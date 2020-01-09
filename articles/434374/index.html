@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Check RBAC at Kubernetes</h1><div class="post__text post__text-html js-mediator-article"><p>  It's one thing to secure the Kubernetes cluster, but to support the protection is another problem.  However, new tools have been added to Kubernetes: now it is much easier to do both. </p><br><p><img src="https://habrastorage.org/getpro/habr/post_images/f2c/3a7/e11/f2c3a7e119adbe00cf543fdcb3856c6b.png" alt="image"></p><a name="habracut"></a><br><p>  In Kubernetes (since version 1.6), we introduced the role-based access control concept (RBAC), which allows administrators to define restriction policies for cluster users.  That is, you create a user with limited access: you limit the user's access to resources like secrets or to certain namespaces. </p><br><p>  In this post we will not understand how to implement RBAC.  Decent sources, where this topic is dismantled completely, suffice: </p><br><ul><li>  <a href="https://medium.com/containerum/configuring-permissions-in-kubernetes-with-rbac-a456a9717d5d">https://medium.com/containerum/configuring-permissions-in-kubernetes-with-rbac-a456a9717d5d</a> </li><li>  <a href="https://www.cncf.io/blog/2018/08/01/demystifying-rbac-in-kubernetes/">https://www.cncf.io/blog/2018/08/01/demystifying-rbac-in-kubernetes/</a> </li><li>  <a href="https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/">https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/</a> </li><li>  <a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">https://kubernetes.io/docs/reference/access-authn-authz/rbac/</a> </li></ul><br><p>  It is better to focus on how to make sure that the requirements of your business are met, and see if the running RBAC objects need to be checked whether they perform their functions. </p><br><h3 id="nash-scenariy">  Our script </h3><br><p>  A certain organization accepts several groups to work with the new Kubernetes cluster.  There is a requirement: you cannot interfere with the deployment of a neighboring group, so that unforeseen intergroup problems or downtime do not happen. </p><br><p>  And now the cluster owner has deployed an RBAC cluster, thereby limiting access to a particular namespace.  The first check showed that the groups could not see the pods of each other in their namespaces. </p><br><p>  A week has passed.  The cluster owner noticed that a user from an isolated namespace reads secrets from another namespace.  How so?  He applied RBAC! </p><br><p> Apply something applied, but, as in the work with the code, the system must be tested for compliance with the desired result.  Good thing the CLI tool Cubernethes <code>kubectl</code> gives you a set of tools to check your RBAC configuration. <code>kubectl auth can-i</code> </p><br><p>  Can I?  ("may I?") <br>  <code>can-i</code> using the API just checks if it is possible to perform some action.  The parameters it uses are as follows: <code>kubectl auth can-i VERB [TYPE | TYPE/NAME | NONRESOURCEURL]</code> <code>kubectl auth can-i VERB [TYPE | TYPE/NAME | NONRESOURCEURL]</code>  <code>kubectl auth can-i VERB [TYPE | TYPE/NAME | NONRESOURCEURL]</code> .  Now the current user can check whether a certain action is available to him.  Go: </p><br><pre> <code class="plaintext hljs">kubectl auth can-i create pods</code> </pre> <br><p>  This should return a “yes” or “no” response with the appropriate exit code. </p><br><p>  However, when trying to check the rights of another user, we will encounter a problem: the user under which we are authorized in the cluster is specified in the config file <code>./kube/config</code> , and it is inconvenient to have separate configs for testing individual users.  Fortunately, Kubernetes comes to the rescue again: he is able to imitate users with the help of the <code>--as=</code> and <code>--as-group=</code> tags. </p><br><p>  Update the command, use the imitation of another user: </p><br><pre> <code class="plaintext hljs">kubectl auth can-i create pods --as=me</code> </pre> <br><p>  We should see that with exit code <code>1</code> , the answer is “no”. </p><br><p>  And this is great, because we now have a set of commands that allow us to check whether a user or a group of users has access to any of the Kubernetes resources, from viewing the subtext to deleting secrets. </p><br><h3 id="avtomatizaciya">  Automation </h3><br><p>  However, it is too early to stop: now we are able to implement a test sequence that describes the list of requirements, and run it as part of the CD conveyor.  For the cause! </p><br><p>  There is enough to choose from, there are enough languages ​​to implement: starting with Ava and Mocha in JavaScript and ending with Rspec.  In this case, I implement a purely bash-evski test framework <a href="https://github.com/bats-core/bats-core">Bats</a> . </p><br><p>  Below is an example of running a test.  He checks the work of the rules of RBAC, allowing the user from the group to change the number of running podov in the namespace.  Executed if the attribute "executable" has been set.  Or - using <code>bats filename</code> . </p><br><pre> <code class="plaintext hljs">#!/usr/bin/env bats @test "Team namespaces can scale deployments within their own namespace" { run kubectl auth can-i update deployments.apps --subresource="scale" --as-group="$group" --as="$user" -n $ns [ "$status" -eq 0 ] [ "$output" == "yes" ] done }</code> </pre> <br><p>  The <code>--as</code> and <code>--as-group</code> require the use of the following RBAC rules: </p><br><pre> <code class="plaintext hljs">rules: - apiGroups: - authorization.k8s.io resources: - selfsubjectaccessreviews - selfsubjectrulesreviews verbs: - create</code> </pre> <br><p>  Here is a simple method for you how to implement validation of your RBAC rules in Kubernetes.  By making it part of the Kubernetes pipeline, we will significantly strengthen the RBAC policy.  The method is tested in practice: to catch changes that violate access policies, it turns out much faster! </p><br><p>  Thanks for taking the time to read this post! </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,16 +59,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/434374/">https://habr.com/ru/post/434374/</a></p>
+    <p>Source: https://habr.com/ru/post/434374/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../434364/index.html">Hangfire queue support</a></li>
 <li><a href="../434366/index.html">The Big Four are preparing to share 5G frequencies</a></li>
 <li><a href="../434368/index.html">Machine learning for finding errors in code: how I trained at JetBrains Research</a></li>
+<li><a href="../43437/index.html">Social recommendations urlov for users FF</a></li>
 <li><a href="../434370/index.html">Regular shadow shadows in the Phaser, or the use of bicycles</a></li>
 <li><a href="../434372/index.html">The development of the digital economy of Russia will cost the state 1.8 trillion rubles</a></li>
 <li><a href="../434376/index.html">"Yandex" will test its robomobil in Israel</a></li>

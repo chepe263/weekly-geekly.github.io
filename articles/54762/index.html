@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <section class="page js-page"><h1>C ++ Pattern Specialization Tricks</h1><div class="post__text post__text-html js-mediator-article"><img src="http://dl.getdropbox.com/u/239055/habr/cpp_template_specialization_logo.png" align="left" alt="image">  Template specialization is one of the “complex” features of the C ++ language and is mainly used when creating libraries.  Unfortunately, some features of the specialization of templates are not well disclosed in popular books on this language.  Moreover, even the 53 pages of the official ISO standard of the language, devoted to templates, describe the interesting details of the messy, leaving a lot to "guess yourself - it's obvious."  Under the cat, I tried to clearly state the basic principles of the specialization of patterns and show how these principles can be used in the construction of magic spells. <br><br><a name="habracut"></a><br><h4>  Hello world </h4><br>  How are we used to using templates?  Use the template keyword, then in angle brackets the names of <b>the template parameters</b> , followed by the type and name.  For parameters, also indicate what it is: type (typename) or value (for example, int).  The type of the template itself can be a class (class), a structure (a struct - in general, also a class) or a function (bool foo () and so on).  For example, the simplest template class 'A' can be set like this: <br><img src="http://dl.getdropbox.com/u/239055/habr/cpp_template_specialization_template.png" alt="image"><br>  After a while, we want our class to work the same for all types, and for some sly like int - differently.  Garbage question, we write a specialization: it looks the same as an ad, but we don’t specify the template <b>parameters</b> in angle brackets, instead we specify the specific <b>arguments of the</b> template after its name: <br><br><pre> template &lt;&gt; class A &lt;int&gt; {};  // here, int is the template argument
 </pre><br>  Done, you can write special implementation methods and fields for int.  Such specialization is usually called full specialization or explicit specialization.  For most practical tasks, no more is required.  And if required, then ... 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  A custom template is a new template. </h4><br>  If you carefully read the ISO standard C ++, you can find an interesting statement: by creating a specialized template class, we create a <b>new template class</b> (14.5.4.3).  What does this give us?  A specialized template class can contain methods whose fields or type declarations are not in the template class that we specialize.  Conveniently, when it is necessary that the template class method works only for a specific specialization - it is enough to declare a method only in this specialization, the compiler will do the rest: <br><img src="http://dl.getdropbox.com/u/239055/habr/cpp_template_specialization_separate_member.png" alt="method only in specialization"><br><h4>  Specialized template can have its own template parameters. </h4><br>  The devil is known to be in the details.  The fact that the specialized template class is a very, very new and separate class is certainly interesting, but there is little magic in it.  And the magic is in a minor consequence - if it is a separate template class, then it can have separate <b>parameters</b> that are not related to the non-specialized template class (parameters are that after the template in angle brackets).  For example, like this: <br><br><pre> template &lt;typename S, typename U&gt; class A &lt;int&gt; {};
@@ -73,12 +73,12 @@
 
  Get &lt;int&gt; :: Size // for example, 4
  Get &lt;int *&gt; :: Size // 0 - found the pointer :)
-</pre><br>  This type of magic is mainly used in libraries: stl, boost, loki, and so on.  Of course, when using high-level programming, it’s fun to use such tricks - I think we all remember the construction to get the size of the array :).  But in libraries, partial specialization makes it relatively easy to implement delegates, events, complex containers, and other sometimes very necessary and useful things. <br><br>  Colleagues, if you find a mistake (and I, unfortunately, are not a guru, I could be mistaken) or you have criticism, questions, or additions to the above, I will be glad to comment. <br><br>  Update: The promised continuation <a href="http://habrahabr.ru/blogs/cpp/78299/">here</a> . <br></div><p>Source: <a href="https://habr.com/ru/post/54762/">https://habr.com/ru/post/54762/</a></p>
+</pre><br>  This type of magic is mainly used in libraries: stl, boost, loki, and so on.  Of course, when using high-level programming, it’s fun to use such tricks - I think we all remember the construction to get the size of the array :).  But in libraries, partial specialization makes it relatively easy to implement delegates, events, complex containers, and other sometimes very necessary and useful things. <br><br>  Colleagues, if you find a mistake (and I, unfortunately, are not a guru, I could be mistaken) or you have criticism, questions, or additions to the above, I will be glad to comment. <br><br>  Update: The promised continuation <a href="http://habrahabr.ru/blogs/cpp/78299/">here</a> . <br></div><p>Source: https://habr.com/ru/post/54762/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../54738/index.html">The results of the tender "Classmates"</a></li>
-<li><a href="../54747/index.html">Apple's iPhone OS 3.0 Preview Event</a></li>
+<li><a href="../54748/index.html">Combining bandwidth of two Internet channels and simple fault tolerance</a></li>
+<li><a href="../5475/index.html">Top10 game girls</a></li>
 <li><a href="../54751/index.html">Asterisk - Enterprise Computer Telephony System</a></li>
 <li><a href="../54753/index.html">Nuclear error</a></li>
 <li><a href="../54757/index.html">Constructor Theme for Wordpress</a></li>

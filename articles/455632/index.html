@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Attention! Dangerous bug in C ++ implementation of std :: map :: merge and std :: set :: merge in Visual Studio 2017</h1><div class="post__text post__text-html js-mediator-article">  If you use the C ++ standard in MS Visual Studio 2017 - be careful: the current version contains a critical bug in the implementation of std :: map :: merge and std :: set :: merge.  Details - under the cut. <br><a name="habracut"></a><br><h3>  How does the bug manifest? </h3><br><ol><li>  The complexity of std :: map :: merge and std :: set :: merge instead of the standard declared N * log (size () + N)), where N is the size of the added part, is approximately N squared. </li><li>  If a container with a sufficiently large number of elements was added with the help of merge, when destroying the resulting container, we get the stack overflow. </li><li>  The container after work merge comes to an incorrect state, therefore, other manifestations are possible. </li></ol><br><h3>  What does Microsoft say? </h3><br>  <a href="https://developercommunity.visualstudio.com/content/problem/543975/stdmapmarge-has-critical-bug.html">Bugreport</a> was sent to me by Microsoft almost 2 months ago. <br>  In Visual Studio 2019 Update 2, Preview 2 should have been fixed. <br><br>  But in the current version of Visual Studio 2017 15.9.12 is not fixed until now, and, judging by the latest reports, wait a long time ... <br><br>  The bug is incorrect marking of the color of the added nodes in the implementation of the red-black tree. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h3>  How to play? </h3><br><pre><code class="cpp hljs"><span class="hljs-comment"><span class="hljs-comment">//#include "pch.h" #include &lt;chrono&gt; #include &lt;string&gt; #include &lt;iostream&gt; #include &lt;map&gt; #include &lt;set&gt; const size_t mainSize = 50'000; const size_t additionSize = mainSize; auto getMainMap() { std::map&lt;size_t, std::string&gt; result; while( result.size() &lt; mainSize ) result.emplace(result.size(), "SomeText"); return result; } auto getAdditionMap() { std::map&lt;size_t, std::string&gt; result; while ( result.size() &lt; additionSize ) result.emplace(mainSize + result.size(), "SomeAdditionText"); return result; } int main() { { auto mainMap = getMainMap(); auto addition = getAdditionMap(); auto start = std::chrono::steady_clock::now(); for ( auto const &amp;elem : addition ) mainMap.emplace(elem); auto end = std::chrono::steady_clock::now(); std::cout &lt;&lt; "manual insertion with copy: " &lt;&lt; std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(end - start).count() &lt;&lt; std::endl; } { auto mainMap = getMainMap(); auto addition = getAdditionMap(); auto start = std::chrono::steady_clock::now(); mainMap.merge(addition); auto end = std::chrono::steady_clock::now(); std::cout &lt;&lt; "std::map::merge: " &lt;&lt; std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(end - start).count() &lt;&lt; std::endl; } // &lt;---- and stack overflow here because of incorrect mainMap after merge return 0; }</span></span></code> </pre> <br>  By varying the value of mainSize, you can get different results - either only slow execution, or else a crash. <br><br><h3>  What to do? </h3><br>  Revise your code and replace merge with manual insertion.  Or go to VS 2019. <br>  And if the compiled code has already gone to the customer ... Ohhh ... </div><p>Source: <a href="https://habr.com/ru/post/455632/">https://habr.com/ru/post/455632/</a></p>
+    <h3>  How to play? </h3><br><pre><code class="cpp hljs"><span class="hljs-comment"><span class="hljs-comment">//#include "pch.h" #include &lt;chrono&gt; #include &lt;string&gt; #include &lt;iostream&gt; #include &lt;map&gt; #include &lt;set&gt; const size_t mainSize = 50'000; const size_t additionSize = mainSize; auto getMainMap() { std::map&lt;size_t, std::string&gt; result; while( result.size() &lt; mainSize ) result.emplace(result.size(), "SomeText"); return result; } auto getAdditionMap() { std::map&lt;size_t, std::string&gt; result; while ( result.size() &lt; additionSize ) result.emplace(mainSize + result.size(), "SomeAdditionText"); return result; } int main() { { auto mainMap = getMainMap(); auto addition = getAdditionMap(); auto start = std::chrono::steady_clock::now(); for ( auto const &amp;elem : addition ) mainMap.emplace(elem); auto end = std::chrono::steady_clock::now(); std::cout &lt;&lt; "manual insertion with copy: " &lt;&lt; std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(end - start).count() &lt;&lt; std::endl; } { auto mainMap = getMainMap(); auto addition = getAdditionMap(); auto start = std::chrono::steady_clock::now(); mainMap.merge(addition); auto end = std::chrono::steady_clock::now(); std::cout &lt;&lt; "std::map::merge: " &lt;&lt; std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(end - start).count() &lt;&lt; std::endl; } // &lt;---- and stack overflow here because of incorrect mainMap after merge return 0; }</span></span></code> </pre> <br>  By varying the value of mainSize, you can get different results - either only slow execution, or else a crash. <br><br><h3>  What to do? </h3><br>  Revise your code and replace merge with manual insertion.  Or go to VS 2019. <br>  And if the compiled code has already gone to the customer ... Ohhh ... </div><p>Source: https://habr.com/ru/post/455632/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

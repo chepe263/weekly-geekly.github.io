@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Transferring data between servers using LVM and iSCSI</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/75b/604/8d5/75b6048d578096107a0949c780d481a0.png" alt="aquarium-PR-332-4"><br><br>  The issue of scaling resources of dedicated servers is fraught with a number of difficulties: adding memory or disks is impossible without downtime, and the upgrade of the disk subsystem often involves the complete transfer of all data (the amount of which can be very large) from the old server to the new one.  Simply moving disks from one server to another very often also turns out to be impossible: the reason for this may be interface incompatibility, the use of different RAID controllers, the geographical distance of servers from each other, etc.  Copying the data over the network can take a very long time, during which the service is idle.  How can I transfer data to a new server, minimizing the downtime of services? <br><br>  We have been thinking about this issue for a long time, and today we are presenting to the wide audience a solution that seems to us the most successful. <br><a name="habracut"></a><br><img src="https://habrastorage.org/getpro/habr/post_images/744/c40/827/744c408277636f999adea8b81f75a82d.png" alt="LVM_v3" width="800" height="600"><br>  The procedure for transferring data using the method described in this article consists of the following steps: <br><ol><li>  The new server is loaded from external media, block devices are prepared: disks are partitioned, RAID arrays are created; </li><li>  block devices of the new server are exported via iSCSI - iSCSI targets are created; </li><li>  On the old server, the iSCSI initiator is started and connected to the targets on the new server.  On the old server, block devices of the new server appear and become available; </li><li>  on the old server, the block device of the new server is added to the LVM group; </li><li>  data is copied to the block device of the new server using data mirroring in LVM; </li><li>  old server is shutting down; </li><li>  on a new server, still loaded from external media, a file system transferred to it is mounted, the necessary edits are made to the settings; </li><li>  The new server reboots from the disks, after which all services are started. </li></ol><br>  If there are problems with the new server, it turns off.  The old server is turned on, all services continue to work on the old server. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The method proposed by us is suitable for all OSs where LVM is used for logical partitions and it is possible to install iSCSI target and initiator.  On the server on which we carried out an experimental test of the proposed methodology, the Debian Wheezy OS was installed.  Other operating systems may use other programs and commands, but the procedure will be the same. <br><br>  All operations were carried out on a server with disk layout, which is standard for our servers during an unattended OS installation.  If your server uses a different disk layout, some command parameters will need to be changed. <br><br>  <em>Our data transfer method is designed for experienced users who know well what LVM, mdraid, iSCSI are.</em>  <em>We warn that errors in commands can lead to complete or partial data loss.</em>  <em>Before embarking on the transfer of data, it is necessary to save backup copies of important information on external storage or storage.</em> <br><br><h2>  We are preparing a new server </h2><br>  If you transfer data to a server with a different hardware configuration (special attention should be paid to the disk controller), install the same OS distribution on the new server as on the old one, as well as the drivers needed for operation.  Check that all devices are detected and working.  Save / write down the necessary actions, in the future they will need to be performed in the transferred system, so that the new server can boot after the transfer. <br><br>  Then load the new server from external media.  We recommend to our clients to boot into Selectel Rescue using the server’s load management menu. <br>  When the download is complete, connect to the new server via SSH.  Set the new server to be its future hostname.  This is necessary if you intend to use mdraid on the new server: when creating a RAID array, the hostname will be saved in the RAID metadata on all the disks it contains. <br><br><pre> # hostname cs940
@@ -234,20 +234,20 @@
  tmpfs 3.2G 0 3.2G 0% / run / shm
  / dev / md0 962M 36M 877M 4% / boot
  / dev / mapper / vg0-var 1.8T 199M 1.8T 1% / var
-</pre><br><br><h2>  Conclusion </h2><br>  Despite its complexity, the approach we have described has several advantages.  Firstly, it allows you to avoid long server idle time - all services continue to work while copying data.  Secondly, in case of any problems with the new server, the old one is ready for a quick start.  Thirdly, it is universal and does not depend on what services are running on the server. <br><br>  In a similar way, you can migrate under other operating systems - CentOS, OpenSUSE, etc. Naturally, in this case there may be differences in some nuances (OS preparation for starting on a new server, setting up the bootloader, initrd, etc.). <br><br>  We are well aware that the method proposed by us can hardly be considered ideal.  We will be grateful for any comments and suggestions for its improvement.  If any of our readers can offer their own solution to the problem of transferring data without stopping the servers, we will be happy to read it. <br><br>  Readers who are not able to comment on posts on Habré, we invite to our <a href="http://slc.tl/4f7cb">blog</a> . </div><p>Source: <a href="https://habr.com/ru/post/209444/">https://habr.com/ru/post/209444/</a></p>
+</pre><br><br><h2>  Conclusion </h2><br>  Despite its complexity, the approach we have described has several advantages.  Firstly, it allows you to avoid long server idle time - all services continue to work while copying data.  Secondly, in case of any problems with the new server, the old one is ready for a quick start.  Thirdly, it is universal and does not depend on what services are running on the server. <br><br>  In a similar way, you can migrate under other operating systems - CentOS, OpenSUSE, etc. Naturally, in this case there may be differences in some nuances (OS preparation for starting on a new server, setting up the bootloader, initrd, etc.). <br><br>  We are well aware that the method proposed by us can hardly be considered ideal.  We will be grateful for any comments and suggestions for its improvement.  If any of our readers can offer their own solution to the problem of transferring data without stopping the servers, we will be happy to read it. <br><br>  Readers who are not able to comment on posts on Habré, we invite to our <a href="http://slc.tl/4f7cb">blog</a> . </div><p>Source: https://habr.com/ru/post/209444/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../209432/index.html">OwnCloud's own corporate cloud with NGINX on the frontend and several backend servers</a></li>
 <li><a href="../209434/index.html">Japanese space agency JAXA is going to hunt space junk with a network in February</a></li>
 <li><a href="../209436/index.html">About logging in Node.js</a></li>
 <li><a href="../209438/index.html">Attack with your time server: NTP amplification attack (CVE-2013-5211)</a></li>
+<li><a href="../20944/index.html">Due to the fall of the Live ID, the main Microsoft Internet services have disconnected</a></li>
 <li><a href="../209442/index.html">Components. Make & watch</a></li>
 <li><a href="../209446/index.html">We study the internal kitchen of the Linux kernel using / proc for quick diagnosis and problem solving</a></li>
+<li><a href="../20945/index.html">Why Mac?</a></li>
 <li><a href="../209450/index.html">The future of IT within companies: less, better, cheaper</a></li>
 <li><a href="../209452/index.html">US authorities seized another 29655 bitcoins ($ 28 million) from Silk Road servers</a></li>
 <li><a href="../209454/index.html">Laboratories for penetration testing "Test.lab"</a></li>
-<li><a href="../209458/index.html">Google showed the dynamics of the popularity of music trends over the past 64 years</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

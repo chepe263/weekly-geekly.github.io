@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Why Math.Round opens a print window from a browser in Try .NET</h1><div class="post__text post__text-html js-mediator-article">  Today, the public’s attention was drawn by a funny, illogical bug found in <a href="http://try.dot.net/">Try .NET</a> , a tool designed to embed interactive C # examples into the documentation.  See the open issue on Github <a href="https://github.com/dotnet/try/issues/290">at the link</a> . <br><br>  The above code, when executed (when calling the <i>Math.Round</i> method) instead of the expected result, suddenly opens a print window from the browser: <br><br><pre><code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">using</span></span> System; <span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">class</span></span> <span class="hljs-title"><span class="hljs-title">Example</span></span> { <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">Main</span></span></span><span class="hljs-function">(</span><span class="hljs-params"></span><span class="hljs-function"><span class="hljs-params"></span>)</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> x = Math.Round(<span class="hljs-number"><span class="hljs-number">11.1</span></span>, MidpointRounding.AwayFromZero); } }</code> </pre> <br><a name="habracut"></a><br><img src="https://habrastorage.org/getpro/habr/post_images/084/e00/94f/084e0094febe0c3f5cfc5f2103a1aa07.gif" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      With the help of error error and breakpoint users found the alleged reason for this behavior - it was hidden in the <i>mono.js</i> library. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/65c/e3c/a83/65ce3ca838451720e1ff1850eb7c3a1a.png" alt="image"><br><br>  The answer is simple.  Apparently, someone wanted to use his own <i>print ()</i> function in JS (or confused it with <i>console.log</i> ), but since such was not found in the scope, the program calls <i>window.print ()</i> , which really should open the current print window Document - since <i>window</i> is a global object for the main thread in the browser. <br><br>  This folbek was not immediately noticed, but one of the users claims that this error <a href="https://github.com/mono/mono/pull/11602">was corrected last November</a> . <br><br>  In order to avoid situations in which errors of this kind arise, the <i>create-react-app</i> project keeps a <a href="https://github.com/facebook/create-react-app/tree/master/packages/confusing-browser-globals">list of “confusing” browser global variables</a> , since it is quite simple to make a similar error: <br><br><pre> <code class="javascript hljs">handleClick() { <span class="hljs-comment"><span class="hljs-comment">//   `event` this.setState({ text: event.target.value //    `event`- ! }); }</span></span></code> </pre> </div><p>Source: <a href="https://habr.com/ru/post/456880/">https://habr.com/ru/post/456880/</a></p>
+      With the help of error error and breakpoint users found the alleged reason for this behavior - it was hidden in the <i>mono.js</i> library. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/65c/e3c/a83/65ce3ca838451720e1ff1850eb7c3a1a.png" alt="image"><br><br>  The answer is simple.  Apparently, someone wanted to use his own <i>print ()</i> function in JS (or confused it with <i>console.log</i> ), but since such was not found in the scope, the program calls <i>window.print ()</i> , which really should open the current print window Document - since <i>window</i> is a global object for the main thread in the browser. <br><br>  This folbek was not immediately noticed, but one of the users claims that this error <a href="https://github.com/mono/mono/pull/11602">was corrected last November</a> . <br><br>  In order to avoid situations in which errors of this kind arise, the <i>create-react-app</i> project keeps a <a href="https://github.com/facebook/create-react-app/tree/master/packages/confusing-browser-globals">list of “confusing” browser global variables</a> , since it is quite simple to make a similar error: <br><br><pre> <code class="javascript hljs">handleClick() { <span class="hljs-comment"><span class="hljs-comment">//   `event` this.setState({ text: event.target.value //    `event`- ! }); }</span></span></code> </pre> </div><p>Source: https://habr.com/ru/post/456880/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>BIOS update on Dell PowerEdge R510 server</h1><div class="post__text post__text-html js-mediator-article">  Server hardware manufacturers are trying to monitor the correct operation of their products.  One of these measures is correcting and improving the <a href="http://en.wikipedia.org/wiki/BIOS">BIOS</a> 'a.  In this article I will explain how to update the BIOS of the Dell PowerEdge series servers from the <a href="http://fedoraproject.org/">Fedora</a> distribution kit. <br><br><a name="habracut"></a>  1. Find out the current firmware version and server model <br><br><pre><code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># smbios-sys-info Libsmbios version: 2.2.28 Product Name: PowerEdge R510 Vendor: Dell Inc. BIOS Version: 1.8.2 System ID: 0x02F1 Service Tag: XXXXXXX Express Service Code: XXXXXXXXXXX Asset Tag: Property Ownership Tag:</span></span></code> </pre> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The current BIOS version 1.8.2. <br><br>  2. The site <a href="http://support.dell.com/support/DPP/Index.aspx%3Fc%3Dus%26l%3Den%26s%3Dbiz">support.dell.com/support/DPP/Index.aspx?c=us&amp;l=en&amp;s=biz</a> <br>  We search our server for “Service Tag” and go to the “Drivers &amp; Downloads” tab.  In the drop-down list, select "Operating Systems: Red Hat Enterprise Linux 6".  Download the latest BIOS'a (a file with the .bin extension) to the server. <br><br>  3. There are two ways of flashing. <br>  - running bin file <br><pre> <code class="bash hljs">sh R510_BIOS_NGVY8_LN32_1.9.0.BIN</code> </pre> <br>  - through the <b>smbios-rbu-bios-update</b> utility, but for this it is necessary to perform preparatory work. <br>  install the <b>smbios-utils</b> package <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># yum install smbios-utils</span></span></code> </pre> <br>  unpack the bin-file <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># mkdir firmware; sh R510_BIOS_NGVY8_LN32_1.9.0.BIN --extract firmware</span></span></code> </pre><br>  We watch information about the new firmware version <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># smbios-rbu-bios-update --hdr-info=firmware/payload/PER510-010900C.hdr BIOS HDR file information dump. Filename: firmware/payload/PER510-010900C.hdr File magic header: $RBU Header length: 84 Header major version: 2 Header minor version: 0 Number of supported systems: 6 Quick check field: Copyright 2011 Dell Inc. BIOS Version (RAW): &lt;libsmbios_c.rbu_hdr.c_ubyte_Array_3 object at 0x24e8d40&gt; BIOS Version: 1.9.0 Misc flags: 1 Compatibility flags: 91 System ID: 0x02f1 Hardware Revision: 0 System ID: 0x043c Hardware Revision: 0 System ID: 0x0460 Hardware Revision: 0 System ID: 0x0474 Hardware Revision: 0 System ID: 0x0475 Hardware Revision: 0 System ID: 0x048a Hardware Revision: 0</span></span></code> </pre><br>  directly flashing and rebooting the server <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># smbios-rbu-bios-update --hdr=PER510-010900C.hdr -u --reboot</span></span></code> </pre><br>  after reboot check the current firmware version <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># smbios-sys-info Libsmbios version: 2.2.28 Product Name: PowerEdge R510 Vendor: Dell Inc. BIOS Version: 1.9.0 System ID: 0x02F1 Service Tag: XXXXXXX Express Service Code: XXXXXXXXXXX Asset Tag: Property Ownership Tag:</span></span></code> </pre> <br>  As a result, we get the updated BIOS version 1.9.0. <br><br>  This way you can flip the BIOS on all servers of the Dell PowerEdge series. </div><p>Source: <a href="https://habr.com/ru/post/144575/">https://habr.com/ru/post/144575/</a></p>
+      The current BIOS version 1.8.2. <br><br>  2. The site <a href="http://support.dell.com/support/DPP/Index.aspx%3Fc%3Dus%26l%3Den%26s%3Dbiz">support.dell.com/support/DPP/Index.aspx?c=us&amp;l=en&amp;s=biz</a> <br>  We search our server for “Service Tag” and go to the “Drivers &amp; Downloads” tab.  In the drop-down list, select "Operating Systems: Red Hat Enterprise Linux 6".  Download the latest BIOS'a (a file with the .bin extension) to the server. <br><br>  3. There are two ways of flashing. <br>  - running bin file <br><pre> <code class="bash hljs">sh R510_BIOS_NGVY8_LN32_1.9.0.BIN</code> </pre> <br>  - through the <b>smbios-rbu-bios-update</b> utility, but for this it is necessary to perform preparatory work. <br>  install the <b>smbios-utils</b> package <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># yum install smbios-utils</span></span></code> </pre> <br>  unpack the bin-file <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># mkdir firmware; sh R510_BIOS_NGVY8_LN32_1.9.0.BIN --extract firmware</span></span></code> </pre><br>  We watch information about the new firmware version <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># smbios-rbu-bios-update --hdr-info=firmware/payload/PER510-010900C.hdr BIOS HDR file information dump. Filename: firmware/payload/PER510-010900C.hdr File magic header: $RBU Header length: 84 Header major version: 2 Header minor version: 0 Number of supported systems: 6 Quick check field: Copyright 2011 Dell Inc. BIOS Version (RAW): &lt;libsmbios_c.rbu_hdr.c_ubyte_Array_3 object at 0x24e8d40&gt; BIOS Version: 1.9.0 Misc flags: 1 Compatibility flags: 91 System ID: 0x02f1 Hardware Revision: 0 System ID: 0x043c Hardware Revision: 0 System ID: 0x0460 Hardware Revision: 0 System ID: 0x0474 Hardware Revision: 0 System ID: 0x0475 Hardware Revision: 0 System ID: 0x048a Hardware Revision: 0</span></span></code> </pre><br>  directly flashing and rebooting the server <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># smbios-rbu-bios-update --hdr=PER510-010900C.hdr -u --reboot</span></span></code> </pre><br>  after reboot check the current firmware version <br><pre> <code class="bash hljs">[root@home ~]<span class="hljs-comment"><span class="hljs-comment"># smbios-sys-info Libsmbios version: 2.2.28 Product Name: PowerEdge R510 Vendor: Dell Inc. BIOS Version: 1.9.0 System ID: 0x02F1 Service Tag: XXXXXXX Express Service Code: XXXXXXXXXXX Asset Tag: Property Ownership Tag:</span></span></code> </pre> <br>  As a result, we get the updated BIOS version 1.9.0. <br><br>  This way you can flip the BIOS on all servers of the Dell PowerEdge series. </div><p>Source: https://habr.com/ru/post/144575/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../144569/index.html">Dragon SpaceX successfully reached the ISS</a></li>
+<li><a href="../14457/index.html">Halo 3 Sales Started</a></li>
 <li><a href="../144571/index.html">Localization of a point in a convex polygon</a></li>
 <li><a href="../144572/index.html">Leaked PS4 specs</a></li>
 <li><a href="../144573/index.html">Large images on the site for users with Retina Display - retina.js</a></li>
 <li><a href="../144574/index.html">Auto-update of stock deadline in Yandex.Direct</a></li>
+<li><a href="../14458/index.html">Freescale MPC8610 multicomponent processor</a></li>
 <li><a href="../144580/index.html">User identification by voice</a></li>
 <li><a href="../144582/index.html">Developing a PHP module in C ++. Part 1: Excursion into the world of Zend Engine 2</a></li>
 <li><a href="../144586/index.html">Happy Birthday, Habr!</a></li>
 <li><a href="../144587/index.html">PocketLint: Opera intends to buy Facebook?</a></li>
-<li><a href="../144588/index.html">The digest of interesting news and materials from the world of ayti for the last week №7 (May 19 - 25, 2012)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

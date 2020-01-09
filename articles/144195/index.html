@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Intel Architecture Code Analyzer 2.0.1</h1><div class="post__text post__text-html js-mediator-article">  My needs for analyzing the performance of software on x86 cover three tula.  One of them - Vtune XE is familiar, probably, to everyone who faced optimization. <br><br>  The second <a href="http://software.intel.com/en-us/articles/intel-architecture-code-analyzer/">tool</a> , unfortunately, is not so widely known.  It was already <a href="http://habrahabr.ru/post/99367/">mentioned</a> on Habré in the context of optimizing AVX code, but its area of ​​application is somewhat broader. <br><br>  Sometimes after Vtune has found the most important hotspot (and often the developer already knows it), there is a need to make some efforts to reduce the number of clocks that are spent on its execution.  For almost three years now, I have been using performance analysis of such small but critical sections of the Intel Architecture Code Analyzer. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       It’s easy to use, here’s a recursive algorithm with just 6 steps: <br>  1. In the appropriate .c / .cpp file is included <br>  #include "iacaMarks.h", <br>  2. IACA dll / so libraries are placed in an accessible system location, <br>  3. Macros are added to the source. <br>  IACA_START, IACA_END <br>  respectively, before and after the end of the code being optimized.  For example, <br><a name="habracut"></a><br><pre> IACA_START
@@ -75,7 +75,7 @@
 		 _mm_store_si128 ((__ m128i *) dst + i * 2 + 1, reg3); 
 	 } 
  IACA_END
-</pre><br>  4. Compile with your favorite compiler (I hope this is ICC, but there will be no problems with GCC or MSVC too) with all commonly used optimizations (except for PGO, unfortunately).  Link the entire project is not necessary, one object is enough. <br><br>  5. Then in the command line we’ll feed the resulting object manager: <br>  iaca -64 -arch IVB -cp DATA_DEPENDENCY -mark 0 -o output.txt ssecpy.obj <br>  The parameters for IACA are as follows: <br>  -64 - means 64-bit code.  Possible and -32. <br>  -arch IVB — shows IACA that you need to analyze the performance of this code on the Ivy Bridge.  Other possible values: nehalem, westmere, SNB. <br>  -analysis LATENCY asks IACA to show which instructions are on the critical path for the data (that is, which instructions need to be optimized so that the result of this code is calculated faster).  Another possible value: -cp THROUGHOPUT asks IACA to show which instructions plug the processor pipeline. <br>  -mark 0 tells IACA to analyze all the tagged parts of the code.  If you specify -mark n, IACA will only analyze the nth tagged code. <br>  6. We think a lot about the result, we make changes in the code (I confess, at this stage often I just thoughtlessly rearrange the instructions in places and see what happened), repeat steps 4-6 until I get bored. <br><br>  Now about the limitations.  Although the u-ops and execution ports will be mentioned in the tula output, IACA is not a simulator — it performs a static analysis.  For example, if a conditional branch command is encountered in the analyzed code, the IACA considers that the transition does not occur.  He also believes that the missions in L1D and L1I, and even more so, are not higher.  He does not support some instructions and simply skips, in the output in their place there will appear "!". <br><br>  Recently, version 2.0.1 appeared on the <a href="http://whatif.intel.com/">site</a> with support for code analysis for SNB and IVB.  The <a href="http://software.intel.com/file/43956">documentation</a> describes in more detail how to use it, and provides several examples of typical optimizations that can be found using IACA.  They say that it works under Linux, Windowx, Mac OS X, but I did not personally check the latter. </div><p>Source: <a href="https://habr.com/ru/post/144195/">https://habr.com/ru/post/144195/</a></p>
+</pre><br>  4. Compile with your favorite compiler (I hope this is ICC, but there will be no problems with GCC or MSVC too) with all commonly used optimizations (except for PGO, unfortunately).  Link the entire project is not necessary, one object is enough. <br><br>  5. Then in the command line we’ll feed the resulting object manager: <br>  iaca -64 -arch IVB -cp DATA_DEPENDENCY -mark 0 -o output.txt ssecpy.obj <br>  The parameters for IACA are as follows: <br>  -64 - means 64-bit code.  Possible and -32. <br>  -arch IVB — shows IACA that you need to analyze the performance of this code on the Ivy Bridge.  Other possible values: nehalem, westmere, SNB. <br>  -analysis LATENCY asks IACA to show which instructions are on the critical path for the data (that is, which instructions need to be optimized so that the result of this code is calculated faster).  Another possible value: -cp THROUGHOPUT asks IACA to show which instructions plug the processor pipeline. <br>  -mark 0 tells IACA to analyze all the tagged parts of the code.  If you specify -mark n, IACA will only analyze the nth tagged code. <br>  6. We think a lot about the result, we make changes in the code (I confess, at this stage often I just thoughtlessly rearrange the instructions in places and see what happened), repeat steps 4-6 until I get bored. <br><br>  Now about the limitations.  Although the u-ops and execution ports will be mentioned in the tula output, IACA is not a simulator — it performs a static analysis.  For example, if a conditional branch command is encountered in the analyzed code, the IACA considers that the transition does not occur.  He also believes that the missions in L1D and L1I, and even more so, are not higher.  He does not support some instructions and simply skips, in the output in their place there will appear "!". <br><br>  Recently, version 2.0.1 appeared on the <a href="http://whatif.intel.com/">site</a> with support for code analysis for SNB and IVB.  The <a href="http://software.intel.com/file/43956">documentation</a> describes in more detail how to use it, and provides several examples of typical optimizations that can be found using IACA.  They say that it works under Linux, Windowx, Mac OS X, but I did not personally check the latter. </div><p>Source: https://habr.com/ru/post/144195/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -88,7 +88,7 @@
 <li><a href="../144197/index.html">Indexing AJAX sites by the Yandex search robot</a></li>
 <li><a href="../144198/index.html">How I walked behind the backtrace</a></li>
 <li><a href="../144199/index.html">Today, YouTube is seven years old. And you set the record again</a></li>
-<li><a href="../144200/index.html">Finger huffman algorithm</a></li>
+<li><a href="../1442/index.html">Russian spammers attacked Blue Security</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

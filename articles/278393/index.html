@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>alter table without table locale</h1><div class="post__text post__text-html js-mediator-article">  Imagine a project that should work 24/7, a project using the mysql database and a typical situation, the developer comes in and says: <i>In the table, which now has 300 million lines, I forgot to add a field and an index on it, and stopping the work with base is invalid, think of something.</i> <i><br></i> <br>  If you try to google on the topic, you will mainly find tips on creating a second label, gradual copying of data there (“insert into T select * from S limit OFFSET”) and then renaming tables, but this mechanism has significant drawbacks, for example, data in the original table may change immediately after copying, and since  it is impossible to lock the table on record, then integrity of data will be in doubt. <br><br>  You can copy data with external code, taking into account all changes synchronously in 2 tables, in reading only unread from the old to the new, but this requires a change in the application code, which is not always possible. <br><br>  Are there any conditions when such an alter can be made on the go?  Certainly yes, there are several of them, but I will tell only one option for my spherical horse in vacuum. <br><a name="habracut"></a><br>  Given - mysql database on 2 servers with master replication and external mechanism (haproxy, application config, etc.), which shows which mysql instance is active in the code.  Those.  we have the ability to switch requests from one server to another. <br>  Replica two-way: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      server1 &lt;==&gt; server2 <br>  server1 is a logical master, i.e.  it receives requests from the application code. <br><br>  1. Turn off the slave on server1 ( <i>mysql&gt; stop slave;</i> ).  Since  requests for server2 do not go, then disabling the replica in this direction will not cause negative consequences for the integrity of data on both servers. <br>  2. We are running alter on server2, this query is filling the table only on server2, but the prod does not address it now, it does not cause problems, which means it is safe. <br>  3. We follow the lag from the master to server2, the show slave status command;  pay attention to Seconds_Behind_Master.  The backlog is caused by the fact that requests to the locked table during alter are not played on the slave server2, they accumulate in the replay-log and after the execution of alter they are played. <br>  4. Next, we get an obsolete table to server1, and to server2 a table with a new format we need, we need to switch the logical master to server2, we switch. <br>  5. Turn off the server on 1 server, for example through <i>mysqladmin start</i> .  which causes alter to come from server2 to server1 and modify the table there. <br>  6. Just in case we wait that the server1 caught up with the replica.  If necessary, we switch the logical master again (for example, there is a hard-code for removing backups from server2 and for the logical master to backups they should not be slowed down). <br><br>  And how do you solve such problems? </div><p>Source: <a href="https://habr.com/ru/post/278393/">https://habr.com/ru/post/278393/</a></p>
+      server1 &lt;==&gt; server2 <br>  server1 is a logical master, i.e.  it receives requests from the application code. <br><br>  1. Turn off the slave on server1 ( <i>mysql&gt; stop slave;</i> ).  Since  requests for server2 do not go, then disabling the replica in this direction will not cause negative consequences for the integrity of data on both servers. <br>  2. We are running alter on server2, this query is filling the table only on server2, but the prod does not address it now, it does not cause problems, which means it is safe. <br>  3. We follow the lag from the master to server2, the show slave status command;  pay attention to Seconds_Behind_Master.  The backlog is caused by the fact that requests to the locked table during alter are not played on the slave server2, they accumulate in the replay-log and after the execution of alter they are played. <br>  4. Next, we get an obsolete table to server1, and to server2 a table with a new format we need, we need to switch the logical master to server2, we switch. <br>  5. Turn off the server on 1 server, for example through <i>mysqladmin start</i> .  which causes alter to come from server2 to server1 and modify the table there. <br>  6. Just in case we wait that the server1 caught up with the replica.  If necessary, we switch the logical master again (for example, there is a hard-code for removing backups from server2 and for the logical master to backups they should not be slowed down). <br><br>  And how do you solve such problems? </div><p>Source: https://habr.com/ru/post/278393/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../278377/index.html">Managing ES6 class private data</a></li>
 <li><a href="../278383/index.html">Video analytics 2.0 or what have left the objects. Part 1</a></li>
 <li><a href="../278387/index.html">ExtJS 6 gallery with touch events</a></li>
 <li><a href="../278389/index.html">Lua Micro Apache Framework</a></li>
+<li><a href="../27839/index.html">Implement Health Monitoring System in any ASP.NET application in a minute</a></li>
 <li><a href="../278391/index.html">Stack Overflow Architecture</a></li>
 <li><a href="../278395/index.html">We promote mobile applications in the AppStore and Google Play: how to use the method of featuring</a></li>
 <li><a href="../278399/index.html">Grace "Grandma COBOL" Hopper</a></li>
+<li><a href="../2784/index.html">Vista: Voice over the Internet</a></li>
+<li><a href="../27840/index.html">Viewdle raised the round</a></li>
 <li><a href="../278401/index.html">JavaScript parser for treasure hunters of photographic depths</a></li>
-<li><a href="../278403/index.html">Dollar</a></li>
-<li><a href="../278405/index.html">Creating applications for Firebird with the use of various components and drivers: ADO.NET Entity Framework 6</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

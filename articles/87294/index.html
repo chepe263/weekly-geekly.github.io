@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Yandeks.Probki: get the area covered with traffic jams + alternative cork gadget</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/fce/37b/f79/fce37bf79cea05638a1fbfd10d90a9e0.png" align="left">  Not so long ago, Yandex began to give data on traffic jams for a large number of other regions, except for Moscow, St. Petersburg, Kiev and Yekaterinburg.  <a href="http://habrahabr.ru/blogs/webdev/86857/">How to place a layer with traffic jams on my map</a> I wrote earlier.  Today we will understand how you can get a list of regions in which traffic jams are processed. <br><br>  Yandex.Prob, along with <a href="">trf.maps.yandex.net/trf/stat.js</a> , also has <a href="">trf.maps.yandex.net/trf/coverage.js</a> .  This script tells us which regions are covered with traffic data (or at least this information is supported). <br><br><a name="habracut"></a><br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">YMaps.TrafficLoader.onLoad( <br> <font color="#A31515">"coverage"</font> , <br> { <br> regions: ( <font color="#0000ff">function</font> (){ <br> <font color="#0000ff">function</font> p(x,y){ <br> <font color="#0000ff">return</font> <font color="#0000ff">new</font> YMaps.GeoPoint(x,y); <br> } <br> <font color="#0000ff">function</font> b(l,b,r,t){ <br> <font color="#0000ff">return</font> <font color="#0000ff">new</font> YMaps.GeoBounds(p(l,b),p(r,t)); <br> } <br> <font color="#0000ff">return</font> [ <br> { <br> name: <font color="#A31515">"   "</font> , <br> regionId: <font color="#A31515">"1"</font> , <br> view:{ <br> point:p(37.620070,55.753630), <br> boundedBy:b(36.61977492,55.3105725984,38.35467432,56.4313303008) <br> }, <br> boundedBy:b(35.14318524,54.2560801359,40.20433848,56.9613240948) <br> } <br> ]; <br> })() <br> } <br> );</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      If you do all the transformations that are performed, the following object is obtained at the input: <br><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">return</font> { <br> regions: [ <br> { <br> name: <font color="#A31515">"   "</font> , <br> regionId: <font color="#A31515">"1"</font> , <br> view:{ <br> point: YMaps.GeoPoint(37.620070,55.753630), <br> boundedBy: YMaps.GeoBounds(36.61977492,55.3105725984,38.35467432,56.4313303008) <br> }, <br> boundedBy: YMaps.GeoBounds(35.14318524,54.2560801359,40.20433848,56.9613240948) <br> } <br> ]; <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  YMaps.TrafficLoader is used again.  The data comes in the form of an object with a regions field that contains an array of objects.  Each object has the same set of fields: <br><ul><li>  name - the name of the region or city; </li><li>  regionId - some kind of ID.  it is also present in the output of stat.js; </li><li>  view: viewport, view.point - an object of type <a href="">YMaps.GeoPoint</a> — the center of the area, conveniently used with <a href="">YMaps.Map.setCenter (geoPoint)</a> to go to the desired area, view.boundedBy — <a href="">YMaps.GeoBounds</a> — a rectangle bounding the coverage area; </li><li>  boundedBy is similar to view.boundedBy. </li></ul><br>  According to the results of "research", I made Windows Sidebar Widgets with traffic jams in any city that is now supported by Yandex.  Not as cool as the original, but it allows you to view the map directly in the widget without opening the site itself. <br>  <a href="http://widgets.elifantiev.ru/widgets/roadcams/winGadget/traffic.gadget">Download the widget for Windows Sidebar "Other Yandex.Probki"</a> </div><p>Source: <a href="https://habr.com/ru/post/87294/">https://habr.com/ru/post/87294/</a></p>
+      If you do all the transformations that are performed, the following object is obtained at the input: <br><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">return</font> { <br> regions: [ <br> { <br> name: <font color="#A31515">"   "</font> , <br> regionId: <font color="#A31515">"1"</font> , <br> view:{ <br> point: YMaps.GeoPoint(37.620070,55.753630), <br> boundedBy: YMaps.GeoBounds(36.61977492,55.3105725984,38.35467432,56.4313303008) <br> }, <br> boundedBy: YMaps.GeoBounds(35.14318524,54.2560801359,40.20433848,56.9613240948) <br> } <br> ]; <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  YMaps.TrafficLoader is used again.  The data comes in the form of an object with a regions field that contains an array of objects.  Each object has the same set of fields: <br><ul><li>  name - the name of the region or city; </li><li>  regionId - some kind of ID.  it is also present in the output of stat.js; </li><li>  view: viewport, view.point - an object of type <a href="">YMaps.GeoPoint</a> — the center of the area, conveniently used with <a href="">YMaps.Map.setCenter (geoPoint)</a> to go to the desired area, view.boundedBy — <a href="">YMaps.GeoBounds</a> — a rectangle bounding the coverage area; </li><li>  boundedBy is similar to view.boundedBy. </li></ul><br>  According to the results of "research", I made Windows Sidebar Widgets with traffic jams in any city that is now supported by Yandex.  Not as cool as the original, but it allows you to view the map directly in the widget without opening the site itself. <br>  <a href="http://widgets.elifantiev.ru/widgets/roadcams/winGadget/traffic.gadget">Download the widget for Windows Sidebar "Other Yandex.Probki"</a> </div><p>Source: https://habr.com/ru/post/87294/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../87287/index.html">Build and configure Transmission in Debian or anything you wanted to know about Transmission but were afraid to ask</a></li>
 <li><a href="../87289/index.html">About RSS Habra and usability ...</a></li>
+<li><a href="../8729/index.html">By 2010, online trading in the United States will reach $ 329 billion</a></li>
 <li><a href="../87290/index.html">Smallest ThinkPad</a></li>
 <li><a href="../87291/index.html">Cloudconf-2010 is getting closer, everything is more interesting!</a></li>
 <li><a href="../87293/index.html">New Blogger Blogging Template Designer</a></li>
+<li><a href="../873/index.html">MySQL 5.1 - what's new?</a></li>
+<li><a href="../8730/index.html">It's hard to be a god ...</a></li>
 <li><a href="../87300/index.html">Quartz Composer: music cube</a></li>
 <li><a href="../87301/index.html">Apple Store prepares for pre-order iPad</a></li>
 <li><a href="../87303/index.html">Harmony</a></li>
-<li><a href="../87304/index.html">Automatic compilation of computer name and issue it via DHCP</a></li>
-<li><a href="../87308/index.html">CoolerMaster NotePal X2 Notebook Cooling Pad Review</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

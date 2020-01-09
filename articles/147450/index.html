@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>NHibernate: a little trick when working with Oracle or PostgreSQL</h1><div class="post__text post__text-html js-mediator-article">  The ADO.NET providers for <a href="http://www.oracle.com/database">Oracle</a> , <a href="http://www.postgresql.org/">PostgreSQL,</a> and perhaps others have one unpleasant feature that can affect the performance of your application if you request large amounts of data from the server: they do not cache <i><a href="http://msdn.microsoft.com/en-us/library/system.data.idatarecord.getordinal.aspx">IDataReader.GetOrdinal</a></i> method calls.  As it turned out, this is very critical for <a href="http://nhforge.org/">NHibernate</a> , but, fortunately, the developers of NHibernate (or rather <a href="http://www.hibernate.org/">Hibernate</a> ) have noticed this problem and have already solved it. <br><br>  But this feature went unnoticed and almost not documented. <br><a name="habracut"></a><br>  In order for NHibernate to enable the caching of <i>IDataReader.GetOrdinal</i> calls, it is necessary to set the “adonet.wrap_result_sets” option to “true” in hibernate.cfg: <br><br><pre><code class="xml hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">hibernate-configuration</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">xmlns</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"urn:nhibernate-configuration-2.2"</span></span></span><span class="hljs-tag">&gt;</span></span> <span class="hljs-comment"><span class="hljs-comment">&lt;!-- other options --&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">session-factory</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">name</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"MySessionFactory"</span></span></span><span class="hljs-tag">&gt;</span></span> <span class="hljs-comment"><span class="hljs-comment">&lt;!-- other session factory options --&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">property</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">name</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"adonet.wrap_result_sets"</span></span></span><span class="hljs-tag">&gt;</span></span>true<span class="hljs-tag"><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">property</span></span></span><span class="hljs-tag">&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">session-factory</span></span></span><span class="hljs-tag">&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">hibernate-configuration</span></span></span><span class="hljs-tag">&gt;</span></span></code> </pre> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Using <a href="http://www.fluentnhibernate.org/">FluentNHibernate,</a> this is done like this: <br><br><pre> <code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> config = Fluently.Configure() .ExposeConfiguration(c =&gt; c.SetProperty(Environment.WrapResultSets, <span class="hljs-string"><span class="hljs-string">"true"</span></span>)) .Database(db) <span class="hljs-comment"><span class="hljs-comment">/* other configuration */</span></span> .BuildConfiguration();</code> </pre><br><br>  The _ExposeConfiguration_ method adds the actions that will be invoked on the <i>NHibernate.Cfg.Configuration</i> object when the <i>BuildConfiguration</i> method is <i>called</i> .  Thus, the code above will be similar to the following: <br><br><pre> <code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> config = Fluently.Configure() .Database(db) <span class="hljs-comment"><span class="hljs-comment">/* other configuration */</span></span> .BuildConfiguration(); config.SetProperty(NHibernate.Cfg.Environment.WrapResultSets, <span class="hljs-string"><span class="hljs-string">"true"</span></span>);</code> </pre><br><br><h5>  Related Links </h5><br><ul><li>  <a href="https://nhibernate.jira.com/browse/NH-3207">nhibernate.jira.com/browse/NH-3207</a> </li><li>  <a href="http://ramblingabout.wordpress.com/2009/01/07/optimizing-oracle-and-hibernate-performance/">ramblingabout.wordpress.com/2009/01/07/optimizing-oracle-and-hibernate-performance</a> </li><li>  <a href="http://martijndashorst.com/blog/2006/11/28/hibernate-31-something-performance-problems-contd/">martijndashorst.com/blog/2006/11/28/hibernate-31-something-performance-problems-contd</a> </li></ul></div><p>Source: <a href="https://habr.com/ru/post/147450/">https://habr.com/ru/post/147450/</a></p>
+      Using <a href="http://www.fluentnhibernate.org/">FluentNHibernate,</a> this is done like this: <br><br><pre> <code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> config = Fluently.Configure() .ExposeConfiguration(c =&gt; c.SetProperty(Environment.WrapResultSets, <span class="hljs-string"><span class="hljs-string">"true"</span></span>)) .Database(db) <span class="hljs-comment"><span class="hljs-comment">/* other configuration */</span></span> .BuildConfiguration();</code> </pre><br><br>  The _ExposeConfiguration_ method adds the actions that will be invoked on the <i>NHibernate.Cfg.Configuration</i> object when the <i>BuildConfiguration</i> method is <i>called</i> .  Thus, the code above will be similar to the following: <br><br><pre> <code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> config = Fluently.Configure() .Database(db) <span class="hljs-comment"><span class="hljs-comment">/* other configuration */</span></span> .BuildConfiguration(); config.SetProperty(NHibernate.Cfg.Environment.WrapResultSets, <span class="hljs-string"><span class="hljs-string">"true"</span></span>);</code> </pre><br><br><h5>  Related Links </h5><br><ul><li>  <a href="https://nhibernate.jira.com/browse/NH-3207">nhibernate.jira.com/browse/NH-3207</a> </li><li>  <a href="http://ramblingabout.wordpress.com/2009/01/07/optimizing-oracle-and-hibernate-performance/">ramblingabout.wordpress.com/2009/01/07/optimizing-oracle-and-hibernate-performance</a> </li><li>  <a href="http://martijndashorst.com/blog/2006/11/28/hibernate-31-something-performance-problems-contd/">martijndashorst.com/blog/2006/11/28/hibernate-31-something-performance-problems-contd</a> </li></ul></div><p>Source: https://habr.com/ru/post/147450/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../147445/index.html">Simple-Science - Simple Experiments (Digest # 8)</a></li>
 <li><a href="../147446/index.html">How best to store password hashes</a></li>
 <li><a href="../147447/index.html">Russian-language Wikipedia is preparing to strike</a></li>
 <li><a href="../147448/index.html">Geeknote - console client for Evernote</a></li>
 <li><a href="../147449/index.html">The next generation Kindle Fire will appear in the third quarter.</a></li>
+<li><a href="../14745/index.html">Kazakh in Canada # 32</a></li>
 <li><a href="../147454/index.html">Github for Android</a></li>
 <li><a href="../147456/index.html">Scheme of undersea internet cables 2012</a></li>
 <li><a href="../147459/index.html">Ultrabook Review SONY VAIO T13</a></li>
+<li><a href="../14746/index.html">Rutube.ru is building a federal CDN network</a></li>
 <li><a href="../147460/index.html">OS X Mountain Lion GM and Xcode 4.4 GM are available to developers.</a></li>
-<li><a href="../147463/index.html">Android 4.1.1 source code "Jelly Bean"</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

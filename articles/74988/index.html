@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Creating a bootable USB Flash with Windows 7 from under Ubuntu</h1><div class="post__text post__text-html js-mediator-article"> A friend recently asked him to install Windows 7. It just so happened that my DVD drive hasn't worked for a long time, but there is a 8 GB flash drive.  The theme of creating a bootable flash drive with Windows 7 from under Windows has long been chewed heavily on the web.  But I use Ubuntu, so I had to find another solution.  In fact, it seems to me, it is also easier. <br><br><a name="habracut"></a><br>  To begin, we will need a graphical utility GParted and a package for working with the NTFS file system.  To do this, install the gparted and ntfsprogs packages.  This can be done both via Synaptic and through the console: <br> <code>sudo apt-get install gparted ntfsprogs</code> <br> <br>  Next, we need to format the USB flash drive. <br>  You can do this from the console: <br> <code>sudo mkfs.ntfs /dev/sdb4</code> <br>  instead of / dev / sdb4, of course, should be the address of your flash drive <br>  You can do this in an easier way.  To do this, run GParted, select the USB flash drive (drop-down menu on the top) and select the partition.  In the “Section” menu, select the “Unmount” submenu, then again in the “Section” menu the “Format to” submenu, and in the drop-down menu select “ntfs”.  Click the green check mark on the toolbar. <br><br>  If you formatted a flash drive through the console, then all the same you will have to run GParted in order to install the boot flag on the USB flash drive.  Select the desired section, select the "Section" menu, the "Set Flags" submenu.  In the appeared window put a tick on the "boot" and close the window.  GParted will not be needed anymore. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Further, the problem I encountered was that the standard Ubuntu tools do not allow you to open a UDF ISO image.  Therefore, you need to mount the image manually: <br> <code>sudo mkdir /media/iso <br> sudo mount windows7.iso /media/iso -t udf -o loop</code> <br> <br>  It remains only to copy all the files from the image to the USB flash drive: <br> <code>cp -R /media/iso/* /media/MyFlashDrive</code> <br> <br>  That's all! <br><br>  PS In principle, it is possible in this way to copy to the USB flash drive not only Windows 7. <br><br>  <b>UPD.</b>  You can do without the use of GParted.  You can use fdisk instead (thanks to <a href="https://habrahabr.ru/users/icce/" class="user_link">icCE</a> ) <br> <code>bogus@bogus-laptop:~$ sudo fdisk /dev/sdb <br> <br>  (m  ): p <br> <br>  /dev/sdb: 1998 , 1998585344  <br> 255 heads, 63 sectors/track, 242 cylinders <br> Units =  of 16065 * 512 = 8225280 bytes <br> Disk identifier: 0x00068ccc <br> <br> -     Id  <br> /dev/sdb4 1 243 1951712 7 HPFS/NTFS <br>  4   / : <br> =(241, 254, 63) =(242, 250, 7) <br> <br>  (m  ): a <br>   (1-4): 4 <br> <br>  (m  ): p <br> <br>  /dev/sdb: 1998 , 1998585344  <br> 255 heads, 63 sectors/track, 242 cylinders <br> Units =  of 16065 * 512 = 8225280 bytes <br> Disk identifier: 0x00068ccc <br> <br> -     Id  <br> /dev/sdb4 * 1 243 1951712 7 HPFS/NTFS <br>  4   / : <br> =(241, 254, 63) =(242, 250, 7) <br> <br>  (m  ): w <br>    ! <br> <br>  ioctl()    . <br> <br> WARNING: Re-reading the partition table failed with error 16: Device or resource busy. <br> The kernel still uses the old table. The new table will be used at <br> the next reboot or after you run partprobe(8) or kpartx(8) <br>  . <br> bogus@bogus-laptop:~$ <br></code> <br><br>  <b>UPD2.</b>  An easier way to use dd (thanks to <a href="https://habrahabr.ru/users/stampoon/" class="user_link">stampoon</a> ): <br> <code>dd if=/w7.iso of=/dev/sdx</code> <br> <br>  <b>UPD3.</b>  If after dd or copying files from a flash drive it does not load, probably there is not a correct MBR.  (thx <a href="https://habrahabr.ru/users/nalimka/" class="user_link">nalimka</a> ) <br>  You can use the <a href="http://ms-sys.sourceforge.net/">ms-sys</a> utility: <br> <code>ms-sys -7 /dev/sdb</code> </div><p>Source: <a href="https://habr.com/ru/post/74988/">https://habr.com/ru/post/74988/</a></p>
+      Further, the problem I encountered was that the standard Ubuntu tools do not allow you to open a UDF ISO image.  Therefore, you need to mount the image manually: <br> <code>sudo mkdir /media/iso <br> sudo mount windows7.iso /media/iso -t udf -o loop</code> <br> <br>  It remains only to copy all the files from the image to the USB flash drive: <br> <code>cp -R /media/iso/* /media/MyFlashDrive</code> <br> <br>  That's all! <br><br>  PS In principle, it is possible in this way to copy to the USB flash drive not only Windows 7. <br><br>  <b>UPD.</b>  You can do without the use of GParted.  You can use fdisk instead (thanks to <a href="https://habrahabr.ru/users/icce/" class="user_link">icCE</a> ) <br> <code>bogus@bogus-laptop:~$ sudo fdisk /dev/sdb <br> <br>  (m  ): p <br> <br>  /dev/sdb: 1998 , 1998585344  <br> 255 heads, 63 sectors/track, 242 cylinders <br> Units =  of 16065 * 512 = 8225280 bytes <br> Disk identifier: 0x00068ccc <br> <br> -     Id  <br> /dev/sdb4 1 243 1951712 7 HPFS/NTFS <br>  4   / : <br> =(241, 254, 63) =(242, 250, 7) <br> <br>  (m  ): a <br>   (1-4): 4 <br> <br>  (m  ): p <br> <br>  /dev/sdb: 1998 , 1998585344  <br> 255 heads, 63 sectors/track, 242 cylinders <br> Units =  of 16065 * 512 = 8225280 bytes <br> Disk identifier: 0x00068ccc <br> <br> -     Id  <br> /dev/sdb4 * 1 243 1951712 7 HPFS/NTFS <br>  4   / : <br> =(241, 254, 63) =(242, 250, 7) <br> <br>  (m  ): w <br>    ! <br> <br>  ioctl()    . <br> <br> WARNING: Re-reading the partition table failed with error 16: Device or resource busy. <br> The kernel still uses the old table. The new table will be used at <br> the next reboot or after you run partprobe(8) or kpartx(8) <br>  . <br> bogus@bogus-laptop:~$ <br></code> <br><br>  <b>UPD2.</b>  An easier way to use dd (thanks to <a href="https://habrahabr.ru/users/stampoon/" class="user_link">stampoon</a> ): <br> <code>dd if=/w7.iso of=/dev/sdx</code> <br> <br>  <b>UPD3.</b>  If after dd or copying files from a flash drive it does not load, probably there is not a correct MBR.  (thx <a href="https://habrahabr.ru/users/nalimka/" class="user_link">nalimka</a> ) <br>  You can use the <a href="http://ms-sys.sourceforge.net/">ms-sys</a> utility: <br> <code>ms-sys -7 /dev/sdb</code> </div><p>Source: https://habr.com/ru/post/74988/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../74977/index.html">Dear UFO!</a></li>
 <li><a href="../74978/index.html">Yeti USB Mic - the world's first THX certified microphone</a></li>
+<li><a href="../7498/index.html">Visualization of social connections</a></li>
 <li><a href="../74983/index.html">One step from love to hate, or the whole truth about the “Runet Prize”</a></li>
 <li><a href="../74984/index.html">Everything you need to know about partitioning (Part 1)</a></li>
 <li><a href="../74986/index.html">Collision of bullets at one million frames per second</a></li>

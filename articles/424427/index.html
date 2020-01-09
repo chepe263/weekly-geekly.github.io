@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Roskomnadzor and Telegram bots through a proxy</h1><div class="post__text post__text-html js-mediator-article"><p>  It’s impossible to think of a better advertisement for an excellent messenger - “the inflexible Durov keeps the defense and stands for the confidentiality of his clients, as in his life”.  But the essence of this post is not in the marketing component of blocking Telegram in Russia.  If your Telegram bot has stopped working and you need to urgently restore this work, welcome to Cat. </p><a name="habracut"></a><br><p>  Last night we ran into a problem that was expected to collide.  The API server of one of our clients was located in Heroku.  Yesterday, a disgruntled client writes to me (in Telegram, of course) that information randomly appears on the site, then no.  The site itself (application on NodeJS) has already been transferred to the Moscow server in advance to reduce ping. </p><br><p>  After half an hour of studying the problem, a simple conclusion was obtained: Roskomnadzor blocked some of the heroku addresses.  Heroku servers are rotated at the DNS level and the DNS sometimes gives a working IP, sometimes not.  By the way, finding out the cause of the problem was still quite difficult - when we tested with the developers - there was no problem.  When the client tested - were.  Thoughts already appeared to respond to the client with the great phrase of the developer “everything works on my computer”. </p><br><p>  The solution was quite simple - we moved the API application server to the St. Petersburg client server and there it was quietly deployed.  Everything worked fine, except, of course, integration with Telegram.  Since it is not possible to abandon this integration, because  There is no decent alternative, we started to look for a solution to this problem.  Everything is simple with Telegram's native client - interaction with the proxy server is already built into it and its configuration takes a few seconds.  With the Bot API, it's a little different.  The application interacts with <a href="https://api.telegram.org/">https://api.telegram.org/</a> for each Telegram bot action, and this address is, of course, blocked by the RKN. </p><br><p>  As an express solution to the problem, it immediately occurred to connect the client's API server to our OpenVPN network to bypass this lock.  The decision was immediately rejected because  the speed of response left much to be desired.  Google and Yandex could not share with me useful information on solving this issue. </p><br><p>  As a result, a simple and obvious thought occurred to me: to raise independently the simplest proxy server for connecting to telegrams.  Below is the nginx config which now does an excellent job. </p><br><div class="spoiler">  <b class="spoiler_title">Nginx config</b> <div class="spoiler_text"><p>  server { <br>  listen 80; <br>  server_name my-telegram-proxy.server; <br>  location / { <br>  proxy_set_header X-Forwarded-Host $ host; <br>  proxy_set_header X-Forwarded-Server $ host; <br>  proxy_set_header X-Forwarded-For $ proxy_add_x_forwarded_for; <br>  proxy_pass <a href="https://api.telegram.org/">https://api.telegram.org/</a> ; <br>  client_max_body_size 100M; <br>  } <br>  } </p></div></div><br><p>  Later in the application, I changed the url BOT API to interact with the telegram - instead of <br>  <a href="https://api.telegram.org/bot">https://api.telegram.org/bot</a> <br>  wrote <br>  <a href="http://my-telegram-proxy.server/bot">http: //my-telegram-proxy.server/bot</a> <br>  and integration with Bot Api successfully earned </p><br><p> For more convenience, I created a docker container with detailed instructions for its use.  This will allow you to raise your telegram bot proxy as a team in seconds. <br>  <a href="https://hub.docker.com/r/zvinger/docker-proxy-rkn/builds/">https://hub.docker.com/r/zvinger/docker-proxy-rkn/builds/</a> <br>  Command example: <br> <code>docker run -d -p 8012:80 zvinger/docker-proxy-rkn</code> <br>  and specify <a href="http://xn--80aid7bg.xn--80adib7ccc:8012/">http: // server address: 8012 /</a> in the application configuration.  You can select any port when entering the command </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/424427/">https://habr.com/ru/post/424427/</a></p>
+    <p>Source: https://habr.com/ru/post/424427/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../424423/index.html">Google Chrome 69 automatically enters the account and does not erase Google cookies when clearing the history</a></li>
 <li><a href="../424425/index.html">Release Java project with Maven in a new way</a></li>
 <li><a href="../424429/index.html">Science Art and Sound: 4 impressive projects</a></li>
+<li><a href="../42443/index.html">Images that go beyond the boundaries of the post on Habré</a></li>
 <li><a href="../424431/index.html">Valve has introduced a rating of game controllers used in Steam</a></li>
 <li><a href="../424433/index.html">What for the hackers Mikrotik and how I hid 100 thousand. RouterOS from the botnet</a></li>
 <li><a href="../424435/index.html">Zoo on Nefteburovoy: we bring order</a></li>
-<li><a href="../424437/index.html">Elm. Comfortable and awkward. Json.Encoder and Json.Decoder</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

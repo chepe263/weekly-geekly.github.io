@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Django: running with xinetd</h1><div class="post__text post__text-html js-mediator-article">  So, another way to start Django.  But why?  After all, what are some ways to start there.  It would seem for every taste.  Justification and description - under the cut. <br><br><a name="habracut"></a><br><br><h3>  Introduction </h3>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I conceived one idea.  Namely, use web applications as applications on your computer.  Since I work with Python / Django, it’s natural to write applications using them. <br><br>  What is needed for this?  You need to run a web application with a minimum of unnecessary work.  Everything seems to be there, Django can work without a database server (using SQLite), there is a built-in devserver, i.e.  You can run web applications without installing and configuring a web server. <br><br>  But it turned out that if everything is fine with SQLite, then working using the built-in devserver is not so convenient.  It needs to be started manually, that will agree, excess gestures.  And it would be desirable that when clicking on a link, everything starts working as an automatic machine. <br><br>  Of course, you can run devserver at system startup, using startup scripts.  But it is somehow ugly, eats resources and slows the start of the company.  And if there are many such applications? <br><br>  So, what do you want?  In order for a web application to start working when addressing by its address, and in the absence of references it would lie quietly to itself on the hard disk. <br><br><h3>  Proposed Solution </h3><br><br>  Then I remembered xinetd.  This server is doing something that is very similar to my task: <br><br><ul><li>  Listens to configured ports on the local host. </li><li>  When accessing a pre-configured port, it starts the desired application and sends the received request to the standard application input. </li><li>  A running application sends the response to its standard output, xinetd responds to the client. </li></ul><br><br>  Everything is good, only here is the standard input and output, and Django communicates with the web server using the WSGI protocol. <br><br><h3>  Script </h3><br><br>  So, you need to write a script that, on the one hand, communicates with xinetd through stdin / stdout, and on the other hand, with my application on Django, via WSGI. <br><br>  The script was written and the first version is posted on GitHub.  Maybe it will interest someone, welcome. <br><br>  You can download the script on GitHub: <a href="http://ekazanov.github.com/django-xinetd/">django-xinetd</a> <br><br>  Installation and configuration are described in the README. <br><br><h3>  Conclusion </h3><br><br>  Of course, the performance of such a solution is lower than with the use of a web server, but it suits me perfectly. <br><br>  This is the first version and of course quite raw.  But for the simplest cases you can use. <br><br>  I almost forgot, as the platform used Linux (Ubuntu).  xinetd is set by the command: <br><br><pre><code class="bash hljs">apt-get install xinetd</code> </pre> <br><br>  The script is written and tested with Django v1.4. This is important, since in previous versions work with static files is different.  With earlier versions, static files will not be served. </div><p>Source: <a href="https://habr.com/ru/post/153165/">https://habr.com/ru/post/153165/</a></p>
+      I conceived one idea.  Namely, use web applications as applications on your computer.  Since I work with Python / Django, it’s natural to write applications using them. <br><br>  What is needed for this?  You need to run a web application with a minimum of unnecessary work.  Everything seems to be there, Django can work without a database server (using SQLite), there is a built-in devserver, i.e.  You can run web applications without installing and configuring a web server. <br><br>  But it turned out that if everything is fine with SQLite, then working using the built-in devserver is not so convenient.  It needs to be started manually, that will agree, excess gestures.  And it would be desirable that when clicking on a link, everything starts working as an automatic machine. <br><br>  Of course, you can run devserver at system startup, using startup scripts.  But it is somehow ugly, eats resources and slows the start of the company.  And if there are many such applications? <br><br>  So, what do you want?  In order for a web application to start working when addressing by its address, and in the absence of references it would lie quietly to itself on the hard disk. <br><br><h3>  Proposed Solution </h3><br><br>  Then I remembered xinetd.  This server is doing something that is very similar to my task: <br><br><ul><li>  Listens to configured ports on the local host. </li><li>  When accessing a pre-configured port, it starts the desired application and sends the received request to the standard application input. </li><li>  A running application sends the response to its standard output, xinetd responds to the client. </li></ul><br><br>  Everything is good, only here is the standard input and output, and Django communicates with the web server using the WSGI protocol. <br><br><h3>  Script </h3><br><br>  So, you need to write a script that, on the one hand, communicates with xinetd through stdin / stdout, and on the other hand, with my application on Django, via WSGI. <br><br>  The script was written and the first version is posted on GitHub.  Maybe it will interest someone, welcome. <br><br>  You can download the script on GitHub: <a href="http://ekazanov.github.com/django-xinetd/">django-xinetd</a> <br><br>  Installation and configuration are described in the README. <br><br><h3>  Conclusion </h3><br><br>  Of course, the performance of such a solution is lower than with the use of a web server, but it suits me perfectly. <br><br>  This is the first version and of course quite raw.  But for the simplest cases you can use. <br><br>  I almost forgot, as the platform used Linux (Ubuntu).  xinetd is set by the command: <br><br><pre><code class="bash hljs">apt-get install xinetd</code> </pre> <br><br>  The script is written and tested with Django v1.4. This is important, since in previous versions work with static files is different.  With earlier versions, static files will not be served. </div><p>Source: https://habr.com/ru/post/153165/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../153149/index.html">Mark Zuckerberg's speech from Moscow State University</a></li>
+<li><a href="../153153/index.html">The notation in the model range of Kyocera devices</a></li>
 <li><a href="../153155/index.html">Apple Support: Violet highlights on iPhone 5 pictures - this is normal, hold the camera correctly</a></li>
 <li><a href="../153157/index.html">New for web designer for September 2012</a></li>
 <li><a href="../153159/index.html">Smart TV - a TV-sized smartphone</a></li>
 <li><a href="../153161/index.html">Nokia Belle FP2 is available for the Nokia 808 PureView</a></li>
 <li><a href="../153169/index.html">Cosmic: modeling the evolution of multicellular organisms</a></li>
+<li><a href="../15317/index.html">Hosting provider Gino connected to OSMP</a></li>
 <li><a href="../153175/index.html">Windows Phone - squeeze out all the juice</a></li>
 <li><a href="../153177/index.html">2nd Forum of mobile developers Apps4All: free for Habr</a></li>
 <li><a href="../153179/index.html">Bilingual books in wiki format</a></li>
-<li><a href="../153181/index.html">Creating minidumps in C # 4.0 projects being developed in VS 2010</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

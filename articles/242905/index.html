@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to install PostgreSQL 9.4 on Raspberry Pi, Radxa or other similar microcomputers running Lubuntu</h1><div class="post__text post__text-html js-mediator-article">  I know that this is a little absurd, but sometimes you may have tasks where the use of microcomputers is one of the best options. <br><a name="habracut"></a><br>  In total, I had three microcomputers at my disposal: Radxa, Cubieboard A20 and Raspberry Pi.  Radxa was selected as the test subject.  It has a 4-core ARM Cortex-A9, 2GB RAM, 8GB PROM, and an integrated Wi-Fi module.  Raspberry Pi can of course also be used, but it was not suitable for my tasks in terms of performance.  The Cubieboard A20 is weaker than the Radxa, but its main advantage is the presence of a SATA controller on board. <br><br>  Ubuntu Server 14.04 (Linaro for ARM processors) is installed on all microcomputers: <br><br><pre><code class="bash hljs">$ lsb_release -a No LSB modules are available. Distributor ID: Linaro Description: Linaro 14.04 Release: 14.04 Codename: trusty $ uname -a Linux radxa 3.0.36+ <span class="hljs-comment"><span class="hljs-comment">#7 SMP PREEMPT Wed Aug 20 10:35:50 CST 2014 armv7l armv7l armv7l GNU/Linux</span></span></code> </pre> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      So, let's begin: <br><br>  1. Create the file <i>/etc/apt/sources.list.d/pgdg.list</i> and add the following repositories to it: <br><pre> <code class="bash hljs">deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main 9.4 deb-src http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main 9.4</code> </pre><br>  If you have a different version of the distribution kit, then replace <i>trusty</i> with the name of the distribution used. <br><br>  2. Add a new key for apt: <br><pre> <code class="bash hljs">wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -</code> </pre><br><br>  3. Update the package list: <br><pre> <code class="bash hljs">sudo aptitude update</code> </pre><br><br>  4. Install the dependencies for PostgreSQL 9.4: <br><pre> <code class="bash hljs">sudo apt-get install fakeroot sudo apt-get build-dep postgresql-9.4</code> </pre><br><br>  5. Load and build PostgreSQL 9.4 from source.  Attention ( <b>do not execute these commands from under the root</b> ): <br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /tmp apt-get <span class="hljs-built_in"><span class="hljs-built_in">source</span></span> --compile postgresql-9.4</code> </pre><br><br>  The assembly process on Radxa took about an hour and flew unnoticed during operation.  On the Raspberry Pi, it is better to run such commands before bedtime. <br>  After successful build, you will receive 16 deb-packs. <br><br>  6. Create a local repository and transfer deb packages to it: <br><pre> <code class="bash hljs">sudo mkdir /var/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/repository sudo mv *.deb /var/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/repository/ <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /var/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/repository sudo dpkg-scanpackages ./ &gt; Packages &amp;&amp; gzip -f Packages</code> </pre><br><br>  7. Add a local repository to <i>/etc/apt/sources.list.d/pgdg.list</i> : <br><pre> <code class="bash hljs">deb [ trusted=yes ] file:///var/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/repository ./</code> </pre><br><br>  8. Update the list of available packages: <br><pre> <code class="bash hljs">sudo aptitude update</code> </pre><br><br>  9. Now we can install PostgreSQL 9.4: <br><pre> <code class="bash hljs">sudo aptitude install postgresql-9.4</code> </pre><br><br>  10. Check the work: <br><pre> <code class="bash hljs">afedorov@radxa:~$ sudo su - postgres postgres@radxa:~$ psql psql (9.4beta3) Type <span class="hljs-string"><span class="hljs-string">"help"</span></span> <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> <span class="hljs-built_in"><span class="hljs-built_in">help</span></span>. postgres=<span class="hljs-comment"><span class="hljs-comment">#</span></span></code> </pre></div><p>Source: <a href="https://habr.com/ru/post/242905/">https://habr.com/ru/post/242905/</a></p>
+      So, let's begin: <br><br>  1. Create the file <i>/etc/apt/sources.list.d/pgdg.list</i> and add the following repositories to it: <br><pre> <code class="bash hljs">deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main 9.4 deb-src http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main 9.4</code> </pre><br>  If you have a different version of the distribution kit, then replace <i>trusty</i> with the name of the distribution used. <br><br>  2. Add a new key for apt: <br><pre> <code class="bash hljs">wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -</code> </pre><br><br>  3. Update the package list: <br><pre> <code class="bash hljs">sudo aptitude update</code> </pre><br><br>  4. Install the dependencies for PostgreSQL 9.4: <br><pre> <code class="bash hljs">sudo apt-get install fakeroot sudo apt-get build-dep postgresql-9.4</code> </pre><br><br>  5. Load and build PostgreSQL 9.4 from source.  Attention ( <b>do not execute these commands from under the root</b> ): <br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /tmp apt-get <span class="hljs-built_in"><span class="hljs-built_in">source</span></span> --compile postgresql-9.4</code> </pre><br><br>  The assembly process on Radxa took about an hour and flew unnoticed during operation.  On the Raspberry Pi, it is better to run such commands before bedtime. <br>  After successful build, you will receive 16 deb-packs. <br><br>  6. Create a local repository and transfer deb packages to it: <br><pre> <code class="bash hljs">sudo mkdir /var/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/repository sudo mv *.deb /var/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/repository/ <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /var/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/repository sudo dpkg-scanpackages ./ &gt; Packages &amp;&amp; gzip -f Packages</code> </pre><br><br>  7. Add a local repository to <i>/etc/apt/sources.list.d/pgdg.list</i> : <br><pre> <code class="bash hljs">deb [ trusted=yes ] file:///var/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/repository ./</code> </pre><br><br>  8. Update the list of available packages: <br><pre> <code class="bash hljs">sudo aptitude update</code> </pre><br><br>  9. Now we can install PostgreSQL 9.4: <br><pre> <code class="bash hljs">sudo aptitude install postgresql-9.4</code> </pre><br><br>  10. Check the work: <br><pre> <code class="bash hljs">afedorov@radxa:~$ sudo su - postgres postgres@radxa:~$ psql psql (9.4beta3) Type <span class="hljs-string"><span class="hljs-string">"help"</span></span> <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> <span class="hljs-built_in"><span class="hljs-built_in">help</span></span>. postgres=<span class="hljs-comment"><span class="hljs-comment">#</span></span></code> </pre></div><p>Source: https://habr.com/ru/post/242905/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../242891/index.html">Press release: Ahoba.co - a service for design and layout on Bumstarter!</a></li>
 <li><a href="../242893/index.html">About how the memory flowed, but I could not understand why</a></li>
 <li><a href="../242897/index.html">Elastics: a simple ElasticSearch client for Ruby with everything you need</a></li>
+<li><a href="../2429/index.html">Cardinal Boston will become a video podcaster</a></li>
 <li><a href="../242901/index.html">The introduction of the software product. Features of the business consultant. Part II</a></li>
 <li><a href="../242903/index.html">WinJS + universal applications. Learning ListView</a></li>
 <li><a href="../242907/index.html">"IT" Vitebsk</a></li>
 <li><a href="../242909/index.html">Isomorphic JavaScript Applications with Catberry.js</a></li>
+<li><a href="../24291/index.html">Social network for learners of foreign languages</a></li>
 <li><a href="../242911/index.html">We turn html into native components</a></li>
 <li><a href="../242915/index.html">About symfony 3.0</a></li>
-<li><a href="../242917/index.html">Myself SelfHost server</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

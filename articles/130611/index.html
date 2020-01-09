@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Return codes vs exception - the battle for error control</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/storage1/e325017c/6ffca4ff/d69268e8/9b424384.png">  Apparently, the week of exceptions on Habré successfully arrived :).  Having accumulated a sufficient “pillow” of karma so as not to be afraid to go into a minus, I, perhaps, will also express my opinion on this issue.  At once I will make a reservation that the opinion is purely personal, based on a small practical experience of commercial development: C ++, Objective-C, C #, Java, Python, Ruby. <br><a name="habracut"></a><br><h4>  What is a mistake? </h4><br><br>  Before embarking on a bloody mess, it is advisable to evaluate the battlefield and synchronize the terminology.  Under the “errors” in the context of software development can be understood quite different things, so for starters, I will try to describe these entities as something to describe and call: <br><ol><li>  The simplest thing that can happen in a program is an operating system or hardware failure.  The failed system call CreateEvent () or pthread_mutex_lock (), division by zero, garbage in the results of the system call - all this can happen for various reasons, ranging from broken iron and ending with viruses in the system, but usually from us and our program it is not very dependent. </li><li>  A slightly more complicated situation is the lack of the resources we need.  Unexpectedly, memory, handles, file descriptors can run out.  May not have rights to write or read the necessary files.  Pipe may not open.  Or vice versa - do not close.  Access to the database may or may not be.  Such a situation may already be caused by our program (it took too much memory) and the instability of the system (the virus took too much memory of the virus). </li><li>  And the most common situation is an error in the logic of the program or the interaction of its parts.  We are trying to remove a non-existing list item, call the method with invalid arguments, perform a non-atomic operation in a multi-threaded manner.  As a rule, this leads to either incorrect behavior of the program (the “toolbar disappeared”) or its crash with an access violation / unhandled exception. </li></ol><br><br>  As you can see, a lot of different things and bad things can happen - but this is not a complete list :).  And what should a programmer do?  Here, in my opinion, we are confronted with a very interesting and important question - how exactly does our program respond to this or that error?  Perhaps now I will remind you once again that I am expressing my purely personal opinion.  And I will say the following - exactly how to react to an error entirely depends on the specific program.  If we have run out of memory in the driver, we must survive at all costs so that the user does not get a blue screen of death.  If we have a memory in a toy like a happy farm, then it makes sense to drop, apologize and ask to send the bug report to the developer.  The system service, designed to spin for many months without rebooting, should be sympathetic to the CreateEvent () error.  This error in an application such as Photoshop means that the system will most likely die in a second, and it is better to fall honestly rather than try to swallow the error, let the user save the file and safely spoil it due to a subsequent failure during recording.  Consequently, we can divide errors into <b>expected</b> and <b>unexpected</b> .  For different programs and different requirements, the same errors can be considered both expected and unexpected.  With the expected errors, we somehow work.  It was not possible to open the file - we are talking about this to the user and continue to work.  Failed to allocate memory for loading a gigabyte file there - we are talking about this to the user and continue to work.  We do not work with unexpected errors in most cases.  Out of memory when trying to allocate twenty bytes to create an object - we fall.  Not created a system object which for the whole program three pieces - falling.  Can not read the system pipe that the specification should read?  It is better to drop than to leave the program in an unstable state and then spoil the user data.  If he restarts the program, he will hate the damaged file until the end of his days.  And for serious cases there is an autosave and restarting us if what the watchdog. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  What happened to the exceptions? </h4><br><br>  In the heyday of procedural programming, the error handling syntax was trivial and was based on what the function returned.  If the function returns TRUE, everything is fine; if FALSE, an error has occurred.  At the same time, two approaches to working with errors immediately stood out: <br><ul><li>  <b>Two-in-one</b> approach - the function returns FALSE or a null pointer for both expected and unexpected errors.  Such an approach was usually applied in the general-purpose API and in the code of user programs, when most of the errors could be safely considered fatal and fall.  For those rare cases when sharing was still needed, some kind of additional machinery like GetLastError () was used.  A snippet of that time copying data from one file to another and returning an error in case of any problems: <br><pre><code class="cpp hljs"><span class="hljs-function"><span class="hljs-function">BOOL </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">Copy</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">( CHAR* sname, CHAR* dname )</span></span></span><span class="hljs-function">
@@ -181,20 +181,20 @@ cleanup: <span class="hljs-comment"><span class="hljs-comment">//  .</span></spa
 <br>
     .   ,       ,     —   C++.    «   », «         »  «   »       C++. ,                   API   ,     .          ,  —            API     ,       .<br>
 <br>
-</div><p>Source: <a href="https://habr.com/ru/post/130611/">https://habr.com/ru/post/130611/</a></p>
+</div><p>Source: https://habr.com/ru/post/130611/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../130603/index.html">Digest Wanted.VC # 18</a></li>
 <li><a href="../130605/index.html">The future of computer games exclusively for AI</a></li>
 <li><a href="../130607/index.html">Design thinking for a startup</a></li>
 <li><a href="../130608/index.html">Testers will gather at Ciklum QA Subbotnik in Kharkov! Join now!</a></li>
 <li><a href="../130609/index.html">We have launched subscriptions for cheap flights</a></li>
+<li><a href="../13061/index.html">Apogee Drive 350: New Swiftech Cooling System</a></li>
 <li><a href="../130612/index.html">The evolution of Android security threats over the past year</a></li>
 <li><a href="../130615/index.html">Made by us - the project year</a></li>
 <li><a href="../130617/index.html">Is there life without an ORM?</a></li>
 <li><a href="../130618/index.html">Video review of Android applications and games - kedDroid</a></li>
-<li><a href="../130620/index.html">Wallet One in Kazakhstan</a></li>
+<li><a href="../13062/index.html">A game that teaches smiling</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

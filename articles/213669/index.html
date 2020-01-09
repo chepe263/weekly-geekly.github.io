@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Who called? Or a callback from a cell to asterisk</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/855/a35/2f7/855a352f73a0a2e7622a0b531975bf1a.jpg"><br>  Often got into the situation when you find a missed call from a city on a mobile phone and when you try to call back, you get to the voice menu of some company and it is completely incomprehensible who called you?  I often, as well as our clients, face this every day ... It was decided to do something about it.  All subsequent actions are relevant for trixbox v2.8.0.4 (with some adjustments, or perhaps even without them, it can be implemented on other systems) <a name="habracut"></a><br><br>  All information on calls made is stored in the CDR Report and, accordingly, the base of mysql. <br>  The algorithm is as follows: <br>  We take the number of the incoming call, make a request to the cdr table and get the internal extension, which made the last call to this number, we pronounce the extension number, we connect the subscribers. <br><br>  Having logged in to mysql on the asterisk host, we immediately see the “asteriskcdrdb” database with a single “cdr” table in which records of this type are stored <br><img src="https://habrastorage.org/getpro/habr/post_images/2ae/ab2/e74/2aeab2e742042fd32914f1ffe2ac7269.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Of all the columns we need: <br><ul><li>  calldate - call time </li><li>  dst - dialed number </li><li>  channel - internal number from which the call was made </li></ul><br><br>  Experimenting with the requests we get the following: <br> <code>SELECT `channel` FROM cdr WHERE `dst`='${CALLERID(number)}' ORDER BY `calldate` DESC LIMIT 1</code> <br>  We get the channel field from the cdr table where the dialed number matches the current callerid, we sort in descending order and we get only the last record, i.e.  the last number from which there was a call. <br><br>  Use custom asterisk files.  We add the following code to the end of the file extensions_custom.conf.  In this example, extension 456 is used. <br><pre>  [custom-from-mobile]
@@ -134,20 +134,20 @@
 </pre><br><br>  When working with ODBC, edit the request in /etc/asterisk/func_odbc.conf <br><pre> [FROMMOBILE]
  dsn = asterisk2mysql;  taken from /etc/asterisk/res_odbc.conf    
  readsql = SELECT channel FROM cdr WHERE dst = $ {ARG1} AND disposition = NO ANSWER OR dst = $ {ARG1} AND disposition = ANSWERED AND billsec &lt;4 ORDER BY calldate DESC LIMIT 1; 
-</pre><br><br>  Dialplan remains the same as in UPD1. <br><br>  <b>UPD3 Personal observation</b> A very good situation has arisen.  On one asteiske there are several sip trunks and, accordingly, several firms.  Each company has its own callerid.  If we imagine a situation that one mobile number was called from three companies, then regardless of which city number to call back, we only get on the last caller and not the fact that from that company.  The solution is as follows.  Add to the sample from the database an additional check parameter - from which callerid this subscriber was called. <br>  In the query in both methods, add `src` = '$ {FROM_DID}': <br><pre>  SELECT `channel` FROM cdr WHERE` dst` = '$ {CALLERID (number)}' AND `src` = '$ {FROM_DID}' ORDER BY` calldate` DESC LIMIT 1 </pre></div><p>Source: <a href="https://habr.com/ru/post/213669/">https://habr.com/ru/post/213669/</a></p>
+</pre><br><br>  Dialplan remains the same as in UPD1. <br><br>  <b>UPD3 Personal observation</b> A very good situation has arisen.  On one asteiske there are several sip trunks and, accordingly, several firms.  Each company has its own callerid.  If we imagine a situation that one mobile number was called from three companies, then regardless of which city number to call back, we only get on the last caller and not the fact that from that company.  The solution is as follows.  Add to the sample from the database an additional check parameter - from which callerid this subscriber was called. <br>  In the query in both methods, add `src` = '$ {FROM_DID}': <br><pre>  SELECT `channel` FROM cdr WHERE` dst` = '$ {CALLERID (number)}' AND `src` = '$ {FROM_DID}' ORDER BY` calldate` DESC LIMIT 1 </pre></div><p>Source: https://habr.com/ru/post/213669/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../213657/index.html">What will tell on PHDays IV: Trojans on the SIM card and where to run during cyber attack</a></li>
 <li><a href="../213659/index.html">iON Adventure: a hybrid of a professional extreme camera and auto-recorder with a G-sensor and GPS</a></li>
+<li><a href="../21366/index.html">Microsoft Research Collective Search Technologies</a></li>
 <li><a href="../213661/index.html">Mozilla announced the "25-dollar smartphone"</a></li>
 <li><a href="../213663/index.html">What drives the browser UC Browser</a></li>
 <li><a href="../213667/index.html">Nokia has released a line of phones based on Android OS</a></li>
+<li><a href="../21367/index.html">And RVK distributes denyuzhki on the early stage</a></li>
+<li><a href="../213671/index.html">Mobile Opera on Nokia X Platform</a></li>
 <li><a href="../213673/index.html">An unexpected hit by the Yandex Yandex filter - recapture lost positions (404 response code)!</a></li>
 <li><a href="../213677/index.html">Adaptation of Visual Studio for development under Salesforce - Introduction</a></li>
 <li><a href="../213679/index.html">Making address forms more attractive</a></li>
-<li><a href="../213683/index.html">We change a lot</a></li>
-<li><a href="../213685/index.html">Samsung introduced the second generation of "smart" watches - Gear 2 and Gear 2 Neo</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

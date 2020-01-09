@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Crackme Chiwaka1 study</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/4dc/3d3/c1b/4dc3d3c1bb9540a9a93353e5593fd1ab.jpg" alt="image" align="right">  This article attempts to describe in detail the study of one entertaining crackme.  It will be interesting first of all for beginners in reverse engineering (whom I am and on which the article is mainly designed), but perhaps more serious experts will find the technique used in it interesting.  To understand what is happening will require basic knowledge of the assembler and WinAPI. <br><a name="habracut"></a><br><h3>  Foreword </h3><br>  The university assembler course awakened a dormant couple of years the spirit of the researcher, which originated in high school.  This spirit was quickly sacrificed for some unpretentious crackme, but soon there was a more interesting copy on the hard disk.  Unfortunately, over the years, the original source of this crackme could not be found, so I uploaded the <a href="https://drive.google.com/open%3Fid%3D0BwNfG861C7W8TzhWOGxuN0U1MVU">archive</a> to Google Drive. <br><br>  <b>Tools used:</b> <br><ul><li>  Debugger (I used <a href="http://www.ollydbg.de/">OllyDbg</a> ) </li><li>  A utility for getting window handles of running programs (for example, <a href="https://tuts4you.com/download.php%3Fview.432">Zero Dump</a> or supplied with Visual Studio Spy ++) </li><li>  Some files included in the <a href="">fasm archive</a> </li></ul><br><h3>  First look at the enemy </h3><br><img src="https://habrastorage.org/files/840/785/615/840785615ded4982b2b2c63977d1ff78.jpg" align="left">  The appearance of the main window of the experimental is very simple: two edit'a and a few buttons.  Moreover, the first input field is intended to give the opportunity to write to the second, which, judging by the Check button located next to it, will be the main obstacle to the registration of cracks. <br>  The About window contains one interesting inscription <i>“Patching is allowed, but where where”</i> , preceding the most interesting.  The whole essence of this inscription will be revealed in the process of research, but for now we will not spoil. <br>  By the way, if someone has already seen this crackme and found a way to patch it (well, or if it seemed very simple to someone and he did it with one left hand in the process of reading the article), then I ask you to tell everyone about success, preferably with comments. <br>  Attempts to cause at least some reaction of the program are not crowned with success: no reaction should be made to pressing the Enable and Check buttons.  However, it is striking that in the active input field, you can only write in Latin letters and put a minus sign.  We notice this fact and begin work. <br><br><h3>  To battle! </h3><br>  To win this crackme, we need to deal with two input fields. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  First edit and Enable button </h4><br>  After loading the program in OllyDbg, we immediately notice an interesting <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v%3Dvs.85).aspx">GetProcAddress</a> near the entry point: <br><br><pre> 00401086 |.  68 56504000 PUSH OFFSET 00405056;  / Procname = "" 10, "&amp; 7", 14, "* - ', 4", 0F, ", - $", 02
@@ -260,7 +260,7 @@
  00401279 |.  6A 00 PUSH 0
  0040127B |.  FFD0 CALL EAX
  0040127D \.  C3 RETN
-</pre></div></div><br>  It remains quite a bit: again to solve the puzzle to find a suitable WinAPI function.  Here is what we know about her: <br><ul><li>  the length of the name is 11 characters; the letter A is at the end </li><li>  is in user32.dll </li><li>  four parameters are passed, two of them are strings </li></ul><br>  To search for a suitable function, I used the <code>%fasm_directory%\INCLUDE\PCOUNT\USER32.INC</code> using the following regular expression <code>'^\i{10}\%\s\=\s\s4'</code> .  The ANSI versions of functions are not duplicated in this file, so a large A at the end cannot be specified.  There were not so many suitable functions, but only one is perfect in its meaning: <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms645505(v%3Dvs.85).aspx">MessageBoxA</a> . <br>  Remembering what operations are performed with it before passing it to GetProcAddress, we transform accordingly: MessageBox - (case inversion) - mESSAGEbOX - (character order inversion) - <b>XObEGASSEm</b> . <br>  Let's enter the treasured line in the second input field and get a winning MessageBox with a window title that reminds of adventures! <br><br><div style="text-align:center;"><img src="https://habrastorage.org/files/e2e/f0d/8d3/e2ef0d8d36ed4cc68712cb7883600586.jpg"></div><br><br><h3>  Instead of conclusion </h3><br>  Crackmy examined demonstrates an interesting way to firmly bind protection to the work of the program itself.  The mechanism used makes it very difficult to patch.  It is hard for me to imagine the use of such a method in commercial protection (but I will be happy if someone talks about examples), but for a puzzle for a couple of days it is very good, especially for beginners. </div><p>Source: <a href="https://habr.com/ru/post/263093/">https://habr.com/ru/post/263093/</a></p>
+</pre></div></div><br>  It remains quite a bit: again to solve the puzzle to find a suitable WinAPI function.  Here is what we know about her: <br><ul><li>  the length of the name is 11 characters; the letter A is at the end </li><li>  is in user32.dll </li><li>  four parameters are passed, two of them are strings </li></ul><br>  To search for a suitable function, I used the <code>%fasm_directory%\INCLUDE\PCOUNT\USER32.INC</code> using the following regular expression <code>'^\i{10}\%\s\=\s\s4'</code> .  The ANSI versions of functions are not duplicated in this file, so a large A at the end cannot be specified.  There were not so many suitable functions, but only one is perfect in its meaning: <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms645505(v%3Dvs.85).aspx">MessageBoxA</a> . <br>  Remembering what operations are performed with it before passing it to GetProcAddress, we transform accordingly: MessageBox - (case inversion) - mESSAGEbOX - (character order inversion) - <b>XObEGASSEm</b> . <br>  Let's enter the treasured line in the second input field and get a winning MessageBox with a window title that reminds of adventures! <br><br><div style="text-align:center;"><img src="https://habrastorage.org/files/e2e/f0d/8d3/e2ef0d8d36ed4cc68712cb7883600586.jpg"></div><br><br><h3>  Instead of conclusion </h3><br>  Crackmy examined demonstrates an interesting way to firmly bind protection to the work of the program itself.  The mechanism used makes it very difficult to patch.  It is hard for me to imagine the use of such a method in commercial protection (but I will be happy if someone talks about examples), but for a puzzle for a couple of days it is very good, especially for beginners. </div><p>Source: https://habr.com/ru/post/263093/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -271,9 +271,9 @@
 <li><a href="../263091/index.html">Pacemaker-based HA-Cluster for LXC and Docker container virtualization</a></li>
 <li><a href="../263097/index.html">Event-oriented Python backtesting step by step. Part 1</a></li>
 <li><a href="../263099/index.html">Skype turned to people?</a></li>
+<li><a href="../2631/index.html">Google opens a research center in Krakow</a></li>
 <li><a href="../263101/index.html">Work with passwords: how to protect your accounts (expert opinion)</a></li>
 <li><a href="../263103/index.html">Unobvious performance problems in Doctrine related to the hydration of objects</a></li>
-<li><a href="../263105/index.html">Getting rid of the “historical reasons” in cmd.exe in an easier and standard way.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

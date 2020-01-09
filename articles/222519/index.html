@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Pool of constants</h1><div class="post__text post__text-html js-mediator-article">  Many people know that every .class file has a wonderful data structure called a constant pool.  But not every Java developer, looking at the source, can even approximately estimate how many constants will be created in the pool. <br><br>  Take, for example, this code: <br><br><pre><code class="java hljs">System.out.println(<span class="hljs-string"><span class="hljs-string">"Hello World!"</span></span>);</code> </pre> <br>  It is translated into three bytecode instructions: getstatic (for loading the static field System.out), ldc (for loading the constant string “Hello World!”) And invokevirtual (for executing the virtual function println).  Try to estimate how many constants are needed for this code to work. <br><a name="habracut"></a><br>  It turns out that this string uses 14 constants, which can be schematically depicted as follows: <br><img src="https://habrastorage.org/getpro/habr/post_images/e9e/c86/9ba/e9ec869ba5b363b13ae83d284a56be8c.png"><br>  As we can see, most constants are references to other constants.  Each constant has a type, a value, and a number by which it can be referenced.  Here are the base types that don't refer to anything: <br><ul><li>  Integer is an integer.  They are referenced from the code where the number is required.  The numbers from -32768 to 32767 do not add the compiler here: you can explicitly specify them in the code using the instructions iconst_ <i>x</i> , bipush and sipush. </li><li>  Long is a long integer.  For historical reasons, it occupies two positions in the pool of constants (that is, the next constant number is two more).  You can save only on 0L and 1L using lconst_ <i>x</i> ;  2L is already in the pool. </li><li>  Float - real single precision.  Special instructions fconst_ <i>x</i> are for 0.0f, 1.0f and 2.0f;  the remaining numbers used go to the pool. </li><li>  Double - real double precision.  Like Long, occupies two positions in the pool.  Only the numbers 0.0 and 1.0 can be used without a pool using the dconst_ <i>x</i> instructions. </li><li>  Utf8 is a Utf8 string literal.  The maximum length does not exceed 65535 bytes (of course, there may be less characters).  These literals are often referenced from other constants most often. </li></ul><br>  Here are some of the reference types: <br><ul><li>  String - string.  Contains a reference to a constant of type Utf8.  If you use a string in the code, you refer to a constant of type String.  It looks like an extra essence, but there is. </li><li>  NameAndType is a constant describing the name and type of the field or method.  Contains two references to Utf8 constants with name and type. </li><li>  Class is a constant describing the name of a class or interface.  Contains a reference to a Utf8 constant with the internal class name. </li><li>  Fieldref is a constant describing a specific field of a particular class.  Contains a reference to the Class constant and a reference to the NameAndType constant. </li><li>  MethodRef, InterfaceMethodRef are constants that describe a particular method of a class or interface.  They contain references to the Class constant and the NameAndType constant. </li></ul><br>  To access a field, you need not only its name, but also the full name of the class where the field is declared, as well as the field type.  To access a method, you need a class, a name, and a method signature.  Fortunately, the entire signature is encoded into one line regardless of the number of method parameters: primitive types are encoded with one letter (for example, D = double), objects with the letter L, followed by the full class name and a semicolon, and one array level adds square bracket.  In parentheses are the types of arguments, followed by the return type (V is void).  For example, the signature <code>(IDLjava/lang/Thread;)Ljava/lang/Object;</code>  will have this method: <br><pre> <code class="java hljs"><span class="hljs-function"><span class="hljs-function">Object </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">m</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(</span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> i, </span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">double</span></span></span></span><span class="hljs-function"><span class="hljs-params"> d, Thread t)</span></span></span><span class="hljs-function"> </span></span>{...}</code> </pre> <br>  From the fact that to refer to the method requires its exact signature, developers sometimes attach to NoSuchMethodError.  Let's say you changed the return type of a method to a more specific one.  Then the calls of this method from other classes remain the same, and the compiler will not reassemble these classes, because the source files have not changed.  However, if you try to call this method at runtime, the Java machine will look for the old signature. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      If you automatically generate Java code, remember that the maximum constant number in the pool does not exceed 65535, after that there will be a compilation error.  This is not such a large number, given the huge number of links and the fact that long and double occupy two positions.  Knowing the pool device will help you control how it is filled when generating code. <br><br>  More information about the device pool of constants can be found in <a href="http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">§4.4</a> specification of the Java virtual machine. </div><p>Source: <a href="https://habr.com/ru/post/222519/">https://habr.com/ru/post/222519/</a></p>
+      If you automatically generate Java code, remember that the maximum constant number in the pool does not exceed 65535, after that there will be a compilation error.  This is not such a large number, given the huge number of links and the fact that long and double occupy two positions.  Knowing the pool device will help you control how it is filled when generating code. <br><br>  More information about the device pool of constants can be found in <a href="http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">§4.4</a> specification of the Java virtual machine. </div><p>Source: https://habr.com/ru/post/222519/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../222513/index.html">How not to turn off pictures and scripts in letters, and at the same time be safe. History from Yandex. Mail</a></li>
 <li><a href="../222515/index.html">Google Chrome extension to improve search quality</a></li>
 <li><a href="../222517/index.html">Postgraduate study in France, personal experience</a></li>
+<li><a href="../22252/index.html">Visiting Thematic Media</a></li>
 <li><a href="../222521/index.html">Axure tutorial videos</a></li>
 <li><a href="../222523/index.html">Parse and calculate MS Excel formulas</a></li>
 <li><a href="../222525/index.html">Half-Life 2 and Portal became available on NVIDIA SHIELD</a></li>
 <li><a href="../222527/index.html">The magazine "TsODy.RF" and the Association of Industry Data Centers will show all the paths that lead to the data center</a></li>
-<li><a href="../222529/index.html">Python Meetup: March Meeting</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

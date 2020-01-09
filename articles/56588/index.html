@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Writing dpi to PNG with PHP</h1><div class="post__text post__text-html js-mediator-article">  It took me suddenly to generate PNG-shki for PHP for one application, so that they could then be inserted into documents and printed.  But here’s the problem, with the help of GD in PHP, it’s impossible to set the resolution in dpi, but this is very important when printing.  I didn’t want to contact ImageMagick, so I quickly jumped the <a href="http://www.libpng.org/pub/png/spec/1.2/PNG-Contents.html">PNG (Portable Network Graphics) Specification</a> and wrote the following code: <br><a name="habracut"></a><br><blockquote><code><font color="black"><font color="#666666">//     GD,  png-   :</font> <br> <font color="#990000">ob_start</font> <font color="#009900">(</font> <font color="#009900">)</font> <font color="#339933">;</font> <br> <font color="#990000">imagepng</font> <font color="#009900">(</font> <font color="#000088">$img</font> <font color="#009900">)</font> <font color="#339933">;</font> <br> <font color="#990000">imagedestroy</font> <font color="#009900">(</font> <font color="#000088">$img</font> <font color="#009900">)</font> <font color="#339933">;</font> <br> <font color="#000088">$img</font> <font color="#339933">=</font> <font color="#990000">ob_get_contents</font> <font color="#009900">(</font> <font color="#009900">)</font> <font color="#339933">;</font> <br> <font color="#990000">ob_end_clean</font> <font color="#009900">(</font> <font color="#009900">)</font> <font color="#339933">;</font> <br> <br> <font color="#666666">//      :</font> <br> <font color="#000088">$img</font> <font color="#339933">=</font> <font color="#990000">file_get_contents</font> <font color="#009900">(</font> <font color="#0000ff">'path/fileName.png'</font> <font color="#009900">)</font> <font color="#339933">;</font> <br> <br> <font color="#000088">$dpi</font> <font color="#339933">=</font> <font color="#cc66cc">600</font> <font color="#339933">;</font> <font color="#666666">//   </font> <br> <br> <font color="#000088">$incPos</font> <font color="#339933">=</font> <font color="#990000">strpos</font> <font color="#009900">(</font> <font color="#000088">$img</font> <font color="#339933">,</font> <font color="#0000ff">'IDAT'</font> <font color="#009900">)</font> <font color="#339933">-</font> <font color="#cc66cc">4</font> <font color="#339933">;</font> <font color="#666666">//      chunk</font> <br> <font color="#000088">$chunk</font> <font color="#339933">=</font> <font color="#0000ff">'pHYs'</font> <font color="#339933">.</font> <font color="#990000">pack</font> <font color="#009900">(</font> <font color="#0000ff">'NNc'</font> <font color="#339933">,</font> <font color="#990000">round</font> <font color="#009900">(</font> <font color="#000088">$dpi</font> <font color="#339933">/</font> <font color="#800080">0.0254</font> <font color="#009900">)</font> <font color="#339933">,</font> <font color="#990000">round</font> <font color="#009900">(</font> <font color="#000088">$dpi</font> <font color="#339933">/</font> <font color="#800080">0.0254</font> <font color="#009900">)</font> <font color="#339933">,</font> <font color="#cc66cc">1</font> <font color="#009900">)</font> <font color="#339933">;</font> <font color="#666666">// chunk type + chunk data</font> <br> <font color="#000088">$incData</font> <font color="#339933">=</font> <font color="#990000">pack</font> <font color="#009900">(</font> <font color="#0000ff">'N'</font> <font color="#339933">,</font> <font color="#cc66cc">9</font> <font color="#009900">)</font> <font color="#339933">.</font> <font color="#000088">$chunk</font> <font color="#339933">.</font> <font color="#990000">pack</font> <font color="#009900">(</font> <font color="#0000ff">'N'</font> <font color="#339933">,</font> <font color="#990000">crc32</font> <font color="#009900">(</font> <font color="#000088">$chunk</font> <font color="#009900">)</font> <font color="#009900">)</font> <font color="#339933">;</font> <font color="#666666">//    chunk-,     crc</font> &lt;br&gt; <font color="#990000">file_put_contents</font> <font color="#009900">(</font> <font color="#0000ff">'path/fileName.png'</font> <font color="#339933">,</font> <font color="#990000">substr_replace</font> <font color="#009900">(</font> <font color="#000088">$img</font> <font color="#339933">,</font> <font color="#000088">$incData</font> <font color="#339933">,</font> <font color="#000088">$incPos</font> <font color="#339933">,</font> <font color="#cc66cc">0</font> <font color="#009900">))</font> <font color="#339933">;</font> <font color="#666666">//  </font></font></code> </blockquote> <br>  I draw your attention to the fact that I proceeded from the fact that GD simply does not create <a href="http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html">pHYs chunk</a> .  Therefore, I simply insert my own before the first IDAT chunk.  But if you want to work with an arbitrary png-shkoy, then you have to consider the case when the pHYs chunk already exists, find and replace it. <br><br>  The composition of the chunk is written here: <a href="http://www.libpng.org/pub/png/spec/1.2/PNG-Structure.html">Chunk layout</a> . <br><br>  At the beginning there is a 4-byte unsigned integer containing the number of bytes allocated for the contents of the chunk (for our need 9 bytes).  Then follow 4 ASCII bytes of the name of the chunk (we are interested in <a href="http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html">pHYs</a> ).  Next, the contents of the chunk, 4 bytes, is allocated for the width and 4 for the height, which are also unsigned integers.  And then one byte must be set to one, otherwise we will set only relative proportions.  After that, you need to calculate and write down 4 bytes of the CRC32 checksum from the name and contents of the chunk.  Important!  Note that all numeric variables (including crc) must be blunt-numbered (older to younger).  Our height and width is given in points per meter.  Therefore, to recalculate the point / inch should be divided by 0.0254. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,16 +59,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I hope someone my experience will be useful. </div><p>Source: <a href="https://habr.com/ru/post/56588/">https://habr.com/ru/post/56588/</a></p>
+      I hope someone my experience will be useful. </div><p>Source: https://habr.com/ru/post/56588/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../56575/index.html">Professional vs Beginner. Is it possible to order icons for your project “thanks”?</a></li>
 <li><a href="../56577/index.html">Laptop table</a></li>
 <li><a href="../56578/index.html">Optimistic synchronization primitives, queues and all-all-all. Tragicomedy in three acts</a></li>
+<li><a href="../5658/index.html">PHPCONF 2007 May 24-25 - registration is open ... or the story of one 404 error ;-)</a></li>
 <li><a href="../56583/index.html">Blog post</a></li>
 <li><a href="../56584/index.html">Version 1.0.4</a></li>
 <li><a href="../56589/index.html">Writing articles on Yii</a></li>

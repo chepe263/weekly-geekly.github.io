@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -60,7 +60,7 @@
      |  'exit' ';'  ;
 </pre> and we see that further in the text goes <code>while</code> , then we will unfold according to the rule <code>OP: 'while' '(' EXPR ')' OP ;</code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -68,7 +68,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       For a store machine, such parsing can be implemented as follows: <ul><li>  During the sweep, we write the right side of the rule onto the stack: we will continue to parse the text according to it. </li><li>  If there is a terminal at the top of the stack, and the same terminal in the input text, it means that the text corresponds to the expected one.  Remove the top terminal from the stack, read the next character of the text. </li><li>  If at the top of the stack is a non-terminal, then it must be deployed.  The rule for scanning is selected based on the input symbol. </li></ul>  Immediately, we note that it is pointless to perform an action when deploying: the right side of the expanded rule has not yet been read, and it is not known whether it will be read at all.  It could be possible to put a dummy-signal “rule read successfully, you can perform an action” on the stack under the symbols of the right part of the stack on the right side of the stack;  but at this point, the entire right-hand side has already been erased from the stack!  What is the action going to work with? <br><br>  But the main difficulty of the downward analysis is not in this, but in how to choose the appropriate rule for scanning. <br>  Recall a grammar that is too tough for a bison: <pre> WORD: S1 'a' 'i' 'l' |  S2 'a' 'l' 'e';
@@ -94,7 +94,7 @@
 </pre>  Here, LR will, after each shift <code>'t'</code> perform <i>M</i> convolutions <code>'t' -&gt; TM -&gt; ... -&gt; T3 -&gt; T2 -&gt; T1</code> ;  and LL, before 'eating' each <code>'t'</code> , makes <i>M</i> sweeps <code>T1 -&gt; T2 -&gt; T3 -&gt; ... -&gt; TM -&gt; 't'</code> . <br>  The whole question is how much the average case differs from the worst: at least, the “linear elephant” performs more deconstructions in any analysis than LL in the same grammar. <br><br>  Another trick in memory consumption.  We will need to store the <i>M</i> * <i>N</i> results of past scans - and this is in addition to the fact that the input text will have to be stored in the memory as a whole, because the elephant needs to run on it back and forth without end.  This is despite the fact that store-assisted parsers never return to the already read text, and therefore their memory requirements depend only on grammar, but not on text. <br>  "The history of one byte" read everything?  Moreover, one of the most natural applications for new compilers is to support all sorts of compact platforms, where saved memory matters. <br><br>  And about the detection of syntax errors.  Our elephant, which actually received the name of packrat (skopidom), concludes that the text of the error, when no sweep did not fit.  Therefore, the position in which the error will be detected may well precede the place of the actual error: suppose the expression <pre> DECL: DECLVAR / DECLFN;
  DECLVAR: TYPE ID ';'  ;
  DECLFN: TYPE ID '(' ARGS ')';
-</pre>  - vaguely resembling the syntax of declarations in C. <br>  If the input text met a sequence that can be parsed as <code>TYPE ID '!'</code>  then in what position is the syntax error?  Packrat will check the first sweep, it will not work, the parser will roll back to the beginning of <code>TYPE</code> and try the second sweep;  she also does not fit.  It turns out, the error will be detected before <code>TYPE</code> ;  and what if <code>TYPE</code> is a half-string hardcore expression? <br>  It is logical to show, as an error position, the rightmost one, which has been able to reach at least one scan - i.e.  the last position, to which the parser still had hopes that the text parsed successfully. <br>  I assume that there are packrat implementations in which the error localization is implemented in this way. <br><br>  Everything, it was the last post of a series in which we are engaged in syntax analysis. <br>  Next time we turn to semantics, and then our toy language will really become a <i>programming</i> language. </div><p>Source: <a href="https://habr.com/ru/post/99466/">https://habr.com/ru/post/99466/</a></p>
+</pre>  - vaguely resembling the syntax of declarations in C. <br>  If the input text met a sequence that can be parsed as <code>TYPE ID '!'</code>  then in what position is the syntax error?  Packrat will check the first sweep, it will not work, the parser will roll back to the beginning of <code>TYPE</code> and try the second sweep;  she also does not fit.  It turns out, the error will be detected before <code>TYPE</code> ;  and what if <code>TYPE</code> is a half-string hardcore expression? <br>  It is logical to show, as an error position, the rightmost one, which has been able to reach at least one scan - i.e.  the last position, to which the parser still had hopes that the text parsed successfully. <br>  I assume that there are packrat implementations in which the error localization is implemented in this way. <br><br>  Everything, it was the last post of a series in which we are engaged in syntax analysis. <br>  Next time we turn to semantics, and then our toy language will really become a <i>programming</i> language. </div><p>Source: https://habr.com/ru/post/99466/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

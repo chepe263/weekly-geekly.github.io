@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Google maps api. Build routes. Part II</h1><div class="post__text post__text-html js-mediator-article">  As I found out for myself <a href="http://seregagl.habrahabr.ru/blog/80639/">last time</a> google and myself can build routes between two points.  For this there is a class Gdirections.  Well, let's see how to realize this opportunity. <br><br>  In fact, the task is much simpler than in the first example.  It is enough to initialize the class, hang a couple of handlers, and display the result.  All are considered and built for us. <br><a name="habracut"></a><br><br>  At the beginning, as usual, we create a map, set the controls: <br><blockquote><code>map = new GMap2(document.getElementById("map_canvas")); <br> map.setCenter(new GLatLng(55.758611, 37.616638), 10); <br> map.setUIToDefault();</code> </blockquote> <br>  Set the starting points (you can specify both directly addresses and geographic coordinates): <br><blockquote> <code>var startpoint = "55.75585, 37.62036"; <br> var endpoint = " ";</code> </blockquote> <br>  And we call the build function, passing into it the starting and ending points: <br><blockquote> <code>add_direction(startpoint, endpoint);</code> </blockquote> <br>  In it we create an instance of the route class: <br><blockquote> <code>function add_direction(startpoint, endpoint) <br> { <br> direct = new Gdirections(); <br> …</code> </blockquote> <br>  We hang up the handler, which will tell us about errors: <br><blockquote> <code>GEvent.addListener(direct,"error", function() { <br> alert("Location(s) not recognised. Code: "+direct.getStatus().code); <br> });</code> </blockquote> <br>  We set the handler to be called upon successful construction of the route (about it just below) <br><blockquote> <code>GEvent.addListener(direct,"load", function(){…}</code> </blockquote> <br>  And form the route: <br><blockquote> <code>direct.loadFromWaypoints([startpoint,endpoint],{getPolyline:true,getSteps:true}); <br> }</code> </blockquote> <br>  Everything, the route has been formed, it remains only to display it on the map after the final load (handling of the load event). <br>  We get a broken line from the route and add it to the map: <br><blockquote> <code>poly = direct.getPolyline(); <br> map.addOverlay(poly);</code> </blockquote> <br>  We create two markers, put them at the beginning and end of the route, mark the markers by dragging, at the end of dragging, we will call the function change_position (in it we will rebuild the route using the new beginning and end coordinates): <br><blockquote> <code>ms = new GMarker(poly.getVertex(0),{'draggable': true, 'icon': G_START_ICON}); <br> me = new GMarker(poly.getVertex(poly.getVertexCount()-1),{'draggable': true, 'icon': G_END_ICON}); <br> GEvent.addListener(ms, "dragend", change_position); <br> GEvent.addListener(me, "dragend", change_position); <br> map.addOverlay(ms); <br> map.addOverlay(me);</code> </blockquote> <br>  Google not only builds a route for us, but also provides us with textual comments in the direction of travel, we’ll get them and derive them (along with the length of the route): <br><blockquote> <code>var descr = ""; <br> for(i=0;i&lt;direct.getRoute(0).getNumSteps();i++) <br> descr = descr + '&lt;br&gt;' + (i+1)+'. ' + direct.getRoute(0).getStep(i).getDescriptionHtml(); <br> descr += ' : ' + direct.getDistance().html; <br> document.getElementById('route_descr').innerHTML = descr;</code> </blockquote> <br>  That's all, an example can be found at <a href="http://gdirections.webservis.ru/">http://gdirections.webservis.ru/</a> <br>  Everything is quite simple, but there is one very unpleasant moment.  For our country, Google gives routes only for the Moscow region.  The region is clearly visible on the <a href="http://maps.google.com/%3Fie%3DUTF8%26ll%3D55.745666,37.770996%26spn%3D4.112951,9.876709%26z%3D7">map</a> , green without white spots (approximate boundaries, Tver-Vladimir-Ryazan-Kaluga).  It remains to wait for expansion. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/80777/">https://habr.com/ru/post/80777/</a></p>
+    <p>Source: https://habr.com/ru/post/80777/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../80767/index.html">Kindle suffers from political correctness</a></li>
 <li><a href="../80768/index.html">What remains for Motorola?</a></li>
+<li><a href="../8077/index.html">Runner goes beyond Russia!</a></li>
 <li><a href="../80771/index.html">January 18 - "New products from Entensys: UseGate Mail Server and UserGate Parental Control", free softkey webinar and Entensys</a></li>
 <li><a href="../80772/index.html">Call Transfer to Extension</a></li>
 <li><a href="../80773/index.html">Beeline burns</a></li>
 <li><a href="../80778/index.html">Print cheat sheets - is it evil?</a></li>
 <li><a href="../80779/index.html">Is Sberbank Online Safe?</a></li>
+<li><a href="../8078/index.html">How to work well at night</a></li>
 <li><a href="../80780/index.html">Trans-Ocean Nuclear Precipitation</a></li>
 <li><a href="../80781/index.html">Distribution of invites</a></li>
-<li><a href="../80782/index.html">The most important news options for you?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

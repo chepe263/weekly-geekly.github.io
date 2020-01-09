@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>JVM crashes (2 stories about calling the native library)</h1><div class="post__text post__text-html js-mediator-article">  I want to share two stories with the same plot, but different interchanges. <br>  Maybe someone who also falls JVM will be useful <br><br>  1. Native code is called from Java via JNI.  Unit test - passes with a bang, the application (GUI, Swing) is crashing. <br>  We are connecting via ddd debager (this is such a shell over gdb, if any of the javaists do not know :)) - we see what falls with the longest stack.  We find out with the author of the native library that they deserialize there through boost (such a library for C ++) a large glibin tree.  And there is a recursion. <br><br>  There is an idea (not immediately, 3 days of disputes and googling) that when called from the application, the stack is larger and it overflows.  Find the parameter for the JVM: -XX: ThreadStackSize = 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Works! <br><br>  2. Native code is invoked via JNA.  Present Kolbeki back to Java, as I <a href="http://habrahabr.ru/blogs/java/113436/">described</a> .  Unit test is running, the app crashes! <br><br><a name="habracut"></a><br>  Again, we run ddd (the process is to call the debug version of the library to see the resources, start the application from the debug environment, put the breakpoint in Java, when it stops to find the process number of Java, connect to it from ddd, set breakpoints in it, continue execution ddd, continue to perform in Java - fuh!) <br><br>  We see that falls when trying to call Java kolbek.  How so?!  I knew that it was impossible for gc to gather and save it in the class field of his service! <br><br>  Another day of investigation and it turns out: <br>  Our craftsmen created another Spring Context in the application. <br>  Those. <br>  1. A “correct” context was created, a spring bin of my service was born in it, it registered a colbek <br>  2. An “extra” context was created, another bin of my service was born in it (it is a singleton, but only within one context! In another context, another istance!) And registered its own colback <br>  3. GC collected an extra context, and with it my service, and with it a callback <br>  4. I called my service (from the “correct” spring context), he called C, he called Kolbek.  And a kolbek from the “wrong” spring context was already collected from him by the scavenger! <br>  5. Crash! <br><br>  We remove the extra context - it works! <br><br></div><p>Source: <a href="https://habr.com/ru/post/114781/">https://habr.com/ru/post/114781/</a></p>
+      Works! <br><br>  2. Native code is invoked via JNA.  Present Kolbeki back to Java, as I <a href="http://habrahabr.ru/blogs/java/113436/">described</a> .  Unit test is running, the app crashes! <br><br><a name="habracut"></a><br>  Again, we run ddd (the process is to call the debug version of the library to see the resources, start the application from the debug environment, put the breakpoint in Java, when it stops to find the process number of Java, connect to it from ddd, set breakpoints in it, continue execution ddd, continue to perform in Java - fuh!) <br><br>  We see that falls when trying to call Java kolbek.  How so?!  I knew that it was impossible for gc to gather and save it in the class field of his service! <br><br>  Another day of investigation and it turns out: <br>  Our craftsmen created another Spring Context in the application. <br>  Those. <br>  1. A “correct” context was created, a spring bin of my service was born in it, it registered a colbek <br>  2. An “extra” context was created, another bin of my service was born in it (it is a singleton, but only within one context! In another context, another istance!) And registered its own colback <br>  3. GC collected an extra context, and with it my service, and with it a callback <br>  4. I called my service (from the “correct” spring context), he called C, he called Kolbek.  And a kolbek from the “wrong” spring context was already collected from him by the scavenger! <br>  5. Crash! <br><br>  We remove the extra context - it works! <br><br></div><p>Source: https://habr.com/ru/post/114781/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -77,8 +77,8 @@
 <li><a href="../114784/index.html">Android Developers Union</a></li>
 <li><a href="../114785/index.html">Loud failures in the fight against virus writers</a></li>
 <li><a href="../114786/index.html">CyanogenMod Review</a></li>
+<li><a href="../11479/index.html">Released RealPlayer recording video from the web</a></li>
 <li><a href="../114791/index.html">Electronic Parliamentary Elections in Estonia (2011)</a></li>
-<li><a href="../114792/index.html">Geek has adapted Kinect for playing Tetris</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Dynamic network traffic redirection</h1><div class="post__text post__text-html js-mediator-article"><p>  The article will discuss how to organize the ability to dynamically switch between network interfaces. </p><br><p>  The roots of the question began to grow from the previous project <a href="http://socmetr.ru/">socmetr.ru</a> , where it took to collect a large amount of information from social networks, and thus clogging the only channel with the Internet.  The analysis showed that even with compression, the amount of incoming information is so large that it is blocked, while the CPU and Memory capacities are not used by 20%, and the disk subsystem is idle almost all the time, that is, we rested on the width of the channel Provides us provider. </p><br><p>  The first thought was to go an extensive way and simply increase its capabilities, cooling down a bit and thinking about it, realized that we were shifting the problem to the future.  Needless to say, the question arose: "How can we go comrades?".  As a result, implemented the following idea: </p><br><div style="text-align:center;"><img src="http://socmetr.ru/work/20170111/habr-diagrams.png" alt="image"></div><a name="habracut"></a><br><h4 id="nastroyka-servera">  Server Tuning </h4><br><p>  Since the configuration looks monotonous, it makes sense to introduce symbolic symbols, let: </p><br><p>  A <sub>1</sub> is the first network interface, A <sub>2</sub> is the second ... A <sub>N</sub> is the last <br>  IP <sub>1</sub> is the IP address associated with the network interface A <sub>1</sub> , IP <sub>2</sub> is the address associated with A <sub>2</sub> ... IP <sub>N</sub> is the address associated with A <sub>N</sub> <br>  GW <sub>1</sub> is the IP address of the gateway provider P <sub>1</sub> (Provider 1), GW <sub>2</sub> is the address of the gateway provider P <sub>2</sub> ... GW <sub>N</sub> is the address of the gateway P <sub>N</sub> <br>  GW <sub>1</sub> _NET is the IP address of the provider's network P <sub>1</sub> , GW <sub>2</sub> _NET IP address of the provider's network P <sub>2</sub> ... GW <sub>N</sub> _NET IP address of the provider's network P <sub>N</sub> </p><br><p>  Then the setting can be done as follows: </p><br><pre><code class="hljs cs"> N-  ( N -      ) ip route <span class="hljs-keyword"><span class="hljs-keyword">add</span></span> {GW1_NET} dev {A1} src {IP1} table T1 ip route <span class="hljs-keyword"><span class="hljs-keyword">add</span></span> <span class="hljs-keyword"><span class="hljs-keyword">default</span></span> via {GW1} table T1 ... ip route <span class="hljs-keyword"><span class="hljs-keyword">add</span></span> {GWn_NET} dev {An} src {IPn} table Tn ip route <span class="hljs-keyword"><span class="hljs-keyword">add</span></span> <span class="hljs-keyword"><span class="hljs-keyword">default</span></span> via {GWn} table Tn      : ip route <span class="hljs-keyword"><span class="hljs-keyword">add</span></span> {GW1_NET} dev {A1} src {IP1} ... ip route <span class="hljs-keyword"><span class="hljs-keyword">add</span></span> {GWn_NET} dev {An} src {IPn} ip route <span class="hljs-keyword"><span class="hljs-keyword">add</span></span> <span class="hljs-keyword"><span class="hljs-keyword">default</span></span> via {GW1}  : ip rule <span class="hljs-keyword"><span class="hljs-keyword">add</span></span> <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> {IP1} table T1 ... ip rule <span class="hljs-keyword"><span class="hljs-keyword">add</span></span> <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> {IPn} table Tn</code> </pre> <br><p>  And it's in the bag, we get a configuration that ensures that all requests to a specific interface will receive a response from it. </p><br><h4 id="ispolzovanie">  Using </h4><br><p>  In order to turn to different network adapters, you must use the design of a specific programming language, or use third-party libraries.  In Java, this can be done through sockets, for example: </p><br><pre> <code class="hljs vhdl">socket.bind(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> InetSocketAddress(InetAddress.getByName(<span class="hljs-string"><span class="hljs-string">"network-adapter"</span></span>), <span class="hljs-keyword"><span class="hljs-keyword">port</span></span>));</code> </pre> <br><p>  By implementing this scheme, it was possible to manage the bandwidth of the Internet channel, depending on the business processes and logic occurring on the servers, at different stages of the life cycle of information systems. </p><br><p>  Pros: </p><br><ul><li>  the possibility of flexible scaling of the Internet channel (we have the opportunity at any time to increase or decrease the overall Internet channel, both by connecting new providers and by increasing the current bandwidth, it is possible to plan and predict its capacity) </li><li>  ability to manage the load, each of them </li><li>  the ability to use any channel or their sequence at any time by any subsystem </li></ul><br><p>  Minuses: </p><br><ul><li>  initial expenses for the purchase of appropriate equipment </li><li>  obligatory presence of many Internet service providers </li></ul><br><p>  Perhaps someone has already encountered a similar problem, and we have built a bicycle, so criticism of the decision is only welcome. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/319410/">https://habr.com/ru/post/319410/</a></p>
+    <p>Source: https://habr.com/ru/post/319410/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

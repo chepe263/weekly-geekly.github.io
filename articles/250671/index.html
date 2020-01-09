@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Insecure password storage in IBM WebSphere</h1><div class="post__text post__text-html js-mediator-article">  At work, I often come across IBM products: WebSphere Application Server (WAS) and others based on it.  And, like everyone, I sometimes forget passwords, especially when it comes to test systems or those that you don’t pay proper attention to. <br><br>  Once again, without remembering the password, I decided to see how our application server stores it.  After analyzing several configuration files, such as security.xml, wimconfig.xml and resources.xml, I discovered all the passwords ever entered in the administration console, including the password of the main admin.  They were stored in a completely harmless at first sight. <br><br><pre><code class="xml hljs">serverPassword="{xor}KD4sPjsyNjE="</code> </pre> <br><a name="habracut"></a><br>  Xor, of course, is alarming, but we do not know the key and salt, which could be used (but not used).  Remembering from student years property xor that: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="cpp hljs"> a ⊕ b = c,  a ⊕ c = b</code> </pre><br>  ... found the key for the system where the password is known: <br><br><pre> <code class="cpp hljs"><span class="hljs-number"><span class="hljs-number">283E2</span></span>C3E3B323631 ⊕ <span class="hljs-number"><span class="hljs-number">77617361646</span></span>D696E = <span class="hljs-number"><span class="hljs-number">5F</span></span>(ASCII  _)</code> </pre><br>  Of course, it is always the same, that is, the password is stored in virtually open text, xor on _ does not even hide it from users who do not understand anything about encryption.  Let me remind you that all passwords are stored this way: for keystores, for access to Active Directory, for access to the database, which, due to the specifics of using WAS, often stores information, access to which should be as limited as possible.  Anyone who has access to the configuration files becomes automatically the application server administrator and receives passwords from databases and other resources. <br><br>  WebSphere products are quite expensive and inaccessible to small and even medium-sized companies.  For example, today a WAS license for an average 2-socket x86 server costs about $ 200,000, WebSphere Portal is several times more expensive.  Usually it is not installed on x86, for RISC a license is even more expensive.  Basically, they are used in government agencies and the banking sector, and in such an organization, security requirements are special, for example, the separation of roles (OS administrator, database, application server).  In such a situation, it is technically unrealizable. <br><br>  I wrote a small script to “remember” passwords on the fly. <br><br><pre> <code class="python hljs"><span class="hljs-keyword"><span class="hljs-keyword">import</span></span> base64 char = <span class="hljs-string"><span class="hljs-string">''</span></span> input = raw_input(<span class="hljs-string"><span class="hljs-string">"Enter: "</span></span>) data = base64.b64decode(input) <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> character <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> data: hex_char = hex(int(character.encode(<span class="hljs-string"><span class="hljs-string">'hex'</span></span>), <span class="hljs-number"><span class="hljs-number">16</span></span>) ^ int(<span class="hljs-string"><span class="hljs-string">'_'</span></span>.encode(<span class="hljs-string"><span class="hljs-string">'hex'</span></span>), <span class="hljs-number"><span class="hljs-number">16</span></span>))[<span class="hljs-number"><span class="hljs-number">2</span></span>:] char = char + hex_char.decode(<span class="hljs-string"><span class="hljs-string">'hex'</span></span>) <span class="hljs-keyword"><span class="hljs-keyword">print</span></span> <span class="hljs-string"><span class="hljs-string">'Password:'</span></span>, char</code> </pre><br>  The algorithm is unchanged in all versions of WAS, including the latest 8.5.5 and in all products based on it: Portal Server, BPM, ESB and others.  I hope in version 8.6 or at least 9 passwords will be encrypted with AES. </div><p>Source: <a href="https://habr.com/ru/post/250671/">https://habr.com/ru/post/250671/</a></p>
+    <pre> <code class="cpp hljs"> a ⊕ b = c,  a ⊕ c = b</code> </pre><br>  ... found the key for the system where the password is known: <br><br><pre> <code class="cpp hljs"><span class="hljs-number"><span class="hljs-number">283E2</span></span>C3E3B323631 ⊕ <span class="hljs-number"><span class="hljs-number">77617361646</span></span>D696E = <span class="hljs-number"><span class="hljs-number">5F</span></span>(ASCII  _)</code> </pre><br>  Of course, it is always the same, that is, the password is stored in virtually open text, xor on _ does not even hide it from users who do not understand anything about encryption.  Let me remind you that all passwords are stored this way: for keystores, for access to Active Directory, for access to the database, which, due to the specifics of using WAS, often stores information, access to which should be as limited as possible.  Anyone who has access to the configuration files becomes automatically the application server administrator and receives passwords from databases and other resources. <br><br>  WebSphere products are quite expensive and inaccessible to small and even medium-sized companies.  For example, today a WAS license for an average 2-socket x86 server costs about $ 200,000, WebSphere Portal is several times more expensive.  Usually it is not installed on x86, for RISC a license is even more expensive.  Basically, they are used in government agencies and the banking sector, and in such an organization, security requirements are special, for example, the separation of roles (OS administrator, database, application server).  In such a situation, it is technically unrealizable. <br><br>  I wrote a small script to “remember” passwords on the fly. <br><br><pre> <code class="python hljs"><span class="hljs-keyword"><span class="hljs-keyword">import</span></span> base64 char = <span class="hljs-string"><span class="hljs-string">''</span></span> input = raw_input(<span class="hljs-string"><span class="hljs-string">"Enter: "</span></span>) data = base64.b64decode(input) <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> character <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> data: hex_char = hex(int(character.encode(<span class="hljs-string"><span class="hljs-string">'hex'</span></span>), <span class="hljs-number"><span class="hljs-number">16</span></span>) ^ int(<span class="hljs-string"><span class="hljs-string">'_'</span></span>.encode(<span class="hljs-string"><span class="hljs-string">'hex'</span></span>), <span class="hljs-number"><span class="hljs-number">16</span></span>))[<span class="hljs-number"><span class="hljs-number">2</span></span>:] char = char + hex_char.decode(<span class="hljs-string"><span class="hljs-string">'hex'</span></span>) <span class="hljs-keyword"><span class="hljs-keyword">print</span></span> <span class="hljs-string"><span class="hljs-string">'Password:'</span></span>, char</code> </pre><br>  The algorithm is unchanged in all versions of WAS, including the latest 8.5.5 and in all products based on it: Portal Server, BPM, ESB and others.  I hope in version 8.6 or at least 9 passwords will be encrypted with AES. </div><p>Source: https://habr.com/ru/post/250671/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../250661/index.html">We pump smart charging Imax B6</a></li>
 <li><a href="../250663/index.html">No cdn one</a></li>
 <li><a href="../250665/index.html">Using AppBarButton in Windows 8.1</a></li>
 <li><a href="../250667/index.html">Legacy code is cancer</a></li>
 <li><a href="../250669/index.html">Seventh annual Microsoft Research Summer School. This time about machine learning and intelligence</a></li>
+<li><a href="../25067/index.html">Difference in the price of models with Linux and Windows</a></li>
 <li><a href="../250673/index.html">Search for similar documents with MinHash + LHS</a></li>
 <li><a href="../250675/index.html">Making Free Software Safer: InstantCMS Bugs And Fixes</a></li>
 <li><a href="../250677/index.html">CNC milling machine with stand-alone controller on STM32</a></li>
 <li><a href="../250679/index.html">Moscow Django MeetUp Report No. 25</a></li>
-<li><a href="../250681/index.html">AdMob 7 for iOS 8</a></li>
+<li><a href="../25068/index.html">Tourism.su bought for $ 50,000</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

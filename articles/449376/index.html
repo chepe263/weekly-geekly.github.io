@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>History of one NOT vulnerability</h1><div class="post__text post__text-html js-mediator-article">  Some time ago I had the opportunity to experiment with the settings of one mediocre router.  The fact is that the first of April obliged me to play my comrades from the university.  The university had a Wi-Fi network.  I decided to raise a fake network on my router (set a name, password and set the MAC address of one of the legitimate access points), run my DNS, web server on my laptop.  Everyone who accidentally connected to my network and tried to access any site had to be redirected to my page with an April Fool's picture.  But the story is not about that.  When I was tinkering about the settings of the router, I found an interesting bug, and I’ll tell you about it today. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/9eb/59c/6a2/9eb59c6a23a5bd342d3ed735da09b380.jpg" alt="image"><br><a name="habracut"></a><br>  At the stage of setting up the router was connected to the Internet.  But for some reason, devices connected to Wi-Fi did not receive Internet.  I got to understand.  In the panel of the router there was a tab with the ability to use the ping utility, so telnet can not be turned on (I hope all readers understand the danger of telnet being opened outside?).  The form looked like this: <br><br><img src="https://habrastorage.org/webt/d6/hu/67/d6hu67t0tcxp7zgydz40mxzxxx4.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      This feature is implemented as follows.  The router program receives from the user a line containing the address, then inserts the ping command into the line: <br><br><pre><code class="bash hljs">ping -c &lt; &gt; &lt;&gt;</code> </pre> <br>  How well does the router check the string containing the address?  It was this question that arose in my head.  Then I substituted the ampersand and the <abbr title="output current directory contents">ls command</abbr> .  Got this: <br><br><img src="https://habrastorage.org/webt/y5/lz/3j/y5lz3j2vo_tk-shplz3ob8jqt1y.png"><br><br><h3>  For those who are not in the tank </h3><br>  On UNIX systems, we can force bash to execute a command in the background, substituting an ampersand after it.  In this case, we can substitute a command after the ampersand, and it will be executed simultaneously with the first one.  What I used in this case.  Substituting "8.8.8.8 &amp; ls", I received "ping -c 3 8.8.8.8 &amp; ls".  The router simultaneously executed the ping and ls commands.  Then brought the result. <br><br>  Had this bug been allowed elsewhere, it would have become a very serious threat.  After all, such a vulnerability would help an attacker to force the router to execute any command, or even get complete control over the device.  Such vulnerabilities are classified as <a href="https://cwe.mitre.org/data/definitions/78.html">CWE-78 (OS Command Injection)</a> . <br><br>  I could not sit still, and I hurried to write to the manufacturer about the found bug.  I described in detail the model of the router, the firmware version and the script for playing the bug.  I received an interesting answer: <br><br><img src="https://habrastorage.org/webt/rc/jb/oq/rcjboqy94v4vzvafu1umcmz8ivm.png" alt="image"><br><blockquote>  Translation (literally) <br><br>  Could you check the hardware version on the bottom label of the product? <br>  We do not have Rev.  Px.  Do you know the source or place of purchase of this device? <br></blockquote>  As it turned out, they did not take into account that I am writing from Russia.  This model of the router was distributed only in our country.  The correspondence ended with the fact that they sent me a new firmware, which eliminated all the shortcomings of the previous one and added many features, but for some reason it was not in the public domain. <br><br><img src="https://habrastorage.org/webt/2t/7t/4v/2t7t4vnud_kklx8uskcgh34_oyi.png"></div><p>Source: <a href="https://habr.com/ru/post/449376/">https://habr.com/ru/post/449376/</a></p>
+      This feature is implemented as follows.  The router program receives from the user a line containing the address, then inserts the ping command into the line: <br><br><pre><code class="bash hljs">ping -c &lt; &gt; &lt;&gt;</code> </pre> <br>  How well does the router check the string containing the address?  It was this question that arose in my head.  Then I substituted the ampersand and the <abbr title="output current directory contents">ls command</abbr> .  Got this: <br><br><img src="https://habrastorage.org/webt/y5/lz/3j/y5lz3j2vo_tk-shplz3ob8jqt1y.png"><br><br><h3>  For those who are not in the tank </h3><br>  On UNIX systems, we can force bash to execute a command in the background, substituting an ampersand after it.  In this case, we can substitute a command after the ampersand, and it will be executed simultaneously with the first one.  What I used in this case.  Substituting "8.8.8.8 &amp; ls", I received "ping -c 3 8.8.8.8 &amp; ls".  The router simultaneously executed the ping and ls commands.  Then brought the result. <br><br>  Had this bug been allowed elsewhere, it would have become a very serious threat.  After all, such a vulnerability would help an attacker to force the router to execute any command, or even get complete control over the device.  Such vulnerabilities are classified as <a href="https://cwe.mitre.org/data/definitions/78.html">CWE-78 (OS Command Injection)</a> . <br><br>  I could not sit still, and I hurried to write to the manufacturer about the found bug.  I described in detail the model of the router, the firmware version and the script for playing the bug.  I received an interesting answer: <br><br><img src="https://habrastorage.org/webt/rc/jb/oq/rcjboqy94v4vzvafu1umcmz8ivm.png" alt="image"><br><blockquote>  Translation (literally) <br><br>  Could you check the hardware version on the bottom label of the product? <br>  We do not have Rev.  Px.  Do you know the source or place of purchase of this device? <br></blockquote>  As it turned out, they did not take into account that I am writing from Russia.  This model of the router was distributed only in our country.  The correspondence ended with the fact that they sent me a new firmware, which eliminated all the shortcomings of the previous one and added many features, but for some reason it was not in the public domain. <br><br><img src="https://habrastorage.org/webt/2t/7t/4v/2t7t4vnud_kklx8uskcgh34_oyi.png"></div><p>Source: https://habr.com/ru/post/449376/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../449384/index.html">Quiz: Is the remote control suitable for you (not freelance!)?</a></li>
 <li><a href="../449386/index.html">Internet for summer resident. We get the maximum speed in 4G networks. Part 1. Choosing the right router.</a></li>
 <li><a href="../449388/index.html">Print ... Belt?</a></li>
-<li><a href="../449392/index.html">Getting statistics for all clients from the Yandex Direct API API in the context of days using Python</a></li>
+<li><a href="../449390/index.html">Benchmarking Emeli</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

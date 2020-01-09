@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The first three steps to optimizing LAMP</h1><div class="post__text post__text-html js-mediator-article">  There is an opinion that the LAMP bundle (Linux + Apache + Mysql + PHP) does not require any special configuration and works out of the box.  Far from it.  After I had been persuading a comrade to install a PHP caching accelerator xcache for a long time, I decided to conduct a small experiment and try to turn off xcache on my virtual server under a small load (about a hit per second).  In real life, the load on the processor is small, but the memory is heavily loaded, because  its a bit (256MB). <br><br>  The results of the experiment exceeded all expectations. <a name="habracut"></a>  I think you can easily find the period when the cache was turned off on the graphs of the CPU and memory load. <br><img src="https://habrastorage.org/getpro/habr/post_images/4c7/c85/5af/4c7c855af7d457cb6a3e5a81845c1941.jpg"><br><br><img src="https://habrastorage.org/getpro/habr/post_images/712/7e6/b50/7127e6b502c8247dcb1ab83866c03aef.jpg">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      After half an hour of experiments, the system got into a cruel swap and I could barely return the caching to the site: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/c5b/8b2/93d/c5b8b293da19726e9346788ec4f14ff2.jpg"><br><br>  This experiment, unfortunately, was not clean, since I set up Apache exactly for the existing configuration, and turning off the cache led to swapping.  Xcache (like other PHP accelerators) allows you to save immediately and processor time, and memory, and disk access, keeping the intermediate code of PHP scripts in RAM.  Despite the fact that the cache occupied 64MB bytes from me, its absence led to the growth of each of the work processes so that they got out of the physical memory. <br><br>  We will take out three optimization lessons - one per component AMP: <br><br>  1. Always configure Apache so that the execution of the command ab -n1000 -c100 <a href="http://yoursite/bigscript.php">yoursite / bigscript.php</a> does not lead to a swap.  To do this, <a href="http://www.ibm.com/developerworks/linux/library/l-tune-lamp-2.html%3Fca%3Ddgr-lnxw01LAMPTuningP2">read this article</a> .  Apache box plus scripts of moderate severity - the right way into the abyss with increasing load.  Especially for memory limited VDS. <br>  2. Always install a PHP accelerator.  On conventional projects and CMS (Drupal / Joomla / WP) it will bring the acceleration of impact and reduction in the load on the processor by 2-4 times, as well as savings in RAM.  Adjust the amount of cache sufficient to store active scripts (cache occupancy can be monitored). <br><br>  The third lesson - turn on Query Cache in MySQL.  It is graphically illustrated by the following schedule: <br><img src="https://habrastorage.org/getpro/habr/post_images/f71/d70/7ac/f71d707ac78d3de39e67a0c5ed2981ea.jpg"><br>  For more detailed MySQL tips, refer to the <a href="http://www.day32.com/MySQL/">tuning-primer.sh</a> script by running it on a live database. <br><br>  The remaining measures (except for the optimization of the applications themselves) give a weaker effect, but they can save a lot more resources.  If you are interested, I recommend reading <a href="http://2bits.com/articles/drupal-performance-tuning-and-optimization-for-large-web-sites.html">these articles.</a> </div><p>Source: <a href="https://habr.com/ru/post/46003/">https://habr.com/ru/post/46003/</a></p>
+      After half an hour of experiments, the system got into a cruel swap and I could barely return the caching to the site: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/c5b/8b2/93d/c5b8b293da19726e9346788ec4f14ff2.jpg"><br><br>  This experiment, unfortunately, was not clean, since I set up Apache exactly for the existing configuration, and turning off the cache led to swapping.  Xcache (like other PHP accelerators) allows you to save immediately and processor time, and memory, and disk access, keeping the intermediate code of PHP scripts in RAM.  Despite the fact that the cache occupied 64MB bytes from me, its absence led to the growth of each of the work processes so that they got out of the physical memory. <br><br>  We will take out three optimization lessons - one per component AMP: <br><br>  1. Always configure Apache so that the execution of the command ab -n1000 -c100 <a href="http://yoursite/bigscript.php">yoursite / bigscript.php</a> does not lead to a swap.  To do this, <a href="http://www.ibm.com/developerworks/linux/library/l-tune-lamp-2.html%3Fca%3Ddgr-lnxw01LAMPTuningP2">read this article</a> .  Apache box plus scripts of moderate severity - the right way into the abyss with increasing load.  Especially for memory limited VDS. <br>  2. Always install a PHP accelerator.  On conventional projects and CMS (Drupal / Joomla / WP) it will bring the acceleration of impact and reduction in the load on the processor by 2-4 times, as well as savings in RAM.  Adjust the amount of cache sufficient to store active scripts (cache occupancy can be monitored). <br><br>  The third lesson - turn on Query Cache in MySQL.  It is graphically illustrated by the following schedule: <br><img src="https://habrastorage.org/getpro/habr/post_images/f71/d70/7ac/f71d707ac78d3de39e67a0c5ed2981ea.jpg"><br>  For more detailed MySQL tips, refer to the <a href="http://www.day32.com/MySQL/">tuning-primer.sh</a> script by running it on a live database. <br><br>  The remaining measures (except for the optimization of the applications themselves) give a weaker effect, but they can save a lot more resources.  If you are interested, I recommend reading <a href="http://2bits.com/articles/drupal-performance-tuning-and-optimization-for-large-web-sites.html">these articles.</a> </div><p>Source: https://habr.com/ru/post/46003/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../45996/index.html">Password is not long enough</a></li>
-<li><a href="../45997/index.html">Benefit from Habr?</a></li>
-<li><a href="../46000/index.html">Invisible Revolution</a></li>
-<li><a href="../46001/index.html">My mom and the Internet</a></li>
+<li><a href="../460018/index.html">Create dynamic PDFs using React and Node.js</a></li>
 <li><a href="../46002/index.html">How do you release updates for your software (CMS, for example)</a></li>
-<li><a href="../46007/index.html">Functional python</a></li>
-<li><a href="../46009/index.html">How did I get a job at Guerrilla</a></li>
-<li><a href="../46010/index.html">(a) Slideshow - jQuery plugin for organizing slide shows</a></li>
-<li><a href="../46013/index.html">Y! LIVE, Pownce ... Who's next?</a></li>
-<li><a href="../46014/index.html">Control Mac with a wave of your hand</a></li>
+<li><a href="../460020/index.html">What is Deno and how does this project differ from Node.js?</a></li>
+<li><a href="../460022/index.html">PHP Digest 160 (July 1 - 15, 2019)</a></li>
+<li><a href="../460028/index.html">The solution to the task with pwnable.kr 04 - flag. Packed executables</a></li>
+<li><a href="../460030/index.html">Native development, React Native and Flutter: selection criteria</a></li>
+<li><a href="../460036/index.html">Alice's B2B skill: from prototype to the first ruble saved</a></li>
+<li><a href="../460038/index.html">Generation of dungeons in Diablo 1</a></li>
+<li><a href="../460040/index.html">We get USRN extracts from Rosreestr, bypassing api. Expectations in python, square millimeters in Rosreestr</a></li>
+<li><a href="../460044/index.html">Oven heater temperature control, with timer on Arduino</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Cardboard engine for an electrical board game. As we brought it closer to reality</h1><div class="post__text post__text-html js-mediator-article"><p>  In the summer of 2018, I already wrote about how we <a href="https://habr.com/ru/post/417211/">created the desktop electrotechnical game "Do not short circuit!"</a>  , which was then preparing for publication.  At the moment, work on the game has been completed, it is successfully <a href="https://crowdrepublic.ru/project/1018337/Ne-zakoroti-Cep">raising</a> funds for the publication <a href="https://crowdrepublic.ru/project/1018337/Ne-zakoroti-Cep">on the CrowdRepublic site</a> , but we decided to talk about its “engine”, its creation and the problems that we encountered in doing so. </p><br><p>  It would seem that complicated.  Battery, wires, LEDs and light bulbs - put together a chain, look at what was lit, get points and fines if you closed a plus on a minus without load.  The resistor reduces the number of points, the diode passes or does not pass current in a certain direction, the circuit is "considered" from plus to minus.  But... </p><br><p>  The game is childish (8+ recommendation) and it is necessary that children (and adults) do not break the brain on determining the health of the circuit.  And I had to simplify the rules.  The main thing that had to be sacrificed and where the “engine” diverges from the real chain is parallel and sequential connections.  Usually, players create chains, where all elements are arranged in series, but alas, on tests, they managed to connect light bulbs in parallel.  Then the elements get the same voltage and once we have the number of points given for the "luminous intensity", then the points had to be charged differently than in a serial connection.  It would seem nothing complicated, but as soon as resistors and LEDs appear in the circuit, the brain begins to "boil." </p><br><p><img src="https://habrastorage.org/webt/my/6x/rf/my6xrfk8c27c6phsufh2aelvzhm.png"></p><a name="habracut"></a><br><p>  It was decided that all lockable chains "unfold" into successive ones.  This allowed both to increase the speed of the game, and to remove the heated debates about who won and why. </p><br><p>  Also, the question arose about the denominations of the elements.  What are resistors?  What is the voltage of diodes and lamps?  What is the voltage in the circuit?  And here again the assumptions come into effect - in the gaming "network" the voltage is 3V, the bulbs are also 3 volt, the diodes are 2 volts, the resistors are "ball-shaped in vacuum" by 1K.  We neglect the characteristics of the diode - we believe that it passes or does not pass current.  It remains only to develop clear and logical rules for scoring.  Here we wanted more reality and for this we began to check everything on the breadboard boards. </p><br><p>  With light bulbs and LED everything is simple - the light bulb in the circuit at a nominal voltage is 2 points, the LED without a resistor burns out, with a resistor it also gives 2 points. </p><br><p><img src="https://habrastorage.org/webt/hn/-m/8g/hn-m8gmgfghvyrmeybr8t3nhf8s.png"></p><br><p>  Two identical light bulbs connected in series will burn to the floor with power - giving them two points.  A light bulb + LED?  Two LEDs in series?  And if you add another resistor?  We consider one of the chain elements resistive for the other.  Then the light bulb + resistor gives 1 point (the voltage drop on the light bulb is taken twice), the LED + light bulb gives 1 + 2 points, two light-emitting diodes gives ... And here it’s not 2 + 2.  In a real circuit, the second LED will “shine” weaker, so we assume that two consecutive LEDs do not burn and the player gets 1 + 2 points.  And all this is confirmed by the layout. </p><br><p><img src="https://habrastorage.org/webt/1o/td/ax/1otdaxjk_7jsc6fizaqyzz1rzw8.png"></p><br><p>  The third element in the chain is calculated similarly.  A resistor plus two LEDs give approximately the same luminescence on both - 2 points per player.  Two resistors + LED also give a dim glow - 1 point to the player. </p><br><p><img src="https://habrastorage.org/webt/gz/mf/se/gzmfserarqtbsuplwgg2tceggym.png"></p><br><p>  Problems began with the connection of several light bulbs and an LED at the same time, or the appearance of a resistor-light bulb-LED circuit.  They did not work, as required by the logic of the "cardboard" engine </p><br><p><img src="https://habrastorage.org/webt/x2/5t/ln/x25tlnpxhf-len3wuvdauujzvmi.png"></p><br><p>  As you can see, the LED shines brightly (and the situation was expected as in the case of two resistors and a LED), and with a resistor the light does not light up, unlike the LED, which shines "by 2 points".  The logic of the same engine required getting dimly lit bulbs and LEDs in both situations and, accordingly, 1 point for each lit element.  With a creak we accept this assumption. </p><br><p>  In order not to lead the players into the wilds of computing chains of more than 3 elements (as we remember, diodes only play the role of “gates” and we ignore them in the chains as resistive elements) we found unable to ignite our luminous elements and do not accrue victory points for them. </p><br><p>  As a result, the table of "luminosity" was as follows: </p><br><p><img src="https://habrastorage.org/webt/ey/qe/gk/eyqegkl5rrtmaadmvdlyuqco7ty.png"></p><br><p>  Not in all aspects is real, but with a fairly clear logic, which allows not to sit with open rules all the time. </p><br><p>  Later we added transistors to the game (plays the role of a key and does not affect resistively) and a photodiode (plays the role of a reversing diode, which passes current only when it lights up with a light bulb next to it) and reed switches (a key that is activated by a magnet lying next to the field) but these elements, like diodes, do not affect the scoring. </p><br><p>  As developers, we sometimes rush to write "complicated" rules for a game with a more realistic behavior of cardboard chains, but we ask ourselves: is it necessary? </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/442612/">https://habr.com/ru/post/442612/</a></p>
+    <p>Source: https://habr.com/ru/post/442612/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../442600/index.html">My home automation system</a></li>
 <li><a href="../442602/index.html">Does speed reduce speed reduction?</a></li>
 <li><a href="../442606/index.html">Domain Object with Lombok: Battle Classics</a></li>
 <li><a href="../442608/index.html">The QuadrigaCX cryptobirds cold wallets, the founder of which died, were empty</a></li>
+<li><a href="../44261/index.html">Questions to Nikita Sherman (Odnoklassniki.Ru)</a></li>
 <li><a href="../442610/index.html">Telegram-bot + Google Analytics</a></li>
 <li><a href="../442614/index.html">CI / CD using Jenkins at Kubernetes</a></li>
 <li><a href="../442616/index.html">Overclock event handling up to 1.6 million per second</a></li>
 <li><a href="../442618/index.html">Not for Selfies: Digital ELISA with a new chip embedded in a smartphone</a></li>
+<li><a href="../44262/index.html">How to draw the fifth construction site this year and keep your interest in the work</a></li>
 <li><a href="../442620/index.html">Machine learning in IT monitoring</a></li>
-<li><a href="../442622/index.html">How to make Korutin in Unity a little more convenient</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

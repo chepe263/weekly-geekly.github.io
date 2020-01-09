@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Tree Objects in Jang</h1><div class="post__text post__text-html js-mediator-article">  Working on one project, I was faced with the need to keep the company's divisions in the form of a tree structure.  I implemented it like this: <br><br><a name="habracut"></a><br>  simplified unit model: <br><blockquote>  class Department (models.Model): <br>  name = models.CharField (maxlength = 255, null = False, blank = False) <br>  code = models.CharField (maxlength = 15, unique = True, null = False, blank = False) <br>  path = models.CharField (maxlength = 255, null = False, editable = False) <br>  parent = models.ForeignKey ('self', null = True, blank = True) <br></blockquote><br><br>  those.  the model refers to itself.  The key word here is path: here we will store the “path” to the current model through all ancestors.  To generate it automatically, override save: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <blockquote>  def save (self): <br>  if self.parent: <br>  self.path = '% s% s /'% (self.parent.path, self.code) <br>  else: <br>  self.path = '/% s /'% self.code <br>  super (type (self), self) .save () <br>  for a in Department.objects.filter (parent = self.id): <br>  a.save () <br></blockquote><br><br>  thus, when the object is saved, the path field is “regenerated” for all its descendants. <br><br>  Now you can select, say, all the employees of a given and all the subdivisions invested in it by a simple query: <br><br><blockquote>  staff = Staff.objects.filter (department__path__startswith = department.path) <br></blockquote><br><br>  for the final beauty guidance, we define __str__ for the Department object: <br><blockquote>  def __str __ (self): <br>  return "% s% s"% ('------' [: self.path.count ('/', 2) -1], self.name) <br></blockquote><br><br>  Now in all forms when choosing a unit, the degree of its nesting will be visible. <br></div><p>Source: <a href="https://habr.com/ru/post/5959/">https://habr.com/ru/post/5959/</a></p>
+    <blockquote>  def save (self): <br>  if self.parent: <br>  self.path = '% s% s /'% (self.parent.path, self.code) <br>  else: <br>  self.path = '/% s /'% self.code <br>  super (type (self), self) .save () <br>  for a in Department.objects.filter (parent = self.id): <br>  a.save () <br></blockquote><br><br>  thus, when the object is saved, the path field is “regenerated” for all its descendants. <br><br>  Now you can select, say, all the employees of a given and all the subdivisions invested in it by a simple query: <br><br><blockquote>  staff = Staff.objects.filter (department__path__startswith = department.path) <br></blockquote><br><br>  for the final beauty guidance, we define __str__ for the Department object: <br><blockquote>  def __str __ (self): <br>  return "% s% s"% ('------' [: self.path.count ('/', 2) -1], self.name) <br></blockquote><br><br>  Now in all forms when choosing a unit, the degree of its nesting will be visible. <br></div><p>Source: https://habr.com/ru/post/5959/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

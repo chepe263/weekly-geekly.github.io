@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using Docker Containers as Jenkins Nod</h1><div class="post__text post__text-html js-mediator-article"><img align="right" src="https://habrastorage.org/getpro/habr/post_images/792/138/92e/79213892e85d57177c0ba9864dd75cc6.png">  This article describes the use of docker containers as separate nodes for a continuous integration system, in this case jenkins.  Too lazy to read <a href="https://github.com/antigluk/docker-jenkins-slave">tl;</a>  <a href="https://github.com/antigluk/docker-jenkins-slave">dr</a> <br>  To build our project in RPM and DEB packages we use Jenkins, for which a special machine is allocated. <br><br>  At first, we collected our project only for CentOS 6. Then CentOS 5 support was added, and it turned out that depending on specific versions of libraries do not allow the same binaries to work under different versions of CentOS, we needed to build different RPMs.  This was decided by adding nodes to the jenkins with CentOS 5, which was served by the VirtualBox virtual box.  Then added support for Suse, and then Debian. <br><br>  The amount of RAM is not rubber, and using virtual machines only for building is an obvious overhead, and it was decided to rewrite the scripts using <a href="http://habrahabr.ru/post/174499/">Docker</a> . <br><a name="habracut"></a><br><img src="https://habrastorage.org/getpro/habr/post_images/238/732/769/238732769c1006e346364cbab93d6545.png"><br>  Using Jenkins for continuous integration, you can connect nodes with the necessary operating systems and assign tasks to them, there are several options: <br><ul><li>  Rent instances / computers and use them as nodes </li><li>  Use standard virtualization (hypervisor) </li><li>  Containers (lxc, jail etc) </li></ul><br>  The advantages of containers over virtual machines are obvious in this case (the RAM is shared, dynamically changing, a large number of lifted containers do not slow down the system, unlike virtual machines), and Docker adds to them such important points as: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <ul><li>  To build the project, the actual build script runs, and nothing more.  Whereas when using a virtual machine, all system processes and daemons will be started, which eats away host resources. </li><li>  “Cheap” creation of a large number of independent clones of machines - sometimes for assembling a project you need an isolated environment for assembly. </li></ul><br><br><h2>  Docker as a jenkins node </h2><br><br>  For jenkins-slave we need: <br><ol><li>  Java </li><li>  Entry Point - ssh </li><li>  Assembly tools </li></ol><br><br>  The entry point is needed to start the process in docker and save the file system within the build session (LXC uses the init process, but the whole system does not need anything).  Since jenkins will still need SSH to communicate with the node, this daemon will be the entry point. <br><br>  Docker suggests using Dockerfile files with instructions for building the machine to build the machine. <br><br>  In this repository: <a href="https://github.com/antigluk/docker-jenkins-slave">https://github.com/antigluk/docker-jenkins-slave</a> now build rules for <ul><li>  CentOS 5 </li><li>  CentOS 6 </li><li>  Suse 12 </li><li>  Debian 6 </li></ul><br><br>  Pull-requests with new systems, and bug fixes are welcome :) <br><br><h2>  Assembly and use </h2><br><br>  It is assumed that you have Docker and Jenkins installed <br><br>  1) Install the Jenkins <a href="https://wiki.jenkins-ci.org/display/JENKINS/Swarm%2BPlugin">Swarm Plugin</a> (it allows slaves to be added to Jenkins automatically using the API) <br><pre> 2) $ git clone git@github.com: antigluk / docker-jenkins-slave.git;  cd docker-jenkins-slave
@@ -67,15 +67,15 @@
      $ cd centos6
  4) $ sudo bash build.sh
 </pre><br><br>  When the image is assembled, you can add as many nodes of this type as you like: <br><br><pre>     sudo bash add_slave.sh SlaveName
-</pre><br><br>  After executing this command, you should see the new node on Jenkins-e. <br><br>  Now, to use a new node, it is enough to indicate in the tags for assembling the necessary task “docker-tagname” - the name of the tag is the name of the system with the full version, the list of tags can be viewed <a href="https://github.com/antigluk/docker-jenkins-slave/wiki/Tags">on a special page in the wiki</a> </div><p>Source: <a href="https://habr.com/ru/post/200244/">https://habr.com/ru/post/200244/</a></p>
+</pre><br><br>  After executing this command, you should see the new node on Jenkins-e. <br><br>  Now, to use a new node, it is enough to indicate in the tags for assembling the necessary task “docker-tagname” - the name of the tag is the name of the system with the full version, the list of tags can be viewed <a href="https://github.com/antigluk/docker-jenkins-slave/wiki/Tags">on a special page in the wiki</a> </div><p>Source: https://habr.com/ru/post/200244/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../200230/index.html">/ dev / null as a Service</a></li>
 <li><a href="../200232/index.html">COLT 1.2.4 released with LESS / SASS support, CoffeeScript</a></li>
 <li><a href="../200234/index.html">Cisco will release the open source implementation of H.264, which will be included in Firefox</a></li>
 <li><a href="../200236/index.html">Children's launcher and parental control</a></li>
 <li><a href="../200238/index.html">We use the tablet as a second monitor to develop</a></li>
+<li><a href="../20024/index.html">You will survive a nuclear conflict. Myth 1</a></li>
 <li><a href="../200246/index.html">Serialization of Judy integer arrays in PHP</a></li>
 <li><a href="../200248/index.html">Designing a secure messaging application together.</a></li>
 <li><a href="../200252/index.html">Counts for the smallest: BFS</a></li>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -60,7 +60,7 @@
                         | -Project2 
     </pre><br></li></ul><br>  Instruction: <br><ol><li>  We need to dump our repository.  To do this, run the command: <br> <code>svnadmin dump /home/user/svn/reps/projects &gt; myrep.dump</code> <br> </li><li>  Now leave only one project. <br> <code>cat myrep.dump | svndumpfilter include Projects/Project1 --drop-empty-revs --renumber-revs &gt; project1.dump</code> <br> <br>  --drop-empty-revs - remove empty revisions <br>  --renumber-revs - renumber revisions <br><br>  It is necessary to specify the full path to the project, i.e.  not just the name of the project “Project1”, but namely “Projects / Project1”.  Otherwise, you will receive an empty dump file. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -68,23 +68,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      In general, the previous two teams can be combined <br> <code>svnadmin dump /home/user/svn/reps/projects | svndumpfilter include Projects/Project1 --drop-empty-revs --renumber-revs &gt; project1.dump</code> <br> </li><li>  Let's create a new repository for the project in the «reps» folder <br> <code>svnadmin create project1</code> <br> </li><li>  Load the cleaned dump into the new repository. <br> <code>svnadmin load project1 &lt; project1.dump</code> <br>  An error occurs in this step. <br>  <code>svnadmin: File not found transaction '0-0', path Projects/Project1</code> , i.e. this means that the Projects folder does not exist.  Apparently during restoration, the structure is not recreated. <br>  To fix this, you must manually create a folder “Projects”: <br><pre>  svn mkdir http://svn.mysite.ru/project1/Projects -m "Creating Projects folder" </pre><br>  And now we can safely perform: <br> <code>svnadmin load project1 &lt; project1.dump</code> <br> </li><li>  Because  the structure of the new repository turned out, repeating the old structure, it will be necessary to transfer everything from the folder “Project1” to the root of the repository, and then delete the folder “Projects” <br></li></ol><br>  I would like to write here “Everything” and put an end.  But still, among these 4 items, there is a fly in the ointment. <br>  If, during the work on the project, you renamed it, then at the 2nd step an error <code>Invalid copy source path '  '</code> will occur. <br>  The regular <code>svndumpfilter</code> program cannot solve this problem. <br>  After some searching, I found a script written in python <a href="http://svn.tartarus.org/sgt/svn-tools/svndumpfilter2">svndumpfilter2</a> that allows you to work around this limitation. <br>  Download the script to your computer and enter the command <br> <code>cat myrep.dump | svndumpfilter2 --drop-empty-revs --renumber-revs /home/user/svn/reps/projects Projects/Project1 &gt; project1.dump</code> <br>  There are some differences from svndumpfilter. <br><ul><li>  You must specify the path to the physical location of the repository, ie / home / user / svn / reps / projects <br></li><li>  Only include key is supported.  (it is not necessary to specify) <br></li></ul><br><br>  Well, now ... EVERYTHING. <br><br>  Note: When I started writing this article (and this was a week ago), then searching on Habré did not find anything similar.  But since  My publication was postponed a bit, then during this time a similar article appeared <a href="http://mrpsycho.habrahabr.ru/blog/74044/">Restore the SVN repository</a> , but since  It seems to me that some problems are not covered there, I decided to publish my article. </div><p>Source: <a href="https://habr.com/ru/post/73788/">https://habr.com/ru/post/73788/</a></p>
+      In general, the previous two teams can be combined <br> <code>svnadmin dump /home/user/svn/reps/projects | svndumpfilter include Projects/Project1 --drop-empty-revs --renumber-revs &gt; project1.dump</code> <br> </li><li>  Let's create a new repository for the project in the «reps» folder <br> <code>svnadmin create project1</code> <br> </li><li>  Load the cleaned dump into the new repository. <br> <code>svnadmin load project1 &lt; project1.dump</code> <br>  An error occurs in this step. <br>  <code>svnadmin: File not found transaction '0-0', path Projects/Project1</code> , i.e. this means that the Projects folder does not exist.  Apparently during restoration, the structure is not recreated. <br>  To fix this, you must manually create a folder “Projects”: <br><pre>  svn mkdir http://svn.mysite.ru/project1/Projects -m "Creating Projects folder" </pre><br>  And now we can safely perform: <br> <code>svnadmin load project1 &lt; project1.dump</code> <br> </li><li>  Because  the structure of the new repository turned out, repeating the old structure, it will be necessary to transfer everything from the folder “Project1” to the root of the repository, and then delete the folder “Projects” <br></li></ol><br>  I would like to write here “Everything” and put an end.  But still, among these 4 items, there is a fly in the ointment. <br>  If, during the work on the project, you renamed it, then at the 2nd step an error <code>Invalid copy source path '  '</code> will occur. <br>  The regular <code>svndumpfilter</code> program cannot solve this problem. <br>  After some searching, I found a script written in python <a href="http://svn.tartarus.org/sgt/svn-tools/svndumpfilter2">svndumpfilter2</a> that allows you to work around this limitation. <br>  Download the script to your computer and enter the command <br> <code>cat myrep.dump | svndumpfilter2 --drop-empty-revs --renumber-revs /home/user/svn/reps/projects Projects/Project1 &gt; project1.dump</code> <br>  There are some differences from svndumpfilter. <br><ul><li>  You must specify the path to the physical location of the repository, ie / home / user / svn / reps / projects <br></li><li>  Only include key is supported.  (it is not necessary to specify) <br></li></ul><br><br>  Well, now ... EVERYTHING. <br><br>  Note: When I started writing this article (and this was a week ago), then searching on Habré did not find anything similar.  But since  My publication was postponed a bit, then during this time a similar article appeared <a href="http://mrpsycho.habrahabr.ru/blog/74044/">Restore the SVN repository</a> , but since  It seems to me that some problems are not covered there, I decided to publish my article. </div><p>Source: https://habr.com/ru/post/73788/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../73773/index.html">Programming Magic: the Gathering - §2 Map</a></li>
 <li><a href="../73774/index.html">Search C # and C ++ for Habrahabr</a></li>
 <li><a href="../73775/index.html">Computer terminology in the Ukrainian language</a></li>
 <li><a href="../73776/index.html">The Berlin Twitter Wall</a></li>
+<li><a href="../7378/index.html">ASCII Star Wars</a></li>
 <li><a href="../73783/index.html">Why I don't like Web 2.0</a></li>
 <li><a href="../73790/index.html">Sandcastle: generating documentation with class diagrams</a></li>
 <li><a href="../73791/index.html">Drupal-a small page navigation upgrade</a></li>
+<li><a href="../738/index.html">Life at GooglePlex</a></li>
+<li><a href="../7380/index.html">Free music will be distributed along with advertising</a></li>
 <li><a href="../73801/index.html">Deanonimization on the Internet</a></li>
-<li><a href="../73804/index.html">Visionsonic 2009</a></li>
-<li><a href="../73805/index.html">Download Adware from Agave</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

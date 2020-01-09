@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How we started monitoring the domains and what came of it</h1><div class="post__text post__text-html js-mediator-article">  Hello!  It all started with the fact that we have divorced a lot of domains that need to be renewed on time.  And so, after one failure with the extension of the domains, it was decided to start monitoring the expiration date of the domain and display it in Nagios monitoring. <br><br><a name="habracut"></a><br><h4>  How to monitor? </h4><br><br>  We had several domains in the zones kz, ru, kg, ge, com. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The easiest way to find out all the necessary information about the domain is to run whois.  In theory, everyone should know this.  But how to implement this whole thing in monitoring? <br><br><h4>  What to monitor? </h4><br>  Rummaging through the Internet, the <a href="https://pypi.python.org/pypi/python-whois">python-whois</a> module was found.  He did a good job for the com, net and other domains described in the module description. <br><br>  There was not enough functionality for several domains in kg zones. <br>  As a result, a fork of the <a href="https://pypi.python.org/pypi/python-whois-extended">python-whois-extended</a> project has appeared which expands the functionality for large TLDs. <br><br><h4>  Ok, how to implement nagios? </h4><br><br>  It's simple, we write a simple check. <br><pre><code class="python hljs"><span class="hljs-comment"><span class="hljs-comment">#!/usr/bin/env python # # Usage: # python check_domain.py -d DOMAIN import whois from datetime import datetime from sys import exit from optparse import OptionParser def check_domain(domain): q = whois.query(domain) if (q.expiration_date - datetime.now()).days &lt;= 30: print "CRITICAL: Domain: {0} expires on {1}".format(domain, q.expiration_date) exit(2) print "OK: Domain: {0} expires on {1}".format(domain, q.expiration_date) if __name__ == '__main__': parser = OptionParser() parser.add_option("-d", "--domain", dest="domain", help="Domain to monitor expiry date") (options, args) = parser.parse_args() if not options.domain: print parser.print_help() exit(0) check_domain(options.domain)</span></span></code> </pre> <br><br>  What is he doing?  Shines red in the monitoring for a month before the expiration of the domain. <br><br>  Interestingly, another maintainer appeared, who added support for the hk, cn and kr TLD. <br><br>  The current list of supported domains is: <br>  com, net, org, uk, pl, ru, lv, jp, co_jp, de, at, eu, biz, info, name, us, co, me, be, nz, cz, it, fr, kg, vc, fm, tv, edu, ca, cn, kr, hk <br><br>  Module code <a href="https://github.com/gen1us2k/python-whois">here</a> <br>  Pull requests, feature requests are invoked! <br>  I hope my experience will help get rid of this problem. </div><p>Source: <a href="https://habr.com/ru/post/251619/">https://habr.com/ru/post/251619/</a></p>
+      The easiest way to find out all the necessary information about the domain is to run whois.  In theory, everyone should know this.  But how to implement this whole thing in monitoring? <br><br><h4>  What to monitor? </h4><br>  Rummaging through the Internet, the <a href="https://pypi.python.org/pypi/python-whois">python-whois</a> module was found.  He did a good job for the com, net and other domains described in the module description. <br><br>  There was not enough functionality for several domains in kg zones. <br>  As a result, a fork of the <a href="https://pypi.python.org/pypi/python-whois-extended">python-whois-extended</a> project has appeared which expands the functionality for large TLDs. <br><br><h4>  Ok, how to implement nagios? </h4><br><br>  It's simple, we write a simple check. <br><pre><code class="python hljs"><span class="hljs-comment"><span class="hljs-comment">#!/usr/bin/env python # # Usage: # python check_domain.py -d DOMAIN import whois from datetime import datetime from sys import exit from optparse import OptionParser def check_domain(domain): q = whois.query(domain) if (q.expiration_date - datetime.now()).days &lt;= 30: print "CRITICAL: Domain: {0} expires on {1}".format(domain, q.expiration_date) exit(2) print "OK: Domain: {0} expires on {1}".format(domain, q.expiration_date) if __name__ == '__main__': parser = OptionParser() parser.add_option("-d", "--domain", dest="domain", help="Domain to monitor expiry date") (options, args) = parser.parse_args() if not options.domain: print parser.print_help() exit(0) check_domain(options.domain)</span></span></code> </pre> <br><br>  What is he doing?  Shines red in the monitoring for a month before the expiration of the domain. <br><br>  Interestingly, another maintainer appeared, who added support for the hk, cn and kr TLD. <br><br>  The current list of supported domains is: <br>  com, net, org, uk, pl, ru, lv, jp, co_jp, de, at, eu, biz, info, name, us, co, me, be, nz, cz, it, fr, kg, vc, fm, tv, edu, ca, cn, kr, hk <br><br>  Module code <a href="https://github.com/gen1us2k/python-whois">here</a> <br>  Pull requests, feature requests are invoked! <br>  I hope my experience will help get rid of this problem. </div><p>Source: https://habr.com/ru/post/251619/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../251613/index.html">For the capture of the author Zeus appointed maximum reward</a></li>
 <li><a href="../251615/index.html">Using color spaces in ATTiny13a for WS2811</a></li>
 <li><a href="../251617/index.html">Liquibase and changesets on pure SQL</a></li>
+<li><a href="../25162/index.html">UFO intrigues?</a></li>
 <li><a href="../251623/index.html">Chemistry gamedev or how to manipulate players</a></li>
 <li><a href="../251625/index.html">New utorrent bugs or what Bittorrent programmers are preparing for us</a></li>
 <li><a href="../251627/index.html">Creating a world map</a></li>
 <li><a href="../251629/index.html">Understanding the LCD screen LPH9157-2 from Siemens C75 / ME75</a></li>
-<li><a href="../251631/index.html">The maze output program at 13 ... no. 10 bytes!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

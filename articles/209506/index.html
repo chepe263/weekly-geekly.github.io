@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Fast graphics output in Matlab</h1><div class="post__text post__text-html js-mediator-article">  The author wants to share his experience in organizing quick redrawing of graphs (more precisely, images,) in Matlab on the example of organizing a radar indicator of a circular view <a name="habracut"></a>  (PPI, it is in the PPI English literature). <br>  The bottom line is that in the same Matlab a simulator of the radar signal was sent, sending data over the network.  And, on the other hand, for testing, I connected the machine with Matlab, which received the data over the network and displayed it on an IKO-like indicator.  Even those who are far from the radar theme, probably saw the ICE at least in the movies.  In Matlab this thing looks like this: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/59b/64b/d4e/59b64bd4e09d0c477d1bd7046657ceaf.gif" alt="image"><br><br>  The angular slider represents the position of the radar antenna beam.  The real radar antenna made a complete turn in 4-6 seconds and the task was to achieve the display speed as close as possible to real-time. <br>  But how to display such an image on a graph?  Use operator Matlab polar?  Not really, the output speed will be just snail. <br>  At the beginning, an attempt was made to display an image using standard Matlab tools: image instructions (well, or, imagesc).  The result was sad: image allowed to make one complete rotation on the screen for 2 minutes, i.e.  20 times slower than required. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,16 +59,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      But a way out was found.  It turned out that there is a much faster way to display the image on the screen.  For this, the image command is given only once and the link to it is remembered. <br><br><pre><code class="matlab hljs">h = image(...</code> </pre> <br>  Next - a matrix is ​​created - a copy of the image.  The initial load of this matrix can be made from the properties of the object h like so: <br><br><pre> <code class="matlab hljs">ImageMatrix = get(h,<span class="hljs-string"><span class="hljs-string">'CData'</span></span>);</code> </pre> <br>  The necessary calculations and changes to the ImageMatrix matrix are performed.  After that, the new matrix is ​​displayed on the screen with commands <br><br><pre> <code class="matlab hljs">set(h,<span class="hljs-string"><span class="hljs-string">'CData'</span></span>,ImageMatrix); drawnow;</code> </pre> <br>  This conclusion is at least an order of magnitude (and actually more) faster than when the image command is called each time. <br>  In order not to redraw the markup and the slider (especially since the gray palette was used, so it would be problematic to draw them with colored) lines, distance circles, corner slider and numbers were drawn with the commands line, text, ellipse, etc.  The only problem that arose with this was the recalculation of coordinates (the graph and lines, alas, live in different worlds in Matlab).  And, because  <s>it was very lazy</s> there was no time to thoroughly deal with these recalculations was done as follows: by turning on the “Annotation” menu, markup elements were drawn by hand and transferred to the code automatically.  As a result, there are some inaccuracies: the picture shows that the beginning of the corner slider slightly misses the center of the PPI. <br>  In the end, on a machine with an i7 processor, 16GB of RAM and a GeForce 690 video card, the program fit into real-time using the CUDA capabilities of the video card, even though the object-oriented programming style was used in Matlab.  This made it possible to avoid the tedious stage of transferring the program from Matlab to C / C ++ or Delphi. <br><br>  I hope this technique is useful to someone. </div><p>Source: <a href="https://habr.com/ru/post/209506/">https://habr.com/ru/post/209506/</a></p>
+      But a way out was found.  It turned out that there is a much faster way to display the image on the screen.  For this, the image command is given only once and the link to it is remembered. <br><br><pre><code class="matlab hljs">h = image(...</code> </pre> <br>  Next - a matrix is ​​created - a copy of the image.  The initial load of this matrix can be made from the properties of the object h like so: <br><br><pre> <code class="matlab hljs">ImageMatrix = get(h,<span class="hljs-string"><span class="hljs-string">'CData'</span></span>);</code> </pre> <br>  The necessary calculations and changes to the ImageMatrix matrix are performed.  After that, the new matrix is ​​displayed on the screen with commands <br><br><pre> <code class="matlab hljs">set(h,<span class="hljs-string"><span class="hljs-string">'CData'</span></span>,ImageMatrix); drawnow;</code> </pre> <br>  This conclusion is at least an order of magnitude (and actually more) faster than when the image command is called each time. <br>  In order not to redraw the markup and the slider (especially since the gray palette was used, so it would be problematic to draw them with colored) lines, distance circles, corner slider and numbers were drawn with the commands line, text, ellipse, etc.  The only problem that arose with this was the recalculation of coordinates (the graph and lines, alas, live in different worlds in Matlab).  And, because  <s>it was very lazy</s> there was no time to thoroughly deal with these recalculations was done as follows: by turning on the “Annotation” menu, markup elements were drawn by hand and transferred to the code automatically.  As a result, there are some inaccuracies: the picture shows that the beginning of the corner slider slightly misses the center of the PPI. <br>  In the end, on a machine with an i7 processor, 16GB of RAM and a GeForce 690 video card, the program fit into real-time using the CUDA capabilities of the video card, even though the object-oriented programming style was used in Matlab.  This made it possible to avoid the tedious stage of transferring the program from Matlab to C / C ++ or Delphi. <br><br>  I hope this technique is useful to someone. </div><p>Source: https://habr.com/ru/post/209506/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../209490/index.html">We analyze the interface details on the example of one mobile taxi client</a></li>
-<li><a href="../209496/index.html">Creating 3D illustrations - a prototype system</a></li>
 <li><a href="../209498/index.html">Experience of using MNP in Russia or how I transferred the number from operator to operator</a></li>
+<li><a href="../2095/index.html">Google will sing on the radio</a></li>
+<li><a href="../20950/index.html">Google Sites: Google launches Jotspot bought by it again</a></li>
 <li><a href="../209500/index.html">Cloud.Mail.Ru + EncFS for backing up your home photo archive</a></li>
 <li><a href="../209504/index.html">Problems of forecasting financial markets</a></li>
 <li><a href="../209508/index.html">Attempt to drain the client databases of BillManager users</a></li>

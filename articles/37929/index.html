@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Codeigniter with PEAR</h1><div class="post__text post__text-html js-mediator-article"><img src="http://ipicture.ru/uploads/080824/qRV7QS1TnM.gif" align="left"><br>  In this article I will explain how to connect the PEAR libraries in the Codeigniter framework.  If PEAR is installed on the system by default and you have access to install individual libraries, then everything is simple.  Otherwise, you have to connect all the pens.  Immediately give a link to the source: <a href="http://codeigniter.com/wiki/PEAR_integration/">codeigniter.com/wiki/PEAR_integration</a> .  Below, I translated this manual, added some corrections to my code, in my opinion. <br><a name="habracut"></a><br><br>  <b>1. Preparation</b> <br>  To use PEAR libraries you need to create a new directory. <br> <code>system/application/pear</code> <br>  Next, copy PEAR.php to this directory. <br> <code>system/application/pear/PEAR.php</code> <br>  Then copy the necessary libraries.  Pay attention to library dependencies. <br>  Example: <br> <code>system/application/pear/HTTP/Request.php <br> system/application/pear/Net/Socket.php <br> system/application/pear/Net/URL.php</code> <br> <br>  <b>2. Connect Hooks</b> <br><br>  Note: You must add the path to the PEAR libraries in the include_path.  As an alternative to the methods described below, you can insert the ini_set () function into your config.php or into the main CI index.php file. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      You need to enable the use of hooks in config.php. <br> <code>$config['enable_hooks'] = TRUE;</code> <br>  Next, open hooks.php and add the following hook: <br> <code>$hook['pre_controller'][] = array( <br> 'class' =&gt; 'Pear_hook', <br> 'function' =&gt; 'index', <br> 'filename' =&gt; 'pear_hook.php', <br> 'filepath' =&gt; 'hooks' <br> );</code> <br> <br>  Then create a new file pear_hook.php. <br> <code>system/application/hooks/pear_hook.php</code> <br>  We write there. <br> <code>&lt;?php <br> if (!defined('BASEPATH')) exit('No direct script access allowed'); <br> <br> class Pear_hook{ <br> function index(){ <br> // OS independent <br> ini_set('include_path',ini_get('include_path').PATH_SEPARATOR.BASEPATH.'application/pear/'); <br> // on Apache <br> // ini_set('include_path',ini_get('include_path').':'.BASEPATH.'application/pear/'); <br> // on Windows <br> // ini_set('include_path',ini_get('include_path').';'.BASEPATH.'application/pear/'); <br> } <br> } <br> <br> ?&gt;</code> <br> <br>  <b>3. Create a PearLoader class.</b> <br><br> <code>system/application/libraries/Pearloader.php:</code> <br> <br> <code>&lt;?php <br> <br> class Pearloader { <br> function load($package, $class = NULL, $options = NULL) { <br> if (is_null($class)) { <br> require_once $package . '.php'; <br> $classname = $package; <br> } else { <br> require_once $package . '/' . $class . '.php'; <br> $classname = $package . '_' . $class; <br> } <br> if (($count = func_num_args()) &gt; 2) { <br> $params = ''; <br> for ($i = 2; $i &lt; $count; $i++) { <br> eval("\$var$i = func_get_arg($i);"); <br> $params .= "\$var$i" . (($i + 1 == $count) ? '' : ', '); <br> } <br> eval("\$instance = new $classname($params);"); <br> return $instance; <br> } else { <br> return new $classname(); <br> } <br> } <br> } <br> <br> ?&gt;</code> <br> <br>  <b>It's all!</b> <br><br>  You can use the Pearloader in Codeigniter style.  First we load the library and call the load method: <br> <code>$this-&gt;pearloader-&gt;load('Packagename','Classname');</code> <br> <br>  For example, the following is a request to yahoo. <br><br> <code>function example(){ <br> $url = 'http://www.yahoo.com'; <br> $this-&gt;load-&gt;library('pearloader'); <br> $http_request = $this-&gt;pearloader-&gt;load('HTTP','Request'); <br> $http_request-&gt;setURL($url); <br> $http_request-&gt;sendRequest(); <br> echo $http_request-&gt;getResponseBody(); <br> }</code> </div><p>Source: <a href="https://habr.com/ru/post/37929/">https://habr.com/ru/post/37929/</a></p>
+      You need to enable the use of hooks in config.php. <br> <code>$config['enable_hooks'] = TRUE;</code> <br>  Next, open hooks.php and add the following hook: <br> <code>$hook['pre_controller'][] = array( <br> 'class' =&gt; 'Pear_hook', <br> 'function' =&gt; 'index', <br> 'filename' =&gt; 'pear_hook.php', <br> 'filepath' =&gt; 'hooks' <br> );</code> <br> <br>  Then create a new file pear_hook.php. <br> <code>system/application/hooks/pear_hook.php</code> <br>  We write there. <br> <code>&lt;?php <br> if (!defined('BASEPATH')) exit('No direct script access allowed'); <br> <br> class Pear_hook{ <br> function index(){ <br> // OS independent <br> ini_set('include_path',ini_get('include_path').PATH_SEPARATOR.BASEPATH.'application/pear/'); <br> // on Apache <br> // ini_set('include_path',ini_get('include_path').':'.BASEPATH.'application/pear/'); <br> // on Windows <br> // ini_set('include_path',ini_get('include_path').';'.BASEPATH.'application/pear/'); <br> } <br> } <br> <br> ?&gt;</code> <br> <br>  <b>3. Create a PearLoader class.</b> <br><br> <code>system/application/libraries/Pearloader.php:</code> <br> <br> <code>&lt;?php <br> <br> class Pearloader { <br> function load($package, $class = NULL, $options = NULL) { <br> if (is_null($class)) { <br> require_once $package . '.php'; <br> $classname = $package; <br> } else { <br> require_once $package . '/' . $class . '.php'; <br> $classname = $package . '_' . $class; <br> } <br> if (($count = func_num_args()) &gt; 2) { <br> $params = ''; <br> for ($i = 2; $i &lt; $count; $i++) { <br> eval("\$var$i = func_get_arg($i);"); <br> $params .= "\$var$i" . (($i + 1 == $count) ? '' : ', '); <br> } <br> eval("\$instance = new $classname($params);"); <br> return $instance; <br> } else { <br> return new $classname(); <br> } <br> } <br> } <br> <br> ?&gt;</code> <br> <br>  <b>It's all!</b> <br><br>  You can use the Pearloader in Codeigniter style.  First we load the library and call the load method: <br> <code>$this-&gt;pearloader-&gt;load('Packagename','Classname');</code> <br> <br>  For example, the following is a request to yahoo. <br><br> <code>function example(){ <br> $url = 'http://www.yahoo.com'; <br> $this-&gt;load-&gt;library('pearloader'); <br> $http_request = $this-&gt;pearloader-&gt;load('HTTP','Request'); <br> $http_request-&gt;setURL($url); <br> $http_request-&gt;sendRequest(); <br> echo $http_request-&gt;getResponseBody(); <br> }</code> </div><p>Source: https://habr.com/ru/post/37929/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../37919/index.html">The island of spiritual values</a></li>
 <li><a href="../37920/index.html">Space tourism today</a></li>
 <li><a href="../379207/index.html">Overview of sitting-standing tables</a></li>
+<li><a href="../37921/index.html"><Canvas> support in IE</a></li>
 <li><a href="../37925/index.html">Relationships between partners in a startup. Contract? Part 1.</a></li>
 <li><a href="../37926/index.html">9 rules for a novice Ajax developer</a></li>
+<li><a href="../3793/index.html">As Artemy Lebedev taught us Russian</a></li>
 <li><a href="../37930/index.html">The main thing is to know where to hit.</a></li>
 <li><a href="../379337/index.html">The most interesting events of astronautics and astronomy for the week (02.05-09.05)</a></li>
 <li><a href="../37936/index.html">Here you are, the iPhone killer</a></li>
 <li><a href="../37937/index.html">Open for free registration service tineye.com</a></li>
-<li><a href="../37942/index.html">ATI Catalyst 8.7 / 8.8 + WINE OpenGL. Solution to the problem.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -68,7 +68,7 @@
  );
 </pre><br><br>  Now in more detail: with the first parameter we set the basic settings, in particular, here we indicate the path to the previously prepared file “provider” (it is in the archive with the build in the cors folder), which should be found 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -76,7 +76,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       I'm on a remote server, it will proxy requests to the url we need and send us answers using one of the available methods. <br>  However, do not forget that here you will also need to enter the path to the flash drive (flash drive is also attached to the lib), through which the old versions of IE will establish a connection. <br><br>  Next, we create the structure of the remote methods, now the <b>request is</b> declared there (in the <a href="http://name.my/cors/index.html">name.my/cors/index.html</a> file, a similar structure of the methods should also be created) <br>  <b>Calling the xhr.request</b> function <b>,</b> we <b>send a</b> request to our proxy file <a href="http://name.my/cors/index.html">name.my/cors/index.html</a> , which knocks on the url and passes the <b>data</b> parameter there, using normal ajax, having received the answer, it sends the data (if necessary, breaking the answer into parts) to our host, where the callback is called, which we passed to the last parameter. <br>  <a href="http://name.my/cors/index.html">We’ll</a> touch on the <a href="http://name.my/cors/index.html">name.my/cors/index.html</a> file a little bit <a href="http://name.my/cors/index.html">;</a> it is an indispensable part of our request; firstly, it organizes the reverse transport and data reception.  Secondly, he has a wonderful bun - he implements CORS with his own means: <br>  <b>var useAccessControl = true;</b>  // allow (true) or disable (false) to accept headers from the server (so that by chance the server will not allow sending data to a third-party domain) <br>  <b>var alwaysTrustedOrigins = [(/\.easyxdm\.net/), (/ xdm1 /)];</b>  // list of allowed servers <br>  <b>var remote</b> is an easyXDM object in which we must implement the structure of remote methods. <br><br>  And also do not forget to connect a small “library” json2.js which for old browsers implements a JSON object actively used in easyXDM (and easyXDM does not prevent you from creating your serializer and passing it as a parameter, although it seems to me this is a very rare need). <br><br>  My project had a task to send a lot of different forms according to Ajax, respectively, I needed a handy tool that serializes and sends the specified form to ajax.  The solution was found immediately in the face of the jQuery Form plugin, but the plugin is tied to jq and therefore refuses to send cross domain requests. <br>  Let me give you a simple way to embed our cross-domain query into a plugin without affecting the structure and leaving jQuery as the handler for the usual ajax. <br>  We have in html form (what the plug-in will do to the excitement of this will take us a little): <br><pre>  &lt;form action = "name2.my" id = "myform" method = "POST"&gt; ... &lt;/ form&gt; </pre><br>  Prepare our object for cross-domain query in advance: <br><pre> crossAjax = new easyXDM.Rpc ({
@@ -94,7 +94,7 @@
 </pre><br><br>  This is the method in which we process the result; we do not affect it at all: <br><pre> showResponse = function (responseText, statusText, xhr, form) { 
      here we do something with our answer
  }
-</pre><br><br>  But the main focus will be in beforeSubmit, the method is called before the form is submitted, accordingly here we can both get the already serialized data and interrupt the further sending of the request (which we need): <br><pre> beforeSubmit = function (arr, form, options) {if (options.url.indexOf (location.host) &lt;0) {// if the host is remote then use our method var json = {};  for (var i = 0; i &lt;arr.length; i ++) {// convert the serialized form data into a normal js object ready for our serialization (the form itself transmits them in a very strange way) json [arr [i] .name] = arr [i] .value;  } crossAjax.request ({// send cross domain request, substituting our parameters url: options.url, method: "POST", data: json}, function (response) {switch (response.status) {// parse the answer case 200: showResponse (JSON.parse (response.data), response.status, arr, form) break; default: alert ("Error:" + response.status); break;}});  return false;  // stop the native ajax request from jQ}} </pre><br><br>  Something like this can easily solve a problematic task.  Working examples can be found on the library website.  At this point, I complete my first “habrapost”. <br>  <a href="http://easyxdm.net/wp/">Library itself</a> </div><p>Source: <a href="https://habr.com/ru/post/120336/">https://habr.com/ru/post/120336/</a></p>
+</pre><br><br>  But the main focus will be in beforeSubmit, the method is called before the form is submitted, accordingly here we can both get the already serialized data and interrupt the further sending of the request (which we need): <br><pre> beforeSubmit = function (arr, form, options) {if (options.url.indexOf (location.host) &lt;0) {// if the host is remote then use our method var json = {};  for (var i = 0; i &lt;arr.length; i ++) {// convert the serialized form data into a normal js object ready for our serialization (the form itself transmits them in a very strange way) json [arr [i] .name] = arr [i] .value;  } crossAjax.request ({// send cross domain request, substituting our parameters url: options.url, method: "POST", data: json}, function (response) {switch (response.status) {// parse the answer case 200: showResponse (JSON.parse (response.data), response.status, arr, form) break; default: alert ("Error:" + response.status); break;}});  return false;  // stop the native ajax request from jQ}} </pre><br><br>  Something like this can easily solve a problematic task.  Working examples can be found on the library website.  At this point, I complete my first “habrapost”. <br>  <a href="http://easyxdm.net/wp/">Library itself</a> </div><p>Source: https://habr.com/ru/post/120336/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -105,9 +105,9 @@
 <li><a href="../120334/index.html">The thinnest Computex laptops: ASUS UX21 and Lenovo X1 and Chinatown under the cut</a></li>
 <li><a href="../120337/index.html">How do you think the right to contact the site visitor?</a></li>
 <li><a href="../120339/index.html">Proprietary provider modems 2/3</a></li>
+<li><a href="../12034/index.html">Open source devices may not receive FCC approval</a></li>
 <li><a href="../120342/index.html">The antivirus era on Mac OS X has officially come</a></li>
 <li><a href="../120343/index.html">Greedy</a></li>
-<li><a href="../120344/index.html">Badges for Habr, version</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

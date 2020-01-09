@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>(Python) A couple of useful decorators</h1><div class="post__text post__text-html js-mediator-article"><blockquote><code><font color="black">import should <br> <br> @should.give((5,2),7) <br> @should.give(( <font color="#A31515">"aa"</font> , <font color="#A31515">"bbb"</font> ), <font color="#A31515">"aabbb"</font> ) <br> @should.give(([1],[2,3]), [1,2,3]) <br> @should.give((1,1),1) # test <br> def add(a,b): <br> <font color="#0000ff">return</font> a+b <br> <br> @should. <font color="#0000ff">throw</font> ((1,0), Exception) <br> @should. <font color="#0000ff">throw</font> ((5,0), ZeroDivisionError) <br> @should. <font color="#0000ff">throw</font> ((5,0), TypeError) # test <br> @should. <font color="#0000ff">throw</font> ((5,1), TypeError) # test <br> def div(a,b): <br> <font color="#0000ff">return</font> a/b</font> <br></code> </blockquote><br><br><blockquote> <code>&gt;pythonw -u "should.py" <br> [!] add(1, 1) should give 1, but got 2. <br> [!] div(5, 1) should raise TypeError, but raised nothing. <br> [!] div(5, 0) should raise TypeError, but raised ZeroDivisionError. <br> &gt;Exit code: 0 <br></code> </blockquote><br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,23 +64,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The idea is to describe test cases for the function as a decorator.  Then they will perform a double function: <br><ul><li>  testing (automatic verification when running code after changing) </li><li>  documentation (examples of using the function) </li></ul><br><br>  Implementation: <br><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"># file: should.py <br> <br> def render_func_args(f, args): <br> <font color="#0000ff">return</font> <font color="#A31515">'%s(%s)'</font> % (f.__name__, <font color="#A31515">', '</font> .join(map(repr,args))) <br> <br> def _inform(msg): <br> print <font color="#A31515">'[!]'</font> , msg <br> <br> def should(args, expected): <br> def check(f): <br> val = f(*args) <br> <font color="#0000ff">if</font> val != expected: <br> _inform( <font color="#A31515">'%s should give %s, but got %s.'</font> % \ <br> (render_func_args(f, args), repr(expected), repr(val))) <br> def decor(f): <br> check(f) <br> <font color="#0000ff">return</font> f <br> <br> <font color="#0000ff">return</font> decor <br> <br> def should_raise(args, ExcptClass): <br> def check(f): <br> excpt = None <br> <font color="#0000ff">try</font> : <br> f(*args) <br> except Exception, ex: <br> excpt = ex <br> <br> <font color="#0000ff">if</font> excpt == None: <br> _inform( <font color="#A31515">"%s should raise %s, but raised nothing."</font> % \ <br> (render_func_args(f, args), ExcptClass.__name__)) <br> elif not isinstance(excpt, ExcptClass): <br> _inform( <font color="#A31515">"%s should raise %s, but raised %s."</font> % \ <br> (render_func_args(f, args), ExcptClass.__name__, excpt.__class__.__name__)) <br> def decor(f): <br> check(f) <br> <font color="#0000ff">return</font> f <br> <br> <font color="#0000ff">return</font> decor <br> <br> <font color="#0000ff">throw</font> = should_raise <br> give = should <br> <br> <font color="#0000ff">if</font> __name__== <font color="#A31515">'__main__'</font> : <br> import should <br> <br> @should.give((5,2),7) <br> @should.give(( <font color="#A31515">"aa"</font> , <font color="#A31515">"bbb"</font> ), <font color="#A31515">"aabbb"</font> ) <br> @should.give(([1],[2,3]), [1,2,3]) <br> @should.give((1,1),1) # test <br> def add(a,b): <br> <font color="#0000ff">return</font> a+b <br> <br> @should. <font color="#0000ff">throw</font> ((1,0), Exception) <br> @should. <font color="#0000ff">throw</font> ((5,0), ZeroDivisionError) <br> @should. <font color="#0000ff">throw</font> ((5,0), TypeError) # test <br> @should. <font color="#0000ff">throw</font> ((5,1), TypeError) # test <br> def div(a,b): <br> <font color="#0000ff">return</font> a/b</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  <b>UPD.</b>  Those who are not familiar with the decorators - <a href="http://www.google.ru/search%3Fhl%3Dru%26source%3Dhp%26q%3D%25D0%25BF%25D0%25B8%25D1%2582%25D0%25BE%25D0%25BD%2B%25D0%25B4%25D0%25B5%25D0%25BA%25D0%25BE%25D1%2580%25D0%25B0%25D1%2582%25D0%25BE%25D1%2580%26btnG%3D%25D0%259F%25D0%25BE%25D0%25B8%25D1%2581%25D0%25BA%2B%25D0%25B2%2BGoogle%26lr%3D%26aq%3Df%26oq%3D">reference for review</a> . </div><p>Source: <a href="https://habr.com/ru/post/71427/">https://habr.com/ru/post/71427/</a></p>
+      The idea is to describe test cases for the function as a decorator.  Then they will perform a double function: <br><ul><li>  testing (automatic verification when running code after changing) </li><li>  documentation (examples of using the function) </li></ul><br><br>  Implementation: <br><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"># file: should.py <br> <br> def render_func_args(f, args): <br> <font color="#0000ff">return</font> <font color="#A31515">'%s(%s)'</font> % (f.__name__, <font color="#A31515">', '</font> .join(map(repr,args))) <br> <br> def _inform(msg): <br> print <font color="#A31515">'[!]'</font> , msg <br> <br> def should(args, expected): <br> def check(f): <br> val = f(*args) <br> <font color="#0000ff">if</font> val != expected: <br> _inform( <font color="#A31515">'%s should give %s, but got %s.'</font> % \ <br> (render_func_args(f, args), repr(expected), repr(val))) <br> def decor(f): <br> check(f) <br> <font color="#0000ff">return</font> f <br> <br> <font color="#0000ff">return</font> decor <br> <br> def should_raise(args, ExcptClass): <br> def check(f): <br> excpt = None <br> <font color="#0000ff">try</font> : <br> f(*args) <br> except Exception, ex: <br> excpt = ex <br> <br> <font color="#0000ff">if</font> excpt == None: <br> _inform( <font color="#A31515">"%s should raise %s, but raised nothing."</font> % \ <br> (render_func_args(f, args), ExcptClass.__name__)) <br> elif not isinstance(excpt, ExcptClass): <br> _inform( <font color="#A31515">"%s should raise %s, but raised %s."</font> % \ <br> (render_func_args(f, args), ExcptClass.__name__, excpt.__class__.__name__)) <br> def decor(f): <br> check(f) <br> <font color="#0000ff">return</font> f <br> <br> <font color="#0000ff">return</font> decor <br> <br> <font color="#0000ff">throw</font> = should_raise <br> give = should <br> <br> <font color="#0000ff">if</font> __name__== <font color="#A31515">'__main__'</font> : <br> import should <br> <br> @should.give((5,2),7) <br> @should.give(( <font color="#A31515">"aa"</font> , <font color="#A31515">"bbb"</font> ), <font color="#A31515">"aabbb"</font> ) <br> @should.give(([1],[2,3]), [1,2,3]) <br> @should.give((1,1),1) # test <br> def add(a,b): <br> <font color="#0000ff">return</font> a+b <br> <br> @should. <font color="#0000ff">throw</font> ((1,0), Exception) <br> @should. <font color="#0000ff">throw</font> ((5,0), ZeroDivisionError) <br> @should. <font color="#0000ff">throw</font> ((5,0), TypeError) # test <br> @should. <font color="#0000ff">throw</font> ((5,1), TypeError) # test <br> def div(a,b): <br> <font color="#0000ff">return</font> a/b</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  <b>UPD.</b>  Those who are not familiar with the decorators - <a href="http://www.google.ru/search%3Fhl%3Dru%26source%3Dhp%26q%3D%25D0%25BF%25D0%25B8%25D1%2582%25D0%25BE%25D0%25BD%2B%25D0%25B4%25D0%25B5%25D0%25BA%25D0%25BE%25D1%2580%25D0%25B0%25D1%2582%25D0%25BE%25D1%2580%26btnG%3D%25D0%259F%25D0%25BE%25D0%25B8%25D1%2581%25D0%25BA%2B%25D0%25B2%2BGoogle%26lr%3D%26aq%3Df%26oq%3D">reference for review</a> . </div><p>Source: https://habr.com/ru/post/71427/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../71419/index.html">Do you have access to IPv6 Internet?</a></li>
+<li><a href="../7142/index.html">Mousetrap for geeks</a></li>
 <li><a href="../71420/index.html">Power pull-ups</a></li>
 <li><a href="../71421/index.html">The usual schedule of classes under geek sauce</a></li>
 <li><a href="../71422/index.html">Winamp in Windows 7 - win7shell</a></li>
 <li><a href="../71423/index.html">Robot with human anatomy</a></li>
+<li><a href="../7143/index.html">Correct screensaver</a></li>
 <li><a href="../71431/index.html">Media Go - Sony's iTunes</a></li>
 <li><a href="../71432/index.html">Microsoft has supported the first web programming championship.</a></li>
 <li><a href="../71433/index.html">If you use virtual hosting, then:</a></li>
 <li><a href="../71434/index.html">Browser Chooser</a></li>
-<li><a href="../71436/index.html">Advice to happy owners of hard drives</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

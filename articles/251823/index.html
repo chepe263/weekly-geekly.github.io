@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The dangers of using open-uri</h1><div class="post__text post__text-html js-mediator-article"> <a href="http://ruby-doc.org//stdlib-1.9.3/libdoc/open-uri/rdoc/OpenURI.html">OpenURI in Ruby is a standard library that greatly simplifies working with URLs</a> as it combines Net: HTTP / HTTPS / FTP and is just an open method.  As far as I know this is the most popular way to download a file, get a request or read data. <br><br>  But in fact, <code>require "open-uri"</code> patches <a href="http://ruby-doc.org//core-2.2.0/Kernel.html">Kernel.open</a> and calls different code for different arguments, which can lead to remote code execution or reading any file on the server! <br><br>  <code>open(params[:url])</code> is code execution for url = <code>|ls</code> Everything that begins with |  considered as a system call. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <code>open(params[:url]) if params[:url] =~ /^http://</code> not better for url = <code>|touch n;\nhttp://url.com</code> ( <a href="http://homakov.blogspot.com/2012/05/saferweb-injects-in-various-ruby.html">broken regulars can lead to RCE, use \ A \ z</a> ). <br><a name="habracut"></a><br>  <code>open(URI(params[:url]))</code> reads any file on the server.  url = / etc / passwd is a valid URL but open-uri calls the original Kernel.open as the argument does not begin with http: // <br><br>  open-uri is a great demonstration of how Ruby creates problems from scratch - it patches a critical system method only to read external URLs that most likely contain an user input.  And no one warns about this, as Rails once came with an XML parser by default, which led to RCE on absolutely all rail sites. <br><br>  Another example: <code>open(params[:url]) if URI(params[:url]).scheme == 'http'</code> .  It looks better already, but if you manage to create the http folder: the attacker can read any file using <code>http:/../../../../../etc/passwd</code> (hi, CarrierWave!).  Of course, it is unlikely that such a folder will be created, but it is a good demonstration of why parsing a URL is difficult and what a bad idea was to extend the system method open instead of creating a separate openURI (url). <br><br>  My <a href="http://homakov.blogspot.com/2013/01/rails-is-fragile-vulnerabilities-will.html">past reflections</a> on the problem of magic in rails. </div><p>Source: <a href="https://habr.com/ru/post/251823/">https://habr.com/ru/post/251823/</a></p>
+      <code>open(params[:url]) if params[:url] =~ /^http://</code> not better for url = <code>|touch n;\nhttp://url.com</code> ( <a href="http://homakov.blogspot.com/2012/05/saferweb-injects-in-various-ruby.html">broken regulars can lead to RCE, use \ A \ z</a> ). <br><a name="habracut"></a><br>  <code>open(URI(params[:url]))</code> reads any file on the server.  url = / etc / passwd is a valid URL but open-uri calls the original Kernel.open as the argument does not begin with http: // <br><br>  open-uri is a great demonstration of how Ruby creates problems from scratch - it patches a critical system method only to read external URLs that most likely contain an user input.  And no one warns about this, as Rails once came with an XML parser by default, which led to RCE on absolutely all rail sites. <br><br>  Another example: <code>open(params[:url]) if URI(params[:url]).scheme == 'http'</code> .  It looks better already, but if you manage to create the http folder: the attacker can read any file using <code>http:/../../../../../etc/passwd</code> (hi, CarrierWave!).  Of course, it is unlikely that such a folder will be created, but it is a good demonstration of why parsing a URL is difficult and what a bad idea was to extend the system method open instead of creating a separate openURI (url). <br><br>  My <a href="http://homakov.blogspot.com/2013/01/rails-is-fragile-vulnerabilities-will.html">past reflections</a> on the problem of magic in rails. </div><p>Source: https://habr.com/ru/post/251823/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../251805/index.html">The digest of interesting materials for the mobile developer # 92 (February 21 - March 1)</a></li>
 <li><a href="../251807/index.html">Another post about building a front-end project</a></li>
 <li><a href="../251815/index.html">Bond James Bond. Robotic fake handwriting for marketers and social engineers</a></li>
 <li><a href="../251817/index.html">Check LibreOffice project</a></li>
+<li><a href="../25182/index.html">Do you know how to use online services?</a></li>
 <li><a href="../251821/index.html">Krita 2.9: Selection of canvas areas with a brush</a></li>
 <li><a href="../251827/index.html">MailChimp UX Team: How We Do Research [Part 3 of the book]</a></li>
 <li><a href="../251829/index.html">Overview of the most interesting materials on data analysis and machine learning №37 (February 23 - March 1, 2015)</a></li>
+<li><a href="../25183/index.html">How I started using Twitter</a></li>
 <li><a href="../251831/index.html">Basic principles of system analysis in SEBoK</a></li>
 <li><a href="../251833/index.html">PHPCI updated to version 1.6</a></li>
-<li><a href="../251835/index.html">Development of javascript applications based on Rx.js and React.js (RxReact)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

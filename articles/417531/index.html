@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How we won in SmartMailHack 2</h1><div class="post__text post__text-html js-mediator-article"><p>  Last weekend (July 14-15), another SmartMailHack hackathon took place at the Mail.Ru Group office.  We were offered "to come up with a feature that will allow access to data from the Post and more effectively interact with them." </p><a name="habracut"></a><br><h2>  Description of data, ideas and solutions </h2><br><p>  We received a test box with more than 1500 messages, as well as full access to it through the API.  The organizers provided a large, detailed manual on its use (547-page booklet).  With the help of a token and simple JSON requests, we could receive all the necessary information about the mail: letters, sender names, various characteristics. </p><br><p>  After discussing that each of us has about several thousand unread mailings from mailings in the mail, we decided to deal with this problem.  In our case, the relevance of the letter is no longer determined by the time of its appearance in the mailbox.  And if we proceed from the fact that not all letters will be opened, then it is better to show the user only those that he is likely to open.  And everything else can be removed to hell.  So we decided to do the sorting for the mail. </p><br><p>  Sort letters were supposed to be categorized, and categories placed inside the tiles (hello, Trello).  The top row of tiles united within the meaning of the letter from different senders.  There can be “Trips”, “Registrations”, “Correspondence with Vasya”, “Events”, “Finance” and so on, all in all about 10 categories.  The second row were tiles with the coolest offers from companies.  We searched for the most relevant promotional codes, the most discount promotions, the most valuable offers, and showed them here, grouped by company.  Then came all the other letters distributed by the sending companies, and these senders, in turn, were scattered in categories (“Food”, “Cosmetics”, “Electronics” and others).  Moreover, the categories were also ranked by the relevance of the letters, and only letters that crossed a certain threshold of relevance were shown inside.  Having supported the idea with the words “Find the right and get rid of the superfluous”, we got into ML. </p><br><h2>  Machine learning </h2><br><p>  We decided to build three models: </p><br><ul><li>  classifier from more than 30 categories that we have designated as basic for all users; </li><li>  clustering and highlighting new categories based on user preferences; </li><li>  ranking of letters within a category, from the most relevant to the least. </li></ul><br><img src="https://habrastorage.org/webt/z1/lp/4c/z1lp4ctrc2qjtboon88dpqpe2iw.png"><br><h2>  Signs of </h2><br><p>  It seems that this item should be described personally for each task.  However, we generated one common feature dataset and trained all the models on it.  There was no time for careful selection. </p><br><p>  There was a bunch of binary features that are unloaded using the API.  However, most of them were generated on the texts: </p><br><ul><li>  tf-idf on document collections; </li><li>  embeddings obtained with Word2Vec; </li><li>  behavioral signs such as: <br>  - the number of read messages for the last window (1, 2, 5 weeks ago); <br>  - the number of messages from this. </li></ul><br><h2>  Classification task </h2><br><p>  We marked out 1000 letters for learning by hand.  It turned out that this is not such a slow and tedious job as it may seem at first.  If you use addresses and headers, you can significantly speed up the work.  For example, Lamoda almost always sends letters to the “Clothing” category. </p><br><p>  Next, we train LightGBMs on the whole set of features and obtained the quality of 0.913 accuracy and 0.892 f1 measures, which we determined as a very good result at the base line level.  This shows that letters can be classified very well. </p><br><h2>  Ranking task </h2><br><p>  We used the binary flag 0/1 as the target variable - whether the letter was read by the user.  Further ranked in terms of probability, predicted by the model, since this is precisely how the model is confident that the person will read the message or not. </p><br><p>  Here, we also trained LightGBMs on the whole set of features and got the quality around 0.816 auc-roc. </p><br><h2>  Clustering and highlighting new categories </h2><br><p>  In addition to the main categories, we have the “Other” category.  From it, you can select new topics. </p><br><p>  We trained standard DBSCAN on letters from this group, and then we chose those clusters in which there were many messages (the threshold can be optimized, but it was fixed by chance).  For example, thematic modeling can be set on a cluster of documents collection, get the most relevant topic for this cluster and select it as a separate group.  Dismiss this algorithm is not enough time. </p><br><p>  So, incoming letters are passed through the classifier, if they fall into the category “Other” - they are clustered, new topics try to stand out, and then the ranking takes place.  A request is sent to the backend, which aggregates everything, and the frontend is rendered. </p><br><img src="https://habrastorage.org/webt/hh/im/e2/hhime2drbnnlgca1jorvldzfvou.png"><br><hr><br><p>  <strong>Remaining ideas</strong> </p><br><ul><li>  improved machine learning models; </li><li>  collecting data from a larger number of users to better predict the behavior of each of them; </li><li>  thorough validation of new emerging categories; </li><li>  the use of pictures as signs, for example, the allocation of embeddings from pre-trained neural networks. </li></ul></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/417531/">https://habr.com/ru/post/417531/</a></p>
+    <p>Source: https://habr.com/ru/post/417531/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

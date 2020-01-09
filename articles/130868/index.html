@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>I want to take and shoot, or an educational program about why you should not use make install</h1><div class="post__text post__text-html js-mediator-article"><table><tbody><tr><td>  <sub>By writing this note, I was inspired by the fact that I was tired of making detailed comments on this topic in the comments to the articles, where as part of the instructions for building and configuring something for a specific distro, they propose to do a install install.</sub> </td></tr></tbody></table><img src="https://habrastorage.org/storage1/edcaa898/70b48a52/3072387b/da577538.png" align="left">  The bottom line is that this command in the form of “make install” or “sudo make install” cannot be used in modern distributions. <br><br>  But the authors of the programs in the installation manuals write that you need to use this command, perhaps you will say.  Yes, they write.  But this only means that they do not know what kind of distribution kit you have, and whether it is a distribution kit at all, maybe you joined a sect and <s>smoked</s> about <s>reading</s> LFS and now decided to build their creation under your chthonic system.  And make install is universal, though often the wrong way to do it. <br><br><a name="habracut"></a><h4>  Lyrical digression </h4><br>  As you know, for normal operation, most software must not only be compiled, but also correctly installed in the system.  Programs expect to find the files they need in certain places, and these places in most * nix-systems are protected in the code at the compilation stage.  In addition to this aspect, the main difference in the linux / freebsd / whatever installation process from that in Windows and MacOS is that the program does not just add a bunch of files to a separate directory in Program Files or / Applications, but “smears” itself across the entire file system.  Libraries go to lib, executable files to bin, configs to etc, all sorts of data to var, and so on.  If you suddenly need to update it, then all this must first be cleaned up somehow, since <i>when using the new version, the remnants of the old files can lead to completely unpredictable consequences</i> , often bad ones.  The probability of this event is not so great, but you need it on the battle server? 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  So what? </h4><br>  So, if you did the installation directly through make install, then you most likely will <i>not be able</i> to uninstall or update the software.  Moreover, installing a new version on top of the old one will most likely <i>wipe your changes in configs</i> .  make install does exactly what it says - installs the files in the right places, ignoring the fact that something is already there.  After this process, absolutely no information about what was put and where it was impossible to obtain in a digestible form.  Sometimes, of course, the Makefile supports the uninstall action, but this is not so common, and it’s not a fact that it works correctly.  In addition, it is strange to keep the unpacked source tree and build rules for uninstallation. <br><br><h4>  How to fight? </h4><br>  Since packages have the ability to sometimes be updated in distributions, they have invented such a thing as a package manager to solve this problem.  When using it, the installation goes something like this: <br><br><ol><li>  taken in a certain way formed archive </li><li>  information is extracted from it about what it is at all, what version, what it depends on, what conflicts with it, whether it is necessary to run some scripts to install / delete / configure, etc </li><li>  Perform direct installation steps. </li><li>  All data about where and what was delivered are added to the database of the package manager. </li></ol><br><br>  In this case, when upgrading, you can safely remove too much, and at the same time see if the files marked as configuration have changed in the system and ask what to do if their content is different in the new version.  In addition, the package manager will not allow to overwrite the files of one package when installing another.  In general, a lot of useful things he can do. <br><br>  If you are unknowingly / lazy to make install install instructions, then <i>files appear on the system that the package manager does not know about</i> .  With all that implies, if not enough of what has been listed before. <br><br><h4>  What to do? </h4><br>  You can, of course, configure the source tree so that the installation of everything and everything goes somewhere in / opt / mycoolapp /, and then, if necessary, remove it with your hands, but then a lot of unpleasant things can come out, starting with what the program expects load their libraries, and the loader about the directory where they lie knows nothing, ending with the fact that the author of the program can expect that for example, if he puts the file, say in $ prefix / share / xsessions /, then the display manager will pick it up.  Not to mention the paths for pkgconfig and so on. <br><br>  So it is necessary to collect the package. <br><br><h4>  I don’t have time to do this with ***, it’s better to do make install again, everything is simple and clear! </h4><br>  Calm, calm.  He's tied to our feet.  Everything is not so scary and difficult, as it seems at first glance. <br><br><h5>  checkinstall </h5><br>  This wonderful utility, being run instead of make install, will ask a few questions, after which it will assemble and install the package.  Everything, at updating any problems with cleaning of old stuff you will not have. <br><br><h5>  Build a deb package manually </h5><br>  If you are not inclined to trust such automatics (which sometimes still mows down) or you want to make a couple of changes, but it’s still lazy to deal with the normal package building process, you can assemble the package with handles.  I provide a way to build it for Debian-based systems, since it’s best known to them.  It is not ideologically correct, but the output is a completely correct package without using additional entities.  This is done as follows. <br>  To begin with, we collect software with the parameters previously specified for configure or autogen.sh --prefix = / usr and --exec-prefix = / usr. <br>  Next, make the installation in a temporary directory.  We write: <br><br><pre><code class="bash hljs">fakeroot
@@ -95,7 +95,7 @@ Description:   - ,
 <br>
  ,     ,            . <br>
 <br>
-<i>     :  checkinstall  make install.     .</i></div><p>Source: <a href="https://habr.com/ru/post/130868/">https://habr.com/ru/post/130868/</a></p>
+<i>     :  checkinstall  make install.     .</i></div><p>Source: https://habr.com/ru/post/130868/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -105,10 +105,10 @@ Description:   - ,
 <li><a href="../130866/index.html">One of the most sought-after windows features was found in LXDE.</a></li>
 <li><a href="../130867/index.html">iOS 5 Tech Talk World Tour 2011</a></li>
 <li><a href="../130869/index.html">WP7 social client. network "Vkontakte" open source</a></li>
+<li><a href="../13087/index.html">An alternative to flash memory will appear this year.</a></li>
 <li><a href="../130870/index.html">Drupal Bundle Inherit - module for inheriting entity types</a></li>
 <li><a href="../130871/index.html">About networks: a little bit of everything</a></li>
 <li><a href="../130872/index.html">TV monitor</a></li>
-<li><a href="../130873/index.html">Interpolation: draw smooth graphics with PHP and GD</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

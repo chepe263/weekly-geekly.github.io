@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Paralleling tasks in Linux</h1><div class="post__text post__text-html js-mediator-article">  I needed to recode a number of video files.  For this, I wrote the following script: <br><br><blockquote><code>#!/bin/bash <br> <br> recode() { <br> mencoder -o $2 $1 -ovc x264 -x264encopts bitrate=22000:keyint=50 -oac mp3lame -lameopts vbr=3:br=320 -fps 50 <br> } <br> recode input/00108.mts 00108.avi <br> recode input/00109.mts 00109.avi <br> ... <br> ... <br></code> <br></blockquote><br>  It seemed, everything would be ready, but I noticed that only one of the two processors was loaded, which means that this process can be accelerated twice a time. <br><a name="habracut"></a><br><br><h4>  The first method: paralleling by means of mencoder </h4>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,23 +64,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      You can set mencoder options.  For x264 codec it is possible to specify the number of streams: <br><blockquote><ul><li>  threads = &lt;0-16&gt; <br>  Use streams to encode simultaneously on multiple processors (default: 1).  This slightly degrades the coding quality.  0 or 'auto' - automatically determine the number of processors and use the appropriate number of threads. <br></li></ul></blockquote><br>  The method is good, but not universal and the quality of the result may deteriorate. <br><br><h4>  Second way: parallelizing with Bash </h4><br>  The method is simple, we start processes in parallel, for example: <br><br><blockquote> <code>(recode input/00108.mts 00108.avi <br> recode input/00109.mts 00109.avi <br> ... <br> ...) &amp; <br> (recode input/00108.mts 00110.avi <br> recode input/00109.mts 00111.avi <br> ... <br> ...) <br></code> </blockquote><br>  The disadvantage of the method is that due to the fact that files of different sizes, the time for their processing can vary significantly and as a result, one processor can be unloaded much earlier than the other. <br><br><h4>  Third way: parallelizing with GNU make </h4><br>  I wanted to somehow improve the scenario, so that two tasks would always work in parallel, and as they were completed, new ones were launched.  Reflecting on how I would do this, I remembered that there is a wonderful build utility that can do exactly what I need.  It turned out the following: <br><br>  Makefile: <br><blockquote> <code>all: 00108.avi 00109.avi 00110.avi 00111.avi 00118.avi 00119.avi 00120.avi 00123.avi <br> <br> VPATH = input:. <br> %.avi: %.mts <br> mencoder -o $@ $&lt; -ovc x264 -x264encopts bitrate=22000:keyint=50 -oac mp3lame -lameopts vbr=3:br=320 -fps 50 <br></code> </blockquote><br>  It turned out surprisingly simple and short.  The list of all the files I want to get is listed first.  It is followed by the path to the source files and the build rule.  Run with the command “make -j 2” so that 2 processes work simultaneously. <br><br>  (The first article on Habré, do not judge strictly) </div><p>Source: <a href="https://habr.com/ru/post/66903/">https://habr.com/ru/post/66903/</a></p>
+      You can set mencoder options.  For x264 codec it is possible to specify the number of streams: <br><blockquote><ul><li>  threads = &lt;0-16&gt; <br>  Use streams to encode simultaneously on multiple processors (default: 1).  This slightly degrades the coding quality.  0 or 'auto' - automatically determine the number of processors and use the appropriate number of threads. <br></li></ul></blockquote><br>  The method is good, but not universal and the quality of the result may deteriorate. <br><br><h4>  Second way: parallelizing with Bash </h4><br>  The method is simple, we start processes in parallel, for example: <br><br><blockquote> <code>(recode input/00108.mts 00108.avi <br> recode input/00109.mts 00109.avi <br> ... <br> ...) &amp; <br> (recode input/00108.mts 00110.avi <br> recode input/00109.mts 00111.avi <br> ... <br> ...) <br></code> </blockquote><br>  The disadvantage of the method is that due to the fact that files of different sizes, the time for their processing can vary significantly and as a result, one processor can be unloaded much earlier than the other. <br><br><h4>  Third way: parallelizing with GNU make </h4><br>  I wanted to somehow improve the scenario, so that two tasks would always work in parallel, and as they were completed, new ones were launched.  Reflecting on how I would do this, I remembered that there is a wonderful build utility that can do exactly what I need.  It turned out the following: <br><br>  Makefile: <br><blockquote> <code>all: 00108.avi 00109.avi 00110.avi 00111.avi 00118.avi 00119.avi 00120.avi 00123.avi <br> <br> VPATH = input:. <br> %.avi: %.mts <br> mencoder -o $@ $&lt; -ovc x264 -x264encopts bitrate=22000:keyint=50 -oac mp3lame -lameopts vbr=3:br=320 -fps 50 <br></code> </blockquote><br>  It turned out surprisingly simple and short.  The list of all the files I want to get is listed first.  It is followed by the path to the source files and the build rule.  Run with the command “make -j 2” so that 2 processes work simultaneously. <br><br>  (The first article on Habré, do not judge strictly) </div><p>Source: https://habr.com/ru/post/66903/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../66893/index.html">Customized datepicker</a></li>
-<li><a href="../66894/index.html">Fulfillment of desires. Communication</a></li>
 <li><a href="../66896/index.html">Old Peppers vs. young heroes</a></li>
 <li><a href="../66898/index.html">Wordpress client for Symbian in Russian</a></li>
 <li><a href="../66899/index.html">Picture For Me - 1 year</a></li>
+<li><a href="../669/index.html">The competition for the best Open Source CMS has ended.</a></li>
+<li><a href="../6690/index.html">Blogger spoke in Russian!</a></li>
 <li><a href="../66909/index.html">Motorola sholes</a></li>
+<li><a href="../6691/index.html">Self criticism</a></li>
 <li><a href="../66910/index.html">Deleted</a></li>
 <li><a href="../66911/index.html">Deleted</a></li>
 <li><a href="../66912/index.html">NAND: three bits per cell</a></li>
-<li><a href="../66913/index.html">"Empty seats" in the starry sky</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

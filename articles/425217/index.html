@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Resiliency of the application when updating the cluster Cubernetes</h1><div class="post__text post__text-html js-mediator-article"><blockquote>  Somehow in the comments they asked the question, how does participation in Slurme differ from reading manuals on Couberntes.  I asked Pavel Selivanov, Speaker Slurm-2 and MegaSlerm, to give a small example of what he would say at Slurm.  I give the floor to him. </blockquote><p><img src="https://habrastorage.org/webt/g4/ll/wx/g4llwxjq6-ru2ik7vb2mi4fdyow.jpeg"></p><br><p>  I administer a cluster of Cuberntes.  Recently, I needed to update the k8s version and, among other things, restart all the machines in the cluster.  I started the process at 12:00, and by the end of the working day everything was ready.  And for the first time, I also followed the update process, and the second time I went for lunch for 1.5 hours (for the sake of fairness, grabbing a laptop).  The cluster was updated by itself, without my participation and imperceptibly for the clients, the development did not notice anything, the deployments continued, the service worked as usual. </p><br><p>  What it looked like. </p><a name="habracut"></a><br><h2 id="veroyatnye-problemy">  Probable problems </h2><br><p>  When rebooting machines there are two bad scenarios. </p><br><ol><li>  The developer has launched the application / redis in one instance.  No matter how carefully you take the car out of service, downtime will happen. </li><li>  There are 2 replicas of the application, and one is deployed.  It went out, the only replica remained, and here comes the admin and puts out the last replica.  Again, until the replica comes up after deployment, there will be downtime. </li></ol><br><p>  I could coordinate the reboot with the development, they say, stop the deployment, check the instances, I will restart the machines, but I like the idea of ​​DevOps that human communication should be kept to a minimum.  It is better to set up automation once, than to coordinate your actions each time. </p><br><h2 id="usloviya-zadachi">  Conditions of the problem </h2><br><p>  I use Amazon with its convenience and stability.  Everything is automated, you can create and extinguish virtuals, check their availability, etc. </p><br><p>  Cluster Kuburnetes is deployed, managed and updated via the kops utility, which I really love. <br>  When updating kops, the node dranit automatically (kubectl drain node), waits until everything is evacuated from this node, deletes it, creates a new node in Amazon with the correct version of the components Cubernetic, attaches it to the cluster, checks that the node has moved into the cluster well, and so with all the nodes in a circle, until everywhere is the right version of Cubernets. </p><br><h2 id="reshenie">  Decision </h2><br><p>  In CI, I use kube-lint to check all the manifests that will run in Cubernette.  Helm Template throws out everything that is going to run, I set up a linter for unloading, which evaluates everything according to specified rules. </p><br><p>  For example, one of the rules states that for any application in the Cuberentes cluster, the number of replicas must be at least 2. <br>  If there are no replicas at all (which defaults to 1), they are 0 or 1, kube-lint prohibits the cluster to cluster in order to avoid problems in the future. </p><br><p>  For example, a warm design by design is designed so that one replica remains.  In this case, there is the pod disruption budget, where max_unavailable and min_available are set for the application running in Cubernetworks.  If you want to always have at least 1 replica, set min_available = 1. <br>  There were 2 replicas, the deployment started, 1 replica died, 1 remained. On the machine where the replica lives, the admin starts the kubectl drain node.  In theory, Kuburnetes should start removing this live replica and transport it to another node.  But it works pod disruption budget.  Kuburnetes says to the admin: sorry, there is a replica here, if we remove it, we will break the pod disruption budget.  A smart drain node hangs before the timeout expires and tries to drop the node.  If the deployment is finished and both replicas become available, the replica on this node will be displayed. </p><br><p>  At MegaSlurme, I’ll show you a complete set of rules that allows me to drink coffee in a cafe while the Cuberentes cluster is updated with a restart of all nodes. </p><br><p>  My topics on <a href="https://slurm.io/slurm2/%3Futm_source%3Dhabr4">Slurm</a> : </p><br><ul><li>  Introduction to Kubernetes, the main components </li><li>  Cluster device, main components, fault tolerance, k8s network </li><li>  Kubernetes Advanced Abstractions </li><li>  Logging and monitoring </li></ul><br><p>  My topics on <a href="https://slurm.io/megaslurm/%3Futm_source%3Dhabr4">MegaSlreme</a> : </p><br><ul><li>  The process of creating a failover cluster from within </li><li>  Authorization in the cluster using an external provider </li><li>  Secure and highly available applications in a cluster </li><li>  Implementation of deployment strategies other than RollingUpdate </li><li>  Trabshuting in Kubernetes </li></ul></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/425217/">https://habr.com/ru/post/425217/</a></p>
+    <p>Source: https://habr.com/ru/post/425217/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../425207/index.html">Design Testing: Top 10 Heisenbug 2018 Piter Reports</a></li>
 <li><a href="../425209/index.html">Sunrise Sun Manually # 2: Hardcore for IDE, Cmake, and my frustration with animals</a></li>
+<li><a href="../42521/index.html">Virtual worlds - some thoughts and statistics</a></li>
 <li><a href="../425211/index.html">286 and network</a></li>
 <li><a href="../425213/index.html">Plans for the next version of Vue.js</a></li>
 <li><a href="../425215/index.html">4 tips for optimizing a webpack application</a></li>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How did we get access to the database of banned resources</h1><div class="post__text post__text-html js-mediator-article">  Welcome, habrasoobschestvu. <br><br>  The most discussed news of the current week in RuNet, of course, is the adoption of Law No. 139-FZ and its consequences.  Due to the fact that <a href="http://www.netangels.ru/">our company</a> provides hosting services, we needed access to the full registry base in order to promptly respond to the addition of our customers' resources to the database.  This is due to the fact that we need to inform customers about the blocking of their resources, because in the case of, for example, blocking the web hosting server's ip, other clients may suffer as well or no fault.  Unfortunately, obtaining such access turned out to be not the most obvious, so we would like to share the result of this quest. <br><br><img src="https://habrastorage.org/storage2/d98/713/3f5/d987133f52b4e367795e6130834b5e7f.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       In the article we would like to focus on the technical aspect and avoid discussing the ethical-political side of the issue, because  any active user has already managed to express his dissatisfaction on this topic, regret the root-tracker with Lurkomoryem and think about the topic of circumventing the ban on resources earlier. <br><br><a name="habracut"></a><br>  Currently, access to a single registry of prohibited resources is assumed to be of two types: <br><br><ol><li>  For all Internet users in the form of a search on the <a href="http://zapret-info.gov.ru/">main page of the registry</a> .  Each request requires captcha, in addition, the form, in fact, solves the problem of obtaining information about locking a particular resource known in advance, because  if the site is banned by url, then entering into the form a domain name will not give any result.  Example: <s>ww.xapka.com</s> is empty, <s>http://www.xapka.com/</s> - information about blocking. </li><li>  In the form of a full dump of the database of prohibited resources in the section <a href="http://zapret-info.gov.ru/tooperators/">"communication operators"</a> .  It is possible to access either through a <a href="http://zapret-info.gov.ru/tooperators/form/">web form</a> with the need to enter a captcha, or through a SOAP-service.  WSDL address: <a href="http://www.zapret-info.gov.ru/services/OperatorRequest/%3Fwsdl">www.zapret-info.gov.ru/services/OperatorRequest/?wsdl</a> . </li></ol><br>  In the second case, each request for unloading the database must be signed with EDS, in the format PKCS # 7 and the unlinked signature must be sent along with the request.  Ideally, we imagined something like this: we buy EDS, take the Debian we are used to, put the appropriate software there to automatically sign requests, write a script that communicates with the zapret-info server via SOAP, generates a request, signs it, downloads a dump and a number of heuristics methods checks to see if any of the resources in the list apply to us. <br><br>  It would seem that everything is simple, but in fact it turned out to be somewhat more complicated and longer. <br><br><h3>  EDS </h3><br>  The zapret-info server does not provide any “sandbox” in which it would be possible to test the work of the script without a valid EDS, so the very first thing is to take care of its acquisition. <br><br>  You can buy a certificate to create a qualified electronic signature in a <a href="http://www.reestr-pki.ru/tsl.html">trusted certification authority</a> .  By default, all CAs for signing documents suggest using programs from the CryptoPRO family (CryptoARM, cryptcp).  Unfortunately, using this variety of software products overshadows a few facts: <br><br><ul><li>  If the CryptoPRO license is part of the EDS package, then most likely it is intended for Windows. </li><li>  CryptoPRO itself does not know how to sign, and tools that can - require a separate license and purchase. </li><li>  There are still questions about licensing (whether we need a license for 1 workplace, or for 1 server). </li></ul><br>  Therefore, a quick search on the Internet brought us to the information that using simple actions with Rutoken, we can <a href="http://forum.rutoken.ru/topic/1639/">teach</a> us <a href="http://forum.rutoken.ru/topic/1639/">how to use</a> OpenSSL, which we are used to.  A brief brief of our actions is: <br><br><ol><li>  Export key in PKCS # 12 format from a cryptocontainer in Windows using the utility <a href="http://www.lissi-crypto.ru/products/utils/p12fromcsp/">P12FromGostCSP</a> </li><li>  Convert it to PEM </li><li>  Register parameters in the openssl.conf config <br>  At the very beginning, before the sections: <br><pre><code class="bash hljs">openssl_conf = openssl_def
@@ -132,20 +132,20 @@ request_str = etree.tostring(request_xml, xml_declaration=<span class="hljs-keyw
 <li>       ,      .</li>
 <li>       «»,       .</li>
 <li> ,      ,      .</li>
-</ul></div><p>Source: <a href="https://habr.com/ru/post/158891/">https://habr.com/ru/post/158891/</a></p>
+</ul></div><p>Source: https://habr.com/ru/post/158891/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../158877/index.html">100 days of curiosity</a></li>
 <li><a href="../158881/index.html">How can a wife help freelancers?</a></li>
 <li><a href="../158885/index.html">WiFi: who is to blame: Windows 8 or Intel</a></li>
 <li><a href="../158887/index.html">Overview and configuration of deduplication tools in Windows Server 2012</a></li>
 <li><a href="../158889/index.html">For Linux came out Skype 4.1</a></li>
+<li><a href="../15889/index.html">Sony Ericsson will have its own online music store.</a></li>
 <li><a href="../158893/index.html">From cassettes to online streaming</a></li>
 <li><a href="../158895/index.html">What each developer needs to know about character encodings and character sets for working with text, part 2</a></li>
 <li><a href="../158897/index.html">Should I use freemium model? Part 2</a></li>
-<li><a href="../158903/index.html">Support the Motorola petition for opening the bootloader</a></li>
-<li><a href="../158905/index.html">Centralized exception handling in Node.JS. Part 2</a></li>
+<li><a href="../1589/index.html">MTV wants to buy YouTube or create something like this</a></li>
+<li><a href="../15890/index.html">Microsoft is going to conquer the Russian Internet</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

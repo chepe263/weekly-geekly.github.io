@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Find out the administrator password in the phone Grandstream GXP2124</h1><div class="post__text post__text-html js-mediator-article">  Today I ran into a problem: someone changed the administrator password to the phone.  After reading the information in the network, concluded that: <br><br><ul><li>  Change admin password, need admin password; </li><li>  Reset the phone to factory settings, you need an administrator password; </li><li>  Reflash the phone - you need that missing password again ... </li></ul><br>  How to find a way out of this situation?  Yes Easy! <br>  To “learn” the password, I used the most common Google Chrome browser with the installed Furebug components, plus another Grandstream GXP2124 phone, access to which I have. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/733/80f/fe1/73380ffe1c0e1a5c9143b581d4428f66.jpg" alt="image"><br>  Further the course of action was as follows: <br><a name="habracut"></a><br>  We launch the browser and turn on the Firebug utility, and then we begin to “walk” on various pages.  The list of requests was found: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <blockquote>  POST cgi-bin / api.values.get </blockquote><br>  and in the response body listed: <br><br><blockquote>  {"Response": "success", "body": {"vendor_fullname": "Grandstream Networks, Inc."}} </blockquote><br>  Scrolling further, I found such a query: <br><blockquote>  POST cgi-bin / api-phone_operation </blockquote><br>  in whose request the parameters were passed: <br><br><blockquote>  cmd = extend &amp; arg = &amp; sid = 639534b3e5a </blockquote><br>  What next?  And then I go to the security settings and change the password on the phone, access to which I already have and see the list of answers: <br><blockquote>  POST cgi-bin / api.values.post <br>  Source: <br>  P2 = MyNewPass &amp;: confirmAdminPwd = MyNewPass &amp; sid = 639534b3e5a <br></blockquote><br>  Where: <br><ul><li>  <b>P2</b> - transmitted administrator password; </li><li>  <b>confirmAdminPwd</b> - confirmation of the administrator password; </li><li>  <b>sid</b> - current session (we will not need it). </li></ul><br>  Further, having shown imagination, we make request of a type: <br><br><blockquote>  <a href="">192.168.1.253/cgi-bin/api.values.get?request=P2</a> </blockquote><br>  where <b>192.168.1.253</b> is the phone’s IP address. <br><br>  Sent and ... <br><br>  ... and get a JSON response of the form: <br><blockquote>  {"Response": "success", "body": {"P2": "adminPass"}} </blockquote><br>  where <b>adminPass</b> is the current administrator password. <br><br>  Profit! <br><br>  <i>Sincerely, Andrey Helldar!</i> <br><br>  <b>PS: The above chip works on the firmware version before 1.0.5.58</b> <b><br></b>  <b>Specifically tested on software version 1.0.5.23</b> </div><p>Source: <a href="https://habr.com/ru/post/219225/">https://habr.com/ru/post/219225/</a></p>
+    <blockquote>  POST cgi-bin / api.values.get </blockquote><br>  and in the response body listed: <br><br><blockquote>  {"Response": "success", "body": {"vendor_fullname": "Grandstream Networks, Inc."}} </blockquote><br>  Scrolling further, I found such a query: <br><blockquote>  POST cgi-bin / api-phone_operation </blockquote><br>  in whose request the parameters were passed: <br><br><blockquote>  cmd = extend &amp; arg = &amp; sid = 639534b3e5a </blockquote><br>  What next?  And then I go to the security settings and change the password on the phone, access to which I already have and see the list of answers: <br><blockquote>  POST cgi-bin / api.values.post <br>  Source: <br>  P2 = MyNewPass &amp;: confirmAdminPwd = MyNewPass &amp; sid = 639534b3e5a <br></blockquote><br>  Where: <br><ul><li>  <b>P2</b> - transmitted administrator password; </li><li>  <b>confirmAdminPwd</b> - confirmation of the administrator password; </li><li>  <b>sid</b> - current session (we will not need it). </li></ul><br>  Further, having shown imagination, we make request of a type: <br><br><blockquote>  <a href="">192.168.1.253/cgi-bin/api.values.get?request=P2</a> </blockquote><br>  where <b>192.168.1.253</b> is the phone’s IP address. <br><br>  Sent and ... <br><br>  ... and get a JSON response of the form: <br><blockquote>  {"Response": "success", "body": {"P2": "adminPass"}} </blockquote><br>  where <b>adminPass</b> is the current administrator password. <br><br>  Profit! <br><br>  <i>Sincerely, Andrey Helldar!</i> <br><br>  <b>PS: The above chip works on the firmware version before 1.0.5.58</b> <b><br></b>  <b>Specifically tested on software version 1.0.5.23</b> </div><p>Source: https://habr.com/ru/post/219225/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../219211/index.html">This is Science: Silicon electronics: bend me completely</a></li>
-<li><a href="../219213/index.html">Build 2014. Announced changes in Windows and Windows Phone app stores</a></li>
+<li><a href="../219215/index.html">How I learned English in Africa</a></li>
 <li><a href="../219217/index.html">The digest of interesting news and materials from the world of PHP No. 39 (March 24 - April 14, 2014)</a></li>
 <li><a href="../219219/index.html">Github cheat sheet</a></li>
+<li><a href="../21922/index.html">File sharing services</a></li>
 <li><a href="../219221/index.html">Samsung Gamepad: an accessory for fans to play and ... fly</a></li>
 <li><a href="../219229/index.html">Expanding MS Excel 2010 with R</a></li>
+<li><a href="../21923/index.html">Overclocking CSS selectors. Part 2: Transitivity</a></li>
 <li><a href="../219237/index.html">Navigator campus travels to Volgograd, Taganrog, Krasnodar, Yaroslavl, St. Petersburg to communicate with the iron workers</a></li>
+<li><a href="../21924/index.html">Self-balancing robots ANYBOTS for peaceful purposes</a></li>
 <li><a href="../219241/index.html">A selection of high-tech fitness innovations on Kickstarter</a></li>
-<li><a href="../219243/index.html">Creating term analysis networks based on text analysis</a></li>
-<li><a href="../219245/index.html">Long-awaited check of Unreal Engine 4</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

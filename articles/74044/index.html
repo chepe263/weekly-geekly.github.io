@@ -31,12 +31,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -58,7 +58,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Restore SVN repository</h1><div class="post__text post__text-html js-mediator-article"> Once upon a time in one of the offices there was one repository for all projects. <br><br> <code>svn svn://server/ <br> some1 <br> some2 <br> some3</code> <br> <br>  in principle, it was quite convenient, because everything is stored in the same database. <br><br>  But faced with a problem.  it is not clear why, the base began to crumble at the very moment when it was decided to divide the repository into several. <br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -66,10 +66,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <br>  To begin with, it was necessary to find all break points, if any. <br><br>  find the first gap: <br> <code>svnadmin dump --incremental -r0:HEAD c:\path\to\repo &gt; test.dmp</code> <br>  In my case, out of 8600 revisions, the first one was found quickly ... 2300th revision. <br><br>  Next, find more points: <br> <code>svnadmin dump --incremental -r2301:HEAD c:\path\to\repo &gt; test.dmp <br></code> <br>  got one more.  3459. <br><br>  and find more. <br> <code>svnadmin dump --incremental -r3460:HEAD c:\path\to\repo &gt; test.dmp <br></code> <br>  there were no more errors. <br><br>  Now we make dumps of live revisions. <br>  s <code>vnadmin dump --incremental -r0:2299 c:\path\to\repo &gt; dump(0-2299).dmp <br> svnadmin dump --incremental -r2301:3458 c:\path\to\repo &gt; dump(2301-3458).dmp <br> svnadmin dump --incremental -r3460:HEAD c:\path\to\repo &gt; dump(3460-HEAD).dmp</code> <code>vnadmin dump --incremental -r0:2299 c:\path\to\repo &gt; dump(0-2299).dmp <br> svnadmin dump --incremental -r2301:3458 c:\path\to\repo &gt; dump(2301-3458).dmp <br> svnadmin dump --incremental -r3460:HEAD c:\path\to\repo &gt; dump(3460-HEAD).dmp</code> <br> <br>  Now we do the division of repositories for projects. <br><br>  project 1: <br> <code>svndumpfilter include /some &lt; dump(0-2299).dmp &gt; some-1.dmp <br> svndumpfilter include /some &lt; dump(2301-3458).dmp &gt; some-2.dmp <br> svndumpfilter include /some &lt; dump(2301-3458).dmp &gt; some-3.dmp</code> <br> <br>  project 2: <br> <code>svndumpfilter include /some2 &lt; dump(0-2299).dmp &gt; some2-1.dmp <br> svndumpfilter include /some2 &lt; dump(2301-3458).dmp &gt; some2-2.dmp <br> svndumpfilter include /some2 &lt; dump(2301-3458).dmp &gt; some2-3.dmp</code> <br> <br>  by analogy and the third as well. <br><br>  Next, create a repository for the first project: <br> <code>svnadmin create c:\path\to\some</code> <br> <br>  and dump the dumps: <br> <code>svnadmin load c:\path\to\some &lt; some-1.dmp <br> svnadmin load c:\path\to\some &lt; some-2.dmp <br> svnadmin load c:\path\to\some &lt; some-3.dmp</code> <br> <br>  and here errors like can appear: <br>  1. file already exists <br>  2. as it is not paradoxical - there is no file. <br><br>  in the first case, everything is simple - we go into the repository, for example, with a “turtle” and delete this interfering file. <br><br>  in the second case, you will have to do screenings in dumps <br> <code>svndumpfilter exclude /chto/ne/nawlos &lt; some-1.dmp &gt; some-11.dmp <br></code> <br>  and then upload it to the repository. <br><br>  But in general, that's all. </div><p>Source: <a href="https://habr.com/ru/post/74044/">https://habr.com/ru/post/74044/</a></p>
+    <br>  To begin with, it was necessary to find all break points, if any. <br><br>  find the first gap: <br> <code>svnadmin dump --incremental -r0:HEAD c:\path\to\repo &gt; test.dmp</code> <br>  In my case, out of 8600 revisions, the first one was found quickly ... 2300th revision. <br><br>  Next, find more points: <br> <code>svnadmin dump --incremental -r2301:HEAD c:\path\to\repo &gt; test.dmp <br></code> <br>  got one more.  3459. <br><br>  and find more. <br> <code>svnadmin dump --incremental -r3460:HEAD c:\path\to\repo &gt; test.dmp <br></code> <br>  there were no more errors. <br><br>  Now we make dumps of live revisions. <br>  s <code>vnadmin dump --incremental -r0:2299 c:\path\to\repo &gt; dump(0-2299).dmp <br> svnadmin dump --incremental -r2301:3458 c:\path\to\repo &gt; dump(2301-3458).dmp <br> svnadmin dump --incremental -r3460:HEAD c:\path\to\repo &gt; dump(3460-HEAD).dmp</code> <code>vnadmin dump --incremental -r0:2299 c:\path\to\repo &gt; dump(0-2299).dmp <br> svnadmin dump --incremental -r2301:3458 c:\path\to\repo &gt; dump(2301-3458).dmp <br> svnadmin dump --incremental -r3460:HEAD c:\path\to\repo &gt; dump(3460-HEAD).dmp</code> <br> <br>  Now we do the division of repositories for projects. <br><br>  project 1: <br> <code>svndumpfilter include /some &lt; dump(0-2299).dmp &gt; some-1.dmp <br> svndumpfilter include /some &lt; dump(2301-3458).dmp &gt; some-2.dmp <br> svndumpfilter include /some &lt; dump(2301-3458).dmp &gt; some-3.dmp</code> <br> <br>  project 2: <br> <code>svndumpfilter include /some2 &lt; dump(0-2299).dmp &gt; some2-1.dmp <br> svndumpfilter include /some2 &lt; dump(2301-3458).dmp &gt; some2-2.dmp <br> svndumpfilter include /some2 &lt; dump(2301-3458).dmp &gt; some2-3.dmp</code> <br> <br>  by analogy and the third as well. <br><br>  Next, create a repository for the first project: <br> <code>svnadmin create c:\path\to\some</code> <br> <br>  and dump the dumps: <br> <code>svnadmin load c:\path\to\some &lt; some-1.dmp <br> svnadmin load c:\path\to\some &lt; some-2.dmp <br> svnadmin load c:\path\to\some &lt; some-3.dmp</code> <br> <br>  and here errors like can appear: <br>  1. file already exists <br>  2. as it is not paradoxical - there is no file. <br><br>  in the first case, everything is simple - we go into the repository, for example, with a “turtle” and delete this interfering file. <br><br>  in the second case, you will have to do screenings in dumps <br> <code>svndumpfilter exclude /chto/ne/nawlos &lt; some-1.dmp &gt; some-11.dmp <br></code> <br>  and then upload it to the repository. <br><br>  But in general, that's all. </div><p>Source: https://habr.com/ru/post/74044/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

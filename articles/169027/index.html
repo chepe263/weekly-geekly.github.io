@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We use Twitter API for receiving "tree" of users</h1><div class="post__text post__text-html js-mediator-article">  Good morning, habrauzer.  In this post I would like to share some experience with the twitter API, and in particular with parsing a large number of users and getting information about each user (account creation date, username, screen_name, user’s webpage, number of tweets, number of friends, number of followers location). <a name="habracut"></a>  This is my first post, so please do not judge strictly, but I also have nothing against constructive criticism. <br><br>  Task: There are about 100 active and respected Twitter users (T0).  For these users, I needed to get a list of friends (T1) and for each user to get personal data.  In the same way we get T2 (T2 - friends of users from T1) and T3. <br>  As a result, we have a user base T = T0 + T1 + T2 + T3.  Since each Twitter user has about 1286 friends (statistics obtained from data of about 80 million accounts), the number of users in each group grows very quickly: <br><br><ul><li>  T0: 100 users </li><li>  T1: ~ 42000 unique users </li><li>  T2: ~ 5,200,000 unique users </li><li>  T3: ~ 80 million unique users </li></ul>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      When parsing so many accounts, the first problem we face is the limit of requests to the API.  We can fulfill 150 requests / hour if we are not authorized and 350 requests / hour if we are authorized.  In addition, these 150/350 requests are divided into two 30 minute intervals.  That is, we can execute 75/175 requests from each user in 30 minutes.  This is clearly not enough to get this amount of data.  For this, I used a database of about 3000 accounts (bots) from a botnet that I developed for the same customer (if anyone is interested, I can tell you about the functionality of the botnet and some “pitfalls” in a separate post).  That is, I had a margin of almost 0.5 million requests in 30 minutes, and then everything else came up against the speed of processing the API response and writing data to the database. <br><br>  To communicate with the API, I did not invent bicycles and used the <a href="https://github.com/abraham/twitteroauth">abraham oauth</a> library, which is well-known in narrow circles.  I only slightly modified it so that it could use <a href="http://www.php.net/manual/en/function.curl-multi-exec.php">multi_curl</a> (we remember that we need to make a lot of requests). <br><br>  To get the friends list of the user, the <a href="https://dev.twitter.com/docs/api/1/get/friends/ids">friends / ids</a> API method was used.  This method allows you to get a list of ID friends of the user.  If the number of friends exceeds 5000, the result is paginated (I received a maximum of 5000 friends for each user and did not make additional requests if there were more than 5k). <br><br>  After we got friends of all users, we need to get data about each user.  For this we use the wonderful <a href="https://dev.twitter.com/docs/api/1/get/users/lookup">users / lookup</a> method.  We take from the database ID packs of 100 and parsim data. <br><br>  As a result, we get a fairly large user database.  The following are some statistics: <br><br><ul><li>  average number of tweets ~ 4317 </li><li>  average number of friends ~ 1286 </li><li>  average number of followers ~ 35045 </li></ul></div><p>Source: <a href="https://habr.com/ru/post/169027/">https://habr.com/ru/post/169027/</a></p>
+      When parsing so many accounts, the first problem we face is the limit of requests to the API.  We can fulfill 150 requests / hour if we are not authorized and 350 requests / hour if we are authorized.  In addition, these 150/350 requests are divided into two 30 minute intervals.  That is, we can execute 75/175 requests from each user in 30 minutes.  This is clearly not enough to get this amount of data.  For this, I used a database of about 3000 accounts (bots) from a botnet that I developed for the same customer (if anyone is interested, I can tell you about the functionality of the botnet and some “pitfalls” in a separate post).  That is, I had a margin of almost 0.5 million requests in 30 minutes, and then everything else came up against the speed of processing the API response and writing data to the database. <br><br>  To communicate with the API, I did not invent bicycles and used the <a href="https://github.com/abraham/twitteroauth">abraham oauth</a> library, which is well-known in narrow circles.  I only slightly modified it so that it could use <a href="http://www.php.net/manual/en/function.curl-multi-exec.php">multi_curl</a> (we remember that we need to make a lot of requests). <br><br>  To get the friends list of the user, the <a href="https://dev.twitter.com/docs/api/1/get/friends/ids">friends / ids</a> API method was used.  This method allows you to get a list of ID friends of the user.  If the number of friends exceeds 5000, the result is paginated (I received a maximum of 5000 friends for each user and did not make additional requests if there were more than 5k). <br><br>  After we got friends of all users, we need to get data about each user.  For this we use the wonderful <a href="https://dev.twitter.com/docs/api/1/get/users/lookup">users / lookup</a> method.  We take from the database ID packs of 100 and parsim data. <br><br>  As a result, we get a fairly large user database.  The following are some statistics: <br><br><ul><li>  average number of tweets ~ 4317 </li><li>  average number of friends ~ 1286 </li><li>  average number of followers ~ 35045 </li></ul></div><p>Source: https://habr.com/ru/post/169027/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../169021/index.html">Vsossisk.ru - here you can find friends, places and discounts</a></li>
 <li><a href="../169023/index.html">New PyCharm 2.7 released with Django 1.5 support, improved refactoring and auto-completion</a></li>
 <li><a href="../169029/index.html">.NET Framework: What version are you using?</a></li>
+<li><a href="../16903/index.html">The results of the competition for the development and testing in the pilot regions of the Russian Federation of the free software package for use in educational institutions of the Russian Federation in 2007-2008.</a></li>
 <li><a href="../169031/index.html">The digest of interesting news and materials from the world of PHP over the past two weeks, number 10 (01/26/2013 - 02.11.2013)</a></li>
 <li><a href="../169033/index.html">Is the MVC pattern a dead end for application development?</a></li>
 <li><a href="../169035/index.html">Key figures of the IT labor market (January 2012 - January 2013)</a></li>
-<li><a href="../169037/index.html">PocketBook SURFpad Review</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>SQL injection in Joomla! 1.5.x</h1><div class="post__text post__text-html js-mediator-article"> I stumbled upon a rather serious security hole of this CMS, and due to the great popularity of this system I decided to post it here. <br>  Roughly speaking, it allows changing the administrator password due to insufficient filtering of input parameters. <br><a name="habracut"></a><br>  Check whether your site is vulnerable by clicking on the link. <br>  <i>site.name / index.php? option = com_user &amp; view = reset &amp; layout = confirm</i> <br>  and typing a single quote in the token field. <br><br>  Bindable code: <br><br> <code>File : /components/com_user/controller.php <br> <br> ##################################################################################### <br> Line : 379-399 <br> <br> function confirmreset() <br> { <br> // Check for request forgeries <br> JRequest::checkToken() or die( 'Invalid Token' ); <br> <br> // Get the input <br> $token = JRequest::getVar('token', null, 'post', 'alnum'); <br> <br> // Get the model <br> $model = &amp;$this-&gt;getModel('Reset'); <br> <br> // Verify the token <br> if ($model-&gt;confirmReset($token) === false) <br> { <br> $message = JText::sprintf('PASSWORD_RESET_CONFIRMATION_FAILED', $model-&gt;getError()); <br> $this-&gt;setRedirect('index.php?option=com_user&amp;view=reset&amp;layout=confirm', $message); <br> return false; <br> } <br> <br> $this-&gt;setRedirect('index.php?option=com_user&amp;view=reset&amp;layout=complete'); <br> } <br> <br> ##################################################################################### <br> <br> File : /components/com_user/models/reset.php <br> <br> Line: 111-130 <br> <br> <br> <br> function confirmReset($token) <br> { <br> global $mainframe; <br> <br> $db = &amp;JFactory::getDBO(); <br> $db-&gt;setQuery('SELECT id FROM #__users WHERE block = 0 AND activation = '.$db-&gt;Quote($token)); <br> <br> // Verify the token <br> if (!($id = $db-&gt;loadResult())) <br> { <br> $this-&gt;setError(JText::_('INVALID_TOKEN')); <br> return false; <br> } <br> <br> // Push the token and user id into the session <br> $mainframe-&gt;setUserState($this-&gt;_namespace.'token', $token); <br> $mainframe-&gt;setUserState($this-&gt;_namespace.'id', $id); <br> <br> return true; <br> } <br> #####################################################################################</code> <br>  As you can see, you need to add escaping quotes in $ db-&gt; Quote ($ token). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Once again I was convinced of the low security of Joomla sites and its mods ... unfortunately .. </div><p>Source: <a href="https://habr.com/ru/post/36884/">https://habr.com/ru/post/36884/</a></p>
+      Once again I was convinced of the low security of Joomla sites and its mods ... unfortunately .. </div><p>Source: https://habr.com/ru/post/36884/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

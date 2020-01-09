@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>24-core CPU, and I can not dial an email</h1><div class="post__text post__text-html js-mediator-article">  I was not looking for trouble.  I didn’t run Chrome’s build process a <a href="https://randomascii.wordpress.com/2017/07/09/24-core-cpu-and-i-cant-move-my-mouse/">thousand times over the weekend</a> , but I’ve only done the most common tasks of the 21st century — I just wrote an email at 10:30 in the morning.  And suddenly Gmail hung.  I kept typing for a few seconds, but no characters appeared on the screen.  Then, suddenly, Gmail opened up - and I went back to my <i>very important</i> letter.  But later everything repeated, only this time Gmail did not respond to requests even longer.  <a href="https://quoteinvestigator.com/2015/03/02/eureka-funny/">This is weird</a> ... <br><br>  It is difficult to resist the opportunity to conduct a good investigation, but in this case the challenge is especially strong.  After all, I'm working on Google to improve the performance of Chrome for Windows.  To discover the cause of the hang is my <i>job</i> .  And after a lot of false starts and hard efforts, I still managed to figure out how Chrome, Gmail, Windows and our IT department together prevented me from typing an email.  Along the way, I found a way to save a significant amount of memory for some web pages in Chrome. <br><br>  The investigation turned out to have so many nuances that I will leave some for <a href="https://habr.com/post/421153/">another article</a> , and now I will fully explain the reasons for the suspensions. <br><a name="habracut"></a><br>  As usual, <a href="https://randomascii.wordpress.com/2015/09/01/xperf-basics-recording-a-trace-the-ultimate-easy-way/">UIforETW</a> works with me in the background and monitors cyclic buffers, so all that remained was to enter Ctrl + Win + R - and the buffers of the system were saved to disk in about the last thirty seconds.  I downloaded them to the <a href="https://randomascii.wordpress.com/2012/06/19/wpaxperf-trace-analysis-reimagined/">Windows Performance Analyzer</a> (WPA), but could not finally install the hang. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       When the Windows program stops transmitting messages, ETW events are issued indicating <a href="https://randomascii.wordpress.com/2012/05/05/xperf-wait-analysisfinding-idle-time/">where exactly this happened</a> , so these types of hangs are trivial to find.  But, apparently, Chrome continued to transmit messages.  I looked for the moment when one of the key streams of Chrome either entered the active cycle, or was completely idle, but found nothing obvious.  There were some places where Chrome was <i>mostly</i> idle, but even then all key streams continued to work, so it was impossible to be sure where the hang occurred - Chrome could have been idle just in the absence of events: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/8f9/52d/104/8f952d104b83f16e15c03d416ba9df6a.png"><br><br><img src="https://habrastorage.org/getpro/habr/post_images/d48/360/d9d/d48360d9d0f046570c6bff25cc7ca970.png" align="right">  UIforETW has a built-in keylogger, which is often useful when identifying key points in a trace.  However, for obvious security reasons, by default it anonymizes keystrokes, regarding each entered number as “1” and every letter as “A”.  This makes it difficult to find the exact time of the hang, so I changed the type of tracing from “private” to “full” and waited for the hang.  At about 10:30 the next morning the hangup repeated.  I saved the trace buffers and saved this mark in the UIforETW trace information field: <br><br><blockquote>  <i>He typed “put aside for those who have more experience with scuba diving” - and Gmail hung at the end of the word “those”, and then resumed work in the area of ​​the word “experience”.</i>  <i>Gmail tab with PID 27368.</i> </blockquote><br>  This is a common discussion of <a href="https://randomascii.wordpress.com/2017/05/01/commute-challenge-2017/">how to get to the office</a> , but it is important that there is now a way to find a hang in the ETW trace.  I load the trace, look at the keylogger data in the Generic Events field (events are issued by UIforETW, and each is a purple diamond in the screenshot below) - and I immediately see where the hang occurred, which is clearly correlated by the failure in using the CPU: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/235/8d4/3c4/2358d43c4b589c1ca7ddaf86a14f4350.png"><br><br>  OK, but why did Chrome stop?  Here are some hints: the screenshots do not show that every time <a href="https://docs.microsoft.com/en-us/windows/desktop/wmisdk/wmi-start-page">WmiPrvSE.exe</a> fully uses the hyper- <a href="https://docs.microsoft.com/en-us/windows/desktop/wmisdk/wmi-start-page">thread</a> CPU.  But that shouldn't matter.  In my machine, there are 24 cores / 48 threads, so the consumption of one hyperflow means that the system is still 98% free. <br><br>  Then I approached a clearly important period when Chrome was idle - and looked, in particular, at the CrRendererMain process in chrome.exe (27368) corresponding to the Gmail tab. <br><br><blockquote>  <i>Note: I want to say thank you to <a href="https://randomascii.wordpress.com/2015/10/26/thread-naming-in-windows-time-for-something-better/">myself from 2015</a> for requesting Microsoft to improve the naming mechanisms for threads, and thanks to Microsoft for implementing all of the suggestions - the names of the threads in WPA are just great!</i> </blockquote><br>  The problem has cleared up.  Within 2.81 seconds of hangup, this thread was launched according to the schedule 440 times.  Usually, running every 6 ms is enough to make the program responsive, but for some reason this did not happen.  I noticed that every time he woke up, I was on the same stack.  If you simplify: <br><br><pre><code class="hljs css"><span class="hljs-selector-tag"><span class="hljs-selector-tag">chrome_child</span></span><span class="hljs-selector-class"><span class="hljs-selector-class">.dll</span></span> (<span class="hljs-selector-tag"><span class="hljs-selector-tag">stack</span></span> <span class="hljs-selector-tag"><span class="hljs-selector-tag">base</span></span>)
@@ -178,7 +178,7 @@ Control Flow Guard (CFG)     .      ,        128-    .         ,      CFG (   2&
 <h2></h2><br>
    <i></i> .     ( ),   (),       ( WMI).            vmmap.      —        —      <a href="https://bugs.chromium.org/p/chromium/issues/detail%3Fid%3D870054">crbug.com/870054</a>.<br>
 <br>
-<b>UPD.</b> <a href="https://habr.com/post/421153/"> </a></div><p>Source: <a href="https://habr.com/ru/post/420579/">https://habr.com/ru/post/420579/</a></p>
+<b>UPD.</b> <a href="https://habr.com/post/421153/"> </a></div><p>Source: https://habr.com/ru/post/420579/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

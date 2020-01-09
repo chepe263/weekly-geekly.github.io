@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Save resources when using virtual machines in Windows Azure</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/37b/965/4e6/37b9654e66f4fd21c75a90340feab637.png" alt="image"><br>  Consider two scenarios of working with virtual machines in Windows Azure, which will help save money and time: <br><ul><li>  We delete virtual machines (but leave the VHD) when they are not in use - Windows Azure withdraws money for virtual machines regardless of its state (running or stopped).  The problem is relevant in cases where you use machines for testing or development (for example, if you are developing on the SharePoint platform); </li><li>  Change network settings - if you need to change the cloud service settings or network settings. </li></ul><br><br>  To solve these problems, we will use PowerShell cmdlets for Windows Azure. <br><a name="habracut"></a><br><h2>  Preliminary actions </h2><br>  We imply that you already have an account in Windows Azure. <br>  Download and install PowerShell cmdlets for Windows on the <a href="https://www.windowsazure.com/en-us/manage/downloads/">official site</a> . <br>  Now you need to get a file with settings for publishing and subscription information. To do this, start Windows Azure PowerShell and execute: <br><pre><code class="cs hljs">Get-AzurePublishSettingsFile</code> </pre> <br>  As a result, the page <a href="https://windows.azure.com/download/publishprofile.aspx">https://windows.azure.com/download/publishprofile.aspx</a> opens and save the file. <br>  Next, do: <br><pre> <code class="cs hljs">Import-AzurePublishSettingsFile &lt;mysettings&gt;. publishsettings</code> </pre><br>  Then the file with the subscription data can be deleted. <br><h2>  We export and delete the virtual machine. </h2><br>  To export the virtual machine settings to an XML file, use the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/jj152899">Export-AzureVM cmdlet</a> : <br><pre> <code class="cs hljs">Export-AzureVM -ServiceName <span class="hljs-string"><span class="hljs-string">'&lt;CloudService&gt;'</span></span> -Name <span class="hljs-string"><span class="hljs-string">'&lt;VmName&gt;'</span></span> -Path <span class="hljs-string"><span class="hljs-string">'c:\VMs\VMstate.xml'</span></span></code> </pre> <br>  And to remove <a href="http://msdn.microsoft.com/en-us/library/windowsazure/jj152859">Remove-AzureVM</a> : <br><pre> <code class="cs hljs">Remove-AzureVM -ServiceName <span class="hljs-string"><span class="hljs-string">'&lt;CloudService&gt;'</span></span> -Name <span class="hljs-string"><span class="hljs-string">'&lt;VmName&gt;'</span></span></code> </pre> <br>  However, Remove-AzureVM does not delete the VHD, and all your data is not lost. <br>  When you need to start using a virtual machine, use the previously exported file and <a href="http://msdn.microsoft.com/en-us/library/windowsazure/jj152820">Import-AzureVM cmdlet</a> : <br><pre> <code class="cs hljs">Import-AzureVM -Path <span class="hljs-string"><span class="hljs-string">'c:\VMs\VMstate.xml'</span></span> | New-AzureVM -ServiceName <span class="hljs-string"><span class="hljs-string">'&lt;CloudService&gt;'</span></span> -Location <span class="hljs-string"><span class="hljs-string">'&lt;Location&gt;'</span></span></code> </pre> <br>  The disadvantage of the above steps is that if you need to export and delete several machines, it will be inconvenient. <br><h2>  Export and delete all virtual machines in the Cloud Service </h2><br><pre> <code class="cs hljs">Get-AzureVM -ServiceName <span class="hljs-string"><span class="hljs-string">'&lt;CloudService&gt;'</span></span> | <span class="hljs-keyword"><span class="hljs-keyword">foreach</span></span> { $path = <span class="hljs-string"><span class="hljs-string">'c:\VMs\' + $_.Name + '</span></span>.xml<span class="hljs-string"><span class="hljs-string">' Export-AzureVM -ServiceName '</span></span>&lt;CloudService&gt;<span class="hljs-string"><span class="hljs-string">' -Name $_.Name -Path $path } Remove-AzureDeployment -ServiceName '</span></span>&lt;CloudService&gt;<span class="hljs-string"><span class="hljs-string">' -Slot Production –Force</span></span></code> </pre><br><h2>  Importing virtual machines into the existing Cloud Service </h2><br><pre> <code class="cs hljs">$vms = @() Get-ChildItem <span class="hljs-string"><span class="hljs-string">'c:\VMs\' | foreach { $path = '</span></span>c:\VMs\<span class="hljs-string"><span class="hljs-string">' + $_ $vms += Import-AzureVM -Path $path } New-AzureVM -ServiceName '</span></span>&lt;CloudService&gt;<span class="hljs-string"><span class="hljs-string">' -VMs $vms</span></span></code> </pre> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/147372/">https://habr.com/ru/post/147372/</a></p>
+    <p>Source: https://habr.com/ru/post/147372/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../147365/index.html">Creating an SNMP Extension Agent</a></li>
 <li><a href="../147367/index.html">Creative field - animations and multiplayer games right in the browser</a></li>
 <li><a href="../147369/index.html">picotux is the smallest Linux computer in the world.</a></li>
+<li><a href="../14737/index.html">Pros and cons of proprietary and open source software according to corporate clients</a></li>
 <li><a href="../147370/index.html">Create a virtual machine template with SharePoint in Windows Azure</a></li>
 <li><a href="../147371/index.html">Making an oracle deploy script independent of the environment</a></li>
+<li><a href="../147373/index.html">Three Ages of the Singleton Pattern</a></li>
 <li><a href="../147374/index.html">Notepad ++. Cyrillic characters mistakenly in the code - a solution</a></li>
 <li><a href="../147375/index.html">My Google Map Switches</a></li>
 <li><a href="../147376/index.html">What I do not like Habr</a></li>
 <li><a href="../147377/index.html">About hiring programmers and other engineers</a></li>
-<li><a href="../147378/index.html">The status of SAMBA 4 at the moment</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

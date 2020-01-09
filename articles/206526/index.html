@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Invisible.js - some models on both client and server</h1><div class="post__text post__text-html js-mediator-article">  <a href="http://invisiblejs.github.io/">Invisible.js</a> is a library that allows you to use the same data models on both the client and the server.  On the server running on top of <b>express.js,</b> the client is <b>sent</b> via <a href="https://github.com/substack/node-browserify">browserify</a> . <br><br>  What is: <br><ul><li>  the ability to once describe the model (including typing and validation) and use it on the client and on the server, </li><li>  connection with <b>MongoDb</b> (when recording on the server - the object is written immediately to the database, when recording on the client, the <b>RESTful API is used</b> , automatically created on the server), </li><li>  Hooks to change data (events run back and forth through <b>socket.io</b> ). </li></ul><a name="habracut"></a><br>  Model description example (available on both client and server): <br><pre><code class="javascript hljs">Invisible = <span class="hljs-built_in"><span class="hljs-built_in">require</span></span>(<span class="hljs-string"><span class="hljs-string">"invisible"</span></span>); crypto = <span class="hljs-built_in"><span class="hljs-built_in">require</span></span>(<span class="hljs-string"><span class="hljs-string">"crypto"</span></span>); _s = <span class="hljs-built_in"><span class="hljs-built_in">require</span></span>(<span class="hljs-string"><span class="hljs-string">"underscore.string"</span></span>); <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">Person</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">firstName, lastName, email</span></span></span><span class="hljs-function">)</span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.firstName = firstName; <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.lastName = lastName; <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.email = email; } Person.prototype.fullName = <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"></span><span class="hljs-function"><span class="hljs-params"></span>)</span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.firstName + <span class="hljs-string"><span class="hljs-string">' '</span></span> + <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.lastName; } Person.prototype.getAvatarUrl = <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"></span><span class="hljs-function"><span class="hljs-params"></span>)</span></span>{ cleanMail = _s.trim(<span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.email).toLowerCase(); hash = crypto.createHash(<span class="hljs-string"><span class="hljs-string">"md5"</span></span>).update(cleanMail).digest(<span class="hljs-string"><span class="hljs-string">"hex"</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> <span class="hljs-string"><span class="hljs-string">"http://www.gravatar.com/avatar/"</span></span> + hash; } <span class="hljs-built_in"><span class="hljs-built_in">module</span></span>.exports = Invisible.createModel(<span class="hljs-string"><span class="hljs-string">"Person"</span></span>, Person);</code> </pre> <br>  Use on server: <br><pre> <code class="javascript hljs">Invisible = <span class="hljs-built_in"><span class="hljs-built_in">require</span></span>(<span class="hljs-string"><span class="hljs-string">"invisible"</span></span>) john = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Invisible.Person(<span class="hljs-string"><span class="hljs-string">"John"</span></span>, <span class="hljs-string"><span class="hljs-string">"Doe"</span></span>, <span class="hljs-string"><span class="hljs-string">"john.doe@mail.com"</span></span>); john.fullName(); <span class="hljs-comment"><span class="hljs-comment">//John Doe</span></span></code> </pre><br>  Use on the client: <br><pre> <code class="html hljs xml"><span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">script</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">src</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"invisible.js"</span></span></span><span class="hljs-tag">&gt;</span></span><span class="undefined"></span><span class="hljs-tag"><span class="undefined"></span><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">script</span></span></span><span class="hljs-tag">&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">script</span></span></span><span class="hljs-tag">&gt;</span></span><span class="actionscript"><span class="actionscript"> jane = </span><span class="hljs-keyword"><span class="actionscript"><span class="hljs-keyword">new</span></span></span><span class="actionscript"> Invisible.Person(</span><span class="hljs-string"><span class="actionscript"><span class="hljs-string">"Jane"</span></span></span><span class="actionscript">, </span><span class="hljs-string"><span class="actionscript"><span class="hljs-string">"Doe"</span></span></span><span class="actionscript">, </span><span class="hljs-string"><span class="actionscript"><span class="hljs-string">"jane.doe@mail.com"</span></span></span><span class="actionscript">); alert(jane.fullName()); </span><span class="hljs-comment"><span class="actionscript"><span class="hljs-comment">//Jane Doe </span></span></span></span><span class="hljs-tag"><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">script</span></span></span><span class="hljs-tag">&gt;</span></span></code> </pre><br><br>  Details can be viewed on the <a href="https://github.com/invisiblejs/invisible">github-page</a> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>P.S.</b>  This library is a great example of <a href="http://habrahabr.ru/post/203444/">isomorphic javascript</a> .  More to such good! </div><p>Source: <a href="https://habr.com/ru/post/206526/">https://habr.com/ru/post/206526/</a></p>
+      <b>P.S.</b>  This library is a great example of <a href="http://habrahabr.ru/post/203444/">isomorphic javascript</a> .  More to such good! </div><p>Source: https://habr.com/ru/post/206526/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../206514/index.html">Piwik 2.0 was released</a></li>
 <li><a href="../206516/index.html">Constructing the Julia Set</a></li>
 <li><a href="../206518/index.html">Installing Sailfish OS on Nokia N9</a></li>
+<li><a href="../20652/index.html">audiko: sometimes Cubase or Sonar are simply not needed</a></li>
 <li><a href="../206522/index.html">Very interesting video about StarlingJS + Sublime + COLT</a></li>
 <li><a href="../206524/index.html">MetaPro - new augmented reality glasses</a></li>
 <li><a href="../206528/index.html">Interview with a twelve-year game developer + author</a></li>
+<li><a href="../20653/index.html">Switch width, or Kill "text-align: justify;"</a></li>
 <li><a href="../206530/index.html">How to pass encrypted parameters to DataStage</a></li>
 <li><a href="../206532/index.html">Four job interviews - four story wonders</a></li>
 <li><a href="../206534/index.html">Finishing exdupe.exe - a smart deduplicating archiver</a></li>
-<li><a href="../206536/index.html">The story of one backdoor</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

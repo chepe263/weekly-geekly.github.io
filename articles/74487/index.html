@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The trick with changing contact types in Android 1.5</h1><div class="post__text post__text-html js-mediator-article"> It so happened that I became the owner of the new HTC Hero. <br>  When you first turn on the phone, set up a Google account.  All contacts are synchronized with the phone.  According to Google’s video presentations, this is very convenient.  For example, if you lose your phone, contacts will still remain on Google. <br><br>  Everything is good, but I just don’t really want to store personal data on Googl’s remote server.  I looked in the settings of contacts - there is no change of types.  That is, when creating a contact, you can choose: google, phone, SIM.  But in the future, change the type of contact nelya. <br><br>  But for every tricky, there will definitely be something. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,14 +60,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      1) Install on the Android SDK computer. <br><br>  2) Using the adb utility (from the SDK kit, located in the TOOLS directory), we connect to the phone: <br> <code>./adb shell</code> <br> <br>  3) Next, open the contact database: <br> <code># sqlite3 /data/data/com.android.providers.contacts/databases/contacts.db</code> <br>  Note: I have unofficial custom firmware.  In official firmware this method did not check. <br><br>  4) For especially curious, you can enable the display of table headers: <br> <code>sqlite&gt; .headers ON</code> <br>  and still see the list of all tables in the database: <br> <code>sqlite&gt; .tables</code> <br> <br>  5) We look at all contacts: <br> <code>sqlite&gt; select * from people;</code> <br>  Note: remember the '_id' (the first number in the line) of the contact we need.  For example, 164. <br><br>  6) And, lo and behold, we change the type of contact with Google to Phone: <br> <code>sqlite&gt; update people set extra_group='2' where _id='164';</code> <br>  Or if you need to change all contacts (step 5 - skip <a name="habracut"></a>  ): <br> <code>sqlite&gt; update people set extra_group='2';</code> <br> <br>  Now this contact will be stored on your phone, and you can turn off the display of Google contacts. <br><br>  PS: I hope the article will help someone.  Comments are welcome! <br>  <b>UPD:</b> <br>  <i>If there is no firmware without root and sqlite3 in the phone, then we will use it on the computer.</i>  <i>Download the database on the computer:</i> <i><br> <code>adb pull /data/data/com.android.providers.contacts/databases/contacts.db contacts.db</code> <br></i>  <i>run sqlite3 on your computer:</i> <i><br> <code>sqlite3 contacts.db</code> <br></i>  <i>then we change the type of contacts and exit sqlite3.</i> <i><br></i>  <i>And then upload the modified file to the body:</i> <i><br> <code>adb push contacts.db /data/data/com.android.providers.contacts/databases/contacts.db</code> <br></i>  <i>Installing sqlite3 on a computer is easier than in a non-armed hero.</i> </div><p>Source: <a href="https://habr.com/ru/post/74487/">https://habr.com/ru/post/74487/</a></p>
+      1) Install on the Android SDK computer. <br><br>  2) Using the adb utility (from the SDK kit, located in the TOOLS directory), we connect to the phone: <br> <code>./adb shell</code> <br> <br>  3) Next, open the contact database: <br> <code># sqlite3 /data/data/com.android.providers.contacts/databases/contacts.db</code> <br>  Note: I have unofficial custom firmware.  In official firmware this method did not check. <br><br>  4) For especially curious, you can enable the display of table headers: <br> <code>sqlite&gt; .headers ON</code> <br>  and still see the list of all tables in the database: <br> <code>sqlite&gt; .tables</code> <br> <br>  5) We look at all contacts: <br> <code>sqlite&gt; select * from people;</code> <br>  Note: remember the '_id' (the first number in the line) of the contact we need.  For example, 164. <br><br>  6) And, lo and behold, we change the type of contact with Google to Phone: <br> <code>sqlite&gt; update people set extra_group='2' where _id='164';</code> <br>  Or if you need to change all contacts (step 5 - skip <a name="habracut"></a>  ): <br> <code>sqlite&gt; update people set extra_group='2';</code> <br> <br>  Now this contact will be stored on your phone, and you can turn off the display of Google contacts. <br><br>  PS: I hope the article will help someone.  Comments are welcome! <br>  <b>UPD:</b> <br>  <i>If there is no firmware without root and sqlite3 in the phone, then we will use it on the computer.</i>  <i>Download the database on the computer:</i> <i><br> <code>adb pull /data/data/com.android.providers.contacts/databases/contacts.db contacts.db</code> <br></i>  <i>run sqlite3 on your computer:</i> <i><br> <code>sqlite3 contacts.db</code> <br></i>  <i>then we change the type of contacts and exit sqlite3.</i> <i><br></i>  <i>And then upload the modified file to the body:</i> <i><br> <code>adb push contacts.db /data/data/com.android.providers.contacts/databases/contacts.db</code> <br></i>  <i>Installing sqlite3 on a computer is easier than in a non-armed hero.</i> </div><p>Source: https://habr.com/ru/post/74487/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../74477/index.html">Photo shower Acer Aspire Revo</a></li>
+<li><a href="../7448/index.html">MySpace and Photobucket healed peacefully</a></li>
 <li><a href="../74480/index.html">Simultaneous use of multiple operating systems with colinux, Virtual PC and Desktops utility</a></li>
 <li><a href="../74482/index.html">Flash GAMM Kyiv 2009!</a></li>
 <li><a href="../74484/index.html">Datacenter Underground</a></li>

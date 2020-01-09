@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Making the code cleaner: Nuances of debugging output in Linux drivers</h1><div class="post__text post__text-html js-mediator-article">  As is well known to many, debugging messages in Linux regarding drivers are carried out by several subsets of macros and functions.  Not all analogues are interchangeable and work as it seems logical at first glance.  That is what this brief article will be about. <a name="habracut"></a><br><br>  First, let's look at what known message output functions are provided in the core internal API. <br><br>  Basic function <br><pre><code class="cpp hljs">printk(LEVEL <span class="hljs-string"><span class="hljs-string">"message\n"</span></span>);</code> </pre> <br>  From it there is a set of macros (the most frequently used): <br><pre> <code class="cpp hljs">pr_err(<span class="hljs-string"><span class="hljs-string">"message\n"</span></span>); pr_warn(<span class="hljs-string"><span class="hljs-string">"message\n"</span></span>); pr_info(<span class="hljs-string"><span class="hljs-string">"message\n"</span></span>); pr_debug(<span class="hljs-string"><span class="hljs-string">"message\n"</span></span>);</code> </pre><br>  And so on. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      For drivers, a set of functions with the prefix <code>dev_*</code> with the corresponding output levels is used, and separately for drivers of network cards with the prefix <code>netdev_*</code> .  And in general, the general rule is that the kernel subsystem or driver uses its prefix with a message output level suffix. <br><br>  All of them are full-fledged analogs of the <code>pr_*</code> record <code>printk(LEVEL …)</code> for <code>pr_*</code> and in the same way for <code>dev_*</code> and <code>netdev_*</code> except for <code>pr_debug()</code> , <code>dev_dbg()</code> and, as everyone has already guessed, <code>netdev_dbg()</code> . <br><br>  So, under what conditions we will see the message displayed by different options? <br><br>  With <code>printk(KERN_DEBUG "message\n")</code> : <br><ul><li>  the output level on the kernel command line is set to either more than 7 <b>or</b> the <i>ignore_loglevel</i> parameter is <i>passed</i> </li></ul><br>  and <code>pr_debug("message\n")</code> : <br><ul><li>  the output level on the kernel command line is set to either more than 7 <b>or</b> the <i>ignore_loglevel</i> parameter is <i>passed</i> </li><li>  the module of interest is built with the <code>DEBUG</code> option <b>or</b> the <code>CONFIG_DYNAMIC_DEBUG</code> kernel configuration option is <code>CONFIG_DYNAMIC_DEBUG</code> , and the corresponding messages (for example, indicating the module name: line number) are included in the list of output </li></ul><br>  Same for <code>dev_dbg()</code> , and for <code>netdev_dbg()</code> . <br><br>  In addition, special attention should be paid to the useful option <code>CONFIG_DYNAMIC_DEBUG</code> .  With all its dynamism, it does not begin to load the kernel itself, so not all modules can rely on it. <br><br>  Another dilemma about what to use in the product version: <code>CONFIG_DYNAMIC_DEBUG</code> <b>or</b> standard output, prefixed by a type condition: <br><pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">define</span></span></span><span class="hljs-meta"> mydbg(dev, format, arg…) \ do { \ </span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">if</span></span></span><span class="hljs-meta"> (mycooldriver-&gt;debug &gt; 0) \ dev_printk(KERN_DEBUG, dev, format, ##arg); \ } while (0)</span></span></code> </pre><br>  So the difference here is quite obvious, if you dig into the depths of the kernel source code, namely, in the first case, the output will be equal to no-op (empty operation), which is not so in the second case.  Accordingly, modules that are critical in terms of execution time should not be filled with the code shown above.  Moreover, the best option would be to use trace points in such places, but I will tell you about this sometime in the future. <br><br>  Bonus add that function <code>print_hex_dump_bytes()</code> relatively recently acquired support from the Dynamic Debug. </div><p>Source: <a href="https://habr.com/ru/post/262791/">https://habr.com/ru/post/262791/</a></p>
+      For drivers, a set of functions with the prefix <code>dev_*</code> with the corresponding output levels is used, and separately for drivers of network cards with the prefix <code>netdev_*</code> .  And in general, the general rule is that the kernel subsystem or driver uses its prefix with a message output level suffix. <br><br>  All of them are full-fledged analogs of the <code>pr_*</code> record <code>printk(LEVEL …)</code> for <code>pr_*</code> and in the same way for <code>dev_*</code> and <code>netdev_*</code> except for <code>pr_debug()</code> , <code>dev_dbg()</code> and, as everyone has already guessed, <code>netdev_dbg()</code> . <br><br>  So, under what conditions we will see the message displayed by different options? <br><br>  With <code>printk(KERN_DEBUG "message\n")</code> : <br><ul><li>  the output level on the kernel command line is set to either more than 7 <b>or</b> the <i>ignore_loglevel</i> parameter is <i>passed</i> </li></ul><br>  and <code>pr_debug("message\n")</code> : <br><ul><li>  the output level on the kernel command line is set to either more than 7 <b>or</b> the <i>ignore_loglevel</i> parameter is <i>passed</i> </li><li>  the module of interest is built with the <code>DEBUG</code> option <b>or</b> the <code>CONFIG_DYNAMIC_DEBUG</code> kernel configuration option is <code>CONFIG_DYNAMIC_DEBUG</code> , and the corresponding messages (for example, indicating the module name: line number) are included in the list of output </li></ul><br>  Same for <code>dev_dbg()</code> , and for <code>netdev_dbg()</code> . <br><br>  In addition, special attention should be paid to the useful option <code>CONFIG_DYNAMIC_DEBUG</code> .  With all its dynamism, it does not begin to load the kernel itself, so not all modules can rely on it. <br><br>  Another dilemma about what to use in the product version: <code>CONFIG_DYNAMIC_DEBUG</code> <b>or</b> standard output, prefixed by a type condition: <br><pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">define</span></span></span><span class="hljs-meta"> mydbg(dev, format, arg…) \ do { \ </span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">if</span></span></span><span class="hljs-meta"> (mycooldriver-&gt;debug &gt; 0) \ dev_printk(KERN_DEBUG, dev, format, ##arg); \ } while (0)</span></span></code> </pre><br>  So the difference here is quite obvious, if you dig into the depths of the kernel source code, namely, in the first case, the output will be equal to no-op (empty operation), which is not so in the second case.  Accordingly, modules that are critical in terms of execution time should not be filled with the code shown above.  Moreover, the best option would be to use trace points in such places, but I will tell you about this sometime in the future. <br><br>  Bonus add that function <code>print_hex_dump_bytes()</code> relatively recently acquired support from the Dynamic Debug. </div><p>Source: https://habr.com/ru/post/262791/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../262777/index.html">The next version of the browser Vivaldi TP4 is ready</a></li>
-<li><a href="../262779/index.html">Why Go and Rust are not rivals</a></li>
+<li><a href="../26278/index.html">Stumbi: StumbleUpon Safari Plugin</a></li>
 <li><a href="../262781/index.html">"Moore's Law" at Risk - Intel Delays New Chips</a></li>
+<li><a href="../262783/index.html">12 little-known facts about CSS (continued)</a></li>
 <li><a href="../262785/index.html">Breaking ETL Barriers With Spark Streaming by Concur. Meeting report</a></li>
 <li><a href="../262789/index.html">New DNS Server Features in Windows Server Technical Preview 2</a></li>
 <li><a href="../262793/index.html">Tax gopher. Features of the simplified tax system when working under contracts with Apple, Google and others</a></li>
 <li><a href="../262795/index.html">Are developers of a programming conference needed?</a></li>
 <li><a href="../262797/index.html">Video of reports from the conference "Russian Internet Technologies 2015"</a></li>
-<li><a href="../262801/index.html">Magic of tensor algebra: Part 9 - Derivation of the angular velocity tensor through the parameters of the final rotation. Apply Maxima</a></li>
-<li><a href="../262803/index.html">How to "feel" the results of software asset management and be satisfied</a></li>
+<li><a href="../2628/index.html">Black hole anatomy</a></li>
+<li><a href="../26280/index.html">Interesting observation</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

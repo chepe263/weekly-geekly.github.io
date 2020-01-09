@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>AppleScript vs iSync (MacOS X 10.4)</h1><div class="post__text post__text-html js-mediator-article"><h4>  Prehistory </h4><br>  iSync - a program to synchronize your address book, calendar with your phone.  I honestly got tired of opening iSync and synchronizing everything with the phone with my hands. <br><h4>  Task </h4><br>  write an application / script / workflow that would automatically synchronize.  Ideal - sync after making changes to iCal / AddressBook <br><a name="habracut"></a><h4>  Decision </h4><br>  AppleScript was chosen for implementation.  The algorithm works as follows: <br><ul><li>  changes to the calendar / address book </li><li>  iSync starts </li><li>  synchronized with the phone (BT is always on) </li><li>  iSync closes </li></ul><br>  Immediately there was a problem - how to keep track of changes in the calendar?  since at first glance there are no simple tracking tools, I had to stop at closing the calendar application. <br>  Problem number two - iSync does not have a command to synchronize with the phone, there is only a command to synchronize the databases.  exit - simulate pressing a shortcut with the active application window. <br>  Problem number three - it is not clear how to track the synchronization process (ended or not). <br>  There was an option to write an Always Run application (some kind of AppleScript server) that would listen to iCal events and activate the synchronization function.  upon first consideration, the varinant was dropped, since the construction <br> <code>on quit application "iCal" <br> -- some code here <br> end quit <br></code> <br>  did not work correctly - intercepted event exit server application. <br>  since everything is so bad, it was decided to write a workflow for Automator and embed its call in the Finder (the implementation claims to be super-perverted). <br>  The code that calls iSync and simulates a button click: <br> <code>tell application "iSync" <br> activate <br> end tell <br> <br> tell application "System Events" <br> if UI elements enabled then <br> tell process "iSync" <br> set frontmost to true <br> end tell <br> -- iSync doesn't have a command to sync with device, so gettin' tricky with it <br> keystroke "t" using command down <br> keystroke return <br> end if <br> end tell</code> <br>  then Automator was opened, and a single block workflow was created - the execution of AppleScript, which was later integrated into the Finder's context menu. <br>  Listing script in automator <br> <code>on run {input, parameters} <br> -- routine that forces iSync to sync with cell phone <br> tell application "iSync" <br> (activate) <br> (synchronize) <br> end tell <br> <br> tell application "System Events" <br> if UI elements enabled then <br> tell process "iSync" <br> set frontmost to true <br> end tell <br> -- iSync doesn't have a command to sync with device, so gettin' tricky with it <br> keystroke "t" using command down <br> keystroke return <br> end if <br> delay 30 <br> quit application "iSync" <br> end tell <br> return input <br> end run</code> <br> <br>  The task was solved, but not brilliantly.  If you know a more elegant solution - write in the comments. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/48045/">https://habr.com/ru/post/48045/</a></p>
+    <p>Source: https://habr.com/ru/post/48045/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../48035/index.html">Bionic Ear - we play spies</a></li>
 <li><a href="../48038/index.html">Methodologies or models?</a></li>
 <li><a href="../48039/index.html">Full hard drive cleaning. DBAN</a></li>
+<li><a href="../4804/index.html">In 2007 “mobilization” of social networks is coming.</a></li>
 <li><a href="../48041/index.html">John Lennon and OLPC</a></li>
 <li><a href="../48042/index.html">Manage tabs in different browsers</a></li>
 <li><a href="../48046/index.html">We write screensaver on wxWidgets</a></li>
 <li><a href="../48048/index.html">Time billing for Microsoft programs</a></li>
 <li><a href="../48049/index.html">GameCommunity.ru - Game Community</a></li>
+<li><a href="../4805/index.html">What Alcatel-Lucent Carries Us</a></li>
 <li><a href="../48052/index.html">Eclipse PDT 2.0 Released</a></li>
-<li><a href="../48053/index.html">Frequent programming errors in Bash (end)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

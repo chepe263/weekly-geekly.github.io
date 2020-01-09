@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>FPGA timing analysis or how I mastered Timequest</h1><div class="post__text post__text-html js-mediator-article">  Good day, dear habravchane. <br><br>  In fact, I am a radio physics engineer and programming an FPGA is not my direct activity, but at one point it took to write a program to synchronize several oscillographic modules.  I had to master this science.  About what problems I have with this, under the cut. <br><br><img src="https://habrastorage.org/files/499/3b3/27f/4993b327f82742dfa865f88f2c27d869.png"><br><a name="habracut"></a><br>  <s>Many</s> I hope at least one of you has programmed under the FPGA at a level higher than the blinking LED.  If this was the case, then you might notice that sometimes something is wrong.  There are problems with this kind of timings: as the frequency rises, the system becomes unstable, the bitics start to stick, the data disappears and the project does not work. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      This is a paraphrase of an article about where these problems come from and how to deal with them.  The author of the post uses ALTERA and software for the development of the same company (Quartus II). <br><br>  To better understand the essence of the problem, consider the simplest model of the 8-bit memory cell. <br><br><pre><code class="hljs pgsql">module habr111( <span class="hljs-keyword"><span class="hljs-keyword">input</span></span> [<span class="hljs-number"><span class="hljs-number">7</span></span>:<span class="hljs-number"><span class="hljs-number">0</span></span>] data, <span class="hljs-keyword"><span class="hljs-keyword">input</span></span> clk, output[<span class="hljs-number"><span class="hljs-number">7</span></span>:<span class="hljs-number"><span class="hljs-number">0</span></span>] <span class="hljs-keyword"><span class="hljs-keyword">out</span></span> ); reg [<span class="hljs-number"><span class="hljs-number">7</span></span>:<span class="hljs-number"><span class="hljs-number">0</span></span>] count; <span class="hljs-keyword"><span class="hljs-keyword">always</span></span> @ ( posedge clk ) count &lt;= data; assign <span class="hljs-keyword"><span class="hljs-keyword">out</span></span> = count; endmodule</code> </pre> <br><br>  We start the simulator and see that when data comes to the input in a certain phase relative to the clock signal, garbage data appears at the output. <br><br><br><br>  The fact is that the D-trigger digital device is only as a first approximation.  That is, in essence, this is a set of analog transistors that have their own time of rising fronts.  It happens that clock catches the moment when the signal grows to the voltage of the transition between 0 and 1. This is called a metastable state and what will be formed at the output is not obvious. <br><br>  Also, each bit has its own delay: some bits arrive earlier, some later.  If data switching occurs at the time of clock switching, then due to the effect described above, there is a mix of old and new bits to the output. <br><br>  For the project to work correctly, you need to get rid of these effects.  To do this, you must independently consider those times  In Quartus II, this is the Timequest program.  The question is: why do we need to know this? <br><br>  The scheme by which timeqwest calculates timings consists of two registers.  If all their parameters are known, she will calculate and do the correct wiring.  But if there is some external register, about which Timequest has no information, then the developer needs to calculate and enter everything on his own.  How this is done is described in this article. <br><br>  My free <a href="https://www.dropbox.com/s/jm7g9n455qehuoz/%25D0%25BF%25D0%25B5%25D1%2580%25D0%25B5%25D0%25B2%25D0%25BE%25D0%25B4.docx">translation</a> . <br><br>  I hope this will help someone as well as it helped me. </div><p>Source: <a href="https://habr.com/ru/post/232599/">https://habr.com/ru/post/232599/</a></p>
+      This is a paraphrase of an article about where these problems come from and how to deal with them.  The author of the post uses ALTERA and software for the development of the same company (Quartus II). <br><br>  To better understand the essence of the problem, consider the simplest model of the 8-bit memory cell. <br><br><pre><code class="hljs pgsql">module habr111( <span class="hljs-keyword"><span class="hljs-keyword">input</span></span> [<span class="hljs-number"><span class="hljs-number">7</span></span>:<span class="hljs-number"><span class="hljs-number">0</span></span>] data, <span class="hljs-keyword"><span class="hljs-keyword">input</span></span> clk, output[<span class="hljs-number"><span class="hljs-number">7</span></span>:<span class="hljs-number"><span class="hljs-number">0</span></span>] <span class="hljs-keyword"><span class="hljs-keyword">out</span></span> ); reg [<span class="hljs-number"><span class="hljs-number">7</span></span>:<span class="hljs-number"><span class="hljs-number">0</span></span>] count; <span class="hljs-keyword"><span class="hljs-keyword">always</span></span> @ ( posedge clk ) count &lt;= data; assign <span class="hljs-keyword"><span class="hljs-keyword">out</span></span> = count; endmodule</code> </pre> <br><br>  We start the simulator and see that when data comes to the input in a certain phase relative to the clock signal, garbage data appears at the output. <br><br><br><br>  The fact is that the D-trigger digital device is only as a first approximation.  That is, in essence, this is a set of analog transistors that have their own time of rising fronts.  It happens that clock catches the moment when the signal grows to the voltage of the transition between 0 and 1. This is called a metastable state and what will be formed at the output is not obvious. <br><br>  Also, each bit has its own delay: some bits arrive earlier, some later.  If data switching occurs at the time of clock switching, then due to the effect described above, there is a mix of old and new bits to the output. <br><br>  For the project to work correctly, you need to get rid of these effects.  To do this, you must independently consider those times  In Quartus II, this is the Timequest program.  The question is: why do we need to know this? <br><br>  The scheme by which timeqwest calculates timings consists of two registers.  If all their parameters are known, she will calculate and do the correct wiring.  But if there is some external register, about which Timequest has no information, then the developer needs to calculate and enter everything on his own.  How this is done is described in this article. <br><br>  My free <a href="https://www.dropbox.com/s/jm7g9n455qehuoz/%25D0%25BF%25D0%25B5%25D1%2580%25D0%25B5%25D0%25B2%25D0%25BE%25D0%25B4.docx">translation</a> . <br><br>  I hope this will help someone as well as it helped me. </div><p>Source: https://habr.com/ru/post/232599/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../232587/index.html">How Airbnb manages to organize the work of its developers without controlling them</a></li>
+<li><a href="../23259/index.html">Easter egg in Firefox 3 beta 5</a></li>
 <li><a href="../232591/index.html">Socio-cultural migration of the 2600-year period of history in 5 minutes: cognitive visualization</a></li>
 <li><a href="../232593/index.html">Unusual DIY materials. Dentistry + electronics =? Part 1</a></li>
 <li><a href="../232595/index.html">To listen to music or not - that is the question</a></li>
 <li><a href="../232597/index.html">Bookmarking Services: General Considerations and Problem Solving Example</a></li>
+<li><a href="../2326/index.html">Firefox 3.0 is available to developers</a></li>
+<li><a href="../23260/index.html">Google Gadgets & Web Widgets in your Linux</a></li>
 <li><a href="../232601/index.html">Major vulnerability in WordPress and Drupal can put a site</a></li>
 <li><a href="../232603/index.html">Magento step by step: REST API</a></li>
 <li><a href="../232605/index.html">fork () vs. vfork ()</a></li>
-<li><a href="../232609/index.html">Escape from the office, or how we started developing our mobile game. Part 1</a></li>
-<li><a href="../232613/index.html">Prospects for the development of speech recognition systems (excerpt from the study)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

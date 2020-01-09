@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Automated backup of Windows workstations using rsync and vshadow - Part 2, setting up a receiving server</h1><div class="post__text post__text-html js-mediator-article"><h4>  As an example, I will use openSUSE 11.4 in text (minimum) mode on the 2.6.37 kernel.  (you can also upgrade it to 3.1.1 with several commands that will be available below) </h4><br><br>  1. Of course, you must first install a clean operating system and configure RAID.  In our case, simple mirroring will be used, that is, RAID 1. This can be configured during the installation of the operating system or collected by installing it if you <a name="habracut"></a>  used a custom-built cast from susestudio.com.  Typically, you can use a Yast Partitioner to create a RAID Mirror to ease the suffering. <br><br>  2. If there is a desire to immediately ruin the installed system, we sew it a new kernel.  To do this, perform: <br> <code><a href="http://download.opensuse.org/repositories/Kernel"></a> zypper ar download.opensuse.org/repositories/Kernel:/stable/standard Kernel:stable <br> zypper in --from Kernel:stable kernel-default</code> <br>  and restart the system. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      3. Install truecrypt.  Unfortunately, it is not included in the SuSE repository, therefore we execute: <br> <code><a href=""></a> wget www.truecrypt.org/download/truecrypt-7.1-linux-console-x86.tar.gz <br> tar -xvf truecrypt-7.1-linux-console-x86.tar.gz <br> ./truecrypt-7.1-setup-console-x86</code> <br>  Since it lacks an additional library, we decide with the command <br> <code>zypper in libfuse.so.2</code> <br> <br>  4. Create a protected partition. <br> <code>: truecrypt -c /dev/sdb (    ) --quick,     [1] <br> : truecrypt /dev/sdb --filesystem=NONE <br>   : mkfs.ext4 /dev/mapper/truecrypt1 <br> : mount /dev/mapper/truecrypt1 /backup <br> ,    : df –h</code> <br> <br>  Here is the script file that will do this in the future, so as not to bother with the commands: <br><br> <code>TC_DEV="/dev/sdb" &lt;-  <br> TC_MP="/backup" &lt;- ? <br> TC_CONT="/dev/mapper/truecrypt1" &lt;-? <br> <br> ## Truecrypt thing <br> <br> # Dismount all mounted volumes <br> <br> truecrypt -d -f <br> <br> # Mount volumes <br> <br> truecrypt $TC_DEV --filesystem=none <br> <br> mount -t ext4 $TC_CONT $TC_MP -o acl,user_xattr</code> <br> <br>  5. Edit the rsyncd daemon configuration files, /etc/rsyncd.conf, add the user and password to /etc/rsyncd.secrets. <br>  This is what rsyncd.conf looks like <br><br> <code>gid = users <br> read only = false <br> use chroot = true <br> transfer logging = true <br> log format = %h %o %f %l %b <br> log file = /var/log/rsyncd.log <br> pid file = /var/run/rsyncd.pid <br> slp refresh = 300 <br> use slp = false <br> <br> [backupusr] <br> path = /backup/ &lt; ? <br> auth users = sbackupusr &lt;  ? <br> gid = users <br> read only = no <br> list = yes <br> hosts allow = 0.0.0.0/24 &lt;   <br> hosts deny = * &lt;  <br> secrets file = /etc/rsyncd.secrets &lt; ?</code> <br> <br>  6. We allow the rsync daemon to listen to the required port on it - you can do it in the Yast - Firewall, or manually. <br><br>  7. Start rsyncd: rcrsyncd start, turn on the service: chckonfig rsyncd on <br><br>  Run the script, which was considered in the first part, check.  He can swear that he cannot create a primary folder by computer name, we decide with an ugly command chmod 777 / backup, this is not critical, as the script will close access to the folder after the first backup.  Next time I will talk about a script that will do snapshots by day of the week, as well as connect our Linux machine to the domain and arrange the rights to the shared folders. </div><p>Source: <a href="https://habr.com/ru/post/132906/">https://habr.com/ru/post/132906/</a></p>
+      3. Install truecrypt.  Unfortunately, it is not included in the SuSE repository, therefore we execute: <br> <code><a href=""></a> wget www.truecrypt.org/download/truecrypt-7.1-linux-console-x86.tar.gz <br> tar -xvf truecrypt-7.1-linux-console-x86.tar.gz <br> ./truecrypt-7.1-setup-console-x86</code> <br>  Since it lacks an additional library, we decide with the command <br> <code>zypper in libfuse.so.2</code> <br> <br>  4. Create a protected partition. <br> <code>: truecrypt -c /dev/sdb (    ) --quick,     [1] <br> : truecrypt /dev/sdb --filesystem=NONE <br>   : mkfs.ext4 /dev/mapper/truecrypt1 <br> : mount /dev/mapper/truecrypt1 /backup <br> ,    : df –h</code> <br> <br>  Here is the script file that will do this in the future, so as not to bother with the commands: <br><br> <code>TC_DEV="/dev/sdb" &lt;-  <br> TC_MP="/backup" &lt;- ? <br> TC_CONT="/dev/mapper/truecrypt1" &lt;-? <br> <br> ## Truecrypt thing <br> <br> # Dismount all mounted volumes <br> <br> truecrypt -d -f <br> <br> # Mount volumes <br> <br> truecrypt $TC_DEV --filesystem=none <br> <br> mount -t ext4 $TC_CONT $TC_MP -o acl,user_xattr</code> <br> <br>  5. Edit the rsyncd daemon configuration files, /etc/rsyncd.conf, add the user and password to /etc/rsyncd.secrets. <br>  This is what rsyncd.conf looks like <br><br> <code>gid = users <br> read only = false <br> use chroot = true <br> transfer logging = true <br> log format = %h %o %f %l %b <br> log file = /var/log/rsyncd.log <br> pid file = /var/run/rsyncd.pid <br> slp refresh = 300 <br> use slp = false <br> <br> [backupusr] <br> path = /backup/ &lt; ? <br> auth users = sbackupusr &lt;  ? <br> gid = users <br> read only = no <br> list = yes <br> hosts allow = 0.0.0.0/24 &lt;   <br> hosts deny = * &lt;  <br> secrets file = /etc/rsyncd.secrets &lt; ?</code> <br> <br>  6. We allow the rsync daemon to listen to the required port on it - you can do it in the Yast - Firewall, or manually. <br><br>  7. Start rsyncd: rcrsyncd start, turn on the service: chckonfig rsyncd on <br><br>  Run the script, which was considered in the first part, check.  He can swear that he cannot create a primary folder by computer name, we decide with an ugly command chmod 777 / backup, this is not critical, as the script will close access to the folder after the first backup.  Next time I will talk about a script that will do snapshots by day of the week, as well as connect our Linux machine to the domain and arrange the rights to the shared folders. </div><p>Source: https://habr.com/ru/post/132906/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../132907/index.html">We got angry neighbors? Choose the right tool.</a></li>
 <li><a href="../132908/index.html">Canobuvosti, 118th edition</a></li>
 <li><a href="../132909/index.html">Restoring the "killed" LaCie Network Space 2 without removing the HDD</a></li>
+<li><a href="../13291/index.html">Eight Technorati employees are laid off; CEO of the company leaves his position</a></li>
 <li><a href="../132911/index.html">Newest world of the smallest PC</a></li>
-<li><a href="../132912/index.html">How we built a mobile network on the “Amur” highway: telephone installation in the country and no nails!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

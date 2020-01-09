@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Ruby integers</h1><div class="post__text post__text-html js-mediator-article">  Ruby supports integers and floating point numbers (float numbers).  Integers can be of any order (in fact, they are limited on top by the amount of memory allocated by your operating system).  Integers within the range (-2 ^ 30, 2 ^ 30 - 1) or (-2 ^ 62, 2 ^ 62 -1) are stored in binary form and are instances of the class <strong>Fixnum</strong> .  Integers outside these ranges are stored as instances of the <strong>Bignum</strong> class (at the moment the class is a variable length set whose elements are instances of the class <strong>Fixnum</strong> ).  This difference is transparent to the user and Ruby automatically converts classes to both sides. <br><a name="habracut"></a><br><blockquote>  num = 81 <br>  6.times do <br>  puts "# {num.class}: # {num}" <br>  num * = num <br>  end </blockquote><br>  will give <br><blockquote>  Fixnum: 81 <br>  Fixnum: 6561 <br>  Fixnum: 43046721 <br>  Bignum: 1853020188851841 <br>  Bignum: 3433683820292512484657849089281 <br>  Bignum: 11790184577738583171520872861412518665678211592275841109096961 </blockquote><br>  To write an integer literal, you optionally use the sign (" <em>+</em> " or " <em>-</em> "), an optional indicator indicating what form the number should be written in (see example: <em>0</em> for octal, <em>0d</em> for decimal — the default is <em>0x</em> for hex binary), then write a string consisting of numbers.  Underscores are ignored in this line, and some guys use them instead of a comma in higher numbers. <br><blockquote>  123456 =&gt; 123456 # Fixnum <br>  0d123456 =&gt; 123456 # Fixnum <br>  123_456 =&gt; 123456 # Fixnum underscores are ignored <br>  -543 =&gt; 543 # Fixnum negative number <br>  0xaabb =&gt; 43707 # Fixnum hexadecimal form <br>  0377 =&gt; 255 # Fixnum octal form <br>  0b10_1010 =&gt; 42 # Fixnum binary form with minus sign <br>  123_456_789_123_456_789 =&gt; 123456789123456789 # Bignum </blockquote><br>  You can generate control characters (carriage return, for example) using the form <em>? \ Cx</em> and <em>? \</em> <em>Cx</em> .  Metacharacters ( <em>x | 0x80</em> ) can be generated using <em>? \ Mx</em> .  Their combination is generated using <em>? \ M- \ Cx</em> .  The backslash number can be obtained using the entry <em>? \\</em> . <br><blockquote>  ? a =&gt; 97 # ASCII character <br>  ? \ n =&gt; 10 # code for the new line (0x0a) <br>  ? \ Ca =&gt; 1 # CTRL a =? A &amp; 0x9f = 0x01 <br>  ? \ Ma =&gt; 225 # meta sets bit 7 <br>  ? \ M- \ Ca =&gt; 129 # meta and control a <br>  ? \ C-?  =&gt; 127 # delete character </blockquote><br>  A numeric literal with a decimal point and / or exponent corresponds to an object of class <strong>Float</strong> , which in turn corresponds to the native type <strong>double</strong> operating system.  After the dot, there must be a number, for example, if you write the number <em>1.0e3</em> in the form <em>1.e3</em> , Ruby will try to call the <em>e3</em> method of the <strong>Fixnum</strong> class. <br>  All numbers are objects and respond to a large number of messages.  This is different from, for example, C ++: the module of the number should be found in the <em>num.abs</em> method, not <em>abs (num)</em> . <br>  Integers support some useful iterators.  Their names speak for themselves: <em>6.times calls the</em> block of code associated with it 6 times, <em>upto</em> and <em>downto</em> are needed to set the upper or lower limit for the number of calls to the block of code.  The <strong>Numeric</strong> class provides a generic <em>step</em> method, more similar to all the usual <em>for</em> . <br><blockquote>  3.times {print "X"} <br>  1.upto (5) {| i |  print i, ""} <br>  99.downto (95) {| i |  print i, ""} <br>  50.step (80, 5) {| i |  print i, ""} </blockquote><br>  will give <br><blockquote>  XXX 1 2 3 4 5 99 98 97 96 95 50 55 60 65 70 75 80 </blockquote><br>  Finally, you need to warn Perl programmers (and some others too - approx. Transl.): Strings that contain numbers are not automatically converted into numbers.  This can let you down if you read numbers from a file.  For example, we want to find the sum of the numbers on each line from the file: <br><blockquote>  3 4 <br>  5 6 <br>  7 8 </blockquote><br>  The following code will give an unexpected result for someone: <br><blockquote>  some_file.each do | line | <br>  v1, v2 = line.split # split a line into objects between spaces <br>  print v1 + v2, "" <br>  end </blockquote><br>  will give us <br><blockquote>  34 56 78 </blockquote><br>  The problem is that <em>v1</em> and <em>v2</em> contain references to string objects.  For them, the result of the addition operation is the concatenation of two strings.  To achieve the desired result, use the Integer method to convert a string to an integer. <br><blockquote>  some_file.each do | line | <br>  v1, v2 = line.split # split a line into objects between spaces <br>  print Integer (v1) + Integer (v2), "" <br>  end </blockquote><br>  finally gives us: <br><blockquote>  7 11 15 </blockquote><br>  Hooray! <br><br>  <em>Dave Thomas</em> Book Translation <em>- Programming Ruby</em> . <br></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/31535/">https://habr.com/ru/post/31535/</a></p>
+    <p>Source: https://habr.com/ru/post/31535/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

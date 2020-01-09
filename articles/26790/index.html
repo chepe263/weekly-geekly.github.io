@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Undocumented feature in WebSphere Portal 5.1 (shared session for portlet and servlet)</h1><div class="post__text post__text-html js-mediator-article"><h4>  Was the following task: </h4>  write a portlet that displays a graph of the report stored in Cognos.  The Cognos report can be built very, very long, from a few seconds to 20. <br>  Making the user wait so much time is a terrible decision. <br><a name="habracut"></a><br>  I decided to put a servlet in the portlet application.  When loading, the portlet sends <em>xmlHttpRequest</em> with the path to the report, and in response it receives a relative link to the report picture that the servlet received from Cognos and saved on the server. <br>  It would seem that everything is very, very simple, but the problem is that when refreshing the page or accessing any portlet on the page, Cognos portlet will send a new request to the servlet.  This is not necessary, because  The picture is already uploaded and you do not need to update it every five minutes. <br>  It is no secret that the visitor of the portal (any other container) has a session.  The session is usually put so-called StateBean, bin, which stores all the trash that the user may need while working with the portal.  We make in bin field <br> <code>String pathToImage;</code> <br>  and two methods: <br> <code>public String getPathToCognosImage(){ return pathToImage} <br> public void setPathToCognosImage(String path){ pathToImage = path;}</code> <br> <br>  The problem is that when receiving a servlet response, JavaScript cannot call the bean method.  I think you understand why. <br>  There is only one way out - to write to the bin on the servlet.  But is it possible?  As they say, it was impossible to get up on portal 5.0.  Unfortunately, I did not find Portal 5.0, and I do not have the opportunity to check this rumor. <br><br>  The method of accessing a session bean is as follows: <br> <code>public class GetPathToChartImageServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet { <br> //bla-bla-bla <br> protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { <br> //getting aditional parameters for Cognos. <br> //Try to get it from StateBean <br> Enumeration en = request.getSession().getAttributeNames(); <br> while(en.hasMoreElements()){ <br> attrName = (String)en.nextElement(); <br> Object o = request.getSession().getAttribute(attrName); <br> System.out.println("attr name " + attrName + " = " + o.toString()); <br> if(o instanceof ru.habr.bean.ChartDataStateBean){ <br> System.out.println("attr name = " + attrName + ". Is my StateBean"); <br> statebean = (ru.habr.bean.ChartDataStateBean)o; <br> break; <br> } <br> } <br> }//doPost <br> }//class <br></code> <br><br>  The following lines can be found in the console: <br><h5>  [04.06.08 11: 04: 25: 495 MSD] 5A9899ea SystemOut O attr name PC_PRIVATE_5_0_CSI_PortletSessionData = {caiid = 5_0_CSI [PORTLET_ENTITY: 13202], creationTime = 1212562835246, lastAccessedTime = 12126 </h5><br><h5>  [04.06.08 11: 04: 25: 495 MSD] 5a9899ea SystemOut O attr name PC_5_0_CSI_en.habr.bean.ChartDataStateBean = ru.habr.bean.ChartDataStateBean@7dc1d9b7 </h5><br><h5>  [04.06.08 11: 04: 25: 495 MSD] 5a9899ea SystemOut O attr name = PC_5_0_CSI_en.habr.bean.ChartDataStateBean.  Is my statebean </h5>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Cheers, bin is available! <br><br>  Before the body of the method ends, you need to remember to write the changes: <br> <code>String newRelativePathToImageFromCognos = CognosFacadeAdapter.getInstance().runReport(reportStringForCognos); <br> statebean.setPathToImage(newRelativePathToImageFromCognos); <br> request.getSession().setAttribute(attrName, statebean); <br></code> <br><br>  This possibility is easily explained by the fact that: <br> <a href="http://picasaweb.google.com/Serega.Sheypak/Technical/photo"><img src="https://habrastorage.org/getpro/habr/post_images/934/821/76e/93482176e184e2767be6b8fbbfaff57c.jpg"></a> <br>  Externally, it looks like this: <br> <a href="http://picasaweb.google.com/Serega.Sheypak/Technical/photo"><img src="https://habrastorage.org/getpro/habr/post_images/f7e/033/736/f7e033736da16f28c5711734e340eb68.jpg"></a> <br><br>  PS <br>  habracut text = “What should I do?” is displayed not once, but several.  Is this a glitch or such a joke? </div><p>Source: <a href="https://habr.com/ru/post/26790/">https://habr.com/ru/post/26790/</a></p>
+      Cheers, bin is available! <br><br>  Before the body of the method ends, you need to remember to write the changes: <br> <code>String newRelativePathToImageFromCognos = CognosFacadeAdapter.getInstance().runReport(reportStringForCognos); <br> statebean.setPathToImage(newRelativePathToImageFromCognos); <br> request.getSession().setAttribute(attrName, statebean); <br></code> <br><br>  This possibility is easily explained by the fact that: <br> <a href="http://picasaweb.google.com/Serega.Sheypak/Technical/photo"><img src="https://habrastorage.org/getpro/habr/post_images/934/821/76e/93482176e184e2767be6b8fbbfaff57c.jpg"></a> <br>  Externally, it looks like this: <br> <a href="http://picasaweb.google.com/Serega.Sheypak/Technical/photo"><img src="https://habrastorage.org/getpro/habr/post_images/f7e/033/736/f7e033736da16f28c5711734e340eb68.jpg"></a> <br><br>  PS <br>  habracut text = “What should I do?” is displayed not once, but several.  Is this a glitch or such a joke? </div><p>Source: https://habr.com/ru/post/26790/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

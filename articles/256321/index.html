@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Geolocation without GPS (part 1)</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/845/308/911/845308911ec746289f21f997b803a924.jpg" alt="wifi" width="300" height="300" align="left"><br>  I present the public base of geolocation of telephone towers and Wi-Fi routers.  I needed a stable and unlimited base for the Android application, which needed accurate geolocation from all available sources (GPS, Wi-Fi, Mobile).  I had to create a database of cellular towers and Wi-Fi.  All interested in asking under the cat. <br><a name="habracut"></a><br>  Brief description of the application: <br><ol><li>  Stage 1. Every few minutes, the application launches the collection of information that is “visible” to the mobile phone (GPS, Mobile towers, all visible Wi-Fi) and saves to the local database; </li><li>  Step 2. The phone is synchronized once every half hour with the remote server and reports its location for each entry from the local database.  Each time, the phone finds out “where is it?” By sending data about mobile towers and Wi-Fi to the API server. </li></ol><br>  Location Algorithm: <br><ul><li>  If you see the GPS and the data "fresh" we trust them; </li><li>  If there is Wi-Fi, send a request for a Wi-Fi position.  If a position is found, we trust him; </li><li>  If there is a mobile station, we get its position and trust this position; </li><li>  If all we get is unfortunate, the position on ip, unfortunately, is not very accurate. </li></ul><br>  The most interesting thing is getting coordinates via Wi-Fi and Cell ID (Mobile Station ID). <br><br>  Unfortunately, I have not found a single public extensive and relevant database that would provide an API without keys and limits on the number of requests.  I had to create my base.  More precisely two - for Wi-Fi and mobile towers. <br><br>  <b>Determining the location of Wi-Fi</b> ( <a href="https://www.mylnikov.org/archives/1063">original article</a> ). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Here I will present the main calculations.  No keys are needed to use the API; there are no restrictions on the number of requests: <a href="https://api.mylnikov.org/geolocation/wifi%3Fv%3D1.1%26bssid%3D08:18:1A:CC:97:82">https://api.mylnikov.org/geolocation/wifi?v=1.1&amp;bssid=</a> {wifi bssid} <br>  {wifi bssid} - Bssid access points (MAC address of the access point network card). <br><br>  The accuracy of the stored coordinates is about 155 meters.  The number of entries is about 10.3M +.  The base is constantly updated and supplemented, but I will be grateful if someone offers an additional open base. <br><br>  <b>Determining the location of the mobile operator's mobile station</b> ( <a href="https://www.mylnikov.org/archives/1056">original article</a> ). <br><br>  I will also present the calculations: <a href="https://api.mylnikov.org/geolocation/cell%3Fv%3D1.1%26mcc%3D250%26mnc%3D02%26cellid%3D44706574%26lac%3D6800">https://api.mylnikov.org/geolocation/cell?v=1.1&amp;mcc=</a> {mcc} &amp; mnc = {mnc} &amp; cellid = {cellid} &amp; lac = {lac} <br><ul><li>  mcc - Integer (Country Code); </li><li>  mnc - Integer (telephone operator code); </li><li>  cellid - Integer (telephone exchange code); </li><li>  lac - Integer (Area Code or Area, Location). </li></ul><br>  The accuracy of the data is about 1100-1600 meters.  In the base of 10M + towers.  The average recording age is 4 weeks. <br><br>  The API script is written in Python, the database is MySQL. <br><br>  I hope someone this database will be useful and someone will be able to use this database as a service. <br><br>  Freedom of information! <br><br>  UPD.  The API response had a grammatical error in the word latitude.  in the abbreviation, this field turned out to be “lan”.  Thanks for pointing out the error.  Currently showing two fields for backward compatibility.  Community, what is better to do in this case?  A new method with the correct field, or in return two identical fields to return?  Many thanks for pointing out my shortcomings! </div><p>Source: <a href="https://habr.com/ru/post/256321/">https://habr.com/ru/post/256321/</a></p>
+      Here I will present the main calculations.  No keys are needed to use the API; there are no restrictions on the number of requests: <a href="https://api.mylnikov.org/geolocation/wifi%3Fv%3D1.1%26bssid%3D08:18:1A:CC:97:82">https://api.mylnikov.org/geolocation/wifi?v=1.1&amp;bssid=</a> {wifi bssid} <br>  {wifi bssid} - Bssid access points (MAC address of the access point network card). <br><br>  The accuracy of the stored coordinates is about 155 meters.  The number of entries is about 10.3M +.  The base is constantly updated and supplemented, but I will be grateful if someone offers an additional open base. <br><br>  <b>Determining the location of the mobile operator's mobile station</b> ( <a href="https://www.mylnikov.org/archives/1056">original article</a> ). <br><br>  I will also present the calculations: <a href="https://api.mylnikov.org/geolocation/cell%3Fv%3D1.1%26mcc%3D250%26mnc%3D02%26cellid%3D44706574%26lac%3D6800">https://api.mylnikov.org/geolocation/cell?v=1.1&amp;mcc=</a> {mcc} &amp; mnc = {mnc} &amp; cellid = {cellid} &amp; lac = {lac} <br><ul><li>  mcc - Integer (Country Code); </li><li>  mnc - Integer (telephone operator code); </li><li>  cellid - Integer (telephone exchange code); </li><li>  lac - Integer (Area Code or Area, Location). </li></ul><br>  The accuracy of the data is about 1100-1600 meters.  In the base of 10M + towers.  The average recording age is 4 weeks. <br><br>  The API script is written in Python, the database is MySQL. <br><br>  I hope someone this database will be useful and someone will be able to use this database as a service. <br><br>  Freedom of information! <br><br>  UPD.  The API response had a grammatical error in the word latitude.  in the abbreviation, this field turned out to be “lan”.  Thanks for pointing out the error.  Currently showing two fields for backward compatibility.  Community, what is better to do in this case?  A new method with the correct field, or in return two identical fields to return?  Many thanks for pointing out my shortcomings! </div><p>Source: https://habr.com/ru/post/256321/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../256309/index.html">Webiny Framework. First look</a></li>
 <li><a href="../256311/index.html">Technical Webinars Series: Optimize Internet Traffic with Kerio Control</a></li>
 <li><a href="../256315/index.html">Vkontakte redesign under 1440pk +</a></li>
 <li><a href="../256317/index.html">Machine Learning - 4: Moving Average</a></li>
 <li><a href="../256319/index.html">Miracle Yudo Yukit fish or the 128th website builder</a></li>
+<li><a href="../25632/index.html">Useful gifts & trash</a></li>
 <li><a href="../256323/index.html">Average Freelancer Rates - Payoneer Survey Results</a></li>
 <li><a href="../256325/index.html">Intensity, scroll indicator (or life after scrollbar)</a></li>
 <li><a href="../256329/index.html">Play head</a></li>
+<li><a href="../25633/index.html">HRP-2: Anime Robot</a></li>
 <li><a href="../256331/index.html">Temporal relativistic ontological space</a></li>
-<li><a href="../256333/index.html">The program of practical training in the field of information security: "Zero Security: A"</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Smart sessions</h1><div class="post__text post__text-html js-mediator-article">  Solve performance problems. <br><br>  <b>Initial data.</b> <br>  We broadcast football matches via the Internet.  Visitors: 5,000-10,000 on regular days, 100,000-150,000 on match days. <br><br>  <b>In the data center</b> <br><ul><li>  5 web servers with apache and PCP, hung out through hardware load balancer </li><li>  2 memkesh pools: for sessions and data from web services </li></ul><br>  <b>Problem</b> <br>  With a large influx of visitors, the local network is overloaded due to the large number of calls to the memksh.  <u>Aggravating factors</u> : 100 Mbit network, both pools on the same servers. <br><a name="habracut"></a><br>  <b>Solutions</b> <br><ul><li>  Increasing the network to 1Gbit after the end of the series of matches </li><li>  Increase cache storage time (as a temporary measure) </li><li>  Using smart session technology </li></ul><br>  Today we will talk about the technology of smart sessions, which we used to reduce the load. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  What is the essence of technology </h5><br><ol><li>  We do not create a session if it is not really needed. </li><li>  We do not update the session in the repository, if it has not changed. </li></ol><br>  In fact, our site is paid, even if we have 150,000 unique per day, then there are really few people willing to pay.  Visitors are distributed approximately as follows: <br><ul><li>  70% - Gawker.  They opened the main page, they realized that it wasn’t what they needed, they closed it.  That is, S worked well, and rake us. </li><li>  28% - Fans.  There is no money, but use our site to keep track of information during the match (goals, substitutions).  Usually not recorded, because the information is available and so. </li><li>  2% - Really watching the matches, registering and paying. </li></ul><br><br><h5>  Implementation </h5><br>  Since we use memkesh, we already have a Session object, which overloads the standard session functionality and allows us to store the latest in memkesh.  Additionally we do the following: <br><ul><li>  We put the global session_start () in if so that the session is not created when not asked. <br><blockquote><code>if(!empty($_COOKIE[ini_get('session.name')])) <br> session_start(); <br></code> </blockquote></li><li>  In the place where the user log in we add the start of the session, because here it is already necessary: <br><blockquote> <code>if(empty($_COOKIE[ini_get('session.name')])) <br> session_start(); <br></code> </blockquote></li><li>  And finally, in our object we create an additional static variable, where we store the contents of the session while reading, and during writing we do the following check at the very beginning: <br><blockquote> <code>if(self::$data !== null &amp;&amp; self::$data == $currentData) <br> return strlen($currentData); <br></code> </blockquote></li></ul><br><br>  Voila, partially the load on the network is reduced, on memkes too.  Then they switched the caching of parts of the blocks to local web servers and were able to wait for the visitors to decline painlessly, after which they increased the network bandwidth. <br><br>  Comments are welcome. <br><br>  <b>UPD</b> : The essence of the post is not to show me how cool I am, but the fact that there are trivialities in PCPs that are so mundane that we stop paying attention to them, and in fact sometimes they are not too thought out and have an impact on performance. </div><p>Source: <a href="https://habr.com/ru/post/62412/">https://habr.com/ru/post/62412/</a></p>
+    <h5>  What is the essence of technology </h5><br><ol><li>  We do not create a session if it is not really needed. </li><li>  We do not update the session in the repository, if it has not changed. </li></ol><br>  In fact, our site is paid, even if we have 150,000 unique per day, then there are really few people willing to pay.  Visitors are distributed approximately as follows: <br><ul><li>  70% - Gawker.  They opened the main page, they realized that it wasn’t what they needed, they closed it.  That is, S worked well, and rake us. </li><li>  28% - Fans.  There is no money, but use our site to keep track of information during the match (goals, substitutions).  Usually not recorded, because the information is available and so. </li><li>  2% - Really watching the matches, registering and paying. </li></ul><br><br><h5>  Implementation </h5><br>  Since we use memkesh, we already have a Session object, which overloads the standard session functionality and allows us to store the latest in memkesh.  Additionally we do the following: <br><ul><li>  We put the global session_start () in if so that the session is not created when not asked. <br><blockquote><code>if(!empty($_COOKIE[ini_get('session.name')])) <br> session_start(); <br></code> </blockquote></li><li>  In the place where the user log in we add the start of the session, because here it is already necessary: <br><blockquote> <code>if(empty($_COOKIE[ini_get('session.name')])) <br> session_start(); <br></code> </blockquote></li><li>  And finally, in our object we create an additional static variable, where we store the contents of the session while reading, and during writing we do the following check at the very beginning: <br><blockquote> <code>if(self::$data !== null &amp;&amp; self::$data == $currentData) <br> return strlen($currentData); <br></code> </blockquote></li></ul><br><br>  Voila, partially the load on the network is reduced, on memkes too.  Then they switched the caching of parts of the blocks to local web servers and were able to wait for the visitors to decline painlessly, after which they increased the network bandwidth. <br><br>  Comments are welcome. <br><br>  <b>UPD</b> : The essence of the post is not to show me how cool I am, but the fact that there are trivialities in PCPs that are so mundane that we stop paying attention to them, and in fact sometimes they are not too thought out and have an impact on performance. </div><p>Source: https://habr.com/ru/post/62412/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -77,8 +77,8 @@
 <li><a href="../62414/index.html">We are all one team</a></li>
 <li><a href="../62418/index.html">Promotion by press releases. Inside view</a></li>
 <li><a href="../62419/index.html">Online Broadcast SPIKa. Peter, Olgino</a></li>
+<li><a href="../6242/index.html">Study: what should be an audio player?</a></li>
 <li><a href="../62421/index.html">Flip UltraHD - Video Podcast's Best Friend</a></li>
-<li><a href="../62424/index.html">Why designers should be able to impose</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Exceptions. Where do i use them</h1><div class="post__text post__text-html js-mediator-article">  After reading <a href="http://habrahabr.ru/blogs/php/58687/">“How to use exceptions”</a> and comments to it I decided to write a short article where I use exceptions, and not as “correct”, everything is based on experience, briefly and concisely. <br><a name="habracut"></a><br><br><h3>  Logics </h3><br><ol><li>  <b>Data validation:</b> in other words, input data error, field format not the same, field not filled, field uniqueness error - all are input data errors, in such cases I throw an event listing all the fields and errors that are subsequently output to the user. </li><li>  <b>404 Document not found:</b> If a specific entity was requested (for example, a line from a database) by its identifier (and not only), then if it is not present, an event is thrown, which later turns into page 404. </li><li>  <b>403 Access denied:</b> If there was an attempt to access the user where he could not - then throws an exception (in the arguments you can pass why there is no access there), which later turns into 403. </li><li>  <b>401 Authorization Required:</b> User requests data where authorization is required.  We throw out the exception (in the arguments we can pass Relarm - the text of the authorization request), and the user receives either a request for HTTP authorization or a regular form. </li><li>  <b>301 Redirect:</b> Need to redirect?  We throw an ekpepshn - in it we transfer where it is necessary redirektit. </li></ol><br><h3>  Errors </h3><br><ol><li>  <b>Fatal errors:</b> Everything is clear, there is no connection to the database, or the config cannot be read.  Just write to the log and pokvyem deface. </li><li>  <b>Critical errors:</b> For example: SMS is not sent, the file cannot be uploaded - we throw a specific exception.  but in the right places (for example, phone confirmation), we process it and write to the user that we cannot send SMS. </li></ol><br><h3>  Debugging </h3><br>  In debug mode I use <a href="http://dklab.ru/lib/PHP_Exceptionizer/">PHP_Exceptionizer</a> ( <a href="http://habrahabr.ru/blogs/php/55846/">discussed here</a> ).  Allows you to make the code cleaner, any notice and varning turns into an event, which in turn allows you not to miss them.  Naturally this is included only in debug mode. <br><br><h3>  Example </h3><br>  I also recommend logging all the "misunderstood" exceptions: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">class</font> Controller_Front <br> { <br> <font color="#008000">//   </font> <br> <font color="#0000ff">public</font> <font color="#0000ff">function</font> execute() <br> { <br> <font color="#0000ff">try</font> { <br> ... <br> <font color="#008000">//     </font> <br> <font color="#0000ff">try</font> { <br> ... <font color="#008000">//     </font> <br> <font color="#008000">//     .</font> <br> <font color="#0000ff">throw</font> <font color="#0000ff">new</font> Controller_RedirectException( <font color="#A31515">'http://habr.ru'</font> ); <br> ... <br> } <font color="#0000ff">catch</font> (Controller_DataException $e) { <br> <font color="#008000">//       </font> <br> $ <font color="#0000ff">this</font> -&gt;errors = $e-&gt;getErrors(); <br> } <br> ... <br> } <font color="#0000ff">catch</font> (Controller_RedirectException $e) { <br> <font color="#008000">// ,   </font> <br> $ <font color="#0000ff">this</font> -&gt;_processRedirectException($e); <br> } <font color="#0000ff">catch</font> (Controller_AuthException $e) { <br> <font color="#008000">// ,  HTTP </font> <br> $ <font color="#0000ff">this</font> -&gt;_processAuthException($e); <br> } <font color="#0000ff">catch</font> (Exception $e) { <br> <font color="#008000">//    .</font> <br> $ <font color="#0000ff">this</font> -&gt;_logException($e); <br> <font color="#008000">//  .</font> <br> $ <font color="#0000ff">this</font> -&gt;_processFatalException($e); <br> } <br> } <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br><h4>  <s>There is not enough karma to transfer to the PHP blog.</s>  Thanks for the karma, suffered. </h4></div><p>Source: <a href="https://habr.com/ru/post/58702/">https://habr.com/ru/post/58702/</a></p>
+    <blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">class</font> Controller_Front <br> { <br> <font color="#008000">//   </font> <br> <font color="#0000ff">public</font> <font color="#0000ff">function</font> execute() <br> { <br> <font color="#0000ff">try</font> { <br> ... <br> <font color="#008000">//     </font> <br> <font color="#0000ff">try</font> { <br> ... <font color="#008000">//     </font> <br> <font color="#008000">//     .</font> <br> <font color="#0000ff">throw</font> <font color="#0000ff">new</font> Controller_RedirectException( <font color="#A31515">'http://habr.ru'</font> ); <br> ... <br> } <font color="#0000ff">catch</font> (Controller_DataException $e) { <br> <font color="#008000">//       </font> <br> $ <font color="#0000ff">this</font> -&gt;errors = $e-&gt;getErrors(); <br> } <br> ... <br> } <font color="#0000ff">catch</font> (Controller_RedirectException $e) { <br> <font color="#008000">// ,   </font> <br> $ <font color="#0000ff">this</font> -&gt;_processRedirectException($e); <br> } <font color="#0000ff">catch</font> (Controller_AuthException $e) { <br> <font color="#008000">// ,  HTTP </font> <br> $ <font color="#0000ff">this</font> -&gt;_processAuthException($e); <br> } <font color="#0000ff">catch</font> (Exception $e) { <br> <font color="#008000">//    .</font> <br> $ <font color="#0000ff">this</font> -&gt;_logException($e); <br> <font color="#008000">//  .</font> <br> $ <font color="#0000ff">this</font> -&gt;_processFatalException($e); <br> } <br> } <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br><h4>  <s>There is not enough karma to transfer to the PHP blog.</s>  Thanks for the karma, suffered. </h4></div><p>Source: https://habr.com/ru/post/58702/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../58691/index.html">Yandex widgets, try pen</a></li>
 <li><a href="../58692/index.html">Microsoft does not admit guilt and protects IE</a></li>
 <li><a href="../58699/index.html">Ads</a></li>
+<li><a href="../587/index.html">Links to people</a></li>
 <li><a href="../58700/index.html">Proxy only in place</a></li>
 <li><a href="../58701/index.html">Last.fm monetized: well and great!</a></li>
 <li><a href="../58703/index.html">Have any vision restoration methods helped you?</a></li>
 <li><a href="../58706/index.html">10 best open source tools for Linux developers</a></li>
 <li><a href="../58707/index.html">Twitter and Mac - together forever</a></li>
 <li><a href="../58708/index.html">Swine Flu Swine Fighter Game</a></li>
-<li><a href="../58710/index.html">Spanish providers failed to negotiate with copywriters</a></li>
+<li><a href="../5871/index.html">What about habr-spelling?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

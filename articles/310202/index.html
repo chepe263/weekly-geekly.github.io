@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Installing your SSL certificates on the D-Link DNS-320L file storage</h1><div class="post__text post__text-html js-mediator-article">  I bought at one time (before the crisis prices) file storage D-Link 320L, as much as 2 990 rubles (despite today's prices, I just want to cry).  And recently, I wanted to set up WebDAV on it, but with access from the outside. <br><br>  I threw port 443 through the router to the file storage, created a new ball, put the WebDAV hooks.  I try to connect - with the help of FAR plugins everything is ok, but through Widnows the connection does not work as a network drive - it swears at certificates.  He does not want to, and to put third-party pribludy - no desire. <br><a name="habracut"></a><br>  It was decided: we get a free SSL certificate (in my opinion, on StartSSL I received it for my domain).  I downloaded the files, a private key, with a contented face, climbed into the admin panel, so that certificates can be poured - but no!  There is no such opportunity there!  It was decided to start picking. <br><br>  The steps are: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      1) Fill the firmware from the official site with Addons support (today it is 1.08b08) <br>  2) Install Addons from the site: OpenSSH, MC, vtCron <br>  3) Find where there are certificates and replace them. <br><br>  Having connected via SSH and executing “ps ax”, I saw that lighttpd was responsible for the web, dug up its config, and it indicated that the certificates (and public and private key) are in the same /etc/certificate_https_all.pem file.  I deleted the old file, saved the new one (the order is as follows: the public key goes first, the private key goes second), restarted lighttpd.  Everything is fine - the certificates were picked up, but after the reboot everything disappeared - everything in / etc is saved only until the reboot.  Then all over again.  In this regard, it was decided to save the file with certificates on the hard disk (in my case, on /mnt/HD_a4/script/cert.pem) and write a script that replaces the certificate file and restarts the web server. <br><br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh if [ ! -e /etc/sslupdate ]; then touch /etc/sslupdate cp /mnt/HD_a4/script/cert.pem /etc/certificate_https_all.pem ps ax | grep lightt | grep -v grep | awk '{ system ("kill " $1) }' /usr/sbin/lighttpd-angel -D -m /usr/lighty_lib -f /etc/lighttpd/lighttpd.conf &amp; fi</span></span></code> </pre> <br>  As a semaphore, was the script already executed in this reboot or not, it was decided to use the / etc / sslupdate file.  At startup, the script checks if the semaphore exists?  If it exists, the script ends its work.  If there is no semaphore, the script performs the following actions: <br><br><ul><li>  Creates a semaphore about how it is executed; </li><li>  Copies the certificate from the hard disk to the / etc folder; </li><li>  Kills the processes that are associated with lighttpd; </li><li>  Runs lighttpd. </li></ul><br>  In order for the script to run, we go through the web-muzzle into the management of vtCron and register the script launch there once every five minutes (* / 5 * * * *) <br><br>  Reboot the repository, everything works. </div><p>Source: <a href="https://habr.com/ru/post/310202/">https://habr.com/ru/post/310202/</a></p>
+      1) Fill the firmware from the official site with Addons support (today it is 1.08b08) <br>  2) Install Addons from the site: OpenSSH, MC, vtCron <br>  3) Find where there are certificates and replace them. <br><br>  Having connected via SSH and executing “ps ax”, I saw that lighttpd was responsible for the web, dug up its config, and it indicated that the certificates (and public and private key) are in the same /etc/certificate_https_all.pem file.  I deleted the old file, saved the new one (the order is as follows: the public key goes first, the private key goes second), restarted lighttpd.  Everything is fine - the certificates were picked up, but after the reboot everything disappeared - everything in / etc is saved only until the reboot.  Then all over again.  In this regard, it was decided to save the file with certificates on the hard disk (in my case, on /mnt/HD_a4/script/cert.pem) and write a script that replaces the certificate file and restarts the web server. <br><br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh if [ ! -e /etc/sslupdate ]; then touch /etc/sslupdate cp /mnt/HD_a4/script/cert.pem /etc/certificate_https_all.pem ps ax | grep lightt | grep -v grep | awk '{ system ("kill " $1) }' /usr/sbin/lighttpd-angel -D -m /usr/lighty_lib -f /etc/lighttpd/lighttpd.conf &amp; fi</span></span></code> </pre> <br>  As a semaphore, was the script already executed in this reboot or not, it was decided to use the / etc / sslupdate file.  At startup, the script checks if the semaphore exists?  If it exists, the script ends its work.  If there is no semaphore, the script performs the following actions: <br><br><ul><li>  Creates a semaphore about how it is executed; </li><li>  Copies the certificate from the hard disk to the / etc folder; </li><li>  Kills the processes that are associated with lighttpd; </li><li>  Runs lighttpd. </li></ul><br>  In order for the script to run, we go through the web-muzzle into the management of vtCron and register the script launch there once every five minutes (* / 5 * * * *) <br><br>  Reboot the repository, everything works. </div><p>Source: https://habr.com/ru/post/310202/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../310188/index.html">Registration is now open for Russia's first international Testathon</a></li>
 <li><a href="../310192/index.html">Another way to get around PornHub lock</a></li>
 <li><a href="../310196/index.html">MapReduce from scrap materials. Part II - Basic Implementation Interfaces</a></li>
 <li><a href="../310198/index.html">8 signs of infantilism in business</a></li>
+<li><a href="../3102/index.html">Does anyone have experience in outsourcing web development processes?</a></li>
 <li><a href="../310200/index.html">We implement Brotli with the help of Nginx - we save bytes almost for free</a></li>
 <li><a href="../310204/index.html">New plugin from Stepik.org for IntelliJ IDEA</a></li>
 <li><a href="../310206/index.html">How I spent the holidays on my first application</a></li>

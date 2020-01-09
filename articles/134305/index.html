@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The dark side of ContentProvider</h1><div class="post__text post__text-html js-mediator-article">  ContentProvider is an Android class for exchanging data <b>between applications</b> .  This is exactly what <a href="http://developer.android.com/reference/android/content/ContentProvider.html">is written in Yavadok</a> : <i>A content provider</i> .  But who reads the documentation while everything works?  Obviously, only the one who stuffed enough lumps, stepping on all sorts of rakes. <br><br>  So, in this post I would like to share my negative experience of using ContentProviders as a data source within the application.  Why is it actually unreasonable to use them to access data within the program? <br><a name="habracut"></a><br><br><h5>  Exception Handling </h5><br>  The most important, in my opinion, problem is that getContentResolver (). Query (..) returns either a cursor with data or null.  If an exception appears inside the ContentProvider, the calling code will not know about it.  The maximum that you can find out by running a null test is the fact that something went wrong. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Such an approach is definitely not suitable for working within one application, since sometimes the exception rises from the lowest level of data down to the user interface.  For example, a message about the unavailability of a web service or an authorization error. <br><br>  Of course, there is a workaround.  You can write to the cursor information about the error, and process it in the calling code.  But this is too artificial a decision. <br><br><h5>  Complex data structures </h5><br>  Cursor is good exactly as long as the returned data is representable as a table.  But what if you need a more complex structure? <br><br>  For example, a web service can return data page by page, while on the first page there will be some meta-information, at least the number of pages.  You can combine several cursors into one, and in the calling code, parse them back.  But it will greatly complicate the logic both at the model level and at the presenter level. <br><br><h5>  Progress progress </h5><br>  Often there is a need to track the progress of the operation.  For example, reading a large amount of data from a file.  ContentProviders do not provide this feature. <br><br>  You can create a private field, write current progress to it and return it as a separate request.  But then immediately there will be problems with multithreading and parallel execution by the provider of several identical requests from different clients. <br><br><h5>  Stop execution </h5><br>  The code running in ContentProvider will <a href="http://developer.android.com/reference/android/content/AsyncQueryHandler.html">most likely</a> not be stopped.  If you do not use AsyncQueryHandler, then in general we will have no control over the execution of the operation. <br><br>  The workaround is approximately the same as in the previous problem - we set up a private field-flag, and switch it when the request needs to be stopped.  In the request, we constantly check the status of the flag.  This solution is not suitable for all the same reasons. <br><br><h4>  Conclusion </h4><br><br>  The conclusion of the above, I can do this.  It makes sense to use ContentProviders only if atomic operations are performed inside them that do not take much time and return strictly homogeneous data that can be used by other applications.  Here all other cases use ContetProvider'ov seems to me unjustified. </div><p>Source: <a href="https://habr.com/ru/post/134305/">https://habr.com/ru/post/134305/</a></p>
+      Such an approach is definitely not suitable for working within one application, since sometimes the exception rises from the lowest level of data down to the user interface.  For example, a message about the unavailability of a web service or an authorization error. <br><br>  Of course, there is a workaround.  You can write to the cursor information about the error, and process it in the calling code.  But this is too artificial a decision. <br><br><h5>  Complex data structures </h5><br>  Cursor is good exactly as long as the returned data is representable as a table.  But what if you need a more complex structure? <br><br>  For example, a web service can return data page by page, while on the first page there will be some meta-information, at least the number of pages.  You can combine several cursors into one, and in the calling code, parse them back.  But it will greatly complicate the logic both at the model level and at the presenter level. <br><br><h5>  Progress progress </h5><br>  Often there is a need to track the progress of the operation.  For example, reading a large amount of data from a file.  ContentProviders do not provide this feature. <br><br>  You can create a private field, write current progress to it and return it as a separate request.  But then immediately there will be problems with multithreading and parallel execution by the provider of several identical requests from different clients. <br><br><h5>  Stop execution </h5><br>  The code running in ContentProvider will <a href="http://developer.android.com/reference/android/content/AsyncQueryHandler.html">most likely</a> not be stopped.  If you do not use AsyncQueryHandler, then in general we will have no control over the execution of the operation. <br><br>  The workaround is approximately the same as in the previous problem - we set up a private field-flag, and switch it when the request needs to be stopped.  In the request, we constantly check the status of the flag.  This solution is not suitable for all the same reasons. <br><br><h4>  Conclusion </h4><br><br>  The conclusion of the above, I can do this.  It makes sense to use ContentProviders only if atomic operations are performed inside them that do not take much time and return strictly homogeneous data that can be used by other applications.  Here all other cases use ContetProvider'ov seems to me unjustified. </div><p>Source: https://habr.com/ru/post/134305/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../134297/index.html">CiEx: Take Kadropotok</a></li>
 <li><a href="../134298/index.html">WiFi-AC - a new generation of Wi-Fi</a></li>
+<li><a href="../13430/index.html">Adium dock icon with futurco bot</a></li>
 <li><a href="../134300/index.html">Rating Top-50 digital agencies of Russia-2011</a></li>
 <li><a href="../134302/index.html">Linking a data model in C ++ with a QML view using a map example</a></li>
 <li><a href="../134303/index.html">REST vs SOAP. Part 2. How easier and more efficient to organize communication platforms?</a></li>
@@ -75,7 +75,7 @@
 <li><a href="../134307/index.html">SFTP support in midnight commander</a></li>
 <li><a href="../134308/index.html">Google+ has introduced face recognition on uploaded photos.</a></li>
 <li><a href="../134309/index.html">Another client for the site TechDays.ru</a></li>
-<li><a href="../134310/index.html">Canobuvosti, 121st edition</a></li>
+<li><a href="../13431/index.html">The website of the President of the Russian Federation is ranked first in terms of compliance with international requirements.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

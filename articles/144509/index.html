@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to warn about the outdated version of the internal utility</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/b87/b6a/da7/b87b6ada7361c4fb56c19e4dd31c1a2f.png"><br>  Imagine this situation: <br><br><ul><li>  We have an internal utility (say, a level editor).  From time to time there are new versions. </li><li>  Information is stored in XML or other tree extensible format.  At the same time, we, like the bright Jedi, are monitoring compatibility from the bottom up, and later versions open all the earlier projects. </li><li>  The tool is used by non-technical people and not affected by the “early imitator syndrome”.  They do not need to have the latest version of the editor;  the main thing is stable and the same in a single project. </li><li>  From time to time new functions appear, new blocks appear in XML for these functions.  At the same time, such a situation is possible: let two work on one project.  One program supports new blocks, the other does not.  The second, having saved the project, will simply lose these blocks. </li><li>  Sometimes you have to “redraw” the data storage format.  For example, there used to be one tileset - now a whole bunch.  The old version, most likely, “will take the roof off”, and it should warn before loading: “This is a save game from the new version and, most likely, incompatible.  Do you want to continue downloading? ” </li><li>  Similar confirmations are needed if we open the old version with a new version.  The utility is still internal, and you shouldn’t preserve the support of old saves for recording in it. </li><li>  Since the utility is internal, it is on the rights of “it's beta than nothing”, and our professionalism is the only guarantor of its bezglyuchnosti.  Sometimes there are “black” versions that spoil the data.  How to warn the designer that a nasty mistake has crept into his version? </li><li>  Need to do without a centralized update server. </li></ul><br>  I came up with this simple solution in 2005, working on mobile games, to at least somehow cope with the zoo versions. <br><br>  In each document we store four fields. <br><ul><li>  BuildSaved is the version with which we saved the project. </li><li>  BuildSupported is the smallest version that is guaranteed to open this save game completely. </li><li>  BuildRequired is the smallest version, which at least partially, but without errors, will open this save game. </li><li>  BlackBuilds - all versions that spoil the data. </li></ul><br>  At the same time, BuildSaved&gt; = BuildSupported&gt; = BuildRequired.  Version numbers I asked hard in the source.  A new field has appeared in XML - replace BuildSupported with the current version.  Perekroil storage format - replace immediately BuildSupported and BuildRequired.  BlackBuilds defined speculatively, according to changers - from the version in which the erroneous functionality appeared, to the one in which they noticed and corrected. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,10 +64,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Opening the document, we do such checks. <br><ul><li>  If the current version of the program is lower than BuildRequired, we inform: “This is a document from the new version and, most likely, incompatible.  Do you want to continue downloading? ” </li><li>  If the version is lower than BuildSupported, we inform you: “There may be new fields in the document, which will be lost during re-saving”. </li><li>  If the version is one of the BlackBuilds, we inform you: “Your version spoils the documents.  Save nothing, upgrade to a less dangerous version. ” </li><li>  If BuildSaved is one of the “black” versions stored in the EXE file, we conclude: “The document has been saved with a dangerous version.  There may be errors in the document.  Let the one who saved the document be immediately updated. ” </li><li>  Finally, if an outdated data storage mechanism is found, we conclude: “Before backing up, make a backup copy”.  And even better, make a backup automatically (suggested by <a href="http://geektimes.ru/users/dzhe/" class="user_link">jhe</a> ).  There are already no naked statements based on a single figure. BuildRequired: when we download, we see for ourselves the outdated format or not. </li></ul></div><p>Source: <a href="https://habr.com/ru/post/144509/">https://habr.com/ru/post/144509/</a></p>
+      Opening the document, we do such checks. <br><ul><li>  If the current version of the program is lower than BuildRequired, we inform: “This is a document from the new version and, most likely, incompatible.  Do you want to continue downloading? ” </li><li>  If the version is lower than BuildSupported, we inform you: “There may be new fields in the document, which will be lost during re-saving”. </li><li>  If the version is one of the BlackBuilds, we inform you: “Your version spoils the documents.  Save nothing, upgrade to a less dangerous version. ” </li><li>  If BuildSaved is one of the “black” versions stored in the EXE file, we conclude: “The document has been saved with a dangerous version.  There may be errors in the document.  Let the one who saved the document be immediately updated. ” </li><li>  Finally, if an outdated data storage mechanism is found, we conclude: “Before backing up, make a backup copy”.  And even better, make a backup automatically (suggested by <a href="http://geektimes.ru/users/dzhe/" class="user_link">jhe</a> ).  There are already no naked statements based on a single figure. BuildRequired: when we download, we see for ourselves the outdated format or not. </li></ul></div><p>Source: https://habr.com/ru/post/144509/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -76,11 +76,11 @@
 <li><a href="../144506/index.html">Nokia Lumia 900 smartphone review</a></li>
 <li><a href="../144507/index.html">Implementing shared memory between driver and application</a></li>
 <li><a href="../144508/index.html">Which company has the highest average junior engineer salary? [The correct answer is in the first comment]</a></li>
+<li><a href="../14451/index.html">Adme.ru Buys Western Advertising Website</a></li>
 <li><a href="../144510/index.html">Single-row sorting</a></li>
 <li><a href="../144512/index.html">Linux Mint 13 Maya Released</a></li>
 <li><a href="../144514/index.html">Making a nuclear chandelier for 100'000 lumen</a></li>
 <li><a href="../144515/index.html">Competitions car-robots in Russia</a></li>
-<li><a href="../144517/index.html">Aloha Editor for MODX Revolution</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

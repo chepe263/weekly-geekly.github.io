@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Export Virtual Machines from VirtualBox to AWS Amazon</h1><div class="post__text post__text-html js-mediator-article">  Good day. <br>  I want to share new acquired experience. <br>  Our company needed its own AMIs with Windows XP, Windows 7, Windows 8 and Windows Server 2003 in AWS Amazon. <br>  After a relatively short search, it was found that there is such a possibility, and it is called AWS VM Import / Export Tools (more <a href="http://aws.amazon.com/ec2/vmimport/">here</a> ). <br><a name="habracut"></a><br>  However, the possibilities of this service are still limited: <br><blockquote>  Q. What operating systems are supported? <br>  VM Import / Export currently supports Windows Server 2003, Windows Server 2003 R2 and Windows Server 2008 (Datacenter, Enterprise, and Standard editions) VM images.  For a full list of supported VM file formats, are you supported? .. </blockquote><br>  Frankly, not seeing in the list of supported OS Windows XP, sighed with relief. <br><br>  So, to the point.  For all the manipulations, we need the installed VirtualBox (I have version 4.2.4) and Amazon EC2 API Tools (you can download the latest version <a href="http://aws.amazon.com/developertools/351">here</a> ). <br>  The OS version selected for import is Windows Server 2003. <br>  Let's create a new virtual machine in VirtualBox. <br><img src="https://habrastorage.org/getpro/habr/post_images/ffb/87e/df0/ffb87edf094761eadfe5a09e66ba9673.jpg"><br><br>  When creating the machine, specify the type of VMDK disk. <br><img src="https://habrastorage.org/getpro/habr/post_images/eea/0f9/287/eea0f928721a60bca481df75046eed1b.jpg">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Further, the installation process is the most common and there is no sense in paying attention to it in addition. <br>  <b>The main thing</b> - do not forget to add a user with administrator rights and allow him to connect via RDP. <br>  After our virtual machine is installed, turn it off and go to the File - Export Configurations menu and select the required configuration. <br><img src="https://habrastorage.org/getpro/habr/post_images/314/223/454/314223454dfd4798d29cdea0a8ce53c6.jpg"><br><br>  In the export options, we put the mark “Save as OVF” and check that the extension in the name of the saved file is also ovf. <br><img src="https://habrastorage.org/getpro/habr/post_images/0f3/0f7/4a6/0f30f74a6220dfd7ddacc1d44cbc01bd.jpg"><br><br>  The result of the export will be two files.  One with the extension ovf, the other - vmdk, and that is what we will continue to use. <br>  When the export is complete, you can proceed to download.  Open a command prompt or terminal (depending on your OS) and do the following: <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># ec2-import-instance /media/sf_UbuntuVirt/win2003_x86-disk1.vmdk -f VMDK -b windows2003x86 -o XXXXXXXXXX -w XXXXXXXXXXXX -t m1.small -a i386</span></span></code> </pre> <br>  Where: <br><ul><li>  -f VMDK - downloadable file format, </li><li>  -b windows2003x86 — Bucket name in AWS S3 </li><li>  -o XXXXXXXXXX - access_key_id </li><li>  -w XXXXXXXXXXXX - secret_access_key </li><li>  -t m1.small is an instance type that starts with your configuration </li><li>  -a i386 - OS Architecture </li></ul><br><img src="https://habrastorage.org/getpro/habr/post_images/290/3db/369/2903db3696f2fe0ad0cae42c09bc7798.jpg"><br>  After our configuration has been loaded into S3, the process of converting it into an EBS instance will begin. <br>  Conversion progress is checked with the command: <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># ec2-describe-conversion-tasks | grep TaskType TaskType IMPORTINSTANCE TaskId import-i-fhax7514 ExpirationTime 2013-02-05T14:41:06Z Status completed InstanceID i-b8923ac8</span></span></code> </pre><br>  In the output, we are interested in two values: <br><ul><li>  Status completed - this means the conversion is completed. </li><li>  InstanceID i-b8923ac8 - Instance ID with our configuration </li></ul><br>  Now we can remove the create AMI from this instance, either from the console or using the CLI. <br>  CLI is closer to me. <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># ec2-create-image i-b8923ac8 --no-reboot -n win2003x86 -d "Windows Server 2003" IMAGE ami-f1a73398</span></span></code> </pre><br>  That's it, now we can safely start new servers with our new AMI. <br>  I hope the information will be useful. <br><br>  PS If someone has found a way to make AMI from XP or knows another import method, please share your experience. </div><p>Source: <a href="https://habr.com/ru/post/167607/">https://habr.com/ru/post/167607/</a></p>
+      Further, the installation process is the most common and there is no sense in paying attention to it in addition. <br>  <b>The main thing</b> - do not forget to add a user with administrator rights and allow him to connect via RDP. <br>  After our virtual machine is installed, turn it off and go to the File - Export Configurations menu and select the required configuration. <br><img src="https://habrastorage.org/getpro/habr/post_images/314/223/454/314223454dfd4798d29cdea0a8ce53c6.jpg"><br><br>  In the export options, we put the mark “Save as OVF” and check that the extension in the name of the saved file is also ovf. <br><img src="https://habrastorage.org/getpro/habr/post_images/0f3/0f7/4a6/0f30f74a6220dfd7ddacc1d44cbc01bd.jpg"><br><br>  The result of the export will be two files.  One with the extension ovf, the other - vmdk, and that is what we will continue to use. <br>  When the export is complete, you can proceed to download.  Open a command prompt or terminal (depending on your OS) and do the following: <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># ec2-import-instance /media/sf_UbuntuVirt/win2003_x86-disk1.vmdk -f VMDK -b windows2003x86 -o XXXXXXXXXX -w XXXXXXXXXXXX -t m1.small -a i386</span></span></code> </pre> <br>  Where: <br><ul><li>  -f VMDK - downloadable file format, </li><li>  -b windows2003x86 — Bucket name in AWS S3 </li><li>  -o XXXXXXXXXX - access_key_id </li><li>  -w XXXXXXXXXXXX - secret_access_key </li><li>  -t m1.small is an instance type that starts with your configuration </li><li>  -a i386 - OS Architecture </li></ul><br><img src="https://habrastorage.org/getpro/habr/post_images/290/3db/369/2903db3696f2fe0ad0cae42c09bc7798.jpg"><br>  After our configuration has been loaded into S3, the process of converting it into an EBS instance will begin. <br>  Conversion progress is checked with the command: <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># ec2-describe-conversion-tasks | grep TaskType TaskType IMPORTINSTANCE TaskId import-i-fhax7514 ExpirationTime 2013-02-05T14:41:06Z Status completed InstanceID i-b8923ac8</span></span></code> </pre><br>  In the output, we are interested in two values: <br><ul><li>  Status completed - this means the conversion is completed. </li><li>  InstanceID i-b8923ac8 - Instance ID with our configuration </li></ul><br>  Now we can remove the create AMI from this instance, either from the console or using the CLI. <br>  CLI is closer to me. <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># ec2-create-image i-b8923ac8 --no-reboot -n win2003x86 -d "Windows Server 2003" IMAGE ami-f1a73398</span></span></code> </pre><br>  That's it, now we can safely start new servers with our new AMI. <br>  I hope the information will be useful. <br><br>  PS If someone has found a way to make AMI from XP or knows another import method, please share your experience. </div><p>Source: https://habr.com/ru/post/167607/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../167591/index.html">Optimize knockoutjs when dynamically adding and removing templates</a></li>
-<li><a href="../167595/index.html">Gamification mobile games</a></li>
 <li><a href="../167597/index.html">Moscow or London - where is the party better?</a></li>
+<li><a href="../1676/index.html">Advertising rises, advertisers go</a></li>
+<li><a href="../16760/index.html">Do we need USB 3.0?</a></li>
 <li><a href="../167601/index.html">Opera 12.13 Final</a></li>
 <li><a href="../167603/index.html">Announcement of intensive training on software testing in the framework of DevCon 2013</a></li>
 <li><a href="../167609/index.html">Connecting sites to online payment in Ukraine</a></li>
 <li><a href="../167613/index.html">Kolobok on a visit at Windows 8: development diaries (introduction)</a></li>
 <li><a href="../167617/index.html">How I met Yii</a></li>
 <li><a href="../167619/index.html">Runetology (183): Elena Orlova, PayU CEO</a></li>
-<li><a href="../167621/index.html">Startup Ideas Search Methods</a></li>
+<li><a href="../16762/index.html">France will disconnect audio and video pirates from the Network</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

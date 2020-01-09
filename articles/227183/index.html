@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Comparison of geolocation binary databases and their drivers: GeoIP, Sypex Geo, TabGeo</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/b61/d37/4cc/b61d374cceb66590ba6a6a34ca53de16.png" align="left">  A specific feature of this test is a certain proximity to real conditions, when there is a need to determine the country of one visitor on the fly for one script launch, that is: <u>one script launch — one ip-address</u> .  In similar <a href="http://habrahabr.ru/post/138067/">testing</a> from <a href="http://habrahabr.ru/users/zapimir/" class="user_link">zapimir</a> , a different principle was used, which, it seems to me, has little to do with the real need: one script launch - the definition of several thousand ip-addresses in a loop. <br><a name="habracut"></a><br>  The first thing we will do is compare the bases: <br><table><tbody><tr><td>  <b>Developer</b> </td><td>  <b>Base</b> </td><td>  <b>Update Date</b> </td><td>  <b>Number of ranges, thousand</b> </td><td>  <b>Size of base, Kb</b> </td></tr><tr><td>  Geoip </td><td>  GeoLite Country </td><td>  2014.06.03 </td><td>  93 </td><td>  688 </td></tr><tr><td>  Sypex geo </td><td>  Sypex Geo Country </td><td>  2014.06.20 </td><td>  90 </td><td>  365 </td></tr><tr><td>  Tabgeo </td><td>  tabgeo_country_v4 </td><td>  2014.06.20 </td><td>  200 </td><td>  998 </td></tr></tbody></table><br>  Sypex Geo boasts the smallest base of all presented, but also the lowest accuracy (90,000 ranges).  TabGeo has the highest accuracy - 200,000 ranges, but, therefore, the most plump base.  GeoIP - in all respects occupies an intermediate position.  All databases currently have regular updates. <br><br>  And now let's proceed directly to testing the performance of different databases.  A special feature of testing was determining the time of the script to determine one ip-address per launch, then the data was interpreted into the number of launches for one second. <br><table><tbody><tr><td>  <b>Developer</b> </td><td>  <b>Base</b> </td><td>  <b>Requests per second (median)</b> </td></tr><tr><td>  Geoip </td><td>  GeoLite Country </td><td>  460 </td></tr><tr><td>  Sypex geo </td><td>  Sypex Geo Country </td><td>  910 </td></tr><tr><td>  Tabgeo </td><td>  tabgeo_country_v4 </td><td>  1400 </td></tr></tbody></table><br><img src="https://habrastorage.org/getpro/habr/post_images/152/dce/d38/152dced38e2ee52ff1dc6c41bdeae4e8.png" align="right">  The table shows that the most unhurried solution for geolocation is GeoIP - only <b>460</b> requests per second, for the most common and popular solution - this is very bad, and I would like to note that MaxMind's GeoIP2 is not a way out of this situation (this is more information base, than the base for geolocation). <br><br>  The silver medalist of this competition is the base and the driver from Sypex Geo - <b>910</b> hits per second, which is two times better than the results shown by GeoIP.  But the absolute leader in this nomination is TabGeo - <b>1400</b> requests per second under equal conditions, which is more than 1.5 times better than Sypex Geo. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Also, a small performance increase gives a smaller number of disk accesses, the comparison provided: one definition of the country - one launch of the script, showed that the minimum value of this parameter for TabGeo is <b>from 1 to 3</b> disk operations, for Sypex Geo - <b>4</b> and the full outsider in this GeoIP is a comparison - <b>from 23 to 52</b> per one initialization and one country definition by ip-address. <br><br>  An important value is the memory size occupied by the script: TabGeo - <b>26</b> Kb, Sypex Geo - <b>110</b> Kb and GeoIP - <b>285</b> Kb. <br><br>  From the presented data we can conclude that the most popular <u>geo</u> - <u>location</u> solution <u>GeoIP</u> is at the same time the worst for real projects.  <u>Sypex Geo</u> - occupies an intermediate position in this hierarchy.  Well, the absolute leader in almost all parameters (from the presented bases) is <u>TabGeo</u> . <br><br>  Sites tested bases: <br>  <a href="http://tabgeo.com/">Tabgeo</a> <br>  <a href="http://sypexgeo.net/">Sypex geo</a> <br>  <a href="https://www.maxmind.com/">Geoip</a> </div><p>Source: <a href="https://habr.com/ru/post/227183/">https://habr.com/ru/post/227183/</a></p>
+      Also, a small performance increase gives a smaller number of disk accesses, the comparison provided: one definition of the country - one launch of the script, showed that the minimum value of this parameter for TabGeo is <b>from 1 to 3</b> disk operations, for Sypex Geo - <b>4</b> and the full outsider in this GeoIP is a comparison - <b>from 23 to 52</b> per one initialization and one country definition by ip-address. <br><br>  An important value is the memory size occupied by the script: TabGeo - <b>26</b> Kb, Sypex Geo - <b>110</b> Kb and GeoIP - <b>285</b> Kb. <br><br>  From the presented data we can conclude that the most popular <u>geo</u> - <u>location</u> solution <u>GeoIP</u> is at the same time the worst for real projects.  <u>Sypex Geo</u> - occupies an intermediate position in this hierarchy.  Well, the absolute leader in almost all parameters (from the presented bases) is <u>TabGeo</u> . <br><br>  Sites tested bases: <br>  <a href="http://tabgeo.com/">Tabgeo</a> <br>  <a href="http://sypexgeo.net/">Sypex geo</a> <br>  <a href="https://www.maxmind.com/">Geoip</a> </div><p>Source: https://habr.com/ru/post/227183/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../227171/index.html">X86 support added to Apportable SDK</a></li>
 <li><a href="../227173/index.html">Smartphones and electronic inks: a difficult symbiosis</a></li>
 <li><a href="../227175/index.html">Make the site work on touch devices.</a></li>
 <li><a href="../227177/index.html">10 years ago, the first flight of a private spacecraft</a></li>
+<li><a href="../22718/index.html">Lebedev collaborates with ThinkGeek?</a></li>
 <li><a href="../227181/index.html">The use of sinter pastes in modern power semiconductor devices</a></li>
 <li><a href="../227185/index.html">Development for Microsoft SQL Server: Unix way</a></li>
 <li><a href="../227189/index.html">Hola: principles of work</a></li>
+<li><a href="../22719/index.html">Lebedev collaborates with ThinkGeek?</a></li>
 <li><a href="../227193/index.html">Creating offline maps for iOS applications</a></li>
 <li><a href="../227195/index.html">Reflections on the blues - once again about exception handling</a></li>
-<li><a href="../227197/index.html">Porting a Windows 8.1 application to Windows Phone 8.0 with troubleshooting</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

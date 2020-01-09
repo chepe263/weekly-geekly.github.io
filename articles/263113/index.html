@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Trouble came from not waiting, XSS vulnerability in Yandex.Metrica</h1><div class="post__text post__text-html js-mediator-article">  Good time habravchane!  Just the other day I published <a href="http://habrahabr.ru/post/262813/">an article</a> on the Web API documentation and there were people who tried to use XSS on a service that was on the same domain.  But especially it did not work.  More precisely it turned out, but not on this service.  For details, I ask under the cat. <br><br><img src="https://habrastorage.org/files/eb6/c2e/45e/eb6c2e45e81a4e26b38c8c85b161fd73.png"><br><a name="habracut"></a><br>  Somehow I was sitting looking through statistics on Yandex.Metrica and wanted to see the requests people came to the site with.  It seems nothing terrible, I did not see.  But still here are the data. <br><br><img src="https://habrastorage.org/files/d51/b0f/b60/d51b0fb605704a31a85289f091cde7d9.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      After I chose to display requests in ascending order, I saw something interesting.  That is, the very XSS vulnerabilities in the GET request, which the respected habravchane left, worked not in the service, which, apparently, was aimed, but on the Yandex.Metrica platform. <br><br>  What I finally saw on Yandex.Metrica: <br><br><img src="https://habrastorage.org/files/123/5cc/9b8/1235cc9b8a424499b55ca2310eb46693.png"><br><br>  A little scratching my head, I decided to see what all the same requests were for and where.  There was no limit to surprise when I did not see these requests.  But literally in a minute I realized that those requests — requests with an empty parameter — those vulnerable requests.  Actually, they are presented below: <br><br><img src="https://habrastorage.org/files/98e/e72/78c/98ee7278c8a84296a32ac40c643d7da0.png"><br><br>  But you ask, they are empty, what is in them and what they look like.  One has only to click on them and we will go to the page, where the error will be shown, saying that the data is incorrect.  Indeed it is: <br><br><img src="https://habrastorage.org/files/75d/d2e/291/75dd2e291fb640a0aea8a0dcb002271d.png"><br><br>  But actually that fateful request: <br><br><pre><code class="hljs perl">https:<span class="hljs-regexp"><span class="hljs-regexp">//mynstu</span></span>.me/small_results?delo=%3C/strong%3E%3C/a%3E%3Cscript%3Ealert(<span class="hljs-string"><span class="hljs-string">'antoha%20privet'</span></span>)%3C/script%3E</code> </pre> <br><img src="https://habrastorage.org/files/ddc/914/ef1/ddc914ef10bd4a7a876bf3884102ad1e.png"><br><br><h2>  findings </h2><br>  Sorry for the rather short article, I just wanted to warn you about an interesting assumption in the Yandex.Metrica platform and that this could lead to sad consequences.  Be careful! <br><br>  PS <br>  Do not judge strictly!  I just want to help you.  And please do not break my service. <br><br>  PPS <b>Vulnerability closed 07/17/15.</b> </div><p>Source: <a href="https://habr.com/ru/post/263113/">https://habr.com/ru/post/263113/</a></p>
+      After I chose to display requests in ascending order, I saw something interesting.  That is, the very XSS vulnerabilities in the GET request, which the respected habravchane left, worked not in the service, which, apparently, was aimed, but on the Yandex.Metrica platform. <br><br>  What I finally saw on Yandex.Metrica: <br><br><img src="https://habrastorage.org/files/123/5cc/9b8/1235cc9b8a424499b55ca2310eb46693.png"><br><br>  A little scratching my head, I decided to see what all the same requests were for and where.  There was no limit to surprise when I did not see these requests.  But literally in a minute I realized that those requests — requests with an empty parameter — those vulnerable requests.  Actually, they are presented below: <br><br><img src="https://habrastorage.org/files/98e/e72/78c/98ee7278c8a84296a32ac40c643d7da0.png"><br><br>  But you ask, they are empty, what is in them and what they look like.  One has only to click on them and we will go to the page, where the error will be shown, saying that the data is incorrect.  Indeed it is: <br><br><img src="https://habrastorage.org/files/75d/d2e/291/75dd2e291fb640a0aea8a0dcb002271d.png"><br><br>  But actually that fateful request: <br><br><pre><code class="hljs perl">https:<span class="hljs-regexp"><span class="hljs-regexp">//mynstu</span></span>.me/small_results?delo=%3C/strong%3E%3C/a%3E%3Cscript%3Ealert(<span class="hljs-string"><span class="hljs-string">'antoha%20privet'</span></span>)%3C/script%3E</code> </pre> <br><img src="https://habrastorage.org/files/ddc/914/ef1/ddc914ef10bd4a7a876bf3884102ad1e.png"><br><br><h2>  findings </h2><br>  Sorry for the rather short article, I just wanted to warn you about an interesting assumption in the Yandex.Metrica platform and that this could lead to sad consequences.  Be careful! <br><br>  PS <br>  Do not judge strictly!  I just want to help you.  And please do not break my service. <br><br>  PPS <b>Vulnerability closed 07/17/15.</b> </div><p>Source: https://habr.com/ru/post/263113/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../263101/index.html">Work with passwords: how to protect your accounts (expert opinion)</a></li>
 <li><a href="../263103/index.html">Unobvious performance problems in Doctrine related to the hydration of objects</a></li>
 <li><a href="../263105/index.html">Getting rid of the “historical reasons” in cmd.exe in an easier and standard way.</a></li>
 <li><a href="../263109/index.html">User data leakage in QIWI</a></li>
+<li><a href="../26311/index.html">Yandex: glitches or a new search algorithm?</a></li>
 <li><a href="../263111/index.html">Chronos library: make writing long operations easier</a></li>
 <li><a href="../263115/index.html">Clojure Web Applications</a></li>
 <li><a href="../263117/index.html">10 years "on the knee" and forced evolution - note for young</a></li>

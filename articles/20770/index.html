@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Saint virus day</h1><div class="post__text post__text-html js-mediator-article">  (notes an amateur antivirus) <br>  When you receive a congratulatory letter with a link on the eve of Valentine's Day, you really want to know what is there with this link.  All in one voice argue that such suspicious links in no case can not be opened, but we know that if you carefully, you can.  For example, download such a page, and then see carefully in your favorite text editor. <br><br>  In my case there was something like <br>  &lt;meta http-equiv = "refresh" content = "1; url = ' <b>valentine.exe</b> '"&gt; <br>  ... <br>  &lt;a href=" <b>valentine.exe</b> "&gt; blah-blah &lt;/a&gt; <br><br>  Unsolicited invitation to become a new user of the virus.  You can also gently download valentine.exe, and change it into .txt, so as not to start up by accident, you can pick it up from the inside. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,21 +60,21 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Kaspersky’s online file scanner identifies this file as being infected with the “Email-Worm.Win32.Zhelatin.vg” virus. <br><br>  To say that the amount of information reported on viruses does not suit me - to say nothing.  It is simply too little.  It does not say, first, what should not be done.  Secondly, it zombies users "keep the anti-virus database updated."  Updated databases - it is, of course, very good, I'm all for it.  Only from the first wave of the epidemic, these bases will not save, because they simply do not have the signatures of the viruses that have not yet been released. <br><br>  Therefore, in order to dissipate - at least for myself - the atmosphere of darkness and horror surrounding the internal structure of the virus, I rolled up my sleeves and found out the following. <br><br><a name="habracut"></a><br><br>  The general scheme of the virus is: <br>  1. The original “valentine.exe” extracts a piece of code from its body, which is first decrypted and then unpacked using the RtlUncompressBuffer function.  This code is stored in the% SYSTEMROOT% / system32 / diperto $ p- $ t.sys file, where $ p and $ t are process and thread identifiers (in hexadecimal format) of the “valentine.exe” that writes the file.  A% SYSTEMROOT% / system32 / diperto.ini file is also created: <br>  [config] <br>  [local] <br>  uport = 1211 <br>  [peers] <br><br>  The port changes randomly.  The magic word “peers” can mean that an infected computer will enter the botnet. <br><br>  2. “valentine.exe” loads the driver “diperto.sys” using the Windows API functions, and then stops its work. <br><br>  3. “diperto.sys” creates a device called “DRV_MODULE_MYDR”, as well as an event named “Ir &lt;fk ^ 7k”.  All this can be seen with WinObj.exe <br><br>  4. After initialization, the driver starts a new thread in the kernel mode, which in turn extracts a piece of encrypted code from the driver's body.  The code is "encrypted" by an "exclusive or" operation and is a Windows executable file. <br><br>  5. Then he finds a process called “services.exe” —the Windows service controller — connects to it, allocates a new block of memory in the address space of the process, to which the decrypted piece of code is written. <br><br>  6. To transfer control to the malicious code, the driver uses an APC - asynchronous procedure call.  Using the KeInsertQueueApc function, it queues an asynchronous call that will be “delivered” after any next system call from the victim process.  After that, the driver stops working. <br>  7. In short, it all looks like this: <br>  valentive -&gt; decrypts a piece of itself -&gt; diperto.sys -&gt; decrypts a piece of itself -&gt; services.exe. <br><br>  At this stage, there are two questions: a) why all these manipulations?  b) how do we protect this beast? <br><br>  The answer to the second question, in general, is obvious.  It is enough to close the write access to% SYSTEMROOT% / system32, as a result, the very first step breaks off and the virus goes through the forest.  But, imagine for a moment that it is mutated, and can write a file to any other place.  Then the only thing that can save us is to take away the right to register and download drivers (which, in essence, is similar to the right to write to the registry section "HKEY_LOCAL_MACHINE \ System \ CurrentControlSet \ Services"). <br><br>  By default, only Adminisrtrators group has such rights. <br><br>  Well, now the most interesting question is why so many gestures?  But why?  Usually, this operation of introducing code and launching it for execution is performed using the <b>“OpenProceess - VirtualAllocEx - WriteProcessMemory - CreateRemoteThread</b> ” <b>bundle</b> , which antiviruses pay close attention to.  In our case, the chain looks like this: <b>"KeAttachProcess - ZwAllocateVirtualMemory - rep movds - KeInsertQueueApc"</b> .  "Rep movsd" means that the malicious code is copied directly into the victim's space, without using any functions at all.  To date, to identify this kind of penetration antiviruses are not able to. <br><br>  Some statistics: <br>  - the size of the original file: 117 248 bytes. <br>  - driver file size: 129,920 bytes. <br>  - original file compiled by MINGW GCC.  Which, by the way, helps turn the brain inside out when you try to track function calls in an unfamiliar style <br><pre>  mov [esp], a
  mov [esp + 4], b
  mov [esp + 8], c
- call F;  calls F (a, b, c); </pre><br>  - the original file is stuffed with fake calls like CreateWaitableTimer (0, 0, 0);  or IsBadHugeReadPtr (0, 0);  or DeleteAtom (0).  It is not entirely clear who they are designed to confuse - antivirus or human. <br><br>  In the second part, we will look at how the virus that is embedded in the services.exe process works. </div><p>Source: <a href="https://habr.com/ru/post/20770/">https://habr.com/ru/post/20770/</a></p>
+ call F;  calls F (a, b, c); </pre><br>  - the original file is stuffed with fake calls like CreateWaitableTimer (0, 0, 0);  or IsBadHugeReadPtr (0, 0);  or DeleteAtom (0).  It is not entirely clear who they are designed to confuse - antivirus or human. <br><br>  In the second part, we will look at how the virus that is embedded in the services.exe process works. </div><p>Source: https://habr.com/ru/post/20770/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../207682/index.html">New Year's Eve Announcement of LendWings Courses</a></li>
 <li><a href="../20769/index.html">Just a beautiful toy</a></li>
 <li><a href="../207690/index.html">Using Portable Class Libraries with Windows Phone 7.5 Support in Visual Studio 2013</a></li>
 <li><a href="../207694/index.html">Stranger than life? Reality TV as a mirror of morals</a></li>
 <li><a href="../207698/index.html">Some interesting and useful things for web developer # 10</a></li>
+<li><a href="../2077/index.html">IE7 included in auto update</a></li>
 <li><a href="../207700/index.html">Highload information blocks and work with them</a></li>
 <li><a href="../207702/index.html">Internet Archive laid out the classic games of the 70s and 80s for free</a></li>
 <li><a href="../207706/index.html">Build Android on Mac OS X</a></li>

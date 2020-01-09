@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Backup mysql database. my way =)</h1><div class="post__text post__text-html js-mediator-article"> The task was this - often backing up the base + to save space on hard. <br>  After reading one article on the creation of an incremental backup for dumps through diff, I realized that this was all kind of crazy stuff. <br>  A thought flashed through my mind - why not dump the base into git?  After all, it will be possible to roll back to the desired commit, and clone the repository for experiments, and taste all the delights of this system.  =) <br>  Immediately decide - I did everything under FreeBSD.  Therefore, under Linux you will need to file a file. <br>  Well, let's go!  First we put git (if not in the system)! <br>  After updating the ports, we write <i>cd / usr / ports / devel / git &amp;&amp; make install clean</i> <br>  Git has been installed.  Select a place for the folder with backup of the base and create the folder <i>mkdir / backup / bases / test</i> <br>  Next, <i>cd / backup / bases / tes</i> t and initialize the repository there with the git init command <br>  I wrote a script that dumps the database casually, adds files to the repository and creates a commit with the date of the backup <br><br> <code>#!/usr/local/bin/bash <br> backupurl=”/backup/bases/test” <br> for i in `/usr/local/bin/mysql -e “use test;show tables;” -uUSER -pPASS|tr -d “|”|grep -v “Tables_in_”`;do /usr/local/bin/mysqldump –quick –skip-extended-insert –dump-date=false –compact=true -uUSER -pPASS test $i &gt;$backupurl/$i.sql;done <br> /usr/local/bin/mysqldump -uUSER -pPASS –no-data test &gt; $backupurl/structure.sql #    <br> cd $backupurl <br> /usr/local/bin/git add . #  <br> sleep 2 <br> /usr/local/bin/git commit -am “backup `date +%d.%m.%y.%H.%M`” #    </code> <br> <br>  We seal this script in a file, make it executable and flop in cron. <br>  Then, after several backups, go to the folder with the backup database and write <i>git log</i> - you will see the history of our backups. <br>  Finally: <br><br><ul><li>  Read the gita documentation </li><li>  Put the <i>cd / backup / bases / test &amp;&amp; git gc</i> command in crowns (depending on the size of the database ... I personally have it once a day) - this seriously compresses the repository </li><li>  For a rollback, it is desirable to tilt the repository and make a rollback via <i>git reset HEAD ^^</i> </li><li>  The <i>–skip-extended-insert</i> option is <i>MANDATORY</i> .  she forbids extended inserts that nullify my whole idea with git </li></ul></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/70458/">https://habr.com/ru/post/70458/</a></p>
+    <p>Source: https://habr.com/ru/post/70458/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,10 +73,10 @@
 <li><a href="../70455/index.html">SharePoint 2007 - Link library - open a link in a new window</a></li>
 <li><a href="../70457/index.html">I twist, turning, I want to fly</a></li>
 <li><a href="../70459/index.html">Wall animation</a></li>
+<li><a href="../7046/index.html">Karma and category on your site</a></li>
 <li><a href="../70461/index.html">Overview of e-Learning Trackers or Live and Learn!</a></li>
 <li><a href="../70463/index.html">Ways of student self-development</a></li>
 <li><a href="../70466/index.html">Registration of applications in the Palm App Catalog e-commerce beta</a></li>
-<li><a href="../70467/index.html">Ways of student self-development - a look after graduation</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

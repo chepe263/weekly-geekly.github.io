@@ -31,12 +31,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -58,7 +58,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Asynchrony in DBD :: Pg</h1><div class="post__text post__text-html js-mediator-article">  We are all used to working with the base in the style: <br><ol><li>  complete request </li><li>  wait for an answer </li><li>  continue execution </li></ol><br><br>  But while the long query is running, we can do something useful in the application.  Do not idle the processor time. <br><br>  For PostgreSQL in DBD :: Pg there is some semblance of asynchrony.  And sometimes it does help us. <br><a name="habracut"></a><br>  You can continue to run the application without waiting for the request.  This is enabled by the pg_async parameter to the prepare-request: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -66,7 +66,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
      <code>use strict; <br> use warnings; <br> use Time::HiRes 'sleep'; <br> use DBD::Pg ':async'; <br> <br> my $dbh = DBI-&gt;connect('dbi:Pg:dbname=postgres', 'postgres', '', {AutoCommit=&gt;0,RaiseError=&gt;1}); <br> <br> ##    <br> my $sth = $dbh-&gt;prepare("SELECT pg_sleep(?)", {pg_async =&gt; PG_ASYNC}); <br> $sth-&gt;execute(5); <br> <br> ##  ,   -  <br> print "Your query is processing. Thanks for waiting\n"; <br> check_on_the_kids(); <br> <br> while (!$dbh-&gt;pg_ready) { <br> check_on_the_kids(); <br> ##   - <br> sleep 0.1; <br> } <br> <br> print "The query has finished. Gathering results\n"; <br> my $result = $sth-&gt;pg_result; <br> print "Result: $result\n"; <br> my $info = $sth-&gt;fetchall_arrayref(); <br></code> <br><br>  For pg_async there are three constants: <br><ul><li>  PG_ASYNC - request execution in asynchronous mode </li><li>  PG_OLDQUERY_CANCEL - if the previous request worked at that moment, it is canceled </li><li>  PG_OLDQUERY_WAIT - we block to wait for the previous request and only then we start to perform a new one. </li></ul><br><br>  There are also three auxiliary methods - <ul><li>  <b>pg_cancel</b> - cancel the request.  One more connection actually opens, in which SELECT is sent pg_cancel_backend (?); </li><li>  <b>pg_ready</b> - returns true if the request has been executed. </li><li>  <b>pg_result</b> - is blocked until the execution of the query, and then returns the same as -&gt; execute in standard mode. </li></ul><br>  Of the minuses - you can not set the callback at the time of execution of the request.  Need to constantly check. <br>  Also at a time in one connection, you can perform only one request.  But what prevents to open a dozen connections and in turn to send requests to them?) <br><br>  I will try to talk about the applications of this technology: <br><ul><li>  heavy queries + complex logic.  Evenly load your server and database server. <pre> while () {
@@ -75,7 +75,7 @@
  $ dbh-&gt; do ('UPDATE stats SET foo =?', {pg_async =&gt; PG_ASYNC + PG_OLDQUERY_WAIT}, $ foo);
  }
 </pre></li><li>  work with several database servers <pre> $ first_dbh-&gt; do ('DELETE FROM old_data', {pg_async =&gt; PG_ASYNC});
- $ second_dbh-&gt; do ('UPDATE new_data SET status = 0', {pg_async =&gt; PG_ASYNC}) </pre></li><li>  timeouts  you can kill the request by timeout if it has not yet completed </li><li>  competitive inquiries.  we send the same request to two servers and give data from the server that responded faster. </li><li>  requests, the result of which you are absolutely indifferent </li></ul></div><p>Source: <a href="https://habr.com/ru/post/67390/">https://habr.com/ru/post/67390/</a></p>
+ $ second_dbh-&gt; do ('UPDATE new_data SET status = 0', {pg_async =&gt; PG_ASYNC}) </pre></li><li>  timeouts  you can kill the request by timeout if it has not yet completed </li><li>  competitive inquiries.  we send the same request to two servers and give data from the server that responded faster. </li><li>  requests, the result of which you are absolutely indifferent </li></ul></div><p>Source: https://habr.com/ru/post/67390/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -88,7 +88,7 @@
 <li><a href="../67396/index.html">Ark in a modern way!</a></li>
 <li><a href="../67397/index.html">Create a wireless network using a Macbook for iPhone</a></li>
 <li><a href="../67399/index.html">Interactive Fiction or Use your imagination ...</a></li>
-<li><a href="../67403/index.html">New products in DreamSpark: Expression Studio 3, RDS 2008 R2, CCR & DSS Toolkit 2008 R2, XNA Game Studio 3.1</a></li>
+<li><a href="../674/index.html">Virtual state</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

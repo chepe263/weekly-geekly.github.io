@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -75,7 +75,7 @@
  st.extend.ready @ jquery.js: 427
  xt @ jquery.js: 97 </pre></blockquote></div></div><br>  On the website, this was displayed in a repeating slider (multiple arrows on the right and left are several copies of the slider, superimposed on each other due to an error): 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -83,7 +83,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <img src="https://habrastorage.org/files/7b5/201/131/7b5201131071456c8101f9761e829421.png" alt="Bxslider slider error"><br><br><h2>  Lyrical digression </h2><br>  It should be said that both MooTools and jQuery came to the site in a compressed form.  However, to jQuery was <a href="http://habrahabr.ru/post/148098/">a source map (source map)</a> , which greatly facilitated the search for the last (= guilty). <br><br>  The source map is an extremely useful thing in debugging compressed code, the third specification has already been released, reducing the size of the card several times.  If you hear about the source map for the first time, I advise you to pay attention to it.  But we move on. <br><br><h2>  Digging deep </h2><br>  In any problem, it is important to highlight the minimum conditions that still lead to the occurrence of the problem (but without additional data), and analyze these conditions sequentially.  As it turned out, the minimum condition for stable reproduction of the problem was the presence of inline JavaScript code in the HTML page.  Caching mechanisms in the browser and with internet providers can prevent simple conclusions, so when working with public unencrypted HTML pages, you need to clearly formulate and re-check conditions several times to be sure of them. <br><br>  But why did the inclusion of JavaScript code in HTML lead to its recursive execution in the browser?  Yandex and Google do not know anything about such situations.  Need to help him. <br><br><h2>  Hypotheses: not enough </h2><br><img src="https://habrastorage.org/getpro/habr/post_images/4b9/0c1/819/4b90c18199c10e1760cd09f5c503ce3f.jpg" alt="Hypotheses" align="right">  On the one hand, everything is clear: JavaScript inline-code is executed recursively, it can not be used on this site.  On the other hand: what exactly leads to recursive inline-code execution? <br><br>  Understand helps call stack (listing above).  Bxslider ( <code>Written while drinking Belgian ales and listening to jazz</code> - the Belgian ale definitely prevented the author from predicting some non-standard scenarios) on each object (in our case, the picture) caused the load property, which was processed via jQuery approximately as follows: <br><br><div class="spoiler">  <b class="spoiler_title">JQuery event handling</b> <div class="spoiler_text"><blockquote><pre>  jQuery.event.triggered = type;
@@ -106,7 +106,7 @@
 		 }
 		 return a
 	 }
- }; </pre></blockquote></div></div><br>  MooTools <code>load</code> method understands its own way.  And in the absence of information about the object, the object is loaded via <code>new Request.HTML</code> .  It seems to be normal too: let's upload the image again, if MooTools has no information about it (after all, the picture has already been loaded into the browser cache, these are just operations in the memory of the local user’s computer).  But jQuery, when it calls this method on an image, for some reason forgets to pass parameters, in particular, a URL.  Probably, jQuery does not know that after it MooTools will still work, to which these parameters will be needed.  And MooTools without parameters loads an “empty” URL (current page). <br><br>  It also seems to be a valid layout: when the page is loaded, the browser will load it 5 more times from the server (just an HTML document), if 5 pictures are loaded in the slider (this is what happened on the site).  If the page is in the server cache, then performance (almost) is not reflected in any way (and it’s also not easy to find resources in the developer’s network toolbar to find these “extra” calls mixed with pictures and counters). <br><br>  But the problem is that by default MooTools executes the <code>eval</code> all scripts in the loaded HTML document.  And this is worse: we can survive the execution of the counter code several times on the site.  And if the DOMReady handler starts running, which loads the slider, which causes images to load, which cause loading the HTML page, which executes all the inline code that starts the DOMReady handler ... Well, you understand. <br><br><h2>  Summary </h2><br>  Do not use multiple JavaScript frameworks together.  Never (for Joomla! There is even a plugin that cuts MooTools from the system).  If suddenly there is a desire - to re-read this article.  The described problem was "on the surface" and was quickly identified.  But there may be situations where the joint behavior of the frameworks will depend on the network (delays and the order of the requests) and the browser used.  And then to find the cause of the problem and fix it is not at all possible. <br><br>  Use <code>eval</code> only in cases where you control the executable code.  If there is no control, there is no eval. <br><br>  Alcohol is evil, el is evil.  Sober lifestyle is our everything. <br><br>  Developer tools in browsers can really give you all the information you need.  You need to be able to use them. </div><p>Source: <a href="https://habr.com/ru/post/249733/">https://habr.com/ru/post/249733/</a></p>
+ }; </pre></blockquote></div></div><br>  MooTools <code>load</code> method understands its own way.  And in the absence of information about the object, the object is loaded via <code>new Request.HTML</code> .  It seems to be normal too: let's upload the image again, if MooTools has no information about it (after all, the picture has already been loaded into the browser cache, these are just operations in the memory of the local user’s computer).  But jQuery, when it calls this method on an image, for some reason forgets to pass parameters, in particular, a URL.  Probably, jQuery does not know that after it MooTools will still work, to which these parameters will be needed.  And MooTools without parameters loads an “empty” URL (current page). <br><br>  It also seems to be a valid layout: when the page is loaded, the browser will load it 5 more times from the server (just an HTML document), if 5 pictures are loaded in the slider (this is what happened on the site).  If the page is in the server cache, then performance (almost) is not reflected in any way (and it’s also not easy to find resources in the developer’s network toolbar to find these “extra” calls mixed with pictures and counters). <br><br>  But the problem is that by default MooTools executes the <code>eval</code> all scripts in the loaded HTML document.  And this is worse: we can survive the execution of the counter code several times on the site.  And if the DOMReady handler starts running, which loads the slider, which causes images to load, which cause loading the HTML page, which executes all the inline code that starts the DOMReady handler ... Well, you understand. <br><br><h2>  Summary </h2><br>  Do not use multiple JavaScript frameworks together.  Never (for Joomla! There is even a plugin that cuts MooTools from the system).  If suddenly there is a desire - to re-read this article.  The described problem was "on the surface" and was quickly identified.  But there may be situations where the joint behavior of the frameworks will depend on the network (delays and the order of the requests) and the browser used.  And then to find the cause of the problem and fix it is not at all possible. <br><br>  Use <code>eval</code> only in cases where you control the executable code.  If there is no control, there is no eval. <br><br>  Alcohol is evil, el is evil.  Sober lifestyle is our everything. <br><br>  Developer tools in browsers can really give you all the information you need.  You need to be able to use them. </div><p>Source: https://habr.com/ru/post/249733/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -118,8 +118,8 @@
 <li><a href="../249735/index.html">The problem of diagonal boarders and Firefox</a></li>
 <li><a href="../249737/index.html">Possibilities of outdoor 3G / 4G antennas for increasing data transfer speed in mobile networks</a></li>
 <li><a href="../249739/index.html">Twitter Bootstrap and SharePoint. How to make Bootstrap work correctly under SP</a></li>
+<li><a href="../24974/index.html">Let's digress a bit from IT</a></li>
 <li><a href="../249743/index.html">Intel® Graphics Technology. Part I: Almost Gran Turismo</a></li>
-<li><a href="../249747/index.html">Yandex.Metro is watching you</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

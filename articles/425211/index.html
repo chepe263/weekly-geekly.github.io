@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>286 and network</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/webt/u0/fg/qh/u0fgqhjs35vptzyp4con0-xvuzy.png"><br><br>  I am a junkie.  I have a wardrobe full of old iron.  From Boolean IC chips in DIP packages to Voodoo5.  Of course, all this is of no practical value, but some people enjoy the pleasure of messing with old pieces of iron.  If you are one of them, I invite you under the cat, where I will tell you how the computer based on the AMD 286 processor “was friends” with the modern network, and what came of it. <br><a name="habracut"></a><br>  The idea of ​​screwing the network to the 286th was born a long time ago, since it is easiest to transfer data to a computer over the network, and in general, this is interesting.  Does TCP / IP work?  Does the web browser earn money?  Although browsers under Dos, people on 286m have already repeatedly launched, but I have never seen 286go under Windows on the Internet.  Well, the main goal is to connect to a home NAS, which stores all the software for my old hardware.  And the NAS is more or less modern, and only TCP / IP can do it. <br><br>  I already had experience connecting to this drive of old computers.  Including while writing previous articles about old iron.  But in previous articles I only considered 32-bit processors, and everything is pretty easy there: even on 386SX-16, Windows 95 runs (yes, terribly slow, yes, the installation takes more than 9 hours, but it works), which has a native TCP stack / IP and a bunch of drivers for all kinds of network cards included.  If you want to be quicker, that is, Windows for Workgroups 3.11, onto which, after installing Win32s, you can roll your own TCP / IP stack.  And, although it will not be able to log in to a modern file server, open folders without a password become quite accessible to the PC even in this configuration.  And Internet Explorer 5 runs even on 386SX, it would be enough memory! 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <img src="https://habrastorage.org/getpro/habr/post_images/f3e/e2f/d32/f3ee2fd32b07851840033e01fde11eb6.jpg" alt="image"><br>  <i>image pulled from google</i> <br><br>  But alas, by 286 all this does not apply.  The main difficulty is that the 286 processor is 16-bit, and Windows for Workgroups 3.11 is not available for it, since the Standard mode, which allowed its predecessor 3.1 to run on 16-bit processors, was cut out of 3.11.  Unsatisfied at 286 and the Win32s extension (for obvious reasons), and, accordingly, it will not be possible to install the native Microsoft TCP / IP stack. <br><br>  Thus, we return to DOS. <br><br>  After a brief, thoughtful googling, the DOS TCP / IP picture became much less clear than it was before.  Basically, it all came down to the fact that the application normally running under DOS itself has its own stack, and all it needs is a packet driver for the network card.  But I could not find an application that allows you to mount remote disks. <br>  However, I came across as many as 2 different network clients for DOS from Microsoft itself (MS Client and MS LAN Manager), and another very strange beast called Windows for Workgroups 3.1.  Yes, it was 3.1, not 3.11, and this meant that everything might work in the standard mode. <br>  What would be extremely interesting.  Of course, I did not expect to see TCP / IP stack 3.1, but also on Google I came across a description of the 16-bit TCP / IP stack from Microsoft.  Interesting. <br>  Having bought the distribution kit 3.1 on eBay, I proceeded to the installation. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/f68/0ca/a9c/f680caa9cc17b5eccfef9405bb5a07d6.png" alt="image"><br>  <i>image pulled from google</i> <br><br>  The system turned out to be a slightly modified 3.1 with a built-in network interface under DOS, very similar to the stripped-down MS LAN Manager.  All the difference from the traditional 3.1 was reduced to the presence of the “mount network drive” button in the File Manager and the corresponding dialog box.  Network configuration from under Windows itself was impossible.  How to perform the setup from under DOS was not clear.  Although after installing the system, she identified my network card as NE1000 or compatible, which was not far from the truth, because the Genius GR1222 card I used was true.  But I had a native driver disc for this card, including under DOS.  It remained unclear, however, how to configure the driver for the interrupt and the address of the I / O card. <br><br>  Moreover, after reading Google it turned out that the driver for MS LAN Manager and the packet driver are two different things. <br><br>  The situation with the drivers under DOS began to clear up a bit. <br><br>  So, there were 3 big standards: <br><br><ol><li>  Odi.  This driver model used Novell to communicate with its Netware servers.  I do not have Netvari, so it will not work. </li><li>  NDIS.  This is a Microsoft model, for their LAN Manager and Windows.  In theory, that is necessary. </li><li>  A batch driver that many DOS applications use. </li></ol><br>
@@ -163,15 +163,15 @@
 <br>
 Windows  286     .      ,  - Windows            Windows.   16 .<br>
 <br>
-<img src="https://habrastorage.org/webt/lp/-8/wu/lp-8wu_eknfoivst1yi8pxtwukk.png"></div><p>Source: <a href="https://habr.com/ru/post/425211/">https://habr.com/ru/post/425211/</a></p>
+<img src="https://habrastorage.org/webt/lp/-8/wu/lp-8wu_eknfoivst1yi8pxtwukk.png"></div><p>Source: https://habr.com/ru/post/425211/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../425199/index.html">What protects buyers from fraud with contactless payments</a></li>
 <li><a href="../425201/index.html">“I’ve been struggling with impostor syndrome for three years” - 10 questions for a programmer, issue 7</a></li>
 <li><a href="../425205/index.html">Soft Skills in Project Management: Concept, Goals and Tips for Successful Business Applications</a></li>
 <li><a href="../425207/index.html">Design Testing: Top 10 Heisenbug 2018 Piter Reports</a></li>
 <li><a href="../425209/index.html">Sunrise Sun Manually # 2: Hardcore for IDE, Cmake, and my frustration with animals</a></li>
+<li><a href="../42521/index.html">Virtual worlds - some thoughts and statistics</a></li>
 <li><a href="../425213/index.html">Plans for the next version of Vue.js</a></li>
 <li><a href="../425215/index.html">4 tips for optimizing a webpack application</a></li>
 <li><a href="../425217/index.html">Resiliency of the application when updating the cluster Cubernetes</a></li>

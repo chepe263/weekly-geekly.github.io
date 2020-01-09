@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>AWS: CloudFormation now supports RDS parameter groups and EBS and RDS accelerated media</h1><div class="post__text post__text-html js-mediator-article">  Hi, Habrasoobschestvo! <img src="https://habrastorage.org/storage2/17f/7a5/133/17f7a51337811060a8db1374dd1d5572.png" alt="image" align="right"><br><br>  Starting today, in the description of AWS CloudFormation templates, there are options that allow you to customize both the latest innovations from Amazon and already very ancient features that the community has asked to include for a very long time. <br><br><h4>  RDS group parameter. </h4><br>  All RDS servers can be raised with standard settings.  But there is no root access to the servers, so it is impossible, for example, to include the ability to store procedures in RDS MySQL.  For this, there are parameter groups that can be created and configured via the API or CLI. <br><a name="habracut"></a><br>  So, previously, when raising the infrastructure through CloudFormation, it was impossible to create a parameter-group and get RDS there.  AWS now included this option in the CloudFromation templates as: <br><pre><code class="javascript hljs">{ <span class="hljs-string"><span class="hljs-string">"Type"</span></span>: <span class="hljs-string"><span class="hljs-string">"AWS::RDS::DBParameterGroup"</span></span>, <span class="hljs-string"><span class="hljs-string">"Properties"</span></span> : { <span class="hljs-string"><span class="hljs-string">"Description"</span></span> : <span class="hljs-built_in"><span class="hljs-built_in">String</span></span>, <span class="hljs-string"><span class="hljs-string">"Family"</span></span> : <span class="hljs-built_in"><span class="hljs-built_in">String</span></span>, <span class="hljs-string"><span class="hljs-string">"Parameters"</span></span> : DBParameters } }</code> </pre> <br>  Moreover, the parameters are listed in the form: <br><pre> <code class="javascript hljs"><span class="hljs-string"><span class="hljs-string">"Parameters"</span></span> : { <span class="hljs-string"><span class="hljs-string">"Key1"</span></span> : <span class="hljs-string"><span class="hljs-string">"Value1"</span></span>, <span class="hljs-string"><span class="hljs-string">"Key2"</span></span> : <span class="hljs-string"><span class="hljs-string">"Value2"</span></span>, <span class="hljs-string"><span class="hljs-string">"Key3"</span></span> : <span class="hljs-string"><span class="hljs-string">"Value3"</span></span> }</code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,16 +61,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Thus, it is even more convenient to automate the work on the creation of infrastructure with RDS.  All about the feature can be found <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-rds-dbparametergroup.html">here</a> . <br><br><h4>  EBS accelerated media and RDS disks </h4><br>  Not so long ago, AWS introduced EBS accelerated media, and the week before last — the same features for RDS drives.  Since then, you can achieve truly incredible IO speeds.  Starting today, these settings are also available in the CloudFormation templates.  Disk description now looks like this: <br><pre> <code class="javascript hljs">{ <span class="hljs-string"><span class="hljs-string">"Type"</span></span>:<span class="hljs-string"><span class="hljs-string">"AWS::EC2::Volume"</span></span>, <span class="hljs-string"><span class="hljs-string">"Properties"</span></span> : { <span class="hljs-string"><span class="hljs-string">"AvailabilityZone"</span></span> : <span class="hljs-built_in"><span class="hljs-built_in">String</span></span>, <span class="hljs-string"><span class="hljs-string">"Iops"</span></span> : Integer, <span class="hljs-string"><span class="hljs-string">"Size"</span></span> : <span class="hljs-built_in"><span class="hljs-built_in">String</span></span>, <span class="hljs-string"><span class="hljs-string">"SnapshotId"</span></span> : <span class="hljs-built_in"><span class="hljs-built_in">String</span></span>, <span class="hljs-string"><span class="hljs-string">"Tags"</span></span> : [ Tag1, Tag2, ... ], <span class="hljs-string"><span class="hljs-string">"VolumeType : String } }</span></span></code> </pre><br><br>  Moreover, the Iops parameters will matter if the VolumeType is set to <b>io1</b> and not <b>standard</b> .  More on these options <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-ebs-volume.html">here</a> . <br><br>  By the way, an article about autoconfiguration in AWS is already in development.  My colleague writes it, and you can read it on a habr in the near future. </div><p>Source: <a href="https://habr.com/ru/post/155005/">https://habr.com/ru/post/155005/</a></p>
+      Thus, it is even more convenient to automate the work on the creation of infrastructure with RDS.  All about the feature can be found <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-rds-dbparametergroup.html">here</a> . <br><br><h4>  EBS accelerated media and RDS disks </h4><br>  Not so long ago, AWS introduced EBS accelerated media, and the week before last — the same features for RDS drives.  Since then, you can achieve truly incredible IO speeds.  Starting today, these settings are also available in the CloudFormation templates.  Disk description now looks like this: <br><pre> <code class="javascript hljs">{ <span class="hljs-string"><span class="hljs-string">"Type"</span></span>:<span class="hljs-string"><span class="hljs-string">"AWS::EC2::Volume"</span></span>, <span class="hljs-string"><span class="hljs-string">"Properties"</span></span> : { <span class="hljs-string"><span class="hljs-string">"AvailabilityZone"</span></span> : <span class="hljs-built_in"><span class="hljs-built_in">String</span></span>, <span class="hljs-string"><span class="hljs-string">"Iops"</span></span> : Integer, <span class="hljs-string"><span class="hljs-string">"Size"</span></span> : <span class="hljs-built_in"><span class="hljs-built_in">String</span></span>, <span class="hljs-string"><span class="hljs-string">"SnapshotId"</span></span> : <span class="hljs-built_in"><span class="hljs-built_in">String</span></span>, <span class="hljs-string"><span class="hljs-string">"Tags"</span></span> : [ Tag1, Tag2, ... ], <span class="hljs-string"><span class="hljs-string">"VolumeType : String } }</span></span></code> </pre><br><br>  Moreover, the Iops parameters will matter if the VolumeType is set to <b>io1</b> and not <b>standard</b> .  More on these options <a href="http://docs.amazonwebservices.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-ebs-volume.html">here</a> . <br><br>  By the way, an article about autoconfiguration in AWS is already in development.  My colleague writes it, and you can read it on a habr in the near future. </div><p>Source: https://habr.com/ru/post/155005/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../154993/index.html">A selection of services to enhance your Dropbox</a></li>
-<li><a href="../154997/index.html">Perl6 - Working with Functions</a></li>
-<li><a href="../154999/index.html">Rivertrail: concurrency in javascript</a></li>
+<li><a href="../155/index.html">"Phenomenon" rpod.ru</a></li>
+<li><a href="../1550/index.html">Hackers have attacked the US State Department</a></li>
+<li><a href="../15500/index.html">Promptly</a></li>
 <li><a href="../155001/index.html">Microsoft Surface Pricing Announced</a></li>
 <li><a href="../155003/index.html">Complete video guide on collecting design information</a></li>
 <li><a href="../155007/index.html">Writing a game for Samsung SmartTV on JS</a></li>

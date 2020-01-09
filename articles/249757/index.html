@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to hack Yandex two-factor authentication</h1><div class="post__text post__text-html js-mediator-article">  Finally, Yandex gash two-factor authentication.  I did not expect a trick, but it seems in vain. <br><br>  How does two-factor authentication of Yandex work? <br><br>  The QR code is displayed in the browser, the user scans it with a special application, the browser immediately senses this and authorizes the user. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      QR code is decoded into a link like this: <br><br>  <a href="http://yandex.ru/promo/2fa%3Ftrack_id%3D38e701d0bb5abaf50d381c3f95e0f341a8">yandex.ru/promo/2fa?track_id=38e701d0bb5abaf50d381c3f95e0f341a8</a> <br><br>  Inside all this, a web page with a QR code constantly polls the server while waiting for authorization: <br><pre><code class="hljs lua">POST /auth/magic/<span class="hljs-built_in"><span class="hljs-built_in">status</span></span>/ HTTP/<span class="hljs-number"><span class="hljs-number">1.1</span></span> Host: passport.yandex.ru track_id=<span class="hljs-number"><span class="hljs-number">38e701</span></span>d0bb5abaf50d381c3f95e0f341a8</code> </pre> <br>  Once the user has scanned the QR code by the Yandex application, the following request will give the browser a cookie. <br><br>  What is the problem here? <br><a name="habracut"></a><br>  To receive cookies, the same ID is used, which is encoded in the QR code. <br>  Pay attention to the track_id parameter in the link and the same parameter in the POST request. <br>  This means that an attacker can peek at his QR code from behind the user's shoulder, retrieve the session ID from it, and, pretending to be a browser, often carry out the same request. <br><br>  And if the hacker before the victim has time to get the session - he will immediately be in the user account. <br><br>  I wrote on my knee a simple Android application that demonstrates this vulnerability. <br>  It is enough to stand behind the victim and have time to scan the qr-code before it, while the victim launches the application and enters the pin-code. <br><br>  After she logs in, the application will show you the victim's mailbox. <br><br>  The application decodes the QR code using the <a href="https://github.com/dm77/barcodescanner">github.com/dm77/barcodescanner</a> library, quickly makes POST requests to Yandex, receives cookies, inserts them into the WebView and opens Yandex.Post in it. <br><br>  For a successful attack, you need a relatively fast Internet on your smartphone (in order to have a cookie before the victim) and a good camera on the device is desirable.  My code was successfully recognized from a distance of up to a meter, while my experimental friends did not notice anything and were very surprised at this trick when I showed them their mail on my phone. </div><p>Source: <a href="https://habr.com/ru/post/249757/">https://habr.com/ru/post/249757/</a></p>
+      QR code is decoded into a link like this: <br><br>  <a href="http://yandex.ru/promo/2fa%3Ftrack_id%3D38e701d0bb5abaf50d381c3f95e0f341a8">yandex.ru/promo/2fa?track_id=38e701d0bb5abaf50d381c3f95e0f341a8</a> <br><br>  Inside all this, a web page with a QR code constantly polls the server while waiting for authorization: <br><pre><code class="hljs lua">POST /auth/magic/<span class="hljs-built_in"><span class="hljs-built_in">status</span></span>/ HTTP/<span class="hljs-number"><span class="hljs-number">1.1</span></span> Host: passport.yandex.ru track_id=<span class="hljs-number"><span class="hljs-number">38e701</span></span>d0bb5abaf50d381c3f95e0f341a8</code> </pre> <br>  Once the user has scanned the QR code by the Yandex application, the following request will give the browser a cookie. <br><br>  What is the problem here? <br><a name="habracut"></a><br>  To receive cookies, the same ID is used, which is encoded in the QR code. <br>  Pay attention to the track_id parameter in the link and the same parameter in the POST request. <br>  This means that an attacker can peek at his QR code from behind the user's shoulder, retrieve the session ID from it, and, pretending to be a browser, often carry out the same request. <br><br>  And if the hacker before the victim has time to get the session - he will immediately be in the user account. <br><br>  I wrote on my knee a simple Android application that demonstrates this vulnerability. <br>  It is enough to stand behind the victim and have time to scan the qr-code before it, while the victim launches the application and enters the pin-code. <br><br>  After she logs in, the application will show you the victim's mailbox. <br><br>  The application decodes the QR code using the <a href="https://github.com/dm77/barcodescanner">github.com/dm77/barcodescanner</a> library, quickly makes POST requests to Yandex, receives cookies, inserts them into the WebView and opens Yandex.Post in it. <br><br>  For a successful attack, you need a relatively fast Internet on your smartphone (in order to have a cookie before the victim) and a good camera on the device is desirable.  My code was successfully recognized from a distance of up to a meter, while my experimental friends did not notice anything and were very surprised at this trick when I showed them their mail on my phone. </div><p>Source: https://habr.com/ru/post/249757/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,10 +74,10 @@
 <li><a href="../249753/index.html">An overview of the Strela robotic platform or a do-it-yourself simple bluetooth bot</a></li>
 <li><a href="../249755/index.html">Cards, Troika, payments</a></li>
 <li><a href="../249759/index.html">Sample Feature Engineering in Machine Learning</a></li>
+<li><a href="../24976/index.html">Types of cash payments to freelancers</a></li>
 <li><a href="../249761/index.html">Sberbank Online: find out personal data by phone</a></li>
 <li><a href="../249765/index.html">How I fought adware on google play and lost</a></li>
 <li><a href="../249767/index.html">Authoring Perl Modules</a></li>
-<li><a href="../249769/index.html">The “Unread issues” plugin - as we notify employees in Redmine. General concept</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

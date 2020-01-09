@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Java hangs on 2.2250738585072012e-308</h1><div class="post__text post__text-html js-mediator-article"><img align="right" src="https://habrastorage.org/storage/3a6f0142/c4d4b4cc/544323e6/deb01f03.png">  Konstantin Preisser recently discovered something very interesting: Java — both runtime and compiler — enters an infinite loop when converting a decimal <code>2.2250738585072012e-308</code> to a double.  In theory, the number should be converted to <code>0x1p-1022</code> , that is, <code>Double.MIN_VALUE</code> .  However, Java hangs at <code>0x0.fffffffffffffp-1022</code> , the largest <a href="http://en.wikipedia.org/wiki/Denormal_number">denormalized number</a> for double. <br><br><h2>  Infinite runtime loop </h2><pre> <code class="java hljs"><span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">RuntimeHang</span></span></span><span class="hljs-class"> </span></span>{ <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">main</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(String[] args)</span></span></span><span class="hljs-function"> </span></span>{ System.out.println(<span class="hljs-string"><span class="hljs-string">"Test:"</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">double</span></span> d = Double.parseDouble(<span class="hljs-string"><span class="hljs-string">"2.2250738585072012e-308"</span></span>); System.out.println(<span class="hljs-string"><span class="hljs-string">"Value: "</span></span> + d); } }</code> </pre><br><br><h2>  Infinite loop at compile time </h2><br>  ( <i>If you want to try it out in Eclipse, do not forget to save everything first, otherwise you will not have time to come to your senses with its shadow compilation</i> - note transl.) <pre> <code class="java hljs"><span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">CompilationHang</span></span></span><span class="hljs-class"> </span></span>{ <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">main</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(String[] args)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">double</span></span> d = <span class="hljs-number"><span class="hljs-number">2.2250738585072012e-308</span></span>; System.out.println(<span class="hljs-string"><span class="hljs-string">"Value: "</span></span> + d); } }</code> </pre><br>  Under the cut of the author's reasoning about the causes of this phenomenon. <br><a name="habracut"></a><br><h2>  What's the matter? </h2><br>  Konstantin found out that at least in runtime the problem lies in the “correction cycle” in <a href="http://www.docjar.com/html/api/sun/misc/FloatingDecimal.java.html">FloatingDecimal.java</a> .  He's writing: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <blockquote>  If you comment out this part, there is no longer any hangup in <code>Double.parseDouble(String s)</code> , because <code>Double.parseDouble(String s)</code> , which calls <code>sun.misc.FloatingDecimal.readJavaFormatString(s).doubleValue()</code> is pure java code, nothing native.  But it uses artifacts of floating-point numbers, so the matter can be in the compiler settings, which compiled JRE and javac. <br><br>  Without a correction cycle, such bits (big endian) are output: <br><pre> <code class="hljs">00000000 00001111 11111111 11111111 11111111 11111111 11111111 11111111</code> </pre> <br>  That is, the number is converted to the largest denormalized floating point number, since the exponent is zero.  Without a correction cycle, the same thing happens with <code>2.2250738585072013e-308</code> , however, if you uncomment the cycle, it will convert correctly: <br><pre> <code class="hljs">00000000 00010000 00000000 00000000 00000000 00000000 00000000 00000000</code> </pre> <br></blockquote><br><br><h2>  From translator </h2><br>  I checked and reproduced the problem on 32-bit and 64-bit HotSpot and on 64-bit OpenJDK.  In addition, a similar problem <a href="http://www.exploringbinary.com/php-hangs-on-numeric-value-2-2250738585072011e-308/">exists in PHP</a> .  Konstantin Preisser has already sent a bugreport. </div><p>Source: <a href="https://habr.com/ru/post/112948/">https://habr.com/ru/post/112948/</a></p>
+    <blockquote>  If you comment out this part, there is no longer any hangup in <code>Double.parseDouble(String s)</code> , because <code>Double.parseDouble(String s)</code> , which calls <code>sun.misc.FloatingDecimal.readJavaFormatString(s).doubleValue()</code> is pure java code, nothing native.  But it uses artifacts of floating-point numbers, so the matter can be in the compiler settings, which compiled JRE and javac. <br><br>  Without a correction cycle, such bits (big endian) are output: <br><pre> <code class="hljs">00000000 00001111 11111111 11111111 11111111 11111111 11111111 11111111</code> </pre> <br>  That is, the number is converted to the largest denormalized floating point number, since the exponent is zero.  Without a correction cycle, the same thing happens with <code>2.2250738585072013e-308</code> , however, if you uncomment the cycle, it will convert correctly: <br><pre> <code class="hljs">00000000 00010000 00000000 00000000 00000000 00000000 00000000 00000000</code> </pre> <br></blockquote><br><br><h2>  From translator </h2><br>  I checked and reproduced the problem on 32-bit and 64-bit HotSpot and on 64-bit OpenJDK.  In addition, a similar problem <a href="http://www.exploringbinary.com/php-hangs-on-numeric-value-2-2250738585072011e-308/">exists in PHP</a> .  Konstantin Preisser has already sent a bugreport. </div><p>Source: https://habr.com/ru/post/112948/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../112946/index.html">Microsoft Quality Assurance Day</a></li>
 <li><a href="../112947/index.html">Experiment with Augmented Reality, multitouch and Vuzix glasses</a></li>
 <li><a href="../112949/index.html">The last provider is disabled in Egypt</a></li>
+<li><a href="../11295/index.html">Fan site WoW sold for a million</a></li>
 <li><a href="../112950/index.html">The administrator of the UA zone, “Hostmaster,” closes public access to information on domain owners.</a></li>
 <li><a href="../112953/index.html">What you need to know about floating-point arithmetic</a></li>
 <li><a href="../112957/index.html">Issued latest IPv4 / 8 blocks</a></li>
-<li><a href="../112958/index.html">Accuracy of meteorological forecasts</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

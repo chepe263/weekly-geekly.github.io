@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Linux + 2 ISP. And the availability of the internal server through both providers</h1><div class="post__text post__text-html js-mediator-article">  There is a great article explaining how this is done <a href="http://habrahabr.ru/blogs/cisconetworks/117573/">on Cisco</a> .  But we do not want to spend $ 100,500 for the purchase of stamped impressions "Cisco Systems" on the body of the router. <br><br><h5>  Description of the problem </h5><br>  So, the essence of the problem: there are two NATs through two different providers, a local area network in which there is a server and which must be public and accessible through both NATs.  Providers have different priorities: the first is activated first, then the second. <br><br>  If a packet is entered through the first provider, it is NATed to our server, processed, a response packet is formed, which goes out through the first provider and goes to where the first packet came from.  Good. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       If a packet is entered through the second provider, it is NATed to our server, processed, a response packet is formed, which goes out through the first provider ... and why?  Because first in Linux there is routing, and then SNAT.  So, when routing a packet, the next node is assigned - the gateway of the first provider (by default).  Then there is a connection tracking - conntrack notices that this packet is the answer to another, and replaces the sender's address with the address that the second provider gave us.  And then the packet is routed through the interface of the first provider to its gateway.  As a rule, the provider blocks packets with the sender address of which the address is not from their subnet.  Poorly. <br><br><a name="habracut"></a><br><h5>  It should be </h5><br>  But is it possible to somehow change the order - first, to track which provider is needed, and then, based on this, choose next hop? <br><br>  Can.  For this, Linux has an interface to its connection tracker - conntrack match and CONNTRACK target.  The first of these is the condition of matching a packet to a rule according to which only those packets will be processed in which a special label — the compound label — has a certain value.  The second is a label management tool. <br><br>  Connection labels differ from conventional packet labels (MARK) in that they are additionally maintained and maintained by the conntrack module.  If we assign a connection label to a package, then this label will be found later on all packages belonging to the same connection.  The connection tracking and label recovery occurs after processing the raw table (PREROUTING or OUPTUT chain), before processing the same chains of the mangle table, and storing the connection label in conntrack in the POSTROUTING chain after processing the nat table. <br><br>  We can from the very beginning, even before our DNAT occurred on the internal server, assign a label to the connection, for example, depending on the interface through which this packet arrived at the router.  After that, we will see all subsequent packages and responses with the same label - i.e.  at any given time for any answer to know which interface it should exit. <br><br>  Linux has RPDB - Routing Policy DataBase is the same as Cisco's called route-map - the routing policy database.  At the same time, we create several different routing tables, and the choice of which of them will process the packet will be made on the basis of policies.  The criteria for selecting a table can be: the interface through which our package entered;  netfilter (nfmark);  sender's address;  destination address and others. <br><br>  The netfilter (nfmark) tag is a suitable criterion for this case.  This is not the same as a connection label (ctmark), but what prevents us from installing an nfmark based on ctmark?  On the contrary, there is a special command in the CONNTRACK target for this. <br><br><h5>  Customization </h5><br>  To begin with, we will configure RPDB.  I will not assign names to the tables - this is beyond the scope of the topic, especially since in this case the numbers will be clearer. <br>  Conditional routing rules are added, set when the corresponding interfaces are raised, killed when stopped. <br><br><pre> ip rule add fwmark 0x1 / 0x3 lookup 201
@@ -84,15 +84,15 @@
  iptables -t mangle -A in-marking -i ppp1 -j CONNMARK --set-xmark 0x1 / 0x3
  # packet entered via ppp2 - put the mark 2, so that the routing of any answers goes according to table 202
  iptables -t mangle -A in-marking -i ppp2 -j CONNMARK --set-xmark 0x2 / 0x3
-</pre><br><br>  It is necessary to pay attention to three points. <br><br>  First, all processing takes place in the PREROUTING chain of the mangle table.  This is because we want to mark packets (therefore mangle) before processing these labels during routing (therefore PREROUTING). <br><br>  Secondly, the task of the connection label occurs only for the head packets (-ctstate NEW) - the others already have it.  If a new packet does not have a connection label, then it doesn’t need to be serviced at all - it will follow the default table.  This is true for all compounds initiated from lokalki. <br><br>  Under the "numbers of providers" involved 2 bits, i.e.  we can do 3 uplinks in this way (0 always remains under the “indefinite provider”, for such packets the default route will be used).  Therefore, everywhere tags are written with a mask / 0x3 - our teams will not affect all other bits of the tags in any way, and they can be used for other purposes.  For me, for example, other bits are used for traffic shaping. <br><br><h5>  And it can be different </h5><br>  We assign the second address to the internal server.  For this address in rpdb, we assign the output through the second provider, and DNAT for the packets that come to us through the second provider, we do this second address. <br><br>  Simpler?  In a sense, yes.  But you will have to maintain N addresses on the internal server (by the number of providers) and N DNAT rules. </div><p>Source: <a href="https://habr.com/ru/post/117620/">https://habr.com/ru/post/117620/</a></p>
+</pre><br><br>  It is necessary to pay attention to three points. <br><br>  First, all processing takes place in the PREROUTING chain of the mangle table.  This is because we want to mark packets (therefore mangle) before processing these labels during routing (therefore PREROUTING). <br><br>  Secondly, the task of the connection label occurs only for the head packets (-ctstate NEW) - the others already have it.  If a new packet does not have a connection label, then it doesn’t need to be serviced at all - it will follow the default table.  This is true for all compounds initiated from lokalki. <br><br>  Under the "numbers of providers" involved 2 bits, i.e.  we can do 3 uplinks in this way (0 always remains under the “indefinite provider”, for such packets the default route will be used).  Therefore, everywhere tags are written with a mask / 0x3 - our teams will not affect all other bits of the tags in any way, and they can be used for other purposes.  For me, for example, other bits are used for traffic shaping. <br><br><h5>  And it can be different </h5><br>  We assign the second address to the internal server.  For this address in rpdb, we assign the output through the second provider, and DNAT for the packets that come to us through the second provider, we do this second address. <br><br>  Simpler?  In a sense, yes.  But you will have to maintain N addresses on the internal server (by the number of providers) and N DNAT rules. </div><p>Source: https://habr.com/ru/post/117620/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../117609/index.html">Obama: “I am president or where? Where are my cool gadgets? ”</a></li>
 <li><a href="../117610/index.html">Skype for Android vulnerability</a></li>
 <li><a href="../117613/index.html">Mailing Lists - a bit of stupid</a></li>
 <li><a href="../117614/index.html">First jQuery 1.6 beta released</a></li>
 <li><a href="../117618/index.html">OpenOffice.org will be handed over to the community</a></li>
+<li><a href="../11762/index.html">Fallout 3: do not pass by!</a></li>
 <li><a href="../117621/index.html">Beerconf</a></li>
 <li><a href="../117622/index.html">Economy IT and Innovation</a></li>
 <li><a href="../117623/index.html">There are more than 10 million multimedia files on Wikimedia Commons.</a></li>

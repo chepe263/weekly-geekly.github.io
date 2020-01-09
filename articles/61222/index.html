@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to cook SphinxQL</h1><div class="post__text post__text-html js-mediator-article">  According to the <a href="http://habrahabr.ru/blogs/sphinx/60628/">applications of workers</a> , I will tell about two new mega-features in Sphinx.  Suggestions for future stories can be sent to the comments. <br><br>  Both features are added in version 0.9.9-rc2, published in early April 2009.  The version is traditionally (too) stable, there are no known serious bugs, tests are passed, and so on.  Brave people, as well as commercial customers with contracts for support, are already successfully used in production, despite a different tag from “release”. <br><br>  <b>1st mega feature.</b>  <b>Sphinx</b> now <b>supports the MySQL network protocol</b> (internal version number 10, which is supported by all server and client versions, starting with MySQL 4.1 and MySQL 5.x inclusive). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <a name="habracut"></a><br><br>  What does this mean in translation back into Russian?  Essentially, a <b>third method of accessing searchd has emerged</b> , while being particularly simple and affordable.  Previously, it was possible to do search queries either through native PHP / Perl / Java / Ruby / ... API, or through SphinxSE.  Now, in addition to this, they can be done through <b>any client for MySQL</b> , including the familiar command-line client, PHP mysql_connect () and mysql_query (), Perl DBI, etc.  At the same time, it is compatible with all clients, ranging from MySQL 4.1 to the present. <br><br>  Those.  The API and SphinxSE become optional, a lot (in the long run, everything) can be done simply as if by MySQL queries.  In addition, support for persistent connections automatically appears.  This is important in the case when very fast average requests are served, but there are <i>MANY</i> such requests.  The overhead of the network connection and fork () typically fit in the interval from 0.001 to 0.01 seconds, depending on the size of the indices, the operating system, etc.  In the case of 1M requests per day and 0.001 seconds of overhead to query, this is an extra 1000 seconds of CPU, which does not matter plus or minus.  In the case of 50M requests and 0.01 sec / request, we still have about 5 days of CPU time ... there is something to fight for. <br><br>  A couple of important points about network connections.  First, <i>all</i> connections, regardless of the protocol, are limited to the <a href="http://sphinxsearch.com/docs/current.html">max_children</a> limit from above.  Secondly, in the current version, connections using the MySQL protocol are considered interactive and the timeout for them is automatically increased to 900 seconds (instead of 1 second using the native Sphinx protocol).  Corresponding, but be careful with the limits, otherwise you can accidentally strangle searchd with idle connections. <br><br>  Enough theory, give practice.  How to configure and try?  It is necessary to add literally one line indicating the address of the interface, the port and the actual name of the protocol in sphinx.conf: <br><br><pre> listen = localhost: 3307: mysql41
@@ -118,20 +118,20 @@
  |  avg_query_readtime |  OFF |
  + -------------------- + ------- +
  29 rows in set (0.00 sec)
-</pre><br><br>  Some counters in the example above return OFF.  This is because searchd was launched without special keys --iostats --cpustats.  By default, they are disabled, TC.  theoretically add overheads (accurately add unnecessary calls to gettimeofday () and other clock_gettime (), respectively, for example).  How many of those overheads it turns out practically, no one has yet measured.  I think a great opportunity to be a pioneer! <br><br>  There are already some known issues.  It seems (like) serious so far none.  The most amusing in my opinion: they say, some frameworks necessarily send all sorts of unnecessary requests like SET NAMES while connecting, and they don’t manage to die out.  Requests, of course, fall;  after them and frameworks.  Well, reach the hands, add a stub. <br><br>  But the transfer of some types of SQL queries from MySQL to Sphinx has been particularly simplified.  On queries that shovel all the available data, Sphinx is obtained up to 1.5-3 times faster ( <a href="http://www.percona.com/files/presentations/opensql2008_sphinx.pdf">once a benchmark</a> , <a href="http://www.mysqlperformanceblog.com/2009/04/19/talking-mysql-to-sphinx/">two benchmarks</a> ).  At the same time, it was necessary to rewrite them to API calls, but now it is not necessary. <br><br>  And we are only one core, <a href="http://sphinxsearch.com/docs/current.html">and you can two</a> . </div><p>Source: <a href="https://habr.com/ru/post/61222/">https://habr.com/ru/post/61222/</a></p>
+</pre><br><br>  Some counters in the example above return OFF.  This is because searchd was launched without special keys --iostats --cpustats.  By default, they are disabled, TC.  theoretically add overheads (accurately add unnecessary calls to gettimeofday () and other clock_gettime (), respectively, for example).  How many of those overheads it turns out practically, no one has yet measured.  I think a great opportunity to be a pioneer! <br><br>  There are already some known issues.  It seems (like) serious so far none.  The most amusing in my opinion: they say, some frameworks necessarily send all sorts of unnecessary requests like SET NAMES while connecting, and they don’t manage to die out.  Requests, of course, fall;  after them and frameworks.  Well, reach the hands, add a stub. <br><br>  But the transfer of some types of SQL queries from MySQL to Sphinx has been particularly simplified.  On queries that shovel all the available data, Sphinx is obtained up to 1.5-3 times faster ( <a href="http://www.percona.com/files/presentations/opensql2008_sphinx.pdf">once a benchmark</a> , <a href="http://www.mysqlperformanceblog.com/2009/04/19/talking-mysql-to-sphinx/">two benchmarks</a> ).  At the same time, it was necessary to rewrite them to API calls, but now it is not necessary. <br><br>  And we are only one core, <a href="http://sphinxsearch.com/docs/current.html">and you can two</a> . </div><p>Source: https://habr.com/ru/post/61222/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../61214/index.html">New Local Business Center dashboard</a></li>
 <li><a href="../61215/index.html">How to become a Zend PHP 5 Certified Engineer</a></li>
 <li><a href="../61217/index.html">Adobe has introduced a new service for web developers.</a></li>
 <li><a href="../61219/index.html">This is a nightmare, comrades. PHPShop</a></li>
+<li><a href="../6122/index.html">George Bush quotes Iraqi bloggers</a></li>
 <li><a href="../61221/index.html">Choose your coloring of the day</a></li>
 <li><a href="../61223/index.html">PocketBook announces contest for developers</a></li>
 <li><a href="../61224/index.html">Windows 7 + Application Compatibility</a></li>
 <li><a href="../61225/index.html">Tight: AMD GPU and DirectX 11</a></li>
 <li><a href="../61228/index.html">Interactive glasses</a></li>
-<li><a href="../61231/index.html">Two fresh books on symfony</a></li>
+<li><a href="../6123/index.html">GPLv3 can hit the Novell business hard</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

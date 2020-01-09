@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>php: Storing objects in session</h1><div class="post__text post__text-html js-mediator-article"> On the recently published resource here, I stumbled upon the question of storing objects created in the script in a php session. <br><br>  How bad the practice is, in principle, the storage of objects in a session, I will not discuss, but just show you how to work with such objects.  However, if experts have already found a recipe on <a href="http://php.net/">php.net</a> , and believe that everything is trivial, I completely agree with them.  However, if you do not know a bit ... <br><a name="habracut"></a><br>  So, we set out to put an object in a session, say, a certain user. <br><br>  About our files will look like this: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       myclass.php: <br><pre> <code class="hljs xml"><span class="php"><span class="hljs-meta"><span class="php"><span class="hljs-meta">&lt;?php</span></span></span><span class="php"> </span><span class="hljs-class"><span class="hljs-keyword"><span class="php"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span></span><span class="php"><span class="hljs-class"> </span></span><span class="hljs-title"><span class="php"><span class="hljs-class"><span class="hljs-title">MyClass</span></span></span></span><span class="php"><span class="hljs-class"> </span></span></span><span class="php">{ </span><span class="hljs-keyword"><span class="php"><span class="hljs-keyword">public</span></span></span><span class="php"> $user; }</span></span></code> </pre><br><br>  index.php: <br><pre> <code class="hljs xml"><span class="php"><span class="hljs-meta"><span class="php"><span class="hljs-meta">&lt;?php</span></span></span><span class="php"> session_start(); </span><span class="hljs-keyword"><span class="php"><span class="hljs-keyword">require</span></span></span><span class="php"> </span><span class="hljs-string"><span class="php"><span class="hljs-string">'myclass.php'</span></span></span><span class="php">; header(</span><span class="hljs-string"><span class="php"><span class="hljs-string">"content-type: text/plain"</span></span></span><span class="php">); </span><span class="hljs-keyword"><span class="php"><span class="hljs-keyword">if</span></span></span><span class="php"> (!</span><span class="hljs-keyword"><span class="php"><span class="hljs-keyword">isset</span></span></span><span class="php">($_SESSION[</span><span class="hljs-string"><span class="php"><span class="hljs-string">'classTst'</span></span></span><span class="php">])) { $myclass = </span><span class="hljs-keyword"><span class="php"><span class="hljs-keyword">new</span></span></span><span class="php"> MyClass(); $myclass-&gt;user = </span><span class="hljs-string"><span class="php"><span class="hljs-string">'me'</span></span></span><span class="php">; $_SESSION[</span><span class="hljs-string"><span class="php"><span class="hljs-string">'classTst'</span></span></span><span class="php">] = $myclass; </span><span class="hljs-keyword"><span class="php"><span class="hljs-keyword">echo</span></span></span><span class="php"> </span><span class="hljs-string"><span class="php"><span class="hljs-string">"Class is into session array now"</span></span></span><span class="php">; } </span><span class="hljs-keyword"><span class="php"><span class="hljs-keyword">else</span></span></span><span class="php"> { </span><span class="hljs-keyword"><span class="php"><span class="hljs-keyword">echo</span></span></span><span class="php"> </span><span class="hljs-string"><span class="php"><span class="hljs-string">"\$_SESSION['classTst'] dump: \n\n"</span></span></span><span class="php">; var_dump($_SESSION[</span><span class="hljs-string"><span class="php"><span class="hljs-string">'classTst'</span></span></span><span class="php">]); } </span></span><br></code> </pre> <code>&lt;?php session_start(); require 'myclass.php'; header("content-type: text/plain"); if (!isset($_SESSION['classTst'])) { $myclass = new MyClass(); $myclass-&gt;user = 'me'; $_SESSION['classTst'] = $myclass; echo "Class is into session array now"; } else { echo "\$_SESSION['classTst'] dump: \n\n"; var_dump($_SESSION['classTst']); } <br></code> <br><br>  And now let's figure out what we are doing. <br><br>  In the first launch of the index.php script, we create an object of the class myclass and put it into the session.  In any subsequent case (until we destroy the session or destroy the “link” to it - in the form of a cookie in the browser, for example) we load the session in which our object already exists.  However, instead of being an instance of the class MyClass, var_dump () “pleases” us with the class "__PHP_Incomplete_Class": <br><br><pre> $ _SESSION ['classTst'] dump: 
@@ -78,7 +78,7 @@
    ["user"] =&gt;
    string (2) "me"
  }
-</pre><br><br>  In general, everything is really simple: all objects that you want to store in a session should be known to the interpreter <b>BEFORE</b> you start the session. <br><br>  Thus, for example, if your standard is session.auto_start On, storing objects in a session is not your fate.  Also, if you rely on frameworks whose authors have decided for you, where and when what objects to load (and you rely entirely on authors), storing certain specific objects in a session can become just a death number (in the case of an object with other embedded objects , called "on demand" somewhere before the execution, say, of the controller, when the session started a long time ago).  In the case of a compound object (containing 2-3 service objects in properties, for example), a reasonable question may arise: what is “cheaper” to throw everything into a session, or to get an object again with one or two queries from the database (or database cache)? <br><br>  So, to store or not to store objects in a session, and how to do it based on the realities of your project - it's up to you anyway :) </div><p>Source: <a href="https://habr.com/ru/post/64146/">https://habr.com/ru/post/64146/</a></p>
+</pre><br><br>  In general, everything is really simple: all objects that you want to store in a session should be known to the interpreter <b>BEFORE</b> you start the session. <br><br>  Thus, for example, if your standard is session.auto_start On, storing objects in a session is not your fate.  Also, if you rely on frameworks whose authors have decided for you, where and when what objects to load (and you rely entirely on authors), storing certain specific objects in a session can become just a death number (in the case of an object with other embedded objects , called "on demand" somewhere before the execution, say, of the controller, when the session started a long time ago).  In the case of a compound object (containing 2-3 service objects in properties, for example), a reasonable question may arise: what is “cheaper” to throw everything into a session, or to get an object again with one or two queries from the database (or database cache)? <br><br>  So, to store or not to store objects in a session, and how to do it based on the realities of your project - it's up to you anyway :) </div><p>Source: https://habr.com/ru/post/64146/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -87,11 +87,11 @@
 <li><a href="../64140/index.html">CMS, CMF, ERP do it yourself</a></li>
 <li><a href="../64143/index.html">July</a></li>
 <li><a href="../64144/index.html">Programming Olympiad, view from NSU. Article 5 - how the team plays</a></li>
+<li><a href="../6415/index.html">Here, came up with a new Mac</a></li>
 <li><a href="../64157/index.html">Entertainment industry and sausage cheese</a></li>
 <li><a href="../64159/index.html">The Elder Scrolls II: Daggerfall give away free and legal</a></li>
+<li><a href="../6416/index.html">Yahoo opened Alpha for beta testing</a></li>
 <li><a href="../64161/index.html">Stargate in the photosinta prism</a></li>
-<li><a href="../64162/index.html">Cooling systems - from radiator to liquid nitrogen! Part 1</a></li>
-<li><a href="../64163/index.html">Subtleties of Chinese web design, part 1: colors and colors</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

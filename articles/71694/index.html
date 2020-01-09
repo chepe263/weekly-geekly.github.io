@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>ddos - how to survive from school?</h1><div class="post__text post__text-html js-mediator-article"> DDoS Attack - short for Distributed Denial Of Service Attack.  This is when a bunch of infected computers send many requests to the server.  As a result, the server spends all its resources on servicing these requests and becomes virtually inaccessible to users.  The size of the attacks are different, only the specialist and Cisco Guard can save from the large ones and such a solution costs at least $ 1000 / month.  But such attacks, thank God, are quite rare.  Most often we see simple attacks, which are usually done by schoolchildren (they are interested in everything).  Creating your own botnet is not difficult, you can even buy ready :).  But such attacks can also harm our web project.  What to do if the attack is small and we do not want to pay huge money to a specialist? <br><a name="habracut"></a><br><br>  1. mod_evasive - (mod_dosevasive) HTTP DoS or DDoS attack or brute force attack (apache module) <br><br>  The module will help from a small flood and ddos ​​attacks on http. <br>  Installation is not complicated. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Download the archive <br> <code><a href=""></a> wget www.zdziarski.com/projects/mod_evasive/mod_evasive_1.10.1.tar.gz</code> <br> <br>  Now you need to unpack <br> <code>tar zxvf mod_dosevasive_1.10.1.tar.gz <br> cd mod_dosevasive <br></code> <br><br>  Compile mod_dosevasive for Apache 2: <br><br> <code>/usr/local/apache/bin/apxs2 -i -a -c mod_dosevasive20.c</code> <br> <br>  / usr / local / apache replace with your path to apache (where apache see through whereis apache) <br><br>  Editing httpd.conf <br>  Add (I think you'll see where) <br> <code>LoadModule evasive20_module lib/apache2/modules/mod_evasive20.so</code> <br> <br>  Next at the end of the file <br> <code>DOSHashTableSize 3097 <br> DOSPageCount 2 <br> DOSSiteCount 50 <br> DOSPageInterval 1 <br> DOSSiteInterval 1 <br> DOSBlockingPeriod 15 <br> DOSEmailNotify email@for-notify.com <br> DOSSystemCommand "" <br></code> <br><br>  - DOSHashTableSize: this is the size of the hash table that processes requests to the WWW server. <br>  - DOSPageCount: the number of requests to one page from the same IP during the specified time interval. <br>  - DOSSiteCount: the number of requests to all pages of the domain, that is, if more than 50 requests were received from one ah-pi to different pages of the domain - then such ah-pi will be blocked. <br>  - DOSPageInterval: Interval for DOSPageCount directive (in seconds) <br>  - DOSSiteInterval: Interval for the DOSSiteCount directive (in seconds) <br>  - DOSBlockingPeriod: How much to block ah-pi (in seconds) <br>  - DOSEmailNotify: can be used for notifications, will send an e-mail message that such an IP has been blocked. <br>  - DOSSystemCommand: this directive is used to execute some of your command when the IP is blocked.  You can use this to add an IP address to the firewall table. <br>  (example: "/ sbin / iptables -A INPUT -p tcp --dport 80 -s% s -j REJECT" The% s is transmitted from the IP module) <br>  - DOSWhiteList: a list of white IP addresses, you can also by masks (eg 127.0.0. *) <br><br>  2. script (D) DoS Deflate. <br>  Just a script to protect against ddos ​​attacks.  It works very simply, according to crown it launches: <br> <code>netstat -ntu | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n</code> <br>  After that, it blocks ip which exceeded the limit on the number of connections (this can be set in its configuration). <br><br>  3. A few rules for iptables <br><br>  Maximum 10 connections from one IP <br> <code>iptables -A INPUT-p tcp --dport 80 -m iplimit --iplimit-above 10 -j REJECT</code> <br> <br>  Lock more than 10 SYN <br> <code>iptables -I INPUT -p tcp --syn --dport 80 -j DROP -m iplimit --iplimit-above 10</code> <br> <br> <code>40      <br> iptables -p tcp --dport 80 -m iplimit --iplimit-above 40 --iplimit-mask 24 -j REJECT</code> <br> <br>  If the attack is one “left” request, then it can be blocked <br> <code>iptables -I INPUT 1 -p tcp --dport 80 -m string --string "GET / HTTP/1.0" --algo kmp -j DROP</code> <br> <br>  Of course, this is not all, but quite enough from the small flood. </div><p>Source: <a href="https://habr.com/ru/post/71694/">https://habr.com/ru/post/71694/</a></p>
+      Download the archive <br> <code><a href=""></a> wget www.zdziarski.com/projects/mod_evasive/mod_evasive_1.10.1.tar.gz</code> <br> <br>  Now you need to unpack <br> <code>tar zxvf mod_dosevasive_1.10.1.tar.gz <br> cd mod_dosevasive <br></code> <br><br>  Compile mod_dosevasive for Apache 2: <br><br> <code>/usr/local/apache/bin/apxs2 -i -a -c mod_dosevasive20.c</code> <br> <br>  / usr / local / apache replace with your path to apache (where apache see through whereis apache) <br><br>  Editing httpd.conf <br>  Add (I think you'll see where) <br> <code>LoadModule evasive20_module lib/apache2/modules/mod_evasive20.so</code> <br> <br>  Next at the end of the file <br> <code>DOSHashTableSize 3097 <br> DOSPageCount 2 <br> DOSSiteCount 50 <br> DOSPageInterval 1 <br> DOSSiteInterval 1 <br> DOSBlockingPeriod 15 <br> DOSEmailNotify email@for-notify.com <br> DOSSystemCommand "" <br></code> <br><br>  - DOSHashTableSize: this is the size of the hash table that processes requests to the WWW server. <br>  - DOSPageCount: the number of requests to one page from the same IP during the specified time interval. <br>  - DOSSiteCount: the number of requests to all pages of the domain, that is, if more than 50 requests were received from one ah-pi to different pages of the domain - then such ah-pi will be blocked. <br>  - DOSPageInterval: Interval for DOSPageCount directive (in seconds) <br>  - DOSSiteInterval: Interval for the DOSSiteCount directive (in seconds) <br>  - DOSBlockingPeriod: How much to block ah-pi (in seconds) <br>  - DOSEmailNotify: can be used for notifications, will send an e-mail message that such an IP has been blocked. <br>  - DOSSystemCommand: this directive is used to execute some of your command when the IP is blocked.  You can use this to add an IP address to the firewall table. <br>  (example: "/ sbin / iptables -A INPUT -p tcp --dport 80 -s% s -j REJECT" The% s is transmitted from the IP module) <br>  - DOSWhiteList: a list of white IP addresses, you can also by masks (eg 127.0.0. *) <br><br>  2. script (D) DoS Deflate. <br>  Just a script to protect against ddos ​​attacks.  It works very simply, according to crown it launches: <br> <code>netstat -ntu | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n</code> <br>  After that, it blocks ip which exceeded the limit on the number of connections (this can be set in its configuration). <br><br>  3. A few rules for iptables <br><br>  Maximum 10 connections from one IP <br> <code>iptables -A INPUT-p tcp --dport 80 -m iplimit --iplimit-above 10 -j REJECT</code> <br> <br>  Lock more than 10 SYN <br> <code>iptables -I INPUT -p tcp --syn --dport 80 -j DROP -m iplimit --iplimit-above 10</code> <br> <br> <code>40      <br> iptables -p tcp --dport 80 -m iplimit --iplimit-above 40 --iplimit-mask 24 -j REJECT</code> <br> <br>  If the attack is one “left” request, then it can be blocked <br> <code>iptables -I INPUT 1 -p tcp --dport 80 -m string --string "GET / HTTP/1.0" --algo kmp -j DROP</code> <br> <br>  Of course, this is not all, but quite enough from the small flood. </div><p>Source: https://habr.com/ru/post/71694/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../71686/index.html">Do you check the layout in Internet Explorer 7?</a></li>
 <li><a href="../71687/index.html">Crazy QIWI</a></li>
 <li><a href="../71689/index.html">Analog ip unnumbered on Linux systems or save IP addresses</a></li>
+<li><a href="../7169/index.html">USB pedal to change screen</a></li>
 <li><a href="../71691/index.html">Quick access to Windows snap-ins</a></li>
 <li><a href="../71692/index.html">A documentary about survival. Part I - “Idea, Concept and Preparation”</a></li>
 <li><a href="../71695/index.html">Server 2003, error 0x80092026</a></li>
 <li><a href="../71698/index.html">VMware Announces Fusion 3.0 for Mac Virtualization System</a></li>
+<li><a href="../7170/index.html">Identity Contest Results: Best of the Best 2007</a></li>
 <li><a href="../71700/index.html">Vertical block alignment in CSS</a></li>
 <li><a href="../71701/index.html">Google introduces people to browsers</a></li>
-<li><a href="../71704/index.html">When memory is more critical than time</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

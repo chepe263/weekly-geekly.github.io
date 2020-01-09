@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Xscreensaver of hours on Esquire.ru</h1><div class="post__text post__text-html js-mediator-article"><img align="right" src="https://habrastorage.org/storage2/7f6/0de/31b/7f60de31bd1cc1122278bad7eeb72185.png">  I, horror, like <a href="http://esquire.ru/clock">this watch</a> , really wanted to screensaver.  No sooner said than done. <br><br>  Dev Tools Chromium made it clear that the URL of the video file being played by the player looks something like this: <br> <code>http://176.9.156.38/clock/big_&lt;&gt;-&lt;,     5&gt;.mp4?start=&lt;     &gt;</code> <br> <a name="habracut"></a><br>  1. Bash script <code>standardtime</code> screensaver: <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash hour=$(date +%-H) ms=$(date +%-M) sec=$(date +%-S) rms=$((($ms / 5) * 5)) st=$((($ms - $rms) * 60 + $sec)) secret=$(curl -s "http://esquire.ru/clock" | grep superSecret | grep -o -P "[0-9a-f]+(?=\")") URL=$(printf "http://176.9.156.38/clock/big_%02d-%02d.mp4?start=%d&amp;pipiska=%s" $hour $rms $st $secret) exec mplayer -cache 2000 -nosound -nolirc -wid $XSCREENSAVER_WINDOW -nostop-xscreensaver -fs -really-quiet $URL</span></span></code> </pre><br>  2. Fold the script into the <code>PATH</code> and make it executable. <br><br>  3. Open your <code>~/.xscreensaver</code> , find the <code>programs</code> option in it and add our <code>standardtime</code> by analogy: <br><pre> <code class="hljs tex">programs: <span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name"> </span></span></span></span>maze -root <span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">n</span></span></span></span><span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name"> </span></span></span></span>GL: superquadrics -root <span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">n</span></span></span></span><span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name"> </span></span></span></span>--   -- GL: tronbit -root <span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">n</span></span></span></span><span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name"> </span></span></span></span>standardtime <span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">n</span></span></span></span><span class="hljs-tag"><span class="hljs-tag">\</span></span></code> </pre><br>  4. Run the <code>xscreensaver</code> configuration and select our newly created screensaver in the list (I called it <code>Standardtime</code> ). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      5. We chop the screen and enjoy how men switch the seven-position indicator :) <br><br>  Dependencies: bash, curl and mplayer. <br><br>  <b>UPD:</b> Removed dependency on Python.  Thanks <a href="https://habrahabr.ru/users/jov/" class="user_link">jov</a> . <br>  <b>UPD:</b> <a href="https://habrahabr.ru/users/sovok_kpss/" class="user_link">sovok_kpss</a> suggests that if you replace <i>big</i> in the template with a <i>small</i> url, then the video quality will be worse, but it will weigh less. <br>  <b>UPD:</b> Escaire ricrolitis habraludey.  Added hash, which comrade <a href="https://habrahabr.ru/users/gusto/" class="user_link">gusto</a> quickly raped.  Now we need curl. <br>  <b>UPD:</b> Hashar stuck in the flash :) Decompile - we'll see. <br>  <b>UPD:</b> And here is the decompiled code: <a href="http://pastebin.com/LQMCZ21j">http://pastebin.com/LQMCZ21j</a> <br>  <b>UPD:</b> Esquire squeezed a video for 30 euros.  In the morning I pull this obfustsirovanny hmac. <br>  <b>UPD:</b> Video can be found on the <a href="http://magnet/%3Fxt%3Durn:btih:A5979FA5905E96AFAB035C156AC9B1021738C401%26dn%3DEsquireClock%26tr%3Dudp%253A//tracker.openbittorrent.com%253A80/announce">magnet link</a> .  Thank you <a href="https://habrahabr.ru/users/acmer/" class="user_link">acmer</a> . </div><p>Source: <a href="https://habr.com/ru/post/143208/">https://habr.com/ru/post/143208/</a></p>
+      5. We chop the screen and enjoy how men switch the seven-position indicator :) <br><br>  Dependencies: bash, curl and mplayer. <br><br>  <b>UPD:</b> Removed dependency on Python.  Thanks <a href="https://habrahabr.ru/users/jov/" class="user_link">jov</a> . <br>  <b>UPD:</b> <a href="https://habrahabr.ru/users/sovok_kpss/" class="user_link">sovok_kpss</a> suggests that if you replace <i>big</i> in the template with a <i>small</i> url, then the video quality will be worse, but it will weigh less. <br>  <b>UPD:</b> Escaire ricrolitis habraludey.  Added hash, which comrade <a href="https://habrahabr.ru/users/gusto/" class="user_link">gusto</a> quickly raped.  Now we need curl. <br>  <b>UPD:</b> Hashar stuck in the flash :) Decompile - we'll see. <br>  <b>UPD:</b> And here is the decompiled code: <a href="http://pastebin.com/LQMCZ21j">http://pastebin.com/LQMCZ21j</a> <br>  <b>UPD:</b> Esquire squeezed a video for 30 euros.  In the morning I pull this obfustsirovanny hmac. <br>  <b>UPD:</b> Video can be found on the <a href="http://magnet/%3Fxt%3Durn:btih:A5979FA5905E96AFAB035C156AC9B1021738C401%26dn%3DEsquireClock%26tr%3Dudp%253A//tracker.openbittorrent.com%253A80/announce">magnet link</a> .  Thank you <a href="https://habrahabr.ru/users/acmer/" class="user_link">acmer</a> . </div><p>Source: https://habr.com/ru/post/143208/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,10 +74,10 @@
 <li><a href="../143206/index.html">Welcome-email or How not to screw it up and not to lose a new client</a></li>
 <li><a href="../143207/index.html">Dropquest 2012 will start next week</a></li>
 <li><a href="../143209/index.html">Nokia claims compliance with 45 patents from HTC, RIM and Viewsonic</a></li>
+<li><a href="../14321/index.html">The first batch of free books from Nigma.ru</a></li>
 <li><a href="../143211/index.html">Creating a lightbox for the touch interface on HTML5</a></li>
 <li><a href="../143212/index.html">Yota officially announces the launch of LTE in Moscow on May 10</a></li>
 <li><a href="../143214/index.html">Google has updated the design features of Google Docs</a></li>
-<li><a href="../143215/index.html">ThePirateBay will be banned in the UK</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

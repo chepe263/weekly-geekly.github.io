@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>MC.exe (Message compiler), rc.exe, link.exe to generate .dll for EventMessageFile</h1><div class="post__text post__text-html js-mediator-article">  Good afternoon, dear readers of Habr.  This post is a guide for creating a dynamic .dll library, which contains the messages necessary to display in a custom logger, located in the Windows Event Viewer \ Application and Services Logs \ yyyyu (as an example). <br><br><img src="https://habrastorage.org/webt/j3/04/wq/j304wqiveg_ocgnbq0oddjzx-e8.png"><br><a name="habracut"></a><br>  In the custom log, you can often see messages, the description of which contains: <br><br><img src="https://habrastorage.org/webt/wm/4f/6x/wm4f6xi5nirwkay2aozgtdemc9w.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      This means that the source of the events yyyy does not contain the necessary set of ID and Description. <br><br>  In order to correct this situation, it is necessary: <br><br>  <b>1.</b> Open regedit in the following path: HKLM \ SYSTEM \ CurrentControlSet \ Services \ EventLog and make sure that your section exists. <br><br>  <b>2.</b> Create eventMessage.txt into which you need to place your parameters, <a href="https://docs.microsoft.com/en-us/windows/desktop/eventlog/message-files">an example with msdn</a> , save in the required encoding of Windows-1251 or Unicode and the eventMessage.mc format. <br><br>  <b>Note:</b> when filling eventMessage with your ID and description, <b>ALWAYS</b> after the description it is necessary to put a period on a new line, and after it transfer the carriage to a new line. <br><br>  Example: <br><br><pre><code class="hljs objectivec">MessageId=<span class="hljs-number"><span class="hljs-number">0x1</span></span> SymbolicName=<span class="hljs-built_in"><span class="hljs-built_in">CAT_1</span></span> Language=English OutDescription <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> your application . MessageId=<span class="hljs-number"><span class="hljs-number">0x2</span></span></code> </pre> <br>  If you do not take into account this feature, then there may be unforeseen errors at compile time. <br><br>  <b>3.</b> Run cmd as administrator. <br><br>  <b>4.</b> Run the command: mc.exe -u C: \ SomeFolder \ eventMessage.mc -r C: \ SomeFolder \ result <br><br>  <b>Note</b> : mc.exe, in a special case, is located in <code>C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x86</code> you can use <code>-A (W-1251  ANSI,    )</code> instead of the <code>-u (Unicode)</code> format, you can use <code>-A (W-1251  ANSI,    )</code> , and the <code>-r</code> parameter is the output location where the files will be saved after compilation. <br><br>  After the command is executed, the binary file and the eventMessage.rc file in C: \ SomeFolder \ result will be created. <br><br>  <b>5.</b> Execute the command: rc.exe C: \ SomeFolder \ result \ eventMessage.rc <br><br>  <b>Note</b> : rc.exe is in the same directory as mc.exe. <br><br>  After compilation, the eventMessage.res file will be created, which is required to create a dynamic library. <br><br>  <b>6.</b> Run the command: link.exe -dll -noentry /out:C:\SomeFolder\result\ OurMessageSet.dll C: \ SomeFolder \ result \ eventMessage.res. <br><br>  <b>Note:</b> link.exe is, in a special case, in <code>C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\SDK\ScopeCppSDK\VC\bin</code> <br><br>  <b>7.</b> Congratulations, we have created a long-awaited library with you, but this is not all.  Go to regedit to our directory from step 1. In the directory field, create a string parameter (string value), naming this creation in the EventMessageFile, and in the value indicate the path to our library: C: \ SomeFolder \ result \ OurMessageSet.dll.  It looks like this: <br><br><img src="https://habrastorage.org/webt/nn/rn/gq/nnrngqo4gc07oq8kcicz2pc0okc.png"><br><br>  Tools reviewed: mc.exe, rc.exe, link.exe. <br><br>  May the force be with you. </div><p>Source: <a href="https://habr.com/ru/post/426121/">https://habr.com/ru/post/426121/</a></p>
+      This means that the source of the events yyyy does not contain the necessary set of ID and Description. <br><br>  In order to correct this situation, it is necessary: <br><br>  <b>1.</b> Open regedit in the following path: HKLM \ SYSTEM \ CurrentControlSet \ Services \ EventLog and make sure that your section exists. <br><br>  <b>2.</b> Create eventMessage.txt into which you need to place your parameters, <a href="https://docs.microsoft.com/en-us/windows/desktop/eventlog/message-files">an example with msdn</a> , save in the required encoding of Windows-1251 or Unicode and the eventMessage.mc format. <br><br>  <b>Note:</b> when filling eventMessage with your ID and description, <b>ALWAYS</b> after the description it is necessary to put a period on a new line, and after it transfer the carriage to a new line. <br><br>  Example: <br><br><pre><code class="hljs objectivec">MessageId=<span class="hljs-number"><span class="hljs-number">0x1</span></span> SymbolicName=<span class="hljs-built_in"><span class="hljs-built_in">CAT_1</span></span> Language=English OutDescription <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> your application . MessageId=<span class="hljs-number"><span class="hljs-number">0x2</span></span></code> </pre> <br>  If you do not take into account this feature, then there may be unforeseen errors at compile time. <br><br>  <b>3.</b> Run cmd as administrator. <br><br>  <b>4.</b> Run the command: mc.exe -u C: \ SomeFolder \ eventMessage.mc -r C: \ SomeFolder \ result <br><br>  <b>Note</b> : mc.exe, in a special case, is located in <code>C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x86</code> you can use <code>-A (W-1251  ANSI,    )</code> instead of the <code>-u (Unicode)</code> format, you can use <code>-A (W-1251  ANSI,    )</code> , and the <code>-r</code> parameter is the output location where the files will be saved after compilation. <br><br>  After the command is executed, the binary file and the eventMessage.rc file in C: \ SomeFolder \ result will be created. <br><br>  <b>5.</b> Execute the command: rc.exe C: \ SomeFolder \ result \ eventMessage.rc <br><br>  <b>Note</b> : rc.exe is in the same directory as mc.exe. <br><br>  After compilation, the eventMessage.res file will be created, which is required to create a dynamic library. <br><br>  <b>6.</b> Run the command: link.exe -dll -noentry /out:C:\SomeFolder\result\ OurMessageSet.dll C: \ SomeFolder \ result \ eventMessage.res. <br><br>  <b>Note:</b> link.exe is, in a special case, in <code>C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\SDK\ScopeCppSDK\VC\bin</code> <br><br>  <b>7.</b> Congratulations, we have created a long-awaited library with you, but this is not all.  Go to regedit to our directory from step 1. In the directory field, create a string parameter (string value), naming this creation in the EventMessageFile, and in the value indicate the path to our library: C: \ SomeFolder \ result \ OurMessageSet.dll.  It looks like this: <br><br><img src="https://habrastorage.org/webt/nn/rn/gq/nnrngqo4gc07oq8kcicz2pc0okc.png"><br><br>  Tools reviewed: mc.exe, rc.exe, link.exe. <br><br>  May the force be with you. </div><p>Source: https://habr.com/ru/post/426121/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../426111/index.html">Google is going to launch a censored search service in China</a></li>
 <li><a href="../426113/index.html">Google News and Leo Tolstoy: Visualizing Vector Representations of Words with t-SNE</a></li>
 <li><a href="../426115/index.html">Practice using the actor model in the back end platform of Quake Champions</a></li>
 <li><a href="../426117/index.html">Ombudsman proposed to block ads with potentially dangerous children's products</a></li>
 <li><a href="../426119/index.html">Antiquities: Cryptonomicon Iron</a></li>
+<li><a href="../42612/index.html">Competition for startups in the field of news, the opportunity to receive funding of $ 5 million</a></li>
 <li><a href="../426123/index.html">Learn OpenGL. Lesson 6.1. PBR or Physically-correct rendering. Theory</a></li>
 <li><a href="../426125/index.html">Career steroids. Elevators</a></li>
+<li><a href="../42613/index.html">PHP-to-Apache log analyzer</a></li>
 <li><a href="../426131/index.html">Download configuration to FPGA via USB or disassemble FTDI MPSSE</a></li>
 <li><a href="../426133/index.html">We get acquainted with the alpha version of snapshots volumes in Kubernetes</a></li>
-<li><a href="../426135/index.html">Private cloud for the Internet of Things</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

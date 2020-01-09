@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>MySQL stored procedures and out of sync</h1><div class="post__text post__text-html js-mediator-article">  Today I figured out a very long time the reason why after I make a MySQL request in which I access the stored procedure (stored procedure) (PHP 5, MySQL 5, mysqli driver) <br><blockquote>  <font><font color="blue"><b>CALL</b></font> procedureName ()</font> </blockquote><br>  then the following request is not executed, and mysqli_error returns an error <br><a name="habracut"></a><br><blockquote>  <font>Error “Commands out of sync;</font>  <font>you can't run this command now "number" 2014 "in query: ...</font> </blockquote><br>  Judging by the error, the impression was that the connection was lost.  This was misleading and led the wrong way. <br><br>  As it turned out, everything comes from the fact that my procedure returns the result as a table, and not a single result (number or string or boolean).  For example, the result of such a query would be a table: <br><blockquote>  <font><font color="blue"><b>SELECT</b></font> * <font color="blue"><b>FROM</b></font> users;</font> </blockquote><br>  If the stored procedure returns such a table, then in addition to this table, another value is also output - the result of the procedure itself.  This behavior of the mysqli driver is called a <strong>multiple result</strong> .  So, most developers take the first and most often the only result.  In the case when the procedure returns the table, the secondary result also needs to be pulled out, otherwise the results buffer will remain uncleaned and other requests will not pass - they will not be able to write there. <br><br>  In the general case, after the first result is fetched by the usual fetch, you need to reset the unnecessary results by pulling them out of the buffer: <br><blockquote>  <font><font color="teal">// $ connection - your MySQLI object</font></font> <font><br></font>  <font><font color="blue"><b>while</b></font> ( <font color="blue">$ connection</font> -&gt; next_result ()) <font color="blue">$ connection</font> -&gt; store_result ();</font> <font><br></font> </blockquote><br>  <font>Thanks to the person under the name Evert, who suggested the <a href="http://www.rooftopsolutions.nl/article/173">answer</a> to this question.</font> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/21326/">https://habr.com/ru/post/21326/</a></p>
+    <p>Source: https://habr.com/ru/post/21326/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

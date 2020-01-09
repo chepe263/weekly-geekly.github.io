@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A little bug with a ftpd locale on FreeBSD</h1><div class="post__text post__text-html js-mediator-article"> A long time ago I ran into a problem when none of the clients, such as Filezilla, Far FTP Plugin, Far Navigator, and others, can display the contents of directories when connecting to the server. <br>  FAR FTP Plugin swears that it can not parse the output, Filezilla shows files by mixing the date and file name and does not allow to move along directories. <br><a name="habracut"></a><br><br>  As it turned out, ftpd inherits the locale of the user who started or restarted the daemon via /etc/rc.d/ and gives the data in this locale to all clients that connect to the server. <br>  Having LANG = ru_RU.UTF-8 (ru_RU.KOI8-R) and restarting ftpd via /etc/rc.d/ftpd restart, when connected via a regular ftp client, we get the following image. <br><br> <code>ftp&gt; ls test <br> 229 Entering Extended Passive Mode (|||64671|) <br> 150 Opening ASCII mode data connection for '/bin/ls'. <br> total 212 <br> -rw-r--r-- 1 aborche wheel 15457 23 ╟©─ 10:51 crypttest.txt <br> -rw-r--r-- 1 aborche wheel 193509 29 ▐Ґ╡ 2009 falling_into_a_black_hole.jpg <br> drwxr-xr-x 2 aborche wheel 512 27 ╟╡ 11:36 geo <br> drwxr-xr-x 2 aborche wheel 512 27 ╟╡ 11:36 release <br> drwxr-xr-x 3 aborche wheel 512 27 ╟╡ 11:36 scripts <br> 226 Transfer complete. <br></code> <br>  Accordingly, the same output curve is given to all other clients who simply cannot parse the data.  Therefore, the file name interferes with the date or nothing is shown at all.  If suddenly the client is able to use full UTF-8, then the received output will still be correctly visible in the client, but the client will not be able to do anything with the files. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      when restarting ftpd with LANG = C, everything returns to normal. <br> <code>ftp&gt; ls test <br> 229 Entering Extended Passive Mode (|||64395|) <br> 150 Opening ASCII mode data connection for '/bin/ls'. <br> total 212 <br> -rw-r--r-- 1 aborche wheel 15457 Apr 23 10:51 crypttest.txt <br> -rw-r--r-- 1 aborche wheel 193509 Jan 29 2009 falling_into_a_black_hole.jpg <br> drwxr-xr-x 2 aborche wheel 512 Aug 27 11:36 geo <br> drwxr-xr-x 2 aborche wheel 512 Aug 27 11:36 release <br> drwxr-xr-x 3 aborche wheel 512 Aug 27 11:36 scripts <br> 226 Transfer complete. <br></code> <br>  The problem is that the startup scripts do not clean the value of LANG, inheriting it from the current user. <br>  Keep this in mind when setting up servers. <br><br> <code><font>(C) Aborche 2009</font> <br> <img src="http://aborche.com/pics/aborchelogo.jpg"></code> </div><p>Source: <a href="https://habr.com/ru/post/68099/">https://habr.com/ru/post/68099/</a></p>
+      when restarting ftpd with LANG = C, everything returns to normal. <br> <code>ftp&gt; ls test <br> 229 Entering Extended Passive Mode (|||64395|) <br> 150 Opening ASCII mode data connection for '/bin/ls'. <br> total 212 <br> -rw-r--r-- 1 aborche wheel 15457 Apr 23 10:51 crypttest.txt <br> -rw-r--r-- 1 aborche wheel 193509 Jan 29 2009 falling_into_a_black_hole.jpg <br> drwxr-xr-x 2 aborche wheel 512 Aug 27 11:36 geo <br> drwxr-xr-x 2 aborche wheel 512 Aug 27 11:36 release <br> drwxr-xr-x 3 aborche wheel 512 Aug 27 11:36 scripts <br> 226 Transfer complete. <br></code> <br>  The problem is that the startup scripts do not clean the value of LANG, inheriting it from the current user. <br>  Keep this in mind when setting up servers. <br><br> <code><font>(C) Aborche 2009</font> <br> <img src="http://aborche.com/pics/aborchelogo.jpg"></code> </div><p>Source: https://habr.com/ru/post/68099/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../68095/index.html">Criticism of EveryBlock.com</a></li>
 <li><a href="../68097/index.html">AdSense: how much can you earn?</a></li>
 <li><a href="../68098/index.html">Recommendations for the customer as part of the project</a></li>
+<li><a href="../681/index.html">Error in the arrow symbol under Win98 / IE5.5</a></li>
+<li><a href="../6810/index.html">Registration of votes</a></li>
 <li><a href="../68100/index.html">Russian officials are actively using the iPhone in the work? About iMonitoring application</a></li>
 <li><a href="../68103/index.html">Riddle of the day :)</a></li>
 <li><a href="../68107/index.html">Regular discharge of goods at low prices</a></li>
-<li><a href="../68110/index.html">Platform of Intel-compatible netbooks: Pine Trail, CULV, Ion. And their near (2009-2010) future</a></li>
-<li><a href="../68111/index.html">Small digital reverb</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

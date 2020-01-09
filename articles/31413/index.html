@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Practical JS: innerHTML problems</h1><div class="post__text post__text-html js-mediator-article"> <em>Note: The following is a translation of Julien Lecomte <a href="http://www.julienlecomte.net/blog/2007/12/38/">'s</a> article <a href="http://www.julienlecomte.net/blog/2007/12/38/">“The Problem With innerHTML”</a> , in which the author considers problems when using the innerHTML method in modern browsers and offers a number of tips on how to avoid it.</em>  <em>My comments further in italics</em> <br><br>  The <code>innerHTML</code> property is extremely popular among web developers because of its simplicity and convenience, since it allows you to simply replace the HTML content of a particular tag.  You can also use the DOM Level 2 API ( <code>removeChild</code> , <code>createElement</code> , <code>appendChild</code> ), but using the <code>innerHTML</code> much simpler and more efficient way to modify the DOM tree.  However, there are a number of problems when using <code>innerHTML</code> , which should be avoided: <br><br><ul><li>  Incorrect handling of the <code>innerHTML</code> property can lead to script-related attacks ( <em>XSS</em> ) in Internet Explorer when the HTML string contains a <code>&lt;script&gt;</code> call marked as deferred: <code>&lt;script defer&gt;...&lt;/script&gt;</code> </li><li>  Setting the <code>innerHTML</code> property will destroy all current nested HTML elements with all event handlers, which can potentially cause memory leaks in some browsers. </li></ul>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       There are a few more minor flaws that are also worth mentioning: <br><br><ul><li>  You cannot get a link to the elements you just created, you have to add code to get a link to them manually (using the DOM API). </li><li>  You cannot set <code>innerHTML</code> for all HTML elements in all browsers (for example, Internet Explorer does not allow setting <code>innerHTML</code> for a table row ( <em>tr</em> )). </li></ul><br><br><a name="habracut"></a><br><br>  Personally, I’m more concerned about security and memory usage issues related to the use of the <code>innerHTML</code> property.  However, the described problem is far from new, and already some bright minds paid attention to it and suggested methods for its solution. <br><br>  <a href="http://www.crockford.com/">Douglas Crockford has</a> written <a href="http://www.crockford.com/javascript/memory/leak.html">a <code>purge</code> function</a> that removes some <em>circular references</em> caused by the addition of event handlers to HTML elements, allowing the <em>garbage collector to</em> completely free all memory associated with them. <br><br>  Removing the <code>&lt;script&gt;</code> from an HTML string is not as easy as it seems at first glance.  The regular expression used for this purpose should be quite complex, although I myself do not know if it covers all possible cases.  Below is an option that I personally use in my work: <br><br><pre>  / &lt;script [^&gt;] *&gt; [\ S \ s] *? &lt;\ / script [^&gt;] *&gt; / ig </pre><br><br>  Now let's try to combine both of these techniques in one <code>setInnerHTML</code> function ( <strong>UPD:</strong> thanks to everyone who added their comments: I corrected all the errors / holes you pointed out. I also decided to enable the <code>setInnerHTML</code> function in <code>YAHOO.util.Dom</code> ) <br><br><pre> YAHOO.util.Dom.setInnerHTML = function (el, html) {
@@ -105,7 +105,7 @@
 
 	 // Return the link to the first child node
 	 return el.firstChild;
- }; </pre><br><br>  Voila!  Please let me know if I missed something in the implementation of this function or need to improve the regular expression. <br><br>  <strong>UPD:</strong> There are a huge number of ways to insert malicious code on a web page.  The <code>setInnerHTML</code> function only normalizes the behavior of the <code>&lt;script&gt;</code> when executed on all class A browsers ( <em>A-grade browsers</em> ).  If you are going to insert HTML code that cannot be trusted, clean it first on the server side.  For this there is a huge number of libraries. <br><br>  <em>Thanks to everyone who read the note.</em>  <em>I will be glad to hear from you on how to improve the given example.</em> </div><p>Source: <a href="https://habr.com/ru/post/31413/">https://habr.com/ru/post/31413/</a></p>
+ }; </pre><br><br>  Voila!  Please let me know if I missed something in the implementation of this function or need to improve the regular expression. <br><br>  <strong>UPD:</strong> There are a huge number of ways to insert malicious code on a web page.  The <code>setInnerHTML</code> function only normalizes the behavior of the <code>&lt;script&gt;</code> when executed on all class A browsers ( <em>A-grade browsers</em> ).  If you are going to insert HTML code that cannot be trusted, clean it first on the server side.  For this there is a huge number of libraries. <br><br>  <em>Thanks to everyone who read the note.</em>  <em>I will be glad to hear from you on how to improve the given example.</em> </div><p>Source: https://habr.com/ru/post/31413/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

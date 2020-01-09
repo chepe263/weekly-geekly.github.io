@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
  mce: [Hardware Error]: Machine check events logged
 </pre><br>  In this case, we definitely want to respond to normal MCE.  What to do? <br><br>  Within logstash, message handling is supposed to be stateless.  You see the message - you react.  Introduce, for the sake of one type of message, a more complex system — overkill. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,7 +64,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       It would seem that there is a filter (not to be confused with output) elasticsearch, which allows you to make requests.  Unfortunately, he does not know how to do ifs, that is, remove_tag and add_tag ​​will work regardless of whether the search was successful or not. <br><br>  It's sad. <br><a name="habracut"></a><br><br>  The second problem: how should the query look like in elasticsearch?  We need a time interval relative to the current one, and we need to filter on the current host (that is, the host to which the MCE arrived). <br><br>  Let's start to decide in turn. <br><br>  First: the request.  query cannot contain a normal search query, but must contain a query string, which is inside the <a href="http://www.lucenetutorial.com/lucene-query-syntax.html">lucene query</a> .  Let's start with a fixed query: <br><br>  "Type: netconsole AND host: compute109 AND message: temperature".  (type is set in input for receiving messages from the kernel via netconsole). <br><br>  Hooray, there are results, but for a large interval, which is fraught with false positives.  What about @ timestamp?  Help for <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html">query language is</a> quite modest, and there is no math or special variables.  On the other hand, ranges are supported using the "[from TO to]" entry. <br><br>  Here I had an intuition attack and I wrote <code>@ timestamp:[now-2h TO now]</code> in the request, although there is not a word about 'now' in the documentation.  And they understood me.  It is better to check such requests in kibana in the field “query”.  A quick check revealed that now-1m also rolls in quality time. <br><br>  So the query has become more pleasant: <code>type:netconsole AND host:compute109 AND message:temperature and @timestamp:[now-1m to now]</code> ... <br><br>  It would seem that everything will be fine.  But - did not work.  Although it should have been.  And here I send WTF rays to the creators of lucene, logstash and elasticsearch.  Because and and AND are six different letters. <br><br>  Correct (and only!) <code>type:netconsole AND host:compute109 AND message:temperature AND @timestamp:[now-1m to now]</code> .  Otherwise, the request begins to search for messages (message) containing any words temperature, and, <code>@ timestamp</code> ). <br><br>  The question remains: where does the host come from?  Here logstash helps - it can substitute variables into text strings from the fields of the message being processed. <br><br>  The query query in the logstash config starts to look like this: <br><br> <code>query =&gt; "(type:netconsole) AND (host:%{[host]}) AND (@timestamp:[now-1m TO now]) AND (message:temperature)"</code> <br> <br>  And there would be happiness if it were not for the absence of if'a inside the elasticsearch filter.  It turns out a perverted construction: we want to use elasticsearch for if, but we cannot, and where we can use if, we cannot make inquiries "into the past." <br><br>  After several dozen attempts to “climb up the tree”, we got the following construction: We, after finding the MCE, make a request to elastic, and fill in the field (in the message about MCE) “mce_temperature” with the message content of the found message about 'temperature' on the host from the message about MCE, in the last minute.  That is, we add to the message about MCE the previous one, about temperature.  If we find, of course. <br><br>  The rest is simple: we have MCE and we have the contents of the mce_temperature field with the “previous” message.  Outside of the elasticsearch block, we write: <br><br><pre>         if [temperature_mce] = ~ / Core temperature.speed normal / {
@@ -88,7 +88,7 @@
                  }
            }
     }
-</pre><br>  If you want to disable throttling MCE completely, then replace / Core temperature.speed normal / with / Core temperature / <br><br>  I'm not sure that the proposed solution is best practice, but it also works minimally intrusively into the configuration.  This approach allows you to solve a whole class of problems associated with multi-line messages and allows you to make retrospective situational decisions without diluting the bigdata for nothing. </div><p>Source: <a href="https://habr.com/ru/post/251349/">https://habr.com/ru/post/251349/</a></p>
+</pre><br>  If you want to disable throttling MCE completely, then replace / Core temperature.speed normal / with / Core temperature / <br><br>  I'm not sure that the proposed solution is best practice, but it also works minimally intrusively into the configuration.  This approach allows you to solve a whole class of problems associated with multi-line messages and allows you to make retrospective situational decisions without diluting the bigdata for nothing. </div><p>Source: https://habr.com/ru/post/251349/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -97,11 +97,11 @@
 <li><a href="../251341/index.html">Whip and ... whip information security in the enterprise</a></li>
 <li><a href="../251345/index.html">Pebble Time: a new watch with a color screen</a></li>
 <li><a href="../251347/index.html">Context Model Pattern via Aero Framework</a></li>
+<li><a href="../25135/index.html">Is everything so simple with dots?</a></li>
 <li><a href="../251351/index.html">CoinFest-2015-Moscow</a></li>
 <li><a href="../251353/index.html">We write a bot for MMORPG with assembler and draenei. Part 3</a></li>
 <li><a href="../251355/index.html">Several subtleties of using jade in Meteor-projects</a></li>
 <li><a href="../251357/index.html">Data exchange using MPI. Working with the MPI Library on the example of the Intel® MPI Library</a></li>
-<li><a href="../251359/index.html">Complete energy autonomy or how to survive with solar panels in the outback (part 1. theoretical)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

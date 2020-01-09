@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Control scalar types in PHP 5</h1><div class="post__text post__text-html js-mediator-article">  <b>[Updated]:</b> Made some changes to the code.  Thank you <a href="http://ithilion.habrahabr.ru/">ithilion</a> and <a href="http://lonecat.habrahabr.ru/">LoneCat</a> <br><br>  Everyone already knows that in PHP 5 you can specify their type in function arguments, with the exception of ... scalar types, ie: integer, string, boolean, float, etc. <br><br>  However, on <a href="http://ru2.php.net/manual/ru/language.oop5.typehinting.php">the</a> type control <a href="http://ru2.php.net/manual/ru/language.oop5.typehinting.php">manual page</a> , in the comments, Daniel L. Wood provides a rather interesting solution to this problem with the help of an error handler class.  The only significant disadvantage of this solution is its performance. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Below I will try to tell you how to optimize this solution, as well as whether to use it, in principle, in production releases. <br><a name="habracut"></a><br>  So, let's analyze what the above solution is sinning: <br><ol><li>  Absolutely unnecessary debug_backtrace calls.  In principle, to solve the problem, just parse the error message.  An explicit argument checker smacks of paranoia.  Indeed, if we caught a message of the form “Argument N passed to Class :: function () must be an instance of string, string given, ...” - this already gives us every reason to make the right choice.  Please note ... <strong>string, string</strong> ... In case of an error it will be, for example, ... integer, string ... This is enough to determine whether this message is an error or not. </li><li>  It has a typo in the type array.  're <strong>srou</strong> ce' =&gt; 'is_resource'. </li><li>  Somewhat non-optimal code in some places. </li></ol><br>  We will try to solve all these problems by rewriting the class as follows: <br><blockquote><pre>  &lt;? php
@@ -126,14 +126,14 @@
  $ end = micro_time ();
 
  echo 'Without Typehint:'.  ($ end- $ start).  'sec.';
- ?&gt; </pre></blockquote><br><br>  Here's what I got: <br><br>  With Typehint: 0.0787329673767 sec. <br>  Without Typehint: 0.00326299667358 sec. <br><br>  I note that for the original solution from Daniel, my result was as follows: 0.215523958206 seconds.  Those.  we won almost 2.7 times the performance. <br><br>  Nevertheless, as we can see, without the use of a Typehint solution, we would have won more than 24 times the performance.  Rather, using it, we lose 24 times. <br><br>  This suggests an idea of ​​the expediency of its use.  See 10,000 calls add to the time of the script almost 0.1 seconds.  There is something to think about. <br><br>  On the other hand, the use of Typehint increases the self-documenting of the code and allows, in some cases, when it is especially necessary, to control the type of arguments passed. <br><br>  However, it should be noted that ubiquitous strong typing in PHP, in fact, will give you no advantages, since  There is no overload mechanism in the language; if the type is declared, problems will arise with the default values ​​of the arguments.  In addition, no one can guarantee the return values ​​in language constructs either. <br><br>  Therefore, it is worth thinking a few times before using this solution or not. <br><br>  If you still see the expediency and want to use it in your project, I suggest you consider the possibility / necessity of creating some automatic builder who will release the final code for production use by cleaning scalar types in the definitions of functions and methods of classes. <br><br>  This will be, in principle, easy, at least using the same PHP or Shell. <br><br>  Good luck in development! <br><br>  PS Cross-post from my blog: <a href="http://mikhailstadnik.com/php5-types-control">mikhailstadnik.com/php5-types-control</a> </div><p>Source: <a href="https://habr.com/ru/post/46353/">https://habr.com/ru/post/46353/</a></p>
+ ?&gt; </pre></blockquote><br><br>  Here's what I got: <br><br>  With Typehint: 0.0787329673767 sec. <br>  Without Typehint: 0.00326299667358 sec. <br><br>  I note that for the original solution from Daniel, my result was as follows: 0.215523958206 seconds.  Those.  we won almost 2.7 times the performance. <br><br>  Nevertheless, as we can see, without the use of a Typehint solution, we would have won more than 24 times the performance.  Rather, using it, we lose 24 times. <br><br>  This suggests an idea of ​​the expediency of its use.  See 10,000 calls add to the time of the script almost 0.1 seconds.  There is something to think about. <br><br>  On the other hand, the use of Typehint increases the self-documenting of the code and allows, in some cases, when it is especially necessary, to control the type of arguments passed. <br><br>  However, it should be noted that ubiquitous strong typing in PHP, in fact, will give you no advantages, since  There is no overload mechanism in the language; if the type is declared, problems will arise with the default values ​​of the arguments.  In addition, no one can guarantee the return values ​​in language constructs either. <br><br>  Therefore, it is worth thinking a few times before using this solution or not. <br><br>  If you still see the expediency and want to use it in your project, I suggest you consider the possibility / necessity of creating some automatic builder who will release the final code for production use by cleaning scalar types in the definitions of functions and methods of classes. <br><br>  This will be, in principle, easy, at least using the same PHP or Shell. <br><br>  Good luck in development! <br><br>  PS Cross-post from my blog: <a href="http://mikhailstadnik.com/php5-types-control">mikhailstadnik.com/php5-types-control</a> </div><p>Source: https://habr.com/ru/post/46353/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../46343/index.html">How do we sleep?</a></li>
 <li><a href="../46344/index.html">HomePlug, on the Internet for ... wiring?</a></li>
 <li><a href="../46347/index.html">Barack Obama is also in podcasting</a></li>
 <li><a href="../46349/index.html">New Year's gifts from LiqPay.com and Roboxchange.com</a></li>
+<li><a href="../4635/index.html">“The caller pays”: first results from MGTS</a></li>
 <li><a href="../46350/index.html">Emacs and Python, Python and Emacs</a></li>
 <li><a href="../46355/index.html">Algorithm rating sheet.</a></li>
 <li><a href="../46358/index.html">Reflections on automatic registration.</a></li>

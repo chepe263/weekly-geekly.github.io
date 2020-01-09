@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Ghosts in ROM</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/bc4/a51/61f/bc4a5161f1191bbe74d5ae92af13b450.png"><br><br>  An old computer sometimes keeps completely unexpected secrets.  The guys from the NYResistor site published the <a href="http://www.nycresistor.com/2012/08/21/ghosts-in-the-rom/">story of</a> how they heroically rebuilt several digital photographs from the flash memory of the prehistoric Macintosh SE computer, which was lying on the side of the road in Brooklyn.  They called the unknown people in these images “ghosts in ROM”. <br><a name="habracut"></a><br>  Found on the side of the road, the Macintosh SE was loaded onto a bicycle trunk and brought home. <br><br><img src="https://habrastorage.org/storage2/16c/3b1/8eb/16c3b18eb085e3e4ef33f9dad5eba2c6.jpg">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The computer booted, but did not contain any storage media.  However, the researchers decided to take up digital archeology.  They removed two ROM chips from the motherboard and <a href="http://bitbucket.org/hudson/prom/">dumped them</a> using the <a href="http://bitbucket.org/hudson/prom/">PROMdate</a> device. <br><br><img src="https://habrastorage.org/storage2/729/868/af1/729868af1b258535bf0788f758f3c9c6.jpg"><br><br>  ROM chips are similar to M27C512 PROM programmable flash memory chips, but only here they are not programmable, so there is no corresponding contact, and the ROM address space is increased to 128 KB, compared to the usual 64 KB in a programmable M27C512. <br><br>  The computer runs on a 16-bit bus, and each of the two 8-bit chips contains half a word, so that together they merge into a single 256-kilobyte binary file.  The dumping and merging operation was successful: the search for <code>strings</code> produced a readable text like “Chicago“, “PACK” and “CDEF”.  If the bytes after the merge were in the wrong order, it would be something like APKC instead of PACK. <br><br>  The researchers decided to try to find the same <a href="http://www.eeggs.com/items/2258.html">Easter egg</a> with secret photos of the creators of Apple, although no one has yet been able to extract these digital files. <br><br>  Instructions for the Easter egg states that the images are hidden starting at address 0x41D89A.  The researchers were able to boot from the historical ROM in the <a href="http://minivmac.sourceforge.net/">Mini vMac</a> emulator and confirm that there is something there.  But they wanted to remove specific photos and search for other secrets that may be hiding in the ROM. <br><br>  The binary ROM file was converted to ELF format and studied a fragment in the region of 0x41D89A. <br><br><blockquote><pre>  41d89a: 4eba 0018 jsr% pc @ (41d8b4 &lt;rom + 0x1d8b4&gt;)
@@ -80,7 +80,7 @@
    41d8d2: 7e00 moveq # 0,% d7
    41d8d4: 4e75 rts
  ...
-   41d91a: a9ff 0124777 </pre></blockquote><br>  There is a link to <code>_GetResource</code> (0x62626d63) and the execution of the program clearly begins.  After considerable work on reverse engineering, the specialists were still able to restore the structure and detect the data in the <a href="http://en.wikipedia.org/wiki/PackBits">PackBits</a> format.  Applying the PackBits unpacking utility, as well as the hex2png utility, these bits were arranged in rows of 536 pixels — and people's faces appeared on the screen for the first time. <br><br>  Four photos of unknown Apple employees dated in ROM are dated November 20, 1986. <br><br><img src="https://habrastorage.org/storage2/3e9/805/9d2/3e98059d2c03367401a720911ff658a3.png"><br><br><img src="https://habrastorage.org/storage2/3f4/d4e/39c/3f4d4e39cc557456c2df22c472b8940e.png"><br><br><img src="https://habrastorage.org/storage2/ea6/9bc/502/ea69bc502a7efb7ec0cf676a3c01b0c3.png"><br><br><img src="https://habrastorage.org/storage2/30d/1e0/fd3/30d1e0fd30422ef6c9899c00cf2b7dac.png"><br><br>  NYResistor hackers are asked to report if someone found out these people from a photo 25 years ago to solve the puzzle to the end. <br><br>  By the way, another fifth data area was found in ROM, but so far it has not been able to decrypt it.  Perhaps this is an audio recording. </div><p>Source: <a href="https://habr.com/ru/post/150208/">https://habr.com/ru/post/150208/</a></p>
+   41d91a: a9ff 0124777 </pre></blockquote><br>  There is a link to <code>_GetResource</code> (0x62626d63) and the execution of the program clearly begins.  After considerable work on reverse engineering, the specialists were still able to restore the structure and detect the data in the <a href="http://en.wikipedia.org/wiki/PackBits">PackBits</a> format.  Applying the PackBits unpacking utility, as well as the hex2png utility, these bits were arranged in rows of 536 pixels — and people's faces appeared on the screen for the first time. <br><br>  Four photos of unknown Apple employees dated in ROM are dated November 20, 1986. <br><br><img src="https://habrastorage.org/storage2/3e9/805/9d2/3e98059d2c03367401a720911ff658a3.png"><br><br><img src="https://habrastorage.org/storage2/3f4/d4e/39c/3f4d4e39cc557456c2df22c472b8940e.png"><br><br><img src="https://habrastorage.org/storage2/ea6/9bc/502/ea69bc502a7efb7ec0cf676a3c01b0c3.png"><br><br><img src="https://habrastorage.org/storage2/30d/1e0/fd3/30d1e0fd30422ef6c9899c00cf2b7dac.png"><br><br>  NYResistor hackers are asked to report if someone found out these people from a photo 25 years ago to solve the puzzle to the end. <br><br>  By the way, another fifth data area was found in ROM, but so far it has not been able to decrypt it.  Perhaps this is an audio recording. </div><p>Source: https://habr.com/ru/post/150208/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

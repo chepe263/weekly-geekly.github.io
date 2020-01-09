@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>I think I began to understand what you meant!</h1><div class="post__text post__text-html js-mediator-article">  To be sealed is a simple matter;  be sealed in the search query and double.  Read all the great web search engines today are able to correct errors in keywords in 1x and suggest queries in 2x;  after them the same I want to search for a smaller one.  Both pieces can be deftly implemented using an open search engine named <a href="http://sphinxsearch.com/">Sphinx</a> ;  In this post I will tell you exactly how. <br><br>  Well, for did you mean ("what did you mean") and other query completion ("do not you look for Vasya"). <br><a name="habracut"></a><br><br><h1>  Listen to your favorite song "Valenki"! </h1>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Let's start with the simple ones.  query completion.  The user begins to enter a search line, as you type, you want him to immediately show prompts (so that he doesn’t look for anything, but listened to “Valenki”, like everyone else).  Perhaps even with the number of results.  How to do where to get the data? <br><br>  There are about two options: you can directly suggest user queries, and you can individual keywords. <br><br>  Keywords hint especially easy.  The indexing program with the unexpected name indexer has two equally unexpected keys: - <b>buildstops</b> , which forces the indexer instead of usually indexing to build a list of N most frequently occurring words (it is a dictionary), and to it - <b>buildfreqs</b> , which also causes the frequencies at the same time count (he is a frequency dictionary).  We take indexer, we build 10 thousand (it is possible 100) the most frequent words in our collection of documents: <br><br><pre> $ indexer myindex --buildstops dict.txt 10000 --buildfreqs
@@ -130,7 +130,7 @@
  $ cl-&gt; SetSelect ("*, @ weight + 2-abs (len- $ len) AS myrank");
  $ cl-&gt; SetSortMode (SPH_SORT_EXTENDED, "myrank DESC, freq DESC");
 </pre><br><br>  Hurray, it works!  For the word liight, the fix light is successfully located.  (More precisely, Sphinx finds the ID, which then gets the string “light” from the base). <br><br>  This is how the demo attached to Sphinx 0.9.9-rc2 (see the misc / suggest directory inside the archive) is arranged, which can be immediately tested on your data without writing any additional code :-) <br><br>  The demo is immediately understandable, imperfect and subject to <a href="http://sphinxsearch.com/consulting.html">fine-tuning with a file</a> .  (Sorry, I could not resist.) There is a danger that, out of the box, PHP will not work with Russian because UTF-8 is expected, substr is used, and correspondingly without mbstring.overload = 7 nowhere.  Almost certainly have to rotate the FREQ_THRESHOLD, those.  the minimum number of occurrences, below which the word is considered a typo and does not fall into the special index;  for small data collections lower, for large ones increase.  For the same reasons (in order not to rank rare garbage above frequent non-garbage), it may be necessary to twist the formula for calculating myrank.  For example, add an extra oddinick to the number of matched trigrams for frequencies differing 1000 times: <br><br><pre> $ cl-&gt; SetSelect ("*, @ weight + 2-abs (len- $ len) + ln (freq) / ln (1000) AS myrank");
-</pre><br><br>  In addition, the trigram focus is effective, but very simple, and does not take into account much.  The order of trigrams is not taken into account, although this is not a problem for words of reasonable length.  What is more interesting is not taken into account <i>how</i> people make mistakes: rearrangement of 2 adjacent letters by the number of trigrams is indistinguishable from replacing these letters with <i>any</i> (!) Others (for example, light / lihgt / limit);  does not take into account the proximity of letters on the keyboard;  does not take into account the phonetic proximity (actually / akshully).  A fairly obvious idea for improving the quality of corrections with a little blood: instead of 1 best option, we take out 10-20 pieces, count the <a href="http://ru.wikipedia.org/wiki/%25D0%2594%25D0%25B8%25D1%2581%25D1%2582%25D0%25B0%25D0%25BD%25D1%2586%25D0%25B8%25D1%258F_%25D0%259B%25D0%25B5%25D0%25B2%25D0%25B5%25D0%25BD%25D1%2588%25D1%2582%25D0%25B5%25D0%25B9%25D0%25BD%25D0%25B0">Levenshtein distance</a> on the client, adjust the calculation results.  With big blood, you can just “count” a dozen or two candidates by any other samopisnym algorithm. <br><br>  In general, the demo will work out of the box.  But this is a demo, and nobody canceled a lot of space for further creative work.  Create, invent, write blogs, send patches! </div><p>Source: <a href="https://habr.com/ru/post/61807/">https://habr.com/ru/post/61807/</a></p>
+</pre><br><br>  In addition, the trigram focus is effective, but very simple, and does not take into account much.  The order of trigrams is not taken into account, although this is not a problem for words of reasonable length.  What is more interesting is not taken into account <i>how</i> people make mistakes: rearrangement of 2 adjacent letters by the number of trigrams is indistinguishable from replacing these letters with <i>any</i> (!) Others (for example, light / lihgt / limit);  does not take into account the proximity of letters on the keyboard;  does not take into account the phonetic proximity (actually / akshully).  A fairly obvious idea for improving the quality of corrections with a little blood: instead of 1 best option, we take out 10-20 pieces, count the <a href="http://ru.wikipedia.org/wiki/%25D0%2594%25D0%25B8%25D1%2581%25D1%2582%25D0%25B0%25D0%25BD%25D1%2586%25D0%25B8%25D1%258F_%25D0%259B%25D0%25B5%25D0%25B2%25D0%25B5%25D0%25BD%25D1%2588%25D1%2582%25D0%25B5%25D0%25B9%25D0%25BD%25D0%25B0">Levenshtein distance</a> on the client, adjust the calculation results.  With big blood, you can just “count” a dozen or two candidates by any other samopisnym algorithm. <br><br>  In general, the demo will work out of the box.  But this is a demo, and nobody canceled a lot of space for further creative work.  Create, invent, write blogs, send patches! </div><p>Source: https://habr.com/ru/post/61807/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -140,10 +140,10 @@
 <li><a href="../61805/index.html">Search for chemical reactions in Nigma made easy</a></li>
 <li><a href="../61806/index.html">Google technology shopping</a></li>
 <li><a href="../61808/index.html">404: Conference not found</a></li>
+<li><a href="../6181/index.html">$ 34 million for online dating</a></li>
 <li><a href="../61810/index.html">Second hacker festival in Paris</a></li>
 <li><a href="../61815/index.html">UPD: Wi2Geo plugin for popular QIP, Miranda and Skype instant messengers + sources</a></li>
 <li><a href="../61819/index.html">Work with sound in * nix. Part 2</a></li>
-<li><a href="../61821/index.html">No more analog television in the US</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

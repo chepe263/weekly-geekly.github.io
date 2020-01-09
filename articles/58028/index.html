@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>LDAP for internet project. Part 5</h1><div class="post__text post__text-html js-mediator-article"> Hello!  Today, I am completing a series of articles on the implementation of OpenLDAP ( <a href="http://unicast.habrahabr.ru/blog/52978/">one</a> , <a href="http://unicast.habrahabr.ru/blog/53082/">two</a> , <a href="http://unicast.habrahabr.ru/blog/53383/">three</a> , <a href="http://habrahabr.ru/blogs/sysadm/53279/">four</a> ), and will talk about storing sudoers in LDAP. <br><a name="habracut"></a><br>  LDAP support is built into sudo itself, so pam modules won't help us here.  On Debian, you need to install the sudo-ldap package: <br> <code>apt-get install sudo-ldap</code> <br>  Among others, the package will install a file with the LDAP scheme we need: <br>  <code>/usr/share/doc/sudo-ldap/schema.OpenLDAP</code> , which must be copied to both LDAP servers and written in the /etc/ldap/slapd.conf file among other people: <br> <code>include /etc/ldap/schema/sudo.schema</code> <br>  After that, objects of the sudoRole class with sudoCommand, sudoHost, sudoRunAs, sudoUser, and sudoOption fields will be available to us. <br>  sudo searches for sudoRole objects using the settings in the /etc/ldap/ldap.conf file: <br><blockquote> <code>uri ldap://ldap.habr.ru <br> sudoers_base ou=servers,dc=habr,dc=ru <br> sudoers_debug 0 <br></code> </blockquote><br>  If you put debug 2, then after running the sudo command, a listing of the objects and matches that sudo found in the LDAP will be displayed. <br><br>  But so far we have not a single object, let's do it. <br>  I have already created a container ou = servers, dc = habr, dc = ru in which I store server containers with objects of the type groupOfUniqueNames;  they contain links to users who have access to the server, for example, <br>  cn = shell-users, ou = dev.habr.ru, ou = servers, dc = habr, dc = en <br>  To store data for sudo, I made a container ou = sudoers, ou = dev.habr.ru, ou = servers, dc = habr, dc = ru in which I have stored objects of the sudoRole class.  For example: <br><br><blockquote> <code>dn: cn=%www-data,ou=sudoers,ou=dev.habr.ru,ou=servers,dc=habr,dc=ru <br> objectClass: sudoRole <br> objectClass: top <br> cn: %www-data <br> sudoCommand: ALL <br> sudoHost: dev.habr.ru <br> sudoRunAs: www-data <br> sudoUser: %www-data <br></code> </blockquote>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Or such: <br><blockquote> <code>dn: cn=developers,ou=sudoers,ou=dev.habr.ru,ou=servers,dc=habr,dc=ru <br> objectClass: sudoRole <br> objectClass: top <br> cn: developers <br> sudoCommand: ALL <br> sudoRunAs: ALL <br> sudoHost: dev.habr.ru <br> sudoUser: dev0 <br> sudoUser: dev1 <br> sudoUser: dev2 <br></code> </blockquote><br><br>  For admins I have a separate container “groupOfUniqueNames” cn = admins, ou = global, ou = servers, dc = habr, dc = ru <br>  And separate sudoers: <br><blockquote> <code>dn: cn=admins,ou=sudoers,ou=global,ou=servers,dc=habr,dc=ru <br> objectClass: sudoRole <br> objectClass: top <br> cn: admins <br> sudoCommand: ALL <br> sudoRunAs: ALL <br> sudoHost: ALL <br> sudoUser: admin0 <br> sudoUser: admin1 <br> sudoUser: admin2 <br></code> </blockquote><br><br>  There is also an object with default settings: <br><blockquote> <code>dn: cn=defaults,ou=sudoers,ou=global,ou=servers,dc=habr,dc=ru <br> objectClass: sudoRole <br> objectClass: top <br> cn: defaults <br> sudoOption: ignore_local_sudoers <br> sudoOption: env_reset <br></code> </blockquote><br>  Now you can try sudo! <br><br>  I will be happy to answer your questions in the comments or in the LAN. </div><p>Source: <a href="https://habr.com/ru/post/58028/">https://habr.com/ru/post/58028/</a></p>
+      Or such: <br><blockquote> <code>dn: cn=developers,ou=sudoers,ou=dev.habr.ru,ou=servers,dc=habr,dc=ru <br> objectClass: sudoRole <br> objectClass: top <br> cn: developers <br> sudoCommand: ALL <br> sudoRunAs: ALL <br> sudoHost: dev.habr.ru <br> sudoUser: dev0 <br> sudoUser: dev1 <br> sudoUser: dev2 <br></code> </blockquote><br><br>  For admins I have a separate container “groupOfUniqueNames” cn = admins, ou = global, ou = servers, dc = habr, dc = ru <br>  And separate sudoers: <br><blockquote> <code>dn: cn=admins,ou=sudoers,ou=global,ou=servers,dc=habr,dc=ru <br> objectClass: sudoRole <br> objectClass: top <br> cn: admins <br> sudoCommand: ALL <br> sudoRunAs: ALL <br> sudoHost: ALL <br> sudoUser: admin0 <br> sudoUser: admin1 <br> sudoUser: admin2 <br></code> </blockquote><br><br>  There is also an object with default settings: <br><blockquote> <code>dn: cn=defaults,ou=sudoers,ou=global,ou=servers,dc=habr,dc=ru <br> objectClass: sudoRole <br> objectClass: top <br> cn: defaults <br> sudoOption: ignore_local_sudoers <br> sudoOption: env_reset <br></code> </blockquote><br>  Now you can try sudo! <br><br>  I will be happy to answer your questions in the comments or in the LAN. </div><p>Source: https://habr.com/ru/post/58028/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../58016/index.html">Roaming in the EU will become history this July</a></li>
+<li><a href="../5802/index.html">It's hard to be god</a></li>
 <li><a href="../58022/index.html">Campaign of Kaspersky Lab, 30% of the license cost</a></li>
 <li><a href="../58023/index.html">8 Characteristics of a successful user interface</a></li>
 <li><a href="../58025/index.html">Copenhagen User Experience</a></li>
@@ -75,7 +75,7 @@
 <li><a href="../58034/index.html">nanoHabr is here,% username%</a></li>
 <li><a href="../58036/index.html">Office monitors Eizo Nanao with a presence sensor</a></li>
 <li><a href="../58038/index.html">IFPI boycott</a></li>
-<li><a href="../58041/index.html">The meeting of the Ural user group .NET</a></li>
+<li><a href="../5804/index.html">Gran Paradiso (Firefox 3) Alpha 3</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

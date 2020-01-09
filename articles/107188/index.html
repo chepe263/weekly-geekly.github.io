@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Making the ProgressBar spin while the http request is coming</h1><div class="post__text post__text-html js-mediator-article">  It all started with the fact that I suddenly really wanted to do something under the android.  And all this despite the fact that java is not my native language. <br>  In the process of creating my application, I encountered several difficulties, the solution of which I want to tell.  I think they will be useful, just like me, to beginners, and I will be grateful for advice and more beautiful examples from the guru. <br>  But the main proof of the examples is that the application is working, you can <a href="http://ru.androlib.com/android.application.com-bullin-qjiAj.aspx">check</a> . <br><a name="habracut"></a><br>  Here are a few problems I encountered: <br><ul><li>  The UI waits for the server to respond, how to win?  (in this article) </li><li>  Sending and receiving data - in what format?  (in the next, if anyone is interested) </li><li>  How to work with the camera?  (also in the next, if anyone is interested) </li></ul><br>  Consider the first problem so far. <br><h4>  The UI waits for the server to respond, how to win? </h4><br>  Interaction with the server is the key moment of this application.  When an application sends a request to the server, it has to wait for a response.  During this wait, the user interface stops and it seems that the program is hanging.  Nestrachno, if the answer is received within a second, but in reality, waiting for a response from the server sometimes has about 10 seconds.  To inform the user that the application is not stuck, you need to show him the ProgressBar.  I stopped on a spinning wheel, as in AJAX.  Here's what it looks like: <br><img src="https://habrastorage.org/storage/808cae8f/81631b72/ded586e9/c91e0f33.png"><br><br>  I will describe approximately how it works.  I have a certain class HttpClient, he is responsible for interacting with the server.  He starts and stops the ProgressBar.  This class works asynchronously.  That is, the application, running it does not wait until it runs, and may continue its work.  This is achieved by the following construction: <br><pre><code class="java hljs"><span class="hljs-comment"><span class="hljs-comment">//   public class HttpClient extends AsyncTask&lt;Void, Integer, Long&gt;{ ... //   public ProgressDialog dialog; //    Context ctx; ... //  ProgressBar     protected void onPreExecute() { dialog = new ProgressDialog(ctx); dialog.setMessage("..."); dialog.setIndeterminate(true); dialog.setCancelable(true); dialog.show(); } //   , SendHttpPost() -    protected Long doInBackground(Void... params) { try { response = SendHttpPost(); } catch (Exception e) { e.printStackTrace(); response = null; } return null; } //      ,  ProgressBar protected void onPostExecute(Long unused) { dialog.dismiss(); ... //     ,    //     : ((Runnable)ctx).run(); .... super.onPostExecute(unused); } .... }</span></span></code> </pre> <br><br>  The parent class that calls the HttpClient looks like this: <br><pre> <code class="java hljs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">SearchableActivity</span></span></span><span class="hljs-class"> </span><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">extends</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">ListActivity</span></span></span><span class="hljs-class"> </span><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">implements</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Runnable</span></span></span><span class="hljs-class"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">private</span></span> HttpClient req; ... <span class="hljs-comment"><span class="hljs-comment">//   ,       private void showResults(String query) { ... req = new HttpClient(); req.execute((Void)null); } //     HttpClient,        -    public void run() { ... //   req    ,    Activity ... } }</span></span></code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The fact that I followed the Runnable path seems to me very controversial, but at that time there were no other thoughts. <br><br>  But I learned to download and show asynchronously pictures for this article: <a href="http://habrahabr.ru/blogs/android/78747/">habrahabr.ru/blogs/android/78747 I</a> use the moment to say thanks <a href="http://geektimes.ru/users/rude/" class="user_link">rude</a> ! </div><p>Source: <a href="https://habr.com/ru/post/107188/">https://habr.com/ru/post/107188/</a></p>
+      The fact that I followed the Runnable path seems to me very controversial, but at that time there were no other thoughts. <br><br>  But I learned to download and show asynchronously pictures for this article: <a href="http://habrahabr.ru/blogs/android/78747/">habrahabr.ru/blogs/android/78747 I</a> use the moment to say thanks <a href="http://geektimes.ru/users/rude/" class="user_link">rude</a> ! </div><p>Source: https://habr.com/ru/post/107188/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../107186/index.html">Queries to the Twitter API on SQL syntax</a></li>
 <li><a href="../107187/index.html">Numbers from QIWI Wallet: 2010 vs 2009</a></li>
 <li><a href="../107189/index.html">Canobuvosti, 63 edition</a></li>
+<li><a href="../10719/index.html">extreme community of Siberia</a></li>
 <li><a href="../107190/index.html">Laptop transformer Acer Aspire 1425P</a></li>
 <li><a href="../107191/index.html">Conference "Usability Ukraine '10"</a></li>
 <li><a href="../107193/index.html">ASUS Online Services</a></li>
-<li><a href="../107196/index.html">Honda P1 - great-grandfather Honda Asimo</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

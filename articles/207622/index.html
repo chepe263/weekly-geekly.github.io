@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>SIP / SIMPLE text messages in Asterisk</h1><div class="post__text post__text-html js-mediator-article">  During the regular telephony of the next office, I noticed that in the microSIP <a href="http://www.microsip.org/">softphone</a> we <a href="http://www.microsip.org/">chose</a> there is some built-in “chat”, which however does not work “out of the box”. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/a18/f70/a13/a18f70a136cdda85534a7cf9e4f304d8.png" alt="image"><br><br>  For sending messages, this program uses the SIP MESSAGE ( <a href="http://www.ietf.org/rfc/rfc3428.txt">RFC 3428</a> ) method, also known as the SIMPLE protocol. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      In Asterisk, its support appeared in version 10, but the documentation here, as is often the case, is far behind progress.  I had to first search the forums for a long time for various configuration options, and then by trial and error to test them. <br><br><a name="habracut"></a>  As a result, such a working configuration was developed (true for Asterisk 11.6.0). <br>  In the [general] section of the sip.conf file (for owners of FreePBX-based systems, the following lines are added to the sip_general_custom.conf file): <br><br><pre><code class="hljs nginx"><span class="hljs-attribute"><span class="hljs-attribute">accept_outofcall_message</span></span> = <span class="hljs-literal"><span class="hljs-literal">yes</span></span> outofcall_message_context = messages auth_message_requests = <span class="hljs-literal"><span class="hljs-literal">no</span></span></code> </pre> <br><br>  And in dialplan (for FreePBX, the context is added to the extensions_custom.conf file): <br><br><pre> <code class="hljs bash">[messages] exten =&gt; _XXX,1,MessageSend(sip:<span class="hljs-variable"><span class="hljs-variable">${EXTEN}</span></span>,<span class="hljs-string"><span class="hljs-string">"</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">${CALLERID(name)}</span></span></span><span class="hljs-string">"</span></span><span class="hljs-variable"><span class="hljs-variable">${MESSAGE(from)}</span></span>)</code> </pre><br><br>  Enter the number X in accordance with the number of digits in your internal numbers. <br><br>  Hooray, everything works! <br><br><img src="https://habrastorage.org/getpro/habr/post_images/38b/a61/e3e/38ba61e3e1dba3eb526f3570fd42617b.png" alt="image"><br><br>  You can send messages to hardware phones: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/281/c82/00c/281c8200c5dd446c6d647439f9eb0825.jpg" alt="image"><br><br>  Well, craftsmen can modify the dialplan for different purposes, for example, to send SMS or email.  The content of the message is in the variables $ {MESSAGE (from)} $ {MESSAGE (to)} and $ {MESSAGE (body)} <br><br>  It also makes sense to try setting auth_message_requests = yes - but there may be compatibility issues. <br><br>  It is also important not to confuse what we are talking about in the article with the textsupport setting - this setting in Asterisk is responsible for a completely different protocol, <a href="https://wiki.asterisk.org/wiki/pages/viewpage.action%3FpageId%3D4260034">ITU-T T.140 realtime text</a> . </div><p>Source: <a href="https://habr.com/ru/post/207622/">https://habr.com/ru/post/207622/</a></p>
+      In Asterisk, its support appeared in version 10, but the documentation here, as is often the case, is far behind progress.  I had to first search the forums for a long time for various configuration options, and then by trial and error to test them. <br><br><a name="habracut"></a>  As a result, such a working configuration was developed (true for Asterisk 11.6.0). <br>  In the [general] section of the sip.conf file (for owners of FreePBX-based systems, the following lines are added to the sip_general_custom.conf file): <br><br><pre><code class="hljs nginx"><span class="hljs-attribute"><span class="hljs-attribute">accept_outofcall_message</span></span> = <span class="hljs-literal"><span class="hljs-literal">yes</span></span> outofcall_message_context = messages auth_message_requests = <span class="hljs-literal"><span class="hljs-literal">no</span></span></code> </pre> <br><br>  And in dialplan (for FreePBX, the context is added to the extensions_custom.conf file): <br><br><pre> <code class="hljs bash">[messages] exten =&gt; _XXX,1,MessageSend(sip:<span class="hljs-variable"><span class="hljs-variable">${EXTEN}</span></span>,<span class="hljs-string"><span class="hljs-string">"</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">${CALLERID(name)}</span></span></span><span class="hljs-string">"</span></span><span class="hljs-variable"><span class="hljs-variable">${MESSAGE(from)}</span></span>)</code> </pre><br><br>  Enter the number X in accordance with the number of digits in your internal numbers. <br><br>  Hooray, everything works! <br><br><img src="https://habrastorage.org/getpro/habr/post_images/38b/a61/e3e/38ba61e3e1dba3eb526f3570fd42617b.png" alt="image"><br><br>  You can send messages to hardware phones: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/281/c82/00c/281c8200c5dd446c6d647439f9eb0825.jpg" alt="image"><br><br>  Well, craftsmen can modify the dialplan for different purposes, for example, to send SMS or email.  The content of the message is in the variables $ {MESSAGE (from)} $ {MESSAGE (to)} and $ {MESSAGE (body)} <br><br>  It also makes sense to try setting auth_message_requests = yes - but there may be compatibility issues. <br><br>  It is also important not to confuse what we are talking about in the article with the textsupport setting - this setting in Asterisk is responsible for a completely different protocol, <a href="https://wiki.asterisk.org/wiki/pages/viewpage.action%3FpageId%3D4260034">ITU-T T.140 realtime text</a> . </div><p>Source: https://habr.com/ru/post/207622/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../207608/index.html">New Year Testing Wiren Board</a></li>
 <li><a href="../207612/index.html">Node.JS + taskset == a bit of weird humor</a></li>
 <li><a href="../207614/index.html">Data transfer in the vehicle monitoring system - DDF technology</a></li>
 <li><a href="../207616/index.html">Python-digest # 8. News, interesting projects, articles and interviews [December 20, 2013 - December 27, 2013]</a></li>
+<li><a href="../20762/index.html">Bill Gates insists on the death of keyboards</a></li>
 <li><a href="../207620/index.html">Porting contrib themes to Drupal 8: Getting Twig themes</a></li>
 <li><a href="../207624/index.html">White and black</a></li>
 <li><a href="../207628/index.html">Protection against DoS / DDoS attacks using autonomous system number (ASN) filtering</a></li>
+<li><a href="../20763/index.html">Humor: Say who?</a></li>
 <li><a href="../207636/index.html">We start the mobile direction in the company: what to prepare for and how to live</a></li>
 <li><a href="../207638/index.html">Hints: API for entering email addresses and full name in one line</a></li>
-<li><a href="../207640/index.html">Cost of servicing the regional component of EGISZ from Rostelecom</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

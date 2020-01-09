@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Modifying a USB-UART converter on a CP2102 chip for use as an Arduino programmer</h1><div class="post__text post__text-html js-mediator-article">  <i>This method requires the <s>direct hands of</s> nanobots - use the one described at your own peril and risk.</i> <br><br>  The USB-UART converter on the CP2102 chip, which came bundled with the Arduino Pro Mini and was declared as a programmer for it, came into my hands: <br><br><img src="https://habrastorage.org/files/239/ca6/437/239ca6437c384d11b24ea55ab50555ee.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,18 +61,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Connecting to the Arduino and trying to fill the sketch, I found that the fill does not occur.  I get an error: <br><a name="habracut"></a><br>  <b>avrdude: stk500_getsync (): not in sync: resp = 0x00</b> <br><br>  The search answered the question why this is happening.  It turned out that the RST at the output of the programmer is divorced in such a way that it is a digital input and is designed to reset the CP2102 chip from a signal from an external device, and not to reset the external device itself.  Further searches led to an <a href="http://www.incrediblediy.com/2013/03/modifying-cheap-cp2102-usb-to-uart.html">article</a> where it was described how to fix it. <br><br>  In the article I did not like that a separate wire was soldered to the chip.  I wanted to try to use the existing RST output.  Having a little understanding of the topology of the board, I found that the track from the RST pin through a through-hole is connected to one of the legs of the CP2102 chip and the resistance on the front side of the board. <br><br>  Thus, it is necessary to cut the section of the track between the via hole and the CP2102 pin, and also to dissolve the SMD resistor above the POW inscription (“1001” on the resistor).  Next, you need to connect with the help of wire output CP2102 "DTR" and the contact pad remaining after brazing the resistor, located closer to the inscription POW.  This connects the “DTR” chip pin and the “RST” board pin. <br><br>  Armed with a breadboarding knife and a soldering iron, I set to work.  The result is such a miracle of technology: <br><br><img src="https://habrastorage.org/files/fe1/334/778/fe13347782d049fcb40ca15f83092acd.png" alt="image"><br><br>  The circle on the left marks the cut track, and the oval on the right is a piece of soldered wire.  In order for the microcircuit pins to stick together from tin, you should fill this side of the microcircuit with an alcohol-rosin mixture.  Alcohol will quickly evaporate, however, when soldering, boiling rosin under the sting will not allow the tin to solder the legs together (of course, if you do not overdo it with tin). <br><br>  Next, you should check the performance of the received board using the <a href="http://sourceforge.net/projects/realterm/">RealTerm</a> program.  Open the “Pins” tab - setting and resetting the DTR pin should not affect the operation of the DSR pin, however it should control the output voltage of the RST board. <br><br>  When all the checks are completed, you can try to fill the sketch.  We connect the Arduino Pro Mini to the converter: <br><br>  (Converter) &lt;-&gt; (Arduino) <br>  RST &lt;-&gt; DTR <br>  TXD &lt;-&gt; RXD <br>  RXD &lt;-&gt; TXD <br>  GND &lt;-&gt; GND <br>  5V &lt;-&gt; VCC <br><br>  Now my sketch has been filled successfully. <br><br>  I hope you will succeed! </div><p>Source: <a href="https://habr.com/ru/post/239401/">https://habr.com/ru/post/239401/</a></p>
+      Connecting to the Arduino and trying to fill the sketch, I found that the fill does not occur.  I get an error: <br><a name="habracut"></a><br>  <b>avrdude: stk500_getsync (): not in sync: resp = 0x00</b> <br><br>  The search answered the question why this is happening.  It turned out that the RST at the output of the programmer is divorced in such a way that it is a digital input and is designed to reset the CP2102 chip from a signal from an external device, and not to reset the external device itself.  Further searches led to an <a href="http://www.incrediblediy.com/2013/03/modifying-cheap-cp2102-usb-to-uart.html">article</a> where it was described how to fix it. <br><br>  In the article I did not like that a separate wire was soldered to the chip.  I wanted to try to use the existing RST output.  Having a little understanding of the topology of the board, I found that the track from the RST pin through a through-hole is connected to one of the legs of the CP2102 chip and the resistance on the front side of the board. <br><br>  Thus, it is necessary to cut the section of the track between the via hole and the CP2102 pin, and also to dissolve the SMD resistor above the POW inscription (“1001” on the resistor).  Next, you need to connect with the help of wire output CP2102 "DTR" and the contact pad remaining after brazing the resistor, located closer to the inscription POW.  This connects the “DTR” chip pin and the “RST” board pin. <br><br>  Armed with a breadboarding knife and a soldering iron, I set to work.  The result is such a miracle of technology: <br><br><img src="https://habrastorage.org/files/fe1/334/778/fe13347782d049fcb40ca15f83092acd.png" alt="image"><br><br>  The circle on the left marks the cut track, and the oval on the right is a piece of soldered wire.  In order for the microcircuit pins to stick together from tin, you should fill this side of the microcircuit with an alcohol-rosin mixture.  Alcohol will quickly evaporate, however, when soldering, boiling rosin under the sting will not allow the tin to solder the legs together (of course, if you do not overdo it with tin). <br><br>  Next, you should check the performance of the received board using the <a href="http://sourceforge.net/projects/realterm/">RealTerm</a> program.  Open the “Pins” tab - setting and resetting the DTR pin should not affect the operation of the DSR pin, however it should control the output voltage of the RST board. <br><br>  When all the checks are completed, you can try to fill the sketch.  We connect the Arduino Pro Mini to the converter: <br><br>  (Converter) &lt;-&gt; (Arduino) <br>  RST &lt;-&gt; DTR <br>  TXD &lt;-&gt; RXD <br>  RXD &lt;-&gt; TXD <br>  GND &lt;-&gt; GND <br>  5V &lt;-&gt; VCC <br><br>  Now my sketch has been filled successfully. <br><br>  I hope you will succeed! </div><p>Source: https://habr.com/ru/post/239401/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../239387/index.html">Testing embedded systems</a></li>
-<li><a href="../239393/index.html">Hewlett-Packard is divided into two companies</a></li>
 <li><a href="../239395/index.html">Vulnerability Yandex money or how to recover a payment password</a></li>
 <li><a href="../239397/index.html">PL / SQL via dblink</a></li>
 <li><a href="../239399/index.html">What technology has learned from Linus Torvalds</a></li>
+<li><a href="../2394/index.html">Does eBay change its strategy in China?</a></li>
+<li><a href="../23940/index.html">About higher education</a></li>
 <li><a href="../239403/index.html">Testing embedded systems - one aspect, which for some reason say little</a></li>
 <li><a href="../239405/index.html">Snowkit announcement</a></li>
 <li><a href="../239407/index.html">Based on the “three interviews about static analyzers,” or the fourth interview</a></li>

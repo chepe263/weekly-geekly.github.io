@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>6 small tips to prepare NodeJS for high loads</h1><div class="post__text post__text-html js-mediator-article"><p></p><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/9f1/160/034/9f1160034811fcc55650a733a2732f41.png"></div>  <em>The service with face recognition "Look-A-Like" served thousands of users simultaneously</em> <br><p>  Developing on NodeJS as a hobby is a real pleasure, but when it comes to production for many users, there are a couple of things you should know to avoid long responses and crashes. </p><br><p>  As part of the work at MyHeritage, we developed the <a href="https://myheritage.com/eurovision-lookalike">doppelgänger service</a> for Eurovision 2019, with which you can find out which contestants you are most like by uploading selfies. </p><br><p>  In addition to the face recognition logic, the application had an extremely clear requirement: it had to serve tens of thousands of simultaneous users, because Eurovision is watched by millions of people around the world. </p><a name="habracut"></a><br><p>  Very quickly, we realized that the load balancer before the application, configured using <a href="https://aws.amazon.com/ru/autoscaling/getting-started/">Auto Scaling</a> , is not enough for fault tolerance.  The following helped us a lot: </p><br><ol><li>  <strong>Hope for the best, but prepare for the worst:</strong> measure how many simultaneous users will be able to serve your application in time X (one instance).  For example, in our case, testing showed that we could serve 200 simultaneous users in each EC2 instance for 10 seconds, so when we learned that we had to serve 10,000 simultaneous users, we just had to prepare 50 servers behind the balancer.  For the test, we used a great tool called <a href="https://jmeter.apache.org/">JMeter</a> . <br><br>  And <a href="https://www.digitalocean.com/community/tutorials/how-to-use-apache-jmeter-to-perform-load-testing-on-a-web-server">this tutorial</a> greatly helped in preparing for the implementation of measurements. </li><li> <strong>Avoid locks:</strong> blocking operations (like <code>fs.readSync</code> ) are tempting because the code looks cleaner, but they literally kill performance.  Instead, use <code>async</code> / <code>await</code> operations, because during the execution of asynchronous operation, the CPU will also be available for other tasks (see <a href="https://nodejs.org/fa/docs/guides/event-loop-timers-and-nexttick/">Event loop</a> ). <br><br>  Before: <code>const res = fs.readSync('file.txt'); <br></code> <code>const res = fs.readSync('file.txt'); <br></code>  After: <code>const res = await fs.readAsync('file.txt');</code> </li><li>  <strong>Increase Memory Limit:</strong> <code>Node</code> is configured by default to a limit of 1 GB.  If the server is available, say, 4 GB specifically for your application, you will have to set the maximum memory limit manually using the CLI with the following flag: - <code>--max-old-space-size <br></code> <code>--max-old-space-size <br></code>  Example: <code>node --max-old-space-size=4096 server.js</code> </li><li>  <strong>Make sure you use all the processor cores:</strong> by default, <code>Node</code> runs in the same thread.  If you did not specifically set up a configuration that would run several threads, save money by choosing a server with 1 core. </li><li>  <strong>Reduce the number of calls to the application:</strong> configure forced HTTPS and all redirects as high as possible (for example, at the proxy level).  This will allow the application not to be distracted by the superfluous, which means that it will be more accessible for requests that are really important. </li><li>  <strong>Error handling:</strong> use logging, for example Logz.io/AWS CloudWatch, to track errors that may cause the application to crash.  DO NOT REPORT everything to services like Slack, because messages usually go in a crowd and can easily clog the channel.  We used an excellent library called <a href="https://github.com/winstonjs/winston">Winston</a> for logging into NodeJS. </li></ol><br><p>  In our case, these tips led to a ten-fold improvement in performance and helped keep the production environment clean, even when thousands of users had to be served at the same time. </p><br><p>  Thank you for reading. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/456036/">https://habr.com/ru/post/456036/</a></p>
+    <p>Source: https://habr.com/ru/post/456036/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

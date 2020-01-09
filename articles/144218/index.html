@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Juniper SRX100, acquaintance</h1><div class="post__text post__text-html js-mediator-article">  The other day I brought the long-awaited Juniper SRX100. <br>  Until that time, I mainly communicated with Cisco and a series of routers, such as 2800, 800. <br>  As far as I understand, I can be mistaken, this equipment is closer to the class of hardware firewalls. <br>  Under the cut, the primary configuration of this piece of iron and Internet access. <br><a name="habracut"></a><br><br><h4>  Turning on </h4><br>  Opened, unpacked, connected the console cable, was surprised at the presence of the power button. <br>  The download showed me that this device works on FreeBSD ARM.  Loaded with default configuration minutes 3. <br>  No documentation read.  I log in. <br>  At the second attempt, I guessed root, without a password. <br>  Here I was waiting for the next surprise.  There was a console.  No, not cli, but / bin / sh! <br>  Having looked somewhere on the Internet, it turned out that to get into cli JunOS you have to write, no matter how surprisingly “cli”. <br><br> <code>screen /dev/ttyUSB0 <br> root@hostname% whoami <br> --- JUNOS 11.2R4.3 built 2011-11-24 08:11:51 UTC <br> root <br> root@hostname% cli <br> root@hostname&gt; <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  Primary setup </h4><br>  And so the first thing is recommended to create a user other than root. <br>  Next, change the password root. <br><br> <code>&gt; show configuration system | display set <br> set system root-authentication encrypted-password "" <br> <br> set system login user admin class super-user <br> set system login user admin authentication encrypted-password ""</code> <br>  In case you want to enter a password after entering the command, use: <br>  <b>plain-text-password</b> instead of <b>encrypted-password</b> <br><br>  Unlike Cisco, commands are not applied immediately. <br>  To apply the configuration you need to write <br><br>  commit <br><br>  If everything is correct, the response will be commit complete. <br>  If there is an error, it will output where it is. <br><br>  Password root must be given necessarily!  Otherwise, the commit will not work. <br><br><h5>  View configuration and operation modes </h5><br><br>  Until I forgot, as in Cisco IOS, JunOS has two main modes of command interface. <br>  1. to execute commands, the invitation ends with "&gt;" <br>  2. to change the configuration, the prompt ends with "#" <br><br>  There is also sh, it ends with "%", but in the near future it will not be useful to us. <br><br>  If you are too lazy to switch from configuration mode to execute a command, you can add to the beginning of the command <b>run</b> . <br>  For example, <br> <code>#run ping ya.ru</code> <br> <br>  Switch to configuration mode, configure command, exit to command mode - <b>exit</b> <br><br>  Viewing the current configuration is also possible in both modes. <br>  from the team - <br> <code>show configure</code> <br>  from configuration <br> <code>show</code> <br> <br>  The output of these commands is the most readable, structured text. <br>  eg: <br><pre>  show configure services
@@ -156,7 +156,7 @@
              }
          }
      }
-</pre><br><br><h4>  Completion </h4><br>  My second article on Habré. <br>  I will accept any constructive criticism and I will be grateful to her.  I am sure that the flow-policy on this equipment is not really figured out yet.  For example, about the screens have not even read. <br>  The next step will be setting up an IPSec site-to-site with third-party hardware.  And Dynamic-vpn.  Already implemented, it remains to write. <br>  Not yet implemented, but I will also try to be in time: <br>  radius authorization <br>  2 wan channel <br>  fail over. <br><br>  I also have a similar task at 5505 ACA, but this is another story. <br><br><h4>  Literature </h4><br>  <a href="https://www.juniper.net/techpubs/en_US/junos11.4/information-products/pathway-pages/srx-series/index.html">www.juniper.net/techpubs/en_US/junos11.4/information-products/pathway-pages/srx-series/index.html the</a> first place to go. <br>  Especially I advise Security Configuration Guide. <br>  <a href="https://www.juniper.net/techpubs/en_US/junos11.4/information-products/topic-collections/security/software-all/security/index.html">www.juniper.net/techpubs/en_US/junos11.4/information-products/topic-collections/security/software-all/security/index.html</a> <br>  I downloaded its version on the tablet and read hard. </div><p>Source: <a href="https://habr.com/ru/post/144218/">https://habr.com/ru/post/144218/</a></p>
+</pre><br><br><h4>  Completion </h4><br>  My second article on Habré. <br>  I will accept any constructive criticism and I will be grateful to her.  I am sure that the flow-policy on this equipment is not really figured out yet.  For example, about the screens have not even read. <br>  The next step will be setting up an IPSec site-to-site with third-party hardware.  And Dynamic-vpn.  Already implemented, it remains to write. <br>  Not yet implemented, but I will also try to be in time: <br>  radius authorization <br>  2 wan channel <br>  fail over. <br><br>  I also have a similar task at 5505 ACA, but this is another story. <br><br><h4>  Literature </h4><br>  <a href="https://www.juniper.net/techpubs/en_US/junos11.4/information-products/pathway-pages/srx-series/index.html">www.juniper.net/techpubs/en_US/junos11.4/information-products/pathway-pages/srx-series/index.html the</a> first place to go. <br>  Especially I advise Security Configuration Guide. <br>  <a href="https://www.juniper.net/techpubs/en_US/junos11.4/information-products/topic-collections/security/software-all/security/index.html">www.juniper.net/techpubs/en_US/junos11.4/information-products/topic-collections/security/software-all/security/index.html</a> <br>  I downloaded its version on the tablet and read hard. </div><p>Source: https://habr.com/ru/post/144218/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -168,8 +168,8 @@
 <li><a href="../144219/index.html">Step-by-step description of the live migration of OpenVZ</a></li>
 <li><a href="../144220/index.html">Accounting control of game time</a></li>
 <li><a href="../144221/index.html">Methods for evaluating a startup. Continuation</a></li>
+<li><a href="../144223/index.html">E1 allows you to travel without interruption from business</a></li>
 <li><a href="../144225/index.html">Yandeks.Afisha. Xss</a></li>
-<li><a href="../144226/index.html">Programmers and Ponte</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

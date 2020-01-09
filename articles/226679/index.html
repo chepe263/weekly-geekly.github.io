@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Another way to intercept traffic through ARP Spoofing</h1><div class="post__text post__text-html js-mediator-article">  On Habré there were already many articles on the subject of classic ARP spoofing, but all of them were similar in that in order to fully capture the traffic, it was necessary to replace ARP entries from two machines.  This is usually the victim and its default gateway.  However, the idea of ​​spoofing the gateway is not always good.  He may well have an attack detector on board, which in two accounts will report to the admin that the network is being broken and the freebie will end before it starts.  This article will discuss the method of intercepting traffic, in which an attack is made only on the host victim.  As usual in such cases, the article is purely for reference, use to the detriment is punishable by law, etc. <br>  There are many letters under the cut. <br><br><a name="habracut"></a><br><br>  At once I will make a reservation that for attacks Linux will be used.  Network security professionals, please do not hit with your feet. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  A little bit about ARP </h4><br>  When writing an article, I will proceed from the fact that the reader at least roughly knows who the ARP is, why, and how it works.  You can <a href="http://ru.wikipedia.org/wiki/Arp">read here</a> .  In short, ARP is used to understand which physical MAC address to send the packet to if the recipient's IP is known.  Accordingly, by replacing the real MAC address of a certain node with your victim's ARP table, we will ensure that the victim sends packets for such a node to us.  We can both send such packages directly to the present recipient, or change them on the fly before sending.  There is one problem here.  If you simply forward the packets further, then we will see only half of the traffic, since the recipient will send the response directly to the victim.  Usually, to solve this problem, the recipient is made the second victim and is subjected to a symmetric attack.  But on the other hand, you usually want to intercept the victim’s Internet traffic, which means that the network gateway will be the recipient.  And if this gateway is not a simple home router, but something more serious, then an ARP attack on it is highly undesirable. <br><br><h4>  Simple attack option </h4><br>  So, let us want to intercept the traffic of the victim, while we can send "obviously fake" packets only to the victim's car.  The solution is to enable NAT on your machine and send traffic to the gateway from your interface instead of direct forwarding.  In this case, we work for the victim as another NAT gateway. <br><br><h5>  Network configuration </h5><br>  Let there be a network <b>192.168.0.0/24</b> with a gateway <b>192.168.0.1</b> .  For convenience, let the MAC addresses of adapters be <b>00-00-00-00-00-XX</b> , where XX is the last digit of the IP address, that is, the MAC gateway will be <b>00-00-00-00-00-01</b> . <br><br>  There are cars in the network: <br><br>  <b>192.168.0.1</b> / <b>00-00-00-00-00-01</b> - gateway <br>  <b>192.168.0.3</b> / <b>00-00-00-00-00-03</b> - victim <br><br>  <b>eth0</b> - <b>192.168.0.5</b> / <b>00-00-00-00-00-05</b> - our machine with which we will attack.  A single <b>eth0</b> network interface is connected to the network. <br><br><h5>  Utilities </h5><br>  For ARP spoofing, we will use the <a href="http://www.arpoison.net/">arpoison</a> utility.  It, in contrast to the arpspoof from the <a href="http://www.monkey.org/~dugsong/dsniff/">dsniff</a> package, does not require the correct IP configuration of the interface from which spoofing occurs (we will need this later). <br><br><h5>  Go </h5><br>  So, let's begin with the packet routing: <br><pre> # sysctl net.ipv4.ip_forward = 1
@@ -127,7 +127,7 @@
 </pre><br><br>  Remained a little.  First, prevent the system from accepting incoming (not forwarded) packets on the virtual interface, so that someone curious does not compare the list of services to 192.168.0.6 and 192.168.0.5 <br><br><pre> # iptables -A INPUT -i virt0 -j DROP
 </pre><br><br>  Secondly (thanks to <a href="http://habrahabr.ru/users/AEP/">AEP</a> ), disable sending ICMP time exceeded in-transit so that our real address does not appear in the traceroute <br><pre> # iptables -A OUTPUT -p icmp - icmp-type 11 -j DROP
 </pre><br><br>  Thirdly (thanks to <a href="http://habrahabr.ru/users/kay/">kay</a> ) add an increase in TTL so that on the pings and traceroute the fact of routing through us is not visible <br><pre> # iptables -t mangle -A PREROUTING -i virt0 -j TTL --ttl-inc 1
-</pre><br><br><h4>  Instead of conclusion </h4><br>  As a result, we managed to intercept traffic, attacking only the victim's car, without lightening its real IP and MAC.  The intercepted packets are routed by standard means.  You can also set up more fun routing rules, open a port on virt0 80 and practice phishing, but that's another story. <br><br>  <b>UPD:</b> it would be interesting to read in the comments how such a scheme can still be set on fire without having l3 routing on the network. </div><p>Source: <a href="https://habr.com/ru/post/226679/">https://habr.com/ru/post/226679/</a></p>
+</pre><br><br><h4>  Instead of conclusion </h4><br>  As a result, we managed to intercept traffic, attacking only the victim's car, without lightening its real IP and MAC.  The intercepted packets are routed by standard means.  You can also set up more fun routing rules, open a port on virt0 80 and practice phishing, but that's another story. <br><br>  <b>UPD:</b> it would be interesting to read in the comments how such a scheme can still be set on fire without having l3 routing on the network. </div><p>Source: https://habr.com/ru/post/226679/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -136,11 +136,11 @@
 <li><a href="../226673/index.html">"Eat your own dog food" or how we found the most important client</a></li>
 <li><a href="../226675/index.html">Test Labs 2014. ONLINE conference for testers and test managers. June 28</a></li>
 <li><a href="../226677/index.html">Probabilistic Models: Sampling</a></li>
+<li><a href="../22668/index.html">Special!</a></li>
 <li><a href="../226681/index.html">Disaster Recovery Planning. The second part of</a></li>
 <li><a href="../226687/index.html">Continuation of Candy Crush, transforming pigs and mobile tanks - the main mobile news of the week</a></li>
 <li><a href="../226689/index.html">Everybody lies! ™ or casuistry describing business processes</a></li>
-<li><a href="../226691/index.html">Amazon introduced its smartphone with 6 Fire Phone cameras</a></li>
-<li><a href="../226693/index.html">Skype 4.3 for Linux released</a></li>
+<li><a href="../22669/index.html">Deciphered the mechanism of karma</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

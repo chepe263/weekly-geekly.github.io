@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>IKEv2 and Flex VPN using Cisco IOS. Syntax and Logic</h1><div class="post__text post__text-html js-mediator-article">  In this article, I tried to describe in the most accessible and concise manner what IKEv2 is, FlexVPN, and how it is implemented in Cisco IOS routers.  For a better understanding of the content, it is necessary that the reader, at the time of familiarization with the text below, did not frighten words such as VPN, IPSec, ISAKMP, ISAKMP Profile, etc.  In addition, it is advisable to have a good understanding of how different types of VPNs are configured using VTI interfaces (or GRE over IPSec) on Cisco equipment, since the article relies heavily on these issues. <br><br><h4>  Foreword </h4><br>  Immediately you need to emphasize that you should not think that IKEv2 is something completely new, difficult to understand and completely changes the whole concept of building VPN networks.  IKE (both 1 and 2) are intended only to provide ESP (well, or AH, if someone needs it) with the necessary key information needed by the specified protocols to directly protect data.  ESP itself, its modes of operation (tunnel / transport) and all related concepts do not change. <br><a name="habracut"></a><br><h4>  Briefly about the main features and differences of IKEv2 from its predecessor </h4><br>  I will list the most significant things in my opinion: <br><br>  1. Both protocols work on UDP / 500 (4500 in the case of NAT-T), but are incompatible with each other, i.e.  it does not work so that at one end of the tunnel was IKEv1, and at the other - IKEv2.  In this case, the same router can terminate on itself and IKEv2 and IKEv1 tunnels simultaneously.  There are enough differences in the IKEv1 and 2 headers so that the router can determine what it is dealing with, despite the same ports. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       2. In IKEv2, there are no longer such concepts as aggressive / main mode, which is one of the aspects that make the protocol easier to understand. <br><br>  3. In IKEv2, the term phase1 is replaced by IKE_SA_INIT (two message exchange, which ensures the negotiation of encryption / hashing protocols and the generation of DH keys), and phase 2 - by IKE_AUTH (also two messages that directly implement peer authentication and key generation for ESP).  The data exchange in IKE_AUTH is always encrypted using SA, formed by IKE_SA_INIT.  Isakmp SA is now called ikev2 sa, and ipsec sa is Child SA. <br><br>  4. In IKEv2, the authentication method between peers is no longer automatically negotiated and is not tied to one or another IKEv2 policy.  Those.  if earlier in IKEv1 of each isakmp policy there was an authentication string, which indicated what type of authentication would be if this policy is chosen, then now the authentication method is set manually and it is clearly determined that with this peer will be certificate authentication, but with this is according to the pre-shared key.  In addition, asymmetric authentication has become possible in IKEv2.  Those.  You can make Endpoint A authenticate Endpoint B with certificates, while B authenticate A with a pre-shared key.  Or, A authenticates B with a pre-shared key1, while B authenticates A with a pre-shared key2.  Other options are possible, incl.  authentication using various EAP methods. <br><br>  5. Mode Config (what was called phase 1.5 in ikev1 and is used to configure remote connections for RAVPN / EasyVPN), NAT-T and keepalives are now directly described in the protocol specification and are an integral part of it.  Previously, these things were implemented by vendors in their own way as needed. <br><br>  6. In IKEv2, an additional control-plane (services plane) protection mechanism against DoS attacks has been added.  Its essence is that before responding to each request to establish a secure connection (IKE_SA_INIT) IKEv2 VPN gateway sends a cookie to the source of such request, and waits for it to respond the same.  If the source responded - great, you can start generating DH with it.  If the source does not respond (in the case of a DoS attack, this is what happens, this is essentially comparable to the TCP SYN flood attack), the VPN gateway just forgets about it.  Without this mechanism, with each IKE_SA_INIT request from IKEv2 from anyone, the VPN gateway would try to generate the DH key (which, as we know, is a very expensive process) and would soon remain with the killed (albeit temporarily) control-plane. <br><br><h4>  What is FlexVPN? </h4><br>  <i>FlexVPN is a framework implementing IKEv2 in Cisco IOS routers.</i>  <i>Those.</i>  <i>This is IKEv2 + IPSec in the IOS command syntax.</i>  No more. <br><br>  The main feature, FlexVPN (Flex keyword - Flexible), which Cisco positions as a distinctive feature of FlexVPN, is that the same VPN gateway configuration allows different types of tunnels to be hooked to it - Remote Access, Site-to-Site, etc .  Although, in my opinion, the same (or almost the same) flexibility can be achieved in the traditional IKEv1 configuration, if you use the VTI interfaces.  Well, okay, this is all my IMHO. <br><br>  Next, let us analyze now what the FlexVPN syntax looks like, what commands it uses, what they mean, what they are for, how they relate to similar commands in IKEv1. <br><br><h4>  FlexVPN syntax for IKEv2 configuration </h4><br>  So, the main (and, IMHO, all) components of IKEv2 in Cisco IOS are: <br><br>  <b><i>1. Proposal</i></b> <b><i><br></i></b>  <b><i>2. Policy</i></b> <b><i><br></i></b>  <b><i>3. Keyring</i></b> <b><i><br></i></b>  <b><i>4. Profile</i></b> <br><br>  Next on each in order. <br><br>  <u><i>Posal</i></u> <br><br>  IKEv2 proposal limits which algorithms will be used to establish / protect the IKE_SA_INIT phase.  In essence, this is an analogue of the crypto isakmp policy in IKEv1, although not fully. <br>  Looks like that: <br><br><pre> crypto ikev2 proposal PROP_1
@@ -170,20 +170,20 @@
   1003 IKEv2 SHA512 + AES256 0 0 0 10.1.12.1
 </pre><br>  Here again, nothing new.  We have two unidirectional IPSec SA (lines starting with 11 and 12) and one bidirectional IKEv2 SA. <br><br>  The output of sh crypto isakmp sa, as expected, shows nothing: <br><br>  <b>Site1Router # sh crypto isakmp sa</b> <br><br><pre> IPv4 Crypto ISAKMP SA
  dst src state conn-id status
-</pre><br><br>  Somehow like this.  I hope all this text has not turned out to be too confusing or too superficial, and will be useful to someone. </div><p>Source: <a href="https://habr.com/ru/post/186126/">https://habr.com/ru/post/186126/</a></p>
+</pre><br><br>  Somehow like this.  I hope all this text has not turned out to be too confusing or too superficial, and will be useful to someone. </div><p>Source: https://habr.com/ru/post/186126/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../186116/index.html">Already a very small survey clarifying the relationship of habrasoobschestva to GMOs</a></li>
 <li><a href="../186118/index.html">I invite you to the hack quest CRC - information security tournament</a></li>
+<li><a href="../18612/index.html">“UsiGi” - a weapon of democracy</a></li>
 <li><a href="../186120/index.html">Education, work and advanced training</a></li>
 <li><a href="../186122/index.html">Iran will distribute state e-mail to all citizens</a></li>
 <li><a href="../186124/index.html">Cross-compiling on OS X under Linux using crosstool-ng</a></li>
 <li><a href="../186128/index.html">Badoo offline notification system</a></li>
+<li><a href="../18613/index.html">Let's talk about startups 2 or again about design and most importantly - what to spend money on?</a></li>
 <li><a href="../186132/index.html">Some simple requests instead of one big one for loading links in ORM</a></li>
 <li><a href="../186134/index.html">Smartphone Meizu MX2 is becoming more accessible!</a></li>
 <li><a href="../186136/index.html">Voyeur.js is a small and attractive library for working with DOM</a></li>
-<li><a href="../186142/index.html">In which areas are most popular sites?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

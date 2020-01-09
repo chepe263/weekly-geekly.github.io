@@ -28,12 +28,12 @@ use strict; use warnings; sub mysub($) { my ($a, $b) = @_; print "$a\n"; print "
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@ use strict; use warnings; sub mysub($) { my ($a, $b) = @_; print "$a\n"; print "
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Another way to shoot yourself in Perl</h1><div class="post__text post__text-html js-mediator-article">  Let's look at the code: <br><br><pre><code class="perl hljs"><span class="hljs-keyword"><span class="hljs-keyword">use</span></span> strict; <span class="hljs-keyword"><span class="hljs-keyword">use</span></span> warnings; <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">sub</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">mysub</span></span></span></span>($$) { <span class="hljs-keyword"><span class="hljs-keyword">my</span></span> ($a, $b) = @_; <span class="hljs-keyword"><span class="hljs-keyword">print</span></span> "$a\n"; <span class="hljs-keyword"><span class="hljs-keyword">print</span></span> "$b\n"; } <span class="hljs-keyword"><span class="hljs-keyword">my</span></span> $<span class="hljs-keyword"><span class="hljs-keyword">x</span></span> = <span class="hljs-keyword"><span class="hljs-keyword">undef</span></span>; mysub($<span class="hljs-keyword"><span class="hljs-keyword">x</span></span> &amp;&amp; $<span class="hljs-keyword"><span class="hljs-keyword">x</span></span>-&gt;[0] =~ /abc/, $<span class="hljs-keyword"><span class="hljs-keyword">x</span></span> = []);</code> </pre> <br><br>  Can mysub get something that is true in boolean context as the first argument? <br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,10 +63,10 @@ use strict; use warnings; sub mysub($) { my ($a, $b) = @_; print "$a\n"; print "
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      It would seem not, because for this $ x should be a reference to an array, and its first element should contain the substring 'abc' <br><br>  But it turned out that it can <br><pre> <code class="dos hljs">$perl poc.pl ARRAY(<span class="hljs-number"><span class="hljs-number">0</span></span>xdb6d48) ARRAY(<span class="hljs-number"><span class="hljs-number">0</span></span>xdb6d48)</code> </pre><br><br>  What's the matter? <br><br><ol><li>  in Perl (as in many other languages) <b>X</b> &amp;&amp; <b>Y</b> , in case <b>X</b> is false, will return not just false (without performing <b>Y</b> ), but return <b>X</b> itself (which must be false) <br></li><li>  All parameters in Perl are passed by reference, not by value. </li></ol><br><br>  Thus, when the first argument is calculated <br><pre> <code class="perl hljs">$x &amp;&amp; $x-&gt;[<span class="hljs-number"><span class="hljs-number">0</span></span>] =~ <span class="hljs-regexp"><span class="hljs-regexp">/abc/</span></span></code> </pre><br><br>  $ x is undef ie  false, therefore instead of the first argument, $ x itself is passed, <br>  when the second argument is calculated, $ x is assigned the value [] (reference to an empty array), so when the mysub code starts executing, both arguments <br>  reference to $ x (which is an empty array, which, in turn, is true) <br><br>  If it seems that the code does not look very applicable in practice, then I can say that the bug was found in the real unit test code: <br><br><pre> <code class="perl hljs">ok( ($errors &amp;&amp; ($errors-&gt;[<span class="hljs-number"><span class="hljs-number">0</span></span>] =~ <span class="hljs-regexp"><span class="hljs-regexp">/My Exception/i</span></span>)), <span class="hljs-string"><span class="hljs-string">"should catch exception $errors-&gt;[0]"</span></span> );</code> </pre><br><br>  (this also triggers another great feature of the <a href="http://en.wikipedia.org/wiki/Autovivification">Autovivification</a> pearl - if you access $ errors -&gt; [0], then $ errors will be created, <br>  if $ errors was previously undef) </div><p>Source: <a href="https://habr.com/ru/post/168559/">https://habr.com/ru/post/168559/</a></p>
+      It would seem not, because for this $ x should be a reference to an array, and its first element should contain the substring 'abc' <br><br>  But it turned out that it can <br><pre> <code class="dos hljs">$perl poc.pl ARRAY(<span class="hljs-number"><span class="hljs-number">0</span></span>xdb6d48) ARRAY(<span class="hljs-number"><span class="hljs-number">0</span></span>xdb6d48)</code> </pre><br><br>  What's the matter? <br><br><ol><li>  in Perl (as in many other languages) <b>X</b> &amp;&amp; <b>Y</b> , in case <b>X</b> is false, will return not just false (without performing <b>Y</b> ), but return <b>X</b> itself (which must be false) <br></li><li>  All parameters in Perl are passed by reference, not by value. </li></ol><br><br>  Thus, when the first argument is calculated <br><pre> <code class="perl hljs">$x &amp;&amp; $x-&gt;[<span class="hljs-number"><span class="hljs-number">0</span></span>] =~ <span class="hljs-regexp"><span class="hljs-regexp">/abc/</span></span></code> </pre><br><br>  $ x is undef ie  false, therefore instead of the first argument, $ x itself is passed, <br>  when the second argument is calculated, $ x is assigned the value [] (reference to an empty array), so when the mysub code starts executing, both arguments <br>  reference to $ x (which is an empty array, which, in turn, is true) <br><br>  If it seems that the code does not look very applicable in practice, then I can say that the bug was found in the real unit test code: <br><br><pre> <code class="perl hljs">ok( ($errors &amp;&amp; ($errors-&gt;[<span class="hljs-number"><span class="hljs-number">0</span></span>] =~ <span class="hljs-regexp"><span class="hljs-regexp">/My Exception/i</span></span>)), <span class="hljs-string"><span class="hljs-string">"should catch exception $errors-&gt;[0]"</span></span> );</code> </pre><br><br>  (this also triggers another great feature of the <a href="http://en.wikipedia.org/wiki/Autovivification">Autovivification</a> pearl - if you access $ errors -&gt; [0], then $ errors will be created, <br>  if $ errors was previously undef) </div><p>Source: https://habr.com/ru/post/168559/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,11 +75,11 @@ use strict; use warnings; sub mysub($) { my ($a, $b) = @_; print "$a\n"; print "
 <li><a href="../168551/index.html">Hipster with a drill on mars</a></li>
 <li><a href="../168553/index.html">DneprPy # 1 - Great Python Web Framework Showdown (Dnepropetrovsk)</a></li>
 <li><a href="../168557/index.html">A tiny quadcopter drone is now available for pre-order.</a></li>
+<li><a href="../16856/index.html">Social web project invites partners</a></li>
 <li><a href="../168563/index.html">Jumpstart: how the new economy began for the IT sphere on January 1</a></li>
 <li><a href="../168565/index.html">PAK FPSU-IP and its buns</a></li>
 <li><a href="../168569/index.html">RSS feed by mail</a></li>
-<li><a href="../168571/index.html">Implementing yield in Kotlin</a></li>
-<li><a href="../168573/index.html">A terrible bedtime story for Android users</a></li>
+<li><a href="../16857/index.html">Mail.ru portal valued at one billion US dollars</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

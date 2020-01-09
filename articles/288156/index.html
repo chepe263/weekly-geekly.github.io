@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We read LiveJournal.com sub-fixes in Google Reader</h1><div class="post__text post__text-html js-mediator-article">  Before the advent of Google Reader, I was actively reading a friend tape on Livejournal.com.  And then habr appeared.  And then a bunch of interesting standalone blogs. <br>  Gradually greader became the main newsreader tool.  And with the discovery of Yahoo Pipes, the quality of my tapes has increased significantly. <br>  Pipes allowed filtering several tapes only for topics of interest to me, allowed filling the description field in those tapes where the authors for some reason did not begin to fill them (news from IRN.ru, Computerry tape), and much more. <br><br>  But there was a barrel of honey and a fly in the ointment.  Neither Pipes nor Google Reader can do digest authentication.  Pipes can only basic, greader can not and that.  And digest is the only type of authentication that Livejournal.com supports. <br>  Therefore, attempts to log in to LJ and read tapes with sub-castle records were doomed to failure. <br>  It was necessary to periodically go into the tape and see if any of the friends had written anything “under lock and key”. <br><br>  Yes, there are services on the Internet a la <br><pre>  http://freemyfeed.com, </pre><br>  solving this problem, but will you trust anyone on the Internet a username and password from your LiveJournal?  Yes, and how to integrate with the services of this service I could not think of.  But a blessing in disguise: the author revealed the source codes of the scripts.  Armed with patience and a php manual, I wrote my own script, remove-authentication.php, on the basis of the freemyfeed source code, which does one simple thing: replaces digest authentication with basic. <br>  With it, the following constructions become possible: <br><pre>  http: // user: pass@my.server/remove-authentication.php? feed = feed-url </pre><br>  And this thing is perfectly integrated with pipes. <br>  Who needs it, take it.  And read LJ in Google Reader.  ) <br>  <b>UPD: the code should be saved as remove-authentication.php and put on any server that supports php :) Ideally, your own.</b> <br>  <b>UPD2: moved to the blog RSS</b> <br><a name="habracut"></a><br><blockquote><code><a href="http://user/"></a> <a href="http://user/"></a> <a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php <br> <font color="#0000ff">if</font> (!isset($_SERVER[ <font color="#A31515">'PHP_AUTH_USER'</font> ])) { <br> header( <font color="#A31515">'WWW-Authenticate: Basic realm="My Realm"'</font> ); <br> header( <font color="#A31515">'HTTP/1.0 401 Unauthorized'</font> ); <br> echo <font color="#A31515">'  - USER:PASS@SERVER.RU/remove-authentication.php?feed=FEED-URL'</font> ; <br> exit; <br> } <font color="#0000ff">else</font> { <br> <font color="#0000ff">if</font> (isset ($_GET[ <font color="#A31515">'feed'</font> ])) { <br> header( <font color="#A31515">"Content-Type: text/html; charset=utf-8"</font> ); <br> $ch = curl_init(); <br> curl_setopt($ch, CURLOPT_URL, $_GET[ <font color="#A31515">'feed'</font> ] . <font color="#A31515">'?auth=digest'</font> ); <br> curl_setopt($ch, CURLOPT_AUTOREFERER, <font color="#0000ff">true</font> ); <br> curl_setopt($ch, CURLOPT_FOLLOWLOCATION, <font color="#0000ff">true</font> ); <br> curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST); <br> curl_setopt($ch, CURLOPT_USERPWD,strtolower($_SERVER[ <font color="#A31515">'PHP_AUTH_USER'</font> ] . <font color="#A31515">':'</font> . $_SERVER[ <font color="#A31515">'PHP_AUTH_PW'</font> ])); <br> $data = curl_exec($ch); <br> curl_close($ch); <br> } <font color="#0000ff">else</font> { <br> echo <font color="#A31515">'  - USER:PASS@SERVER.RU/remove-authentication.php?feed=FEED-URL'</font> ; <br> exit; <br> } <br> } <br> ?&gt;</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      PS: this is my first php code, constructive criticism is welcome :) </div><p>Source: <a href="https://habr.com/ru/post/288156/">https://habr.com/ru/post/288156/</a></p>
+      PS: this is my first php code, constructive criticism is welcome :) </div><p>Source: https://habr.com/ru/post/288156/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../288152/index.html">The market for newspaper advertising fell already before 1996</a></li>
 <li><a href="../288154/index.html">PBC dismisses employees</a></li>
 <li><a href="../288158/index.html">Billionaires bloggers</a></li>
+<li><a href="../28816/index.html">It lacks only cars and music</a></li>
 <li><a href="../288160/index.html">Will you meet NG on the Internet?</a></li>
 <li><a href="../288162/index.html">It's cheaper to send to Kindle subscribers than to print a newspaper for a year</a></li>
 <li><a href="../288164/index.html">New Banner Advertising Formats</a></li>
-<li><a href="../288166/index.html">If in 2009 you are still going to take money for access to the news, you will end</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>DNS failure with registrar R01 and some fatal accidents</h1><div class="post__text post__text-html js-mediator-article">  Today, one of the oldest registrars R01 <a href="http://r01.ru/about/news/detail.php%3FID%3D4548">announced a failure in the DNS</a> . <br>  In this regard, I want to tell you a small instructive story about how it almost killed our company. <br><br>  By the nature of the activity, we are the saas-analytics for the web.  Our primary weapon is a javascript file that collects statistics.  The file is distributed to many sites of our users, so we must ensure its impeccable stability, the inaccessibility of our site should not affect the sites of our clients.  And we spent a lot of effort to ensure complete stability: put the script in a great powerful CDN, made your domain to abstract this CDN (so that you can change the CDN at any time if it fails or becomes too expensive).  But they did not take into account one little thing: the DNS server was at the registrar. <br><a name="habracut"></a><br>  The failure of DNS in R01 was that all domains resolved into one specific IP address, which showed HTTP requests for the usual "parking" page of the domain with advertising.  Either did not show anything, because this IP had a spontaneous DoS attack from all the people who tried to go to the usual sites that kept the DNS from R01.  But not in our case.  <b>The server responds with requests from /somescript.js script</b> .  And not just a script, but dynamically generated, like this: <br><br>  <i>var redir_url = 'http: // domain that was resolved to the fatal IP /';</i> <i><br></i>  <i>if (window! = top) {</i> <i><br></i>  <i>top.location.href = redir_url;</i> <i><br></i>  <i>} else {</i> <i><br></i>  <i>window.location = redir_url;</i> <i><br></i>  <i>}</i> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The script cut off the request parameters (still on the server) and made a redirect to the base domain.  All our users who connected analytics, instead of our script on their sites, got someone else who launched a redirect from their site to the left page. <br><br>  Partially it saved us only that almost all the time the server that responded by that IP was under DDoS due to the number of requests to it, which is why, for the overwhelming majority of users, requests to our script fell off by timeout (if the script was unavailable , of course, do not affect other people's sites).  But those fractions of a percent that were “lucky” to receive a response from the server received a redirect. <br><br>  The fatal confluence of circumstances, as often happens, nearly cost us 2 years of project work.  Just unavailable DNS;  available DNS, which sends requests to an unavailable server;  available DNS + available server, but which does not respond to script requests by the script;  all previous, but a script that does not redirect - it would all help to avoid a catastrophic effect on the sites of our users.  I don’t know if we will be able to get out after such a blow to our service, but many customers, of course, have noticed complaints from their users about incomprehensible redirects.  Yes, and we did not hide, immediately conducted an email-list with a request to disable our service until the DNS cache is updated around the world. <br><br>  The moral of the story is simple: it is impossible to foresee everything, and even such reliable and familiar things as a DNS server cannot be trusted. <br><br>  It was extremely difficult to foresee such a situation: too much was not in our favor.  Of course, we will change the DNS provider, and even put our servers, if it is more reliable.  But it can break and DNS, and CDN, anything.  The only thing that can be done to minimize the chance to fly as much as we do: make sure that the best, most reliable possible solution is used at <b>every</b> point of your system.  Even if it is the choice of a DNS server or registrar. </div><p>Source: <a href="https://habr.com/ru/post/232363/">https://habr.com/ru/post/232363/</a></p>
+      The script cut off the request parameters (still on the server) and made a redirect to the base domain.  All our users who connected analytics, instead of our script on their sites, got someone else who launched a redirect from their site to the left page. <br><br>  Partially it saved us only that almost all the time the server that responded by that IP was under DDoS due to the number of requests to it, which is why, for the overwhelming majority of users, requests to our script fell off by timeout (if the script was unavailable , of course, do not affect other people's sites).  But those fractions of a percent that were “lucky” to receive a response from the server received a redirect. <br><br>  The fatal confluence of circumstances, as often happens, nearly cost us 2 years of project work.  Just unavailable DNS;  available DNS, which sends requests to an unavailable server;  available DNS + available server, but which does not respond to script requests by the script;  all previous, but a script that does not redirect - it would all help to avoid a catastrophic effect on the sites of our users.  I don’t know if we will be able to get out after such a blow to our service, but many customers, of course, have noticed complaints from their users about incomprehensible redirects.  Yes, and we did not hide, immediately conducted an email-list with a request to disable our service until the DNS cache is updated around the world. <br><br>  The moral of the story is simple: it is impossible to foresee everything, and even such reliable and familiar things as a DNS server cannot be trusted. <br><br>  It was extremely difficult to foresee such a situation: too much was not in our favor.  Of course, we will change the DNS provider, and even put our servers, if it is more reliable.  But it can break and DNS, and CDN, anything.  The only thing that can be done to minimize the chance to fly as much as we do: make sure that the best, most reliable possible solution is used at <b>every</b> point of your system.  Even if it is the choice of a DNS server or registrar. </div><p>Source: https://habr.com/ru/post/232363/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../232351/index.html">VKApp Treatment for iPhone</a></li>
 <li><a href="../232353/index.html">Social engineering in practice: “physical access” to Kevin Mitnick’s private conference</a></li>
 <li><a href="../232357/index.html">Android Tablet instead of Auto Radio</a></li>
 <li><a href="../232359/index.html">Scan mail. Has Google gone too far?</a></li>
+<li><a href="../23236/index.html">Entertaining problem with bar codes (only for those who want to help)</a></li>
 <li><a href="../232361/index.html">Distributed computing: some theory</a></li>
 <li><a href="../232367/index.html">A selection of backend libraries</a></li>
 <li><a href="../232369/index.html">Why there are no simple solutions that it is better to buy servers or optimize code</a></li>
+<li><a href="../23238/index.html">On veins of Moscow comes a heart attack.</a></li>
 <li><a href="../232381/index.html">In the wake of Spring Pet Clinic. Maven / Spring Context / Spring Test / Spring ORM / Spring Data JPA</a></li>
 <li><a href="../232383/index.html">Meeting the comet today</a></li>
-<li><a href="../232385/index.html">URI - tricky about simple (Part 1)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

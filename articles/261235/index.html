@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Implement Blacklist in Asterisk using MySQL database</h1><div class="post__text post__text-html js-mediator-article">  If you are not using a ready-made Asterisk distribution such as FreePBX and you do not have a web GUI for it, the task of adding numbers to the Blacklist comes down to working with AstDB.  With this, in principle, everything is simple.  But the Blacklist Asterisk database is common and if we need to distinguish between the lists of blocked numbers by subscribers, then in this case it is better to resort to using an external database. <br><a name="habracut"></a><br>  So for this we need: <br><ul><li>  Asterisk itself (well, how can it be without it) </li><li>  DB on MySQL </li><li>  GUI phpmyadmin for more intuitive database management </li></ul><br>  Let's get started  We have the following action plan: <br><ol><li>  Creating a base for numbers and tables in it </li><li>  Create a macro in Asterisk dialplan </li><li>  Checking macro operation in dialplan </li></ol><br>  Using phpmyadmin create a database and test table with fields <br><ul><li>  id (key field) </li><li>  callerid (the number itself blocked) </li><li>  blockenabled (field for setting whether blocking is enabled for this number) </li><li>  notes </li></ul><br><img src="https://habrastorage.org/files/647/46c/5b6/64746c5b68774d41a013adf81d50ef56.png" alt="image"><br><br>  Now we will write a macro to check in the dial plan for the presence of a number in our blacklist.  To do this, in the general section, add a globals block where we declare all our variables necessary to connect to our database. <br>  In the macro itself, and we will use its updated and more stable version of GoSub (), we will write connection commands to the database (we will use the Asterisk MySQL operator) and search the table for the required CALLERID value. <br>  After sampling from the database, we check the found value with the callerid caller and terminate the call in case of a match. <br><br><pre><code class="hljs ruby">[general] [globals] DBCurrentHost=localhost DBuser=myuser DBpass=mysomepassword DBname=asterisk [SubMysqlblacklist] exten =&gt; s,<span class="hljs-number"><span class="hljs-number">1</span></span>,NoOp(--- MACRO --- BLACKLIST ---) same =&gt; n,MySql(connect connid ${DBCurrentHost} ${DBuser} ${DBpass} ${DBname}) same =&gt; n,MySql(query resultid ${connid} select callerid from own_blacklist where callerid=${CALLERID(num)} <span class="hljs-keyword"><span class="hljs-keyword">and</span></span> blockenabled = <span class="hljs-number"><span class="hljs-number">1</span></span>) same =&gt; n,MySql(Fetch fetchid ${resultid} blacklistid) same =&gt; n,NoOp(<span class="hljs-symbol"><span class="hljs-symbol">FetchID:</span></span> ${fetchid} <span class="hljs-symbol"><span class="hljs-symbol">Var1:</span></span> ${blacklistid} <span class="hljs-symbol"><span class="hljs-symbol">ConnID:</span></span> ${connid} <span class="hljs-symbol"><span class="hljs-symbol">ResultID:</span></span> ${resultid}) same =&gt; n,GotoIf($[<span class="hljs-string"><span class="hljs-string">"${CALLERID(num)}"</span></span> = <span class="hljs-string"><span class="hljs-string">"${blacklistid}"</span></span>]?blacklisted) same =&gt; n,MySql(clear ${resultid}) same =&gt; n,MySql(disconnect ${connid}) same =&gt; n,Goto(<span class="hljs-keyword"><span class="hljs-keyword">end</span></span>) same =&gt; n(blacklisted),NoOp(Cannot dial - ${CALLERID(num)} is blacklisted !) same =&gt; n,MYSQL(clear ${resultid}) same =&gt; n,MYSQL(disconnect ${connid}) same =&gt; n,Hangup() same =&gt; n(<span class="hljs-keyword"><span class="hljs-keyword">end</span></span>),NoOp(-- Clear --) same =&gt; n,Return()</code> </pre> <br>  Next, we call our macro in terms of sets, and after reloading it in the console (dialplan reload) we check the operation. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="hljs php">exten =&gt; <span class="hljs-number"><span class="hljs-number">4445566</span></span>,<span class="hljs-number"><span class="hljs-number">1</span></span>,NoOp(-- to ${EXTEN} -- &lt;from&gt; -- ${CALLERID(num)} --) same =&gt; n,GoSub(SubMysqlblacklist,s,<span class="hljs-number"><span class="hljs-number">1</span></span>()) same =&gt; n,Dial(SIP/to_user1/<span class="hljs-number"><span class="hljs-number">555</span></span>,<span class="hljs-number"><span class="hljs-number">40</span></span>) same =&gt; n,Hangup()</code> </pre><br>  As a result, we got the following functionality: <br><br><ul><li>  All malicious telephone pests are blocked and stored in one database.  And you can add numbers not through the console but through the Web interface; </li><li>  We can create several tables for each subscriber and block the callers individually (if necessary). </li></ul><br>  Everything is prepared on materials from open sources. </div><p>Source: <a href="https://habr.com/ru/post/261235/">https://habr.com/ru/post/261235/</a></p>
+    <pre> <code class="hljs php">exten =&gt; <span class="hljs-number"><span class="hljs-number">4445566</span></span>,<span class="hljs-number"><span class="hljs-number">1</span></span>,NoOp(-- to ${EXTEN} -- &lt;from&gt; -- ${CALLERID(num)} --) same =&gt; n,GoSub(SubMysqlblacklist,s,<span class="hljs-number"><span class="hljs-number">1</span></span>()) same =&gt; n,Dial(SIP/to_user1/<span class="hljs-number"><span class="hljs-number">555</span></span>,<span class="hljs-number"><span class="hljs-number">40</span></span>) same =&gt; n,Hangup()</code> </pre><br>  As a result, we got the following functionality: <br><br><ul><li>  All malicious telephone pests are blocked and stored in one database.  And you can add numbers not through the console but through the Web interface; </li><li>  We can create several tables for each subscriber and block the callers individually (if necessary). </li></ul><br>  Everything is prepared on materials from open sources. </div><p>Source: https://habr.com/ru/post/261235/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../261221/index.html">Testing in another language: what to do if you don’t know it</a></li>
 <li><a href="../261223/index.html">Software oriented storage</a></li>
 <li><a href="../261225/index.html">Top new features for Web, UX and mobile application designers in Photoshop 2015</a></li>
 <li><a href="../261229/index.html">Microsoft Research for Young Scientists - Results, Slides, and Azure Cloud for Research Program</a></li>
+<li><a href="../26123/index.html">The biggest drawing in the world</a></li>
 <li><a href="../261233/index.html">We continue to deal with the "historical reasons" in cmd.exe</a></li>
 <li><a href="../261237/index.html">Pluses of microservice architecture</a></li>
 <li><a href="../261239/index.html">We monitor the status of Push-notifications and news of the project + UPD RSS</a></li>

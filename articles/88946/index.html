@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Mac OS Routing with VPN Connection</h1><div class="post__text post__text-html js-mediator-article"> There was once a task to connect via VPN to a working network in order to have access to internal resources. <br>  You can do this with Mac tools by creating a VPN connection and 2 options: <br>  1. put a tick "Send all traffic through a VPN connection" <br>  2. Statically prescribe statically route add-net 192.168.10.0/24 192.168.44.1, where 192.168.10.0/24 is the network where the computers are located at work, 192.168.44.1 VPN gateway to which I connect. <br><br>  So after each connection you need to do a second manipulation, since the general access to the Internet is limited and the speed is not great.  Or the task is to go to sites (for example, youtube) through a faster VPN channel ... <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      So I solved the problem as follows: <br>  created script: <code>touch /etc/ppp/ip-up</code> <br>  gave him execution rights: <code>chmod +x /etc/ppp/ip-up</code> <br>  created a log file: <code>touch /tmp/ppp.log</code> <br><br>  Script content: <br> <code>#!/bin/sh <br> VPNWORK="192.168.44.1"; #  (   VPN ) <br> if [ $IPREMOTE = $VPNWORK ] #,     <br> then <br> /sbin/route -n add -net 192.168.10.0/24 $IPREMOTE &gt; /tmp/ppp.log 2&gt;&amp;1 <br> fi <br></code> <br><br>  Thus, after connecting to the network, the route is added, and there is no need to add it manually, as well as disconnecting from the VPN, it is deleted by itself. <br><br>  If you need to add a DNS server, you can add text between then and fi: <br> <code>echo "nameserver 4.2.2.1" &gt; /etc/resolv.conf</code> <br>  Instead of 4.2.2.1, specify your primary DNS and a second entry working. <br><br>  But at the same time, after disconnecting, we need to return the previous DNS config to the site, for this we create: <code>touch /etc/ppp/ip-down &amp;&amp; chmod +x /etc/ppp/ip-down</code> <br><br>  Before starting work we make backup: <br> <code>cp /etc/resolv.conf /etc/resolv.conf_original</code> <br> <br>  and add to the script / etc / ppp / ip-down: <br> <code>#!/bin/sh <br> cat /etc/resolv.conf_original &gt; /etc/resolv.conf <br></code> <br><br>  Actually everything.  With each VPN connection, a route is prescribed, you work as long as you need, after a shutdown, it is deleted, and you will not have DNS snags. </div><p>Source: <a href="https://habr.com/ru/post/88946/">https://habr.com/ru/post/88946/</a></p>
+      So I solved the problem as follows: <br>  created script: <code>touch /etc/ppp/ip-up</code> <br>  gave him execution rights: <code>chmod +x /etc/ppp/ip-up</code> <br>  created a log file: <code>touch /tmp/ppp.log</code> <br><br>  Script content: <br> <code>#!/bin/sh <br> VPNWORK="192.168.44.1"; #  (   VPN ) <br> if [ $IPREMOTE = $VPNWORK ] #,     <br> then <br> /sbin/route -n add -net 192.168.10.0/24 $IPREMOTE &gt; /tmp/ppp.log 2&gt;&amp;1 <br> fi <br></code> <br><br>  Thus, after connecting to the network, the route is added, and there is no need to add it manually, as well as disconnecting from the VPN, it is deleted by itself. <br><br>  If you need to add a DNS server, you can add text between then and fi: <br> <code>echo "nameserver 4.2.2.1" &gt; /etc/resolv.conf</code> <br>  Instead of 4.2.2.1, specify your primary DNS and a second entry working. <br><br>  But at the same time, after disconnecting, we need to return the previous DNS config to the site, for this we create: <code>touch /etc/ppp/ip-down &amp;&amp; chmod +x /etc/ppp/ip-down</code> <br><br>  Before starting work we make backup: <br> <code>cp /etc/resolv.conf /etc/resolv.conf_original</code> <br> <br>  and add to the script / etc / ppp / ip-down: <br> <code>#!/bin/sh <br> cat /etc/resolv.conf_original &gt; /etc/resolv.conf <br></code> <br><br>  Actually everything.  With each VPN connection, a route is prescribed, you work as long as you need, after a shutdown, it is deleted, and you will not have DNS snags. </div><p>Source: https://habr.com/ru/post/88946/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../88939/index.html">Open source Universal Distributed Cracker</a></li>
+<li><a href="../8894/index.html">Ponosov accused the prosecutor's office of piracy</a></li>
 <li><a href="../88940/index.html">Are your system users adequate?</a></li>
 <li><a href="../88942/index.html">About doubles, google, yandex, openstreet on the example of Kurgan and the Kurgan region (situation and forecasts)</a></li>
 <li><a href="../88944/index.html">Configuring tab switching in Unix versions</a></li>
 <li><a href="../88945/index.html">Novell has stopped support for Netware</a></li>
 <li><a href="../88947/index.html">Gray Hat Python Book</a></li>
 <li><a href="../88948/index.html">Soft USB flash drives</a></li>
+<li><a href="../8895/index.html">In the office of Microsoft put the ballot box for iPods.</a></li>
 <li><a href="../88950/index.html">Erotic animation of Philips TVs</a></li>
 <li><a href="../88951/index.html">Nodebox</a></li>
-<li><a href="../88953/index.html">"On laptops can not play" or about the ASUS G72Gx</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

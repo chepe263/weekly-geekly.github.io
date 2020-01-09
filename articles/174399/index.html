@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Juniper MX80 + Cisco ASR1002 LACP Ether-channel</h1><div class="post__text post__text-html js-mediator-article"> Good day!  The task was to make the Ether-channel of 4 gigabit ports between 2 pieces of iron from different manufacturers, namely Juniper MX80 and Cisco ASR1002.  If between Cisco Catalyst and ASR it worked without problems, then it was necessary to tinker with the juniper. <br><a name="habracut"></a><br><br>  It all starts easy.  On a tsiska we create the Port-channel interface. <br> <code>interface Port-channel 1 <br></code> <br>  Set the desired ip address and parameters. <br><br>  Further on the necessary interfaces we enter <br> <code>channel-group 1 mode active</code> <br> <br>  There are no settings for balancing on this router, but outgoing ASR traffic seems to be balancing normally.  on katalist included load-balance by src-dst-mac. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      With Tsiskoy finished, move on to the juniper. <br><br> <code>chassis { <br> aggregated-devices { <br> ethernet { <br> device-count 1; <br> } <br> } <br> network-services all-ethernet; <br> } <br></code> <br><br>  device-count is set by the number of aggregated interfaces, in this case there will be one interface. <br><br>  on the right interfaces we enter <br> <code>ge-1/0/0 { <br> gigether-options { <br> 802.3ad ae0; <br> } <br> } <br></code> <br>  create an aggregated interface <br> <code>ae0 { <br> aggregated-ether-options { <br> minimum-links 1; <br> link-speed 1g; <br> lacp { <br> active; <br> periodic fast; <br> } <br> } <br> unit 0 { <br> family inet { <br> address 10.100.0.1/30; <br> } <br> } <br> } <br> <br></code> <br><br>  Link rises ping go.  I couldn’t find any docks on balancing on the juniper and when I sent traffic to the channel I found out that from the tsiska to the juniper the traffic is balanced, and from the june to the tsiska everything flew into one channel. <br><br>  Digging the documentation came to nothing lead.  I was familiar with Juniper for the first time and by studying the configuration of the piece of iron clicking "?"  stumbled upon balancing in the polising section (nowhere in the manuals about why no one wrote) <br><br> <code>policy-options { <br> policy-statement balance { <br> then { <br> load-balance per-packet; <br> } <br> } <br> } <br></code> <br><br>  Thus, the traffic from juniper to tsiska began to be shared across interfaces. <br><br>  I hope someone will be useful, since for me it was not the most trivial. <br><br>  Sorry for my Russian, the first experience of writing articles. </div><p>Source: <a href="https://habr.com/ru/post/174399/">https://habr.com/ru/post/174399/</a></p>
+      With Tsiskoy finished, move on to the juniper. <br><br> <code>chassis { <br> aggregated-devices { <br> ethernet { <br> device-count 1; <br> } <br> } <br> network-services all-ethernet; <br> } <br></code> <br><br>  device-count is set by the number of aggregated interfaces, in this case there will be one interface. <br><br>  on the right interfaces we enter <br> <code>ge-1/0/0 { <br> gigether-options { <br> 802.3ad ae0; <br> } <br> } <br></code> <br>  create an aggregated interface <br> <code>ae0 { <br> aggregated-ether-options { <br> minimum-links 1; <br> link-speed 1g; <br> lacp { <br> active; <br> periodic fast; <br> } <br> } <br> unit 0 { <br> family inet { <br> address 10.100.0.1/30; <br> } <br> } <br> } <br> <br></code> <br><br>  Link rises ping go.  I couldn’t find any docks on balancing on the juniper and when I sent traffic to the channel I found out that from the tsiska to the juniper the traffic is balanced, and from the june to the tsiska everything flew into one channel. <br><br>  Digging the documentation came to nothing lead.  I was familiar with Juniper for the first time and by studying the configuration of the piece of iron clicking "?"  stumbled upon balancing in the polising section (nowhere in the manuals about why no one wrote) <br><br> <code>policy-options { <br> policy-statement balance { <br> then { <br> load-balance per-packet; <br> } <br> } <br> } <br></code> <br><br>  Thus, the traffic from juniper to tsiska began to be shared across interfaces. <br><br>  I hope someone will be useful, since for me it was not the most trivial. <br><br>  Sorry for my Russian, the first experience of writing articles. </div><p>Source: https://habr.com/ru/post/174399/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../174385/index.html">Intel installs coffee and cola in its offices on the Core i7 platform</a></li>
 <li><a href="../174387/index.html">Acumatica 4.0 - what can be the design of the ERP, and how to optimize the performance of complex applications</a></li>
 <li><a href="../174397/index.html">Biometrics 2013: it's time to abandon bank cards. Dream?</a></li>
+<li><a href="../1744/index.html">New blogger appeared in RuNet - Google</a></li>
+<li><a href="../17440/index.html">The porn industry invests in social networks</a></li>
 <li><a href="../174401/index.html">IPhone has more vulnerabilities than Android, BlackBerry and Windows Phone combined</a></li>
 <li><a href="../174405/index.html">Object-oriented analysis and design</a></li>
 <li><a href="../174407/index.html">Linux in Active Directory Domain</a></li>
-<li><a href="../174409/index.html">Desktop vs Cloud</a></li>
-<li><a href="../174413/index.html">Steve Blank: To live for work or work for life?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

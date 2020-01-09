@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>MySQL getting blocking restrictions (konberentov) when deleting records, mini HowTo</h1><div class="post__text post__text-html js-mediator-article"> Sometimes, I will not say that often, rather even rarely, a designated task arises, to find out - which tables in the tables block the deletion of the current record by their external links. <br><a name="habracut"></a><br><br>  1. You need a MySQL version higher than 5.1.16, starting from this version, a table describing the REFERENTIAL_CONSTRAINTS consternates appeared in the official information_schema database. <br>  2. The required request, for the sake of which this post was written: <br><br><pre> <code class="hljs pgsql"><span class="hljs-keyword"><span class="hljs-keyword">SELECT</span></span> information_schema.referential_constraints.<span class="hljs-built_in"><span class="hljs-built_in">table_name</span></span>, information_schema.key_column_usage.<span class="hljs-built_in"><span class="hljs-built_in">column_name</span></span> <span class="hljs-keyword"><span class="hljs-keyword">FROM</span></span> information_schema.referential_constraints <span class="hljs-keyword"><span class="hljs-keyword">INNER</span></span> <span class="hljs-keyword"><span class="hljs-keyword">JOIN</span></span> information_schema.key_column_usage <span class="hljs-keyword"><span class="hljs-keyword">ON</span></span> information_schema.key_column_usage.constraint_schema = information_schema.referential_constraints.constraint_schema <span class="hljs-keyword"><span class="hljs-keyword">AND</span></span> information_schema.key_column_usage.<span class="hljs-built_in"><span class="hljs-built_in">constraint_name</span></span> = information_schema.referential_constraints.<span class="hljs-built_in"><span class="hljs-built_in">constraint_name</span></span> <span class="hljs-keyword"><span class="hljs-keyword">WHERE</span></span> information_schema.referential_constraints.constraint_schema = <span class="hljs-keyword"><span class="hljs-keyword">schema</span></span>() <span class="hljs-keyword"><span class="hljs-keyword">AND</span></span> delete_rule = <span class="hljs-string"><span class="hljs-string">'RESTRICT'</span></span> <span class="hljs-keyword"><span class="hljs-keyword">AND</span></span> information_schema.referential_constraints.referenced_table_name = :<span class="hljs-keyword"><span class="hljs-keyword">table</span></span></code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Here we select the tables and their foreign keys that have RESTRICT DELETE_RULE on the current table. <br><br>  P.S.  The mistake of the constrint, for which I was fussing with this garden, in PHP (PDO) I catch as follows: <br><br><pre> <code class="hljs ruby">try { <span class="hljs-regexp"><span class="hljs-regexp">//</span></span> <span class="hljs-keyword"><span class="hljs-keyword">do</span></span> pdo execute() } catch (Exception $e) { <span class="hljs-regexp"><span class="hljs-regexp">/** * Find constraints error */</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> ( (strpos($e-&gt;getMessage(), <span class="hljs-string"><span class="hljs-string">'SQLSTATE[HY000]'</span></span>) !== <span class="hljs-literal"><span class="hljs-literal">false</span></span> &amp;&amp; strpos($e-&gt;getMessage(), <span class="hljs-string"><span class="hljs-string">'General error: 1451'</span></span>)) <span class="hljs-params"><span class="hljs-params">||</span></span> (strpos($e-&gt;getMessage(), <span class="hljs-string"><span class="hljs-string">'SQLSTATE[23000]'</span></span>) !== <span class="hljs-literal"><span class="hljs-literal">false</span></span> &amp;&amp; strpos($e-&gt;getMessage(), <span class="hljs-string"><span class="hljs-string">'Integrity constraint violation: 1451'</span></span>)) ) { <span class="hljs-regexp"><span class="hljs-regexp">//</span></span> look <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> constraints } }</code> </pre><br><br>  P.P.S. <br>  Live applications when needed: <br>  The current database scheme includes 55 tables with large branching (the scheme has been refined many times over 3 years of life), 4 CMF client applications work with data from this database (different subcircuits), the database is checked for checking the referential integrity of the database tools, about the impossibility of deleting the record on which there are links also to indicate these links. </div><p>Source: <a href="https://habr.com/ru/post/77641/">https://habr.com/ru/post/77641/</a></p>
+      Here we select the tables and their foreign keys that have RESTRICT DELETE_RULE on the current table. <br><br>  P.S.  The mistake of the constrint, for which I was fussing with this garden, in PHP (PDO) I catch as follows: <br><br><pre> <code class="hljs ruby">try { <span class="hljs-regexp"><span class="hljs-regexp">//</span></span> <span class="hljs-keyword"><span class="hljs-keyword">do</span></span> pdo execute() } catch (Exception $e) { <span class="hljs-regexp"><span class="hljs-regexp">/** * Find constraints error */</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> ( (strpos($e-&gt;getMessage(), <span class="hljs-string"><span class="hljs-string">'SQLSTATE[HY000]'</span></span>) !== <span class="hljs-literal"><span class="hljs-literal">false</span></span> &amp;&amp; strpos($e-&gt;getMessage(), <span class="hljs-string"><span class="hljs-string">'General error: 1451'</span></span>)) <span class="hljs-params"><span class="hljs-params">||</span></span> (strpos($e-&gt;getMessage(), <span class="hljs-string"><span class="hljs-string">'SQLSTATE[23000]'</span></span>) !== <span class="hljs-literal"><span class="hljs-literal">false</span></span> &amp;&amp; strpos($e-&gt;getMessage(), <span class="hljs-string"><span class="hljs-string">'Integrity constraint violation: 1451'</span></span>)) ) { <span class="hljs-regexp"><span class="hljs-regexp">//</span></span> look <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> constraints } }</code> </pre><br><br>  P.P.S. <br>  Live applications when needed: <br>  The current database scheme includes 55 tables with large branching (the scheme has been refined many times over 3 years of life), 4 CMF client applications work with data from this database (different subcircuits), the database is checked for checking the referential integrity of the database tools, about the impossibility of deleting the record on which there are links also to indicate these links. </div><p>Source: https://habr.com/ru/post/77641/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../77634/index.html">Writing a voice menu script for Asterisk</a></li>
 <li><a href="../77637/index.html">Google's Liquid Galaxy</a></li>
 <li><a href="../77638/index.html">RightJS v1.5.0 saw the light</a></li>
 <li><a href="../77639/index.html">About working with customers, developing and implementing software</a></li>
+<li><a href="../7764/index.html">No personalized pages - iGoogle is available!</a></li>
 <li><a href="../77640/index.html">And again on the monetization of widgets</a></li>
 <li><a href="../77642/index.html">Hackers are robbing phishers</a></li>
 <li><a href="../77644/index.html">Personal Cabinets are activated on all QIWI terminals (QIWI)</a></li>

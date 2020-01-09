@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>ejabberd with LDAP authorization</h1><div class="post__text post__text-html js-mediator-article">  I parted from ICQ for a long time and without regrets.  Taking the opportunity, I raised my own Jabber-server, which I have been successfully using to this day.  However, not all of my employees have a Jabber account (not everyone even knows what it is :-), which makes communication at work somewhat difficult.  To communicate with the others, to organize a secure and independent messaging system, I decided to raise a corporate jabber server.  And since we are actively using LDAP, it seemed logical to use it for user authentication and account management. <br><a name="habracut"></a><br><br><h2>  Initial data </h2><br>  - OS: FreeBSD 5.4 <br>  - There are several sites on the server, including the site of our company with the company.ru domain (in order not to be accused of self-promotion - the name has been changed :-) <br>  - LDAP server at ldap.company.local (our servers are connected to the local network of company.local) <br>  - ejabberd 1.1.4_2 (latest version on FreeBSD ports at the time of installation) <br><br>  All paths in the note are specific to FreeBSD, they may be different on other systems. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h2>  Installation </h2><br>  I installed ejabberd from FreeBSD ports without any difficulty.  You can read about installing on other systems in the <a href="http://www.process-one.net/docs/ejabberd/guide_en.html">ejabberd manual</a> . <br><br><h2>  Customization </h2><br>  It is important to understand how ejabberd works with settings.  He has two sources: <br><ol><li>  DB with the current configuration (/ var / spool / ejabberd /) </li><li>  Text files (/ usr / local / etc / ejabbrd /) </li></ol>  There is also a web interface for management.  So: <br><ul><li>  ejabberd uses the configuration written to the database; </li><li>  the web interface changes data only in the database; </li><li>  configuration files are read only once at the start of ejabberd; </li><li>  configuration files <strong>rewrite the</strong> information in the database, but not all, but only the specified part (which one - see below about override_XXX). </li></ul>  From this it is necessary to draw two important conclusions: <br><ol><li>  Changes made via the web interface may be lost when restarting ejabberd </li><li>  Changes made to the configuration file may not affect the ejabberd configuration </li></ol>  Understanding this will save a lot of time, nerves and hair on the head. <br><br><h2>  A little about the syntax of the configuration files </h2><br>  Comments begin with the% character and end with the end of the line. <br><br>  Teams must end with a full stop. <br><br>  Parameters are specified like this: <br><br><pre> {parameter, value}
@@ -165,7 +165,7 @@
          {ldap_base, "ou = people, dc = 3wstyle, dc = local"}<font></font>
 <font></font>
  ]}.
-</pre><br><br><h2>  A few notes </h2><br>  Sometimes, after a crash, ejabberd refuses to start.  Check whether the beam and empd processes or other erlang applications are hanging. <br><br>  In order to manage all virtual domains via the web interface, the {access, configure, ...} entry must be located in the global scope and not in the virtual host configuration. <br><br>  When using an LDAP backend, the client <b>must</b> enable the “Allow plaintext login” option.  <b>UPD:</b> This is not a password security threat if using SSL.  In this case, the encrypted connection to the server is first established, and then the open password is transmitted.  For example, in the Psi client, this is configured as follows: Encrypt connection: Always;  Allow plaintext authentication: Over encrypted connection. <br><br><h2>  Links </h2><br><ul><li>  <a href="http://www.process-one.net/en/ejabberd/">Ejabberd official website</a> </li><li>  <a href="http://www.ejabberd.im/">Ejabberd community site</a> </li><li>  <a href="http://www.process-one.net/docs/ejabberd/guide_en.html">Ejabberd Installation &amp; Setup Guide (eng)</a> </li></ul></div><p>Source: <a href="https://habr.com/ru/post/44154/">https://habr.com/ru/post/44154/</a></p>
+</pre><br><br><h2>  A few notes </h2><br>  Sometimes, after a crash, ejabberd refuses to start.  Check whether the beam and empd processes or other erlang applications are hanging. <br><br>  In order to manage all virtual domains via the web interface, the {access, configure, ...} entry must be located in the global scope and not in the virtual host configuration. <br><br>  When using an LDAP backend, the client <b>must</b> enable the “Allow plaintext login” option.  <b>UPD:</b> This is not a password security threat if using SSL.  In this case, the encrypted connection to the server is first established, and then the open password is transmitted.  For example, in the Psi client, this is configured as follows: Encrypt connection: Always;  Allow plaintext authentication: Over encrypted connection. <br><br><h2>  Links </h2><br><ul><li>  <a href="http://www.process-one.net/en/ejabberd/">Ejabberd official website</a> </li><li>  <a href="http://www.ejabberd.im/">Ejabberd community site</a> </li><li>  <a href="http://www.process-one.net/docs/ejabberd/guide_en.html">Ejabberd Installation &amp; Setup Guide (eng)</a> </li></ul></div><p>Source: https://habr.com/ru/post/44154/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

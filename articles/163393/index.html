@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using try - catch for debugging</h1><div class="post__text post__text-html js-mediator-article">  So, you wrote the program, started it in the debugger - everything is fine, everything is fine.  Put in the workflow - falls.  Moreover, in the most unexpected places. <br>  What to do? <br>  We start to think.  Everywhere put try-catch ... the computing unit will be great to slow down.  So, you need to make a debug version.  So we enter <br>  #define __TRY__DEBUG__ <br><a name="habracut"></a><br>  OK.  Good.  In suspicious places set <br><pre><code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">ifdef</span></span></span><span class="hljs-meta"> __TRY__DEBUG__ try{ #</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">endif</span></span></span><span class="hljs-meta"> </span><span class="hljs-comment"><span class="hljs-meta"><span class="hljs-comment">//  #ifdef __TRY__DEBUG__ catch(...){ fprintf(stderr,"    %s.  \n",NameFunction); throw; } #endif</span></span></span></span></code> </pre> <br>  Oops.  output function scattered in different places.  Not good. <br><br>  Exception class is born <br>  class DebugException: exception {} <br>  Oops number two.  And what is stored in it? <br>  So, we need what?  output to file  It is desirable all with what function at the moment of crash works. <br>  Those.  we need text data. <br>  Yeah. <br><pre> <code class="cpp hljs"><span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">struct</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Obj</span></span></span><span class="hljs-class">{</span></span> <span class="hljs-comment"><span class="hljs-comment">//!  char* name; //!  char* State; //!  Obj** MyObj; //!   int numberOfObjects; //!  Obj(char*nm,char* stt):name(nm),State(stt),MyObj(NULL),namberOfObjects(0){ }; };</span></span></code> </pre><br>  So, we go further.  In what to store, invented, we think how to get the whole thing from the object with which we work. <br>  Obj * GetState () method is born;  which is prescribed in each class. <br>  We go further. <br>  Now, attention is the question: where is the output to a file? <br>  It is possible in the same place where the crash.  Those.  in the exception constructor ... Yeah, not good. <br>  In the exception class, the printf method appears, outputting the entire object to a file. <br>  main begins to take shape <br><pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">ifdef</span></span></span><span class="hljs-meta"> __TRY__DEBUG__ try{ #</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">endif</span></span></span><span class="hljs-meta"> </span><span class="hljs-comment"><span class="hljs-meta"><span class="hljs-comment">//  #ifdef __TRY__DEBUG__ catch(DebugException ups){ ups.print(); throw; } #endif</span></span></span></span></code> </pre><br>  So, and it would be nice to collect information about the system as a whole.  This is how the view constructor is born. <br><pre> <code class="cpp hljs"> <span class="hljs-comment"><span class="hljs-comment">//!    ,      DebugException(char*NmFunc,char GetStates,Obj* FuncState);</span></span></code> </pre><br><br>  As a result, the code increases by a factor of two, but in the case of a crash, you can find out who caused it, who was to blame. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      pros <br>  + much less summary information than when logging.  Especially if the test version worked fine for two days, and the third one crashed. <br>  + It is possible to collect absolutely complete information about the system at the time of the crash. <br>  + Does not affect the release version. <br><br>  Minuses <br>  - Completely different organization code functions.  Since the variables declared in the try block are unknown in the catch block, they have to be declared at the beginning of the functions, forgetting about the elegance of the code. <br>  - A lot of debugging code <br>  - It may be that the reason that led to this state of the system is missing. <br><habracut></habracut></div><p>Source: <a href="https://habr.com/ru/post/163393/">https://habr.com/ru/post/163393/</a></p>
+      pros <br>  + much less summary information than when logging.  Especially if the test version worked fine for two days, and the third one crashed. <br>  + It is possible to collect absolutely complete information about the system at the time of the crash. <br>  + Does not affect the release version. <br><br>  Minuses <br>  - Completely different organization code functions.  Since the variables declared in the try block are unknown in the catch block, they have to be declared at the beginning of the functions, forgetting about the elegance of the code. <br>  - A lot of debugging code <br>  - It may be that the reason that led to this state of the system is missing. <br><habracut></habracut></div><p>Source: https://habr.com/ru/post/163393/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../163375/index.html">Store on Guideman - discount for Habrahabra</a></li>
-<li><a href="../163377/index.html">MIT researchers have discovered a new state of matter</a></li>
+<li><a href="../16338/index.html">Gmail mobile application</a></li>
 <li><a href="../163383/index.html">Letters of torrent happiness from a big brother</a></li>
 <li><a href="../163387/index.html">A little bit about Z-Wave technology</a></li>
 <li><a href="../163389/index.html">VMC - webcam on Mars</a></li>
+<li><a href="../16339/index.html">Jokes from skype</a></li>
 <li><a href="../163395/index.html">Drawing graphs. Python. Tkinter</a></li>
 <li><a href="../163397/index.html">We write your Android Market</a></li>
 <li><a href="../163399/index.html">Zhenya Tsodikov draws about TSODIKi</a></li>
-<li><a href="../163405/index.html">Recommendations for backup and recovery after the End of the World policy</a></li>
-<li><a href="../163407/index.html">Facebook will deliver a message to a stranger for $ 1</a></li>
+<li><a href="../1634/index.html">Google: we will not sell music</a></li>
+<li><a href="../16340/index.html">For true Firefox fans ...</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

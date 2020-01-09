@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -63,7 +63,7 @@
  32766: from all lookup main
  32767: from all lookup default </pre><br>  The number at the beginning of the line is the rule identifier, <code>from all</code> is a condition, means packets from any addresses, <code>lookup</code> indicates which table to send the packet to.  If a packet falls under several rules, then it passes them all in order of increasing identifier.  Of course, if a packet falls under any routing entry, then subsequent routing entries and subsequent rules will not pass. <br>  Possible conditions: <br><ul><li>  <code>from</code> - we have already considered above, this is the verification of the sender of the packet </li><li>  <code>to</code> - the recipient of the packet. </li><li>  <code>iif</code> is the name of the interface to which the packet arrived. </li><li>  <code>oif</code> is the name of the interface from which the package leaves.  This condition applies only to packets originating from local sockets bound to a specific interface. </li><li>  <code>tos</code> is the <a href="http://en.wikipedia.org/wiki/Type_of_Service">TOS</a> value of the IP packet. </li><li>  <code>fwmark</code> - check the value of the FWMARK package.  This condition gives tremendous flexibility to the rules.  Using <code>iptables</code> rules, you can filter packets by a huge number of attributes and set specific FWMARK values.  And then these values ​​to consider when routing. </li></ul><br>  Conditions can be combined, for example <code>from 192.168.1.0/24 to 10.0.0.0/8</code> , and you can also use the prefix <code>not</code> , which indicates that the packet should not meet the condition in order to fall under this rule. <br>  So, we figured out what routing tables and routing rules are.  And creating your own tables and routing rules is <strong>policy-routing</strong> , or <strong>PBR</strong> (policy based routing).  By the way, <strong>SBR</strong> (source based routing) or <strong>source-routing</strong> in Linux is a special case of policy-routing, this is the use of the <code>from</code> condition in a routing rule. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -71,7 +71,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  Simple example </h4><br>  Now consider a simple example.  We have a certain gateway, packets with IP 192.168.1.20 come to it.  Packets from this IP need to be sent to the gateway 10.1.0.1.  To do this, we do the following: <br>  Create a table with a single rule: <br><pre>  # ip route add default via 10.1.0.1 table 120 </pre><br>  Create a rule that sends the necessary packets to the desired table: <br><pre>  # ip rule add from 192.168.1.20 table 120 </pre><br>  As you can see, everything is simple. <br><br><h4>  Server availability through several uplinks </h4><br>  Now for a more realistic example.  There are two uplinks to two providers, it is necessary to ensure the availability of the server from both channels: <br><img src="https://habrastorage.org/storage/4078cd31/32b8fcfa/0bc4fa86/cd7a0cde.png"><br>  The default route is one of the providers, no matter which one.  In this case, the web server will be accessible only through the network of this provider.  Requests via another provider’s network will arrive, but the response packets will go to the default gateway and nothing will come of it. <br>  This is solved very simply: <br>  Define the tables: <br><pre>  # ip route add default via 11.22.33.1 table 101
@@ -84,15 +84,15 @@
 
  # ip rule add fwmark 0x2 / 0x2 lookup 102 </pre><br>  The first team is marking all the packages going to port 80.  The second command is to create a routing table.  The third team wraps all the packages with the specified marking in the desired table. <br>  Again, everything is simple.  Consider also the use of the iptables <em>CONNMARK</em> module.  It allows you to track and label all packets related to a particular connection.  For example, you can label packets for a particular attribute in the <em>INPUT</em> chain, and then automatically label packets related to these connections and in the <em>OUTPUT</em> chain.  It is used like this: <br><pre>  # iptables -t mangle -A INPUT -i eth0 -j CONNMARK --set-mark 0x2
  # iptables -t mangle -A INPUT -i eth1 -j CONNMARK --set-mark 0x4
- # iptables -t mangle -A OUTPUT -j CONNMARK --restore-mark </pre><br>  Packages arriving with eth0 are labeled 2, and with eth1 - 4 (lines 1 and 2).  The rule on the third line checks whether the packet belongs to a particular connection and restores the markings (which were set for incoming) for outgoing packets. <br>  I hope the material presented will help you evaluate the full flexibility of routing in Linux.  Thanks for attention :) </div><p>Source: <a href="https://habr.com/ru/post/108690/">https://habr.com/ru/post/108690/</a></p>
+ # iptables -t mangle -A OUTPUT -j CONNMARK --restore-mark </pre><br>  Packages arriving with eth0 are labeled 2, and with eth1 - 4 (lines 1 and 2).  The rule on the third line checks whether the packet belongs to a particular connection and restores the markings (which were set for incoming) for outgoing packets. <br>  I hope the material presented will help you evaluate the full flexibility of routing in Linux.  Thanks for attention :) </div><p>Source: https://habr.com/ru/post/108690/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../108681/index.html">Agnitum Releases Outpost Security Suite Free</a></li>
 <li><a href="../108682/index.html">Speak correctly. Part 1</a></li>
 <li><a href="../108685/index.html">Last.fm & Gracenote</a></li>
 <li><a href="../108687/index.html">Tim Berners-Lee: Facebook can fragment the Web</a></li>
 <li><a href="../108689/index.html">Olympiad hobby. Waste disposal task</a></li>
+<li><a href="../10869/index.html">UTF transcoding</a></li>
 <li><a href="../108691/index.html">Increase netfilter performance using ipset</a></li>
 <li><a href="../108695/index.html">Success tracing</a></li>
 <li><a href="../108697/index.html">WD Advanced Format on Windows Server 2003</a></li>

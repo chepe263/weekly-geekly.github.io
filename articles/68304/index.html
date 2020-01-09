@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Determining the address of the page after RewriteRule using mod_proxy</h1><div class="post__text post__text-html js-mediator-article">  Faced a problem that collectively solved almost a day. <br><br>  Briefly: there is a website, all pages / templates of which are processed and delivered through a single index.php, and also for organizing CNC (friendly urls) htaccess is used with a rather considerable list of various RewriteRule rules. <br><br>  And everything would be fine, but it took to solve one problem to know, and what address the client is requesting.  That is, in fact, the php script is known-not-knows what the user entered in the address bar, since the request he receives is already htaccess, which causes the needed script. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,14 +61,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a><br>  The result was that the real URL of the page could only be taken on the client side via javascript. <br>  Printing out all kinds of superglobal arrays of the type $ _SERVER showed that the real address is not contained in any of the variables. <br><br>  It became clear that the answer should obviously be sought only in the htaccess file. <br>  The first option was to try to use the ability to set and pass environment variables to scripts, so something like this was written at the very beginning of htaccess: <br><br>  <em>SetEnvIf Request_URI "(. *)" My = $ 1</em> <em><br></em>  <em>SetEnvIf REDIRECT_my (. +) My = $ 1</em> <em><br></em>  <em>Passenv my</em> <em><br></em> <br><br>  Indeed, the $ my variable begins to be visible in the $ _SERVER array, but the value was still the same as after processing by further htaccess rules. <br>  I suppose that this will work in some cases, however, in our case, it seems that there was a multiple pass of the htaccess file (for some of the tasks, we also use mod_proxy). <br><br>  Then the idea came to transmit at each reraite the URL from which the rewrite occurs, for example <br><br>  <em>RewriteRule ^ photo / ([0-9] +). Html $ / rubricator <strong>/</strong> photo.html?%{QUERY_STRING} <strong>&amp;</strong> id <strong>=$1 &amp; url = $ 0</strong> [P, L]</em> <em><br></em> <br><br>  As a result, in any script, the $ _SERVER [“url”] variable becomes available to us, which contains the desired appendage of the URL (except for the understandable case of the domain itself). <br><br>  Long search on the web did not give a solution, so I decided to share my experience with the community. </div><p>Source: <a href="https://habr.com/ru/post/68304/">https://habr.com/ru/post/68304/</a></p>
+    <a name="habracut"></a><br>  The result was that the real URL of the page could only be taken on the client side via javascript. <br>  Printing out all kinds of superglobal arrays of the type $ _SERVER showed that the real address is not contained in any of the variables. <br><br>  It became clear that the answer should obviously be sought only in the htaccess file. <br>  The first option was to try to use the ability to set and pass environment variables to scripts, so something like this was written at the very beginning of htaccess: <br><br>  <em>SetEnvIf Request_URI "(. *)" My = $ 1</em> <em><br></em>  <em>SetEnvIf REDIRECT_my (. +) My = $ 1</em> <em><br></em>  <em>Passenv my</em> <em><br></em> <br><br>  Indeed, the $ my variable begins to be visible in the $ _SERVER array, but the value was still the same as after processing by further htaccess rules. <br>  I suppose that this will work in some cases, however, in our case, it seems that there was a multiple pass of the htaccess file (for some of the tasks, we also use mod_proxy). <br><br>  Then the idea came to transmit at each reraite the URL from which the rewrite occurs, for example <br><br>  <em>RewriteRule ^ photo / ([0-9] +). Html $ / rubricator <strong>/</strong> photo.html?%{QUERY_STRING} <strong>&amp;</strong> id <strong>=$1 &amp; url = $ 0</strong> [P, L]</em> <em><br></em> <br><br>  As a result, in any script, the $ _SERVER [“url”] variable becomes available to us, which contains the desired appendage of the URL (except for the understandable case of the domain itself). <br><br>  Long search on the web did not give a solution, so I decided to share my experience with the community. </div><p>Source: https://habr.com/ru/post/68304/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../68297/index.html">Counting the number of atomic bombs required for the complete destruction of humanity. Something is wrong here!?!</a></li>
+<li><a href="../6830/index.html">Setting up Google Mail in Firefox</a></li>
 <li><a href="../68300/index.html">Online chat for a site via jabber (GTalk)</a></li>
 <li><a href="../68301/index.html">We are protected from HTTP DDoS and other Habraeffektov</a></li>
 <li><a href="../68302/index.html">Answer to “blackmail”</a></li>

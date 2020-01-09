@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Solving the problem with Russian characters in the URL</h1><div class="post__text post__text-html js-mediator-article">  It is known that by default in Code Igniter, Russian letters in addresses are prohibited. <br>  However, even if you change the lines in the system / application / config / config.php file <br>  $ config ['permitted_uri_chars'] = 'az 0-9 ~%.: _ \ -'; <br>  on <br>  $ config ['permitted_uri_chars'] = 'a-za-yo 0-9 ~%.: _ \ -'; <br>  The problem did not dare. <a name="habracut"></a><br>  I had to look into the file system / libraries / URI.php, which is responsible for processing addresses.  The decision on the correctness of the URL segment is dealt with by this line (the _filter_uri method): <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">if</font> ( ! preg_match( <font color="#A31515">"|^["</font> .preg_quote($ <font color="#0000ff">this</font> -&gt;config-&gt;item( <font color="#A31515">'permitted_uri_chars'</font> )). <font color="#A31515">"]+$|i"</font> , $str)) { ... }</font> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> <ol><li> <code><font color="black"><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="#0000ff">if</font> ( ! preg_match( <font color="#A31515">"|^["</font> .preg_quote($ <font color="#0000ff">this</font> -&gt;config-&gt;item( <font color="#A31515">'permitted_uri_chars'</font> )). <font color="#A31515">"]+$|i"</font> , $str)) { ... } <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></font></code> </li> <li> <code><font color="black"><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="#0000ff">if</font> ( ! preg_match( <font color="#A31515">"|^["</font> .preg_quote($ <font color="#0000ff">this</font> -&gt;config-&gt;item( <font color="#A31515">'permitted_uri_chars'</font> )). <font color="#A31515">"]+$|i"</font> , $str)) { ... } <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></font></code> </li> </ol> <code><font color="gray"><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">if</font> ( ! preg_match( <font color="#A31515">"|^["</font> .preg_quote($ <font color="#0000ff">this</font> -&gt;config-&gt;item( <font color="#A31515">'permitted_uri_chars'</font> )). <font color="#A31515">"]+$|i"</font> , $str)) { ... }</font> * This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  After half an hour of googling, it became clear that in order to make preg_match accept Unicode characters, you need to add the 'u' modifier to the regular expression.  After that, everything worked. <br><br>  I publish this way of solving the problem, and I am interested in blog readers: is there any way around this problem without modifying the class from the core framework? <br><br>  <b>UPD:</b> <br>  while I was publishing, it dawned on me that you can not change the system class, but expand it by overloading the _filter_uri method.  To do this, create the file system / application / libraries / MY_URI.php and place the following code there: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a></code> <ol><li>  &lt;? php </li><li></li><li>  <font color="#0000ff">class</font> MY_URI extends CI_URI </li><li>  { </li><li>  function _filter_uri ($ str) </li><li>  { </li><li>  <font color="#0000ff">if</font> ($ str! = <font color="#A31515">''</font> AND $ <font color="#0000ff">this</font> -&gt; config-&gt; item ( <font color="#A31515">'permitted_uri_chars'</font> )! = <font color="#A31515">''</font> ) </li><li>  { </li><li>  <font color="#0000ff">if</font> (! preg_match ( <font color="#A31515">"| ^ ["</font> .preg_quote ($ <font color="#0000ff">this</font> -&gt; config-&gt; item ( <font color="#A31515">'permitted_uri_chars'</font> )). <font color="#A31515">"] + $ | ui"</font> , $ str)) </li><li>  { </li><li>  exit ( <font color="#A31515">'The URI you submitted has disallowed characters.'</font> ); </li><li>  } </li><li>  } </li><li></li><li>  <font color="#0000ff">return</font> $ str; </li><li>  } </li><li>  } </li></ol>  <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font> </blockquote></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/40465/">https://habr.com/ru/post/40465/</a></p>
+    <p>Source: https://habr.com/ru/post/40465/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

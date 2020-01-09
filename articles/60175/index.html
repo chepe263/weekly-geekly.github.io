@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Quick System.Drawing.Bitmap</h1><div class="post__text post__text-html js-mediator-article">  This topic prompted me to write an article about working with System.Drawing.Bitmap <a href="http://habrahabr.ru/blogs/net/60085/">http://habrahabr.ru/blogs/net/60085/</a> .  I often had to deal with pixel-by-pixel processing of images for typical operations, while in .NET there are classes ColorMatrix, ColorMap, ImageAttributes for some types of image transformations. <br><a name="habracut"></a><br>  For example, for the 1024 x 768 image, the following code that performs the conversion to a gray image was executed in 0.1 second on my machine (Virtual Machine (under Hyper-V) 4 cores and 1GB of RAM), and for a 360 image size x 480 time was 0.03 seconds.  (I strictly ask you not to judge the code that you quickly jotted down for this topic - on the form there are two PictureBox and one Button). <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#2B91AF">DateTime</font> startTime = <font color="#2B91AF">DateTime</font> .Now; <br> <br> ImageAttributes ia = <font color="#0000ff">new</font> ImageAttributes(); <br> ColorMatrix cm = <font color="#0000ff">new</font> ColorMatrix(); <br> cm.Matrix00 = cm.Matrix01 = cm.Matrix02 = <br> cm.Matrix10 = cm.Matrix11 = cm.Matrix12 = <br> cm.Matrix20 = cm.Matrix21 = cm.Matrix22 = 0.34f; <br> <br> ia.SetColorMatrix(cm); <br> <br> <font color="#2B91AF">Bitmap</font> bmp = <font color="#0000ff">new</font> <font color="#2B91AF">Bitmap</font> (pictureBox1.Image); <br> <font color="#2B91AF">Graphics</font> g = <font color="#2B91AF">Graphics</font> .FromImage(bmp); <br> <br> g.DrawImage(bmp, <font color="#0000ff">new</font> Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, ia); <br> <br> pictureBox2.Image = (Image)bmp; <br> <br> button1.Text = ( <font color="#2B91AF">DateTime</font> .Now - startTime).TotalSeconds + <font color="#A31515">" c."</font> ;</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  "Fading" can be obtained using the values: <br><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">cm.Matrix00 = cm.Matrix11 = cm.Matrix22 = 0; <br> cm.Matrix33 = 0.25f;</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      If desired / necessary, you can specify all values ​​simultaneously using the class constructor: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">ColorMatrix cm = <font color="#0000ff">new</font> ColorMatrix( <font color="#0000ff">new</font> <font color="#0000ff">float</font> [][] <br> { <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0, 0}, <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0, 0}, <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0, 0}, <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0.25f, 0}, <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0, 0}, <br> });</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  They can also be used to create negative images, replace one color with another, and so on.  operations. <br><br></div><p>Source: <a href="https://habr.com/ru/post/60175/">https://habr.com/ru/post/60175/</a></p>
+      If desired / necessary, you can specify all values ​​simultaneously using the class constructor: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">ColorMatrix cm = <font color="#0000ff">new</font> ColorMatrix( <font color="#0000ff">new</font> <font color="#0000ff">float</font> [][] <br> { <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0, 0}, <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0, 0}, <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0, 0}, <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0.25f, 0}, <br> <font color="#0000ff">new</font> <font color="#0000ff">float</font> [] { 0, 0, 0, 0, 0}, <br> });</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  They can also be used to create negative images, replace one color with another, and so on.  operations. <br><br></div><p>Source: https://habr.com/ru/post/60175/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../60173/index.html">Openlife is open for reading</a></li>
 <li><a href="../60174/index.html">Google Chrome 2.0 release</a></li>
 <li><a href="../60177/index.html">Hope</a></li>
+<li><a href="../6018/index.html">Toys</a></li>
 <li><a href="../60181/index.html">Suggest refined (or not)</a></li>
 <li><a href="../60183/index.html">TVC considers the return of Nibiru in 2012, a scientifically proven fact</a></li>
 <li><a href="../60185/index.html">Social networks store the data you have deleted.</a></li>
-<li><a href="../60187/index.html">The Last Shore of Utopia</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

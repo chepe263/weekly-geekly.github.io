@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Web audio offline in Safari for iOS 6</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/storage2/10c/be3/303/10cbe3303ca7ee19cfbe4cf676a8e547.png"></div><br>  Playback of cached audio in offline mode in Safari for iOS has long been a real challenge, which was considered an <a href="http://happyworm.com/blog/2012/05/29/playing-web-audio-offline-on-mobile-safari-mission-impossible/">unattainable goal</a> .  But with the advent of the <a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html">web audio API</a> (only in the WebKit engines), it finally became possible, despite the fact that you still have to take a few steps. <br><br>  The bad news is that you still won't be able to cache mp3 files using the <a href="http://html5doctor.com/go-offline-with-application-cache/">application's cache</a> and simply download them using <code>XmlHttpRequest</code> .  Safari for iOS 6 will cache mp3 files, but then silently refuses to play them (very useful!) <br><a name="habracut"></a><br><h4>  Base64 goes to the rescue </h4><br>  Due to the fact that the web audio API provides developers with direct access to the <a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html">audio buffer</a> , you can change the data format on the fly and send them directly to the web audio API for playback.  For example, if you encode an mp3 file into a base64 string, then you can decode it into an <a href="https://developer.mozilla.org/en/JavaScript_typed_arrays/ArrayBuffer">ArrayBuffer</a> and convert the raw audio data. <br><h4>  Encoding audio file </h4><br>  You can easily convert mp3 file to base64 string using <a href="http://www.openssl.org/">OpenSSL</a> .  If you are running Mac OS X, where it is pre-installed, simply open Terminal.app and enter the following command: <br><br><pre> <code class="bash hljs">openssl base64 -<span class="hljs-keyword"><span class="hljs-keyword">in</span></span> [infile] -out [outfile]</code> </pre><br>  Replace [infile] with the path to your mp3 file, and [outfile] with the path to save the encoded data. <br>  The command will save the base64-encoded audio file representation.  Then you can cache this string using any web storage of your choice (for example, <a href="http://html5doctor.com/go-offline-with-application-cache/">application cache</a> , <a href="http://html5doctor.com/storing-data-the-simple-html5-way-and-a-few-tricks-you-might-not-have-known/">local storage</a> or <a href="http://html5doctor.com/introducing-web-sql-databases/">webSQL</a> ) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Base64 in ArrayBuffer </h4><br>  To convert base64 to ArrayBuffer, you need to use your solution.  See Daniel Baser's solution for <a href="">base64-</a> binary.js (Daniele Guerrero).  This is a good script that was created specifically for this purpose.  It converts the base64 string to a <a href="https://developer.mozilla.org/en/JavaScript_typed_arrays/Uint8Array">Uint8Array</a> and saves it to an ArrayBuffer. <br>  After that you can simply decode the audio data using honey <code>decodeAudioData()</code> from the web audio API. <br><br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> buff = Base64Binary.decodeArrayBuffer(sound); myAudioContext.decodeAudioData(buff, <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">audioData</span></span></span><span class="hljs-function">) </span></span>{ myBuffer = audioData; });</code> </pre><br>  After transcoding audio data, transfer them to the audio buffer and play the sound: <br><br><pre> <code class="objectivec hljs">mySource = myAudioContext.createBufferSource(); mySource.buffer = myBuffer; mySource.connect(myAudioContext.destination); mySource.noteOn(<span class="hljs-number"><span class="hljs-number">0</span></span>);</code> </pre><br><br><h4>  Demo and source code </h4><br>  View an <a href="http://alxgbsn.co.uk/offlinewebaudio/">online demo</a> and <a href="https://github.com/alexgibson/offlinewebaudio">source code</a> with additional examples of using the technique from this article. <br><br><h4>  Browser support </h4><br>  Presented demos work under Safari 6, Chrome Desktop and Safari under iOS6.  Technique, potentially, can work in any browser that supports web audio API, therefore, we hope Chrome Mobile will soon add support for it. <br>  At the moment, W3C is promoting the web audio API <a href="http://www.w3.org/2011/audio/wiki/W3C_Audio_Publications_and_Milestones">as standard</a> . </div><p>Source: <a href="https://habr.com/ru/post/160465/">https://habr.com/ru/post/160465/</a></p>
+    <h4>  Base64 in ArrayBuffer </h4><br>  To convert base64 to ArrayBuffer, you need to use your solution.  See Daniel Baser's solution for <a href="">base64-</a> binary.js (Daniele Guerrero).  This is a good script that was created specifically for this purpose.  It converts the base64 string to a <a href="https://developer.mozilla.org/en/JavaScript_typed_arrays/Uint8Array">Uint8Array</a> and saves it to an ArrayBuffer. <br>  After that you can simply decode the audio data using honey <code>decodeAudioData()</code> from the web audio API. <br><br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> buff = Base64Binary.decodeArrayBuffer(sound); myAudioContext.decodeAudioData(buff, <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">audioData</span></span></span><span class="hljs-function">) </span></span>{ myBuffer = audioData; });</code> </pre><br>  After transcoding audio data, transfer them to the audio buffer and play the sound: <br><br><pre> <code class="objectivec hljs">mySource = myAudioContext.createBufferSource(); mySource.buffer = myBuffer; mySource.connect(myAudioContext.destination); mySource.noteOn(<span class="hljs-number"><span class="hljs-number">0</span></span>);</code> </pre><br><br><h4>  Demo and source code </h4><br>  View an <a href="http://alxgbsn.co.uk/offlinewebaudio/">online demo</a> and <a href="https://github.com/alexgibson/offlinewebaudio">source code</a> with additional examples of using the technique from this article. <br><br><h4>  Browser support </h4><br>  Presented demos work under Safari 6, Chrome Desktop and Safari under iOS6.  Technique, potentially, can work in any browser that supports web audio API, therefore, we hope Chrome Mobile will soon add support for it. <br>  At the moment, W3C is promoting the web audio API <a href="http://www.w3.org/2011/audio/wiki/W3C_Audio_Publications_and_Milestones">as standard</a> . </div><p>Source: https://habr.com/ru/post/160465/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../160459/index.html">NetWrix Change Reporter Suite licenses for Microsoft Certified Professionals</a></li>
 <li><a href="../160461/index.html">Sixth Kiev Habravstrecha</a></li>
 <li><a href="../160463/index.html">Industrial Internet can add 15 trillion dollars to global GDP</a></li>
+<li><a href="../160469/index.html">Creating a smart home and developing your own protocol</a></li>
 <li><a href="../160473/index.html">Examples of using trigonometric functions for animation</a></li>
 <li><a href="../160477/index.html">"Offline first" approach to creating web applications</a></li>
 <li><a href="../160479/index.html">Catalog of companies - exporters of IT solutions in St. Petersburg</a></li>
-<li><a href="../160481/index.html">Gmail increases attachment size up to 10 GB (with links to GDrive)</a></li>
-<li><a href="../160483/index.html">"Leaving, extinguish everything." The principle of building a partially disconnected apartment grid is one of the stages of preparation for the creation of a “smart home”</a></li>
+<li><a href="../16048/index.html">Veche 2.0</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

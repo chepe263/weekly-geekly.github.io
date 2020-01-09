@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -62,7 +62,7 @@
                  AllowOverride None
          &lt;/ Directory&gt; </pre></blockquote><br>  With the apache setup, we are done.  Save the config.  In nano, this is done with the Ctrl + O combination, followed by Enter. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -70,7 +70,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The next step is to create a user for the ftp login and define it in the same group as the apache.  For example, <i>sosnickiy</i> . <br>  <b>Attention!</b>  These username and password will need to be entered at the entrance to your ftp. <br>  We write to the console: <br><blockquote> <code>adduser sosnickiy --ingroup www-data --shell /bin/false</code> </blockquote> <br>  Enter the password, the rest can not be filled, just click on Enter.  The script will create a user, define it in a group and copy standard files.  Create an ftp directory in its home directory: <br><blockquote> <code>mkdir -m 775 /home/sosnickiy/ftp</code> </blockquote> <br>  On this, perhaps, dealt with the user. <br><br>  The next step is to set up an ftp server.  So, we enter: <br><blockquote> <code>nano /etc/proftpd/proftpd.conf</code> </blockquote> <br>  We are looking for a parameter: <br><blockquote> <code># DefaultRoot ~</code> </blockquote> <br>  A # (#) at the beginning of a line means that the parameter is commented out and ignored by the server.  We remove this sieve. <br>  We are looking for a parameter: <br><blockquote> <code>RequireValidShell on</code> </blockquote> <br>  Change it to: <br><blockquote> <code>RequireValidShell off</code> </blockquote> <br>  Add the following to the end of the configuration file: <br><blockquote><pre>  &lt;Directory / home / sosnickiy / ftp&gt;
@@ -175,7 +175,7 @@
 
  calculate md5sum Calculate md5sum
  download directory as tar.gz archive Download the directory as a tar.gz archive </pre></div></div><br>  Format: value [tab] translation to the desired language [line feed] <br>  In the original file, the format is somewhat broken.  Therefore, file sharing will not work. <br>  Then, create in the root directory (next to the <u>index.php</u> file) file <u>.htpasswd.autoindex</u> .  Mandatory with a dot at the beginning.  Open, paste into it the following: <br><blockquote><pre>  admin 7c4a8d09ca3762af61e59520943dc26494f8941b 3
- user 12dea96fec20593566ab75692c9949596833adc9 1 </pre></blockquote><br>  In this case, the administrator password is <u>123456</u> <br>  User Password: <u>user</u> <br><br>  We save everything, we pack the directory with the corrected script in a <b>zip</b> archive, restart the ftp server, go in, upload the archive with the corrected script to the ftp directory. <br>  For Windows, I recommend the Filezilla client.  Or simply enter “Explorer” into the address bar: <pre>  ftp: // ip_address_server / ftp / </pre>  and hit enter.  Also, you can save a password and add to Favorites.  Conveniently. <br><br>  So, the script is packed into the archive and lies in the ftp folder.  Expand the console, write (better copy and paste): <br><blockquote> <code>cd /home/sosnickiy/ftp/ &amp;&amp; unzip AutoIndex-2.2.4.zip &amp;&amp; cp ./AutoIndex-2.2.4/* /var/www &amp;&amp; rm -rf AutoIndex-2.2.4.zip AutoIndex-2.2.4</code> </blockquote> <br>  Now we execute a simple command: <br><blockquote> <code>chown -R www-data:www-data /var/www &amp;&amp; chmod -R 775 /var/www</code> </blockquote> <br>  Now everything is ready!  Use for health. <br>  Thanks for attention. </div><p>Source: <a href="https://habr.com/ru/post/151428/">https://habr.com/ru/post/151428/</a></p>
+ user 12dea96fec20593566ab75692c9949596833adc9 1 </pre></blockquote><br>  In this case, the administrator password is <u>123456</u> <br>  User Password: <u>user</u> <br><br>  We save everything, we pack the directory with the corrected script in a <b>zip</b> archive, restart the ftp server, go in, upload the archive with the corrected script to the ftp directory. <br>  For Windows, I recommend the Filezilla client.  Or simply enter “Explorer” into the address bar: <pre>  ftp: // ip_address_server / ftp / </pre>  and hit enter.  Also, you can save a password and add to Favorites.  Conveniently. <br><br>  So, the script is packed into the archive and lies in the ftp folder.  Expand the console, write (better copy and paste): <br><blockquote> <code>cd /home/sosnickiy/ftp/ &amp;&amp; unzip AutoIndex-2.2.4.zip &amp;&amp; cp ./AutoIndex-2.2.4/* /var/www &amp;&amp; rm -rf AutoIndex-2.2.4.zip AutoIndex-2.2.4</code> </blockquote> <br>  Now we execute a simple command: <br><blockquote> <code>chown -R www-data:www-data /var/www &amp;&amp; chmod -R 775 /var/www</code> </blockquote> <br>  Now everything is ready!  Use for health. <br>  Thanks for attention. </div><p>Source: https://habr.com/ru/post/151428/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

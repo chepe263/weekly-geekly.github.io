@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Export Terrain from WorldMachin to Unity3D</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/files/77f/ab7/bf4/77fab7bf4428470491c44b4bd8a16753.png"></div><br><br>  <i>This article is adapted by the editor with the Russian translation of the original manual: <a href="http://www.world-machine.com/learn.php%3Fpage%3Dworkflow%26workflow%3Dwfunity">“Terrain export from world machine to unity”</a> .</i> <br><hr><br>  World Machine can serve as an excellent terrain generator for Unity.  Unity also has native support for textures and splatmaps.  You can create and use several layers of terrain textures at the same time.  Here is a simple working code for importing into Unity areas from World Machine.  Please note that, although this method works for the main localities in the unity, many advanced users can create their own local shaders, which may require a different technique. <br><a name="habracut"></a><br><h3>  What you need to do to export to <b>World Machine</b> </h3><br><ul><li><img src="https://habrastorage.org/files/62f/6b5/a34/62f6b5a3481340c690db114ef22cbd54.jpg" align="right"><img src="https://habrastorage.org/files/c37/481/23f/c3748123ffea4cb3947df765002a7173.JPG" align="right">  Expose <abbr title="Exit height">Height Output</abbr> in your world.  <u>Remember this value</u> . </li><li>  Create texture masks for terrain based on any criteria (using: Height Selectors, Slope Selectors, Erosion masks, and others). </li><li>  Use Splat Converter to control and respect the <abbr title="Supremacy">weight of</abbr> your <abbr title="Splat textures">splatmaps</abbr> .  You can also use Splat Converter included in <abbr title="New examples for WM 2.3 \ Technics">"New Examples for WM 2.3 \ Techniques"</abbr> </li><li>  To convert individual cards in a bitmap image, link them to a channel converter, which will produce RGB images for the first three channels.  The fourth will be used as an alpha channel bitmap.  Wiring the resulting cards in one or several raster output devices to create a splatmap 4 channel.  If you use more than 4 textures, simply create several raster outputs and adjust the Splat converter accordingly. </li><li>  Select the format in File Output that will be used to export from <abbr title="World machine">WM</abbr> .  In this case, you must use the RAW16 format. </li><li>  <abbr title="Build">Build</abbr> your world and export all files.  Select <abbr title="Export of terrain files">Export Terrain files</abbr> in the <abbr title="Files">Files</abbr> menu, which is the central location for such commands. </li></ul><br><h3>  What needs to be done to import into <b>Unity3D</b> </h3><br><ul><li><img src="https://habrastorage.org/files/2f0/6c6/7c7/2f06c67c7d7a403d90bfdf7788d7540c.JPG" align="right">  In your project, in the <abbr title="Game objects">GameObject</abbr> menu, select <abbr title="3D objects">3D Object</abbr> -&gt; <abbr title="Terrain">Terrain</abbr> . </li><li>  Select the object and the <abbr title="Terrain">Terrain</abbr> component and open the <abbr title="Settings inspector">Terrain Settings</abbr> section.  It is recommended to edit the <abbr title="Detail map size">Detail Resolutoin</abbr> , <abbr title="The size of the map control texture">Control Texture Resolution</abbr> and <abbr title="The size of the main texture map">Base Texture Resolution</abbr> values. </li><li>  * If you are going to import a landscape in RAW16 format, then it is better to first place this file in your project (for RAW8, you can not do this). </li><li>  Click the <abbr title="Import Raw File">Import Raw</abbr> button. </li><li>  In the window that opens, find and select the landscape that you want to import.  If you are importing a file in the RAW16 format, select the <abbr title="All files">“All files”</abbr> file type. </li><li>  In the <abbr title="Bit depth">Depth</abbr> option in the menu that appears, select “bit16” if you are importing a landscape in RAW16 format, for RAW8 format, select “bit8”.  Also make sure that the <abbr title="Byte order">Byte order</abbr> value is set to “Windows” and the <abbr title="Width height">Width / Height</abbr> values ​​of the height map correspond to the values ​​of the terrain you import. </li><li>  Change the <abbr title="Landscape Size">Terrain Size</abbr> to the values ​​from the imported area (X corresponds to the Width value of the height map, Z is Height, and you have to remember the Y value) in order for the recreated terrain to match the one you exported from <abbr title="World machine">WM</abbr> . </li><li><img src="https://habrastorage.org/files/366/f50/492/366f5049279244dc826f02ee4c85fb05.jpg" align="right">  Click the <abbr title="Import">Import</abbr> button. </li><li>  Assign the textures you want to use in your area, as usual.  Then make sure you save the scene.  You should see a red splatmap for the terrain, which will appear in the asset window. </li><li>  Import (simply drag and drop into the unity window) the splatmap created and exported to WM earlier. </li><li>  Go to the inspector for the <u>imported</u> splatmap and change the following parameters: <br><blockquote>  Texture Type: Advanced <br>  Read / Write Enabled: checked <br>  Format: ARGB 32 bit </blockquote><br>  Then click <abbr title="To apply">Apply</abbr> . </li><li>  Download and import the script below into your project and place it in the “YourProject / Assets / Editor folder”: <a href="https://mega.nz/">download</a> . </li><li><img src="https://habrastorage.org/files/142/75e/909/14275e909f684c02ace61831d38a2b0a.jpg" align="right">  From the Terrain menu, select Replace Splatmap.  If you do not see this inscription, it means that the ReplaceSplatmap.js script was not properly located in the project folder.  Drag the splatmap embedded inside the landscape to the first “Splatmap” field and the imported splatmap to the “New” field.  Make sure that “Flip Vertical” matches the orientation of your area. </li><li>  If you are an indie developer, then you can take a pie from the shelf: you are finished! </li></ul><br><div style="text-align:center;"><img src="https://habrastorage.org/files/e86/9ab/966/e869ab966bc740b7a27d82417b40de51.jpg"></div><br><br><hr>  PS: That's all for now.  Perhaps there will still be a video of the whole process. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/268297/">https://habr.com/ru/post/268297/</a></p>
+    <p>Source: https://habr.com/ru/post/268297/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../268281/index.html">Paul Graham: "Design and Research"</a></li>
 <li><a href="../268283/index.html">A detailed review of Affinity Designer (Mac OS). Part 1. Tools</a></li>
+<li><a href="../26829/index.html">About Maximus and Lebedev.</a></li>
 <li><a href="../268291/index.html">Google has released a security update for Android</a></li>
 <li><a href="../268293/index.html">Paul Graham: "Revenge of the nerds." What is the difference between Lisp</a></li>
 <li><a href="../268295/index.html">Attend Linux Container Developers Meeting</a></li>
 <li><a href="../268299/index.html">A series of webinars about the new features of RAD Studio 10 Seattle</a></li>
+<li><a href="../2683/index.html">Briefly about the design layouts, convenient XHTML-maker-up</a></li>
+<li><a href="../26830/index.html">Google Panoramio</a></li>
 <li><a href="../268303/index.html">Failures on the Moscow Stock Exchange: Problems and Solutions</a></li>
 <li><a href="../268305/index.html">Vulnerability in Platius: access to any account</a></li>
-<li><a href="../268307/index.html">Adaptation of complex applications for Material Design: an approach from Aviary</a></li>
-<li><a href="../268309/index.html">Testing in Yandex. How to make a fault-tolerant grid of thousands of browsers</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

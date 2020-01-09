@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Analyzing HTTP traffic with Mitmproxy</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/6ad/c8d/355/6adc8d35564a0044d1cec9e225f38794.png" alt="mitmproxy" width="100%" height="100%"><br><br>  In the practice of a web developer, situations often arise when it is necessary to track and analyze the traffic of applications communicating with the server using the HTTP protocol (for example, testing applications for mobile devices or the HTTP API). <br><br>  The tools traditionally used to listen to traffic (tshark, about which we <a href="http://blog.selectel.ru/analiz-setevogo-trafika-na-servere-pri-pomoshhi-tshark/">have already written</a> , as well as ngrep and tcpdump) are poorly suited for this purpose: their functionality for working with the HTTP protocol is limited. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       There is a more specialized, simple and effective solution for analyzing HTTP traffic.  Meet: <a href="http://mitmproxy.org/" rel="nofollow">mitmproxy</a> .  There are almost no detailed publications about it in Russian.  In this article we will share our experience with mitmproxy and hope that you will find it useful. <br><a name="habracut"></a><br><br><h2>  general information </h2><br><br>  Mitmproxy is a whole set of software tools, which includes: <br><ul><li>  mitmproxy itself is an interactive console program that intercepts traffic “on the fly”; </li><li>  <a href="http://mitmproxy.org/doc/mitmdump.html" rel="nofollow">mitmdump</a> is a utility that can be described as an analogue of tcpdump for the HTTP protocol: it intercepts traffic and saves all the information about it into a text file; </li><li>  <a href="http://mitmproxy.org/doc/scripting/libmproxy.html" rel="nofollow">libmproxy</a> is a Python library that implements all the mitmproxy functionality. </li></ul><br><br>  The very name mitmproxy comes from the abbreviation MITM, which means man in the middle, or "man in the middle."  This is the name of the method of compromising a communication channel, in which a hacker connects to a transmission channel between two contractors and intervenes in the transmission protocol, viewing, deleting and distorting information.  mitmproxy works in a similar way: it is used as a proxy server, registering all HTTP traffic.  Like any proxy server, in some cases mitmproxy can modify both user requests and responses to them. <br>  Consider the principles and features of mitmproxy in more detail. <br><br><h2>  How it works </h2><br><br>  In the case of unencrypted HTTP connections, everything is simple: mitmproxy accepts a connection from a client (for example, from a browser on a mobile device), displays information about it on the console (or saves it to a text file), and then returns a response from the recipient to the client. <br><br>  Mitmproxy can also be used to intercept protected HTTPS traffic.  When running mitmproxy or mitmdump, a set of CA files is created in the ~ / .mitmproxy directory, based on which substitute certificates are generated.  Naturally, the browser will identify these certificates as suspicious, giving a warning on every attempt to establish an SSL connection using mitmproxy. <br><br>  To prevent this warning, you can add a certificate from mitmproxy to the list of certificates used by the browser (detailed instructions are available <a href="http://mitmproxy.org/doc/ssl.html" rel="nofollow">here</a> ). <br>  When these two conditions are met, the client concludes that the connection being established is secure. <br><br>  Mitmproxy can intercept and secure HTTPS traffic.  The interception procedure consists of the following steps: <br><br><ol><li>  The client establishes a connection with mitmproxy. </li><li>  Mitmproxy sends a response code 200 to the client (connection established). </li><li>  The client interacts with mitmproxy in the same way as with a remote server and establishes an SSL connection.  To specify a host name, it uses SNI. </li><li>  Mitmproxy connects to the server and establishes an SSL connection using the hostname specified by the client. </li><li>  In response, the server sends an SSL certificate containing the values ​​of the CN and SAN parameters, on the basis of which a substitute certificate will then be created. </li><li>  Mitmproxy generates a spoof certificate and continues the SSL conversation with the client, suspended in step 3. </li><li>  The client sends the request via the established SSL connection. </li><li>  Mitmproxy sends the request to the server over the SSL connection established in step 4. </li></ol><br><br>  More clearly, the process of intercepting protected traffic can be represented as the following graphic scheme: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/5b2/1e0/070/5b21e0070ccfd79b61dd4fea77699f69.png" alt="mitmproxy" width="100%" height="100%"><br><br><h2>  Why do you need it </h2><br><br>  The name mitmproxy comes from the name of one of the most common types of attacks.  Even the official documentation for the product is replete with words such as "attack", "interception" and the like.  All this suggests that this tool can act as a tool for hacking.  Of course, mitmproxy (like all products with a similar set of functions - the so-called sniffers) may well be used for illegal purposes, but for obvious reasons we will not discuss this and focus on the legal use cases. <br><br>  Mitmproxy can be used, firstly, to test and debug web applications.  With it, you can get detailed information about what requests the application makes and what answers it receives.  Also mitproxy can help in studying the features of the functioning of some REST API, especially poorly documented and using closed (and often very suspicious) technologies. <br><br>  Secondly, Mitmproxy can work in <a href="http://mitmproxy.org/doc/transparent.html" rel="nofollow">transparent proxy</a> mode <a href="http://mitmproxy.org/doc/transparent.html" rel="nofollow">with traffic interception</a> , which means that it can be used to analyze the network activity of suspicious applications. <br><br><h2>  Testing Mitmproxy </h2><br><br><h3>  Installation </h3><br><br>  Today, mitmproxy is included in the linux repositories and can be installed using the standard package manager: <br><br><pre> $ sudo aptitude install mitmproxy
@@ -82,7 +82,7 @@
 </pre><br>  Saved information can be filtered using regular expressions and then saved to a new file: <br><pre> $ mitmdump -nr &lt;file1&gt; -w &lt;file2&gt; "~ m post"
 </pre><br><br>  In the above example, mitmdump selects from the file 1 requests that meet a specific criterion (in our case, POST requests), and writes them to file 2. <br><br>  Mitmdump can read already saved information about client requests from a file, replay these requests again, and save the results to a new file: <br><pre> $ mitmdump -nc &lt;file 1&gt; -w &lt;file 2&gt;
 </pre><br>  This feature may be useful when testing some web applications. <br><br>
-<h2>  Conclusion </h2><br><br>  In this article, we gave a brief overview of the capabilities of mitmproxy.  For those who want to learn more, here are some links: <br><br><ul><li>  <a href="http://mitmproxy.org/doc/index.html" rel="nofollow">official mitmproxy documentation</a> ; </li><li>  <a href="https-traffic-of-your-phone/" rel="nofollow">an article about tracking mobile application traffic</a> ; </li><li>  <a href="http://corte.si/%252Fposts/code/mitmproxy/howitworks/index.html">A description of how Mitmproxy works by the developer is Aldo Cortesi</a> . </li></ul><br>  Readers who for one reason or another are not able to leave comments here are invited <a href="http-trafika-s-mitmproxy/">to our blog</a> . </div><p>Source: <a href="https://habr.com/ru/post/242727/">https://habr.com/ru/post/242727/</a></p>
+<h2>  Conclusion </h2><br><br>  In this article, we gave a brief overview of the capabilities of mitmproxy.  For those who want to learn more, here are some links: <br><br><ul><li>  <a href="http://mitmproxy.org/doc/index.html" rel="nofollow">official mitmproxy documentation</a> ; </li><li>  <a href="https-traffic-of-your-phone/" rel="nofollow">an article about tracking mobile application traffic</a> ; </li><li>  <a href="http://corte.si/%252Fposts/code/mitmproxy/howitworks/index.html">A description of how Mitmproxy works by the developer is Aldo Cortesi</a> . </li></ul><br>  Readers who for one reason or another are not able to leave comments here are invited <a href="http-trafika-s-mitmproxy/">to our blog</a> . </div><p>Source: https://habr.com/ru/post/242727/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -92,10 +92,10 @@
 <li><a href="../242715/index.html">Blade syntax extension</a></li>
 <li><a href="../242725/index.html">Automatic connection of network multifunction devices with the ability to scan [Part 2]</a></li>
 <li><a href="../242729/index.html">Configuring Ruby Module</a></li>
+<li><a href="../24273/index.html">Happy Easter to you!</a></li>
 <li><a href="../242731/index.html">Low cost, small, networked computers - a small overview</a></li>
 <li><a href="../242739/index.html">Power Raspberry Pi using Arduino</a></li>
-<li><a href="../242741/index.html">Open vSwitch as a virtual network core</a></li>
-<li><a href="../242743/index.html">Paul Graham: An Illogical Startup</a></li>
+<li><a href="../24274/index.html">How does a light gun work?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How opcache ruined my life and spent my nerves</h1><div class="post__text post__text-html js-mediator-article"><img src="https://blog-static.saraeff.net/uploads/2016/06/Jackie-Chan_opcache_5e10ce81ba141ece.png" alt="Jackie-chan_opcache" width="400" height="261"><br><br>  It all started with php update, a long time ago and in the same galaxy.  And from that moment I was pursued by one vile problem that spoiled my life for quite a long time. <br><a name="habracut"></a><br>  I use php for only a few sites: a wordpress blog, a phpbb forum and a small modx site.  This works in conjunction with nginx + php-fpm.  I basically don't use Apache, since nginx can do everything.  Each fpm has its own account, its own home, everything is stabbed and cut, so that it only works to please my paranoia. <br><br>  And after that very ancient update, weirdness began.  When opening one of the sites and then opening another site, I received an error from the previous one. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      That is, when opening a site on phpbb and following a site on modx, I saw an error about an uninstalled block from phpbb, when opening a site on modx and following a blog on wordpress, I saw hi 503 from modx.  As if in some strange way, one fpm thread accessed scripts from another, working in another directory, another port, another user in another group ... <br><br>  Since that time, much water has flowed, nginx configurations have been rewritten several times, fpm'y changed, used .sock instead of the port.  The result was the same - when you quickly open two different sites, the answer was from Pergy, and the second I get a glitch of the engine of the first site. <br><br>  If the sites were popular, I would have snatched up with a search for a solution, but the forum hung half-dead, a few people visit the blog, like modx.  And here a couple of days ago, being in working nastronii and restoring order on the server, I wrote an interesting article: <a href="https://www.digitalocean.com/community/tutorials/how-to-host-multiple-websites-securely-with-nginx-and-php-fpm-on-ubuntu-14-04">How To Host Multiple Websites On Ubuntu 14.04</a> . <br><br>  And it was this quotation that clarified to me “who is who ...”: <br><blockquote>  Amazingly, if you’re running again, it’s not.  It has not been fixed yet. </blockquote><br>  I said to myself: <em>“this means that the opcache sausages my fpms for the last 7 months, pushing my cache and carrying the tower to unhappy CMS!”</em> <br><br>  There was a small edit <code>opcache.enable=0</code> <br><br>  and ... the problem disappeared.  She is no more.  Three unfortunate sites work happily, the server snaps into a hole in the 384 vent hole, and I just touched the nirvana and even listened to a couple of tracks. <br><br>  What did I lose with opcache shutdown?  opcache.  How did this affect my performance?  No  I use the nginx cache on the raid server, and 8 cores are loaded on average by 5-10%.  So the extra parsing of php resource scripts will not eat.  And visually nothing slows down, including under load tests. <br><br>  A special case?  May be.  Already not bug?  Full  Why not php7?  Because.  Update?  Nope, I write JSP code. </div><p>Source: <a href="https://habr.com/ru/post/304146/">https://habr.com/ru/post/304146/</a></p>
+      That is, when opening a site on phpbb and following a site on modx, I saw an error about an uninstalled block from phpbb, when opening a site on modx and following a blog on wordpress, I saw hi 503 from modx.  As if in some strange way, one fpm thread accessed scripts from another, working in another directory, another port, another user in another group ... <br><br>  Since that time, much water has flowed, nginx configurations have been rewritten several times, fpm'y changed, used .sock instead of the port.  The result was the same - when you quickly open two different sites, the answer was from Pergy, and the second I get a glitch of the engine of the first site. <br><br>  If the sites were popular, I would have snatched up with a search for a solution, but the forum hung half-dead, a few people visit the blog, like modx.  And here a couple of days ago, being in working nastronii and restoring order on the server, I wrote an interesting article: <a href="https://www.digitalocean.com/community/tutorials/how-to-host-multiple-websites-securely-with-nginx-and-php-fpm-on-ubuntu-14-04">How To Host Multiple Websites On Ubuntu 14.04</a> . <br><br>  And it was this quotation that clarified to me “who is who ...”: <br><blockquote>  Amazingly, if you’re running again, it’s not.  It has not been fixed yet. </blockquote><br>  I said to myself: <em>“this means that the opcache sausages my fpms for the last 7 months, pushing my cache and carrying the tower to unhappy CMS!”</em> <br><br>  There was a small edit <code>opcache.enable=0</code> <br><br>  and ... the problem disappeared.  She is no more.  Three unfortunate sites work happily, the server snaps into a hole in the 384 vent hole, and I just touched the nirvana and even listened to a couple of tracks. <br><br>  What did I lose with opcache shutdown?  opcache.  How did this affect my performance?  No  I use the nginx cache on the raid server, and 8 cores are loaded on average by 5-10%.  So the extra parsing of php resource scripts will not eat.  And visually nothing slows down, including under load tests. <br><br>  A special case?  May be.  Already not bug?  Full  Why not php7?  Because.  Update?  Nope, I write JSP code. </div><p>Source: https://habr.com/ru/post/304146/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../304136/index.html">The digest of interesting materials for the mobile # 159 developer (June 20-26)</a></li>
 <li><a href="../304138/index.html">Important aspects of the browser for developers. Part 1</a></li>
+<li><a href="../30414/index.html">Video review translated.by</a></li>
 <li><a href="../304140/index.html">Parallax in 2D game. Interesting motion effect when creating a game on JavaScript (canvas)</a></li>
 <li><a href="../304142/index.html">Learning C # - A Practical Approach</a></li>
 <li><a href="../304144/index.html">Vending machine accepting DASH cryptocurrency returns</a></li>
 <li><a href="../304150/index.html">Writing your P2P messenger</a></li>
 <li><a href="../304152/index.html">The digest of fresh materials from the world of the frontend for the last week №217 (June 20 - 26, 2016)</a></li>
 <li><a href="../304154/index.html">Algorithmic design</a></li>
+<li><a href="../304156/index.html">NutanixOS 4.7 - what's new is being prepared in a fresh release</a></li>
 <li><a href="../304158/index.html">How to create a startup? Experience in applying Customer Development and Lean Startup methods in Silicon Valley</a></li>
-<li><a href="../304160/index.html">Generate passwords for Super Castlevania IV and Rock n 'Roll Racing</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

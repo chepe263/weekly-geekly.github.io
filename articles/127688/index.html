@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Asset Pipeline Recipe</h1><div class="post__text post__text-html js-mediator-article">  The post was inspired by long testing of various hypotheses of correct work with images through the Asset Pipeline after switching to Ruby on Rails 3.1 from previous versions. <br><br><h4>  So, the Task </h4><br>  In the CSS file, specify the image located in the assets folder.  The image in the production environment should be precompiled. <br>  It would seem, well, there is such an <a href="http://ryanbigg.com/guides/asset_pipeline.html">official guide</a> , an <a href="http://habrahabr.ru/blogs/ror/127311/">adapted translation of the guide</a> , a <a href="http://railscasts.com/episodes/279-understanding-the-asset-pipeline">screencast</a> , in the end.  Here the rule “It just works” works only if you did not allow your (or others) hands to sensitive points.  Which ones? <br><a name="habracut"></a><br><h4>  Decision </h4><br>  During the experiments, only one hypothesis was confirmed, which, for the convenience of presentation, is convenient to be divided into several parts. <br>  The tree of files will look like this (.erb is a whim, work through the sass-rails engine is also possible): <br><br>  app / <br>  ... assets / <br>  ...… images / <br>  .......... rails.png <br>  …… stylesheets / <br>  ……… application.css.erb 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      1. For precompilation we use not rake assets: precompile, but a slightly altered <a href="https://gist.github.com/1185448">rake task</a> <br>  Periodically, I had an error <br> <code>rake assets:precompile <br> rake aborted! rails.png isn't precompiled</code> <br>  The reason for her appearance is incomprehensible to me, but I know for sure that I am not the only one: the solution to this problem was found on the <a href="https://github.com/rails/rails/issues/2763">githaba</a> . <br><br>  2. To specify the path in css, we use the asset_path erb-template engine helper. <br>  There are a <a href="https://github.com/rails/sass-rails">lot of helpers for SASS</a> , but <s>none of them worked</s> in my project, I do not use it yet. <br>  Content application.css.erb: <br> <code>#header { background-image: url(&lt;%= asset_path("rails.png") %&gt;) <br></code> <br>  In case of using sass (application.css.scss): <br> <code>#header { background-image: image_url('rails.png') }</code> <br> <br>  3. Settings production.rb, which also play a role: <br> <code>config.assets.compile = false #      <br> config.assets.digest = true #        (  ) <br> config.action_dispatch.x_sendfile_header = "X-Sendfile" # 'X-Accel-Redirect'  nginx,   ,  http-server    </code> <br>  The last line strained me a lot when running on a local machine: <br>  The image “localhost: 3000 / assets / rails-s43o54m765t656ed76i8gest.png” cannot be displayed because it contains errors. <br>  The problem was that the Webrick's http-server does not support the x_sendfile_header directive (perhaps I am mistaken, but something definitely did not work there). <br><br><h4>  Conclusion </h4><br>  Of course, I have not yet figured out the topic until the end, but, as Alexander Sergeyevich put it, <br>  <i>Oh, how many wonderful discoveries to us</i> <i><br></i>  <i>Prepare an enlightened spirit</i> <br><br>  <b>UPD</b> : created a <a href="https://github.com/aiperon/asset-image-probe">project on github</a> , demonstrating work using sass-rails </div><p>Source: <a href="https://habr.com/ru/post/127688/">https://habr.com/ru/post/127688/</a></p>
+      1. For precompilation we use not rake assets: precompile, but a slightly altered <a href="https://gist.github.com/1185448">rake task</a> <br>  Periodically, I had an error <br> <code>rake assets:precompile <br> rake aborted! rails.png isn't precompiled</code> <br>  The reason for her appearance is incomprehensible to me, but I know for sure that I am not the only one: the solution to this problem was found on the <a href="https://github.com/rails/rails/issues/2763">githaba</a> . <br><br>  2. To specify the path in css, we use the asset_path erb-template engine helper. <br>  There are a <a href="https://github.com/rails/sass-rails">lot of helpers for SASS</a> , but <s>none of them worked</s> in my project, I do not use it yet. <br>  Content application.css.erb: <br> <code>#header { background-image: url(&lt;%= asset_path("rails.png") %&gt;) <br></code> <br>  In case of using sass (application.css.scss): <br> <code>#header { background-image: image_url('rails.png') }</code> <br> <br>  3. Settings production.rb, which also play a role: <br> <code>config.assets.compile = false #      <br> config.assets.digest = true #        (  ) <br> config.action_dispatch.x_sendfile_header = "X-Sendfile" # 'X-Accel-Redirect'  nginx,   ,  http-server    </code> <br>  The last line strained me a lot when running on a local machine: <br>  The image “localhost: 3000 / assets / rails-s43o54m765t656ed76i8gest.png” cannot be displayed because it contains errors. <br>  The problem was that the Webrick's http-server does not support the x_sendfile_header directive (perhaps I am mistaken, but something definitely did not work there). <br><br><h4>  Conclusion </h4><br>  Of course, I have not yet figured out the topic until the end, but, as Alexander Sergeyevich put it, <br>  <i>Oh, how many wonderful discoveries to us</i> <i><br></i>  <i>Prepare an enlightened spirit</i> <br><br>  <b>UPD</b> : created a <a href="https://github.com/aiperon/asset-image-probe">project on github</a> , demonstrating work using sass-rails </div><p>Source: https://habr.com/ru/post/127688/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../127684/index.html">A simple way to track the activity of Mail.Ru Agent users</a></li>
 <li><a href="../127685/index.html">HP will split the webOS division into two parts</a></li>
 <li><a href="../127689/index.html">Another Android game</a></li>
+<li><a href="../12769/index.html">Flagxo - airport assessment service</a></li>
 <li><a href="../127690/index.html">Mounting LVM-based volumes (LVM-in-LVM)</a></li>
 <li><a href="../127692/index.html">OpenStreetMap and Flickr license (Creative Commons BY-SA version 2.0) translated into Russian</a></li>
 <li><a href="../127693/index.html">Guitar Pro 6 on Ubuntu 10.10 - solving installation problems</a></li>
-<li><a href="../127694/index.html">Riding a tank - Part 1 - The battlefield</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

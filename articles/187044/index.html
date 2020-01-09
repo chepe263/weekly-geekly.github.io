@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Search all AD user groups by LDAP protocol</h1><div class="post__text post__text-html js-mediator-article">  By occupation, I often have to deal with services integrating with AD.  Unfortunately, in the majority of such services there is absolutely no support for such a convenient AD feature as <a href="http://technet.microsoft.com/en-us/library/cc776499%2528v%3Dws.10%2529.aspx">Nested Groups.</a> <br>  Is it really so difficult to organize the transfer of all nested user groups? <br><a name="habracut"></a><br><h5>  At first sight. </h5><br>  At first glance, to solve the task at a minimum, it will be necessary to organize a cyclic function call to get groups that include a user group and so on.  With this approach, it is important not to forget and handle the possible situation when group A is nested in group B, and group B is nested in group A. <br>  And if verification of group membership is called often enough, then this approach may require significant computational resources. <br><br><h5>  But there is a way out. </h5><br>  There is a wonderful <a href="http://social.technet.microsoft.com/wiki/contents/articles/5392.active-directory-ldap-syntax-filters.aspx">Active Directory</a> article <a href="http://social.technet.microsoft.com/wiki/contents/articles/5392.active-directory-ldap-syntax-filters.aspx">: LDAP Syntax Filters</a> <br>  This is an interesting example of an LDAP filter for getting user groups, including nested: <br><pre><code class="hljs lisp">(<span class="hljs-name"><span class="hljs-name">member</span></span>:<span class="hljs-number"><span class="hljs-number">1.2</span></span>.<span class="hljs-number"><span class="hljs-number">840.113556</span></span>.<span class="hljs-number"><span class="hljs-number">1.4</span></span>.<span class="hljs-number"><span class="hljs-number">1941</span></span><span class="hljs-symbol"><span class="hljs-symbol">:=cn=Jim</span></span> Smith,ou=West,dc=Domain,dc=com)</code> </pre> <br>  Also on MSDN there is a <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa746475%2528v%3Dvs.85%2529.aspx">Search Filter Syntax</a> article describing the existing Matching Rules that can be used in LDAP filters in conjunction with Active Directory.  In this article, the LDAP_MATCHING_RULE_IN_CHAIN ​​rule is described in more detail: <br><blockquote>  This rule applies only to attributes of the distinguishedName type.  This special match operator modifier allows you to bypass the entire tree of nested objects. </blockquote><br><br>  Thus, the task of processing group nesting is easily transferred to the AD server. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  How can this knowledge be useful to administrators? </h5><br>  Some services allow the administrator to configure the LDAP filter when searching for user groups when setting up - in this case the administrator can change his behavior with respect to nested groups without interfering with the application code.  Enough filters: <br><pre> <code class="hljs lisp">(<span class="hljs-name"><span class="hljs-name">member=cn=Jim</span></span> Smith,ou=West,dc=Domain,dc=com) (<span class="hljs-name"><span class="hljs-name">memberOf=cn=Sales</span></span>,ou=West,dc=Domain,dc=com)</code> </pre><br>  replaced by <br><pre> <code class="hljs lisp">(<span class="hljs-name"><span class="hljs-name">member</span></span>:<span class="hljs-number"><span class="hljs-number">1.2</span></span>.<span class="hljs-number"><span class="hljs-number">840.113556</span></span>.<span class="hljs-number"><span class="hljs-number">1.4</span></span>.<span class="hljs-number"><span class="hljs-number">1941</span></span><span class="hljs-symbol"><span class="hljs-symbol">:=cn=Jim</span></span> Smith,ou=West,dc=Domain,dc=com) (<span class="hljs-name"><span class="hljs-name">memberOf</span></span>:<span class="hljs-number"><span class="hljs-number">1.2</span></span>.<span class="hljs-number"><span class="hljs-number">840.113556</span></span>.<span class="hljs-number"><span class="hljs-number">1.4</span></span>.<span class="hljs-number"><span class="hljs-number">1941</span></span><span class="hljs-symbol"><span class="hljs-symbol">:=cn=Sales</span></span>,ou=West,dc=Domain,dc=com)</code> </pre><br><br>  <a href="http://blogs.technet.com/b/isrpfeplat/archive/2011/01/17/querying-bitwise-flags-in-attributes.aspx">An example of using extensible comparison rules on PowerShell</a> </div><p>Source: <a href="https://habr.com/ru/post/187044/">https://habr.com/ru/post/187044/</a></p>
+    <h5>  How can this knowledge be useful to administrators? </h5><br>  Some services allow the administrator to configure the LDAP filter when searching for user groups when setting up - in this case the administrator can change his behavior with respect to nested groups without interfering with the application code.  Enough filters: <br><pre> <code class="hljs lisp">(<span class="hljs-name"><span class="hljs-name">member=cn=Jim</span></span> Smith,ou=West,dc=Domain,dc=com) (<span class="hljs-name"><span class="hljs-name">memberOf=cn=Sales</span></span>,ou=West,dc=Domain,dc=com)</code> </pre><br>  replaced by <br><pre> <code class="hljs lisp">(<span class="hljs-name"><span class="hljs-name">member</span></span>:<span class="hljs-number"><span class="hljs-number">1.2</span></span>.<span class="hljs-number"><span class="hljs-number">840.113556</span></span>.<span class="hljs-number"><span class="hljs-number">1.4</span></span>.<span class="hljs-number"><span class="hljs-number">1941</span></span><span class="hljs-symbol"><span class="hljs-symbol">:=cn=Jim</span></span> Smith,ou=West,dc=Domain,dc=com) (<span class="hljs-name"><span class="hljs-name">memberOf</span></span>:<span class="hljs-number"><span class="hljs-number">1.2</span></span>.<span class="hljs-number"><span class="hljs-number">840.113556</span></span>.<span class="hljs-number"><span class="hljs-number">1.4</span></span>.<span class="hljs-number"><span class="hljs-number">1941</span></span><span class="hljs-symbol"><span class="hljs-symbol">:=cn=Sales</span></span>,ou=West,dc=Domain,dc=com)</code> </pre><br><br>  <a href="http://blogs.technet.com/b/isrpfeplat/archive/2011/01/17/querying-bitwise-flags-in-attributes.aspx">An example of using extensible comparison rules on PowerShell</a> </div><p>Source: https://habr.com/ru/post/187044/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../187032/index.html">Webmaster! Have you paid Google AdSense tax?</a></li>
 <li><a href="../187034/index.html">ETegro Hyperion RS430 G4 - ready for Big Data</a></li>
 <li><a href="../187036/index.html">Where did the user blocking policy go?</a></li>
 <li><a href="../187038/index.html">Texts for online stores</a></li>
+<li><a href="../18704/index.html">Archaisms</a></li>
 <li><a href="../187040/index.html">Scientific and educational comics for children</a></li>
 <li><a href="../187046/index.html">Adding synchronized transcription text to HTML5 video</a></li>
 <li><a href="../187052/index.html">8 things that a developer should not be afraid of</a></li>

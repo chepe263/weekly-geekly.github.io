@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>RTCP REMB: we twist the video call settings in the browser</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/webt/zt/xn/0l/ztxn0lmscpdwc6gc6fgrbibh7re.jpeg"></div><br>  The resourceful guys from <a href="https://tribe.pm/">Tribe</a> not only found their niche at the junction of conference and gamedev (which is already interesting in itself), but also know well what is happening under the hood of WebRTC.  Product Manager Timote Le Bornier periodically describes the technical side of his brainchild;  we decided to translate his article about the non-standard, but very interesting functionality of WebRTC.  Sure, you will be interested.  In the meantime, as you read, we will continue to prepare an insider about our updated video conferencing ... But that's another story. <br><a name="habracut"></a><br><hr><br><h3>  Fine tune and manage stream quality using REMB </h3><br>  So, now you most likely know that we worked on creating a custom MCU for the Tribe - if you suddenly don’t know, then that's <a href="https://medium.com/tribe-staff/why-were-coding-a-mcu-from-scratch-webrtc-45a9b3ca72db">why we decided to do it</a> and <a href="https://medium.com/tribe-staff/down-the-mcu-road-with-gstreamer-webrtc-d1df48a93492">how we do it</a> . <br><br>  But more to the point: let's see what happens under the hood. <br><br><ol><li>  A WebRTC connection begins with an exchange mechanism called “SDP offer / answer” —the exchange of information on the supported codecs and the corresponding parameters between the participants. </li><li>  After that, the participants try to communicate with each other directly: start listening to the UDP ports and use ICE, STUN, and (hereinafter) TURN to establish a UDP connection. </li><li>  When a UDP connection is established, participants use it to exchange encryption parameters using the DTLS-SRTP protocol.  After that, participants use: <br><ul><li>  SRTP (Secure RTP over UDP) to send and receive media </li><li>  SRTCP (Secure RTCP over UDP) protocol for flow control and out-of-band data exchange. </li></ul><br></li></ol><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/vc/hv/bf/vchvbf2auf4s0h_fonovykqwr5a.png"></div><br>  <font color="lightgray">Stack of WebRTC protocols (modified schema, original here: <a href="http://webrtc-security.github.io/">webrtc-security.github.io</a> )</font> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h3>  Understanding RTCP </h3><br>  The above mentioned RTP and RTCP packets are securely stored in SRTP and SRTCP.  What are they used for? <br><br>  RTP provides end-to-end transport for real-time data: audio and video.  In some ways, RTCP is the “brother of RTP”: it is used together with RTP and improves the data transfer protocol by monitoring delivery, as well as management and identification. <br><br>  In the WebRTC session, the MCU acts as an intermediary between the participants: they are connected to the MCU, but not directly with each other. <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/i5/xf/gn/i5xfgnxweik2mwpvfpwikbcrqdq.png"></div><br>  <font color="lightgray">WebRTC — MCU Base Topology</font> <br><br>  For example, take a session with two participants.  The MCU receives the media stream from the FOO participant, decodes and encodes it, and sends it to the BAR participant.  At the same time, the same thing happens with the flow from BAR to FOO. <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/zw/zx/6r/zwzx6rosmhlb-ifkumgge6uxxu4.png"></div><br>  <font color="lightgray">MTP and RTCP protocols</font> <br><br>  Symmetry is obvious, so let's focus on one direction and see what is going on there: <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/so/jp/2k/sojp2kmzckrewtzhlftvniyou-4.png"></div><br>  <font color="lightgray">Focus on one side</font> <br><br>  When the BAR browser receives the media stream from the MCU, it also receives statistics from the RTCP Sender Reports (SR).  BAR will use RTP's sequential packet numbers, RTP time stamps, own time, and Sender Reports to calculate what we call RTCP Receiver Reports (RR). <br><br>  The BAR browser uses all of this data to calculate the maximum expected bitrate, and then send this value to the MCU using RTCP REMB (Remote Estimate Maximum Bitrate). <br><br><h3>  We use REMB (effectively) </h3><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/rz/ct/lm/rzctlmuvruafi28hexwe2fcngts.jpeg"></div><br>  <font color="lightgray">Package format RTCP REMB <a href="https://tools.ietf.org/html/draft-alvestrand-rmcat-remb-00">tools.ietf.org/html/draft-alvestrand-rmcat-remb-00#section-2.2</a></font> <br><br>  The value of the calculated maximum bitrate is encoded in the fields BR Exp and BR Mantissa. <br><br><blockquote>  An example implementation can be seen in the Chromium code: <a href="">cs.chromium.org/chromium/src/third_party/webrtc/modules/rtp_rtcp/source/rtcp_packet/remb.cc</a> <br></blockquote>  In the Go language, we converted this message to a PacketALFBRemb structure: <br><br><div class="oembed"><script type="text/javascript" src="https://gist.github.com/058f1d5ccc3fce899ba90f63c3ca5241.js"></script><link rel="stylesheet" href="https://github.githubassets.com/assets/gist-embed-b3b573358bfc66d89e1e95dbf8319c09.css"><div id="gist86322858" class="gist">
@@ -335,20 +335,20 @@
       </div>
     </div>
 </div>
-</div><br>  <b>When</b> you open <b>chrome: // webrtc-internals</b> , you will see something like this: <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/1d/yw/gd/1dywgdot3jctxxi7a5jz4z5d9nc.png"></div><br>  This is a clear confirmation that you are able to change and track the bitrate on your part in real time.  Which parameters are better suited to your needs and whether it is necessary to optimize the bandwidth and the quality of the stream :) <br><br><hr><br>  You probably noticed that RTCP REMB is now in <i>deprecated</i> status.  The idea was that the bandwidth should control the data source (and not the remote receiver / participant) - well, in the article we showed that it is still possible and how to do it. <br><br>  In our case it was useful to get a point control over the strip and quality :) </div><p>Source: <a href="https://habr.com/ru/post/353460/">https://habr.com/ru/post/353460/</a></p>
+</div><br>  <b>When</b> you open <b>chrome: // webrtc-internals</b> , you will see something like this: <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/1d/yw/gd/1dywgdot3jctxxi7a5jz4z5d9nc.png"></div><br>  This is a clear confirmation that you are able to change and track the bitrate on your part in real time.  Which parameters are better suited to your needs and whether it is necessary to optimize the bandwidth and the quality of the stream :) <br><br><hr><br>  You probably noticed that RTCP REMB is now in <i>deprecated</i> status.  The idea was that the bandwidth should control the data source (and not the remote receiver / participant) - well, in the article we showed that it is still possible and how to do it. <br><br>  In our case it was useful to get a point control over the strip and quality :) </div><p>Source: https://habr.com/ru/post/353460/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../353440/index.html">Shine and Poverty Java for Desktop</a></li>
 <li><a href="../353444/index.html">We write the plugin for Unity correctly. Part 2: Android</a></li>
 <li><a href="../353446/index.html">Operators?. ?? and |>: future JavaScript features you'll like</a></li>
 <li><a href="../353448/index.html">Great, we are going to devOps-ping. So, 15 years of planning?</a></li>
+<li><a href="../35345/index.html">Let's rate our favorite habr</a></li>
 <li><a href="../353458/index.html">Code generation during application operation: real examples and techniques</a></li>
 <li><a href="../353462/index.html">How to get into Microsoft, Amazon or Twitter without a prestigious college diploma</a></li>
 <li><a href="../353464/index.html">Online statistics in Telegram</a></li>
 <li><a href="../353466/index.html">Uncountable: in search of a finite number</a></li>
 <li><a href="../353468/index.html">What's new in AppCode 2018.1</a></li>
-<li><a href="../353470/index.html">Migration from Check Point from R77.30 to R80.10</a></li>
+<li><a href="../35347/index.html">See?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

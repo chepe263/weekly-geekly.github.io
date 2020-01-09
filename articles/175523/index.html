@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>ZF2: Get db adapter without using service locator</h1><div class="post__text post__text-html js-mediator-article">  Hello readers! <br><br>  Many developers began to study Zend framework 2 and, most likely, faced the problem of using a permanent adapter for the database.  I would like to share with you an interesting article that helped me resolve this issue. <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The problem is to get the TableGateway instance directly, and not through the service locator. <br>  The TableGateway object requires you to configure the dbAdapter object sent to the designer gateway. <br><br>  The following solution will help solve this problem: <br><br>  1. Use GlobalAdaperFeature as static storage for dbAdapter: <br><br><pre><code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">use</span></span> <span class="hljs-title"><span class="hljs-title">Zend</span></span>\<span class="hljs-title"><span class="hljs-title">Db</span></span>\<span class="hljs-title"><span class="hljs-title">TableGateway</span></span>\<span class="hljs-title"><span class="hljs-title">Feature</span></span>; $feature = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Feature\GlobalAdapterFeature();</code> </pre> <br><br>  2. Add the bootstrap method to the module configuration file: <br><br><pre> <code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">onBootstrap</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">($e)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-comment"><span class="hljs-comment">// set static adapter for all module table gateways $serviceManager = $e-&gt;getApplication()-&gt;getServiceManager(); $dbAdapter = $serviceManager-&gt;get('Zend\Db\Adapter\Adapter'); Feature\GlobalAdapterFeature::setStaticAdapter($dbAdapter); }</span></span></code> </pre><br><br>  3. Now you can access the already loaded dbAdapter object in the TableGateway constructor: <br><br><pre> <code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">__construct</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;featureSet = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Feature\FeatureSet(); <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;featureSet-&gt;addFeature(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Feature\GlobalAdapterFeature()); <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;initialize(); }</code> </pre><br><br>  Thus, we have a dbAdapter embedded in the gateway of the constructor.  Of course, this is not the best practice, but it does add some flexibility to your application, but in any case, the dbAdapter object was created using the service locator, but as a singleton method for all tableGateways at the bootstrap module level. </div><p>Source: <a href="https://habr.com/ru/post/175523/">https://habr.com/ru/post/175523/</a></p>
+      The problem is to get the TableGateway instance directly, and not through the service locator. <br>  The TableGateway object requires you to configure the dbAdapter object sent to the designer gateway. <br><br>  The following solution will help solve this problem: <br><br>  1. Use GlobalAdaperFeature as static storage for dbAdapter: <br><br><pre><code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">use</span></span> <span class="hljs-title"><span class="hljs-title">Zend</span></span>\<span class="hljs-title"><span class="hljs-title">Db</span></span>\<span class="hljs-title"><span class="hljs-title">TableGateway</span></span>\<span class="hljs-title"><span class="hljs-title">Feature</span></span>; $feature = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Feature\GlobalAdapterFeature();</code> </pre> <br><br>  2. Add the bootstrap method to the module configuration file: <br><br><pre> <code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">onBootstrap</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">($e)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-comment"><span class="hljs-comment">// set static adapter for all module table gateways $serviceManager = $e-&gt;getApplication()-&gt;getServiceManager(); $dbAdapter = $serviceManager-&gt;get('Zend\Db\Adapter\Adapter'); Feature\GlobalAdapterFeature::setStaticAdapter($dbAdapter); }</span></span></code> </pre><br><br>  3. Now you can access the already loaded dbAdapter object in the TableGateway constructor: <br><br><pre> <code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">__construct</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;featureSet = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Feature\FeatureSet(); <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;featureSet-&gt;addFeature(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Feature\GlobalAdapterFeature()); <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;initialize(); }</code> </pre><br><br>  Thus, we have a dbAdapter embedded in the gateway of the constructor.  Of course, this is not the best practice, but it does add some flexibility to your application, but in any case, the dbAdapter object was created using the service locator, but as a singleton method for all tableGateways at the bootstrap module level. </div><p>Source: https://habr.com/ru/post/175523/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../175505/index.html">Convenient CSS Sprite Generator</a></li>
-<li><a href="../175507/index.html">Navigation: an implementation option for a corporate application</a></li>
 <li><a href="../175511/index.html">Technopark Mail.Ru. Start</a></li>
+<li><a href="../175513/index.html">Google changes approach to calculating the popularity of versions of Android or updated statistics on the relevance of versions</a></li>
 <li><a href="../175517/index.html">Basics of security of the Android operating system. Core level</a></li>
+<li><a href="../17552/index.html">Be careful!</a></li>
 <li><a href="../175521/index.html">The final version of the specification of super-fast RAM is published.</a></li>
 <li><a href="../175525/index.html">PostgreSQL update fixes serious vulnerability</a></li>
 <li><a href="../175527/index.html">Search on Drupal 7 with Apache Solr Part 1 - Basic Setup</a></li>
+<li><a href="../175529/index.html">Extended battery for Galaxy Note 2: 6.5Ah or two days autonomy</a></li>
+<li><a href="../17553/index.html">Flash</a></li>
 <li><a href="../175531/index.html">Microsoft released another set of updates, April 2013</a></li>
-<li><a href="../175533/index.html">Quadratic equation? Yes, just spit!</a></li>
-<li><a href="../175537/index.html">Visual Studio 2012 Update 2 released</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

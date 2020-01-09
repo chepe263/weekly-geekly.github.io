@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Perl 6 File Operations</h1><div class="post__text post__text-html js-mediator-article"><h4>  Directories </h4><br>  Instead of opendir and his friends, Perl 6 has one function dir, which returns a list of files from a directory (by default, from the current one).  Instead of a thousand words: <br><a name="habracut"></a><br><pre><code class="perl hljs"><span class="hljs-comment"><span class="hljs-comment">#   Rakudo &gt; dir build parrot_install Makefile VERSION parrot docs Configure.pl README dynext t src tools CREDITS LICENSE Test.pm &gt; dir 't' 00-parrot 02-embed spec harness 01-sanity pmc spectest.data</span></span></code> </pre> <br><br>  Dir has an optional test parameter, to use grep based on the results: <br><br><pre> <code class="perl hljs"> &gt; dir <span class="hljs-string"><span class="hljs-string">'src/core'</span></span>, <span class="hljs-string"><span class="hljs-string">test =&gt;</span></span> any(<span class="hljs-regexp"><span class="hljs-regexp">/^C/</span></span>, <span class="hljs-regexp"><span class="hljs-regexp">/^P/</span></span>) Parcel.pm Cool.pm Parameter.pm Code.pm Complex.pm CallFrame.pm Positional.pm Capture.pm Pair.pm Cool-num.pm Callable.pm Cool-str.pm</code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Directories are created via mkdir ('foo') <br><br><h4>  Files </h4><br>  The easiest way to read a file in Perl 6 is slurp.  It returns the contents of the file as a String. <br><br><pre> <code class="bash hljs"> &gt; slurp <span class="hljs-string"><span class="hljs-string">'VERSION'</span></span> 2010.11</code> </pre><br><br>  There is access to the classical methods: <br><br><pre> <code class="perl hljs"> &gt; <span class="hljs-keyword"><span class="hljs-keyword">my</span></span> $fh = <span class="hljs-keyword"><span class="hljs-keyword">open</span></span> <span class="hljs-string"><span class="hljs-string">'CREDITS'</span></span> IO()&lt;<span class="hljs-number"><span class="hljs-number">0x1105a068</span></span>&gt; &gt; $fh.getc <span class="hljs-comment"><span class="hljs-comment">#   = &gt; $fh.get #   pod &gt; $fh.close; $fh = open 'new', :w #    IO()&lt;0x10f3e704&gt; &gt; $fh.print('foo Bool::True &gt; $fh.say('bar Bool::True &gt; $fh.close; say slurp('new') foobar</span></span></code> </pre><br><br><h4>  File checks </h4><br>  File checks for existence and types go through smart matching ~~ <br><br><pre> <code class="perl hljs"> &gt; <span class="hljs-string"><span class="hljs-string">'LICENSE'</span></span>.IO ~~ :e <span class="hljs-comment"><span class="hljs-comment">#   ? Bool::True &gt; 'LICENSE'.IO ~~ :d #      ? Bool::False &gt; 'LICENSE'.IO ~~ :f #   ? Bool::True</span></span></code> </pre><br><br>  Lightweight <br><br><h4>  File :: Find </h4><br>  When standard functions end, modules are connected to the case.  File :: Find from the File :: Tools set traverses the directory tree in search of the necessary files and creates lazy lists of found files.  It comes with Rakudo Star, and is easy to install via neutro. <br><br>  Example: <br><br><pre> <code class="perl hljs">find(:dir&lt;t/dir1&gt;, :type&lt;file&gt;, :name(<span class="hljs-regexp"><span class="hljs-regexp">/foo/</span></span>))</code> </pre><br><br>  will display a lazy list of files, and only files, in the t / dir1 directory with a name matching the regular / foo /.  List items are not simple lines.  These are objects that turn into strings with a full path, but they also have accessors for the name of the directory in which they lie (dir) and the name of the file (name).  See the documentation for details. <br><br><h4>  Useful idioms </h4><br>  Create a new file <br><br><pre> <code class="perl hljs"><span class="hljs-keyword"><span class="hljs-keyword">open</span></span>(<span class="hljs-string"><span class="hljs-string">'new'</span></span>, :w).close</code> </pre><br><br>  Unnamed File Handler <br><br><pre> <code class="perl hljs"> <span class="hljs-keyword"><span class="hljs-keyword">given</span></span> <span class="hljs-keyword"><span class="hljs-keyword">open</span></span>(<span class="hljs-string"><span class="hljs-string">'foo'</span></span>, :w) { .say(<span class="hljs-string"><span class="hljs-string">' !'</span></span>); .close }</code> </pre></div><p>Source: <a href="https://habr.com/ru/post/252509/">https://habr.com/ru/post/252509/</a></p>
+      Directories are created via mkdir ('foo') <br><br><h4>  Files </h4><br>  The easiest way to read a file in Perl 6 is slurp.  It returns the contents of the file as a String. <br><br><pre> <code class="bash hljs"> &gt; slurp <span class="hljs-string"><span class="hljs-string">'VERSION'</span></span> 2010.11</code> </pre><br><br>  There is access to the classical methods: <br><br><pre> <code class="perl hljs"> &gt; <span class="hljs-keyword"><span class="hljs-keyword">my</span></span> $fh = <span class="hljs-keyword"><span class="hljs-keyword">open</span></span> <span class="hljs-string"><span class="hljs-string">'CREDITS'</span></span> IO()&lt;<span class="hljs-number"><span class="hljs-number">0x1105a068</span></span>&gt; &gt; $fh.getc <span class="hljs-comment"><span class="hljs-comment">#   = &gt; $fh.get #   pod &gt; $fh.close; $fh = open 'new', :w #    IO()&lt;0x10f3e704&gt; &gt; $fh.print('foo Bool::True &gt; $fh.say('bar Bool::True &gt; $fh.close; say slurp('new') foobar</span></span></code> </pre><br><br><h4>  File checks </h4><br>  File checks for existence and types go through smart matching ~~ <br><br><pre> <code class="perl hljs"> &gt; <span class="hljs-string"><span class="hljs-string">'LICENSE'</span></span>.IO ~~ :e <span class="hljs-comment"><span class="hljs-comment">#   ? Bool::True &gt; 'LICENSE'.IO ~~ :d #      ? Bool::False &gt; 'LICENSE'.IO ~~ :f #   ? Bool::True</span></span></code> </pre><br><br>  Lightweight <br><br><h4>  File :: Find </h4><br>  When standard functions end, modules are connected to the case.  File :: Find from the File :: Tools set traverses the directory tree in search of the necessary files and creates lazy lists of found files.  It comes with Rakudo Star, and is easy to install via neutro. <br><br>  Example: <br><br><pre> <code class="perl hljs">find(:dir&lt;t/dir1&gt;, :type&lt;file&gt;, :name(<span class="hljs-regexp"><span class="hljs-regexp">/foo/</span></span>))</code> </pre><br><br>  will display a lazy list of files, and only files, in the t / dir1 directory with a name matching the regular / foo /.  List items are not simple lines.  These are objects that turn into strings with a full path, but they also have accessors for the name of the directory in which they lie (dir) and the name of the file (name).  See the documentation for details. <br><br><h4>  Useful idioms </h4><br>  Create a new file <br><br><pre> <code class="perl hljs"><span class="hljs-keyword"><span class="hljs-keyword">open</span></span>(<span class="hljs-string"><span class="hljs-string">'new'</span></span>, :w).close</code> </pre><br><br>  Unnamed File Handler <br><br><pre> <code class="perl hljs"> <span class="hljs-keyword"><span class="hljs-keyword">given</span></span> <span class="hljs-keyword"><span class="hljs-keyword">open</span></span>(<span class="hljs-string"><span class="hljs-string">'foo'</span></span>, :w) { .say(<span class="hljs-string"><span class="hljs-string">' !'</span></span>); .close }</code> </pre></div><p>Source: https://habr.com/ru/post/252509/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../252499/index.html">The digest of interesting materials from the world of web development and IT for the last week №150 (March 2 - 8, 2015)</a></li>
+<li><a href="../25250/index.html">Western freelance exchanges - the withdrawal of funds earned</a></li>
 <li><a href="../252501/index.html">About one trick to return an error code from a function</a></li>
 <li><a href="../252503/index.html">High Voltage Greetings on Spring Day</a></li>
 <li><a href="../252505/index.html">C ++ Russia and after</a></li>
 <li><a href="../252507/index.html">Migrating to https</a></li>
+<li><a href="../25251/index.html">Google launched Friend Connect platform</a></li>
 <li><a href="../252513/index.html">How we "married" cloud PBX, GSM and realtors (part 3)</a></li>
 <li><a href="../252517/index.html">CTOcast # 5: “You don't need a thousand people for a good discussion.”</a></li>
 <li><a href="../252519/index.html">C ++ REST service: POCO + Angular TODO</a></li>
-<li><a href="../252521/index.html">The digest of interesting materials from the world of Drupal # 6</a></li>
-<li><a href="../252529/index.html">Free SSL certificates for 2 years from WoSign</a></li>
+<li><a href="../25252/index.html">New computer from Sony</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

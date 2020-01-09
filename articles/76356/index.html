@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Large tables and ENUM</h1><div class="post__text post__text-html js-mediator-article">  Continuation of the article <a href="http://habrahabr.ru/blogs/mysql/76149/">Large tables and unique keys.</a> <a href="http://habrahabr.ru/blogs/mysql/76149/"><br></a> <br>  I again needed to change the structure of a fairly large table in MySQL.  The changes concerned the field of type ENUM. <br><br>  so <br>  <b>It is given.</b>  MyISAM table <br>  In the table there is a field of type ENUM. <br>  Size - 145 million entries. <br>  The disk capacity is 12 GB. <br>  The table also has a unique key on the VARCHAR string field (150). <br>  <b>It is necessary</b> to change the list of ENUM field constants. <br><br>  That is, we have the field `my_field` ENUM ('A', 'B') NOT NULL.  It is necessary to change to ENUM ('C', 'D', 'E', 'F') NOT NULL. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>It makes no sense to make ALTER TABLE CHANGE COLUMN</b> , because on such data volumes and with a unique index it will take forever.  Cause?  MySQL when changing the structure of the table in most cases creates a temporary table of the desired structure, where it copies all the data line by line.  And creating a unique key line by line in such volumes takes an unreasonable amount of time. <br><br>  However, I remembered in my memory that I had already seen something similar.  I finally found the recipe I needed in the <a href="http://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/0596101716">book “High Performance MySQL”</a> , where by the way I found the hack from my previous article. <br><br>  The recipe is simple - the substitution of the file, where the definition of the structure of the table <b>.FRM is stored</b> . <a name="habracut"></a><br>  1. Create a new table with the structure of the original: CREATE TABLE test_struct LIKE test. <br>  2. Change the ENUM field in the new table: ALTER TABLE `test_struct` CHANGE` my_field` ENUM ('C', 'D', 'E', 'F') NOT NULL. <br>  3. Lock the tables: FLUSH TABLES WITH READ LOCK <br>  4. in the directory with the required database, copy the file test_struct.frm over test.frm. <br>  5. Remove the lock: UNLOCK TABLES <br><br>  All is ready.  You can check. <br><br>  <b>What should be remembered?</b>  In MySQL, the data in fields of type ENUM are integers.  Countdown starts from one. <br>  Thus it was: the constant A = 1, B = 2. <br>  It became: C = 1, D = 2, E = 3, F = 4. - As a result, all records with the value “A” after our changes began to appear as “C”, and all “B” as “D”, because their internal representation remains the same - 1 and 2, respectively. <br><br>  <b>Where else can this recipe apply?</b> <br>  1. Remove the AUTO_INCREMENT attribute from the field. <br>  2. Add, change or remove constants in the fields of type <a href="http://dev.mysql.com/doc/refman/5.1/en/set.html">SET</a> . </div><p>Source: <a href="https://habr.com/ru/post/76356/">https://habr.com/ru/post/76356/</a></p>
+      <b>It makes no sense to make ALTER TABLE CHANGE COLUMN</b> , because on such data volumes and with a unique index it will take forever.  Cause?  MySQL when changing the structure of the table in most cases creates a temporary table of the desired structure, where it copies all the data line by line.  And creating a unique key line by line in such volumes takes an unreasonable amount of time. <br><br>  However, I remembered in my memory that I had already seen something similar.  I finally found the recipe I needed in the <a href="http://www.amazon.com/High-Performance-MySQL-Optimization-Replication/dp/0596101716">book “High Performance MySQL”</a> , where by the way I found the hack from my previous article. <br><br>  The recipe is simple - the substitution of the file, where the definition of the structure of the table <b>.FRM is stored</b> . <a name="habracut"></a><br>  1. Create a new table with the structure of the original: CREATE TABLE test_struct LIKE test. <br>  2. Change the ENUM field in the new table: ALTER TABLE `test_struct` CHANGE` my_field` ENUM ('C', 'D', 'E', 'F') NOT NULL. <br>  3. Lock the tables: FLUSH TABLES WITH READ LOCK <br>  4. in the directory with the required database, copy the file test_struct.frm over test.frm. <br>  5. Remove the lock: UNLOCK TABLES <br><br>  All is ready.  You can check. <br><br>  <b>What should be remembered?</b>  In MySQL, the data in fields of type ENUM are integers.  Countdown starts from one. <br>  Thus it was: the constant A = 1, B = 2. <br>  It became: C = 1, D = 2, E = 3, F = 4. - As a result, all records with the value “A” after our changes began to appear as “C”, and all “B” as “D”, because their internal representation remains the same - 1 and 2, respectively. <br><br>  <b>Where else can this recipe apply?</b> <br>  1. Remove the AUTO_INCREMENT attribute from the field. <br>  2. Add, change or remove constants in the fields of type <a href="http://dev.mysql.com/doc/refman/5.1/en/set.html">SET</a> . </div><p>Source: https://habr.com/ru/post/76356/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../76347/index.html">Parallels Virtuozzo VS Microsoft Hyper-V. Whose virtualization is more honest?</a></li>
 <li><a href="../76349/index.html">Send Java / Python SDKs 1.2.8 prerelease</a></li>
+<li><a href="../7635/index.html">Guglism or God named Google?</a></li>
 <li><a href="../76350/index.html">Video report "Advanced multisiting"</a></li>
 <li><a href="../76351/index.html">No robot: Encrypt text on a webpage.</a></li>
 <li><a href="../76355/index.html">Call from terminal</a></li>
 <li><a href="../76357/index.html">In a series of Open Source CMS arrived</a></li>
 <li><a href="../76358/index.html">Improving usability of Krusader</a></li>
 <li><a href="../76359/index.html">What to do if hacking site?</a></li>
+<li><a href="../7636/index.html">Hybrid Apps - End of the Desktop-to-Web War</a></li>
 <li><a href="../76361/index.html">Inkscape 0.47 released</a></li>
-<li><a href="../76363/index.html">Business 160 bytes. Part Two, Technical</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

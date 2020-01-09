@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The most common SQL injection pattern in PHP is the useless escape of characters.</h1><div class="post__text post__text-html js-mediator-article">  By the nature of my business, I have to perform security audits of the source code of web applications. <br>  Lots of web apps and lots of code ... <br><br>  In this article I would like to share one simple (very simple) truth and statistics that I derived and repeatedly checked during the last three years of viewing tons of PHP code. <br><br>  It is no secret that vulnerabilities of the introduction of database operators (SQL injections) are the most common of all server-side web application vulnerabilities.  There are platforms and frameworks where such things are almost completely excluded, for example, ORM and other things.  But statistics stubbornly tells us about the absolute prevalence of web applications on the Internet with simple concatenated SQL queries.  In addition, there are cases where ORM generally can not be applied.  For example, when not only the parameters of expressions should depend on user data, but also the logic of the query at the operator level. <br><a name="habracut"></a><br>  So, let's begin. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  Useless character escaping </h5><br><h6>  Found in 83% of PHP web applications vulnerable to SQL injections </h6><br>  The use of shielding characters such as <br>  mysql_escape_string <br>  mysql_real_escape_string <br>  addslashes <br>  without framing quotes.  Most often manifested in numeric parameters (all kinds of * _id). <br><br><h6>  Example </h6><br> <code>$sql = "SELECT user FROM userslist WHERE userid=".mysql_real_escape_string($_GET['uid']); <br></code> <br>  In appearance, this is a safe code, but only in appearance.  The most frequent template of SQL injection in PHP has crept in here.  To attack this vulnerability from an attacker, you simply do not need to use "\ x00 \ r \ n \ x1a characters in the attack vector. <br>  For example: <br> <code>/index.php?uid=-777 UNION SELECT password FROM userlist</code> <br> <br><h6>  Search in code </h6><br>  Complicated by the semantics of the language.  For a simple search, you can use egrep: <br> <code>egrep -Rin "(select|update|insert|delete|replace).*(from|set|into).*(mysql_escape_string|mysql_real_escape_string|addslashes)" . | grep -v "[\"']['\"]" <br></code> <br>  The logic of the search expression is to find all the lines in which there is no sequence of quotation marks to the left of the filtering functions ('', "", "','").  The method, of course, is far from 100%, but it is impossible to require semantic analysis from a regular expression. <br>  For the convenience of displaying information, you can highlight the function in the color in the console: <br> <code>egrep -Rin "(select|update|insert|delete|replace).*(from|set|into).*(mysql_escape_string|mysql_real_escape_string|addslashes)" . | grep -v "[\"']['\"]" | egrep --color "(mysql_escape_string|mysql_real_escape_string|addslashes)" <br></code> <br>  To protect against this template vulnerability, it is best to use a type conversion. <br>  It is always faster and more reliable than all sorts of filtering and screening. <br>  For the example above, the patch might be: <br> <code>$sql = "SELECT user FROM userslist WHERE userid=".intval($_GET['uid']); <br></code> <br><br>  At this short essay is over.  I urge all web developers to try to stole their sources for such constructions.  Better yet, expand the above search script for people. </div><p>Source: <a href="https://habr.com/ru/post/142599/">https://habr.com/ru/post/142599/</a></p>
+    <h5>  Useless character escaping </h5><br><h6>  Found in 83% of PHP web applications vulnerable to SQL injections </h6><br>  The use of shielding characters such as <br>  mysql_escape_string <br>  mysql_real_escape_string <br>  addslashes <br>  without framing quotes.  Most often manifested in numeric parameters (all kinds of * _id). <br><br><h6>  Example </h6><br> <code>$sql = "SELECT user FROM userslist WHERE userid=".mysql_real_escape_string($_GET['uid']); <br></code> <br>  In appearance, this is a safe code, but only in appearance.  The most frequent template of SQL injection in PHP has crept in here.  To attack this vulnerability from an attacker, you simply do not need to use "\ x00 \ r \ n \ x1a characters in the attack vector. <br>  For example: <br> <code>/index.php?uid=-777 UNION SELECT password FROM userlist</code> <br> <br><h6>  Search in code </h6><br>  Complicated by the semantics of the language.  For a simple search, you can use egrep: <br> <code>egrep -Rin "(select|update|insert|delete|replace).*(from|set|into).*(mysql_escape_string|mysql_real_escape_string|addslashes)" . | grep -v "[\"']['\"]" <br></code> <br>  The logic of the search expression is to find all the lines in which there is no sequence of quotation marks to the left of the filtering functions ('', "", "','").  The method, of course, is far from 100%, but it is impossible to require semantic analysis from a regular expression. <br>  For the convenience of displaying information, you can highlight the function in the color in the console: <br> <code>egrep -Rin "(select|update|insert|delete|replace).*(from|set|into).*(mysql_escape_string|mysql_real_escape_string|addslashes)" . | grep -v "[\"']['\"]" | egrep --color "(mysql_escape_string|mysql_real_escape_string|addslashes)" <br></code> <br>  To protect against this template vulnerability, it is best to use a type conversion. <br>  It is always faster and more reliable than all sorts of filtering and screening. <br>  For the example above, the patch might be: <br> <code>$sql = "SELECT user FROM userslist WHERE userid=".intval($_GET['uid']); <br></code> <br><br>  At this short essay is over.  I urge all web developers to try to stole their sources for such constructions.  Better yet, expand the above search script for people. </div><p>Source: https://habr.com/ru/post/142599/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,11 +74,11 @@
 <li><a href="../142596/index.html">Simulator for software testing</a></li>
 <li><a href="../142597/index.html">We learn MS SQL Server Reporting Services 2008 R2 to show HTML in reports</a></li>
 <li><a href="../142598/index.html">The story of another electric bicycle with their own hands</a></li>
+<li><a href="../1426/index.html">Russian Internet Companies Create Professional Association</a></li>
+<li><a href="../14260/index.html">LINA released under the GPL v2 license</a></li>
 <li><a href="../142600/index.html">Difficult choice of Python or PHP. And maybe both?</a></li>
 <li><a href="../142601/index.html">Umi.CMS developer problem tree, options for slowing growth</a></li>
 <li><a href="../142602/index.html">Drug Design or Drug Design</a></li>
-<li><a href="../142603/index.html">Custom Tree View</a></li>
-<li><a href="../142604/index.html">Untethered unlock for iPhone on iOS 5.0 / 5.0.1 available</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

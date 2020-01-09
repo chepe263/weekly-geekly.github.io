@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Fleeting malware</h1><div class="post__text post__text-html js-mediator-article">  I am a freelancer, and my main specialization is Asterisk-based IP telephony solutions. <br><br>  The other day, I was approached by one of my rather long-standing customers, who last year introduced a telephony for the call center of an online store.  There, I installed and configured only Asterisk with accompanying packages, installing the actual server and OS (Ubuntu), as well as supporting the system after implementation, was handled by the local sysadmin, and occasionally I was approached with one-time nontrivial tasks that require more than simple qualifications. editing contexts in dialplan.  This time they needed to change the logic of the CDR in terms of statistics of received calls by queues. <br><br>  Having agreed on the cost and timing, I set to work.  What was my surprise when after switching on the logging of incomplete calls to the CDR a stream of records a la "UNKNOWN UNKNOWN" with the status "FAILED" began!  Moreover, attempts to dial were sent to several Lithuanian numbers in the code +370. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Since the thought of connecting from the outside to the asterisk itself was dropped immediately after checking (all security recommendations were implemented at the implementation stage, there was fail2ban, and sip accounts had a hard ip restriction), and the AMI was disabled, there was only one option - call-files.  So it turned out.  I clarified with the client: they did not use this technology and, moreover, did not call to Lithuania.  Morality?  Correct, banal hacking. <br><a name="habracut"></a><br>  When deleting call-files, they appeared again after some time.  Expectedly, nothing was found in cron.  Scratching the back of my head, I ran lsof cyclically - but he could not catch anything interesting outgoing.  Then, after a short googling, heavy artillery went - inotify_tools.  The picture loomed curious: <i>something</i> constantly generated the notorious files of several pieces per second.  From which I concluded that I am not dealing with a scheduled task, but with a process or a demon. <br><br>  Further, it is simpler: through top and ps, a rather suspicious process was quickly caught, called “backup” and located in /var/tmp/bkb.d.  It turned out to be the simplest script that constantly copied to / var / spool / asterisk / outgoing there were a dozen of call-files lying there, which contained the initiation of an international call to various Lithuanian numbers.  At the same time, what is most interesting is that calls (more precisely, dialing attempts) were made via a non-existent trunk, and the call-files did not contain an indication of a connection after dialing with someone else. <br><br>  Having drunk off the malware and having made the required modifications of the CDR logic, I informed the client about the estimated time of the hacking and, as expected, I received a separate financial thanks for discovering this fact.  I don’t know what he will do next - I don’t know, the task of finding a hole through which hacking became possible did not stand in front of me.  Although only SIP, SSH and the statutory webmord's http-authorization statistics stuck out there (of course, the Apache, like the asterisk, was not launched from under the root), so the choice is small. <br><br>  It may have been a simpler and faster solution to finding the malware — but I still don’t consider linux to be a broad profile administrator, and applied what came to my mind and googled along the way.  However, it is still incomprehensible to me who, like, and most importantly, why he made such a meaningless hack. </div><p>Source: <a href="https://habr.com/ru/post/175959/">https://habr.com/ru/post/175959/</a></p>
+      Since the thought of connecting from the outside to the asterisk itself was dropped immediately after checking (all security recommendations were implemented at the implementation stage, there was fail2ban, and sip accounts had a hard ip restriction), and the AMI was disabled, there was only one option - call-files.  So it turned out.  I clarified with the client: they did not use this technology and, moreover, did not call to Lithuania.  Morality?  Correct, banal hacking. <br><a name="habracut"></a><br>  When deleting call-files, they appeared again after some time.  Expectedly, nothing was found in cron.  Scratching the back of my head, I ran lsof cyclically - but he could not catch anything interesting outgoing.  Then, after a short googling, heavy artillery went - inotify_tools.  The picture loomed curious: <i>something</i> constantly generated the notorious files of several pieces per second.  From which I concluded that I am not dealing with a scheduled task, but with a process or a demon. <br><br>  Further, it is simpler: through top and ps, a rather suspicious process was quickly caught, called “backup” and located in /var/tmp/bkb.d.  It turned out to be the simplest script that constantly copied to / var / spool / asterisk / outgoing there were a dozen of call-files lying there, which contained the initiation of an international call to various Lithuanian numbers.  At the same time, what is most interesting is that calls (more precisely, dialing attempts) were made via a non-existent trunk, and the call-files did not contain an indication of a connection after dialing with someone else. <br><br>  Having drunk off the malware and having made the required modifications of the CDR logic, I informed the client about the estimated time of the hacking and, as expected, I received a separate financial thanks for discovering this fact.  I don’t know what he will do next - I don’t know, the task of finding a hole through which hacking became possible did not stand in front of me.  Although only SIP, SSH and the statutory webmord's http-authorization statistics stuck out there (of course, the Apache, like the asterisk, was not launched from under the root), so the choice is small. <br><br>  It may have been a simpler and faster solution to finding the malware — but I still don’t consider linux to be a broad profile administrator, and applied what came to my mind and googled along the way.  However, it is still incomprehensible to me who, like, and most importantly, why he made such a meaningless hack. </div><p>Source: https://habr.com/ru/post/175959/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,11 +73,11 @@
 <li><a href="../175951/index.html">How to disable the service in "Megaphone": a guide to the "Service Guide"</a></li>
 <li><a href="../175953/index.html">Tin nanocrystals increase battery power</a></li>
 <li><a href="../175955/index.html">iconBIT NetTAB ULTRA NT-0704M: Good configuration for little money in an unusual version</a></li>
+<li><a href="../17596/index.html">Ten of the best gadgets in 2007. Version Time</a></li>
 <li><a href="../175963/index.html">Video: laser gun aboard warship knocks down drone</a></li>
 <li><a href="../175965/index.html">Effective online store "Comparison / selection of analogues." "Customer reviews of products / ratings." "With this often buy"</a></li>
 <li><a href="../175971/index.html">Coolpix P7700 and Coolpix P310 - two practical compact from Nikon</a></li>
 <li><a href="../175975/index.html">Don Jones "Creating a unified IT monitoring system in your environment." Chapter 6. Unified management with examples</a></li>
-<li><a href="../175977/index.html">How old are you, Habrayuzer?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

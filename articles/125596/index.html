@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Software RAID-6 under Linux: 16TB array recovery experience</h1><div class="post__text post__text-html js-mediator-article">  A few days ago one of the hard drives on a budget array of 16x1TB drives failed.  Array level: RAID 6. The situation was complicated by the fact that (as it turned out) a cooler was also installed on the video card of the same server, which was not noticed before, and after replacing the HDD, as a result of a change in the cooling mode of the case - this began to manifest itself in the form of synchronization time, which in itself is very unpleasant.  This resulted in the fact that the array ceased to auto-assemble, and several more disks were marked as failed, and I had to deal with it seriously, smoking wikis, manuals and forums (forums are the most useful because they describe the experience of specific people in specific situations) . <br><a name="habracut"></a><br>  The structure of my array: <br><br>  16x1TB HDD <br><br>  sections: <br>  md0 - / root 8x1 GB, RAID 6 <br>  md1 - / data: 16x999GB, RAID 6 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       At first, all the assembly experiments were set up on md0, i.e., on the rudimentary partition, which in itself does not have much value, except that it is a tuned system. <br><br>  So, I booted from Debian Disc 1 in Resque mode <br><br>  Attempting to auto-array through <br><br><pre> mdadm --assemble --scan
@@ -95,20 +95,20 @@
 </pre><br>  for sure, a simple way to assemble it would be as follows: <br><br><pre> mdadm —assemble —scan -f -v
 </pre><br>  But since I got to the "-f" flag through thorns, this is now understandable. <br>  That is, sections marked as failed or obsolete were added to the array, and not ignored.  It is likely that a bad or outdated partition may be marked with a bad, or not tightly fitting SATA cable, which is not uncommon. <br><br>  Nevertheless, I got an array in degraded mode, on 14 disks out of 16. <br><br>  Now, to restore the normal performance of the array and not be afraid for it, you need to add 2 missing disks to it: <br><br><pre> mdadm --add / dev / md3 / dev / sdX2
 </pre><br>  where X is the letter of the new HDD partition <br><br>  Below I will cite the difficulties that I encountered in order to save others from attacking my rake: <br><br>  I used WIKI recommendations - Linux RAID Recovery ( <a href="https://raid.wiki.kernel.org/index.php/RAID_Recovery">raid.wiki.kernel.org/index.php/RAID_Recovery</a> ) for working with the Linux RAID array WIKI - I advise you to be careful with them, because the page describes the process very briefly, and thanks to these recommendations, I destroyed / root (md0) of my array. <br><br>  Until this line at the very bottom of the WIKI article, everything is very useful: <br><br><pre> mdadm --create --assume-clean --level = 6 --did-devices = 10 / dev / md0 / dev / sdb1 / dev / sdc1 / dev / sdd1 / dev / sde1 / dev / sdf1 missing / dev / sdl1 / dev / sdk1 / dev / sdj1
-</pre><br>  This line demonstrates how to re-create an array, knowing which devices in which order it is included.  It is very important to take into account the version of your superblock, since the new mdadm create a superblock 1.2 and it is located at the beginning of the section, 0.90 is located at the end.  Therefore, you need to add the flag "--metadata = 0.90". <br>  After I built the array using “--create”, the file system was destroyed, and neither the main ext4 superblock nor the backup superclock was found.  At first, I discovered that the new superblock was not 0.90 and 1.2, which could have caused the partition to be destroyed, but it didn’t appear, because changing the RAID version of the superblock to 0.90 and searching the backup of the ext4 superblock was unsuccessful. <br>  Since the / root partition is not the most important part, I decided to experiment - the array was reformatted and then stopped: <br>  mdadm —stop / dev / md2 <br>  and immediately created again through “--create”: the result is that the file system is destroyed again, although this should not have happened, I am sure that I did not confuse the order of the devices for the first time, and especially the 2nd one. <br>  Perhaps someone successfully restored partitions, through "--create", I will be happy to add to this article what exactly I did wrong, and why FS was destroyed.  Perhaps it was also collected with other parameters of the block size (chunk size). <br><br>  <i>It is obvious that any recommendations from this article should be used at your own risk and risk, no one guarantees that in your case everything will work exactly as in mine.</i> </div><p>Source: <a href="https://habr.com/ru/post/125596/">https://habr.com/ru/post/125596/</a></p>
+</pre><br>  This line demonstrates how to re-create an array, knowing which devices in which order it is included.  It is very important to take into account the version of your superblock, since the new mdadm create a superblock 1.2 and it is located at the beginning of the section, 0.90 is located at the end.  Therefore, you need to add the flag "--metadata = 0.90". <br>  After I built the array using “--create”, the file system was destroyed, and neither the main ext4 superblock nor the backup superclock was found.  At first, I discovered that the new superblock was not 0.90 and 1.2, which could have caused the partition to be destroyed, but it didn’t appear, because changing the RAID version of the superblock to 0.90 and searching the backup of the ext4 superblock was unsuccessful. <br>  Since the / root partition is not the most important part, I decided to experiment - the array was reformatted and then stopped: <br>  mdadm —stop / dev / md2 <br>  and immediately created again through “--create”: the result is that the file system is destroyed again, although this should not have happened, I am sure that I did not confuse the order of the devices for the first time, and especially the 2nd one. <br>  Perhaps someone successfully restored partitions, through "--create", I will be happy to add to this article what exactly I did wrong, and why FS was destroyed.  Perhaps it was also collected with other parameters of the block size (chunk size). <br><br>  <i>It is obvious that any recommendations from this article should be used at your own risk and risk, no one guarantees that in your case everything will work exactly as in mine.</i> </div><p>Source: https://habr.com/ru/post/125596/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../125589/index.html">Combined Russian-Ukrainian typographical keyboard layout for Mac OS X 10.6</a></li>
+<li><a href="../12559/index.html">Micro-contributors authors</a></li>
 <li><a href="../125590/index.html">Nokia creatively promotes the N8</a></li>
 <li><a href="../125591/index.html">The news of IE's low IQ users turned out to be a hoax</a></li>
 <li><a href="../125592/index.html">Silverlight cookbook: drag & drop recipe</a></li>
 <li><a href="../125594/index.html">50 more Nokia N950 are waiting for developers</a></li>
 <li><a href="../125597/index.html">Writing PHP extension</a></li>
 <li><a href="../125599/index.html">Node.JS for Windows: node.exe</a></li>
+<li><a href="../1256/index.html">Google is working on the "killer" iPhone</a></li>
+<li><a href="../12560/index.html">Mirrors now accept SMS messages</a></li>
 <li><a href="../125603/index.html">The second breath of a budget Android-smartphone</a></li>
-<li><a href="../125605/index.html">HotMilk is a library for conveniently organizing Mustache templates.</a></li>
-<li><a href="../125607/index.html">Quality assurance management</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

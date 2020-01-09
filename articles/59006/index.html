@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Setting up a debugger in Nusphere PhpEd for remote debugging of web services</h1><div class="post__text post__text-html js-mediator-article">  Nusphere PhpEd has a debugger for php scripts that allows you to debug and profile web services of any complexity and with any structure on a remote server.  The only requirements for its normal operation is an open port on the computer from which debugging occurs, and the connection of the debugger module that comes with PhpEd to php. <br><br><a name="habracut"></a><br><br>  After the release of Weborama 2.0, we finally made a feature-freeze and it was time to seriously do refactoring.  For this, it would be nice to use a debugger.  Personally, I really envy those who use the debugger to work on an ongoing basis.  We failed to implement it from the very beginning and somehow abandoned this business.  But now, in view of the complexity of the relationship between the various modules of the project, we began to lose a lot of time using the “classic” debugging methods (var_dump, print). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       That's how I remembered the debugger built into PhpEd again.  But since our production is located in different places, we go to the development server remotely.  Therefore, we had to raise it according to the most difficult scenario, which is described below: <br><br>  <i>Next comes the text of our technologist (with my edits to make it more or less abstract), who wrote the article in the corporate wiki (If successful, the author will not get an invite for Habr, since he already has an account <a href="http://habrahabr.ru/users/andrushkaaaa/" class="user_link">andrushkaaaa</a> :)):</i> <br><br>  Using the example of PhpEd 5.6 and hypothesing <b>dev.weborama.ru</b> (all folders and projects can be called as you please, in order to avoid paranoia I do not write every time that “this folder can be placed anywhere” or “here you can choose any name”) <br><br>  1. First, let's do the server.  Copy the desired debugger version to the server from the PhpEd installation / debugger subfolder. <br><br>  2. open the <i>php.ini file</i> and list the following in it: <br><br><pre> zend_extension = /path/to/debbugger_extension/dbg-php-5.2.so
@@ -70,7 +70,7 @@
  debugger.hosts_allow = your IP address
  debugger.hosts_deny = ALL
  debugger.ports = 7869 10000/16
-</pre><br><br>  3. restart the web server, fast-cgi daemon, backend or whatever you have. <br><br>  4. Now the client.  <i>At C: \ Documents and Settings \ {computer name} \ Application ata \ NuSphere \ PhpED \ create a folder myWorkspace</i> <br><br>  5. Inside the myWorkspace create the projects folder, inside it the dev.weborama.ru folder where the project files will be stored. <br><br>  6. Download or put there the whole project. <br><br>  7. Open PhpEd <br><br>  8. In PhpEd choose New project. <br><br>  9. Switch to Wizard mode if it did not happen automatically. <br><br>  10. Select "Web server is on a remote machine." <br><br><img src="http://tbms.ru/phped/debugger/pic1.jpg"><br><br>  11. Specify the project root as <i>C: \ Documents and Settings \ {computer name} \ Application Data \ NuSphere \ PhpED \ myWorkspace \ dev.weborama.ru</i> <br><br><img src="http://tbms.ru/phped/debugger/pic2.jpg"><br><br>  12. Click the <i>Accounts</i> button. <br><br><img src="http://tbms.ru/phped/debugger/pic4.jpg"><br><br>  13. Configure FTP account for dev.weborama.ru <br><br><img src="http://tbms.ru/phped/debugger/pic3.jpg"><br><br>  14. Choose it as <i>Publishing account</i> . <br><br><img src="http://tbms.ru/phped/debugger/pic4.jpg"><br><br>  This will allow you to synchronize your local code with what is on the server. <br><br>  15. In the next step, download the dbg-wizard.php at the specified link and put it in the root of the project on FTP yourself.  Relieve your headache.  Then provide a link to it. <br><br><img src="http://tbms.ru/phped/debugger/pic5.jpg"><br><br>  Next, click "Next" until you reach the finish line.  I can not go with you, because the project is hypothetical.  If there are problems, then write in the comments - we'll figure it out. <br><br>  After all this, you can consider your project ready for debugging. <br><br>  16. If you are behind a firewall, then make sure that port 7869 (by default) sticks out and accepts connections.  Also, if you want more security and you have a static IP, then prepare it, we will need it in the settings for the server part of the debugger. <br><br>  17. now open any project php-file in phpEd and press F9 or Run in debugger in the debug panel.  If everything is done correctly, then you will start a debugging session. <br><br>  Thanks for attention. <br><br>  <b>PS</b> : If you're interested, next time I will write how to make friends with PhpEd project with Subversion and set up a debugger for several developers. </div><p>Source: <a href="https://habr.com/ru/post/59006/">https://habr.com/ru/post/59006/</a></p>
+</pre><br><br>  3. restart the web server, fast-cgi daemon, backend or whatever you have. <br><br>  4. Now the client.  <i>At C: \ Documents and Settings \ {computer name} \ Application ata \ NuSphere \ PhpED \ create a folder myWorkspace</i> <br><br>  5. Inside the myWorkspace create the projects folder, inside it the dev.weborama.ru folder where the project files will be stored. <br><br>  6. Download or put there the whole project. <br><br>  7. Open PhpEd <br><br>  8. In PhpEd choose New project. <br><br>  9. Switch to Wizard mode if it did not happen automatically. <br><br>  10. Select "Web server is on a remote machine." <br><br><img src="http://tbms.ru/phped/debugger/pic1.jpg"><br><br>  11. Specify the project root as <i>C: \ Documents and Settings \ {computer name} \ Application Data \ NuSphere \ PhpED \ myWorkspace \ dev.weborama.ru</i> <br><br><img src="http://tbms.ru/phped/debugger/pic2.jpg"><br><br>  12. Click the <i>Accounts</i> button. <br><br><img src="http://tbms.ru/phped/debugger/pic4.jpg"><br><br>  13. Configure FTP account for dev.weborama.ru <br><br><img src="http://tbms.ru/phped/debugger/pic3.jpg"><br><br>  14. Choose it as <i>Publishing account</i> . <br><br><img src="http://tbms.ru/phped/debugger/pic4.jpg"><br><br>  This will allow you to synchronize your local code with what is on the server. <br><br>  15. In the next step, download the dbg-wizard.php at the specified link and put it in the root of the project on FTP yourself.  Relieve your headache.  Then provide a link to it. <br><br><img src="http://tbms.ru/phped/debugger/pic5.jpg"><br><br>  Next, click "Next" until you reach the finish line.  I can not go with you, because the project is hypothetical.  If there are problems, then write in the comments - we'll figure it out. <br><br>  After all this, you can consider your project ready for debugging. <br><br>  16. If you are behind a firewall, then make sure that port 7869 (by default) sticks out and accepts connections.  Also, if you want more security and you have a static IP, then prepare it, we will need it in the settings for the server part of the debugger. <br><br>  17. now open any project php-file in phpEd and press F9 or Run in debugger in the debug panel.  If everything is done correctly, then you will start a debugging session. <br><br>  Thanks for attention. <br><br>  <b>PS</b> : If you're interested, next time I will write how to make friends with PhpEd project with Subversion and set up a debugger for several developers. </div><p>Source: https://habr.com/ru/post/59006/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -81,9 +81,9 @@
 <li><a href="../59005/index.html">What are anti-patterns?</a></li>
 <li><a href="../59007/index.html">Fighting the whole crowd system or experiment with crowdfunding in runet</a></li>
 <li><a href="../59008/index.html">Need for Speed: Undercover for iPhone and iPod touch</a></li>
+<li><a href="../5901/index.html">Updated GMail widget for Personalized Google Homepage</a></li>
 <li><a href="../59012/index.html">Torpig botnet captured for research</a></li>
 <li><a href="../59016/index.html">7 Creative Pixar Principles by John Lasseter</a></li>
-<li><a href="../59018/index.html">SMTP relay or what to do if your server is in the blacklist email</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

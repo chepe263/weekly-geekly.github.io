@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Arduino for beginners. Part 2</h1><div class="post__text post__text-html js-mediator-article"><h2 id="predislovie-avtora">  Preface of the author </h2><br><p>  Good day, Habr.  As planned, I continue the cycle of articles that will help you in acquaintance with Arduino.  Also, in each subsequent article (including this one) you can find answers to the most important questions that appear in the comments.  For those who have not read the first part, <a href="https://habr.com/post/352806/">here</a> . </p><br><h2 id="kak-opredelit-polyarnost-svetodioda">  How to determine the polarity of the LED </h2><br><p>  At the moment, most LEDs do so in order to simplify the process of determining the polarity.  The LED has two legs, one of which will be longer than the other.  The long leg is a plus (anode).  A short leg is a minus (cathode).  But what to do if the findings of the LED of the same size?  Sometimes the cathode output is marked with a dot or a small cut on the body.  You can also find out the polarity by careful consideration of the crystal.  Plus has a much smaller size inside the lens compared to minus.  The minus contact, in turn, resembles the flag on which the crystal is placed.  You can also determine the polarity of the power supply.  To do this, you need a current source (with a voltage of 3 to 6 volts), a resistor (with a resistance of 220 - 470 Ohms) and the LED itself.  First connect one leg of the LED to the resistor.  Then touch the power supply contacts with the LED.  Touching the anode to the plus, and the cathode to the minus, the LED will glow (if it is working). <a name="habracut"></a></p><br><h2 id="prodvigaemsya-dalee-v-izuchenii-arduino">  Moving further in the study of Arduino </h2><br><p>  In the last article we learned how to connect and turn on the LED and also flicker them.  And what if we need to control this LED.  Or we want to make a semblance of a lamp.  Here we will help the button or switch.  But today we will look at the button.  They can actually be useful in different projects.  Let's get started </p><br><h2 id="neobhodimye-komponenty-i-podklyuchenie">  Necessary components and connection </h2><br><p>  To connect the button you need: </p><br><ul><li>  Arduino controller </li><li>  button </li><li>  resistor (10 kΩ) </li><li>  bread board </li><li>  jumpers / wires <br>  The connection scheme itself looks like this: </li></ul><br><p><img src="https://habrastorage.org/webt/hd/_n/sb/hd_nsbchwahb2cskd8dah1kz2_4.jpeg" alt="image"></p><br><h2 id="pishem-kod">  Write the code </h2><br><p>  After connecting the circuit, let's deal with the program itself.  After connecting the circuit, let's deal with the program itself.  In this example, we will control the LED on the 13 pin.  That is, you can not connect an additional LED so there is a built-in.  But the connection of the LED can be read in 1 part Arduino for beginners. </p><br><pre><code class="hljs pgsql"><span class="hljs-type"><span class="hljs-type">int</span></span> Led = <span class="hljs-number"><span class="hljs-number">13</span></span>; <span class="hljs-type"><span class="hljs-type">int</span></span> Button = <span class="hljs-number"><span class="hljs-number">2</span></span>; //  ,    <span class="hljs-type"><span class="hljs-type">void</span></span> setup(){ pinMode(Led, OUTPUT); pinMode(Button, <span class="hljs-keyword"><span class="hljs-keyword">INPUT</span></span>); } <span class="hljs-type"><span class="hljs-type">void</span></span> <span class="hljs-keyword"><span class="hljs-keyword">loop</span></span>(){ <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(digitalRead(Button) == HIGH){ //    digitalWrite(Led, HIGH); //   } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span>{ //    () digitalWrite(Led, LOW); //    } }</code> </pre> <br><p>  This example is quite good.  But, and if we need to perform an action not by holding, but by pressing.  Then we will change our code a bit.  We will add two more variables, some flags that will follow some processes.  And the code looks like this: </p><br><pre> <code class="hljs pgsql"><span class="hljs-type"><span class="hljs-type">bool</span></span> But = <span class="hljs-keyword"><span class="hljs-keyword">true</span></span>; //    <span class="hljs-type"><span class="hljs-type">bool</span></span> Light = <span class="hljs-keyword"><span class="hljs-keyword">false</span></span>; //    <span class="hljs-type"><span class="hljs-type">int</span></span> Led = <span class="hljs-number"><span class="hljs-number">13</span></span>; <span class="hljs-type"><span class="hljs-type">int</span></span> Button = <span class="hljs-number"><span class="hljs-number">2</span></span>; //  ,    <span class="hljs-type"><span class="hljs-type">void</span></span> setup(){ pinMode(Led, OUTPUT); pinMode(Button, <span class="hljs-keyword"><span class="hljs-keyword">INPUT</span></span>); } <span class="hljs-type"><span class="hljs-type">void</span></span> <span class="hljs-keyword"><span class="hljs-keyword">loop</span></span>(){ <span class="hljs-type"><span class="hljs-type">bool</span></span> Now = digitalRead(Button); //     <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(But &amp;&amp; !Now) { delay(<span class="hljs-number"><span class="hljs-number">10</span></span>); //   Now = digitalRead(Button); <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(!Now) { Light = !Light; digitalWrite(Led, Light); } } But = Now; }</code> </pre> <br><p>  In this code, you might notice <code>Light = !Light</code> .  I'll explain now.  We read whether the button has been omitted.  Next, a small delay determines whether it was an error and if the button was actually pressed, we invert the LED signal.  That is, if the LED is on, it will stop burning.  And vice versa. </p><br><h2 id="drebezg-kontaktov">  Contact Bounce </h2><br><p>  Very good, when everything is perfect.  But unfortunately everything is so perfect.  And with the buttons the same problem.  The mechanical contacts of the button cannot close / open instantly.  This is called “contact bounce”.  How to understand this.  The input of the microcontroller pulses.  But instead of just getting 1 or 0 because of this phenomenon, a whole bunch of impulses come to the input.  This can create false signals.  And that is why we make a small delay in our program.  At the speed of this is not particularly affect, but will provide us from the error. </p><br><p><img src="https://habrastorage.org/webt/fo/vq/pe/fovqpeaqq_ygr-y8ox8o-i-alrm.png" alt="image"></p><br><p>  On this we have the end of the second part.  Thanks for attention. <cut></cut></p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/358186/">https://habr.com/ru/post/358186/</a></p>
+    <p>Source: https://habr.com/ru/post/358186/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -78,7 +78,7 @@
 <li><a href="../358190/index.html">CredSSP encryption oracle remediation - error when connecting via RDP to a virtual server (VPS / VDS)</a></li>
 <li><a href="../358192/index.html">Marvin Minsky "The Emotion Machine": Chapter 3 "Suffering, pain, grief"</a></li>
 <li><a href="../358198/index.html">Notification Center. Tame 200+ mailings</a></li>
-<li><a href="../358200/index.html">Brief analysis of solutions in the field of SOC and the development of a neural network detector of anomalies in data networks</a></li>
+<li><a href="../3582/index.html">Happy habralyudi</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Working with get requests in JSF</h1><div class="post__text post__text-html js-mediator-article">  As you know, JSF can work only with post requests, but there is a method that allows you to parse and get. <br><br><a name="habracut"></a><br>  This is done like this: <br><br>  <b>1. Create a known bin to retrieve request parameters.</b> <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">package ru.beans;&lt;br&gt;&lt;br&gt;import javax.faces.context.FacesContext;&lt;br&gt;import javax.servlet.http.HttpServletRequest;&lt;br&gt;&lt;br&gt; <font color="#0000ff">public</font> <font color="#0000ff">class</font> EntryBean {&lt;br&gt;&lt;br&gt; <font color="#008000">//     get-</font> &lt;br&gt; <font color="#0000ff">private</font> <font color="#0000ff">static</font> final <font color="#2B91AF">String</font> PARAM_ID = <font color="#A31515">"id"</font> ;&lt;br&gt;&lt;br&gt; <font color="#0000ff">private</font> Integer id = <font color="#0000ff">null</font> ;&lt;br&gt;&lt;br&gt; <font color="#008000">//      </font> &lt;br&gt; <font color="#0000ff">public</font> EntryBean() {&lt;br&gt;    HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();&lt;br&gt;&lt;br&gt; <font color="#2B91AF">String</font> id = req.getParameter(PARAM_ID);&lt;br&gt; <font color="#0000ff">if</font> (id != <font color="#0000ff">null</font> ) {&lt;br&gt;      setId(Integer.parseInt(id));&lt;br&gt;    }&lt;br&gt;  }&lt;br&gt;&lt;br&gt; <font color="#0000ff">public</font> <font color="#0000ff">void</font> setId(Integer id) {&lt;br&gt; <font color="#0000ff">this</font> .id = id;&lt;br&gt;  }&lt;br&gt;&lt;br&gt; <font color="#0000ff">public</font> <font color="#0000ff">int</font> getId() {&lt;br&gt; <font color="#0000ff">return</font> id;&lt;br&gt;  }&lt;br&gt;&lt;br&gt; <font color="#008000">//       </font> &lt;br&gt; <font color="#0000ff">public</font> <font color="#2B91AF">String</font> getEntryLocation() {&lt;br&gt; <font color="#2B91AF">String</font> result = <font color="#A31515">"/userList.jsf"</font> ;&lt;br&gt;&lt;br&gt; <font color="#0000ff">if</font> (getId() != <font color="#0000ff">null</font> ) {&lt;br&gt;      result = <font color="#A31515">"/userDetail.jsf"</font> ;&lt;br&gt;    }&lt;br&gt;&lt;br&gt; <font color="#0000ff">return</font> result;&lt;br&gt;  }&lt;br&gt;}</font> &lt;br&gt;&lt;br&gt; <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  <b>2. Implement the PhaseListener interface:</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">pacakage ru.lifecycle;&lt;br&gt;&lt;br&gt;import javax.faces.component.UIViewRoot;&lt;br&gt;import javax.faces.context.FacesContext;&lt;br&gt;import javax.faces. <font color="#0000ff">event</font> .PhaseEvent;&lt;br&gt;import javax.faces. <font color="#0000ff">event</font> .PhaseId;&lt;br&gt;import javax.faces. <font color="#0000ff">event</font> .PhaseListener;&lt;br&gt;import javax.servlet.http.HttpServletRequest;&lt;br&gt;&lt;br&gt;import ru.beans.EntryBean;&lt;br&gt;&lt;br&gt;&lt;br&gt; <font color="#0000ff">public</font> <font color="#0000ff">class</font> RedirectPhaseListener implements PhaseListener {&lt;br&gt;&lt;br&gt; <font color="#008000">//     </font> &lt;br&gt; <font color="#0000ff">public</font> PhaseId getPhaseId() {&lt;br&gt; <font color="#0000ff">return</font> PhaseId.RESTORE_VIEW;&lt;br&gt;    }&lt;br&gt;&lt;br&gt; <font color="#008000">//   </font> &lt;br&gt; <font color="#0000ff">public</font> <font color="#0000ff">void</font> beforePhase(PhaseEvent <font color="#0000ff">event</font> ) {&lt;br&gt;        FacesContext ctx = <font color="#0000ff">event</font> .getFacesContext();&lt;br&gt;        HttpServletRequest request = (HttpServletRequest)ctx.getExternalContext().getRequest();&lt;br&gt;        &lt;br&gt; <font color="#2B91AF">String</font> path = request.getServletPath();&lt;br&gt;        EntryBean entry = <font color="#0000ff">null</font> ;&lt;br&gt; <font color="#0000ff">if</font> ((path != <font color="#0000ff">null</font> ) &amp;&amp; path.endsWith( <font color="#A31515">"/entry.jsf"</font> )) {&lt;br&gt; <font color="#008000">//    </font> &lt;br&gt;      entry = (EntryBean)ctx.getApplication().evaluateExpressionGet(ctx, <font color="#A31515">"#{EntryBean}"</font> , EntryBean. <font color="#0000ff">class</font> );&lt;br&gt; <font color="#0000ff">try</font> {&lt;br&gt; <font color="#2B91AF">String</font> location = entry.getEntryLocation();&lt;br&gt;        &lt;br&gt; <font color="#008000">//  ViewRoot   </font> &lt;br&gt;        UIViewRoot newPage = ctx.getApplication().getViewHandler().createView(ctx, location);&lt;br&gt;        ctx.setViewRoot(newPage);&lt;br&gt;        &lt;br&gt; <font color="#008000">//   ,    , :</font> &lt;br&gt; <font color="#0000ff">if</font> (entry.getId() != <font color="#0000ff">null</font> ) {&lt;br&gt;          customersBean.setCustomerId(entry.getId());&lt;br&gt;        }&lt;br&gt;&lt;br&gt; <font color="#008000">//  -   ...</font> &lt;br&gt;      } <font color="#0000ff">catch</font> (Throwable e) {&lt;br&gt;            log.error( <font color="#A31515">"Failed to redirect"</font> , e);&lt;br&gt;         }&lt;br&gt; <font color="#008000">//  ,  </font> &lt;br&gt;      ctx.renderResponse();&lt;br&gt;    }&lt;br&gt;  }&lt;br&gt;&lt;br&gt; <font color="#008000">//  </font> &lt;br&gt; <font color="#0000ff">public</font> <font color="#0000ff">void</font> afterPhase(PhaseEvent <font color="#0000ff">event</font> ) {&lt;br&gt;  }&lt;br&gt;}</font> &lt;br&gt;&lt;br&gt; <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  <b>3. In faces-config.xml create a category</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">&lt;</font> <font color="#800000">lifecycle</font> <font color="#0000ff">&gt;</font> &lt;br&gt; <font color="#0000ff">&lt;</font> <font color="#800000">phase-listener</font> <font color="#0000ff">&gt;</font> ru.lifecycle.RedirectPhaseListener <font color="#0000ff">&lt;/</font> <font color="#800000">phase-listener</font> <font color="#0000ff">&gt;</font> &lt;br&gt; <font color="#0000ff">&lt;/</font> <font color="#800000">lifecycle</font> <font color="#0000ff">&gt;</font></font> &lt;br&gt;&lt;br&gt; <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,23 +64,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/45565/">https://habr.com/ru/post/45565/</a></p>
+    <p>Source: https://habr.com/ru/post/45565/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../45553/index.html">That means what they do there! Mosaic in google.spreadsheets</a></li>
-<li><a href="../45555/index.html">HP introduced the first working hybrid transistor memristor</a></li>
-<li><a href="../45562/index.html">For the first time in history, the turnover of online stores has decreased</a></li>
-<li><a href="../45563/index.html">Internet business vs crisis. Who will win?</a></li>
+<li><a href="../455638/index.html">Alan Kay did not invent objects</a></li>
 <li><a href="../45564/index.html">Apple spends more money on advertising than Microsoft</a></li>
+<li><a href="../455640/index.html">Marvin Minsky "The Emotion Machine": Chapter 4. "How We Recognize Consciousness"</a></li>
+<li><a href="../455642/index.html">The architecture of the service of distributed message queues in Yandex. Oblak</a></li>
+<li><a href="../455646/index.html">Security Week 24: factory backdoors on Android smartphones</a></li>
+<li><a href="../455658/index.html">Legendary Intel Core i7-2600K: Sandy Bridge Testing in 2019 (Part 3)</a></li>
 <li><a href="../45566/index.html">Social blog widget</a></li>
+<li><a href="../455662/index.html">Large mechanical cam display as a decoder</a></li>
+<li><a href="../455666/index.html">Building Outbound Sales in a Service IT Company</a></li>
 <li><a href="../45567/index.html">New fring for iPhone / iPod touch with firmware 2.2</a></li>
-<li><a href="../45570/index.html">All the same 100% height and margin</a></li>
-<li><a href="../45571/index.html">New LinkedIn Search Platform</a></li>
-<li><a href="../45572/index.html">How not to get a job</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

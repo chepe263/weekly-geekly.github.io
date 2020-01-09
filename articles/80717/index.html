@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
    ip route 0.0.0.0 0.0.0.0 Gate (ISP2) track 22
 </pre><br><a name="habracut"></a><br>  NATa rules do not change.  The same route-map in dynamic and static broadcasts.  But how to determine which package to send through which provider?  It is possible to forcibly scatter incoming packets from g0 / 0 with another route-map. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,7 +63,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <pre> !  We prepare access lists with “interesting” traffic.  Everyone knows what is
@@ -108,20 +108,20 @@
  route-map ISP2 permit 10
    match interface f0 / 1
    match ip address FORISP2
-</pre><br>  This solution, though not beautiful, but still completely solves the problem without affecting the server (it can often not be affected: for example, if it is not an application, but a VPN server).  There is only one loss here: the server never knows with whom it actually communicates, which means it is impossible to collect adequate statistics, etc. <br><br>  If we use the capabilities of servers, then several solutions that do not require external NATa come to mind. <br>  The first is to actually make 2 partner servers, with different addresses and connected to each other for replication with one more link.  Each server is broadcast to its address, but in the event of a drop in one of the channels it switches to a partner address. <br>  Not the easiest and cheapest solution. <br><br>  Second: set 2 addresses on the same server.  If they are from the same subnet, then there will be no problems with routing.  Each of the local server addresses is strictly broadcast only by one of the providers, since  physically, the server is one and we still will not get any benefit from the load.  To explicitly specify the output interface, use the route-map STRELKA.  There may be a problem with the server itself: it often happens that when the server responds, it uses only the primary address of the interface, regardless of what address the request came to. <br>  A typical example: VPN server.  If the cisco router acts as a VPN server, it always responds to the primary interface address. <br><br>  _________________ <br><h5>  UPD on 23:45 01/14/2010 </h5><br><br>  I received a letter from a reader from Lithuania, where he referred to an interesting article.  Perhaps it will complement the server part of the task: <br>  <a href="http://www.nil.com/ipcorner/SOHO_Servers/">Here on the site NILA</a> .  The author is Ivan Pepelnyak, one of the early CCIEs, a very deep specialist (his blog <a href="http://blog.ioshints.info/">“iOS hints and tricks”</a> <br><br>  In short: on the Windows server you can create loopback interfaces (2 pieces) and sorsy the packages from the services from these addresses.  And broadcast them to different external.  In addition, it is necessary to register return routes on the loopback network on the routers.  Then the source address problem will be solved. <br>  __________________ <br><br>  If addresses from different subnets, the default gateway is still the same.  So, everything will be routed through only one interface and the task will not be completely solved. <br><br>  PS Today I finally assembled a stand and checked everything again, thanks to your interest!  So use, my dear :) <br><br>  Sergey Fedorov, CCIE Security # 22974 </div><p>Source: <a href="https://habr.com/ru/post/80717/">https://habr.com/ru/post/80717/</a></p>
+</pre><br>  This solution, though not beautiful, but still completely solves the problem without affecting the server (it can often not be affected: for example, if it is not an application, but a VPN server).  There is only one loss here: the server never knows with whom it actually communicates, which means it is impossible to collect adequate statistics, etc. <br><br>  If we use the capabilities of servers, then several solutions that do not require external NATa come to mind. <br>  The first is to actually make 2 partner servers, with different addresses and connected to each other for replication with one more link.  Each server is broadcast to its address, but in the event of a drop in one of the channels it switches to a partner address. <br>  Not the easiest and cheapest solution. <br><br>  Second: set 2 addresses on the same server.  If they are from the same subnet, then there will be no problems with routing.  Each of the local server addresses is strictly broadcast only by one of the providers, since  physically, the server is one and we still will not get any benefit from the load.  To explicitly specify the output interface, use the route-map STRELKA.  There may be a problem with the server itself: it often happens that when the server responds, it uses only the primary address of the interface, regardless of what address the request came to. <br>  A typical example: VPN server.  If the cisco router acts as a VPN server, it always responds to the primary interface address. <br><br>  _________________ <br><h5>  UPD on 23:45 01/14/2010 </h5><br><br>  I received a letter from a reader from Lithuania, where he referred to an interesting article.  Perhaps it will complement the server part of the task: <br>  <a href="http://www.nil.com/ipcorner/SOHO_Servers/">Here on the site NILA</a> .  The author is Ivan Pepelnyak, one of the early CCIEs, a very deep specialist (his blog <a href="http://blog.ioshints.info/">“iOS hints and tricks”</a> <br><br>  In short: on the Windows server you can create loopback interfaces (2 pieces) and sorsy the packages from the services from these addresses.  And broadcast them to different external.  In addition, it is necessary to register return routes on the loopback network on the routers.  Then the source address problem will be solved. <br>  __________________ <br><br>  If addresses from different subnets, the default gateway is still the same.  So, everything will be routed through only one interface and the task will not be completely solved. <br><br>  PS Today I finally assembled a stand and checked everything again, thanks to your interest!  So use, my dear :) <br><br>  Sergey Fedorov, CCIE Security # 22974 </div><p>Source: https://habr.com/ru/post/80717/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../80704/index.html">First steps with QML</a></li>
 <li><a href="../80705/index.html">AsciiCamera</a></li>
 <li><a href="../80706/index.html">We charge mobile phones with brute force</a></li>
+<li><a href="../8071/index.html">Sticky nanoparticles are assembled into macrostructures.</a></li>
 <li><a href="../80713/index.html">Nokia 5800 has finally added kinetic scrolling!</a></li>
 <li><a href="../80716/index.html">Visual Studio 2005/2008 PasteBin via C #</a></li>
 <li><a href="../80718/index.html">In April of this year, iPhone 4G will appear; rumor has it that there will be support for fourth-generation cellular networks</a></li>
+<li><a href="../8072/index.html">OQO Model 2 now with HSDPA</a></li>
 <li><a href="../80720/index.html">In the first week, only 20 thousand copies of Google Nexus One were sold.</a></li>
 <li><a href="../80721/index.html">Cheat sheet to decipher the names of video files</a></li>
 <li><a href="../80722/index.html">Russian national Internet film award "George"</a></li>
-<li><a href="../80724/index.html">How many active mailboxes do you have?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

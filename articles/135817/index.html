@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Slow read server vulnerabilities</h1><div class="post__text post__text-html js-mediator-article">  Greetings. <br>  I want to tell you what I indulged in in my spare time from working in Qualys.  Since there is surprisingly a lot of <a href="">noise</a> on the English-language Internet about the Slow Read DoS attack, and I am sure that I will receive here a lot of useful criticism and practical suggestions. <br><br>  In August 2011, I wrote a program <a href="httptest/">called slowhttptest</a> that tests web servers for vulnerabilities related to processing slow HTTP requests, such as slowloris and slow HTTP Post.  The goal is to create a configurable tool that facilitates the work of developers and allow them to concentrate on creating effective defenses, not picking python, on which most proof-of-concept exploits are written. <br><br>  And then I decided to try how the servers react to slow reading by clients of HTTP responses.  Surprisingly bad react.  Default apache, nginx, lightpd, IIS refuse to service with a bang. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      And the essence is: <br><a name="habracut"></a><br>  if you find a resource on a web server that is larger than send buffer-a, which the kernel allocated for the connection, to which the server program sends the resource, then if you force the kernel not to accept all the data, the server will try to send the remaining piece of data, occupying the limited in size the queue of connections, processor time, memory, and free time of the system administrator.  If you block the entire queue with such connections, the server will, accordingly, begin to deny service to fast clients. <br><br>  Making the core behave this way is quite simple and was described as early as 2008 by the guys from Outpost24 in the <a href="http://en.wikipedia.org/wiki/Sockstress">Sockstress</a> method: for example, sending a TCP window size equal to 0, i.e.  the client has no place to receive data.  The TCP design correctly implies that the application, rather than the kernel, is required to control slow and dead connections.  However, for 4 years, no one raised a finger. <br><br>  Sockstress manually creates packets, calculates when to send another confirmation in order not to reset the persist timer on the server, it is difficult to make it shorter. <br>  My student is even able to put my method into practice: <br>  Create a socket, set a relatively small size of receive buffer on the client, send a completely holistic and normal HTTP request for a picture of 100Kb in size, for example.  The server takes a picture from memory, gives the kernel to transfer it to the network.  The server takes a piece of the picture and sends, the client takes the first thousand bytes, and says stop, there is no place.  The server polls a socket, trying to figure out when it will be ready to write, but it is not ready!  Once a minute, read a couple of bytes from the client's receive buffer so that the TCP stack sends something different from zero, thereby creating the appearance of a live connection for firewalls and IDS. <br><br>  That's all.  Please do not kick much, the first technical post in Russian, but Habr like, did not hesitate.  A detailed description can be found <a href="https://community.qualys.com/blogs/securitylabs/2012/01/05/slow-read">here</a> . <br>  PS For the previous version, slowhttptest wrote the <a href="httptest/wiki/InstallationAndUsage%3Fwl%3Dru">wiki</a> in Russian, if at least one soul is interested, I will translate it for the new version. <br><br>  Update: <br>  ModSecurity hurry up, show in detail how to defend: <br>  <a href="http://blog.spiderlabs.com/2012/01/modsecurity-advanced-topic-of-the-week-mitigation-of-slow-read-denial-of-service-attack.html%3Futm_source%3Dtwitterfeed%26utm_medium%3Dtwitter%26utm_campaign%3DFeed%253A%2BSecurityBloggersNetwork%2B%2528Security%2BBloggers%2BNetwork%2529">Denial of Service Attack: Modify Security Advanced Topic of the Week</a> <br>  Update 2: <br>  <a href="https://habrahabr.ru/users/semy/" class="user_link">Semy</a> pointed to build errors on BSD.  Fixed in svn. </div><p>Source: <a href="https://habr.com/ru/post/135817/">https://habr.com/ru/post/135817/</a></p>
+      And the essence is: <br><a name="habracut"></a><br>  if you find a resource on a web server that is larger than send buffer-a, which the kernel allocated for the connection, to which the server program sends the resource, then if you force the kernel not to accept all the data, the server will try to send the remaining piece of data, occupying the limited in size the queue of connections, processor time, memory, and free time of the system administrator.  If you block the entire queue with such connections, the server will, accordingly, begin to deny service to fast clients. <br><br>  Making the core behave this way is quite simple and was described as early as 2008 by the guys from Outpost24 in the <a href="http://en.wikipedia.org/wiki/Sockstress">Sockstress</a> method: for example, sending a TCP window size equal to 0, i.e.  the client has no place to receive data.  The TCP design correctly implies that the application, rather than the kernel, is required to control slow and dead connections.  However, for 4 years, no one raised a finger. <br><br>  Sockstress manually creates packets, calculates when to send another confirmation in order not to reset the persist timer on the server, it is difficult to make it shorter. <br>  My student is even able to put my method into practice: <br>  Create a socket, set a relatively small size of receive buffer on the client, send a completely holistic and normal HTTP request for a picture of 100Kb in size, for example.  The server takes a picture from memory, gives the kernel to transfer it to the network.  The server takes a piece of the picture and sends, the client takes the first thousand bytes, and says stop, there is no place.  The server polls a socket, trying to figure out when it will be ready to write, but it is not ready!  Once a minute, read a couple of bytes from the client's receive buffer so that the TCP stack sends something different from zero, thereby creating the appearance of a live connection for firewalls and IDS. <br><br>  That's all.  Please do not kick much, the first technical post in Russian, but Habr like, did not hesitate.  A detailed description can be found <a href="https://community.qualys.com/blogs/securitylabs/2012/01/05/slow-read">here</a> . <br>  PS For the previous version, slowhttptest wrote the <a href="httptest/wiki/InstallationAndUsage%3Fwl%3Dru">wiki</a> in Russian, if at least one soul is interested, I will translate it for the new version. <br><br>  Update: <br>  ModSecurity hurry up, show in detail how to defend: <br>  <a href="http://blog.spiderlabs.com/2012/01/modsecurity-advanced-topic-of-the-week-mitigation-of-slow-read-denial-of-service-attack.html%3Futm_source%3Dtwitterfeed%26utm_medium%3Dtwitter%26utm_campaign%3DFeed%253A%2BSecurityBloggersNetwork%2B%2528Security%2BBloggers%2BNetwork%2529">Denial of Service Attack: Modify Security Advanced Topic of the Week</a> <br>  Update 2: <br>  <a href="https://habrahabr.ru/users/semy/" class="user_link">Semy</a> pointed to build errors on BSD.  Fixed in svn. </div><p>Source: https://habr.com/ru/post/135817/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,10 +73,10 @@
 <li><a href="../135815/index.html">Testing parallel threads</a></li>
 <li><a href="../135816/index.html">Moving and Transforming in CSS3</a></li>
 <li><a href="../135818/index.html">"Bug" is not a bug of non-centering of figures with the attribute align = center</a></li>
+<li><a href="../13582/index.html">Some iPhone links</a></li>
 <li><a href="../135820/index.html">Do you use new syntax (hash, lambda) in Ruby 1.9?</a></li>
 <li><a href="../135821/index.html">What is this new jQuery.Callbacks Object</a></li>
 <li><a href="../135822/index.html">Script for Notepad ++ in Python</a></li>
-<li><a href="../135823/index.html">Laser toy for a cat on servo drives</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

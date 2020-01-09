@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PHP & AMQP (Continued) Installing php-rabbit</h1><div class="post__text post__text-html js-mediator-article"> In the continuation of the article <a href="http://akalend.habrahabr.ru/blog/70757/">"AMQP is now in PHP"</a> <br>  <i>Who cares what stones are expected when installing php-rabbit</i> <a name="habracut"></a><br><br>  1) The installation of the RabbitMQ broker itself went smoothly.  Gathers from FreeBSD ports, MacOs, .deb packages <br>  dependencies: requires an Erlang package (otp), taken for granted, as RabbitMQ is implemented on an Erlang, which has good internal multithreading mechanisms.  I tried to build RabbitMQ from source, but did not take into account something.  In general, the experience was not enough. <br><br>  2) With the installation of C, the client had to tinker, the features of which I will describe a little below.  But if you use the Mercurial client, the installation went through without any problems: <br> <code><a href="http://hg.rabbitmq.com/rabbitmq-c"></a> <a href="http://hg.rabbitmq.com/rabbitmq-codegen"></a> {{{ <br> echo Cloning rabbitmq-c <br> hg clone -r 84aaa77eba59 hg.rabbitmq.com/rabbitmq-c <br> cd rabbitmq-c <br> <br> echo Closning rabbitmq-codegen <br> hg clone -r 75c3ef2e1083 hg.rabbitmq.com/rabbitmq-codegen codegen <br> echo Compiling <br> <br> autoreconf -i &amp;&amp; ./configure &amp;&amp; make &amp;&amp; make install <br> }}} <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      But, initially, as a smart Masha, I decided to compile from source. <br>  Here, it should be noted that the architecture of applications of the RabbitMQ family is arranged as follows: in order not to make the code firmly dependent on changes to the AMQP protocol, the development team proposed a code generation solution in which all protocol-dependent parts were described in JSON and to this file (stable amqp -0.8.json, experiment amqp-0.9.json) in addition there was a code generator.  Kodogenerator can take hg.rabbitmq.com/rabbitmq-codegen/ <br><br>  The regular Makefile turned out to be slightly inoperable and at startup it gives an error for the absence of the amqp_framing.h and amqp_framing.c files, therefore, they need to be generated as follows: <br>  - initially download files (amqp-0.8.json, amqp_codegen.py) from the code generator folder and add it to the librabbitmq directory <br>  - run the code generator from the librabbitmq: python codegen.py directory, you should see the following: <br> <code>python codegen.py <br> Usage: <br> codegen.py header|body path_to_amqp_spec.json path_to_output_file <br></code> <br>  - enter the command: <br> <code>python codegen.py header &lt;full/path/to/amqp-0.8.json&gt; &lt;full/path/to/amqp_framing.h&gt; <br> python codegen.py body &lt;full/path/to/amqp-0.8.json&gt; &lt;full/path/to/amqp_framing.c&gt; <br></code> <br>  After code generation, you need to disable code generation sections in the Makefile: amqp_framing.h and amqp_framing.c.  And why are they needed if we did it with pens. <br><br>  I just commented out their contents. <code>amqp_framing.h: $(AMQP_SPEC_JSON_PATH) $(CODEGEN_PY) <br> # PYTHONPATH=$(AMQP_CODEGEN_DIR) $(PYTHON) $(CODEGEN_PY) header $&lt; $@ <br> <br> amqp_framing.c: $(AMQP_SPEC_JSON_PATH) $(CODEGEN_PY) <br> # PYTHONPATH=$(AMQP_CODEGEN_DIR) $(PYTHON) $(CODEGEN_PY) body $&lt; $@ <br></code> <br><br>  perhaps it was enough just to tinker in the Makefile and set it up so that it was not dancing with tambourines ... <br><br>  3) the installation of the extension is normal, if as .so, then: <br>  in the <code>phpize <br> ./configure <br> sudo make install <br></code> project <code>phpize <br> ./configure <br> sudo make install <br></code> <code>phpize <br> ./configure <br> sudo make install <br></code> <br>  further write in php.ini: rabbit.so; <br><br>  If we want to install statically, then we rewrite the mod in the directory php / ext and then everything is the same as any PECL extension: <br> <code>./buildconf <br> ./configure .... --with-rabbit <br> make &amp; make install <br></code> </div><p>Source: <a href="https://habr.com/ru/post/70792/">https://habr.com/ru/post/70792/</a></p>
+      But, initially, as a smart Masha, I decided to compile from source. <br>  Here, it should be noted that the architecture of applications of the RabbitMQ family is arranged as follows: in order not to make the code firmly dependent on changes to the AMQP protocol, the development team proposed a code generation solution in which all protocol-dependent parts were described in JSON and to this file (stable amqp -0.8.json, experiment amqp-0.9.json) in addition there was a code generator.  Kodogenerator can take hg.rabbitmq.com/rabbitmq-codegen/ <br><br>  The regular Makefile turned out to be slightly inoperable and at startup it gives an error for the absence of the amqp_framing.h and amqp_framing.c files, therefore, they need to be generated as follows: <br>  - initially download files (amqp-0.8.json, amqp_codegen.py) from the code generator folder and add it to the librabbitmq directory <br>  - run the code generator from the librabbitmq: python codegen.py directory, you should see the following: <br> <code>python codegen.py <br> Usage: <br> codegen.py header|body path_to_amqp_spec.json path_to_output_file <br></code> <br>  - enter the command: <br> <code>python codegen.py header &lt;full/path/to/amqp-0.8.json&gt; &lt;full/path/to/amqp_framing.h&gt; <br> python codegen.py body &lt;full/path/to/amqp-0.8.json&gt; &lt;full/path/to/amqp_framing.c&gt; <br></code> <br>  After code generation, you need to disable code generation sections in the Makefile: amqp_framing.h and amqp_framing.c.  And why are they needed if we did it with pens. <br><br>  I just commented out their contents. <code>amqp_framing.h: $(AMQP_SPEC_JSON_PATH) $(CODEGEN_PY) <br> # PYTHONPATH=$(AMQP_CODEGEN_DIR) $(PYTHON) $(CODEGEN_PY) header $&lt; $@ <br> <br> amqp_framing.c: $(AMQP_SPEC_JSON_PATH) $(CODEGEN_PY) <br> # PYTHONPATH=$(AMQP_CODEGEN_DIR) $(PYTHON) $(CODEGEN_PY) body $&lt; $@ <br></code> <br><br>  perhaps it was enough just to tinker in the Makefile and set it up so that it was not dancing with tambourines ... <br><br>  3) the installation of the extension is normal, if as .so, then: <br>  in the <code>phpize <br> ./configure <br> sudo make install <br></code> project <code>phpize <br> ./configure <br> sudo make install <br></code> <code>phpize <br> ./configure <br> sudo make install <br></code> <br>  further write in php.ini: rabbit.so; <br><br>  If we want to install statically, then we rewrite the mod in the directory php / ext and then everything is the same as any PECL extension: <br> <code>./buildconf <br> ./configure .... --with-rabbit <br> make &amp; make install <br></code> </div><p>Source: https://habr.com/ru/post/70792/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../70777/index.html">What and how to write (part 1. Eclipse and Java)</a></li>
 <li><a href="../70781/index.html">Learn to make money from 1C</a></li>
 <li><a href="../70787/index.html">10 useful conclusions and principles of usability</a></li>
 <li><a href="../70789/index.html">Test Labs 2009</a></li>
+<li><a href="../7079/index.html">Cock ring</a></li>
 <li><a href="../70790/index.html">Visiting Turbomilk</a></li>
 <li><a href="../70793/index.html">Use the Observer pattern to create a process execution indicator in Javascript</a></li>
 <li><a href="../70794/index.html">Algorithm: we get rid of passwords for different resources - we use a mailbox</a></li>
 <li><a href="../70795/index.html">Not another XSS filter</a></li>
 <li><a href="../70796/index.html">classic TCP server</a></li>
-<li><a href="../70800/index.html">Create an application - "Drum Set"</a></li>
+<li><a href="../70798/index.html">Open letter to ABBYY</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

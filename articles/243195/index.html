@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Rakes, which I stepped on when crossing CRM with Google Calendar</h1><div class="post__text post__text-html js-mediator-article">  As usually happens with boxed products, not all solutions are satisfied, and business processes have to be improved with external tools.  In our case, it was difficult to work with the built-in calendar.  The main problem was that it was impossible to simultaneously set the task and look at the employment of employees - at the same time there were difficulties in two adjacent departments. <br><br>  <b>We decided to introduce Google calendar:</b> <br><img src="https://habrastorage.org/files/a97/4cd/20d/a974cd20d61f47b98642d7b749d3bbfc.png" alt="image"><br><a name="habracut"></a><br>  Prior to this, I did not work with the Google API, so the first thing I did was find the <a href="https://developers.google.com/google-apps/calendar/v3/reference/calendarList/get">documentation</a> for the search; <br><br>  The first rake: the specified documentation describes the objects that are now wrapped in the source code in other objects.  After studying the code and searching for solutions on the Internet, I wrote the code for connecting to the calendar and added the first calendar. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      “It's great how quickly everything turned out!  We have almost everything ready, it remains a bit: add all the calendars we need and throw events into them ”, I thought and opened the calendar interface in the browser. <br>  And here I was waited by the second rake: in the interface I did not find the added calendars.  How to understand where they disappeared?  I wrote code that returned a list of created calendars.  It turned out that there were already 10 of them. How so - everything works, calendars are created and even returned.  And in the interface they are not there ... <br><br>  OK Google, what am I doing wrong? <br><br>  I had to dig again.  Found: calendars are added to the service account (147837410720-t2rf13ce77not3h58ubgme3q682nr54@developer.gserviceaccount.com).  In order for the calendars to be visible, it turns out that they had to be added to the main one. <br><br>  <b>Add as follows:</b> <br><pre><code class="php hljs">$service = GoogleAuth::getInstance(); $scope = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Google_Service_Calendar_AclRuleScope(); $scope-&gt;setType(<span class="hljs-string"><span class="hljs-string">'user'</span></span>); $scope-&gt;setValue(<span class="hljs-string"><span class="hljs-string">'  @gmail.com'</span></span>); $rule = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Google_Service_Calendar_AclRule(); $rule-&gt;setRole(<span class="hljs-string"><span class="hljs-string">'owner'</span></span>); $rule-&gt;setScope($scope); $result = $service-&gt;acl-&gt;insert($calId, $rule);</code> </pre> <br>  I relaxed and enjoyed, calendars were created, events were recorded, everything worked like a clock.  But here I was waiting for the next rake! <br><br>  Suddenly, on one heavy Monday, Google stopped accepting a token, producing an error (invalid_grant).  For two days, the whole department searched for a black cat in a dark room.  Found  The recent change of time for winter time led to the lag of our server from the real time, and Google did not like it.  After adjusting the time it worked. <br>  While the calendars are working, we look forward to the next rake from Google. <br><br>  I would be glad if this post helps someone to reduce the time for finding solutions to problems. </div><p>Source: <a href="https://habr.com/ru/post/243195/">https://habr.com/ru/post/243195/</a></p>
+      “It's great how quickly everything turned out!  We have almost everything ready, it remains a bit: add all the calendars we need and throw events into them ”, I thought and opened the calendar interface in the browser. <br>  And here I was waited by the second rake: in the interface I did not find the added calendars.  How to understand where they disappeared?  I wrote code that returned a list of created calendars.  It turned out that there were already 10 of them. How so - everything works, calendars are created and even returned.  And in the interface they are not there ... <br><br>  OK Google, what am I doing wrong? <br><br>  I had to dig again.  Found: calendars are added to the service account (147837410720-t2rf13ce77not3h58ubgme3q682nr54@developer.gserviceaccount.com).  In order for the calendars to be visible, it turns out that they had to be added to the main one. <br><br>  <b>Add as follows:</b> <br><pre><code class="php hljs">$service = GoogleAuth::getInstance(); $scope = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Google_Service_Calendar_AclRuleScope(); $scope-&gt;setType(<span class="hljs-string"><span class="hljs-string">'user'</span></span>); $scope-&gt;setValue(<span class="hljs-string"><span class="hljs-string">'  @gmail.com'</span></span>); $rule = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Google_Service_Calendar_AclRule(); $rule-&gt;setRole(<span class="hljs-string"><span class="hljs-string">'owner'</span></span>); $rule-&gt;setScope($scope); $result = $service-&gt;acl-&gt;insert($calId, $rule);</code> </pre> <br>  I relaxed and enjoyed, calendars were created, events were recorded, everything worked like a clock.  But here I was waiting for the next rake! <br><br>  Suddenly, on one heavy Monday, Google stopped accepting a token, producing an error (invalid_grant).  For two days, the whole department searched for a black cat in a dark room.  Found  The recent change of time for winter time led to the lag of our server from the real time, and Google did not like it.  After adjusting the time it worked. <br>  While the calendars are working, we look forward to the next rake from Google. <br><br>  I would be glad if this post helps someone to reduce the time for finding solutions to problems. </div><p>Source: https://habr.com/ru/post/243195/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../243175/index.html">A full-fledged Minecraft processor: how does it work, how to program on it and what is it for?</a></li>
 <li><a href="../243183/index.html">Under what OS and what are you programming?</a></li>
 <li><a href="../243187/index.html">Russian SQL language documentation for Firebird 2.5 DBMS</a></li>
+<li><a href="../24319/index.html">Homer Simpson</a></li>
 <li><a href="../243191/index.html">SMM? Thanks but no thanks</a></li>
 <li><a href="../243193/index.html">Payler - LIVE!</a></li>
 <li><a href="../243197/index.html">DEV Labs 2014 - online conference for Oracle developers</a></li>
 <li><a href="../243199/index.html">Haxe: convert source code</a></li>
+<li><a href="../2432/index.html">Google issued police searches criminal</a></li>
+<li><a href="../24320/index.html">the less karma - the less you can comment</a></li>
 <li><a href="../243201/index.html">The smartest marketers in the world. Learn from Amazon</a></li>
-<li><a href="../243203/index.html">FreeBSD, dhcp, ip unnumbered and everything is all all ...</a></li>
-<li><a href="../243205/index.html">Finger Trees (Part 2. Operations)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

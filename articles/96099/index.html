@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>SMS notifications from Nagios with little blood</h1><div class="post__text post__text-html js-mediator-article">  Once the admin was standing in a smoking room and thinking - how could he find out during off-hours, away from the computer and the Internet, that a problem had arisen on one of his servers.  You can of course put a student at the monitor with <a href="http://www.nagios.org/">Nagios</a> , so that if he called the admin and said, “Something red appeared here ...” Stop.  I called.  On the mobile phone.  Nafig student SMS can be received.  The thought stopped and the admin went to drink coffee.  Then he came back and sat down at the workplace where the <a href="http://www.google.com/calendar/">Google Calendar</a> was loaded in the browser ... and the solution came by itself. <br><a name="habracut"></a><br>  So, we have configured Nagios and the desire to receive SMS about the problems encountered on your phone. <br>  For convenience, we <a href="https://www.google.com/accounts/NewAccount">register a</a> separate Google account - something like nagios_alert@your-company-domain.com and go to set up a calendar for this account.  We are interested in notifications for the calendar by default - set the notification 1 minute before the event by SMS. <br>  You also need to bind your mobile number to this account (this is done in the same place in the calendar settings). <br>  Next, follow this link: <a href="https://github.com/insanum/gcalcli">github.com/insanum/gcalcli</a> and download GCalCLI, a console utility in Python that allows you to work with the Google calendar. <br>  All that is required for the utility to work is described on the project page, there is literally a couple of Python modules. <br>  For gcalcli to work properly, you need to finish it a bit (where without it). <br>  Open the file for editing, go to line 226 and change it to this: <br><pre><code class="python hljs">feedPrefix = <span class="hljs-string"><span class="hljs-string">'https?://www.google.com/calendar/feeds/'</span></span></code> </pre> <br>  Next, we put this script somewhere more comfortable, where the account from which the Nagios-demon is spinning could launch it.  I chose / usr / bin. <br>  Next to gcalcli we put a bash-script of the following content: <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash # notify_sms for Nagios by Br0ziliy NOW_HOUR=`date +%-H` NOW_MIN=`date +%-M` [ $NOW_HOUR -gt 0 ] &amp;&amp; H=$(( $NOW_HOUR-1 )) || H=23 [ $NOW_MIN -lt 55 ] &amp;&amp; M=$(( $NOW_MIN+5 )) || M=59 /usr/bin/gcalcli --user nagios_alert@your-company-domain.com --pw yourpass quick "$H:$M $@"</span></span></code> </pre><br>  The script will add a “quick” event to the calendar of the account nagios_alert@your-company-domain.com with the text that will be transmitted in the parameters (see below). <br>  I also note that the time on the Nagios server and my local time differ by 1 hour - this difference is taken into account in the script. <br>  Next, configure Nagios itself. <br>  Add the notify-service-by-sms command: <br><br><pre> <code class="hljs nginx"><span class="hljs-attribute"><span class="hljs-attribute">define</span></span> command{ <span class="hljs-attribute"><span class="hljs-attribute">command_name</span></span> notify-service-by-sms command_line /usr/bin/notify_sms <span class="hljs-string"><span class="hljs-string">'</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$NOTIFICATIONTYPE</span></span></span><span class="hljs-string">$ </span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$HOSTALIAS</span></span></span><span class="hljs-string">$/</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$SERVICEDESC</span></span></span><span class="hljs-string">$: </span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$SERVICEOUTPUT</span></span></span><span class="hljs-string">$'</span></span> }</code> </pre><br>  Add a separate contact for SMS-notifications (so easy to use): <br><pre> <code class="hljs pgsql">define contact{ contact_name mobile mobile host_notification_period never #      service_notification_period nonworkhours # SMS      service_notification_options c,r #     service_notification_commands <span class="hljs-keyword"><span class="hljs-keyword">notify</span></span>-service-<span class="hljs-keyword"><span class="hljs-keyword">by</span></span>-sms host_notification_commands <span class="hljs-keyword"><span class="hljs-keyword">notify</span></span>-host-<span class="hljs-keyword"><span class="hljs-keyword">by</span></span>-email }</code> </pre><br>  Add this contact to the right group, restart Nagios - everything.  Now the admin will always know where the cho lies.  My test message arrives exactly 8 minutes after the problem has appeared (you may have more / less depending on Nagios settings). <br><br>  As for the mobile phone number - I tested it on the MTS - it works at 5. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      As for paid SMS sending services, yes, I know about them, but in the title of the topic, therefore, there are words with “little blood”. </div><p>Source: <a href="https://habr.com/ru/post/96099/">https://habr.com/ru/post/96099/</a></p>
+      As for paid SMS sending services, yes, I know about them, but in the title of the topic, therefore, there are words with “little blood”. </div><p>Source: https://habr.com/ru/post/96099/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../96095/index.html">Configuring Mercurial and Visual Studio interaction</a></li>
 <li><a href="../96096/index.html">Distributed computing and p2p business model</a></li>
 <li><a href="../96098/index.html">Microsoft Dynamics CRM. Plug-ins (plug-ins) and extensions (add-ons)</a></li>
+<li><a href="../961/index.html">LinuxFormat magazine posted in free access in PDF format. All numbers from last year.</a></li>
+<li><a href="../9610/index.html">VOLCANO vaporizer - a device for high-tech use of any smoking mixtures.</a></li>
 <li><a href="../96101/index.html">Monitor changes to network device configuration files</a></li>
 <li><a href="../96104/index.html">Autoportal KhMAO</a></li>
 <li><a href="../96105/index.html">How to organize an event</a></li>
-<li><a href="../96108/index.html">Qmmp: continued. Alternative Interfaces</a></li>
-<li><a href="../96109/index.html">Fast download</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

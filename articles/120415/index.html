@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How and why to break the disk in the Nix</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage/b0e73c76/663568e1/99dd5650/948a3694.jpg" align="left">  One of the fairly frequent questions on various near-nix resources is the question of which disk partitioning scheme to use.  It looks like a simple question is actually fraught with many pitfalls.  If, of course, business concerns servers.  On desktops everything is much duller and grayer. <br><br>  There is no universal solution in this matter, there are just some aspects that should guide the choice of the breakdown scheme. <br><a name="habracut"></a><br><br><h5>  User Restriction </h5><br>  All sections where a regular user has write permissions (/ home; / tmp; / var / tmp) should be moved to separate sections.  With this step we kill immediately the whole family of hares: <br><ul><li>  when reinstalling the system, there is no need to hurry to transfer user data to other media / restore what was dug out of the foul back year-old backups </li><li>  we get the ability to mount these partitions with noexec, so that malicious coolers do not run all sorts of rubbish on your system.  I remind you that noexec does not save from shell scripts. </li><li>  We are saved from a hard-link attack (this is when a vulnerability is detected in a package, you successfully demolish it, and the vulnerability remains, because the attacker created a hard link to the vulnerable file).  <a href="http://www.hackinglinuxexposed.com/articles/20031111.html">Here</a> and <a href="http://www.hackinglinuxexposed.com/articles/20031214.html">here</a> you can read more. </li><li>  we can use the ext2 file system in / tmp (logging is useless here, since you don’t need to restore anything in case of a failure) </li></ul><h5>  We protect the system from failure in the work due to lack of disk space </h5><br>  It is worth remembering that we have a wonderful / var / log, which loves to be clogged with logs to the eye, insatiable users who always lack disk space and temporary folders that love to be clogged with millions of temporary files that no one deletes.  All similar sections (/ var; / home; / tmp) it is also desirable to move beyond the root. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  Sticks in the wheel intruders </h5><br>  Very doubtful measure, but not once met a similar recommendation: mount / usr in readonly. <br>  However, we also create some inconveniences to ourselves: it is not so easy to upgrade the system now.  However, for example in GNU / Debian this is by adding to /etc/apt/apt.conf: <br> <code>DPkg <br> { <br> Pre-Invoke { "mount /usr -o remount,rw" }; <br> Post-Invoke { "mount /usr -o remount,ro" }; <br> };</code> <br>  True post-invoke does not always work.  Sometimes you have to use lsof + L1 to figure out who is at fault, that / usr is busy and cannot be remounted to ro. <br><br><h5>  swap.  Need or not? </h5><br>  Very often, recommendations to make a swap equal to double the size of RAM.  On servers, where it happens on 64-128GB (or even more) of RAM, it even sounds silly.  There is no special need for swap on systems today.  Well, only if you do not want to use hibernation.  But it is the prerogative of laptops, not servers. <br><br><h5>  Mount options </h5><br>  A very important point to pay attention to.  In addition to the aforementioned noexec, nosuid and nodev should be placed on user partitions.  You can also reduce the load on the disk using the noatime or relatime options and using commit time = 60 (the default is 5 seconds). <br><br><h5>  Results </h5><br>  These aspects are advisory in nature, there are no strict rules on this issue.  It all depends on personal preference. <br>  However, I would still like to draw a certain line: <br><ul><li>  Try to take out of the root into separate sections / boot, / home, / tmp, / var. </li><li>  Use lvm, in order not to bite your elbows in the future, if suddenly some section urgently needs to be increased. </li><li>  Do not forget the mount option, sparing drives.  We do not want them to fly out. </li><li>  Do not forget to remove the reserve for the root on the sections made, since  it is no longer necessary (tune2fs -m 0 / section) </li></ul></div><p>Source: <a href="https://habr.com/ru/post/120415/">https://habr.com/ru/post/120415/</a></p>
+    <h5>  Sticks in the wheel intruders </h5><br>  Very doubtful measure, but not once met a similar recommendation: mount / usr in readonly. <br>  However, we also create some inconveniences to ourselves: it is not so easy to upgrade the system now.  However, for example in GNU / Debian this is by adding to /etc/apt/apt.conf: <br> <code>DPkg <br> { <br> Pre-Invoke { "mount /usr -o remount,rw" }; <br> Post-Invoke { "mount /usr -o remount,ro" }; <br> };</code> <br>  True post-invoke does not always work.  Sometimes you have to use lsof + L1 to figure out who is at fault, that / usr is busy and cannot be remounted to ro. <br><br><h5>  swap.  Need or not? </h5><br>  Very often, recommendations to make a swap equal to double the size of RAM.  On servers, where it happens on 64-128GB (or even more) of RAM, it even sounds silly.  There is no special need for swap on systems today.  Well, only if you do not want to use hibernation.  But it is the prerogative of laptops, not servers. <br><br><h5>  Mount options </h5><br>  A very important point to pay attention to.  In addition to the aforementioned noexec, nosuid and nodev should be placed on user partitions.  You can also reduce the load on the disk using the noatime or relatime options and using commit time = 60 (the default is 5 seconds). <br><br><h5>  Results </h5><br>  These aspects are advisory in nature, there are no strict rules on this issue.  It all depends on personal preference. <br>  However, I would still like to draw a certain line: <br><ul><li>  Try to take out of the root into separate sections / boot, / home, / tmp, / var. </li><li>  Use lvm, in order not to bite your elbows in the future, if suddenly some section urgently needs to be increased. </li><li>  Do not forget the mount option, sparing drives.  We do not want them to fly out. </li><li>  Do not forget to remove the reserve for the root on the sections made, since  it is no longer necessary (tune2fs -m 0 / section) </li></ul></div><p>Source: https://habr.com/ru/post/120415/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../120409/index.html">Google launched the +1 button for sites</a></li>
+<li><a href="../12041/index.html">New spamming trojan bypasses CAPTCHA</a></li>
 <li><a href="../120410/index.html">Computex 2011 - iron and girls. Part one</a></li>
 <li><a href="../120412/index.html">ICAAN is going to significantly simplify the procedure for registering new domain zones</a></li>
 <li><a href="../120413/index.html">Twitter launched its own photo and video hosting</a></li>
@@ -74,8 +74,8 @@
 <li><a href="../120416/index.html">I am busy. That is no time</a></li>
 <li><a href="../120417/index.html">How to make a stylus for a capacitive touchscreen</a></li>
 <li><a href="../120419/index.html">How to buy shares of IT-companies on foreign exchanges? (part 2)</a></li>
+<li><a href="../12042/index.html">My little startup</a></li>
 <li><a href="../120420/index.html">25 most popular web hosting sites</a></li>
-<li><a href="../120421/index.html">Windows 8 interface</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

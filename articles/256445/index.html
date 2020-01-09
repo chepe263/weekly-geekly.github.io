@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Performance evaluation of Django Session Engine configurations</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/746/307/ba4/746307ba4a0440b2b342d8c30fe2de49.png" alt="image" align="left">  I think everyone knows what a session in Django is, isn’t it?  Without them, it is quite difficult to imagine application development.  They usually store the user ID and some intermediate data.  They are used more often than they think about setting up the way they are stored.  Of course, the default settings, as a rule, are enough to run almost any project.  However, an inquiring mind needs to know which of the possible configurations <b>is faster</b> ... <br><br>  The Django documentation describes in great detail how the various <a href="http/sessions/">Session Engine</a> works and how to configure them.  This article will discuss how I tested various deployment configurations of a <a href="https://github.com/mnach/django_sessionengine_benchmark">hypothetical project</a> . <br><a name="habracut"></a><br><h4>  Initial data </h4><br>  Testing was conducted on 2 virtual machines running debian wheezy.  Machines are located within the same subnet. <br><ul><li>  model name: Intel Xeon CPU E7- 4830 @ 2.13GHz </li><li>  RAM: 8GB </li><li>  Linux Kernel Version: 3.2.0-4-amd64 </li></ul><br>  The first is to save session data in databases.  The second to run the application. <br>  As part of testing, 2 databases were used: <br><ul><li>  PostgreSQL 9.1.15 </li><li>  Redis - 2.4.14-1 </li></ul><br>  Application running on <br><ul><li>  Python - 3.4.3 </li><li>  Django - 1.7.7 </li></ul><br>  The gunicorn application server with asynchronous workers (eventlet) is selected: <br><ul><li>  Gunicorn - 19.3.0 </li><li>  Eventlet - 0.17.3 </li><li>  libevent - 1.4-2 </li></ul><br>  Apache Bench was used to evaluate performance. <br><ul><li>  Number of requests = 4000 </li><li>  Parallel connections = 20 </li><li>  Within one session identifier (sessionid) </li></ul><br><h4>  Task </h4><br>  Test framework backends for storing session data <br><ol><li>  database-backed - postgresql </li><li>  cached - redis </li><li>  file-based - ext2 file system </li><li>  cookie-based - for data up to 4K </li></ol><br>  Documentation on them can be found <a href="http/sessions/">here</a> . <br><br><h4>  Testing </h4><br>  I decided to test in two configurations: “read only” and “read and write”.  At the same time, also create a not very complicated page using django templates to make it look like a very simple, but still real application. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  Reading </h5><br><img src="https://habrastorage.org/files/518/fae/151/518fae1519b34e40ae4732266912ba51.png"><br><br><h5>  Record </h5><br><img src="https://habrastorage.org/files/e54/e8c/fb9/e54e8cfb9a5746e6abdfd9239c8083ee.png"><br><br><h4>  findings </h4><br>  From the graphs it can be seen that when storing large amounts of data in a session, the speed of loading pages of the application drops significantly.  The relationship between the amount of data and download speed becomes logarithmic after 16K. <br><br>  It is also difficult not to replace that saving the session in the database is significantly lagging behind the performance of other configurations.  However, it was quite predictable.  The behavior of the session file storage was quite unusual for me.  In particular, the file access speed was higher than that of the redis database within the same subnet with a session size less than ~ 64K.  Perhaps this is somehow related to the configuration of virtual machines, I do not know ... <br><br>  Based on the test results, I formed the following rules for use by repositories: <br><br><img src="https://habrastorage.org/files/7f8/00f/e9d/7f800fe9da584165b7f3bf143bd500d7.png"><br><br>  Thanks for attention! </div><p>Source: <a href="https://habr.com/ru/post/256445/">https://habr.com/ru/post/256445/</a></p>
+    <h5>  Reading </h5><br><img src="https://habrastorage.org/files/518/fae/151/518fae1519b34e40ae4732266912ba51.png"><br><br><h5>  Record </h5><br><img src="https://habrastorage.org/files/e54/e8c/fb9/e54e8cfb9a5746e6abdfd9239c8083ee.png"><br><br><h4>  findings </h4><br>  From the graphs it can be seen that when storing large amounts of data in a session, the speed of loading pages of the application drops significantly.  The relationship between the amount of data and download speed becomes logarithmic after 16K. <br><br>  It is also difficult not to replace that saving the session in the database is significantly lagging behind the performance of other configurations.  However, it was quite predictable.  The behavior of the session file storage was quite unusual for me.  In particular, the file access speed was higher than that of the redis database within the same subnet with a session size less than ~ 64K.  Perhaps this is somehow related to the configuration of virtual machines, I do not know ... <br><br>  Based on the test results, I formed the following rules for use by repositories: <br><br><img src="https://habrastorage.org/files/7f8/00f/e9d/7f800fe9da584165b7f3bf143bd500d7.png"><br><br>  Thanks for attention! </div><p>Source: https://habr.com/ru/post/256445/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../256439/index.html">Blending Modes in Unity</a></li>
 <li><a href="../256441/index.html">Open access to research results</a></li>
 <li><a href="../256443/index.html">Pointers in C ++. Introduction</a></li>
+<li><a href="../25645/index.html">The problem with newbies</a></li>
 <li><a href="../256451/index.html">We crack D-Link DIR-890L</a></li>
 <li><a href="../256453/index.html">City laboratory of data analysis: we assemble a team</a></li>
 <li><a href="../256459/index.html">Image and video analysis. Image classification and object recognition</a></li>
-<li><a href="../256461/index.html">Where to get a half million for a cybersecurity startup</a></li>
-<li><a href="../256463/index.html">Yandex has released antivirus for sites - Manul</a></li>
+<li><a href="../25646/index.html">Search: FULLTEXT or LIKE?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Trojan-Dropper.Win32.Agent.rek: "legal" rootkit</h1><div class="post__text post__text-html js-mediator-article">  This note describes the driver that is loaded by the virus <a href="http://nchaly.habrahabr.ru/blog/43898.html">described in the previous section</a> .  The driver works at the kernel level of the operating system, and provides a “privileged” cover for the main functionality of the Trojan, which works in user mode (the authors name of the component is winnt32.dll. For more information, see <a href="http://habrahabr.ru/blog/virus/43787.html">habrahabr.ru/blog/virus/43787.html</a> ). <br><br>  <b>Short description.</b> <br>  The program is an nt-driver (also known as legacy drivers, that is, not associated with any physical device).  Is a rootkit: using the mechanisms of the OS kernel, it deprives other programs of access to certain files and registry keys. <br>  Detected by Kaspersky as <a href="http://www.viruslist.com/en/viruses/encyclopedia%3Fvirusid%3D89871">Trojan-Dropper.Win32.Agent.rek</a> .  The size is 27,548 bytes. <br><blockquote>  <i><b>Lyrical omission</b> .</i>  <i>A “regular” <a href="http://ru.wikipedia.org/wiki/Rootkit">rootkit</a> can use flaws in the OS implementation to hide objects: files, network connections, and so on down to the hard disk sectors.</i>  <i>For this, in the simplest case, the system call is intercepted.</i>  <i>A system call is essentially a function call, and a function call is the transfer of control to a specified address.</i>  <i>The rootkit writes down its code at this address, which transforms the result of the original function.</i>  <i>For example, it checks if someone is trying to open a file with the body of a virus, and returns some error code, for example, “access is denied”.</i> </blockquote>  The rootkit intercepts requests from the registry and files using the legal methods of the OS itself. <br><a name="habracut"></a><br>  <b>File system</b> <br>  Using the IoRegisterFsRegistrationChange kernel function, the driver signs up to receive a file system enable / disable event.  That is, the OS itself notifies the driver, and it also passes it the DEVICE_OBJECT structure, which describes the “device” of the file system and its driver.  A “file system device” is, roughly speaking, the way in which a user sees data on a disk organized as folders and files. <br><blockquote>  The reference book says: The system registers or unregisters itself. </blockquote><br><br>  In the DEVICE_OBJECT structure that describes the device, the driver replaces the IRP_MJ_CREATE request handler with its own.  The IRP_MJ_CREATE request is generated from within NtCreateFile when the file is opened.  The new handler compares the requested name with the file name of the driver itself (which is set by the dropper in the form of Wwwdd.sys, for example Jer24.sys), and, in case of coincidence, returns the error code STATUS_ACCESS_DENIED. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       <b>Registry keys</b> <br>  Accessing registry keys is no less legal: using the CmRegisterCallback function, the driver signs up for notification of all registry entries.  Is it worth talking about how the computer starts to slow down? <br><br><blockquote>  A driver calls a registry call register to register a registry call register. </blockquote><br><br>  When accessing registry keys: <br><blockquote>  HKLM \ System \ CurrentControlSet \ Sevices \ DRIVER-NAME <br>  HKLM \ System \ ControlSet001 \ Sevices \ DRIVER-NAME <br>  HKLM \ System \ ControlSet002 \ Sevices \ DRIVER-NAME <br>  HKLM \ System \ CurrentControlSet \ Control \ SafeBoot \ Minimal \ DRIVER-NAME <br>  HKLM \ System \ CurrentControlSet \ Control \ SafeBoot \ Network \ DRIVER-NAME <br>  HKLM \ System \ ControlSet001 \ Control \ SafeBoot \ Minimal \ DRIVER-NAME <br>  HKLM \ System \ ControlSet001 \ Control \ SafeBoot \ Minimal \ DRIVER-NAME <br>  HKLM \ System \ ControlSet002 \ Control \ SafeBoot \ Network \ DRIVER-NAME <br>  HKLM \ System \ ControlSet002 \ Control \ SafeBoot \ Network \ DRIVER-NAME </blockquote><br>  driver returns error code STATUS_ACCESS_DENIED. <br><br>  <b>Slides</b> <br><br>  Prevent file deletion: <br><img src="https://habrastorage.org/getpro/habr/olpictures/bec/4f0/a8a/bec4f0a8afb559c0273567f8327b9989.gif" width="450" height="225" alt="Prevent file deletion" hspace="10" vspace="10"><br><br>  The ban on deleting the registry key: <br><img src="https://habrastorage.org/getpro/habr/olpictures/43c/7e9/b9e/43c7e9b9e47fa9a0d623ad1ec0172087.gif" width="450" height="470" alt="The ban on the removal of the registry key" hspace="10" vspace="10"><br><br>  Here the system sends the CDFS information to the rootkit: <pre>  kd&gt; kb
@@ -115,7 +115,7 @@
     + 0x0ac SectorSize: 0x800
     + 0x0ae Spare1: 0
     + 0x0b0 DeviceObjectExtension: 0x81815970 _DEVOBJ_EXTENSION
-    + 0x0b4 Reserved: (null) </pre><br><br>  <b>Conclusion.</b> <br>  In the invisible anti-virus viruses, when everything is intercepted and intercepted, the method used by this rootkit is <b>legal</b> , and therefore the most dangerous.  From my big bell tower, I can assume that it’s impossible to remove such a hook in practice.  Or intercept the actual registration procedures for such notifications (such as CmRegisterCallback), prohibiting calling it without getting caught. <br>  On the other hand, the line separating viruses and antiviruses is getting thinner and the territory is barely noticeable.  They use the same mechanisms to hide data or track the work of ordinary programs.  And by the way, the steps to this are done more by the dark side. </div><p>Source: <a href="https://habr.com/ru/post/27444/">https://habr.com/ru/post/27444/</a></p>
+    + 0x0b4 Reserved: (null) </pre><br><br>  <b>Conclusion.</b> <br>  In the invisible anti-virus viruses, when everything is intercepted and intercepted, the method used by this rootkit is <b>legal</b> , and therefore the most dangerous.  From my big bell tower, I can assume that it’s impossible to remove such a hook in practice.  Or intercept the actual registration procedures for such notifications (such as CmRegisterCallback), prohibiting calling it without getting caught. <br>  On the other hand, the line separating viruses and antiviruses is getting thinner and the territory is barely noticeable.  They use the same mechanisms to hide data or track the work of ordinary programs.  And by the way, the steps to this are done more by the dark side. </div><p>Source: https://habr.com/ru/post/27444/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

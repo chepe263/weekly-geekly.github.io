@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>TeX-like markup on Javascript</h1><div class="post__text post__text-html js-mediator-article"><img src="http://www.picamatic.com/show/2009/08/19/01/52/4780284_300x160.png" align="left">  When writing the <a href="http://habrahabr.ru/blogs/i_am_advertising/67301/">console-like forum</a> , the question was asked: “which markup should I use?”.  Among the options were the standard bb code ([b] bold [/ b]), wiki markup (* bold *), or TeX-like markup (\ b {bold}).  After a brief meeting, the choice was on TeX-like.  A small library was written, which, in my opinion, is quite interesting, expandable and flexible.  Those who wish to see an example can follow the link <a href="http://freecr.ru/TeX/">freecr.ru/TeX</a> <br><a name="habracut"></a><br>  The library is expanded with plugins.  There are two types of plugins - "tag" and "rule".  “Tag” is, in fact, the TeX tag itself, and the rule is a function applied to text that is not in tags.  For example, to highlight urls in the text: “So at <a href="http://www.example.com/">www.example.com</a> we see \ b {sample site}”. <br>  Example of adding a rule: <br><br><blockquote><code><font color="black">TeX.addRule ({ <br> name : <font color="#A31515">'liveUrls'</font> , <br> func : <font color="#0000ff">function</font> ( <font color="#0000ff">string</font> ) { <br> <font color="#0000ff">var</font> urlRE = /((git|svn|ftp|http|https):\/\/(www\.)?|www.)(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&amp;%@!\-\/]))?/gi; <br> <font color="#0000ff">return</font> <font color="#0000ff">string</font> .replace(urlRE, <font color="#0000ff">function</font> (url) { <br> <font color="#0000ff">var</font> urlFull = (url.indexOf( <font color="#A31515">'www'</font> ) === 0) ? <font color="#A31515">"http://"</font> + url : url; <br> <font color="#0000ff">return</font> <font color="#A31515">"&lt;a class='url' href='"</font> + urlFull + <font color="#A31515">"'&gt;"</font> + url + <font color="#A31515">"&lt;/a&gt;"</font> ; <br> }); <br> } <br> })</font> ;</code> </blockquote> <br>  The tag is added according to this very principle: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">TeX.addTag ({ <br> name : <font color="#A31515">'b'</font> , <br> args : [1], <br> func : <font color="#0000ff">function</font> (args) { <br> <font color="#0000ff">return</font> <font color="#A31515">"&lt;b&gt;"</font> + TeX.markup(args[0]) + <font color="#A31515">"&lt;/b&gt;"</font> ; <br> } <br> });</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  The only significant difference is the presence of the args property of the tag.  It can accept an array of numbers, or the string 'unlimited'.  Thus, we indicate how many parameters an argument can take: for example, code can accept two parameters - the language and the code itself, or one - only the code.  Then the value will be args: [1, 2] and it will take an array of arguments with one or two values. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      All the characters inside the tag are not processed by any rules, because if you want them to be processed, you can call TeX.markup recursively for the corresponding argument. <br><br>  I think the most understandable principles of operation will be on the example of code: <br>  Liba itself: <a href="http://pastebin.com/f46087804">http://pastebin.com/f46087804</a> <br><br>  Plugins: <a href="http://pastebin.com/f7840dc97">http://pastebin.com/f7840dc97</a> <br><br>  Well, for the seed - an example of a more advanced plug-in that implements the CCS-highlighting, a la: <br><blockquote>  \ style {float: right} {border: dotted red 2px} {background: #fcc} {text-align: justify} {padding: 25px 100px} {display: block} {text is here} </blockquote><br>  <a title="Sample plugin style" href="http://pastebin.com/f4e75d3f6">http://pastebin.com/f4e75d3f6</a> <br><br>  License - LGPL. <br>  Liba is quite fresh and little tested, so improper work is possible. <br></div><p>Source: <a href="https://habr.com/ru/post/67388/">https://habr.com/ru/post/67388/</a></p>
+      All the characters inside the tag are not processed by any rules, because if you want them to be processed, you can call TeX.markup recursively for the corresponding argument. <br><br>  I think the most understandable principles of operation will be on the example of code: <br>  Liba itself: <a href="http://pastebin.com/f46087804">http://pastebin.com/f46087804</a> <br><br>  Plugins: <a href="http://pastebin.com/f7840dc97">http://pastebin.com/f7840dc97</a> <br><br>  Well, for the seed - an example of a more advanced plug-in that implements the CCS-highlighting, a la: <br><blockquote>  \ style {float: right} {border: dotted red 2px} {background: #fcc} {text-align: justify} {padding: 25px 100px} {display: block} {text is here} </blockquote><br>  <a title="Sample plugin style" href="http://pastebin.com/f4e75d3f6">http://pastebin.com/f4e75d3f6</a> <br><br>  License - LGPL. <br>  Liba is quite fresh and little tested, so improper work is possible. <br></div><p>Source: https://habr.com/ru/post/67388/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

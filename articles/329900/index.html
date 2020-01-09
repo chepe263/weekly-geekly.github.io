@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Initial setup of Puppet is not as simple as it sounds.</h1><div class="post__text post__text-html js-mediator-article"><p><img src="https://habrastorage.org/getpro/habr/post_images/ac1/246/688/ac1246688abfbe217b5d6e2a0deaf33a.jpg" alt="image"></p><br><p>  Hello!  In this article I want to share with you my impressions of the Puppet configuration for configuring Windows servers. </p><br><p>  In general, the task was as follows: to organize the process of automatic delivery and installation of patches for updating remote servers.  We chose from well-known configuration managers, the main requirement for which is high-level Windows support.  I’ll say right away that they decided to give up Puppet because of the high threshold of entry, the pull approach and the need for knowledge of Ruby.  But I really want to share what happened. </p><br><a name="habracut"></a><br><h1 id="vvedenie">  Introduction </h1><br><p>  Puppet has a master agent communication model (architecture), and the master's operating system cannot be Windows.  To manage Windows agents, the target machines must have software installed, which is an .msi installer. </p><br><p>  Puppet operates with hostnames and the interaction between the master and the agents is carried out via the HTTPS protocol, from which it follows that there are dependencies such as the Apache web server (for the master), and the interaction with the certificates and their settings cannot be avoided. </p><br><h1 id="testovaya-infrastruktura">  Test infrastructure </h1><br><ul><li>  Ubuntu 16.04 LTS virtual machine for installing the Puppet wizard. </li><li>  Target Windows machines that you actually need to manage. </li></ul><br><h1 id="ustanovka">  Installation </h1><br><p>  The installation consists of two parts, according to the number of architectural components. </p><br><h2 id="master">  Master </h2><br><p>  Installation wizard is described <a href="https://www.digitalocean.com/community/tutorials/how-to-install-puppet-to-manage-your-server-infrastructure">here</a> .  The only thing that didn't happen during the installation was that after the SSL certificates were regenerated, Apache stopped running. </p><br><p><img src="https://habrastorage.org/getpro/habr/post_images/815/73f/8e9/81573f8e98485faecfb67ab94f6bc43e.png" alt="image! [image] (https://imagebin.ca/v/3NbWzYZ942C3)"></p><br><p>  After referring to the event log, it becomes clear what the problem is - there is no certificate with the same name as in the /etc/apache2/sites-enabled/puppetmaster.conf configuration file.  Go, correct the name (in my case just puppet), ready.  By the way, you can look at the master certificate here - / var / lib / puppet / ssl / certs. </p><br><h2 id="agenty">  Agents </h2><br><p>  When installing Windows agents, it is likely that something will go wrong.  <em>The most important rule - the version of the Puppet wizard must always be comparable (or more) to the version of the Puppet agent</em> . <br>  At the very beginning of the installation process, you can see what the installer includes. </p><br><p><img src="https://habrastorage.org/getpro/habr/post_images/ca3/236/9d6/ca32369d617b22052ea06e6539c847c9.png" alt="image"></p><br><p>  More specifically, many of these components can be found in the <a href="https://docs.puppet.com/puppet/">documentation</a> .  Further we specify the address of the master and it is ready. </p><br><p>  How can you see if everything is a success?  Go to the Event Viewer and look at the messages, where the source is Puppet.  An example of the previously mentioned incompatibility issue of the wizard and agent versions is given below. </p><br><p><img src="https://habrastorage.org/getpro/habr/post_images/953/565/ab0/953565ab0993d7b1952e6e238fd221d7.jpg" alt="image"></p><br><p>  If everything went well, the final step is to sign the agent certificate on the master. </p><br><pre><code class="hljs pgsql">puppet cert list <span class="hljs-comment"><span class="hljs-comment">--all cert sign &lt;agent-hostname&gt;</span></span></code> </pre> <br><h1 id="primer-puppet-manifesta">  Sample Puppet Manifest </h1><br><pre> <code class="hljs pgsql">#          #    ,    #     ,     #     <span class="hljs-keyword"><span class="hljs-keyword">class</span></span> action::windows { file { <span class="hljs-string"><span class="hljs-string">'c:\\Temp\\foo.txt'</span></span>: ensure =&gt; present, content =&gt; <span class="hljs-string"><span class="hljs-string">'This is some text in my file'</span></span> } } #     ,  Windows <span class="hljs-keyword"><span class="hljs-keyword">class</span></span> action::<span class="hljs-keyword"><span class="hljs-keyword">default</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">notify</span></span>{ "Operating system $::operatingsystem not supported": } } #   osfamily #         <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> $::osfamily { <span class="hljs-string"><span class="hljs-string">'windows'</span></span>: { <span class="hljs-keyword"><span class="hljs-keyword">include</span></span> action::windows } <span class="hljs-keyword"><span class="hljs-keyword">default</span></span>: { <span class="hljs-keyword"><span class="hljs-keyword">include</span></span> action::<span class="hljs-keyword"><span class="hljs-keyword">default</span></span> } }</code> </pre> <br><p>  To apply manifests on the wizard: <code>puppet apply &lt;manifest-name&gt;</code> . <br>  On agents: <code>puppet agent --test</code> . </p><br><h1 id="zaklyuchenie">  Conclusion </h1><br><p>  As I wrote earlier, Puppet was not chosen for the task, mainly because it uses a pull management approach, but my opinion is that the stability and age of the system is more important in many situations.  In addition, for the push approach, there is <a href="https://docs.puppet.com/mcollective/">mcollective</a> . </p><br><h1 id="poleznye-istochniki">  Useful sources </h1><br><ol><li>  <a href="https://docs.puppet.com/background/ssl/">ssl background</a> </li><li>  <a href="https://docs.puppet.com/puppet/latest/subsystem_agent_master_comm.html">puppet agent / master communications</a> </li><li>  <a href="https://docs.puppet.com/puppet/latest/architecture.html">puppet architecture overview</a> </li><li>  <a href="https://docs.puppet.com/pe/latest/windows_modules.html">puppet official modules</a> </li><li>  <a href="https://www.digitalocean.com/community/tutorials/how-to-install-puppet-to-manage-your-server-infrastructure">installation</a> </li><li>  <a href="http://www.example42.com/tutorials/PuppetTutorial/">tutorial presentation</a> </li><li>  <a href="https://docs.puppet.com/mcollective/">mcollective</a> <br></li></ol><br></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,18 +62,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/329900/">https://habr.com/ru/post/329900/</a></p>
+    <p>Source: https://habr.com/ru/post/329900/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../329890/index.html">PHDays VII: Confrontation Chronicles</a></li>
 <li><a href="../329892/index.html">What are women talking about? (Text mining of beauty blogs)</a></li>
 <li><a href="../329894/index.html">Reactive Stream Log Processing with RxJava - Part 1</a></li>
 <li><a href="../329896/index.html">Recipes for Android: Scroll-To-Dismiss Activity</a></li>
 <li><a href="../329898/index.html">Must see: videos of MoscowJS 37 mitap</a></li>
+<li><a href="../3299/index.html">GMail will be "slightly paid"</a></li>
 <li><a href="../329902/index.html">Routers, attack vectors and other adventures of Shurik</a></li>
 <li><a href="../329904/index.html">How to use a token to make a Windows domain safer? Part 2</a></li>
 <li><a href="../329906/index.html">I want to break free. What and how to learn to escape from 1C</a></li>

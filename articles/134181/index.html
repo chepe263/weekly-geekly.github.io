@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Amazon EC2 + PHP-fpm + Nginx</h1><div class="post__text post__text-html js-mediator-article">  The moment came when I decided to transfer my FastCGI project, I didn’t need performance, I didn’t need stability or any other advantages provided by FastCGI.  First of all, it was the desire to learn something new, understand how it works, and see all the advantages in business. <a name="habracut"></a><br>  After reading a lot of information found on the Internet, I made a choice in favor of php-fpm + Nginx. <br>  Why this bundle, well, firstly because the project is written in php, secondly, it is she who is the informal standard on the network. <br><br>  First of all, I reread a huge pile of information found in search engines, and everywhere it was almost the same thing, download php, put a patch php-fpm, make, make install, the solution is quite understandable but not quite right for the OS with package management systems. <br><br>  Therefore, I found a solution using the package manager, which I will give below. <br>  All the manipulations were performed by me on Amazon EC2 micro with the installed operating system Amazon Linux x64, so I will describe all the manipulations for this system.  For all other systems, everything and package managers are almost identical. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  Component installation </h5><br>  Install nginx: <br> <code>sudo yum install nginx</code> <br> <br>  Installing php (I didn’t need it because Apache + php worked for me): <br> <code>sudo yum install php</code> <br> <br>  Install php-fpm: <br> <code>sudo yum install php-fpm</code> <br> <br>  After installation, you need a little tweaking. <br><br>  Configure nginx to work with php-fpm, the configuration file is /etc/nginx/nginx.conf: <br>  All configuration is to add the following text inside the “location” section.  Do not forget to also fix the port on which the service works if you, like me, will initially install it on a system with an already running Apache web server. <br><br><pre> <code class="nginx hljs"> <span class="hljs-attribute"><span class="hljs-attribute">location</span></span> <span class="hljs-regexp"><span class="hljs-regexp">~ \.php$</span></span> { <span class="hljs-comment"><span class="hljs-comment">#root ; fastcgi_pass 127.0.0.1:9000; fastcgi_index index.php; fastcgi_param SCRIPT_FILENAME /var/www/html/$fastcgi_script_name; include fastcgi_params; }</span></span></code> </pre><br><br>  To run the bundle in the standard settings mode, you do not need to change anything in the configuration file (/etc/php-fpm.conf).  All configuration parameters are well described in the file itself, you can also look in addition <a href="http://www.php.net/manual/en/install.fpm.configuration.php">here</a> . <br><h5>  Launch </h5><br>  When the settings are complete go to launch, it's still easier <br> <code>sudo service php-fpm start <br> sudo service nginx start <br></code> <br><br>  Testing, comparing apache + php and nginx + php-fpm, I will not give here because it is an article about setting up.  I will express here only my subjective opinion. Nginx + php-fpm does not work much faster than apache + php. </div><p>Source: <a href="https://habr.com/ru/post/134181/">https://habr.com/ru/post/134181/</a></p>
+    <h5>  Component installation </h5><br>  Install nginx: <br> <code>sudo yum install nginx</code> <br> <br>  Installing php (I didn’t need it because Apache + php worked for me): <br> <code>sudo yum install php</code> <br> <br>  Install php-fpm: <br> <code>sudo yum install php-fpm</code> <br> <br>  After installation, you need a little tweaking. <br><br>  Configure nginx to work with php-fpm, the configuration file is /etc/nginx/nginx.conf: <br>  All configuration is to add the following text inside the “location” section.  Do not forget to also fix the port on which the service works if you, like me, will initially install it on a system with an already running Apache web server. <br><br><pre> <code class="nginx hljs"> <span class="hljs-attribute"><span class="hljs-attribute">location</span></span> <span class="hljs-regexp"><span class="hljs-regexp">~ \.php$</span></span> { <span class="hljs-comment"><span class="hljs-comment">#root ; fastcgi_pass 127.0.0.1:9000; fastcgi_index index.php; fastcgi_param SCRIPT_FILENAME /var/www/html/$fastcgi_script_name; include fastcgi_params; }</span></span></code> </pre><br><br>  To run the bundle in the standard settings mode, you do not need to change anything in the configuration file (/etc/php-fpm.conf).  All configuration parameters are well described in the file itself, you can also look in addition <a href="http://www.php.net/manual/en/install.fpm.configuration.php">here</a> . <br><h5>  Launch </h5><br>  When the settings are complete go to launch, it's still easier <br> <code>sudo service php-fpm start <br> sudo service nginx start <br></code> <br><br>  Testing, comparing apache + php and nginx + php-fpm, I will not give here because it is an article about setting up.  I will express here only my subjective opinion. Nginx + php-fpm does not work much faster than apache + php. </div><p>Source: https://habr.com/ru/post/134181/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../134175/index.html">Cycling with turn signals</a></li>
 <li><a href="../134176/index.html">The SETI program resumes operation with the detection of exoplanets Kepler-22b</a></li>
 <li><a href="../134178/index.html">CD-ROM printer</a></li>
 <li><a href="../134179/index.html">MySql -> Oracle Replication with Tungsten Replicator</a></li>
+<li><a href="../13418/index.html">Intel! AMD! Tilera?</a></li>
 <li><a href="../134180/index.html">We enter the Windows phone marketplace: from simple desire to real results</a></li>
 <li><a href="../134183/index.html">Migrate java application to Fork / Join or what you need to remember</a></li>
 <li><a href="../134184/index.html">Writing a program for the simplest FTP file synchronization for Android using SL4A + Python</a></li>

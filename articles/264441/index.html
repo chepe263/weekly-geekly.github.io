@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>ARM programming on Pascal</h1><div class="post__text post__text-html js-mediator-article">  One day, suddenly, completely unexpectedly and without a declaration of war, an idea appeared.  And it was necessary for this to write and program the STM32 crystal. <br><br>  But what are the actual problems?  stm32vldiscovery was on the shelf and was waiting for its time, I know programming and often write “to order”.  I am good friends with iron. <br><br>  The first thing to ask was “what to write on”?  There are many programming environments, but the language is only “C”.  No options.  Assembler does not consider in principle.  You can blink the LED, but something more complicated requires huge labor costs. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       But I do not know Si!  At all.  All his life he wrote only on Pascal / Delphi.  Learn the language?  Have you tried to learn a language when you are over 40 years old?  When work, family and minimum free time.  When the mind is not as sharp as in youth.  And it makes no sense to start all this for the sake of one project, than to study for the rights and buy a car for the sake of going to the bakery in the neighboring house. <br><br>  The way out was the found “mikroPascal PRO for ARM” from MikroElektronika.  To be honest, I already worked with “mikroPascal PRO for PIC” at the peak of PIC chip popularity.  Impressions were not very good.  The compiler is “weird”, the shell is also not very stable and friendly interface. <br><br>  It was especially interesting to see what has changed over the years and in what direction. <br><br>  And so, what we have on hand: <br><ul><li>  Fee stm32f4discovery; </li><li>  mikroPascal PRO for ARM with a license key (taken from a friend, then have to be returned).  Without a key - a limit of 2 kV on the size of the code; </li><li>  An engineer who was taught at the university exclusively Pascal. </li></ul><br>  Task: to master the programming of the microcontroller without a single line of C code. <br><br>  So let's start ... <br><a name="habracut"></a><br>  Creating a project is easy.  File -&gt; New -&gt; New Project. <br><br>  Specify the type of microcontroller.  Ask what standard libraries we use (by default - everything).  Leave.  “Extra” libraries will be thrown out automatically when compiled. <br><br>  Do not forget to configure the tactics.  If in doubt, use one of the standard “Scheme”.  This is a set of settings for clocking options. <br><br>  First of all, let's play around with LEDs.  Let's just ask them to burn.  I remind you that the LEDs are located on the ports D12, D13, D14 and D15. <br><div class="spoiler">  <b class="spoiler_title">Code</b> <div class="spoiler_text"><pre> program MyProject1;
@@ -244,7 +244,7 @@
          ;
      end;
  end.
-</pre><br></div></div><br>  For normal operation of this program (and any program that uses the standard USB library), it is necessary to generate the USBdsc.mpas file.  It contains the USB parameters for this device.  At once I will tell, from the “Tools” menu there is a utility “HID Terminel”.  This utility allows you to create the correct file, sufficient to run examples and simple applications.  And if something more complicated - see the description of the USB bus.  And rule the file.  Fortunately, he generously provided with comments. <br><br><img src="https://habrastorage.org/files/1fa/57c/f0e/1fa57cf0e91d46059507486b6623d8cc.png"><br><br>  Using this utility, we check the operation of the example: <br><br><img src="https://habrastorage.org/files/a5b/641/2b6/a5b6412b6a314be0b094fb3ebff76189.png"><br><br>  Of course, there will be a bunch of grunts about the “inefficiency” of the code.  But look - a rather “hard” example with USB HID takes 1.7% of flash and 1.2% of operative memory. <br><br><img src="https://habrastorage.org/files/314/7b0/23d/3147b023d7234096b07f39919b967bcb.png"><br><br>  And a small digression. <br><br>  All this “magic” machinery works only with the correct setting of the clocking system.  If the absolutely correct code starts to “freak out”, the external interfaces start to “disappear” and the USB interface connection generates the message “Device ID Request Error” - open the project settings and check the clocking again. <br><br><img src="https://habrastorage.org/files/85b/9ec/a9d/85b9eca9d2d04404989459dfbad5e412.png"><br><br>  All this shows that knowledge of C is not a prerequisite for effective programming of the microcontroller.  And the availability of standard libraries significantly reduces the entry threshold for unprepared people.  At the same time, the code is quite compact and readable. <br><br>  A detailed description of the programming environment will be written in a separate article. <br><br>  PS: Actually, I know C (C ++).  Freely read and understand the code.  But writing programs in this language is “uncomfortable” for me.  Brains automatically give access to Pascal-like code. </div><p>Source: <a href="https://habr.com/ru/post/264441/">https://habr.com/ru/post/264441/</a></p>
+</pre><br></div></div><br>  For normal operation of this program (and any program that uses the standard USB library), it is necessary to generate the USBdsc.mpas file.  It contains the USB parameters for this device.  At once I will tell, from the “Tools” menu there is a utility “HID Terminel”.  This utility allows you to create the correct file, sufficient to run examples and simple applications.  And if something more complicated - see the description of the USB bus.  And rule the file.  Fortunately, he generously provided with comments. <br><br><img src="https://habrastorage.org/files/1fa/57c/f0e/1fa57cf0e91d46059507486b6623d8cc.png"><br><br>  Using this utility, we check the operation of the example: <br><br><img src="https://habrastorage.org/files/a5b/641/2b6/a5b6412b6a314be0b094fb3ebff76189.png"><br><br>  Of course, there will be a bunch of grunts about the “inefficiency” of the code.  But look - a rather “hard” example with USB HID takes 1.7% of flash and 1.2% of operative memory. <br><br><img src="https://habrastorage.org/files/314/7b0/23d/3147b023d7234096b07f39919b967bcb.png"><br><br>  And a small digression. <br><br>  All this “magic” machinery works only with the correct setting of the clocking system.  If the absolutely correct code starts to “freak out”, the external interfaces start to “disappear” and the USB interface connection generates the message “Device ID Request Error” - open the project settings and check the clocking again. <br><br><img src="https://habrastorage.org/files/85b/9ec/a9d/85b9eca9d2d04404989459dfbad5e412.png"><br><br>  All this shows that knowledge of C is not a prerequisite for effective programming of the microcontroller.  And the availability of standard libraries significantly reduces the entry threshold for unprepared people.  At the same time, the code is quite compact and readable. <br><br>  A detailed description of the programming environment will be written in a separate article. <br><br>  PS: Actually, I know C (C ++).  Freely read and understand the code.  But writing programs in this language is “uncomfortable” for me.  Brains automatically give access to Pascal-like code. </div><p>Source: https://habr.com/ru/post/264441/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -257,7 +257,7 @@
 <li><a href="../264445/index.html">How does ecology affect data center cooling</a></li>
 <li><a href="../264447/index.html">The realities of SharePoint migration to the cloud</a></li>
 <li><a href="../264449/index.html">Cloud for developer companies, release one: Azure Marketplace - a store of services and solutions for every taste</a></li>
-<li><a href="../264451/index.html">On limitations in the applicability of the Minkowski metric in digital data processing</a></li>
+<li><a href="../26445/index.html">minimalism</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

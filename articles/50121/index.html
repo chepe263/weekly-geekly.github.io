@@ -32,12 +32,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -59,7 +59,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Xen server do it yourself. Part two.</h1><div class="post__text post__text-html js-mediator-article">  We continue to put Xen on Ubuntu. <br>  <a href="http://habrahabr.ru/blogs/sysadm/50118/">Part one</a> <br><br><a name="habracut"></a><br><br><h3>  <strong>Preparing the system for installing DomU</strong> </h3><br>  Let's start point by point. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -67,7 +67,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h6>  <strong>1. Next, you should determine the storage location of the config.</strong>  <strong>files</strong> </h6><br>  Configs we add in a directory <br><br> <code>/etc/xen/config</code> <br>  If the config folder is not there - create. <br>  And we do not forget to keep configs of all systems and a couple of pure templates there. <br><br><h6>  <strong>2. On what media do we have DomU - LVM or physical disk images created by dd or qemu.</strong> </h6><br>  Initially, I am only for LVM - and because it is faster than just images stuck in <br>  / dev / loop and because their backup is much simpler and more pleasant than anything that can be;) <br>  I will dwell on this example.  To whom I can, then I can supplement later with an example of working with physical <br>  in a way. <br><br>  In order to create an LVM partition, we need a separate partition on the screw drive.  Desirable it <br>  availability to think of initially and with a reserve of space, because there will be stored images of lvm and he <br>  will not be available for storage there anything else. <br>  Suppose we have such a partition / dev / sdb6 and its size is 270 GB. <br><br>  Go to the root console ( <code>sudo su -</code> ) and set lvm itself <br><br> <code>aptitude install lvm2</code> <br> <br>  Next, you need to load the LVM modules: <br><br> <code>modprobe dm_mod modprobe dm_mirror modprobe dm_snapshot</code> <br> <br>  Initialize LVM support with this section. <br><br> <code>pvcreate /dev/sdb</code> <br> <br>  Create a volume group which we will call vg (virtual group) <br><br> <code>vgcreate vg /dev/sdb</code> <br> <br>  Everything, we create an image that will be visible in the system as a physical one and you can put Win XP there for example. <br><br> <code>lvcreate -L10240M -n hdd vg</code> <br> <br> <code>lvs</code> <br> <pre>  LV VG Attr LSize Origin Snap% Move Log Copy%
@@ -106,20 +106,20 @@
      VNC = 1
      Started domain "xp-test-1" </pre><br><br> <code>xm list</code> <br> <pre>  Name ID Mem VCPUs State Time (s)
      Domain-0 0 577 8 r ----- 186810.6
-     xp-test-1 1 386 2 -b ---- 15.1 </pre><br><br>  If your distribution kit consists of several disks - it doesn't matter, you can re-mount the cdrom source to another disk on the fly: <br><br> <code>xm block-configure 1 phy:/dev/null hd:cdrom r <br> losetup -d /dev/loop1 <br> losetup /dev/loop1 /home/felvis/distr2.iso <br> xm block-configure 1 phy:/dev/loop1 hd:cdrom r</code> <br> <br>  In order to get to the guest system, you need to put the VNC client: <br><br> <code>aptitude install xtightvncviewer</code> <br> <br>  After that, the virtual machine will be available on port vnc 0 (corresponding to the next raised machine by 1,2,3, etc.) <br>  We carry out: <br><br> <code>vncviewer :0</code> <br> <br>  and if you are under X, then u will have a first-person view of Windows. <br>  If you are not under X, but, for example, you sit through ssh - there is also a way out - Xming. <br>  We put this program where you are sitting under win.  It helps you to display GUI windows running in ssh. <br>  We put Xming, run it. <br>  On Ubuntu, set the environment variable: <br><br> <code>export DISPLAY= ip:0.0</code> <br> <br>  and now when you run the vncviewer command through some putty, you get a graphical window from Linux. <br><br>  We finish the installation and enjoy the virtual machine. <br><br>  The article was written by LiveJournal user felvis and me during the actual installation and configuration of this whole farm for production use. <br>  Used materials from the book "Professional Xen® Virtualization" by William von Hagen and the manual from the site Xen.ru - <a href="http://xgu.ru/xen/manual/">Read the manual</a> . </div><p>Source: <a href="https://habr.com/ru/post/50121/">https://habr.com/ru/post/50121/</a></p>
+     xp-test-1 1 386 2 -b ---- 15.1 </pre><br><br>  If your distribution kit consists of several disks - it doesn't matter, you can re-mount the cdrom source to another disk on the fly: <br><br> <code>xm block-configure 1 phy:/dev/null hd:cdrom r <br> losetup -d /dev/loop1 <br> losetup /dev/loop1 /home/felvis/distr2.iso <br> xm block-configure 1 phy:/dev/loop1 hd:cdrom r</code> <br> <br>  In order to get to the guest system, you need to put the VNC client: <br><br> <code>aptitude install xtightvncviewer</code> <br> <br>  After that, the virtual machine will be available on port vnc 0 (corresponding to the next raised machine by 1,2,3, etc.) <br>  We carry out: <br><br> <code>vncviewer :0</code> <br> <br>  and if you are under X, then u will have a first-person view of Windows. <br>  If you are not under X, but, for example, you sit through ssh - there is also a way out - Xming. <br>  We put this program where you are sitting under win.  It helps you to display GUI windows running in ssh. <br>  We put Xming, run it. <br>  On Ubuntu, set the environment variable: <br><br> <code>export DISPLAY= ip:0.0</code> <br> <br>  and now when you run the vncviewer command through some putty, you get a graphical window from Linux. <br><br>  We finish the installation and enjoy the virtual machine. <br><br>  The article was written by LiveJournal user felvis and me during the actual installation and configuration of this whole farm for production use. <br>  Used materials from the book "Professional Xen® Virtualization" by William von Hagen and the manual from the site Xen.ru - <a href="http://xgu.ru/xen/manual/">Read the manual</a> . </div><p>Source: https://habr.com/ru/post/50121/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../50109/index.html">Wardriving, gathering information about wireless networks</a></li>
 <li><a href="../50114/index.html">Pardus 2008.1</a></li>
 <li><a href="../50115/index.html">Task: Objects and Access</a></li>
 <li><a href="../50118/index.html">Xen server do it yourself. Part one</a></li>
+<li><a href="../5012/index.html">8apps: a social network for productive people</a></li>
 <li><a href="../50120/index.html">We master Python. Oz 2. Branching cycles + practice.</a></li>
+<li><a href="../50122/index.html">One of the methods of interactive marketing, stand for discussion.</a></li>
 <li><a href="../50129/index.html">Sclerosis attack</a></li>
+<li><a href="../5013/index.html">The PDF format will become an ISO standard.</a></li>
 <li><a href="../50130/index.html">All webmord in one. virtualhost and proxy_pass in nginx for home.</a></li>
 <li><a href="../50131/index.html">ICQ masquerade as a universal solution to problems with changes in the ICQ protocol</a></li>
-<li><a href="../50134/index.html">Apple Macintosh turned 25 years old</a></li>
-<li><a href="../50137/index.html">Spell check with Google</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

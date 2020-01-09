@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Time Machine: backup file size limit</h1><div class="post__text post__text-html js-mediator-article">  Having suffered for many hours in search of a solution, I decided to share the method found with Habr's readers. <br><img src="https://habrastorage.org/storage2/660/1d2/623/6601d26233cfa32653bdd63b3aea511b.png"><br><a name="habracut"></a><br>  Time Machine stores all backup copies in a “growing disk image”, the physical size of which in the location takes up exactly as much space as the data in it occupies.  Such an approach saves us from having to break up the storage into sections - one by one for different purposes - all image-packages are stored on the same physical partition, consuming megabytes and gigabytes only when necessary.  It is convenient when you do not know in advance what size to allocate for a particular task. <br><br>  A useful feature of the “growing disk image package” is setting a limit on its maximum size.  When you first start Time Machine creates a package image with a limit equal to the entire capacity of the partition on which it will be located.  And when the free space is exhausted, old backups simply start to be deleted.  Prior to Mac OS X 10.6.3, there was a way to change this limitation with the <i>hdiutil</i> utility.  For example, the following line sets the limit for the maximum size of a package image to 500 GB: <br><br><pre><code class="bash hljs">hdiutil resize -size 500G -shrinkonly /Volumes/Data/macbook.sparsebundle</code> </pre> <br>  However, with the update 10.6.3, Time Machine every time it started it began to automatically change the parameters of the image package, restoring the size of the limit to the default value (that is, to the maximum) in case it was changed or the media capacity changed. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      There is still no official solution to the problem from Apple.  The solution is another trick - to <b>block changing the parameters of the image package</b> after installing the necessary size limit for it. <br><br>  It should be noted that the image parameters are stored in the image itself in the <b>Info.plist</b> and <b>Info.bckup files</b> .  And in order to block changes in parameters, it is necessary to block changes to these files.  I’ll say right away that a simple write ban with <i>chmod</i> does not work.  But another method works (10.8.2) - locking files using the <i>SetFile</i> utility: <br><br><pre> <code class="bash hljs">SetFile -a L /Volumes/Data/macbook.sparsebundle/Info.*</code> </pre><br>  After executing this command, Time Machine will no <u>longer be able</u> to change image parameters: <br><img src="https://habrastorage.org/storage2/e9b/23d/52b/e9b23d52b10dbb8399d194ad5c61e2e9.png"><br><br>  <i>SetFile is</i> not included in the standard set of Mac OS X utilities and is installed by installing the Xcode application and the optional Command Line Tools component: <br><img src="https://habrastorage.org/storage2/760/31c/2e9/76031c2e960e68a3e4a08cb6f4670595.png"><br>  To be able to change the image parameters again, it is necessary to remove the lock (we use the same arguments with the only difference that instead of the capital letter “L” we put its uppercase version - “l”): <br><br><pre> <code class="bash hljs">SetFile -al /Volumes/Data/macbook.sparsebundle/Info.*</code> </pre><br>  <b>PS:</b> A method was found while studying <a href="https://discussions.apple.com/thread/2383738%3Fstart%3D60%26tstart%3D45">this discussion</a> . </div><p>Source: <a href="https://habr.com/ru/post/157471/">https://habr.com/ru/post/157471/</a></p>
+      There is still no official solution to the problem from Apple.  The solution is another trick - to <b>block changing the parameters of the image package</b> after installing the necessary size limit for it. <br><br>  It should be noted that the image parameters are stored in the image itself in the <b>Info.plist</b> and <b>Info.bckup files</b> .  And in order to block changes in parameters, it is necessary to block changes to these files.  I’ll say right away that a simple write ban with <i>chmod</i> does not work.  But another method works (10.8.2) - locking files using the <i>SetFile</i> utility: <br><br><pre> <code class="bash hljs">SetFile -a L /Volumes/Data/macbook.sparsebundle/Info.*</code> </pre><br>  After executing this command, Time Machine will no <u>longer be able</u> to change image parameters: <br><img src="https://habrastorage.org/storage2/e9b/23d/52b/e9b23d52b10dbb8399d194ad5c61e2e9.png"><br><br>  <i>SetFile is</i> not included in the standard set of Mac OS X utilities and is installed by installing the Xcode application and the optional Command Line Tools component: <br><img src="https://habrastorage.org/storage2/760/31c/2e9/76031c2e960e68a3e4a08cb6f4670595.png"><br>  To be able to change the image parameters again, it is necessary to remove the lock (we use the same arguments with the only difference that instead of the capital letter “L” we put its uppercase version - “l”): <br><br><pre> <code class="bash hljs">SetFile -al /Volumes/Data/macbook.sparsebundle/Info.*</code> </pre><br>  <b>PS:</b> A method was found while studying <a href="https://discussions.apple.com/thread/2383738%3Fstart%3D60%26tstart%3D45">this discussion</a> . </div><p>Source: https://habr.com/ru/post/157471/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,10 +75,10 @@
 <li><a href="../157467/index.html">Ghost: The Idea of ​​Simple WordPress Blogger</a></li>
 <li><a href="../157469/index.html">Whether Americans will fly to Mars - how it depends on the results of the election of the President of the United States</a></li>
 <li><a href="../157477/index.html">Account without registration</a></li>
+<li><a href="../15748/index.html">Now comments ala Habrahabr in any blog!</a></li>
 <li><a href="../157481/index.html">Features of working with Apple push notification service</a></li>
 <li><a href="../157483/index.html">Procurement "Import-Export"</a></li>
 <li><a href="../157485/index.html">Photos jobs habrovchan</a></li>
-<li><a href="../157487/index.html">Elon Musk. Mission to mars</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

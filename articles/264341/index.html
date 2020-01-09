@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>STC Metrotek. Part 2. Bercut-MMT and the rake race</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/files/fff/538/0b7/fff5380b7ce74228a28b4c820328c10b.jpg"></div><br><p>  The <a href="https://habrahabr.ru/company/metrotek/blog/260979/">last time</a> I stopped the story is that we ventured to make our own modular device, so as not to tie the development to third-party solutions, such as iPAQ handhelds, which had long been out of the market and eventually ousted by smartphones. </p><br><p>  So, 2005-2006. <a name="habracut"></a></p><br><p>  Usually the cycle of creating a new piece of iron in the company took six months - from the idea to the first mass production of aka mass production.  By the way, the complexity of the upcoming development did not scare us at all.  No wonder we chose the slogan "Challenges - simple solutions!".  Especially since, as the main developer of hardware considered, if there is an FPGA in the system, then any hardware problems can be solved in a “software” way (for example, if the design of the board made a mistake with the purpose of the legs). </p><br><p>  OK, the decision is made - and it started!  Agreed TK: general requirements, form factor, approximate constructive, structural scheme.  Foreign competitors (Sunrise Telecom, Anritsu etc.) were dominated by a fixed configuration or, at most, a configuration with one replaceable module.  We decided that there would be two replaceable measuring modules in our device and assumed that we would first release three types of boards: E1 / PCM, Datacom, Gigabit Ethernet. </p><br><p>  Since the development experience for the ARM processor of the Intel PXA250 family was fully available - just such a processor was installed in iPAQ handhelds - then Intel PXA270 was chosen as the core of the control platform (later Intel gave these processors to the company Marvell), especially since the pilot fee was earned almost immediately and without any problems. </p><br><p>  This is how the pilot looked, where in a couple of days with the help of a <s>rope loop and a stick of</s> jtag and <a href="http://openocd.org/">openocd, the</a> bootloader and linux <a href="http://openocd.org/">could</a> be launched, simultaneously pointing out Intel's flaws in the documentation. </p><br><p>  View from the processor: </p><br><img src="https://habrastorage.org/files/9e5/dee/13d/9e5dee13d7314438a0181ff2e7d21cad.jpg"><br><p><br>  View from the side of the comb for connecting peripherals: </p><br><img src="https://habrastorage.org/files/08e/d98/218/08ed98218b5044a494fa5573e6a6d6da.png"><br><p>  But choosing and raising the CPU is not even half the battle, but a maximum of one tenth.  Because there are peripheral devices, such as the controller for power management and battery charging, audio-codec, ethernet, usb, etc., embedded in the processor or stand-alone. </p><br><p>  To avoid errors at the level of the PCB layout, we made an "epoch-making" decision to do the digital signal routing through FPGA and CPLD chips and this is what happened when looking at the first version of the device from the programmer's point of view: </p><br><img src="https://habrastorage.org/files/2fa/c8e/494/2fac8e49412a4057af5aae3b57f867db.png"><br><p><br>  As you can easily figure out, almost all peripheral components are connected to the central processor via FPGA (FPGA and CPLD): display, touch-panel, audio, keyboard, LAN-ports, removable measurement modules, and even compact flash.  And to manage the power and charge of the NiMh battery, they connected a separate ATMega-based controller, which implemented the smart battery functions. </p><br><p>  (Let me remind you that it was ten years ago and we knew about specialized chips for charging and power control, but for some reason we didn’t trust them much. Now we can safely admit that yes, they were wrong. Not for nothing that companies that produce such chips spend on the development of several years. Now we have become smarter and do not invent the bicycle.) </p><br><p>  And here is the resulting monster - the main board of the device: </p><br><img src="https://habrastorage.org/files/c7c/25c/9f3/c7c25c9f3a464b4e869221a4600645e1.png"><br><p>  To connect plug-in modules, its own data exchange and control protocol was invented, and the physical interface was executed in the reduced PCI slot form factor: </p><br><img src="https://habrastorage.org/files/0f4/f8a/307/0f4f8a307b7742c78312e2a01cba26f2.jpg"><br><p>  Above and below - protective panels, so that curious users do not pick off unnecessary details from the board, as it seemed to them. </p><br><p>  Do I have to say that the device turned out to be mega-complex both in development and accompanied?  In addition to the measurement programs, many <s>crutches and ropes of the</s> subsystems had to be developed: </p><br><ul><li>  FPGA and CPLD firmware for resolving SPI streams, for working with a printed ethernet controller, for exchanging interchangeable modules on a parallel bus, for transferring audio information from the modules to an audio codec, </li><li>  drivers (linux kernel modules) for updating firmware and working with the entire zoo invented, </li><li>  firmware for charge and power management chip ... </li></ul><br><p>  But universally and insured from almost any errors in the layout.  People never do that! </p><br><p>  Oh, how much simpler our world was before we had to rush into the development of complex systems. </p><br><p>  In addition to the FPGA installed on board (on the motherboard), each plug-in module also has its own FPGA, in which the real-time measurement logic is implemented and which cannot be done in our business, unlike the motherboard.  The latter, by the way, has since undergone several reincarnations and has become an order of magnitude simpler and more reliable. </p><br><p>  And in new versions, we didn’t pervert it like this and didn’t reinvent the wheel: USB was used for exchange with interchangeable modules, the processor board was taken ready-made using the SO-DIMM format, the volitional decision was abandoned by the special processors for monitoring and charging the batteries and switched to standard BQ microchips from Texas Instruments and happiness came. </p><br><p>  As M. Zhvanetsky said in one of his miniatures: “but there is experience!”, And we try not to step on such a rake. </p><br><p>  And if the system turned out to be so complicated as in our example, then, most likely, it was designed incorrectly. </p><br><p>  To be continued. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/264341/">https://habr.com/ru/post/264341/</a></p>
+    <p>Source: https://habr.com/ru/post/264341/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../264329/index.html">Security Week 32: Android Stagefright, New Car Riders, Do Not Track 2.0</a></li>
 <li><a href="../264333/index.html">Define key products using linear regression</a></li>
 <li><a href="../264335/index.html">Vulnerability in Mozilla Firefox web browser is exploited in-the-wild</a></li>
 <li><a href="../264337/index.html">Glyuching, attacks on third-party channels and hacker projects on Kickstarter (continued)</a></li>
 <li><a href="../264339/index.html">Working with text data in scikit-learn (translation of documentation) - part 1</a></li>
+<li><a href="../26434/index.html">Opera-9.5 will fully support Google Gears</a></li>
 <li><a href="../264343/index.html">React boilerplate - Rocket React</a></li>
 <li><a href="../264345/index.html">Introduction to JavaScript Iterators on ES6</a></li>
 <li><a href="../264347/index.html">The third PyCon Russia will be held in Yekaterinburg on September 18-19</a></li>
 <li><a href="../264349/index.html">Underground carders market. Translation of the book "Kingpin". Chapter 6. “I Miss Crime”</a></li>
-<li><a href="../264351/index.html">Vim in full: The library on which everything rests</a></li>
+<li><a href="../26435/index.html">Now there is an official opportunity to launch utilities from Mark Russinovich (Sysinternals) directly from the Internet from the official site</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

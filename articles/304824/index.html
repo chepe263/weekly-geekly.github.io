@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Moving responsibility of the repository pattern</h1><div class="post__text post__text-html js-mediator-article">  During many discussions about the applicability of the Repository pattern, I noticed that people are divided into two camps.  Within the framework of this text, I, conditionally, will call them abstractionists and concreters.  The difference between them lies in how they relate to the value of the pattern.  The first believe that the repository is worth having, because  he allows to abstract from details of data storage.  The latter believe that we cannot completely abstract away from these details, therefore the very idea of ​​a repository is meaningless, and its use is a waste of time.  The dispute between them usually turns into holivar. <br><br>  What's wrong with the repository?  Obviously, everything is fine with the pattern itself, but the difference is in its understanding by the developers.  I tried to investigate it and came across two main points that, in my opinion, are the cause of a different attitude towards it.  One of these is the “moving” responsibility of the repository, and the other is associated with underestimating unit testing.  Under the cut, I will explain the first. <br><a name="habracut"></a><br><h4>  Repository Slip Responsibility </h4><br>  When it comes to building the application architecture, everyone in the head immediately gets an idea of ​​three layers: Presentation Layer, Business Layer, and Data Layer ( <a href="https://msdn.microsoft.com/en-us/library/ee658109.aspx">see MSDN</a> ).  In such systems, business logic objects use repositories to retrieve data from physical repositories.  Repositories return business entities instead of raw record sets.  This is very often justified by the fact that if we had to replace the type of physical storage (base, file, or service), we would create an abstract class of the repository and implement the storage specific to us.  It looks like this: <br><br><img src="https://habrastorage.org/files/102/408/601/10240860173d4d62bac62b0b8bdb8adf.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      About the same division says <a href="http://martinfowler.com/eaaCatalog/repository.html">Martin Fowler</a> and <a href="https://msdn.microsoft.com/en-us/library/ff649690.aspx">MSDN</a> .  As usual, the description is just a simplified model.  Therefore, although it looks right for a small project, it is misleading when you try to transfer this pattern to a more complex one.  Existing ORMs are even more confusing, because  implement many things out of the box.  But imagine that a developer only knows how to use the Entity Framework (or another ORM) only to get data.  Where, for example, should it put a second-level cache, or logging all business operations?  In an attempt to do this, it is obvious that he will try to separate the modules according to their functionality, follow the SPR from SOLID, and build a composition of them, which may look like this: <br><br><img src="https://habrastorage.org/files/c70/a7a/551/c70a7a5517cb4849a2403c665b396951.png" alt="image"><br><br>  Does the repository perform the same role as before?  The obvious answer is "NO", because now it does not retrieve data from the repository.  This responsibility has been transferred to another object.  On this basis, the first discrepancy arises between the camps of abstractionists and concreters. <br><br><h4>  Instead of analyzing </h4><br>  If we accept the rule that all terms should retain their meaning, regardless of code modifications, then it would be correct at the first stage not to call an object that simply returns data a repository.  This is a pure DAO pattern, because  its task is to hide a specific data access interface (ling, ADO.NET, or something else).  At the same time, the repository may not know anything at all about such details, gathering all the data access subsystems in a single composition. <br><br>  Do you think that such a problem exists? </div><p>Source: <a href="https://habr.com/ru/post/304824/">https://habr.com/ru/post/304824/</a></p>
+      About the same division says <a href="http://martinfowler.com/eaaCatalog/repository.html">Martin Fowler</a> and <a href="https://msdn.microsoft.com/en-us/library/ff649690.aspx">MSDN</a> .  As usual, the description is just a simplified model.  Therefore, although it looks right for a small project, it is misleading when you try to transfer this pattern to a more complex one.  Existing ORMs are even more confusing, because  implement many things out of the box.  But imagine that a developer only knows how to use the Entity Framework (or another ORM) only to get data.  Where, for example, should it put a second-level cache, or logging all business operations?  In an attempt to do this, it is obvious that he will try to separate the modules according to their functionality, follow the SPR from SOLID, and build a composition of them, which may look like this: <br><br><img src="https://habrastorage.org/files/c70/a7a/551/c70a7a5517cb4849a2403c665b396951.png" alt="image"><br><br>  Does the repository perform the same role as before?  The obvious answer is "NO", because now it does not retrieve data from the repository.  This responsibility has been transferred to another object.  On this basis, the first discrepancy arises between the camps of abstractionists and concreters. <br><br><h4>  Instead of analyzing </h4><br>  If we accept the rule that all terms should retain their meaning, regardless of code modifications, then it would be correct at the first stage not to call an object that simply returns data a repository.  This is a pure DAO pattern, because  its task is to hide a specific data access interface (ling, ADO.NET, or something else).  At the same time, the repository may not know anything at all about such details, gathering all the data access subsystems in a single composition. <br><br>  Do you think that such a problem exists? </div><p>Source: https://habr.com/ru/post/304824/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../304822/index.html">How to create a Telegram bot using WCF service</a></li>
 <li><a href="../304826/index.html">Elementary, Watson, or social media analysis in Aybiems</a></li>
 <li><a href="../304828/index.html">Oracle from arithmetic</a></li>
+<li><a href="../30483/index.html">Eclipse, as it were ...</a></li>
 <li><a href="../304830/index.html">Non-standard approach to programming the microcontroller</a></li>
 <li><a href="../304832/index.html">Vim and IDE are different things.</a></li>
-<li><a href="../304834/index.html">4 moments when Tom Hanks completely changed our attitude to life</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

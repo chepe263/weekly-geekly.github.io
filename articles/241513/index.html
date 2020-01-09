@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Monitor the response time of the NFS server using tshark and lua</h1><div class="post__text post__text-html js-mediator-article">  The other day, I faced a task, how to determine how much time the NFS server spends on a request. <br>  It turned out that it is not so easy to see.  But the favorite <s>hammer</s> tool - wireshark came to the rescue.  For wireshak, you can write your own extension on LUA. <br><br><a name="habracut"></a><br><br>  The idea is simple: we take the NFS request and put it in a hashmap, and when we see the answer, we consider <br>  time difference: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <pre><code class="lua hljs"><span class="hljs-keyword"><span class="hljs-keyword">if</span></span> msgtyp == <span class="hljs-number"><span class="hljs-number">0</span></span> <span class="hljs-keyword"><span class="hljs-keyword">then</span></span> packets[xid] = { timestamp = frameepochtime, source = <span class="hljs-built_in"><span class="hljs-built_in">tostring</span></span>(ipsrc), destination = <span class="hljs-built_in"><span class="hljs-built_in">tostring</span></span>(ipdst), op_code = nfs_op }; <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> <span class="hljs-keyword"><span class="hljs-keyword">local</span></span> l = packets[xid] <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> l ~= nul <span class="hljs-keyword"><span class="hljs-keyword">then</span></span> packets[xid] = <span class="hljs-literal"><span class="hljs-literal">nil</span></span> <span class="hljs-keyword"><span class="hljs-keyword">local</span></span> time_delta = frameepochtime - l.timestamp <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> time_delta &gt; min_time_delta <span class="hljs-keyword"><span class="hljs-keyword">then</span></span> <span class="hljs-built_in"><span class="hljs-built_in">print</span></span>(frametime .. <span class="hljs-string"><span class="hljs-string">" "</span></span> .. l.source .. <span class="hljs-string"><span class="hljs-string">" &lt;=&gt; "</span></span> .. l.destination .. <span class="hljs-string"><span class="hljs-string">" "</span></span> .. <span class="hljs-built_in"><span class="hljs-built_in">string</span></span>.<span class="hljs-built_in"><span class="hljs-built_in">format</span></span>(<span class="hljs-string"><span class="hljs-string">"%.3f"</span></span>,time_delta) .. <span class="hljs-string"><span class="hljs-string">" "</span></span> .. l.op_code) <span class="hljs-keyword"><span class="hljs-keyword">end</span></span> <span class="hljs-keyword"><span class="hljs-keyword">end</span></span></code> </pre> <br><br>  Full code is available <a href="https://github.com/kofemann/wireshark_lua">here.</a> <br><br>  Runs just from the command line. <br><pre> <code class="bash hljs">$ tshark -q -X lua_script:nfs.lua -f <span class="hljs-string"><span class="hljs-string">"port 2049"</span></span></code> </pre><br><br>  Result: <br><pre> "Aug 27, 2014 16: 44: 43.000 CEST" aaaa: bbbb: ccc: 10a0 :: 1: 7f &lt;=&gt; aaaa: bbbb: ccc: 10bf :: 1: 8c 0.001 v4_EXCHANGE_ID
@@ -74,20 +74,20 @@
  "Aug 27, 2014 16: 44: 43.000 CEST" ab161.127 &lt;=&gt; ab191.140 0.003 v4_PUTROOTFH
  "Aug 27, 2014 16: 44: 43.000 CEST" ab161.127 &lt;=&gt; ab191.140 0.002 v4_RECLAIM_COMPLETE
  "Aug 27, 2014 16: 44: 43.000 CEST" ab161.127 &lt;=&gt; ab191.140 0.004 v4_PUTROOTFH
-</pre><br><br>  Maybe someone has similar practices?  Share! <br><br>  <a href="https://www.wireshark.org/docs/wsug_html_chunked/wsluarm.html">Lua Support in Wireshark</a> <br>  <a href="http://wiki.wireshark.org/Lua">Wireshark LUA wiki</a> </div><p>Source: <a href="https://habr.com/ru/post/241513/">https://habr.com/ru/post/241513/</a></p>
+</pre><br><br>  Maybe someone has similar practices?  Share! <br><br>  <a href="https://www.wireshark.org/docs/wsug_html_chunked/wsluarm.html">Lua Support in Wireshark</a> <br>  <a href="http://wiki.wireshark.org/Lua">Wireshark LUA wiki</a> </div><p>Source: https://habr.com/ru/post/241513/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../241499/index.html">Lego WeDo - robotics for the little ones</a></li>
 <li><a href="../241501/index.html">Balanced currency and multilateral clearing</a></li>
 <li><a href="../241505/index.html">VeeRoute is the winner of the it track</a></li>
 <li><a href="../241509/index.html">Pirate Bay has started promoting a new free VPN</a></li>
+<li><a href="../24151/index.html">Habraskhodka in Novosibirsk</a></li>
 <li><a href="../241511/index.html">Pain. Or design of large projects</a></li>
 <li><a href="../241515/index.html">WebJars + RequireJS</a></li>
 <li><a href="../241519/index.html">Easy to remember shortcut to Google cache</a></li>
+<li><a href="../24152/index.html">Opera 9.50 Beta 2</a></li>
 <li><a href="../241525/index.html">Pro Git 2nd Edition</a></li>
 <li><a href="../241527/index.html">Overview of the most interesting materials on data analysis and machine learning №19 (October 20 - 26, 2014)</a></li>
-<li><a href="../241531/index.html">Garry Kasparov lost to the Deep Blue supercomputer in chess due to computer failure</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

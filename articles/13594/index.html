@@ -31,12 +31,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -58,7 +58,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Javascript Object Layout</h1><div class="post__text post__text-html js-mediator-article">  Next we will talk about the hierarchy of objects in JavaScript. <br><a name="habracut"></a><br><br><img src="https://habrastorage.org/getpro/habr/olpictures/e64/9b4/c6d/e649b4c6db9962e7c3f238e422d30e1e.jpg" width="450" height="559" alt="Jol" hspace="10" vspace="10"><br><br>  Source: <a href="">www.mollypages.org/misc/js.mp</a> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -66,10 +66,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Next come excerpts from the text and they can be "muddy", so I immediately suggest not to swear, but it is better to just study the diagram, for the sake of it and the article is published.  Those.  it is possible not to read further, but if you still read and see the obvious discrepancies and can argue them, then welcome to the discussion in the comments ... <br><br>  So the translation: <br>  - All instances are inherited from the prototype of the function object that created them. <br><br>  - Mozilla / Konqueror has a built-in __proto__ property that points to the prototype of the creator function object. <br><br>  - Regardless of the presence / absence of the __proto__ property, the basic idea is that all objects use the prototype of the object pointed to by the creator function.  The default object prototype has a constructor property that points back to the prototype creator function. <br><br>  - The prototype can only be used for inherited properties of a function.  The function itself does not use the associated prototype! <br><br>  function foo () {};  var f1 = new foo (); <br>  foo.prototype.x = "hello"; <br>  console.log (f1.x);  // hello <br>  console.log (foo.x);  // undefined <br><br>  - The default object prototype can be replaced by any other object created by the user.  The constructor property must be manually replaced by another: <br><br>  function foo () {};  var f1 = new foo (); <br>  console.log ('source&gt;', f1.constructor, foo.prototype.constructor, foo, f1.constructor === foo, foo.prototype.constructor === foo); <br><br>  foo.prototype.constructor = Object; <br>  console.log ('prototype replacement&gt;', f1.constructor, foo.prototype.constructor, Object, f1.constructor === Object, foo.prototype.constructor === Object); <br><br>  foo.prototype.constructor = foo <br>  console.log ('back&gt;', f1.constructor, foo.prototype.constructor, foo, f1.constructor === foo, foo.prototype.constructor === foo); <br><br>  - all objects automatically read the properties of the prototypes along the chain from their own to the parent. <br><br>  function foo () {};  f1 = new foo ();  f2 = new foo (); <br>  foo.prototype.x = "hello"; <br><br>  console.log (f1.x);  // "hello" <br>  console.log (f2.x);  // "hello" <br><br>  f1.x = “goodbye”;  // setting f1.x "overlaps" foo.prototype.x Only for f1 <br><br>  console.log (f1.x);  // "goodbye" <br>  console.log (f2.x);  // "hello" <br>  delete f1.x // delete local property <br>  console.log (f1.x) // "hello" ... foo.prototype.x back "visible" for f1 <br><br>  // Setting the property directly to the prototype changes the value in all instances. <br><br>  foo.prototype.x = “goodbye”; <br>  console.log (f1.x);  // "goodbye" <br>  console.log (f2.x);  // "goodbye"; <br><br>  In the diagram below you can see that: <br><br>  - Function .__ proto__ points to Function.prototype.  Accordingly: Function.constructor === Function The function constructor is a function. <br><br>  - Object instanceof Object == true.  based on the fact that Object .__ proto __.__ proto __. constructor == Object <br><br>  But, foo instanceof foo == false.  Because Foo does not exist as a constructor in its own prototype chain. </div><p>Source: <a href="https://habr.com/ru/post/13594/">https://habr.com/ru/post/13594/</a></p>
+      Next come excerpts from the text and they can be "muddy", so I immediately suggest not to swear, but it is better to just study the diagram, for the sake of it and the article is published.  Those.  it is possible not to read further, but if you still read and see the obvious discrepancies and can argue them, then welcome to the discussion in the comments ... <br><br>  So the translation: <br>  - All instances are inherited from the prototype of the function object that created them. <br><br>  - Mozilla / Konqueror has a built-in __proto__ property that points to the prototype of the creator function object. <br><br>  - Regardless of the presence / absence of the __proto__ property, the basic idea is that all objects use the prototype of the object pointed to by the creator function.  The default object prototype has a constructor property that points back to the prototype creator function. <br><br>  - The prototype can only be used for inherited properties of a function.  The function itself does not use the associated prototype! <br><br>  function foo () {};  var f1 = new foo (); <br>  foo.prototype.x = "hello"; <br>  console.log (f1.x);  // hello <br>  console.log (foo.x);  // undefined <br><br>  - The default object prototype can be replaced by any other object created by the user.  The constructor property must be manually replaced by another: <br><br>  function foo () {};  var f1 = new foo (); <br>  console.log ('source&gt;', f1.constructor, foo.prototype.constructor, foo, f1.constructor === foo, foo.prototype.constructor === foo); <br><br>  foo.prototype.constructor = Object; <br>  console.log ('prototype replacement&gt;', f1.constructor, foo.prototype.constructor, Object, f1.constructor === Object, foo.prototype.constructor === Object); <br><br>  foo.prototype.constructor = foo <br>  console.log ('back&gt;', f1.constructor, foo.prototype.constructor, foo, f1.constructor === foo, foo.prototype.constructor === foo); <br><br>  - all objects automatically read the properties of the prototypes along the chain from their own to the parent. <br><br>  function foo () {};  f1 = new foo ();  f2 = new foo (); <br>  foo.prototype.x = "hello"; <br><br>  console.log (f1.x);  // "hello" <br>  console.log (f2.x);  // "hello" <br><br>  f1.x = “goodbye”;  // setting f1.x "overlaps" foo.prototype.x Only for f1 <br><br>  console.log (f1.x);  // "goodbye" <br>  console.log (f2.x);  // "hello" <br>  delete f1.x // delete local property <br>  console.log (f1.x) // "hello" ... foo.prototype.x back "visible" for f1 <br><br>  // Setting the property directly to the prototype changes the value in all instances. <br><br>  foo.prototype.x = “goodbye”; <br>  console.log (f1.x);  // "goodbye" <br>  console.log (f2.x);  // "goodbye"; <br><br>  In the diagram below you can see that: <br><br>  - Function .__ proto__ points to Function.prototype.  Accordingly: Function.constructor === Function The function constructor is a function. <br><br>  - Object instanceof Object == true.  based on the fact that Object .__ proto __.__ proto __. constructor == Object <br><br>  But, foo instanceof foo == false.  Because Foo does not exist as a constructor in its own prototype chain. </div><p>Source: https://habr.com/ru/post/13594/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -82,7 +82,7 @@
 <li><a href="../135941/index.html">Embedded JavaFX</a></li>
 <li><a href="../135942/index.html">When to use Parallel.ForEach, and when to use PLINQ</a></li>
 <li><a href="../135943/index.html">Sony Xperia S - the new flagship under the new name. Hands-on video</a></li>
-<li><a href="../135945/index.html">New BlackBerry PlayBook features with OS 2.0</a></li>
+<li><a href="../135944/index.html">The solution for publishing educational materials on the Internet</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

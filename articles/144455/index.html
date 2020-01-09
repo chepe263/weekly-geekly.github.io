@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Database Hacking due to LFI</h1><div class="post__text post__text-html js-mediator-article"> Probably it is not a secret to anyone that bad code can lead to sad consequences.  This is especially true of sites.  Recently, reading an article about what mistakes PHP programmers make and what vulnerabilities appear on this site, I stumbled upon Local File Inclusion.  I was very interested in this vulnerability and I decided to <s>break something</s> in more detail to study it. <br><br>  After not a long search for one of the forums, I found a link to the German site <a href="http://www.gamecaptain.de/">http://www.gamecaptain.de</a> .  Immediately interesting parameters were noticed in the address bar <br><br><img src="https://habrastorage.org/getpro/habr/post_images/b3f/f1b/bf7/b3ff1bbf70b9c5f601506810be5f8cf4.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Let's try to extract something from this.  First we get the source code index.php <br><br><img src="https://habrastorage.org/getpro/habr/post_images/9a1/724/d3f/9a1724d3fa8c408cf22120723d7cbbe5.png" alt="image"><br><a name="habracut"></a><br>  We used conversion filters.  A couple of movements and ... <br><br><img src="https://habrastorage.org/getpro/habr/post_images/971/155/091/97115509111f85694d714cb2f0f3a326.png" alt="image"><br><br>  ... the source code of the file with us! <br><br>  Let's look at what's in this file.  Immediately began to look for a site in which German programmers made a mistake.  Searches were short-lived <br><br> <code><br> if(!isset($file)) { <br> if(isset($_POST["file"])) { <br> $file = $_POST["file"]; <br> } else if (isset($_GET["file"])) { <br> $file = $_GET["file"]; <br> } else { <br> if(!isset($sitearea) || $sitearea == "Magazin") { <br> $file="aktuell.php"; <br> } else { <br> $file="aktuell_downloads.php"; <br> } <br> } <br> } <br></code> <br><br>  Another vivid example of how not to include files. <br><br>  Then, of course, I began to look for a file with a connection to the database.  Obviously, this is the line <br><br> <code>require("includes/connect.inc.php");</code> <br> <br>  We perform the same operation that we did for index.php, for includes / connect.inc.php <br><br><img src="https://habrastorage.org/getpro/habr/post_images/339/d74/535/339d745352c8172011c09341112a05bd.jpg" alt="image"><br><br>  we decode the base-64 character set and get the information to connect to the database <br><br><img src="https://habrastorage.org/getpro/habr/post_images/12b/e75/248/12be7524831c37beb46fd403ae3fdde7.jpg" alt="image"><br><br>  Connecting ... <br><br><img src="https://habrastorage.org/getpro/habr/post_images/645/950/5dc/6459505dc9ac23bdbaa51087cd662347.jpg" alt="image"><br><br>  Everything! </div><p>Source: <a href="https://habr.com/ru/post/144455/">https://habr.com/ru/post/144455/</a></p>
+      Let's try to extract something from this.  First we get the source code index.php <br><br><img src="https://habrastorage.org/getpro/habr/post_images/9a1/724/d3f/9a1724d3fa8c408cf22120723d7cbbe5.png" alt="image"><br><a name="habracut"></a><br>  We used conversion filters.  A couple of movements and ... <br><br><img src="https://habrastorage.org/getpro/habr/post_images/971/155/091/97115509111f85694d714cb2f0f3a326.png" alt="image"><br><br>  ... the source code of the file with us! <br><br>  Let's look at what's in this file.  Immediately began to look for a site in which German programmers made a mistake.  Searches were short-lived <br><br> <code><br> if(!isset($file)) { <br> if(isset($_POST["file"])) { <br> $file = $_POST["file"]; <br> } else if (isset($_GET["file"])) { <br> $file = $_GET["file"]; <br> } else { <br> if(!isset($sitearea) || $sitearea == "Magazin") { <br> $file="aktuell.php"; <br> } else { <br> $file="aktuell_downloads.php"; <br> } <br> } <br> } <br></code> <br><br>  Another vivid example of how not to include files. <br><br>  Then, of course, I began to look for a file with a connection to the database.  Obviously, this is the line <br><br> <code>require("includes/connect.inc.php");</code> <br> <br>  We perform the same operation that we did for index.php, for includes / connect.inc.php <br><br><img src="https://habrastorage.org/getpro/habr/post_images/339/d74/535/339d745352c8172011c09341112a05bd.jpg" alt="image"><br><br>  we decode the base-64 character set and get the information to connect to the database <br><br><img src="https://habrastorage.org/getpro/habr/post_images/12b/e75/248/12be7524831c37beb46fd403ae3fdde7.jpg" alt="image"><br><br>  Connecting ... <br><br><img src="https://habrastorage.org/getpro/habr/post_images/645/950/5dc/6459505dc9ac23bdbaa51087cd662347.jpg" alt="image"><br><br>  Everything! </div><p>Source: https://habr.com/ru/post/144455/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../144456/index.html">Software Development Methodology</a></li>
 <li><a href="../144457/index.html">YOTA has included LTE network in Samara</a></li>
 <li><a href="../144459/index.html">St. Petersburg: you can already put the phone to the turnstile</a></li>
+<li><a href="../14446/index.html">"Poster" is preparing to spend money "Prof-Media"</a></li>
 <li><a href="../144460/index.html">Support for touchscreen devices will be improved in CSS4 media queries</a></li>
-<li><a href="../144461/index.html">Pulls - pulls, can not pull ...</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>nginx, once again about caching</h1><div class="post__text post__text-html js-mediator-article"> Sometimes the growth rate of a project is slightly higher than the speed of optimization of a web application or the acquisition of more powerful equipment under the backend. <br><br>  The simplest scheme of "parallelization" of the load is the removal of the main load on several frontend.  Previously, you had to suffer (or enjoy someone as you like) with webdavs, clustered filesystems and other tricks to provide up-to-date information, this was until nginx appeared, or rather, <b>proxy_store</b> and <b>proxy_cache</b> in it. <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      In general, the scheme of work is as follows: <br>  Several frontend (cheap servers without raid and other adult intricacies) through round robin are given to clients. <br>  frontend gives off statics, proxies and gives off cached dynamics for guests and performs transparent proxying for registered users. <br>  TTX backend in this case does not matter much, the question of the correct configuration should be discussed individually.  Additional caching of all that is possible on the backend is welcome. <br><br>  The advantages of this approach are in the cost of this “clustering” due to the budget characteristics of the frontend.  The refusal of any frontend is not critical, it is enough to raise its ip (if available) on another frontend or change the DNS configuration (which may result in unavailability for a number of users).  In practice, the city portal where the video / photo storage on 4TB (occupied on the backend) on the frontend does not contain more than 300GB of what users actually request (you can clean it by atime, but considering that the frontend FS is mounted with noaime then by date of creation file).  Static content on the backend is generated with a new name, modifying the file also creates a new file name so that the frontend works correctly. <br><br> <code>http { <br> proxy_cache_path /var/www/cache levels= keys_zone=mycache:150m; <br> ... <br> } <br> <br> server { <br> #  ,   <br> set $cached 0; <br> listen server; <br> server_name server *.server; <br> #    500   <br> error_page 502 503 504 509 /500.html; <br> # - - ,       <br> error_page 404 = @nocached; <br> <br> expires epoch; <br> root /var/www/html; <br> <br> location = /500.html { <br> } <br> <br> #    frontend   ,   <br> location ~* ^.+\.(jpg|jpeg|gif|gz|zip|flv|rar|wmv|avi|css|swf|png|htc|ico|mpeg|mpg|txt|mp3|mov|js)$ { <br> expires 1y; <br> error_page 404 = @fetch; <br> } <br> <br> #    <br> location @fetch { <br> proxy_pass htt://backend; <br> proxy_store on; <br> proxy_temp_path /var/www/_fetch; <br> proxy_set_header Host mydomain; <br> proxy_set_header If-Modified-Since ""; <br> } <br> <br> #    <br> location @nocached { <br> proxy_pass htt://backend; <br> proxy_set_header Host $host; <br> proxy_set_header X-Real-IP $remote_addr; <br> proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; <br> } <br> <br> #    <br> location @cached { <br> proxy_pass htt://backend; <br> proxy_set_header Host $host; <br> proxy_set_header X-Real-IP $remote_addr; <br> proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; <br> proxy_cache mycache; <br> proxy_cache_valid 200 301 302 304 5m; <br> proxy_cache_key "$request_method|$http_if_modified_since|$http_if_none_match|$host|$request_uri"; <br> proxy_hide_header "Set-Cookie"; <br> proxy_ignore_headers "Cache-Control" "Expires"; <br> } <br> <br> #      <br> location = / { <br> return 404; <br> } <br> <br> location / { <br> #    <br> if ($http_cookie !~ "userid" ) { <br> set $cached 1; <br> } <br> <br> if ($request_method = POST) { <br> set $cached 0; <br> } <br> <br> if ($request_method != GET) { <br> set $cached 0; <br> } <br> <br> if ($cached = 1) { <br> error_page 404 405 502 504 = @cached; <br> break; <br> } <br> <br> if ($cached = 0) { <br> error_page 404 405 502 504 = @nocached; <br> break; <br> } <br> <br> } <br> <br> }</code> <br> <br>  The whole thing is for the benefit of my <a href="http://1nsk.ru/">Novosibirsk site</a> </div><p>Source: <a href="https://habr.com/ru/post/76315/">https://habr.com/ru/post/76315/</a></p>
+      In general, the scheme of work is as follows: <br>  Several frontend (cheap servers without raid and other adult intricacies) through round robin are given to clients. <br>  frontend gives off statics, proxies and gives off cached dynamics for guests and performs transparent proxying for registered users. <br>  TTX backend in this case does not matter much, the question of the correct configuration should be discussed individually.  Additional caching of all that is possible on the backend is welcome. <br><br>  The advantages of this approach are in the cost of this “clustering” due to the budget characteristics of the frontend.  The refusal of any frontend is not critical, it is enough to raise its ip (if available) on another frontend or change the DNS configuration (which may result in unavailability for a number of users).  In practice, the city portal where the video / photo storage on 4TB (occupied on the backend) on the frontend does not contain more than 300GB of what users actually request (you can clean it by atime, but considering that the frontend FS is mounted with noaime then by date of creation file).  Static content on the backend is generated with a new name, modifying the file also creates a new file name so that the frontend works correctly. <br><br> <code>http { <br> proxy_cache_path /var/www/cache levels= keys_zone=mycache:150m; <br> ... <br> } <br> <br> server { <br> #  ,   <br> set $cached 0; <br> listen server; <br> server_name server *.server; <br> #    500   <br> error_page 502 503 504 509 /500.html; <br> # - - ,       <br> error_page 404 = @nocached; <br> <br> expires epoch; <br> root /var/www/html; <br> <br> location = /500.html { <br> } <br> <br> #    frontend   ,   <br> location ~* ^.+\.(jpg|jpeg|gif|gz|zip|flv|rar|wmv|avi|css|swf|png|htc|ico|mpeg|mpg|txt|mp3|mov|js)$ { <br> expires 1y; <br> error_page 404 = @fetch; <br> } <br> <br> #    <br> location @fetch { <br> proxy_pass htt://backend; <br> proxy_store on; <br> proxy_temp_path /var/www/_fetch; <br> proxy_set_header Host mydomain; <br> proxy_set_header If-Modified-Since ""; <br> } <br> <br> #    <br> location @nocached { <br> proxy_pass htt://backend; <br> proxy_set_header Host $host; <br> proxy_set_header X-Real-IP $remote_addr; <br> proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; <br> } <br> <br> #    <br> location @cached { <br> proxy_pass htt://backend; <br> proxy_set_header Host $host; <br> proxy_set_header X-Real-IP $remote_addr; <br> proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; <br> proxy_cache mycache; <br> proxy_cache_valid 200 301 302 304 5m; <br> proxy_cache_key "$request_method|$http_if_modified_since|$http_if_none_match|$host|$request_uri"; <br> proxy_hide_header "Set-Cookie"; <br> proxy_ignore_headers "Cache-Control" "Expires"; <br> } <br> <br> #      <br> location = / { <br> return 404; <br> } <br> <br> location / { <br> #    <br> if ($http_cookie !~ "userid" ) { <br> set $cached 1; <br> } <br> <br> if ($request_method = POST) { <br> set $cached 0; <br> } <br> <br> if ($request_method != GET) { <br> set $cached 0; <br> } <br> <br> if ($cached = 1) { <br> error_page 404 405 502 504 = @cached; <br> break; <br> } <br> <br> if ($cached = 0) { <br> error_page 404 405 502 504 = @nocached; <br> break; <br> } <br> <br> } <br> <br> }</code> <br> <br>  The whole thing is for the benefit of my <a href="http://1nsk.ru/">Novosibirsk site</a> </div><p>Source: https://habr.com/ru/post/76315/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../76305/index.html">Find good people</a></li>
 <li><a href="../76309/index.html">Parallelization of long operations</a></li>
+<li><a href="../7631/index.html">Web 2.0 for raising babies</a></li>
 <li><a href="../76311/index.html">Search on a site based on Yandex.XML</a></li>
 <li><a href="../76313/index.html">PR fail</a></li>
 <li><a href="../76314/index.html">Half a year with iPhone</a></li>
 <li><a href="../76316/index.html">KOffice 2.1 - Release</a></li>
 <li><a href="../76317/index.html">Select loses ON when JOIN'e</a></li>
+<li><a href="../7632/index.html">"Yandex" felt "Pulse"</a></li>
 <li><a href="../76323/index.html">The place of web standards, as I see it</a></li>
 <li><a href="../76325/index.html">Parking.ru received Server Platform competency</a></li>
-<li><a href="../76326/index.html">What happens when a company changes policy?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

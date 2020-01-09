@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We climb into the internal storage of Android M</h1><div class="post__text post__text-html js-mediator-article"><p>  Android 6.0 introduced a feature that allows you to format the memory card so that it is not a separate storage, but an appendage to the internal memory.  This avoids confusion with the two data storages, especially when manually installing some <del>  not always honestly purchased </del>  large applications delivered in parts.  However, there is one caveat: while all of us tightly block access to the card directly.  If you want to transfer something to the device, use MTP with all the consequences, such as a file transfer speed comparable to the walking step of a contused turtle.  Now the card can not be directly connected to a PC via a cable: you cannot just mount it from a switched off phone through a card reader, because it is formatted into something unknown neither to science nor to our computers. </p><br><p>  But the rules are created to break them?  Let's try to get around this shameless limitation. </p><a name="habracut"></a><br><h2 id="sposob-pervyy-prostoy-adb-pushpull">  Method one, simple: adb push / pull </h2><br><p>  Recommended for daily use.  Apparently, does not even require a root.  All you need is ADB.  Those who are aware, can scroll through to the second method. </p><br><p>  With the transfer, everything is simple: the first argument is from where, the second argument is where.  / sdcard is the place where the user-accessible storage is mounted on Android, i.e.  The root directory of the staff file manager of almost any device on Android. </p><br><pre><code class="bash hljs">$ adb push chunk.bin /sdcard chunk.bin: 1 file pushed. 4.8 MB/s (44040192 bytes <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> 8.667s)</code> </pre> <br><p>  Receiving is similar: </p><br><pre> <code class="bash hljs">$ adb pull /sdcard/chunk.bin chunk2.bin /sdcard/chunk.bin: 1 file pulled. 16.0 MB/s (44040192 bytes <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> 2.627s) $ cmp chunk.bin chunk2.bin</code> </pre> <br><p>  The main advantage is the two-way data exchange at a quite satisfactory speed (when compared with MTP).  Also, a nice progress percentage is attached to all this beauty, which, unfortunately, is not visible from here.  I suppose that you can somehow attach something similar to the graphical file manager, but in practice you have never had to deal with such plugins.  Perhaps, Android is still not in vain to let the map to us, but oh well, who asks him? </p><br><h2 id="sposob-vtoroy-interesnyy-ruchnoe-montirovanie-zashifrovannyh-razdelov">  Method two, interesting: manual mounting of encrypted partitions </h2><br><p>  This time we need root access to a smartphone and a PC with a Linux-based system. </p><br><p>  To begin, pull the card out of the device, connect it to the PC and immediately look at its contents. </p><br><pre> <code class="bash hljs">$ parted /dev/mmcblk0 <span class="hljs-built_in"><span class="hljs-built_in">print</span></span> Model: SD SD32G (sd/mmc) Disk /dev/mmcblk0: 31.2GB Sector size (logical/physical): 512B/512B Partition Table: gpt Disk Flags: Number Start End Size File system Name Flags 1 1049kB 17.8MB 16.8MB fat32 android_meta 2 17.8MB 31.2GB 31.2GB android_expand</code> </pre> <br><p>  Well, at least there is a partition table. </p><br><p>  With the naked eye it is clear that the filet portion is the second partition with the unidentified file system.  The first section is perfectly mounted in fat32 and is equally beautifully empty, so you can forget about it, because  I do not know what is stored on it in healthy people. </p><br><p>  The second part of the sinister plan is the key.  Yes, yes, the data is encrypted: well, not just so parted could not be detected on the target file system partition.  The key is almost as simple: it is stored on our Android device in a binary file at /data/misc/vold/expand_PARTUUID.key, where PARTUUID is the UUID of the encrypted partition in lower case without separators.  We will need Ruth just to get to this file through unreadable for everyone except the root, the / data / misc / vold directory. </p><br><pre> <code class="bash hljs">$ partuuid=$(lsblk /dev/mmcblk0p2 -o PARTUUID | tail -1 | tr -d <span class="hljs-string"><span class="hljs-string">'-'</span></span>) $ adb root $ adb pull /data/misc/vold/expand_<span class="hljs-variable"><span class="hljs-variable">$partuuid</span></span>.key magic.key /data/misc/vold/expand_9d292da2b76a9179118aaa217f23e4a7.key: 1 file pulled. 0.0 MB/s (16 bytes <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> 0.110s)</code> </pre> <br><p>  Is done.  128 bits of treasured information. </p><br><p>  The final part of the Merleson Ballet is the connection of the section.  Let's make it the standard Linux dm-crypt, which, in fact, is used by Android itself. </p><br><p>  Unfortunately, I don’t know what kind of encryption method Android is using, so I’ll hope for the holy default, leaving --cipher unspecified. </p><br><pre> <code class="bash hljs">$ cryptsetup open --<span class="hljs-built_in"><span class="hljs-built_in">type</span></span> plain --key-file=magic.key --key-size=128 /dev/mmcblk0p2 dm-magic</code> </pre> <br><p>  I do not swear, it's good.  Mounted. </p><br><pre> <code class="bash hljs">$ mount /dev/mapper/dm-magic /mnt $ ls -l /mnt total 21 drwxrwx--x 33 alpha alpha 3488 Mar 16 08:51 app drwxr-x--x 3 root root 3488 Nov 29 00:34 <span class="hljs-built_in"><span class="hljs-built_in">local</span></span> drwxrwx--- 4 1023 1023 3488 Nov 29 08:01 media drwxrwx--t 3 alpha 9998 3488 Nov 30 03:02 misc drwx--x--x 3 alpha alpha 3488 Nov 29 00:34 user drwx--x--x 3 alpha alpha 3488 Nov 29 00:34 user_de</code> </pre> <br><p>  It seems to work out.  Unidentified UIDs remind us that the card is not from our PC and it would be better for us not to stir up anything special here. </p><br><p>  If you dig through the directories, you can see the data of applications stored on the memory card, as well as directly the contents of the SD card, which we slipped in the first method to the / sdcard address.  We can find it in the / mnt / media / 0 directory. </p><br><p>  That's all, pleasant picking. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/355464/">https://habr.com/ru/post/355464/</a></p>
+    <p>Source: https://habr.com/ru/post/355464/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../355454/index.html">PhotoMath app came out on Android</a></li>
 <li><a href="../355456/index.html">The maximum cost of applications in the Play Store increased from 6,000 to 42,000 rubles</a></li>
 <li><a href="../355458/index.html">Memo for novice translators of Android applications or how to start translating applications</a></li>
+<li><a href="../35546/index.html">Evaluate the quality of the user support service at Habré (provided that there was a communication experience)</a></li>
 <li><a href="../355460/index.html">Android, PhraseApp and files - or about poor android strings put in a word</a></li>
 <li><a href="../355462/index.html">Google's vice president of trolls that a new version of Android could be named after algae</a></li>
+<li><a href="../35547/index.html">In which company would you like to work?</a></li>
+<li><a href="../35548/index.html">Do you pay more attention to hidden comments than usual ones?</a></li>
 <li><a href="../355480/index.html">MapFactor GPS Navigation - a new application for navigating maps Openstreetmap</a></li>
-<li><a href="../355600/index.html">About time transfer 2 / Do not forget to patch XP and 2003, otherwise there will be a surprise on the night of January 6-7</a></li>
-<li><a href="../355602/index.html">Microsoft will bring "Cortana" in MS Office</a></li>
-<li><a href="../355604/index.html">In the preview of Windows 10 appeared Spartan browser</a></li>
-<li><a href="../355606/index.html">Windows 10 will ship on DVD and flash drives.</a></li>
+<li><a href="../3555/index.html">COMCON and “Runner” investigated the popularity of contextual advertising</a></li>
+<li><a href="../35550/index.html">Are you ready to separate yourself from Odnoklassniki, Vkontakte and other similar social networks once and for all?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

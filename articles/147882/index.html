@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Photo after each commit (Win)</h1><div class="post__text post__text-html js-mediator-article">  Enjoy your day! <br><br>  Oh, how <a href="https://habrahabr.ru/users/alizar/" class="user_link">terrible the</a> article <a href="https://habrahabr.ru/users/alizar/" class="user_link">alizar</a> hooked. <a href="https://habrahabr.ru/users/alizar/" class="user_link">We take</a> <a href="http://habrahabr.ru/post/146418/">pictures after each commit (Linux, OSX)</a> .  But due to the peculiarities of my OS, the proposed solutions did not suit me very well.  After spending a little time searching and not getting the desired result, it was decided to do something simple (just for fun, with <a href="https://habrahabr.ru/users/demonix/" class="user_link">Demonix</a> ) to solve this problem ... <br><a name="habracut"></a><br>  Given: <br>  Several clients for different systems (perverted, but what to do) <br><img src="https://habrastorage.org/storage2/0ba/803/109/0ba80310935f01346e8aa82d642ff5c5.png"><br>  To find: <br>  Decide how to make a photo from a webcam when committing. <br><br>  To make the task as simple as possible, I used the <a href="http://www.codeproject.com/Articles/2615/DirectShow-NET">DirectShow .NET</a> library. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The main code of the console application: <br><pre><code class="cs hljs">Image image = Capture.GetImage(); image.Save(path, ImageFormat.Jpeg); image.Dispose();</code> </pre> <br><br>  Client settings: <br>  I created a hook for the Post-commit event, because  I wanted to add a revision to the file name. <br><img src="https://habrastorage.org/storage2/5eb/634/be9/5eb634be9f8e380a2fd943ce2895c69d.png"><br><br>  When you run the command, arguments are automatically added.  For different events, <a href="http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-dug-settings.html">different arguments</a> . <br>  Specifically for the Post-commit event, the arguments are as follows: <br>  PATH DEPTH MESSAGEFILE REVISION ERROR CWD <br><br>  The result is something like c: \ temp \ svn_134278_2012-07-17_13-54-46.jpg <br><br><img src="https://habrastorage.org/storage2/60a/a01/af9/60aa01af9dd82f69c1c244575e7a5102.jpg"><br><br>  Anyone can <a href="https://github.com/iklementiev/webcam-snap">customize the</a> path and file format. <br>  For TortoiseGit, the settings are almost identical: <br><img src="https://habrastorage.org/storage2/a1b/008/12f/a1b00812f47dbfc257ac257508c04cbc.png"><br><br>  On my hardware, the program runs around 00: 00: 03.3676868 <br><pre> <code class="cs hljs">before INIT <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00.0000007</span></span> before CaptureImage <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00.3365297</span></span> before CloseInterfaces <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">02.3431425</span></span> before Clone <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">03.3188398</span></span> before save <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">03.3235840</span></span> end <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">03.3676868</span></span></code> </pre><br>  Naturally, webcam-snap.exe can be used for any other purposes. <br>  In the future, existing images can be glued together, for example, in the video.  The example is not attached, because  while I don’t have enough photo commits;) <br>  <a href="https://github.com/iklementiev/webcam-snap">Github</a> </div><p>Source: <a href="https://habr.com/ru/post/147882/">https://habr.com/ru/post/147882/</a></p>
+      The main code of the console application: <br><pre><code class="cs hljs">Image image = Capture.GetImage(); image.Save(path, ImageFormat.Jpeg); image.Dispose();</code> </pre> <br><br>  Client settings: <br>  I created a hook for the Post-commit event, because  I wanted to add a revision to the file name. <br><img src="https://habrastorage.org/storage2/5eb/634/be9/5eb634be9f8e380a2fd943ce2895c69d.png"><br><br>  When you run the command, arguments are automatically added.  For different events, <a href="http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-dug-settings.html">different arguments</a> . <br>  Specifically for the Post-commit event, the arguments are as follows: <br>  PATH DEPTH MESSAGEFILE REVISION ERROR CWD <br><br>  The result is something like c: \ temp \ svn_134278_2012-07-17_13-54-46.jpg <br><br><img src="https://habrastorage.org/storage2/60a/a01/af9/60aa01af9dd82f69c1c244575e7a5102.jpg"><br><br>  Anyone can <a href="https://github.com/iklementiev/webcam-snap">customize the</a> path and file format. <br>  For TortoiseGit, the settings are almost identical: <br><img src="https://habrastorage.org/storage2/a1b/008/12f/a1b00812f47dbfc257ac257508c04cbc.png"><br><br>  On my hardware, the program runs around 00: 00: 03.3676868 <br><pre> <code class="cs hljs">before INIT <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00.0000007</span></span> before CaptureImage <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00.3365297</span></span> before CloseInterfaces <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">02.3431425</span></span> before Clone <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">03.3188398</span></span> before save <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">03.3235840</span></span> end <span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">00</span></span>:<span class="hljs-number"><span class="hljs-number">03.3676868</span></span></code> </pre><br>  Naturally, webcam-snap.exe can be used for any other purposes. <br>  In the future, existing images can be glued together, for example, in the video.  The example is not attached, because  while I don’t have enough photo commits;) <br>  <a href="https://github.com/iklementiev/webcam-snap">Github</a> </div><p>Source: https://habr.com/ru/post/147882/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../147875/index.html">Jax-Awards, PhpStorm and everything, everything, everything (news digest from July 9-15)</a></li>
 <li><a href="../147876/index.html">RubyMine 4.5 release</a></li>
 <li><a href="../147877/index.html">Redmine - control over production update</a></li>
 <li><a href="../147879/index.html">Opening coworking incubator in Samara: photo report</a></li>
+<li><a href="../14788/index.html">The future is not far off: autopilot on the Volkswagen Golf GTI with the best engine of the year TSI</a></li>
 <li><a href="../147880/index.html">“Runet today”, July 16, 2012. Experts of the issue: Anatoly Denisov, Oleg Uliansky</a></li>
 <li><a href="../147885/index.html">If PHP were to highlight lists and generators</a></li>
 <li><a href="../147886/index.html">Mobile applications in China: developers do not earn</a></li>
 <li><a href="../147889/index.html">Do you block your smartphone / phone with a password?</a></li>
+<li><a href="../14789/index.html">The value of Google shares again broke records.</a></li>
 <li><a href="../147890/index.html">Why object-oriented programming sucks</a></li>
-<li><a href="../147891/index.html">Ouya: $ 5 million with Kickstarter is just the beginning</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

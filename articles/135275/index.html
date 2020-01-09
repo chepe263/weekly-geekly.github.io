@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using SSH tunneling on Juniper devices with Junos</h1><div class="post__text post__text-html js-mediator-article">  Considering that the standard ssh daemon is used in the Junos operating system, I dared to assume that the organization of ssh tunnels is implemented in it.  And although the documentation for such an application of switches, routers or firewalls could not find any mention, it works.  Moreover, ssh tunnels are enabled by default. <br><br>  Let me give you an example that allows you to demonstrate where it can be useful. <br><a name="habracut"></a><br>  Suppose, somewhere on a remote site, a new 3COM 3C16475CS switch has been connected to the Juniper EX series switchboard under your control.  And we have a task to get control over the switch. <br><br>  From the documentation of the <a href="http%253A%252F%252Fbizsupport1.austin.hp.com%252Fbc%252Fdocs%252Fsupport%252FSupportManual%252Fc02581570%252Fc02581570.pdf">3C16475CS,</a> it was found out that when the device was first turned on, the “Automatic IP Configuration” procedure was used to assign an ip address, during which the switch assigned an ip address to itself from the 169.254.xy / 16 network.  Where x and y are the last 2 bytes of the MAC address of the device.  Since the routing setting in the device does not occur (really, how can he know who in this network can be a router to other networks?), You can connect to the assigned ip only if you have an ip address in the same network. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       For clarity, here is an explanatory diagram. <br><img src="https://habrastorage.org/storage2/014/8ac/c77/0148acc775a2fdf78545c61d7c3be9be.png"><br><br>  The first thing we need to do is to add an additional ip address belonging to the 169.254.0.0/16 network as the second address on the selected Juniper EX 2200 L3 switch interface. <br><br>  Second, make sure that the selected L3 interface and the port to which the 3COM 3C16475CS switch is connected belong to the same VLAN. <br><br>  Here are excerpts from the configuration relating to the first two points: <br><pre> adm @ ex2200&gt; show configuration interfaces vlan
@@ -80,11 +80,11 @@
      l3-interface vlan.0;
  }
 </pre><br>  Third, in the administrator's workplace, we launch an ssh tunnel. <br><pre> &gt; ssh -L 192.168.88.12:2000:169.254.1.2:80 192.168.77.8
-</pre><br>  Fourth, refer to the URL http://192.168.88.12:2000// to the control interface of the switch 3COM. <br><br>  PS: Since we are considering 3COM switches, I’ll note that the documentation for them can be found on the HP website using the so-called " <a href="http://h17007.www1.hp.com/us/en/support/converter/index.aspx">3Com product conversion tool</a> ". <br><br>  PS1: For this particular 3C16475CS switch model, there is one feature that spoils the simplicity of the solution.  The point is that the switch, after authenticating the user, changes the location for the subsequent work of the web interface.  At the same time, it contains the ip address assigned by the switch.  The location is changed in the “doCookie ()” function of the “sysIpAddress” variable.  This is corrected as follows.  After loading the user authentication window, but prior to authentication, you can use the developer's WEB tools (for example, in IE9. Alt-X service, F12 Developer Tools, Script. Find the specified JavaScript function, variable).  To change a variable, assign it an ip address that you use to access the ssh tunnel by a web browser. </div><p>Source: <a href="https://habr.com/ru/post/135275/">https://habr.com/ru/post/135275/</a></p>
+</pre><br>  Fourth, refer to the URL http://192.168.88.12:2000// to the control interface of the switch 3COM. <br><br>  PS: Since we are considering 3COM switches, I’ll note that the documentation for them can be found on the HP website using the so-called " <a href="http://h17007.www1.hp.com/us/en/support/converter/index.aspx">3Com product conversion tool</a> ". <br><br>  PS1: For this particular 3C16475CS switch model, there is one feature that spoils the simplicity of the solution.  The point is that the switch, after authenticating the user, changes the location for the subsequent work of the web interface.  At the same time, it contains the ip address assigned by the switch.  The location is changed in the “doCookie ()” function of the “sysIpAddress” variable.  This is corrected as follows.  After loading the user authentication window, but prior to authentication, you can use the developer's WEB tools (for example, in IE9. Alt-X service, F12 Developer Tools, Script. Find the specified JavaScript function, variable).  To change a variable, assign it an ip address that you use to access the ssh tunnel by a web browser. </div><p>Source: https://habr.com/ru/post/135275/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../135268/index.html">GoDaddy director refuses to revoke signature in support of SOPA</a></li>
+<li><a href="../13527/index.html">Reconstruction of the Tschuggen Grand Hotel in Switzerland completed by Mario Botta</a></li>
 <li><a href="../135271/index.html">Three favorite bug</a></li>
 <li><a href="../135272/index.html">ASUS has released an all-in-one PC</a></li>
 <li><a href="../135273/index.html">Again, the disclosure of the IP-address of the interlocutor in Skype</a></li>
@@ -93,7 +93,7 @@
 <li><a href="../135279/index.html">Hackers attacked strategic intelligence company Strategic Forecasting</a></li>
 <li><a href="../135280/index.html">AI Challenge 2011 Ants. In the eyes of the participant Murashka (15th place)</a></li>
 <li><a href="../135281/index.html">What is a hidden Markov model</a></li>
-<li><a href="../135283/index.html">Wpbb3: wordpress integration and phpbb3 forum using curl</a></li>
+<li><a href="../135282/index.html">RBK Money and a professional wallet, be careful</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

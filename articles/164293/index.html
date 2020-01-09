@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Watch out for the windows. Windows + Zabbix</h1><div class="post__text post__text-html js-mediator-article"><h4>  Introduction </h4><br>  In Zabbix, it is possible to bind a template to Windows-based servers and computers.  Called Template OS Windows. <br>  At one point, I realized: it would be nice to have a bunch of counters in there too <br><a name="habracut"></a><br><h4>  Practice "Agent" </h4><br>  If you have Zabbix agent installed, then we will communicate with the OS through it. <br><br>  When viewing the Template OS template for Windows, pay attention to the data item: <br> <code>Average disk write queue length perf_counter[\234(_Total)\1404].</code> <br> <br>  What do these numbers mean <b>\ 234 (_Total) \ 1404.</b>  ? <br><br>  In Windows, these numbers indicate internal identifiers for performance counters.  But if you have installed the Zabbix base with UTF8 encoding, then nothing prevents us from using Russian names in the counters 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      We get the counters as follows: <br> <code>typeperf -q</code> <br> <br>  And if we have several hard drives (interfaces, etc.): <br> <code>typeperf -qx</code> <br> <br>  Too much information?  We filter: <br> <code>typeperf "\ (_Total)\"</code> <br> <br>  Another option is to get the counters: <br> <code>lodctr /s:perfcount.txt</code> <br>  Opening the file we will see the identifiers and their name at the beginning in English and then in Russian. <br><br><h4>  SNMP practice </h4><br>  But what to do when it is impossible (or not willing) to install an agent? <br>  For this, we will read the counters via SNMP: <br><br> <code>snmpwalk -Of -c public -v 2c 192.168.0.1</code> <br> <br>  If run under Windows, the result will be: <br>  <i><b>.iso.3.6.1.2.1.1.1.0</b> = STRING: "Hardware: Intel64 Family 6 Model 44 Stepping 2 AT / AT COMPATIBLE - Software: Windows Version 6.1 (Build 7601 Multiprocessor Free)"</i> <br><br>  If run under Linux, the result will be: <br>  <i><b>.iso.org.dod.internet.mgmt.mib-2.system.sysDescr.0</b> = STRING: Hardware: Intel64 Family 6 Model 44 Stepping 2 AT / AT COMPATIBLE - Software: Windows Version 6.1 (Build 7601 Multiprocessor Free)</i> <br><br>  (You can also search for matching numbers with the names at <a href="http://support.ipmonitor.com/snmp_center.aspx">http://support.ipmonitor.com/snmp_center.aspx</a> ) <br><br>  Linux version is more informative. <br><br><h4>  Conclusion </h4><br>  It remains to connect the necessary counts and it will be possible to monitor the performance of the system. <br><br>  Template examples: <br>  Agent Windows: <a href="http://yadi.sk/d/emnLSQlv1VPxj">http://yadi.sk/d/emnLSQlv1VPxj</a> (Disk System Performance) <br>  Windows SNMP: <a href="http://yadi.sk/d/aHcKTrJm1VPyJ">http://yadi.sk/d/aHcKTrJm1VPyJ</a> (Monitor the network interface) <br>  SNMP Printers: <a href="http://yadi.sk/d/5lggU-8d1VPyN">http://yadi.sk/d/5lggU-8d1VPyN</a> (Condition of HP printer consumables) </div><p>Source: <a href="https://habr.com/ru/post/164293/">https://habr.com/ru/post/164293/</a></p>
+      We get the counters as follows: <br> <code>typeperf -q</code> <br> <br>  And if we have several hard drives (interfaces, etc.): <br> <code>typeperf -qx</code> <br> <br>  Too much information?  We filter: <br> <code>typeperf "\ (_Total)\"</code> <br> <br>  Another option is to get the counters: <br> <code>lodctr /s:perfcount.txt</code> <br>  Opening the file we will see the identifiers and their name at the beginning in English and then in Russian. <br><br><h4>  SNMP practice </h4><br>  But what to do when it is impossible (or not willing) to install an agent? <br>  For this, we will read the counters via SNMP: <br><br> <code>snmpwalk -Of -c public -v 2c 192.168.0.1</code> <br> <br>  If run under Windows, the result will be: <br>  <i><b>.iso.3.6.1.2.1.1.1.0</b> = STRING: "Hardware: Intel64 Family 6 Model 44 Stepping 2 AT / AT COMPATIBLE - Software: Windows Version 6.1 (Build 7601 Multiprocessor Free)"</i> <br><br>  If run under Linux, the result will be: <br>  <i><b>.iso.org.dod.internet.mgmt.mib-2.system.sysDescr.0</b> = STRING: Hardware: Intel64 Family 6 Model 44 Stepping 2 AT / AT COMPATIBLE - Software: Windows Version 6.1 (Build 7601 Multiprocessor Free)</i> <br><br>  (You can also search for matching numbers with the names at <a href="http://support.ipmonitor.com/snmp_center.aspx">http://support.ipmonitor.com/snmp_center.aspx</a> ) <br><br>  Linux version is more informative. <br><br><h4>  Conclusion </h4><br>  It remains to connect the necessary counts and it will be possible to monitor the performance of the system. <br><br>  Template examples: <br>  Agent Windows: <a href="http://yadi.sk/d/emnLSQlv1VPxj">http://yadi.sk/d/emnLSQlv1VPxj</a> (Disk System Performance) <br>  Windows SNMP: <a href="http://yadi.sk/d/aHcKTrJm1VPyJ">http://yadi.sk/d/aHcKTrJm1VPyJ</a> (Monitor the network interface) <br>  SNMP Printers: <a href="http://yadi.sk/d/5lggU-8d1VPyN">http://yadi.sk/d/5lggU-8d1VPyN</a> (Condition of HP printer consumables) </div><p>Source: https://habr.com/ru/post/164293/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,9 +75,9 @@
 <li><a href="../164291/index.html">With the new code!</a></li>
 <li><a href="../164295/index.html">The best in the world of PHP for 2012 and the digest of interesting materials for the last two weeks №7 (12/15/2012 - 12/28/2012)</a></li>
 <li><a href="../164297/index.html">What we need to configure Git!</a></li>
+<li><a href="../1643/index.html">North-West Telecom will connect up to 70 thousand ADSL subscribers by the end of the year</a></li>
+<li><a href="../16430/index.html">Epson Prototype Ebook</a></li>
 <li><a href="../164301/index.html">Configure VPN for android</a></li>
-<li><a href="../164303/index.html">Parsing a simple cryptographic keygenme</a></li>
-<li><a href="../164305/index.html">Debugging C # code in AutoCAD using Visual Studio 2012</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

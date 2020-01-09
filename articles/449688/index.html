@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Testing the sendBeacon setting to send data</h1><div class="post__text post__text-html js-mediator-article"><p>  When using standard methods of sending data to Google Analytics, there is a possibility that the system will not have time to send all the events if the process was interrupted by reloading the page.  Earlier this year, several publications appeared on how to improve the integrity of the collected data in GA. <a name="habracut"></a>  <a href="https://t.me/webanalyst/451">One of them</a> was devoted to events that track user actions leading to page reloading: clicks on external links, file downloads, clicks on form submit buttons, and beforeunload events.  To solve the problem, the author of the material, Dmitry Osiyuk, proposes to set in the Google Analytics code a field of <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference">transport</a> with the value beacon.  This field specifies which of the dispatch methods to use: </p><br><p>  <strong>xhr</strong> (using the XMLHttpRequest object) <br>  <strong>image</strong> (using the Image object) <br>  <strong>beacon</strong> (using the navigator.sendBeacon method). </p><br><p>  sendBeacon will work asynchronously, even if the user closes the page or leaves the site altogether, which should allow collecting data more accurately. </p><br><p>  Now analytics.js chooses the optimal dispatch method.  Navigator.sendBeacon is used only if the beacon is selected as the transfer mechanism (the transport field).  According to Google, in the future, the beacon option is likely to be used in the default browsers that support it.  I decided to test in practice what effect the use of the sendBeacon setting gives. </p><br><p>  <strong>What was done:</strong> </p><br><p>  Chose an event for the test: click on the link in the menu.  By clicking, another page is loaded. <br>  Created two tags in Google Tag Manager, triggered by the same trigger.  One used the standard submission method, the second - sendBeacon. </p><br><p>  Additionally, I decided to test the use of different tag priorities in GTM in order to understand the effect of customization in all variants. </p><br><p>  In other words, when the user clicked on the link we need, GTM sent the event to GA twice: once by the standard method, once by the sendBeacon method.  You can change priorities in the advanced settings of the tag in GTM, the item “Priority of the activation of the tag”.  Zero - the minimum priority;  the higher the number, the higher the priority compared to other tags.  The default value is zero. </p><br><p><img src="https://habrastorage.org/webt/ns/jj/zg/nsjjzgh0qrt0iltto0gzofbpejy.png"></p><br><p>  <strong>Verify that sendBeacon is working</strong> </p><br><p>  Tested three options: </p><br><ul><li>  Priority is higher for standard shipments; </li><li>  The priority is higher for sendBeacon; </li><li>  Equally high priority for both methods. </li></ul><br><p>  In the case of different priorities, when the user clicked on the link, GTM first sent the event with the highest priority, immediately after it - the second.  When priorities coincided, each method worked earlier in half of the cases. </p><br><p>  As a result, you can observe two pairs of events - for PC (desktop) and mobile devices (tablet and mobile). </p><br><p>  Priority for standard shipping </p><br><p><img src="https://habrastorage.org/webt/yt/il/bp/ytilbpt_53f_b1n6asnrdnttiu4.png"></p><br><p>  SendBeacon priority </p><br><p><img src="https://habrastorage.org/webt/nz/z8/yo/nzz8yoc51fsbbflvgklz_nhebm0.png"></p><br><p>  Same priority - highest sample </p><br><p><img src="https://habrastorage.org/webt/hl/_q/q9/hl_qq90lhutbcoyukzffexgihtc.png"></p><br><p>  <strong>As the test showed</strong> , sendBeacon does work better, but the percentage of events that might not have gone is not that high.  The difference compared with the usual method of sending ~ 0.3%.  It should also be borne in mind that sendBeacon is designed to track events that lead the user to a new page.  When using this method to track all events on the site, the difference will be even less significant.  At the same time, sendBeacon has an advantage: sending data asynchronously, it does not slow down the work of the site, which occurs when using other methods.  The speed of unloading and loading pages does not fall. </p><br><p>  * Bonus: During the experiment, I additionally made sure that the tag activation priorities in GTM work fine. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/449688/">https://habr.com/ru/post/449688/</a></p>
+    <p>Source: https://habr.com/ru/post/449688/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

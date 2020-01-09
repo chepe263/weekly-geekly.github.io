@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Parse custom udp dns request using tcpdump</h1><div class="post__text post__text-html js-mediator-article">  Reacting to the next “pseudorandom subdomain” ( <a href="https://indico.dns-oarc.net//getFile.py/access%3FcontribId%3D9%26sessionId%3D2%26resId%3D0%26materialId%3Dslides%26confId%3D20">PRSD</a> ) DDoS, and they are very clearly visible on the graph of outgoing requests: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/004/101/d66/004101d665a7313729b4c9f892c2fd31.png" alt="image"><br><br>  I came across a strange udp request. <br><a name="habracut"></a><br>  The standard udp request-response looks like this: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,7 +63,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <blockquote>  20: 14: 17.533119 IP [ip-address] .60000&gt; [resolver-ip] .53: 31337+ A?  ya.ru.  (23) <br>  20: 14: 17.534871 IP [resolver-ip] .53&gt; [ip-address] .60000: 31337 3/0/0 A 213.180.204.3, A 213.180.193.3, A 93.158.134.3 (71) <br></blockquote><br><br>  But sometimes in the tcpdump logs you can see the following: <br><blockquote>  20: 16: 43.333220 IP [ip-address] .60000&gt; [resolver-ip] .53: 31337+ [b2 &amp; 3 = 0x180] A?  ya.ru.  (23) <br>  20: 16: 43.336146 IP [resolver-ip] .53&gt; [ip-address] .60000: 31337 3/0/0 A 213.180.193.3, A 213.180.204.3, A 93.158.134.3 (71) <br></blockquote><br><br>  The request almost did not change, but the field appeared: <b>[b2 &amp; 3 = 0x180]</b> (there may be different values). <br><br>  What does it mean? <br><br>  The <a href="http://www.tcpdump.org/tcpdump_man.html">tcpdump</a> documentation says: <br><br><blockquote>  There are two bits of three, and there can be no more than a bit. header bytes two and three. </blockquote><br><br>  If you look at what the <a href="http://tools.ietf.org/html/rfc1035">dns header of the package</a> consists <a href="http://tools.ietf.org/html/rfc1035">of</a> , you can see the following: <br><br><pre>                                     1 1 1 1 1 1
@@ -81,7 +81,7 @@
      + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +
      |  ARCOUNT |
      + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +
-</pre><br><br>  We are interested in the field: <br><br>  | QR |  Opcode | AA | TC | RD | RA |  Z |  RCODE | <br><br>  If 0x180 translate into a binary number system, we get: <br><br><blockquote>  $ echo 'ibase = 16; obase = 2; 180' | bc <br>  1 1000 0000 </blockquote><br><br>  Since  byte 16, then the final number looks like this: <br>  <b>0000 0001 1000 0000</b> <b><br></b> <br><br>  If you look at the header of the packet, you can see that the packet contains bits responsible for the recursion.  RD - recursion desired and RA - recursion available. <br><br>  In the outgoing packet of the dns request, the RA bit is not expected, so tcpdump says this by showing the construct: [b2 &amp; 3 = 0x180]. <br><br>  You can double-check yourself to make sure that the RA bit was set. <br>  This will help <a href="http://www.secdev.org/projects/scapy/">scapy</a> : <br><br><pre><code class="python hljs"><span class="hljs-comment"><span class="hljs-comment">#!/usr/bin/env python from scapy.all import * pkt=IP(dst="[resolver-ip]")/\ UDP(sport=60000)/\ DNS(id=31337,qr=0,rd=1,ra=1,qd=DNSQR(qname="ya.ru")) pkt.show2() send(pkt)</span></span></code> </pre> <br><br>  Having formed a packet and having sent it, you can see in the console with tcpdump what exactly this behavior was about: <br><br><blockquote>  $ sudo tcpdump -n -i eth0 port 53 and host [resolver-ip] <br><br>  20: 17: 43.975572 IP [ip-address] .60000&gt; [resolver-ip] .53: 31337+ [b2 &amp; 3 = 0x180] A?  ya.ru.  (23) <br>  20: 17: 43.979447 IP [resolver-ip] .53&gt; [ip-address] .60000: 31337 3/0/0 A 93.158.134.3, A 213.180.204.3, A 213.180.193.3 (71) </blockquote></div><p>Source: <a href="https://habr.com/ru/post/241375/">https://habr.com/ru/post/241375/</a></p>
+</pre><br><br>  We are interested in the field: <br><br>  | QR |  Opcode | AA | TC | RD | RA |  Z |  RCODE | <br><br>  If 0x180 translate into a binary number system, we get: <br><br><blockquote>  $ echo 'ibase = 16; obase = 2; 180' | bc <br>  1 1000 0000 </blockquote><br><br>  Since  byte 16, then the final number looks like this: <br>  <b>0000 0001 1000 0000</b> <b><br></b> <br><br>  If you look at the header of the packet, you can see that the packet contains bits responsible for the recursion.  RD - recursion desired and RA - recursion available. <br><br>  In the outgoing packet of the dns request, the RA bit is not expected, so tcpdump says this by showing the construct: [b2 &amp; 3 = 0x180]. <br><br>  You can double-check yourself to make sure that the RA bit was set. <br>  This will help <a href="http://www.secdev.org/projects/scapy/">scapy</a> : <br><br><pre><code class="python hljs"><span class="hljs-comment"><span class="hljs-comment">#!/usr/bin/env python from scapy.all import * pkt=IP(dst="[resolver-ip]")/\ UDP(sport=60000)/\ DNS(id=31337,qr=0,rd=1,ra=1,qd=DNSQR(qname="ya.ru")) pkt.show2() send(pkt)</span></span></code> </pre> <br><br>  Having formed a packet and having sent it, you can see in the console with tcpdump what exactly this behavior was about: <br><br><blockquote>  $ sudo tcpdump -n -i eth0 port 53 and host [resolver-ip] <br><br>  20: 17: 43.975572 IP [ip-address] .60000&gt; [resolver-ip] .53: 31337+ [b2 &amp; 3 = 0x180] A?  ya.ru.  (23) <br>  20: 17: 43.979447 IP [resolver-ip] .53&gt; [ip-address] .60000: 31337 3/0/0 A 93.158.134.3, A 213.180.204.3, A 213.180.193.3 (71) </blockquote></div><p>Source: https://habr.com/ru/post/241375/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -92,9 +92,9 @@
 <li><a href="../241371/index.html">Amazon Web Services now has a second location in Europe - in Frankfurt</a></li>
 <li><a href="../241377/index.html">Based on GUIRunner</a></li>
 <li><a href="../241379/index.html">Ubuntu 14.10 (Utopic Unicorn) is available for download.</a></li>
+<li><a href="../24138/index.html">AMD continues to have financial problems</a></li>
 <li><a href="../241381/index.html">Gamedzhemy and what they eat</a></li>
 <li><a href="../241383/index.html">How do sales fluctuations affect turnover?</a></li>
-<li><a href="../241387/index.html">When is it time to think about implementing a BI system?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

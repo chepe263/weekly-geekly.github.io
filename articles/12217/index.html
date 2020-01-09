@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Connecting the blog and Livejournal via XML-RPC</h1><div class="post__text post__text-html js-mediator-article"> The XML remote procedure call is actually a very simple procedure, with the help of which I can now write on my blog and copy the article in livejournal. <img src="https://habrastorage.org/getpro/geektimes/post_images/160/cce/8fd/160cce8fdecc8ebe3aa03b3b4ca38be2.gif" width="225" height="70" align="right">  In appearance, the simplest solution would probably be the creation of such a process, where the transfer of data to the LJ server would occur by the browser.  It is enough to create a separate iframe, put a form into it, into which to copy content from another form and eventually publish it to LJ.  But - firstly it’s ugly, secondly it’s not a fact that you can fake it. It’s much easier and more convenient to transfer all data through xml-rpc.  To do this, install the finished <a href="http://phpxmlrpc.sourceforge.net/">library</a> and use the function .. <br><br> <code>function post2livejournal($subject,$event,$time=0) { <br> require_once('lib/xmlrpc.inc'); <br> $lj_userid='my_livejournal_username'; <br> $lj_passwd='my_secret_password'; <br> <br> if (!$time)$time=time(); <br> $year=date('Y',$time); <br> $month=date('m',$time); <br> $day=date('d',$time); <br> $hour=date('H',$time); <br> $minute=date('i',$time); <br> <br> $client=new xmlrpc_client("/interface/xmlrpc", "www.livejournal.com", 80); <br> <br> $params = new xmlrpcval( array( <br> 'username' =&gt; new xmlrpcval($lj_userid,'string'), <br> 'password' =&gt; new xmlrpcval($lj_passwd,'string'), <br> 'ver' =&gt; new xmlrpcval('1','string'), <br> 'lineendings' =&gt; new xmlrpcval('pc','string'), <br> 'event' =&gt; new xmlrpcval($event,'string'), <br> 'subject' =&gt; new xmlrpcval($subject,'string'), <br> 'year' =&gt; new xmlrpcval($year,'int'), <br> 'mon' =&gt; new xmlrpcval($month,'int'), <br> 'day' =&gt; new xmlrpcval($day,'int'), <br> 'hour' =&gt; new xmlrpcval($hour,'int'), <br> 'min' =&gt; new xmlrpcval($minute,'int')),'struct' <br> ); <br> <br> $msg = new xmlrpcmsg('LJ.XMLRPC.postevent'); <br> $msg-&gt;addparam($params); <br> $client-&gt;setDebug(0); <br> $result = $client-&gt;send($msg); <br> } <br></code> <br><br><br>  And that would not have appeared type errors <br>  <strong>Application failed during request deserialization</strong> Check the encoding in the library - for sure utf tries to send as iso. <strong><br></strong> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      ... so why is there no XML-RPC on habrahabr? </div><p>Source: <a href="https://habr.com/ru/post/12217/">https://habr.com/ru/post/12217/</a></p>
+      ... so why is there no XML-RPC on habrahabr? </div><p>Source: https://habr.com/ru/post/12217/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

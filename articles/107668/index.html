@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to connect two asterisk servers (part one. SIP)</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/getpro/geektimes/post_images/8d4/3ce/88a/8d43ce88a466af8f5cfbef7ee227dc7e.png" alt="image">  So, we have two asterisks. <br>  The task is to organize direct dialing through the prefix there and back. <br>  Initial data: <br>  Asterisk 1.4 at both ends <br>  kazan.asterisk.ru is the name of the first asterisk. <br>  volgograd.asterisk.ru - the name of the second asterisk. <br>  It is assumed that both asterisks have direct access to the Internet (otherwise, there should be no problems, you need to configure NAT and use the nat = yes parameter) <br><br>  Let the 1st asterisk be in Kazan, the other in Volgograd.  Let us turn to the car codes of the regions. <br>  Then dialing from Volgograd will be 9-16- &lt;number&gt;. <br>  From Kazan 9-34- &lt;number&gt;. <br><a name="habracut"></a><br>  <b>sip.conf 1st Asterisk:</b> <br> <code>[general] <br> context=default <br> allowguest=no <br> bindport=5060 <br> bindaddr=0.0.0.0 <br> <br> ;      - <br> register =&gt; kazan:kazan_password@volgograd.asterisk.ru:5060 <br> <br> [volgograd] <br> ;      <br> username=volgograd <br> secret=volgograd_password <br> ;      <br> type=friend <br> <br> ;     INVITE <br> canreinvite=no <br> ;   .  <br> insecure=very <br> ;     <br> qualify=yes <br> <br> ;   <br> ; (www.voip-info.org): If you want the phone to register itself, use the keyword dynamic instead of Host IP. <br> ;     deny,permit <br> host=dynamic <br> <br> ;DTMF <br> dtmfmode=rfc2833 <br> <br> ;   <br> disallow=all <br> allow=alaw <br> allow=ulaw <br> <br> ;        <br> context=office_rules <br></code> <br><br>  <b>extension.conf 1 st asterisk:</b> <br> <code>;    <br> [office] <br> exten =&gt; _934.,1,Set(CALLERID(all)="Kazan &lt;16&gt;") <br> exten =&gt; _934.,n,Dial(SIP/${EXTEN:3}@volgograd,60,r) <br> exten =&gt; _934.,n,HangUp <br> .. <br> <br> include =&gt; office_rules <br> <br> ;     <br> ;     1XX  2XX <br> [office_rules] <br> exten =&gt; _[12]XX,1,Dial(SIP/${EXTEN},60,tTr) <br> exten =&gt; _[12]XX,n,HangUp() <br> <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,10 +63,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>sip.conf 2nd Asterisk:</b> <br> <code>[general] <br> context=default <br> allowguest=no <br> bindport=5060 <br> bindaddr=0.0.0.0 <br> <br> ;      - <br> register =&gt; volgograd:volgograd_password@kazan.asterisk.ru:5060 <br> <br> [kazan] <br> type=friend <br> <br> ; credentials for registration <br> username=kazan <br> secret=kazan_password <br> <br> ;   <br> ; (www.voip-info.org): If you want the phone to register itself, use the keyword dynamic instead of Host IP. <br> ;     deny,permit <br> host=dynamic <br> <br> ;     INVITE <br> canreinvite=no <br> ;   .  <br> insecure=very <br> ;     <br> qualify=yes <br> <br> ; DTMF <br> dtmfmode=rfc2833 <br> <br> ;   ( G711) <br> disallow=all <br> allow=ulaw <br> allow=alaw <br> <br> ;      <br> context=office_rules <br> <br></code> <br><br>  <b>extension.conf 2nd Asterisk:</b> <br> <code>;    <br> [office] <br> exten =&gt; _916.,1,Set(CALLERID(all)="Volgograd &lt;34&gt;") <br> exten =&gt; _916.,n,Dial(SIP/${EXTEN:3}@kazan,60,r) <br> exten =&gt; _916.,n,HangUp <br> .. <br> <br> include =&gt; office_rules <br> <br> ;     <br> ;     1XX  2XX <br> [office_rules] <br> exten =&gt; _[12]XX,1,Dial(SIP/${EXTEN},60,tTr) <br> exten =&gt; _[12]XX,n,HangUp() <br> <br></code> <br><br>  Ps.  I would appreciate tips on extending functionality and security. <br><br>  upd: In any case, in terms of the security aspect, you need to look at <a href="http://blogs.digium.com/2009/03/28/sip-security/">it</a> . <br><br>  A few comments. <br>  If you have some experience with asterisk, then you should have a question. <br>  How is the context determined for outgoing calls? <br>  Record <br> <code>context=office_rules <br></code> <br>  only works on incoming calls.  So, in this case, on the receiving side, the asterisk sees that there is a peer in the system, which has the same IP address as the client that makes the call.  And it takes its context. <br><br>  And further.  Nobody bothers you to specify several register if you have several providers.  The essence of register is to tell you exactly where you are.  If you say “you are here” 2 or more times, there will be no problems and moreover, you will be insured against interruptions of one of the providers. </div><p>Source: <a href="https://habr.com/ru/post/107668/">https://habr.com/ru/post/107668/</a></p>
+      <b>sip.conf 2nd Asterisk:</b> <br> <code>[general] <br> context=default <br> allowguest=no <br> bindport=5060 <br> bindaddr=0.0.0.0 <br> <br> ;      - <br> register =&gt; volgograd:volgograd_password@kazan.asterisk.ru:5060 <br> <br> [kazan] <br> type=friend <br> <br> ; credentials for registration <br> username=kazan <br> secret=kazan_password <br> <br> ;   <br> ; (www.voip-info.org): If you want the phone to register itself, use the keyword dynamic instead of Host IP. <br> ;     deny,permit <br> host=dynamic <br> <br> ;     INVITE <br> canreinvite=no <br> ;   .  <br> insecure=very <br> ;     <br> qualify=yes <br> <br> ; DTMF <br> dtmfmode=rfc2833 <br> <br> ;   ( G711) <br> disallow=all <br> allow=ulaw <br> allow=alaw <br> <br> ;      <br> context=office_rules <br> <br></code> <br><br>  <b>extension.conf 2nd Asterisk:</b> <br> <code>;    <br> [office] <br> exten =&gt; _916.,1,Set(CALLERID(all)="Volgograd &lt;34&gt;") <br> exten =&gt; _916.,n,Dial(SIP/${EXTEN:3}@kazan,60,r) <br> exten =&gt; _916.,n,HangUp <br> .. <br> <br> include =&gt; office_rules <br> <br> ;     <br> ;     1XX  2XX <br> [office_rules] <br> exten =&gt; _[12]XX,1,Dial(SIP/${EXTEN},60,tTr) <br> exten =&gt; _[12]XX,n,HangUp() <br> <br></code> <br><br>  Ps.  I would appreciate tips on extending functionality and security. <br><br>  upd: In any case, in terms of the security aspect, you need to look at <a href="http://blogs.digium.com/2009/03/28/sip-security/">it</a> . <br><br>  A few comments. <br>  If you have some experience with asterisk, then you should have a question. <br>  How is the context determined for outgoing calls? <br>  Record <br> <code>context=office_rules <br></code> <br>  only works on incoming calls.  So, in this case, on the receiving side, the asterisk sees that there is a peer in the system, which has the same IP address as the client that makes the call.  And it takes its context. <br><br>  And further.  Nobody bothers you to specify several register if you have several providers.  The essence of register is to tell you exactly where you are.  If you say “you are here” 2 or more times, there will be no problems and moreover, you will be insured against interruptions of one of the providers. </div><p>Source: https://habr.com/ru/post/107668/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,11 +75,11 @@
 <li><a href="../107663/index.html">New clone species</a></li>
 <li><a href="../107664/index.html">Test C compilers for Windows</a></li>
 <li><a href="../107665/index.html">Google Corporation is planning a number of major purchases.</a></li>
+<li><a href="../10767/index.html">blog service or your blog?</a></li>
 <li><a href="../107670/index.html">Do I need to spend time designing?</a></li>
 <li><a href="../107672/index.html">Steve Ballmer gave a lecture to Ukrainian students</a></li>
 <li><a href="../107673/index.html">Hack Kinect, serve Open Source and get $ 2000. The winner is already there</a></li>
 <li><a href="../107674/index.html">Easy installation and configuration of BURG</a></li>
-<li><a href="../107675/index.html">My experience of opening a free hosting</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

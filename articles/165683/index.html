@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Where the hashCode legs grow</h1><div class="post__text post__text-html js-mediator-article"><img align="right" src="https://habrastorage.org/storage2/c2a/2ae/7b0/c2a2ae7b0b031f5b76a4c0d2e06e4cae.gif">  Again in Java interviews are asked about <code>hashCode</code> and <code>equals</code> ?  And who among the interviewees will answer the question how the <code>Object.hashCode()</code> and <code>System.identityHashCode()</code> calculated?  How expensive is calling these methods?  How can they be accelerated in HotSpot JVM?  I bet hardly anyone will give the correct answer.  Is that who reads this article. <br><a name="habracut"></a><br>  There is a common misconception that <code>Object.hashCode</code> returns the address of an object in memory.  Once upon a time, it probably was.  For example, Dalvik VM still uses an object address that is shifted 3 bits to the right.  However, such an implementation is unsuccessful: first, successively allocated objects will have consecutive hash codes;  secondly, the garbage collector can move objects in memory by changing their addresses. <br><br>  It so happened that last week I was twice confronted with the topic of calculating the hash code, which prompted me to write a note.  At first I caught the eye of an extremely unfairly amused <a href="http://habrahabr.ru/post/164881/">comment</a> .  It is <a href="https://habrahabr.ru/users/sssurkv/" class="user_link">SSSurkv that</a> quite correctly suggested that a random number generator is used to calculate <code>Object.hashCode</code> . <br>  - How so?  - you ask.  - After all, the object hash code must remain constant throughout the life of the application. <br><br>  That's right.  The embedded hash code is generated only once for each object during the first call to the <code>hashCode()</code> method, and then stored in the object header for subsequent calls.  But for the first time it uses random!  Convince yourself by looking at the <a href="">OpenJDK sources</a> ( <code>get_next_hash</code> function). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Probably, I would have forgotten about this case if I had not recently encountered a real problem in a real project.  Profiling the application, among the hot methods, I suddenly saw <code>IdentityHashMap.put()</code> , which, in my opinion, is implemented quite effectively.  The bottleneck turned out to be <code>System.identityHashCode()</code> , on which IdentityHashMap relies.  And only the first identityHashCode call on the object was slow.  The second and subsequent calls, as we now know, take the stored value from the header. <br><br>  But every cloud has a silver lining.  The fact is that in HotSpot you can choose the implementation of <code>Object.hashCode</code> using the command line switch <code>-XX:hashCode=n</code> (where n is from 0 to 5). <br>  0 - <a href="http://en.wikipedia.org/wiki/Park-Miller_random_number_generator">Park-Miller RNG</a> (default) <br>  1 - f (address, global_state) <br>  2 - constant 1 <br>  3 - sequential counter <br>  4 - object address <br>  5 - Thread-local <a href="http://en.wikipedia.org/wiki/Xorshift">Xorshift</a> <br>  The most adequate, in my opinion, is the last one - it gives a good uniform distribution using only bit operations, and, which is important for competitive algorithms, does not touch global variables. <br>  So, just by adding the JVM <code>-XX:hashCode=5</code> key <code>-XX:hashCode=5</code> , I magically accelerated my algorithm by 30%!  Why this option has not yet been defaulted remains a mystery ... <br><br>  Finally, a funny fact: Hotspot <code>hashCode</code> never returns 0, because 0 is considered a sign that the hash code for this object has not yet been generated: <br><pre> <code class="hljs cs"><span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (<span class="hljs-keyword"><span class="hljs-keyword">value</span></span> == <span class="hljs-number"><span class="hljs-number">0</span></span>) <span class="hljs-keyword"><span class="hljs-keyword">value</span></span> = <span class="hljs-number"><span class="hljs-number">0xBAD</span></span> ;</code> </pre><br>  I hope now that you have learned the whole truth about <code>hashCode</code> , you can not only surprise your colleagues at the interview, but also make your algorithms more efficient. </div><p>Source: <a href="https://habr.com/ru/post/165683/">https://habr.com/ru/post/165683/</a></p>
+      Probably, I would have forgotten about this case if I had not recently encountered a real problem in a real project.  Profiling the application, among the hot methods, I suddenly saw <code>IdentityHashMap.put()</code> , which, in my opinion, is implemented quite effectively.  The bottleneck turned out to be <code>System.identityHashCode()</code> , on which IdentityHashMap relies.  And only the first identityHashCode call on the object was slow.  The second and subsequent calls, as we now know, take the stored value from the header. <br><br>  But every cloud has a silver lining.  The fact is that in HotSpot you can choose the implementation of <code>Object.hashCode</code> using the command line switch <code>-XX:hashCode=n</code> (where n is from 0 to 5). <br>  0 - <a href="http://en.wikipedia.org/wiki/Park-Miller_random_number_generator">Park-Miller RNG</a> (default) <br>  1 - f (address, global_state) <br>  2 - constant 1 <br>  3 - sequential counter <br>  4 - object address <br>  5 - Thread-local <a href="http://en.wikipedia.org/wiki/Xorshift">Xorshift</a> <br>  The most adequate, in my opinion, is the last one - it gives a good uniform distribution using only bit operations, and, which is important for competitive algorithms, does not touch global variables. <br>  So, just by adding the JVM <code>-XX:hashCode=5</code> key <code>-XX:hashCode=5</code> , I magically accelerated my algorithm by 30%!  Why this option has not yet been defaulted remains a mystery ... <br><br>  Finally, a funny fact: Hotspot <code>hashCode</code> never returns 0, because 0 is considered a sign that the hash code for this object has not yet been generated: <br><pre> <code class="hljs cs"><span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (<span class="hljs-keyword"><span class="hljs-keyword">value</span></span> == <span class="hljs-number"><span class="hljs-number">0</span></span>) <span class="hljs-keyword"><span class="hljs-keyword">value</span></span> = <span class="hljs-number"><span class="hljs-number">0xBAD</span></span> ;</code> </pre><br>  I hope now that you have learned the whole truth about <code>hashCode</code> , you can not only surprise your colleagues at the interview, but also make your algorithms more efficient. </div><p>Source: https://habr.com/ru/post/165683/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../165669/index.html">Simulate dark-eye adaptation in 3D, or HDR for dummies</a></li>
+<li><a href="../16567/index.html">The issue of memory leaks in Firefox 3 has almost disappeared</a></li>
 <li><a href="../165671/index.html">Mass publication of online journal articles in memory of Aaron Schwarz</a></li>
 <li><a href="../165675/index.html">Results 24pullrequests</a></li>
 <li><a href="../165677/index.html">ViBe - background subtraction algorithm</a></li>
@@ -74,8 +74,8 @@
 <li><a href="../165695/index.html">Testing server 1C, DBMS MSSQL2008 on Windows 2008 OS on IBM x3650 M3 with 1 processor</a></li>
 <li><a href="../165697/index.html">Adapting a website for users with disabilities is not difficult.</a></li>
 <li><a href="../165699/index.html">Online IDE ShiftEdit</a></li>
-<li><a href="../165701/index.html">Useful hacks and snippets for .htaccess</a></li>
-<li><a href="../165703/index.html">Saving Excel documents to PDF on server</a></li>
+<li><a href="../1657/index.html">Enforta acquired SkyTeleCom and Mir-TV</a></li>
+<li><a href="../16570/index.html">Extended evaluation habrapostov</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

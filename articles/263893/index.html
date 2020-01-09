@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Samsung solid-state drives are justified. The problem was in the Linux kernel</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/3ca/10a/e34/3ca10ae34d8c483e99f47211f5c80fb9.png"><br><br>  Remember the <a href="http://habrahabr.ru/company/1cloud/blog/262257/">translation of the</a> article <a href="https://blog.algolia.com/when-solid-state-drives-are-not-that-solid/">"When Solid State Drives are not that solid"</a> ?  In it, Algolia employees blamed Samsung for data corruption on RAID0 configurations. <br><br>  The problem was solved as a result of a long trial, during which Algolia employees even had to <a href="https://github.com/algolia/trimtester">write software</a> emulating their type of load on the RAID, so that Samsung’s engineers could repeat the problem on their hardware.  The fix affected the Linux kernel, to be exact, the bio.c file, which is responsible for the basic block I / O operations. <br><a name="habracut"></a><br>  The problem was as follows - the kernel's input-output subsystem can divide the block input-output (BIO) operation into several when it is appropriate.  The bio_split () function is used for separation.  When splitting, a new BIO object is created, and the information in the old one is corrected, taking into account the fact that some of the addresses where I / O takes place have “moved” to the new object.  In order to save memory, a new object is created by copying values ​​from the old one, while the pointers in the new and old objects point to the same memory area.  For read / write operations, this works fine, since when performing these operations, the contents of the fields of the BIO object accessible through pointers do not change.  However, this is not the case for the DISCARD operation - the bio_vec field of the bio structure contains a pointer to the service data necessary for executing the command (starting address and size of the area to be erased). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The raid0 and raid10 kernel modules use the bio_split () function and send split requests to the SCSI / SATA driver, but the SCSI / SATA driver does not assume that different requests can use the same memory area and overwrite the contents at the address specified in bio_vec.  Therefore, the next request comes with a pointer to incorrect data, which calls DISCARD to incorrect addresses. <br><br>  The first version of the <a href="http://www.spinics.net/lists/raid/msg49440.html">patch</a> , proposed by Samsung engineers, provided for modifying the source code of the raid0 driver, but a <a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/%3Fid%3Df3f5da624e0a891c34d8cd513c57f1d9b0c7dadc">more general version</a> entered the kernel, which provided for a complete copy of the bio structure along with the memory pages occupied by it in the case of DISCARD. <br><br>  This problem affects all drives that support TRIM, regardless of model, in a RAID0 or RAID10 configuration. <br><br>  It remains unclear why the problem did not appear on Intel drives.  Perhaps it's in the timings. </div><p>Source: <a href="https://habr.com/ru/post/263893/">https://habr.com/ru/post/263893/</a></p>
+      The raid0 and raid10 kernel modules use the bio_split () function and send split requests to the SCSI / SATA driver, but the SCSI / SATA driver does not assume that different requests can use the same memory area and overwrite the contents at the address specified in bio_vec.  Therefore, the next request comes with a pointer to incorrect data, which calls DISCARD to incorrect addresses. <br><br>  The first version of the <a href="http://www.spinics.net/lists/raid/msg49440.html">patch</a> , proposed by Samsung engineers, provided for modifying the source code of the raid0 driver, but a <a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/%3Fid%3Df3f5da624e0a891c34d8cd513c57f1d9b0c7dadc">more general version</a> entered the kernel, which provided for a complete copy of the bio structure along with the memory pages occupied by it in the case of DISCARD. <br><br>  This problem affects all drives that support TRIM, regardless of model, in a RAID0 or RAID10 configuration. <br><br>  It remains unclear why the problem did not appear on Intel drives.  Perhaps it's in the timings. </div><p>Source: https://habr.com/ru/post/263893/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../263881/index.html">github attracted $ 250M investment</a></li>
 <li><a href="../263883/index.html">Create a universal Install Server for an automatic network installation of Linux and Windows based on Cobbler</a></li>
 <li><a href="../263885/index.html">System Administrator Day 2015</a></li>
 <li><a href="../263887/index.html">Happy System Administrator</a></li>
+<li><a href="../26389/index.html">Charity marathon "You are not alone!"</a></li>
 <li><a href="../263891/index.html">Market research, Cortana for Android, page design of your application on the App Store - and other news of the week for a mobile developer</a></li>
 <li><a href="../263895/index.html">Proper API design: what are “one”, “many”, “zero” and “nothing”</a></li>
 <li><a href="../263897/index.html">UI performance comparison in WPF, Qt, WinForms and FLTK</a></li>
 <li><a href="../263899/index.html">In app purchase using Soomla. Fast and easy</a></li>
-<li><a href="../263901/index.html">Webinar second. Bug work, work tools and customer relationship building methods</a></li>
-<li><a href="../263903/index.html">New critical vulnerabilities in Android: What is the problem, and how to protect</a></li>
+<li><a href="../2639/index.html">EBay says goodbye to virtual lots</a></li>
+<li><a href="../26390/index.html">You you you We? (I'm a little crazy)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

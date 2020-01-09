@@ -31,12 +31,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -58,7 +58,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Small python joy # 1: loguru</h1><div class="post__text post__text-html js-mediator-article"><p> Today we will discuss why someone needed to write a replacement for the standard logging logger and how to use this thing. </p><br><p> <a href="https://github.com/Delgan/loguru"><img src="https://habrastorage.org/webt/3g/ym/bw/3gymbw73ezeybuearnmpg4vvukm.png"></a> </p><a name="habracut"></a><br><h2 id="bolnovato">  It's sick! </h2><br><p>  When it comes to logging in Python, <code>logging</code> comes to mind immediately. </p><br><p>  <code>logging</code> is a robust, stable solution, tightly embedded in the Python ecosystem.  You import it where it is necessary, you make a couple of manipulations - and that’s it, everything seems to be possible to write the cherished <code>logger.exception('--')</code> .  And the entry <code>'--'</code> will fall into some kind of journal. </p><br><p>  After that, developers are usually interested in where exactly the <code>'--'</code> and what happens next with this recording.  Programmers climb into the logger settings and start using a heap of different options to teach it to properly stuff records into files, databases, error collectors, and other places where log files can be stored. </p><br><p>  There are configs for the logger, which start with a cumbersome, but more or less understandable: </p><br><pre> <code class="python hljs">LOGGER_CONFIG = { <span class="hljs-string"><span class="hljs-string">"version"</span></span>: <span class="hljs-number"><span class="hljs-number">1</span></span>, <span class="hljs-string"><span class="hljs-string">"disable_existing_loggers"</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">False</span></span>, <span class="hljs-string"><span class="hljs-string">"formatters"</span></span>: { <span class="hljs-string"><span class="hljs-string">"simple"</span></span>: { <span class="hljs-string"><span class="hljs-string">"format"</span></span>: <span class="hljs-string"><span class="hljs-string">"%(asctime)s - %(name)s - %(levelname)s - %(message)s"</span></span> } }, <span class="hljs-string"><span class="hljs-string">"handlers"</span></span>: { <span class="hljs-string"><span class="hljs-string">"console"</span></span>: { <span class="hljs-string"><span class="hljs-string">"class"</span></span>: <span class="hljs-string"><span class="hljs-string">"logging.StreamHandler"</span></span>, <span class="hljs-string"><span class="hljs-string">"level"</span></span>: <span class="hljs-string"><span class="hljs-string">"DEBUG"</span></span>, <span class="hljs-string"><span class="hljs-string">"formatter"</span></span>: <span class="hljs-string"><span class="hljs-string">"simple"</span></span>, <span class="hljs-string"><span class="hljs-string">"stream"</span></span>: <span class="hljs-string"><span class="hljs-string">"ext://sys.stdout"</span></span> }, }, <span class="hljs-string"><span class="hljs-string">"root"</span></span>: { <span class="hljs-string"><span class="hljs-string">"level"</span></span>: <span class="hljs-string"><span class="hljs-string">"INFO"</span></span>, <span class="hljs-string"><span class="hljs-string">"handlers"</span></span>: [<span class="hljs-string"><span class="hljs-string">"console"</span></span>] } }</code> </pre> <br><p>  Such configs quickly evolve towards something much more indigestible.  A normally configured config for <code>logging</code> , with different logging levels, different message collectors and rotation of log files is a hefty piece of text that is really hard to dig into. </p><br><h2 id="chtoby-ne-bolno-i-dazhe-priyatno">  In order not to hurt and even pleasant </h2><br><p>  Once a couple of programmers finally got into trouble digging (and making mistakes) in numerous <code>logging</code> tuning options.  These engineers wrote their logger, extremely simple and at the same time very powerful.  This thing is called <a href="https://github.com/Delgan/loguru">Loguru</a> . </p><br><p>  And here is the demo of this library, and it exhaustively shows how it is possible in a couple of lines to understand and simply configure journaling in your python application. </p><br><p><img src="https://habrastorage.org/webt/is/a9/ce/isa9cecwc1zw7f2fuka0jbvufhm.gif"></p><br><p>  Why consider <code>loguru</code> as an alternate <code>logging</code> ? </p><br><ul><li>  Simplicity.  About this, I have already said above, but I will say it again - correctly <code>loguru</code> easier than <code>logging</code> . </li><li>  Understandable ways to customize the rotation of log files and archiving old records. </li><li>  Heaps of batteries are already included in the box - message colors, formatting, sending crash notifications to mail, function call stacks along with crash reports, and many other nice amenities. </li><li>  And, of course, asynchrony!  Yes, the Python world is going further and further towards async / await, and this tectonic shift of all programming programming clearly requires asynchronous loggers. </li></ul><br><p>  Of course, you have to pay for everything.  And for the use of <code>loguru</code> will have to pay two things: </p><br><ul><li>  Lieb is relatively young and there may be surprises. </li><li>  The authors promise full compatibility with <code>logging</code> , but you may well come across problems connecting <code>loguru</code> with third-party libraries for <code>logging</code> .  For example, when hanging handlers for Sentry or Airbrake. </li></ul><br><p>  Despite these possible difficulties, <code>loguru</code> worth it to be carefully tested and use in your nearest project. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -66,10 +66,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/454436/">https://habr.com/ru/post/454436/</a></p>
+    <p>Source: https://habr.com/ru/post/454436/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

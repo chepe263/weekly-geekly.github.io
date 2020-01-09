@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We create notebooks for the book in automatic mode</h1><div class="post__text post__text-html js-mediator-article"><h1>  How it all began </h1><br>  It all started with laziness.  Laziness is productive and not very, in my case, it seems - the first. <br><br>  Recently I bought a book by Nassim Taleb “Anti-fragility” on “Liters”.  I downloaded it, threw it on the reading room, but I did not get to it, then my wife would drag her off to read it, then the child ... And then this article <a href="http://habrahabr.ru/post/239377">“The best gift - book.”</a> Arrived in the newsletter <a href="http://habrahabr.ru/post/239377">.</a>  <a href="http://habrahabr.ru/post/239377">We make a beautiful cover</a> .  I looked, everything seems to be beautiful, but now there was no machine with “Vents” near at hand, well, we don’t use them, but to run these WordPages through a strip like Wine or somehow non-comfortably in Qemu.  However, I have the opportunity to print books and normally trim (mini-printing house on the first floor of the house in which I live) in the desired format.  This means that you should use the opportunities available at hand. <br><a name="habracut"></a><br><h1>  Idea </h1><br>  In my office, I have been using a small bash script for half a year to assemble the scattered PDF nicknames together and form a single structure of project documentation.  So, there is one candidate for parts. <br><br>  Actually the idea was to separate the individual pages in a certain sequence into notebooks of arbitrary size multiple 4. If you look carefully, one notebook sheet contains exactly 4, not three or five pages, and the pages are arranged in a certain order on the sheet, though , I later finished it, but for now it was as it is, namely (for a 48-page notebook): 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,7 +62,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <table><tbody><tr><th>  Pairs of pages </th><th>  addiction </th></tr><tr><td>  1-48 </td><td>  m = (1) n = (48) </td></tr><tr><td>  2-47 </td><td>  m = (1 + 1) n = (48-1) </td></tr><tr><td>  3-46 </td><td>  m = (1 + 2) n = (48-2) </td></tr><tr><td>  ... </td><td>  ... </td></tr><tr><td>  24-25 </td><td>  m = (1 + 23) n = (48-23) </td></tr></tbody></table><br>  This means that, first, the book should be divided into <b>i</b> pages, then into <b>j</b> notebooks, <b>k</b> pages each, then each notebook should be divided into pairs of pages, which should be placed on sheets, which should be combined into single files of notebooks, which should be placed next to the original Pdf nickname.  F-Fu, barely formulated ... <br><br>  In general, the dependence is simple, the first page of the sheet is a + b, and the last is kb, where a is the sequence number of the notebook, with 0 &lt;a &lt;j, and b is the sequence number of the paired page, and 0 &lt;b &lt;k / 2  Those.  this is a <b>for ((b = 0; b &lt;k / 2; b ++)</b> loop <b>)</b> in which all these pages should be processed. <br><br>  We push this cycle into another one, which runs through the notebooks <b>for ((a = 0; a &lt;j; a ++))</b> . <br><br>  Next we use the GhostScript, ImageMagic and djvulibre packages, and some bash and Linux built-in commands. <br><br>  In the process of elaboration, it turned out that part of the code is better to be rendered into separate functions, and bash divides everything completely, which means that it is necessary to refine the assembly of the remaining pages, which turned out to be primitive: <br><br><pre> echo "The pages of the main set were assembled, now you can put together an additional notebook."
@@ -189,20 +189,20 @@
  rm -R $ TMP_DIR
 </pre><br><br><h1>  Problems </h1><br>  <strike>I really do not like this solution:</strike> <strike><br><br></strike> <pre>  gs -q -sDEVICE = bmpmono -r2x2 -sOutputFile = $ TMP_DIR /% d.bmp -dNOPAUSE -dBATCH * pdf # Extract pages from PDF in low resolution
  FILE_COUNT = `ls -l $ TMP_DIR / * bmp |  grep ^ - |  wc -l` # Count the number of pages in the document by counting the number of files in the directory
-</pre><br><br>  Thanks klirichek, now it looks like this: <pre>  FILE_COUNT = `pdfinfo * pdf |  awk '/ Pages / {print $ 2}' ` </pre><br><br>  <strike>Therefore, I will be grateful for the hint how to find out the number of pages in the PDF-nick without unpacking it.</strike> <br><br><h1>  Conclusion </h1><br>  The script is raw.  The processing of a PDF-file containing the number of pages is not a multiple of 4 has not been completed, it was not originally planned to be published here, because the Chukchi is a reader. <br><br>  I plan to add a launch from the command line indicating the parameters and batch processing of a series of files, while this creation processes only one, even though it says "* pdf". <br><br>  The first experience, please do not kick. <br><br>  For ideas and corrections thanks in advance. </div><p>Source: <a href="https://habr.com/ru/post/240489/">https://habr.com/ru/post/240489/</a></p>
+</pre><br><br>  Thanks klirichek, now it looks like this: <pre>  FILE_COUNT = `pdfinfo * pdf |  awk '/ Pages / {print $ 2}' ` </pre><br><br>  <strike>Therefore, I will be grateful for the hint how to find out the number of pages in the PDF-nick without unpacking it.</strike> <br><br><h1>  Conclusion </h1><br>  The script is raw.  The processing of a PDF-file containing the number of pages is not a multiple of 4 has not been completed, it was not originally planned to be published here, because the Chukchi is a reader. <br><br>  I plan to add a launch from the command line indicating the parameters and batch processing of a series of files, while this creation processes only one, even though it says "* pdf". <br><br>  The first experience, please do not kick. <br><br>  For ideas and corrections thanks in advance. </div><p>Source: https://habr.com/ru/post/240489/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../240475/index.html">Creating Today Extension for iOS 8</a></li>
 <li><a href="../240477/index.html">Enchanting performance by Bertrand Picard</a></li>
 <li><a href="../240479/index.html">Fight against memory leaks in Android. Part 1</a></li>
+<li><a href="../24048/index.html">Euroset is going to compete with Skype</a></li>
 <li><a href="../240483/index.html">Using the beanstalkd queue server to distribute our mailing list</a></li>
 <li><a href="../240485/index.html">Sequential execution of tasks in Gulp JS</a></li>
+<li><a href="../24049/index.html">Kitchen Products Indicator</a></li>
 <li><a href="../240491/index.html">Starban. Flexible development methodology, gamification and many more buzz words</a></li>
 <li><a href="../240493/index.html">We introduce work with coordinates in sonata-admin</a></li>
 <li><a href="../240495/index.html">IIS as an edge web server (now haproxy)</a></li>
 <li><a href="../240497/index.html">SAM: your personal "Internet of things"</a></li>
-<li><a href="../240499/index.html">SSLv3 POODLE vulnerability - like BEAST, only easier</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

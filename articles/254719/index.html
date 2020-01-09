@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The Bresenham algorithm in a soldering furnace - theory</h1><div class="post__text post__text-html js-mediator-article"><img align="left" width="300" src="https://habrastorage.org/files/2b5/30e/cea/2b530ecea99a46a595f8899eca0352fc.jpg">  The Bresenham algorithm is one of the oldest algorithms in computer graphics.  It would seem, how can you apply the algorithm for constructing raster lines when creating a home soldering furnace?  It turns out you can, and with a very decent result.  Looking ahead, I will say that this algorithm is very well fed by a low-power 8-bit microcontroller.  But first things first. <br><a name="habracut"></a><br>  <b>The Bresenham algorithm</b> is an algorithm that determines which points of a two-dimensional raster need to be colored in order to get a close approximation of a straight line between two given points.  The essence of the algorithm is to determine for each column <b>X</b> (see figure) which row <b>Y is</b> closest to the line and draw a point. <br><br>  Now let's see how a similar algorithm will help us in the management of heating elements in an electric furnace. <br><br>  TEN is powered from mains voltage 220V / 50Hz.  Take a look at the chart. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img align="left" width="500" src="https://habrastorage.org/files/8ff/198/3c4/8ff1983c483441bbaa99330d64569337.jpg"><br>  When applying such a voltage in its pure form to the input of the electric heater, we get 100% of the heating power at the output.  It's simple. <br><br clear="left"><img align="left" width="500" src="https://habrastorage.org/files/353/972/961/353972961c6d4ca0bf3859da46aa835d.jpg"><br>  What will happen if you apply only a positive half-wave of the mains voltage to the TEN input?  That's right, we get 50% of the heating output. <br><br clear="left"><img align="left" width="500" src="https://habrastorage.org/files/96b/58e/1aa/96b58e1aacd74b03a90285d44d55caac.jpg"><br>  If you submit every third half-wave, we get 33% power. <br><br clear="left">  As an example, take a 10% gradation of the output power and a time interval of 100ms, which is equivalent to 10 half-waves of the mains voltage.  Draw a 10x10 grid and imagine that the <b>Y</b> axis is the axis of the output power values.  Let's draw a straight line from 0 to the required power value. <br><br><img src="https://habrastorage.org/files/d75/d22/859/d75d22859c9f442285247253ef15cb53.jpg"><br><br>  Are you tracking addiction? <br>  Increasing the time interval to 1 second, you can get a gradation of the output power of 1%.  The result is a 100x100 grid with all the consequences. <br><br>  <b>And now about the pleasant:</b> <br>  The Bresenham algorithm can be built in a loop so that at each step along the <b>X</b> axis, it is easy to track the error value, which means the vertical distance between the current value of <b>y</b> and the exact value of <b>y</b> for the current <b>x</b> .  Whenever we increase <b>x</b> , we increase the error value by the amount of slope.  If the error has exceeded 0.5, the line is closer to the next <b>y</b> , so we increase <b>y</b> by one (read - we miss one half-wave of voltage), while reducing the error value by 1. <br><br>  This approach can easily be reduced to cyclic <b>integer addition</b> (more on this later, when describing the algorithm of operation of the MC in the next article), which is a definite plus for microcontrollers. <br><br>  I intentionally did not load you with formulas.  The algorithm is elementary, easily googled.  I just want to show its ability to use in circuitry.  To control the load, a typical connection circuit of a MOC3063 triac optocoupler with a zero detector will be used. <br><br><img src="https://habrastorage.org/files/3e6/971/ecd/3e6971ecd6d24f1ba0198b4faa009f83.jpg"><br><br>  <b>With this approach, there are a number of advantages.</b> <br><ul><li>  Minimal interference in the network due to frequent commutation of a large load, on / off will occur at the moments of voltage crossing through zero. </li><li>  A very simple algorithm - all calculations are reduced to working with integers, which is good for a microcontroller. </li><li>  There is no need to fence the detector voltage over zero (hello MOC3063).  Even if the MC is just jerking the timer on a timer, opening the optocoupler, the error will not be critical. </li></ul><br><br>  <b>To be continued.</b> </div><p>Source: <a href="https://habr.com/ru/post/254719/">https://habr.com/ru/post/254719/</a></p>
+    <img align="left" width="500" src="https://habrastorage.org/files/8ff/198/3c4/8ff1983c483441bbaa99330d64569337.jpg"><br>  When applying such a voltage in its pure form to the input of the electric heater, we get 100% of the heating power at the output.  It's simple. <br><br clear="left"><img align="left" width="500" src="https://habrastorage.org/files/353/972/961/353972961c6d4ca0bf3859da46aa835d.jpg"><br>  What will happen if you apply only a positive half-wave of the mains voltage to the TEN input?  That's right, we get 50% of the heating output. <br><br clear="left"><img align="left" width="500" src="https://habrastorage.org/files/96b/58e/1aa/96b58e1aacd74b03a90285d44d55caac.jpg"><br>  If you submit every third half-wave, we get 33% power. <br><br clear="left">  As an example, take a 10% gradation of the output power and a time interval of 100ms, which is equivalent to 10 half-waves of the mains voltage.  Draw a 10x10 grid and imagine that the <b>Y</b> axis is the axis of the output power values.  Let's draw a straight line from 0 to the required power value. <br><br><img src="https://habrastorage.org/files/d75/d22/859/d75d22859c9f442285247253ef15cb53.jpg"><br><br>  Are you tracking addiction? <br>  Increasing the time interval to 1 second, you can get a gradation of the output power of 1%.  The result is a 100x100 grid with all the consequences. <br><br>  <b>And now about the pleasant:</b> <br>  The Bresenham algorithm can be built in a loop so that at each step along the <b>X</b> axis, it is easy to track the error value, which means the vertical distance between the current value of <b>y</b> and the exact value of <b>y</b> for the current <b>x</b> .  Whenever we increase <b>x</b> , we increase the error value by the amount of slope.  If the error has exceeded 0.5, the line is closer to the next <b>y</b> , so we increase <b>y</b> by one (read - we miss one half-wave of voltage), while reducing the error value by 1. <br><br>  This approach can easily be reduced to cyclic <b>integer addition</b> (more on this later, when describing the algorithm of operation of the MC in the next article), which is a definite plus for microcontrollers. <br><br>  I intentionally did not load you with formulas.  The algorithm is elementary, easily googled.  I just want to show its ability to use in circuitry.  To control the load, a typical connection circuit of a MOC3063 triac optocoupler with a zero detector will be used. <br><br><img src="https://habrastorage.org/files/3e6/971/ecd/3e6971ecd6d24f1ba0198b4faa009f83.jpg"><br><br>  <b>With this approach, there are a number of advantages.</b> <br><ul><li>  Minimal interference in the network due to frequent commutation of a large load, on / off will occur at the moments of voltage crossing through zero. </li><li>  A very simple algorithm - all calculations are reduced to working with integers, which is good for a microcontroller. </li><li>  There is no need to fence the detector voltage over zero (hello MOC3063).  Even if the MC is just jerking the timer on a timer, opening the optocoupler, the error will not be critical. </li></ul><br><br>  <b>To be continued.</b> </div><p>Source: https://habr.com/ru/post/254719/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../254707/index.html">Machine learning in navigation devices: we determine the maneuvers of the machine by the accelerometer and gyroscope</a></li>
+<li><a href="../25471/index.html">The Tale of Black Habrastrelka</a></li>
 <li><a href="../254711/index.html">Presentation of speakers of the Desktop UI & Business Application conference. About UI</a></li>
 <li><a href="../254713/index.html">Even more jQuery?</a></li>
 <li><a href="../254715/index.html">What are good free monads</a></li>
 <li><a href="../254717/index.html">On middleware</a></li>
+<li><a href="../25472/index.html">jQuery + AJAX + (Google Search API || Yahoo Search API)</a></li>
 <li><a href="../254721/index.html">Practical use of a small vocabulary</a></li>
+<li><a href="../254723/index.html">Off Button for Raspberry Pi</a></li>
 <li><a href="../254727/index.html">Asynchronous work with Tarantool on Python</a></li>
-<li><a href="../254731/index.html">Improving xaml: Bindable Converters, Switch Converter, Sets</a></li>
-<li><a href="../254733/index.html">Using Asterisk to receive data from security systems</a></li>
-<li><a href="../254737/index.html">Talking panda or what can be done with FFmpeg and OpenCV on Android</a></li>
+<li><a href="../25473/index.html">The first release of the project Moonlight</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -30,12 +30,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -57,7 +57,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Muller's recurrent relation: problems with rounding floating-point numbers</h1><div class="post__text post__text-html js-mediator-article">  Some time ago I came across an exercise that doesn’t look that difficult: <br><br>  Let the sequence <i>x <sub>n be</sub></i> defined as: <br><img src="https://habrastorage.org/files/30c/b91/aad/30cb91aad7fc44c79a1eb5422e44469d.png"><br>  count <i>x <sub>30</sub></i> . <br><br>  This is not so difficult to encode, perhaps implementing <i>x <sub>i</sub></i> as a recursive function.  With ordinary double-precision floating point numbers, as <i>i</i> increases, the result converges nicely to 100. Super! 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -65,7 +65,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Unfortunately, 100 is not even the closest answer.  In fact, the sequence converges to 5. <br><a name="habracut"></a><br><h3>  Problem </h3><br>  This sequence is known as the Muller Recurrent Relationship and has been synthesized specifically to demonstrate how quickly and dramatically round-off floating-point errors lead to catastrophic results, under the right (well, wrong) conditions.  <a href="http://www.cs.berkeley.edu/~wkahan/Mindless.pdf">This paper (pdf)</a> details the various dangers of rounding, in particular, and this sequence (p. 14).  Another description of the problem can be found <a href="http://www.cs.berkeley.edu/~wkahan/Math128/M128Bsoln09Feb04.pdf">here (pdf)</a> . <br><br>  I think that many programmers, including me, realize that the math of floating-point numbers can go wrong in some situations, but dismiss the problem, believing that this can happen only if very large or very small numbers are involved in the calculations, or when accumulates a huge number of errors.  This exercise with innocent-looking constants and a small number of iterations perfectly demonstrates that rounding errors can have a significant impact even besides extreme numbers.  In this case, the instability of a fixed point 5 leads to the fact that even small errors significantly change the result. <br><br>  I can add nothing more, but I think that this problem is worth sharing. <br><br><h3>  Calculating the correct result </h3><br>  We can compare the first hundred values ​​of a sequence between ordinary floating point numbers and arithmetic with arbitrary precision using a short Mathematica program.  We use the convenient syntax of Mathematica memos, so the calculations take place quite quickly even for 100 or more iterations. <br><br>  <font><font color="#008b8b">f</font> [ <font color="#0000ff"><b>y_</b></font> , <font color="#0000ff"><b>z_</b></font> ] <font color="#0000ff"><b>: =</b></font> <font color="#0000ff"><b>108</b></font> <font color="#0000ff"><b>-</b></font> ( <font color="#0000ff"><b>815</b></font> <font color="#0000ff"><b>-</b></font> <font color="#0000ff"><b>1500</b></font> <font color="#0000ff"><b>/</b></font> z) <font color="#0000ff"><b>/</b></font> y;</font> <font><br><br></font>  <font><font color="#008b8b">xExact</font> [ <font color="#0000ff"><b>0</b></font> ] <font color="#0000ff"><b>=</b></font> <font color="#0000ff"><b>4</b></font> ;</font> <font><br></font>  <font><font color="#008b8b">xExact</font> [ <font color="#0000ff"><b>1</b></font> ] <font color="#0000ff"><b>=</b></font> <font color="#008b8b">17/4</font> ;</font> <font><br></font>  <font><font color="#008b8b">xExact</font> [ <font color="#0000ff"><b>n_</b></font> ] <font color="#0000ff"><b>: =</b></font> <font color="#008b8b">xExact</font> [n] <font color="#0000ff"><b>=</b></font> <font color="#008b8b">f</font> [ <font color="#008b8b">xExact</font> [n <font color="#0000ff"><b>-</b></font> <font color="#0000ff"><b>1</b></font> ], <font color="#008b8b">xExact</font> [n <font color="#0000ff"><b>-</b></font> <font color="#0000ff"><b>2</b></font> ]];</font> <font><br><br></font>  <font><font color="#008b8b">xFloat</font> [ <font color="#0000ff"><b>0</b></font> ] <font color="#0000ff"><b>=</b></font> <font color="#0000ff"><b>4</b></font> ;</font> <font><br></font>  <font><font color="#008b8b">xFloat</font> [ <font color="#0000ff"><b>1</b></font> ] <font color="#0000ff"><b>=</b></font> <font color="#0000ff"><b>4.25</b></font> ;</font> <font><br></font>  <font><font color="#008b8b">xFloat</font> [ <font color="#0000ff"><b>n_</b></font> ] <font color="#0000ff"><b>: =</b></font> <font color="#008b8b">xFloat</font> [n] <font color="#0000ff"><b>=</b></font> <font color="#008b8b">f</font> [ <font color="#008b8b">xFloat</font> [n <font color="#0000ff"><b>-</b></font> <font color="#0000ff"><b>1</b></font> ], <font color="#008b8b">xFloat</font> [n <font color="#0000ff"><b>-</b></font> <font color="#0000ff"><b>2</b></font> ]];</font> <font><br><br></font>  <font><font color="#008b8b">TableForm</font> [</font> <font><br></font>  <font><font color="#008b8b">Table</font> [{i, <font color="#008b8b">N</font> [ <font color="#008b8b">xExact</font> [i], <font color="#0000ff"><b>20</b></font> ], <font color="#008b8b">N</font> [ <font color="#008b8b">xFloat</font> [i], <font color="#0000ff"><b>20</b></font> ]}, {i, <font color="#0000ff"><b>0</b></font> , <font color="#0000ff"><b>100</b></font> }],</font> <font><br></font>  <font>TableHeadings <font color="#0000ff"><b>-&gt;</b></font></font> <font><br></font>  <font>{ <font color="#008b8b">None</font> , { <font color="#00cd00">"i"</font> , <font color="#00cd00">"x [i] \" exact \ ""</font> , <font color="#00cd00">"x [i] floating point"</font> }}</font> <font><br></font> <div class="spoiler">  <b class="spoiler_title">Results:</b> <div class="spoiler_text"><pre> ix [i] "exact" x [i] floating point
@@ -171,15 +171,15 @@
  98 5.00000000000000000 100.
  99 5.00000000000000000 100.
  100 5.00000000000000000 100.
-</pre><br></div></div></div><p>Source: <a href="https://habr.com/ru/post/258483/">https://habr.com/ru/post/258483/</a></p>
+</pre><br></div></div></div><p>Source: https://habr.com/ru/post/258483/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../258469/index.html">Internet of Things (IoT) and plumbing</a></li>
 <li><a href="../258471/index.html">Not only software one we are alive from now on. Congratulations on the emergence of a new hub "Circuitry"</a></li>
 <li><a href="../258475/index.html">Big Data: current reality</a></li>
 <li><a href="../258477/index.html">Accessibility. How we make Yandex accessible to people with disabilities and why we consider it important.</a></li>
 <li><a href="../258479/index.html">New features for application developers in Search Console</a></li>
+<li><a href="../25848/index.html">Downloadable fonts in HTML - a dream or a reality?</a></li>
 <li><a href="../258485/index.html">Registration for the conference on computational linguistics "Dialogue" is open</a></li>
 <li><a href="../258489/index.html">OpenEMS modeling basics</a></li>
 <li><a href="../258491/index.html">64-bit code in 2015: what's new in diagnosing possible problems?</a></li>

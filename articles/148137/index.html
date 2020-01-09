@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>UCS2 or UCS4? - pyodbc and work with utf16 data in MSSQL</h1><div class="post__text post__text-html js-mediator-article"><h2>  Problem </h2><br>  To work with the MSSQL Server 2005 database in UTF-16 (UCS2) encoding, I use a script written in python.  This script uses the following set of tools for working with the database: <br><ul><li>  unixODBC </li><li>  FreeTDS </li><li>  pyodbc </li><li>  sqlachemy </li></ul><br>  And then there was a difficulty: when retrieving string data from the database (nvarchar, ntext fields), Unicode is incorrectly processed. <br>  As it turned out, the python installed by me was compiled with UCS4 unicode.  Methods for obtaining a unicode type in a python assembly are well described in this <a href="http://stackoverflow.com/questions/1446347/how-to-find-out-if-python-is-compiled-with-ucs-2-or-ucs-4">question on stackoverflow</a> .  Ie, if you run the following line in the terminal: <pre><code class="bash hljs">python -c <span class="hljs-string"><span class="hljs-string">"import sys;print 'UCS4' if sys.maxunicode &gt; 65536 else 'UCS2'"</span></span></code> </pre>  then we get the unicode build version for python. In my case it was <strong>UCS4</strong> .  What is behind it pulls: <br><ol><li>  unixODBC calling the appropriate database functions with an appendix W (for example, <em>SQLExecDirectW ()</em> ), gets the results.  in which one character of the text occupies 2 bytes (UCS2) </li><li>  pyodbc receives the results from the ODBC driver, and in turn saves the results to a variable of type <strong>unicode.</strong> </li><li>  Thus 1 result symbol, according to pyodbc, is 4 bytes (UCS4).  That is how the result is saved.  derived from the ODBC driver. </li></ol><br>  The driver returns data in which the character takes 2 bytes, and pyodbc rewrites this data so that the character takes 4 bytes.  It would be nice if there was any conversion, but the data is simply stored as an array of bytes into a variable with a <strong>unicode</strong> type, which has unpleasant consequences: the result symbol essentially contains 2 characters of the result that the ODBC driver returned. <br><a name="habracut"></a><br>  Not terrible consequences, I decided, and independently transformed the result, dividing it by symbols: <br><pre> <code class="python hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">odbcUCS4toUCS2</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(ustr)</span></span></span><span class="hljs-function">:</span></span> u = <span class="hljs-string"><span class="hljs-string">u""</span></span> <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> i <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> range(<span class="hljs-number"><span class="hljs-number">0</span></span>, len(ustr)): u32 = ord(ustr[i]) u16 = [(u32 &amp; <span class="hljs-number"><span class="hljs-number">0xFFFF0000</span></span>) &gt;&gt; <span class="hljs-number"><span class="hljs-number">16</span></span>, (u32 &amp; <span class="hljs-number"><span class="hljs-number">0x0000FFFF</span></span>)] u += unichr(u16[<span class="hljs-number"><span class="hljs-number">1</span></span>]) u += unichr(u16[<span class="hljs-number"><span class="hljs-number">0</span></span>]) <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> u</code> </pre><br>  This was not enough.  Another unpleasant consequence has appeared: <strong>if the length in the characters of the result is odd, then the last character of the result is truncated</strong> .  Those.  the string <em>'this word'</em> will be received in my script as <em>'these are words'</em> .  I could not solve this problem with transformations: the last two bytes of the result are actually absent due to incorrect saving of unicode.  Then I came to the decision to rebuild python with unicode UCS2 support. <br><br><h2>  Decision </h2><br>  We collect, not forgetting to specify in options <em>- enable-unicode = ucs2</em> .  When building a new python, you need to remember to put a bag of zlib1g-dev, otherwise there may be difficulties with installing packages with the help of pip. <br>  Install and configure virtualenv: <br><pre> <code class="bash hljs">$ sudo apt-get install virtualenv $ virtualenv ~/ucs2env -p [   ucs2 ]</code> </pre><br>  Well, add to aliases: <pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"alias ucs2env='source ~/ucs2env/bin/activate'"</span></span>&gt;&gt;~/.bashrc</code> </pre> <br>  Well that's all.  Now the data is obtained in the same way as it is stored in the database: <br><pre> <code class="bash hljs">$ ucs2env (ucs2env)$ python -c <span class="hljs-string"><span class="hljs-string">"import sys;print 'UCS4' if sys.maxunicode &gt; 65536 else 'UCS2'"</span></span> UCS2</code> </pre></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/148137/">https://habr.com/ru/post/148137/</a></p>
+    <p>Source: https://habr.com/ru/post/148137/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,9 +74,9 @@
 <li><a href="../148136/index.html">Practice ITIL for a small company. Change management</a></li>
 <li><a href="../148138/index.html">Time sinks and the fight against them</a></li>
 <li><a href="../148139/index.html">Java shared memory and off-heap caching</a></li>
+<li><a href="../14814/index.html">Ajax forums</a></li>
 <li><a href="../148140/index.html">Substitution of XMLHttpRequest or not touching the tons of ready-made js-code to change the behavior of all ajax requests</a></li>
 <li><a href="../148142/index.html">Android stopwatch with Python + sl4a + fullScreenUI</a></li>
-<li><a href="../148144/index.html">Load balancing on PPTP / L2TP MPD5 servers</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

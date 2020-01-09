@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>MPLS and VPLS on Mikrotik</h1><div class="post__text post__text-html js-mediator-article">  On the one hand, the desire is somewhat strange - the organization of a “serious” MPLS / VPLS on cheap Mikrotik-type hardware.  On the other hand, for 70 bucks (1500-2000r) for the younger model RB / 750 (GL) we get a PE / CE device that can (among other things) L2VPN / L3VPN over an MPLS medium and can pump through about 70 megabits of duplex (on large packages). <br>  Mikrotik RouterOS can do both MPLS (L3VPN, Traffic Engeneering) and L2VPN (l2circuit aka VPWS, VPLS), which covers almost all possible tasks (given the performance of iron, of course). <br><br>  Interesting?  I ask under the cat! <br><a name="habracut"></a><br>  For a start, a little theory. <br><br>  <b>MPLS</b> ( <i>multiprotocol label switching</i> ) - <i>label-</i> based routing mechanism.  Each packet passing through the MPLS network, regardless of the type of this packet, is assigned a specific label on the basis of which the routing decision is made.  It is important to note that the content is not studied, i.e.  inside MPLS, you can drive absolutely any L2 / L3 traffic (STP, BPDU, etc., up to SDH and ATM) without any influence on the transport network (flood, Vlana with a large number of MAC addresses, loops and other "joys "Become you, as a transport, deep purple). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The key concept in MPLS is <b>LSP</b> ( <i>Label Switched Path</i> ), a packet path that is established based on the LDP, RSVP-TE, BGP or CR-LDP protocols.  In this article I will not be distributed, according to what criteria is set LSP, and from the protocols I will focus on the LDP.  The MPLS literature on the network is enough for an interested reader to learn a lot of new things, but the purpose of this article is to demonstrate the very specific features of RouterOS. <br><br>  A router in an MPLS network can perform one of three functions: <br><br>  1. CE-router (Client-edge) - is not a member of the MPLS network, and in general does not know anything about it, it is just a client device that has L2 / L3 connectivity with the provider’s router. <br>  2. PE router (Provider-edge) - an edge MPLS router.  It is the gateway for the client and forwards its traffic to the provider's MPLS network.  Another name is LER - label edge router. <br>  3. P router (provider router) - MPLS router that transparently passes MPLS traffic without analyzing its contents.  Another name is LSR (label-switch router). <br><br>  VPWS (l2circuit) is a point-to-point channel (aka pseudo-wire). <br>  VPLS is a multipoint channel, for the client it looks like a virtual “dumb” switch, transparently letting through any packets. <br><br>  Now, when we have decided on terminology, we will consider concrete examples: <br><br>  <b>1. Mikrotik - Juniper - Mikrotik L2Circuit</b> <br>  Option one: Mikrotik acts as a PE router, Juniper - as a P-router. <br><br>  <b>Network layout</b> <br> <a href=""><img src="https://habrastorage.org/getpro/geektimes/post_images/984/3ee/b1f/9843eeb1fdebb1daae6cb90d5fc8e682.png"></a> <br>  <i>All images are clickable</i> <br><br>  <b>Miktorik configuration as a PE router</b> <br><br>  Raise interfaces and ip-addresses: <br><pre> / interface bridge
@@ -504,20 +504,20 @@
            transport: 172.19.238.35/32
    transport-nexthop: 192.168.168.1
       imposed-labels: 58,300096
-</pre><br>  If the channel does not rise right away, then Mikrotik will turn off and on the VPLS interface.  In other cases, the channel, as they say, "either works or not." <br><br><br>  On this, in fact, everything. <br>  <strong>5. Theory</strong> <br>  Manuals on the topic: <br>  1. <a href="http://wiki.mikrotik.com/wiki/Manual:MPLS">MPLS</a> <br>  2. <a href="http://wiki.mikrotik.com/wiki/Manual:MPLS/Overview">MPLS Overview</a> <br>  3. <a href="http://wiki.mikrotik.com/wiki/Manual:MPLSVPLS">MPLSVPLS</a> <br>  4. <a href="http://wiki.mikrotik.com/wiki/Manual:MPLS_L2VPN_vs_Juniper">L2VPN with Juniper</a> <br><br>  PS I apologize in advance for the large volume and large number of configs, but here, as they say, it is better to see the config once than to go into theoretical arguments. <br><br>  PPS Transferred to “Network Equipment” </div><p>Source: <a href="https://habr.com/ru/post/169103/">https://habr.com/ru/post/169103/</a></p>
+</pre><br>  If the channel does not rise right away, then Mikrotik will turn off and on the VPLS interface.  In other cases, the channel, as they say, "either works or not." <br><br><br>  On this, in fact, everything. <br>  <strong>5. Theory</strong> <br>  Manuals on the topic: <br>  1. <a href="http://wiki.mikrotik.com/wiki/Manual:MPLS">MPLS</a> <br>  2. <a href="http://wiki.mikrotik.com/wiki/Manual:MPLS/Overview">MPLS Overview</a> <br>  3. <a href="http://wiki.mikrotik.com/wiki/Manual:MPLSVPLS">MPLSVPLS</a> <br>  4. <a href="http://wiki.mikrotik.com/wiki/Manual:MPLS_L2VPN_vs_Juniper">L2VPN with Juniper</a> <br><br>  PS I apologize in advance for the large volume and large number of configs, but here, as they say, it is better to see the config once than to go into theoretical arguments. <br><br>  PPS Transferred to “Network Equipment” </div><p>Source: https://habr.com/ru/post/169103/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../169089/index.html">VLC can get support for streaming torrent playback</a></li>
-<li><a href="../169091/index.html">YouTube is testing a new channel design</a></li>
 <li><a href="../169093/index.html">Cheat Sheet by Language R</a></li>
 <li><a href="../169097/index.html">Build traffic lights in the office</a></li>
 <li><a href="../169099/index.html">An inside look: postgraduate study at EPFL. Part 1</a></li>
+<li><a href="../1691/index.html">Komkor-TV will switch to ruble tariffs from September 1</a></li>
+<li><a href="../16910/index.html">In London, launched a mobile service to find the nearest toilet</a></li>
 <li><a href="../169105/index.html">Flickr accidentally made some private photos for 20 days public.</a></li>
 <li><a href="../169107/index.html">Washington Post: Mass cyber espionage campaign underway against the USA</a></li>
 <li><a href="../169109/index.html">Own constitution as a foundation for setting goals</a></li>
+<li><a href="../16911/index.html">AirSage determines traffic jams by the number of mobiles on the roads</a></li>
 <li><a href="../169111/index.html">History of Game.EXE magazine (Interview with the creators)</a></li>
-<li><a href="../169113/index.html">From DevCon with love! Only 4 days low price + rate for lovers</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Paperclip Vulnerability (XSS / RCE)</h1><div class="post__text post__text-html js-mediator-article">  <a href="https://github.com/thoughtbot/paperclip">Paperclip</a> is the most popular jam for uploading files / avatars in rails.  A fairly simple logical bug was found in it, leading to uploading an arbitrary file to the server, that is, with an arbitrary extension: file.html, file.php, file.cgi, and so on. <br><br>  Paperclip has a “magical” (like all in the rails) adapter system.  If the input is an object of the type File, then the file adapter is taken, if the line is checked according to different patterns.  If the line is of the URL type http: // * then a request is made at this URL to download the file. <br><a name="habracut"></a><br>  io_adapters / uri_adapter.rb contained the following code: <br><pre><code class="ruby hljs">@original_filename = @target.path.split(<span class="hljs-string"><span class="hljs-string">"/"</span></span>).last @original_filename <span class="hljs-params"><span class="hljs-params">||</span></span>= <span class="hljs-string"><span class="hljs-string">"index.html"</span></span> <span class="hljs-keyword"><span class="hljs-keyword">self</span></span>.original_filename = @original_filename.strip @content_type = @content.content_type <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> @content.respond_to?(<span class="hljs-symbol"><span class="hljs-symbol">:content_type</span></span>) @content_type <span class="hljs-params"><span class="hljs-params">||</span></span>= <span class="hljs-string"><span class="hljs-string">"text/html"</span></span></code> </pre> <br>  Note that the content of the type is taken from the header of the server response, which you have no reason to trust.  So I created a URL that returns a picture <a href="http://www.sakurity.com/img.jpg.htm">www.sakurity.com/img.jpg.htm</a> but having .htm in the extension. <br><br>  Paperclip thinks that we gave it a picture, as the Content-Type returned image / jpg and saves the file as file.jpg.htm.  But if the web server (apache / ngin) serves this file, then it already looks at .htm at the end and responds with the insides of our file and Content-Type = text / html.  The browsers parse the response like a normal HTML page. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Oh yes, we will hide our load in the EXIF ​​headers, so the file will still be a valid JPG (in case there are any resize operations on the server). <br><br>  ÛßÙ4Ù¬ıPı ﬁˆ mˆ˚˜ä¯¯®˘8˘ “W˙Á˚˚w¸ ¸ò˝) ˝∫˛K˛‹ ˇmˇˇˇ · ‚EifII * <br>  Ü å ¢ ™ (1 ≤2 "£ € iá ¯CanonCanon DIGITAL IXUS 70 ¥ ¥ f-spot version 0.3.52008: 09: 08 11:29:26 <code><img src="http://onerror=alert(0)"></code>  öÇ Z ùÇ b 'à Pê 0220 <br><br><img src="https://habrastorage.org/getpro/habr/post_images/d17/48d/6b2/d1748d6b22ce2a4ce964eb14cbb41531.png" alt="image"><br>  For RCE (code execution) it is necessary for the server to execute .php / .pl / .cgi files, which is rarely a principle for Rails applications, but I could be wrong. <br><br>  To check if you are vulnerable, remove type = file from the tag and send the URL. <br><img src="https://habrastorage.org/getpro/habr/post_images/9da/acb/dc9/9daacbdc9648deb7bbeb92d831448328.png" alt="image"><br><br>  The bug was fixed on December 11 and fixed only on February 2.  A new major version of Paperclip 4 has been released, which also makes content listing of required list types mandatory (previously, many developers forgot to limit file types for download in general).  Well, in general, it can be an interesting vector for checking the download-by-URL functionality. </div><p>Source: <a href="https://habr.com/ru/post/211973/">https://habr.com/ru/post/211973/</a></p>
+      Oh yes, we will hide our load in the EXIF ​​headers, so the file will still be a valid JPG (in case there are any resize operations on the server). <br><br>  ÛßÙ4Ù¬ıPı ﬁˆ mˆ˚˜ä¯¯®˘8˘ “W˙Á˚˚w¸ ¸ò˝) ˝∫˛K˛‹ ˇmˇˇˇ · ‚EifII * <br>  Ü å ¢ ™ (1 ≤2 "£ € iá ¯CanonCanon DIGITAL IXUS 70 ¥ ¥ f-spot version 0.3.52008: 09: 08 11:29:26 <code><img src="http://onerror=alert(0)"></code>  öÇ Z ùÇ b 'à Pê 0220 <br><br><img src="https://habrastorage.org/getpro/habr/post_images/d17/48d/6b2/d1748d6b22ce2a4ce964eb14cbb41531.png" alt="image"><br>  For RCE (code execution) it is necessary for the server to execute .php / .pl / .cgi files, which is rarely a principle for Rails applications, but I could be wrong. <br><br>  To check if you are vulnerable, remove type = file from the tag and send the URL. <br><img src="https://habrastorage.org/getpro/habr/post_images/9da/acb/dc9/9daacbdc9648deb7bbeb92d831448328.png" alt="image"><br><br>  The bug was fixed on December 11 and fixed only on February 2.  A new major version of Paperclip 4 has been released, which also makes content listing of required list types mandatory (previously, many developers forgot to limit file types for download in general).  Well, in general, it can be an interesting vector for checking the download-by-URL functionality. </div><p>Source: https://habr.com/ru/post/211973/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

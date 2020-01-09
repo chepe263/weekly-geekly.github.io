@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>VMWare ESXi suicide</h1><div class="post__text post__text-html js-mediator-article">  Can Windows kill itself?  I think no.  But VMWare ESXi is easy.  And so the conditions of the experiment. <br><br>  It is given: The server on the Intel SR2500ALLXR platform with local storage.  6 × 300Gb SAS disks are combined into a RAID5 array.  Install in the usual way ESX (say from a DVD). <br><a name="habracut"></a><br><br>  After installation, we connect to the console through the VI Client and see a warning that you need to install a storage to get started with ESXi.  Logically, click “Click here to create a datastore ...” 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,16 +61,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img src="http://dimka.yz74.ru/wp-content/uploads/2009/03/add_storage.jpg" alt="image"><br><br>  The most interesting begins, at first everything goes as usual: <br><br>  Select Disk / LUN <br><br><img src="http://dimka.yz74.ru/wp-content/uploads/2009/03/store_type.jpg" alt="image"><br><br>  Choosing a local RAID array <br><br><img src="http://dimka.yz74.ru/wp-content/uploads/2009/03/dev_location.jpg" alt="image"><br><img src="http://dimka.yz74.ru/wp-content/uploads/2009/03/disk_warn.jpg" alt="image"><br><br>  And here he is a stone foretold.  On the first path you go head down you lose, on the second you will blow it <br><br>  As it turns out, VMWare ESXi sees that the disk has already been somehow marked up in principle, but it has no idea that it did the markup itself and, in fact, was launched from these partitions.  If you select the first option, you will successfully create a storage and be able to place virtual machines that will work fine BUT until the first reboot of the host, as the clock strikes 12, your virtual environment will turn into a pumpkin and you will not see anything on the screen except Non bootable partition. <br><br>  What happened?  VMWare ESXi completely cleared the only local storage where it was installed.  The hypervisor itself is fully loaded into RAM and the hard disk is essentially not needed for operation.  And your virtual machines lie to themselves as if nothing had happened safe and sound. <br><br>  If you are in such a situation, the main thing is not to hurry and not try to restore ESXi from the installation disk - you will spoil everything. <br><br>  You need to connect any external drive of sufficient size and install the ESXi hypervisor on it, then simply connect the local storage.  After that, you will need to drop all the necessary virtual machines in a safe place and reinstall VMWare ESXi on the server's RAID array, then back up and start the virtual machines. <br><br>  To prevent this from happening, you naturally need to select the Use free space option, but in my opinion, it seems silly to look at the suicide performed by VMWare - after all, you just had to once again issue a warning that ESXi was already installed and running on this disk.  And user errors can no longer be. <br><br>  ps It was a matter of installing ESXi on another platform, and there such a situation did not arise in principle.  Even during the installation process, ESXi has already created a repository, so perhaps this is a feature of this particular platform. <br><br>  Original <a href="http://dimka.yz74.ru/2009/03/13/wmware_suicide/">dimka.yz74.ru/2009/03/13/wmware_suicide</a> </div><p>Source: <a href="https://habr.com/ru/post/54322/">https://habr.com/ru/post/54322/</a></p>
+    <img src="http://dimka.yz74.ru/wp-content/uploads/2009/03/add_storage.jpg" alt="image"><br><br>  The most interesting begins, at first everything goes as usual: <br><br>  Select Disk / LUN <br><br><img src="http://dimka.yz74.ru/wp-content/uploads/2009/03/store_type.jpg" alt="image"><br><br>  Choosing a local RAID array <br><br><img src="http://dimka.yz74.ru/wp-content/uploads/2009/03/dev_location.jpg" alt="image"><br><img src="http://dimka.yz74.ru/wp-content/uploads/2009/03/disk_warn.jpg" alt="image"><br><br>  And here he is a stone foretold.  On the first path you go head down you lose, on the second you will blow it <br><br>  As it turns out, VMWare ESXi sees that the disk has already been somehow marked up in principle, but it has no idea that it did the markup itself and, in fact, was launched from these partitions.  If you select the first option, you will successfully create a storage and be able to place virtual machines that will work fine BUT until the first reboot of the host, as the clock strikes 12, your virtual environment will turn into a pumpkin and you will not see anything on the screen except Non bootable partition. <br><br>  What happened?  VMWare ESXi completely cleared the only local storage where it was installed.  The hypervisor itself is fully loaded into RAM and the hard disk is essentially not needed for operation.  And your virtual machines lie to themselves as if nothing had happened safe and sound. <br><br>  If you are in such a situation, the main thing is not to hurry and not try to restore ESXi from the installation disk - you will spoil everything. <br><br>  You need to connect any external drive of sufficient size and install the ESXi hypervisor on it, then simply connect the local storage.  After that, you will need to drop all the necessary virtual machines in a safe place and reinstall VMWare ESXi on the server's RAID array, then back up and start the virtual machines. <br><br>  To prevent this from happening, you naturally need to select the Use free space option, but in my opinion, it seems silly to look at the suicide performed by VMWare - after all, you just had to once again issue a warning that ESXi was already installed and running on this disk.  And user errors can no longer be. <br><br>  ps It was a matter of installing ESXi on another platform, and there such a situation did not arise in principle.  Even during the installation process, ESXi has already created a repository, so perhaps this is a feature of this particular platform. <br><br>  Original <a href="http://dimka.yz74.ru/2009/03/13/wmware_suicide/">dimka.yz74.ru/2009/03/13/wmware_suicide</a> </div><p>Source: https://habr.com/ru/post/54322/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../54316/index.html">The method of data presentation "Face Chernova" and their development using asymmetry</a></li>
 <li><a href="../54317/index.html">Dashboard TOPM</a></li>
 <li><a href="../54318/index.html">But what if? Skybeat on mobile phones</a></li>
+<li><a href="../5432/index.html">Soon the earth will boil!</a></li>
 <li><a href="../54320/index.html">Opera Turbo - new frontiers of speed</a></li>
 <li><a href="../54321/index.html">Go to open source small office. Experience, reflections</a></li>
 <li><a href="../54323/index.html">Kharkov: Week of open doors. All Wellcome!</a></li>

@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Electricity monitoring with Eastron SDM220-Modbus meter</h1><div class="post__text post__text-html js-mediator-article">  I want to tell you about the experience of connecting the Eastron SDM220-Modbus electric meter and receiving data from it. <br>  In general, there is nothing complicated, the meter has a standard RS485 interface and supports the Modbus protocol. <br><br><img src="https://habrastorage.org/files/1c4/2f7/4f7/1c42f74f7ce74c0981575ac6a0cf3330.jpg"><br><a name="habracut"></a><br>  Counter was purchased on <a href="http://www.aliexpress.com/item/SDM220Modbus-Single-Phase-DIN-Rail-Kwh-meter-with-Pulse-Output-and-RS485-Modbus-Communication-MID-approved/32346363823.html">Aliexpress</a> . <br>  A USB-RS485 adapter of its own production based on FT232RL and SP485 was used for the connection, but it should work with any other adapter. <br><br><img src="https://habrastorage.org/files/59f/4fe/840/59f4fe8403d64e9381bd79908fcfacee.jpg">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      When the power is connected, the counter shows the current settings, including the connection speed, the default speed was 2400, despite the fact that 9600 was written in the data sheet. I changed it to 9600. To do this, hold down for 3 seconds.  button with a corner arrow, select the desired setting, change it and exit the settings by holding the button with circular arrows. <br><img src="https://habrastorage.org/files/7d2/5e3/9dd/7d25e39dd9544369987269bb4954d3d6.jpg"><br>  To receive data from the device, you need to send an 8-byte request to the virtual com port via the usb-RS485 adapter: <br><img src="https://habrastorage.org/files/7a5/31e/8c3/7a531e8c3c39488cae0a898a3de383fc.png"><br>  For example, <b>01-04-00-00-00-02-71-CB</b> <br>  Where 01 is the address of the device, visible on the meter itself, the default is 1 <br>  04 - operation code, read data register <br>  00-00 - register number, in this register, for example, the voltage value is stored <br>  00-02 - the number of cells to read (2 bytes) <br>  71-CB - checksum using CRC-16 algorithm <br><br>  If everything is correct, the following message will come in response: <br><img src="https://habrastorage.org/files/d6f/7ac/ee2/d6f7acee2695439aae68174b0b7e6162.png"><br>  For example, <b>01-04-04-43-4C-A1-C5-96-14</b> <br>  Where 01 is the address <br>  04 - request response code <br>  04 - number of response bytes <br>  43-4C-A1-C5 - the returned float value in IEEE 754 format in reverse order, i.e.  value should be C5-A1-4C-43 <br>  96-14 - CRC-16 checksum <br><br>  To poll the counter, a simple program was written that allows you to poll each individual counter register and all registers in sequence. <br><br><img src="https://habrastorage.org/files/846/7a0/447/8467a04471b6489c8a992508e3c63d24.png"><br>  The request is written in red, the answer is blue, the decoded value is green, the results of polling all registers are brown. <br>  To work, you need .NET Framework 3.0, in the list you need to select the com-port to which the RS485 converter is connected <br><br>  The program itself, as well as the documentation on the meter, can be downloaded on our website <a href="http://megadevices.com.ua/eastron_sdm220/">megadevices.com.ua</a> <br><br>  Plans for the future - screw ESP8266 and organize the transfer of data to the <a href="http://narodmon.ru/">People's Monitoring</a> </div><p>Source: <a href="https://habr.com/ru/post/369379/">https://habr.com/ru/post/369379/</a></p>
+      When the power is connected, the counter shows the current settings, including the connection speed, the default speed was 2400, despite the fact that 9600 was written in the data sheet. I changed it to 9600. To do this, hold down for 3 seconds.  button with a corner arrow, select the desired setting, change it and exit the settings by holding the button with circular arrows. <br><img src="https://habrastorage.org/files/7d2/5e3/9dd/7d25e39dd9544369987269bb4954d3d6.jpg"><br>  To receive data from the device, you need to send an 8-byte request to the virtual com port via the usb-RS485 adapter: <br><img src="https://habrastorage.org/files/7a5/31e/8c3/7a531e8c3c39488cae0a898a3de383fc.png"><br>  For example, <b>01-04-00-00-00-02-71-CB</b> <br>  Where 01 is the address of the device, visible on the meter itself, the default is 1 <br>  04 - operation code, read data register <br>  00-00 - register number, in this register, for example, the voltage value is stored <br>  00-02 - the number of cells to read (2 bytes) <br>  71-CB - checksum using CRC-16 algorithm <br><br>  If everything is correct, the following message will come in response: <br><img src="https://habrastorage.org/files/d6f/7ac/ee2/d6f7acee2695439aae68174b0b7e6162.png"><br>  For example, <b>01-04-04-43-4C-A1-C5-96-14</b> <br>  Where 01 is the address <br>  04 - request response code <br>  04 - number of response bytes <br>  43-4C-A1-C5 - the returned float value in IEEE 754 format in reverse order, i.e.  value should be C5-A1-4C-43 <br>  96-14 - CRC-16 checksum <br><br>  To poll the counter, a simple program was written that allows you to poll each individual counter register and all registers in sequence. <br><br><img src="https://habrastorage.org/files/846/7a0/447/8467a04471b6489c8a992508e3c63d24.png"><br>  The request is written in red, the answer is blue, the decoded value is green, the results of polling all registers are brown. <br>  To work, you need .NET Framework 3.0, in the list you need to select the com-port to which the RS485 converter is connected <br><br>  The program itself, as well as the documentation on the meter, can be downloaded on our website <a href="http://megadevices.com.ua/eastron_sdm220/">megadevices.com.ua</a> <br><br>  Plans for the future - screw ESP8266 and organize the transfer of data to the <a href="http://narodmon.ru/">People's Monitoring</a> </div><p>Source: https://habr.com/ru/post/369379/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../369369/index.html">Dream trucker. Nikola One electric tractor available for pre-order</a></li>
+<li><a href="../36937/index.html">Logitech V550 Nano Clip-and-Go - 18 months from two batteries</a></li>
 <li><a href="../369371/index.html">How to lose $ 8 billion with Twitter - the story of one failure</a></li>
 <li><a href="../369373/index.html">State Duma introduced 18% VAT for foreign Internet companies</a></li>
 <li><a href="../369375/index.html">JD.ru: a year in Russia. Part 2, final</a></li>
 <li><a href="../369377/index.html">Ask Ethan # 56: Are black holes made up of dark matter?</a></li>
+<li><a href="../36938/index.html">Oh this weird weave</a></li>
 <li><a href="../369381/index.html">Which of these platforms are suitable for the laboratory of robotics and intelligent systems?</a></li>
 <li><a href="../369383/index.html">New War Formats: Television HDR</a></li>
 <li><a href="../369387/index.html">Smart Home - Universal Automation</a></li>
 <li><a href="../369389/index.html">DE0-Nano-SoC is another minicomputer for creativity</a></li>
-<li><a href="../369391/index.html">Guitar effects: algorithms, first experience in hardware implementation</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

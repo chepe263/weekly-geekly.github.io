@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>New Trojan with a valid digital signature LLC Mail.Ru disguises as an update of popular programs</h1><div class="post__text post__text-html js-mediator-article">  On a quiet Saturday evening, my mother peacefully Youtube Youtube to care for the cyclamens and suddenly a banner formed to the left of the video (unfortunately, there will be no screenshot because the banner could not be reproduced) calling for Skype to be updated.  After clicking on it, there was a redirect to _http: //easyupdate.ru/skype/, which looks something like this ... <br><a name="habracut"></a><br><img src="https://habrastorage.org/storage2/ea0/8f8/f64/ea08f8f6435afbd4cbd9aab85c2b0b95.png"><br><br>  My mother is not a very experienced user and the phrases in the spirit of “Your version of Skype is outdated, its support will end on 03/04/2013, after which you will no longer be able to communicate via Skype” they are very frightened, so she pressed “Cancel” and called me.  At first, I decided that it would be about a banal Skype update and with a sigh I connected with Teamviewer, just going to poke a couple of buttons and disconnect.  To my shame, with all my many years of experience, I even managed to launch an “update” downloaded from easyupdate.ru, but after seeing that the file was signed for some reason by the publisher “LLC Mail.Ru” and not Skype, at the last moment forbade performance and realized that the evening will be interesting and long.  Having praised my mother for vigilance, I began to study the fresh scheme of filling the botnet. <br><br><h5>  Digital signature puzzle </h5><br>  So, first of all, let's look at the file properties: <br><img src="https://habrastorage.org/storage2/3be/853/a5e/3be853a5ebb332ea853716f04f001026.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Strange, only 74 KB, somehow not enough even for a web installer.  We look at the digital signature, what kind of “LLC Mail.Ru” is, can someone again drag a similar legal entity name through Thawte? <br><br><img src="https://habrastorage.org/storage2/424/8af/614/4248af614e76ff0070b78952c797de74.png"><br><br>  Strangely, a digital signature certificate is very similar to a real one from Mail.Ru: <br><br><img src="https://habrastorage.org/storage2/d02/04f/b67/d0204fb67a580737b2b4be21249f9ce0.png"><br><br>  They have the same validity period, from 09/12/2011 to 07/02/2014, however, the Mail.ru Agent’s digital signature has signatures of other parties: Symantec Time Stamping Services Signer.  All exe files are subscribed on the fly before returning to download to the browser, this is indicated by the dynamically changing time of file signing. <br><br>  <b>Total, we have three options:</b> <br>  1. This is the real digital signature of Mail.ru, the private key of which was somehow stolen and is now used to sign Malvari <br>  2. This is a real digital signature Mail.ru, which Mail.ru itself for some reason uses to sign Malvari <br>  3. This is a fake digital signature of Mail.ru, which was somehow compromised (which is unlikely, for RSA 2048 bits) <br><br>  Googling easyupdate.ru, and finding nothing sensible in the output, I looked at all the links for site: easyupdate.ru and found that, besides Skype, there are landing pages for all popular browsers: <br><img src="https://habrastorage.org/storage2/1f3/66c/878/1f366c878892f11fa92e77e182008be6.png"><br><img src="https://habrastorage.org/storage2/ed1/f7d/ba7/ed1f7dba7ee86c436afec86168d84458.png"><br><img src="https://habrastorage.org/storage2/3e2/31f/b43/3e231fb43ca251ae248cb7e68570fe6c.png"><br><img src="https://habrastorage.org/storage2/64f/299/aad/64f299aade49732c784ed662c2f9ff9f.png"><br><br>  They are very much related to the nice pop-up javascript confirmation that the exe file starts downloading without even having to bother to check which button the user pressed, OK or Cancel. <br><br><h5>  Virustotal </h5><br>  Thus, we obtained 5 samples (links lead to the results of scanning the Virustotal files): <br>  <a href="https://www.virustotal.com/ru/file/c5d1e217b1ef2483af530f287036f46ccf87a44b04bdb891df7af2a45fcb18de/analysis/">chromesetup.exe</a> , <a href="https://www.virustotal.com/ru/file/4b26539b44ebd80206a02017aa88cf6fb54735f7e5a66c121bb506b36997ac6a/analysis/">firefox-setup.exe</a> , <a href="https://www.virustotal.com/ru/file/630def167074cf13cc8dd0b22ac2e549759f5b2fc47795ef9d365dbd7e1bbb63/analysis/">ie-setup-full.exe</a> , <a href="https://www.virustotal.com/ru/file/aca3bbd04c749fda6ca3beee6c308f2798610c81c345ce1027ec44c4f68d5618/analysis/">opera_int_setup.exe</a> and <a href="https://www.virustotal.com/ru/file/86d93562b658df70a28477a20fb0d42c2d8752648f75a56cd195bd61c24bf4f2/analysis/">skypesetup.exe</a> <br><br>  opera_int_setup.exe and ie-setup-full.exe have not yet been scanned before me, that is, the spread of the infection was started quite recently, but 8-9 antiviruses out of 46 reacted to the other files. Kaspersky is for some reason the only one who has classified exe as "Not a virus": "not-a-virus: HEUR: Downloader.Win32.LMN.a".  Perhaps this decision was positively influenced by a digital signature, but this is better than the solution of Microsoft’s built-in antivirus program from Microsoft, which did not see any threat in the samples at all. <br><br>  For chromesetup.exe, information is available on the behavior, apparently provided by some of the anti-virus companies, in particular network activity: <br><img src="https://habrastorage.org/storage2/275/8f0/39e/2758f039ed850a2942a030e59ae4c8e6.png"><br><br>  So, we have two strange domains and a link to the Mail.ru subdomain, let's take a closer look at them: <br>  <b>easyupdate.ru was</b> registered on January 30, 2013 with the hiding of information about the owner (Private person), this service is available and free of charge with most Russian domain registrars.  At the root of the site we are greeted by 404: <br><blockquote>  404 Not Found <br><br>  Found this server! <br>  Powered By LiteSpeed ​​Web Server <br>  LiteSpeed ​​Technologies is not responsible for this web site! </blockquote><br>  The second link apparently used a <a href="http://projects.webappsec.org/w/page/13246981/URL%2520Redirector%2520Abuse">URL redirect</a> vulnerability on one of the Mail.ru subdomains, however, it appears that the vulnerability has already been fixed.  Perhaps the attackers decided that such a link is easier to pass through the firewall. <br><br>  The <b>dwnfile.ru</b> domain <b>is</b> registered on February 1, 2013 with hiding information about the owner. <br>  The text of the landing page also contains links to the following domains: <br>  <b>uprgadotesbest.com</b> - was registered on December 26, 2012 through PrivacyProtect.org and currently has the status of "Locked" <br>  <b>uploadeasy.ru</b> - the domain is not registered at all, apparently forgotten in the bustle of rolling out “in production”, cybersquatters, fly in! <br><br>  All domains were registered through Reg.ru. <br><br>  In addition, the Trojan disables the use of a proxy in the registry, which obviously affects the operation of IE and Chrome, Firefox and Opera have their own proxy settings. <br><br><h5>  Affiliate program </h5><br>  Further, the link _http: //dwnfile.ru/get_xml? File_id = 18499626 returns us the following XML: <br><pre><code class="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
@@ -94,20 +94,20 @@
 <h6>  12 </h6><br>
          . ,    ,                 «easyupdate.ru».<br>
 <br>
- <a href="http://habrahabr.ru/users/mairon/" class="user_link">Mairon</a>  .</div><p>Source: <a href="https://habr.com/ru/post/172393/">https://habr.com/ru/post/172393/</a></p>
+ <a href="http://habrahabr.ru/users/mairon/" class="user_link">Mairon</a>  .</div><p>Source: https://habr.com/ru/post/172393/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../172383/index.html">Bitcoin network problems - the emergence of two competing block chains</a></li>
 <li><a href="../172385/index.html">About today's error in the Bitcoin system</a></li>
 <li><a href="../172387/index.html">Grid in the design of interfaces for Windows Phone: a strict teacher or a kind helper? (Part 1)</a></li>
 <li><a href="../172389/index.html">SIEM: Frequently Asked Questions</a></li>
+<li><a href="../17239/index.html">RoboPhilo - a $ 500 humanoid robot</a></li>
 <li><a href="../172391/index.html">How to write an online course of study (or prepare other materials for publication on the site) using Evernote</a></li>
 <li><a href="../172397/index.html">The software helped to complete the Gaudi plan, which started 130 years ago.</a></li>
 <li><a href="../172399/index.html">Contrast measurement in black and white images</a></li>
+<li><a href="../1724/index.html">Google offers a free set of services for organizations.</a></li>
+<li><a href="../17240/index.html">When is it better to send spam?</a></li>
 <li><a href="../172401/index.html">Intel System Studio - software development kit for embedded and mobile systems</a></li>
-<li><a href="../172403/index.html">Free the mind from Photoshop - a fresh concept of image processing</a></li>
-<li><a href="../172405/index.html">Radio86RK - Soviet homemade computer</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

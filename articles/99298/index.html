@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Compilation. 2: grammar</h1><div class="post__text post__text-html js-mediator-article">  In the <a href="http://habrahabr.ru/blogs/programming/99162/">previous post</a> there was a lot of code and, according to some opinions, not enough explanations.  We will alternate: this time there will be a lot of theory, and the practice will almost never come. <br><br><h3>  Further in the post: </h3><ol><li>  Vending machine </li><li>  Formal grammar </li><li>  LR parsing </li></ol><a name="habracut"></a><br><h3>  Vending machine </h3><br>  Last time, we identified a problem with regular expressions and the construction of DFAs for them to parse the text: it is impossible to determine whether or not the nesting level is located in the text of the bracket.  With the help of regexp it is impossible to solve even a much narrower task: check in a string of type <b>{*} *</b> whether the number <b>{</b> number <b>}</b> is equal.  The proof is by contradiction: suppose that such a regexp can be created.  So, you can build on it a DFA, which will distinguish suitable strings from inappropriate ones.  If in the resulting DFA there are <i>N</i> states, then an automaton of the type <b>{ <sup><i>N</i> +1</sup></b> (i.e. " <i>N</i> +1 times <b>{</b> ") will have the machine in one of the states more than once ("looped").  So, by adding new characters to the beginning of the line <b>{</b> , you can drive the automaton through the same cycle once again - and he will not notice the substitution.  As a result, the machine will not be able to distinguish the appropriate string <b>{ <sup><i>N</i> +1</sup> } <sup><i>N</i> +1</sup></b> from the unsuitable string <b>{ <sup><i>N</i> + <i>M</i> +1</sup> } <sup><i>N</i> +1</sup></b> .  ( <i>M</i> is the length of the cycle detected in the automaton; it is exactly that <b>{</b> add to the beginning of the line.) <br><br>  In other words, DKA cannot recognize nested constructions due to the fact that it does not have enough memory: all that it remembers is only one value from 1 to <i>N</i> (the number of the current state).  We will need a more capacious automaton whose memory can grow indefinitely as necessary. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
      <a href=""><img src="https://habrastorage.org/getpro/habr/post_images/ad0/5a3/71c/ad05a371c64e32308cd8a59a9c7bfb4d.jpg" align="right"></a>  An <i>automaton with a store memory</i> , in addition to the current state, has a stack where it can write characters.  At each step, the machine reads the next input character, plus the top character from the stack.  In accordance with the triple (the current state, the input character, a character from the stack), the automaton chooses which state to go to and what to write to the stack instead of the read character.  Writing to the stack is optional: you can simply erase the read character from there;  so the stack can grow and shrink during operation. <br><br>  Regarding the terminology: the vending machine is not related to vending machines in stores.  Strangely enough, the slot machine is named after the machine shops (see fig.), Which are the classic implementation of the stack: access is possible only to the <s>topmost element of the</s> cartridge. <br><br>  Now we can solve the original problem: check whether it is equal in the <b>{</b> and <b>} line</b> .  Reading each <b>{</b> , we write it to the stack.  Reading each <b>}</b> , erase one from the stack <b>{</b> . <br><br><pre> state 1: consider {
@@ -248,7 +248,7 @@
  * remove TERM = 5, '-', EXPR = 34 from the stack, write EXPR = 29 there, go to 8
  state 8, input is empty, stack EXPR = 29, (1)
  * EOF: expression recognized successfully, value = 29
-</pre><br>  The parser in the real compiler is similar, only there the expression is not calculated in each bundle, and the corresponding code is generated. <br><br>  The described method of parsing is called <i>ascending</i> : we start with the recognition of the smallest constructions, and, connecting them together, we get more and more.  There is an opposite, <i>downward</i> approach: we start with the “all text” construction, and we split it up, recognizing ever smaller substructures.  As it turned out, there are slack holivors between the proponents of the two approaches: each side believes that its approach is more natural, closer to the recognition of syntax by man, and therefore easier to debug. <br><br>  Next time we will <a href="http://habrahabr.ru/blogs/programming/99366/">get acquainted with the bison</a> , which according to the grammar itself builds a recognizing LR machine, and then we can compile our wonderful calculator. </div><p>Source: <a href="https://habr.com/ru/post/99298/">https://habr.com/ru/post/99298/</a></p>
+</pre><br>  The parser in the real compiler is similar, only there the expression is not calculated in each bundle, and the corresponding code is generated. <br><br>  The described method of parsing is called <i>ascending</i> : we start with the recognition of the smallest constructions, and, connecting them together, we get more and more.  There is an opposite, <i>downward</i> approach: we start with the “all text” construction, and we split it up, recognizing ever smaller substructures.  As it turned out, there are slack holivors between the proponents of the two approaches: each side believes that its approach is more natural, closer to the recognition of syntax by man, and therefore easier to debug. <br><br>  Next time we will <a href="http://habrahabr.ru/blogs/programming/99366/">get acquainted with the bison</a> , which according to the grammar itself builds a recognizing LR machine, and then we can compile our wonderful calculator. </div><p>Source: https://habr.com/ru/post/99298/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -258,10 +258,10 @@
 <li><a href="../99295/index.html">Open Source Hardware Definition accepted in version 0.3</a></li>
 <li><a href="../99296/index.html">Performance tuning for ASP.NET. Part 1</a></li>
 <li><a href="../99299/index.html">Virtual Connect FlexFabric - optimizing network connections for virtual machines</a></li>
+<li><a href="../993/index.html">Artificial supposedly sun</a></li>
 <li><a href="../99300/index.html">My Yandex.Fotki Uploader (Myf) - Important Update Extension</a></li>
 <li><a href="../99302/index.html">Intellectmoney</a></li>
 <li><a href="../99304/index.html">"Industrial" chassis for the server in a hurry</a></li>
-<li><a href="../99305/index.html">Gradual user involvement instead of registration form</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

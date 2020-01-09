@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Pacemaker HA: Network Connections and Dynamic Cluster Resource Allocation</h1><div class="post__text post__text-html js-mediator-article">  Cluster nodes are very dependent on their physical connection.  As practice shows, the majority of cases of working off failove migrations of resources occur due to the fault of network connections.  Therefore, a lot depends on how you connect between the nodes and set up resource allocation. <a name="habracut"></a><br><br>  For example, I will consider a cluster consisting of two nodes.  One node will be Active, and the other Hot Spare.  Our cluster will serve the internal private network and contain the following cluster resources: Mysql server and Mysql VIP.  On two Mysql nodes, the server will be launched with Master-Master replication.  However, all work will be done with only one instance through a virtual ip address.  This scheme allows you to get the fastest failover.  Omit the choice of this particular configuration its advantages and disadvantages - we are now interested in the availability of these resources in the event of a drop in network links. <br><br><img src="https://habrastorage.org/storage/54857706/0397455b/ccfc40d1/e6a32efd.png"><br>  rice  1 Classical layout 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The main thing you should pay attention to when designing any cluster is the redundancy of the network connection between the nodes of the cluster.  In other words, there should be at least two cross-connections between our nodes.  They can be combined by bonding into one interface, or you can simply use two different interfaces in a heartbeat or corosyn configuration.  When designing a new cluster, I would recommend using corosync, not only because the development of heartbeat is gradually minimized towards the pacemaker and corosync, but because it has more flexible settings for working with several interfaces and can use them in parallel or in “acting and spare ". <br><br>  Not following the rules of redundancy or the allocation of individual network interfaces can lead to a split brain situation (split brain).  That, in principle, does not bode well.  Also make sure that you use different network cards, otherwise there will not be much confusion in case of a hardware failure. <br><br>  Because  we have a cluster of two nodes, then we have problems with quorum.  Or rather its complete absence, which again hints at the need for a backup connection between the nodes. <br>  At this enough theory turn to practice. <br>  We expose the behavior of the node in the case of a lack of quorum: <br><br><pre>	 crm configure property no-quorum-policy = "ignore" 
@@ -100,7 +100,7 @@
 </pre><br>  After that, the resource receives a location with 1,000,000 points (this is INF for the pacemaker) and moves to first.local.  It is very important to further unmove this resource, which will return the locatoin glasses to the place, but will not change the location of the resource, since  he already has more points (see the initial situation): <br><br><pre>	 crm resource unmove P_MYSQL_IP 
 </pre><br><h4>  What else can you do with location and ping </h4><br>  You can check whether the ping resource is running and check its value: <br><br><pre>	 location L_RESOURCE P_RESOURCE rule -inf: not_defined ping_intranet or ping_intranet lte 0
 </pre><br>  This location prohibits placing the P_RESOURCE resource on the node where the ping is less than or equal to 0 (lte - less then or equal) or the ping resource is not running. <br><br>  You can also combine this rule with the name of the node: <br><br><pre>	 location L_RESOURCE P_RESOURCE rule -inf: #host eq first.local and ping_intranet lte 0
-</pre><br>  Tells us that if this is the node first.local and ping = &lt;0, then this resource cannot be here. </div><p>Source: <a href="https://habr.com/ru/post/118925/">https://habr.com/ru/post/118925/</a></p>
+</pre><br>  Tells us that if this is the node first.local and ping = &lt;0, then this resource cannot be here. </div><p>Source: https://habr.com/ru/post/118925/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

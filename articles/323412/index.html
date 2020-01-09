@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>OOP is beautifully cracked with C ++ 14</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/666/11f/b69/66611fb69ffa4ae3b0f7a8b69bc43726.png" align="left"><h1>  Introduction </h1><br>  Recently, when working on a project of educational practice, the need arose from one's own code to generate an arbitrary process and simultaneously read its stdout and stderr.  Since the application is written exclusively for linux, I decided to deal with <a href="https://ru.wikipedia.org/wiki/Epoll">epoll</a> at the same time.  To start the process on the Internet, a small library was found that does exactly what is needed, and it also wraps the input-output into the usual streams from the standard library (this is &lt;iostream&gt;). <br><br><br>  Armed with several articles about epoll, I was already going to write code, if not for one “but” - for epoll, you need access to raw file descriptors, and the author of the library does not provide public access to them.  Class methods that return handles are hidden under the heading "protected". <br><br><h3>  What to do? </h3><br>  The easiest way would be to fix the library code and move the necessary methods to the public section, it would be even better to fork the library and implement the necessary functionality yourself.  But the first would be ugly and would give rise to conflicts when updating the library, and the second would take too much time to parse the library code and then test it under several different * nix-systems. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Therefore, an insane third thought occurred to me: why not try to somehow “crack” the OOP and “legally” get access to the protected method without interfering with the source code of the library?  About what barriers arose on this way and how C ++ 14 helped to overcome them, and the story in this publication will go. <br><a name="habracut"></a><br><h3>  Test environment </h3><br>  For example, use the following simple code: <br><br><pre><code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">include</span></span></span><span class="hljs-meta"> </span><span class="hljs-meta-string"><span class="hljs-meta"><span class="hljs-meta-string">&lt;iostream&gt; class A { protected: int f(){ std::cout &lt;&lt; "Protected" &lt;&lt; std::endl; return 0; } }; int main(int argc, char **argv){ A a; int val = 1; //val = af(); //    f()? return val; }</span></span></span></span></code> </pre> <br>  All examples are compiled under Ubuntu 16.04 using gcc (Ubuntu 5.4.0-6ubuntu1 ~ 16.04.4). <br><br>  <strong>Warning: the following sections provide code that is not recommended for use in production!</strong> <br><br><h2>  Idea 1 is a static method </h2><br>  So, my eyes lit up, the task was set, but how to solve it?  We recall the inheritance rules in OOP: protected fields and methods are available only in the scope of the class itself and the classes that inherit it. <br><br>  The first step is clear: create a class that inherits the target class (in our case, this is the “A” class).  And since we want to call a protected method on an already existing object, the static method of our wrapper should help us to get to it: <br><br><pre> <code class="cpp hljs"><span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">B</span></span></span><span class="hljs-class"> :</span></span> <span class="hljs-keyword"><span class="hljs-keyword">public</span></span> A { <span class="hljs-keyword"><span class="hljs-keyword">public</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">static</span></span> <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> _f(A &amp;a){ <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> af(); } }; <span class="hljs-comment"><span class="hljs-comment">// main(): val = B::_f(a);</span></span></code> </pre><br>  Everything turned out so simple?  Not here it was!  C ++ <a href="http://stackoverflow.com/questions/11631777/accessing-a-protected-member-of-a-base-class-in-another-subclass">prohibits</a> accessing the protected members of the parent class from the child, which the compiler politely reminds us of: <br><br><div class="spoiler">  <b class="spoiler_title">Compilation log</b> <div class="spoiler_text"><pre>  access_protected_fields_hack.cpp: In member function 'int B :: _ f (A &amp;)':
@@ -81,11 +81,11 @@
    400752: 31 c0 xor% eax,% eax
    400754: 48 83 c4 08 add $ 0x8,% rsp
    400758: c3 retq   
-   400759: 0f 1f 80 00 00 00 00 nopl 0x0 (% rax) </pre><br></div></div><br>  It contains only the inline body of the function A :: f (). <br><br><h2>  Conclusion </h2><br>  The capabilities of the new standard make it possible to conveniently solve problems that were previously difficult to solve or completely impossible.  I was interested to find the use of some "chips" of the language in a real project.  I hope the publication was also useful for you and it was interesting to read. <br><br>  <b>PS:</b> As for the main task that I solved in my application, reluctantly I had to throw out the freshly written macro.  Still, the conscience is not allowed to apply such code in the open source application.  I also had to forget about the epoll, and the reading from stderr and stdout was implemented using istream :: read_some () and sleep for 50 milliseconds between calls. </div><p>Source: <a href="https://habr.com/ru/post/323412/">https://habr.com/ru/post/323412/</a></p>
+   400759: 0f 1f 80 00 00 00 00 nopl 0x0 (% rax) </pre><br></div></div><br>  It contains only the inline body of the function A :: f (). <br><br><h2>  Conclusion </h2><br>  The capabilities of the new standard make it possible to conveniently solve problems that were previously difficult to solve or completely impossible.  I was interested to find the use of some "chips" of the language in a real project.  I hope the publication was also useful for you and it was interesting to read. <br><br>  <b>PS:</b> As for the main task that I solved in my application, reluctantly I had to throw out the freshly written macro.  Still, the conscience is not allowed to apply such code in the open source application.  I also had to forget about the epoll, and the reading from stderr and stdout was implemented using istream :: read_some () and sleep for 50 milliseconds between calls. </div><p>Source: https://habr.com/ru/post/323412/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../323398/index.html">Why the February update HPE 3PAR StoreServ - the most important since the launch line</a></li>
+<li><a href="../3234/index.html">Apple enters the gaming market</a></li>
 <li><a href="../323400/index.html">Where do the clouds go? RightScale Study Overview</a></li>
 <li><a href="../323402/index.html">How does it feel to write articles</a></li>
 <li><a href="../323404/index.html">Application we made for Russian Railways</a></li>

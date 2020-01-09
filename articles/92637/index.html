@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Ubuntu 10.04 BUGFIX (Fix slow window deployment and plymouth resolution after installing ATI Catalyst drivers)</h1><div class="post__text post__text-html js-mediator-article">  Hurray comrades!  This long-awaited day has arrived! <br>  Ubuntu 10.04 LTS aka [Lucid Lynx] released <br>  Undoubtedly, this is one of the most significant events of several years, and many sites have long managed to highlight this event. <br><br>  Once you read this, you are faced with the same problem as me. <br><br>  1. In Ubuntu 10.04, after installing ATI's proprietary drivers, with Compiz enabled, there is a noticeable “slowdown” when the minimized window is maximized ( <i>about half a second delay</i> ). <br>  2. Ubunt-new Splash, which plymouth, "loses" its resolution and looks poor. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Both of these problems have already been solved, and in the sequel I will tell you how ... <br><a name="habracut"></a><br><h1>  Let's start with solving the problem of "braking" </h1><br>  She, the problem lies in the drivers themselves, they work with concretely xserver. <br><br>  For a long time, there is a <a href="http://aur.archlinux.org/packages/xorg-server-1.8-catalyst-maximize-fix/xorg-server-1.8-catalyst-maximize-fix/fedora_dont_backfill_bg_none.patch">patch</a> to solve this problem, but the independent imposition of the patch and the subsequent build of the package are not available to every user, for various reasons. <br><br>  The strength of the community is that there are users who can independently fix / build the package independently of the developers. <br>  And have the desire to share this correction with everyone else. <br><br>  The user <a href="https://launchpad.net/~info-g-com">Alf Gaida</a> did just that, with which I used the fixed package, for which the emu - <b>thank you so much</b> . <br><br>  In order to install a package, you need to add it to the PPA and perform a system update, this will lead to updating the xserver-xorg package and fixing the unfortunate bug. <br><blockquote><code>sudo apt-add-repository ppa:info-g-com/xserver-xorg-1.7.6-gc <br> sudo aptitude update <br> sudo aptitude upgrade</code> </blockquote> <br><h1>  Moving on to solving the second problem. </h1><br>  The decision is made <a href="http://idyllictux.wordpress.com/2010/04/26/lucidubuntu-10-04-high-resolution-plymouth-virtual-terminal-for-atinvidia-cards-with-proprietaryrestricted-driver/">here</a> , but optimized by me. <br><br>  Open <code>/etc/default/grub</code> find <code>GRUB_CMDLINE_LINUX_DEFAULT</code> and change to: <br><blockquote> <code>GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nomodeset video=uvesafb:mode_option= <b>1280x800</b> -24,mtrr=3,scroll=ywrap"</code> </blockquote> <br>  After that we find <code>GRUB_GFXMODE</code> and attach the following view: <br><blockquote> <code>GRUB_GFXMODE= <b>1280x800</b></code> </blockquote> <br>  Next, open <code>/etc/initramfs-tools/modules</code> and add the following line: <br><blockquote> <code>uvesafb mode_option= <b>1280x800</b> -24 mtrr=3 scroll=ywrap</code> </blockquote> <br>  Now install the v86d package and update grub: <br><blockquote> <code>sudo aptitude install v86d <br> sudo update-grub</code> </blockquote> <br>  Everything. <br><br><h5>  PS&gt; Allocated permissions - you must specify your own. </h5><br><br>  <b>UPD:</b> <br>  Open <code>/etc/modprobe.d/blacklist-framebuffer.conf</code> and add: <br><blockquote> <code>blacklist vga16fb</code> </blockquote>  <a href="https://habrahabr.ru/users/berilium/" class="user_link">BeriliUM</a> <a href="http://habrahabr.ru/blogs/ubuntu/92637/">'s</a> <a href="https://habrahabr.ru/users/berilium/" class="user_link">advice</a> <a href="http://habrahabr.ru/blogs/ubuntu/92637/">here</a> <br><br>  <b>UPD2:</b> <br>  They say that is suitable for nVidia: <br>  <a href="https://habrahabr.ru/users/tigr/" class="user_link">TiGR</a> user <a href="http://habrahabr.ru/blogs/ubuntu/92637/">here</a> </div><p>Source: <a href="https://habr.com/ru/post/92637/">https://habr.com/ru/post/92637/</a></p>
+      Both of these problems have already been solved, and in the sequel I will tell you how ... <br><a name="habracut"></a><br><h1>  Let's start with solving the problem of "braking" </h1><br>  She, the problem lies in the drivers themselves, they work with concretely xserver. <br><br>  For a long time, there is a <a href="http://aur.archlinux.org/packages/xorg-server-1.8-catalyst-maximize-fix/xorg-server-1.8-catalyst-maximize-fix/fedora_dont_backfill_bg_none.patch">patch</a> to solve this problem, but the independent imposition of the patch and the subsequent build of the package are not available to every user, for various reasons. <br><br>  The strength of the community is that there are users who can independently fix / build the package independently of the developers. <br>  And have the desire to share this correction with everyone else. <br><br>  The user <a href="https://launchpad.net/~info-g-com">Alf Gaida</a> did just that, with which I used the fixed package, for which the emu - <b>thank you so much</b> . <br><br>  In order to install a package, you need to add it to the PPA and perform a system update, this will lead to updating the xserver-xorg package and fixing the unfortunate bug. <br><blockquote><code>sudo apt-add-repository ppa:info-g-com/xserver-xorg-1.7.6-gc <br> sudo aptitude update <br> sudo aptitude upgrade</code> </blockquote> <br><h1>  Moving on to solving the second problem. </h1><br>  The decision is made <a href="http://idyllictux.wordpress.com/2010/04/26/lucidubuntu-10-04-high-resolution-plymouth-virtual-terminal-for-atinvidia-cards-with-proprietaryrestricted-driver/">here</a> , but optimized by me. <br><br>  Open <code>/etc/default/grub</code> find <code>GRUB_CMDLINE_LINUX_DEFAULT</code> and change to: <br><blockquote> <code>GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nomodeset video=uvesafb:mode_option= <b>1280x800</b> -24,mtrr=3,scroll=ywrap"</code> </blockquote> <br>  After that we find <code>GRUB_GFXMODE</code> and attach the following view: <br><blockquote> <code>GRUB_GFXMODE= <b>1280x800</b></code> </blockquote> <br>  Next, open <code>/etc/initramfs-tools/modules</code> and add the following line: <br><blockquote> <code>uvesafb mode_option= <b>1280x800</b> -24 mtrr=3 scroll=ywrap</code> </blockquote> <br>  Now install the v86d package and update grub: <br><blockquote> <code>sudo aptitude install v86d <br> sudo update-grub</code> </blockquote> <br>  Everything. <br><br><h5>  PS&gt; Allocated permissions - you must specify your own. </h5><br><br>  <b>UPD:</b> <br>  Open <code>/etc/modprobe.d/blacklist-framebuffer.conf</code> and add: <br><blockquote> <code>blacklist vga16fb</code> </blockquote>  <a href="https://habrahabr.ru/users/berilium/" class="user_link">BeriliUM</a> <a href="http://habrahabr.ru/blogs/ubuntu/92637/">'s</a> <a href="https://habrahabr.ru/users/berilium/" class="user_link">advice</a> <a href="http://habrahabr.ru/blogs/ubuntu/92637/">here</a> <br><br>  <b>UPD2:</b> <br>  They say that is suitable for nVidia: <br>  <a href="https://habrahabr.ru/users/tigr/" class="user_link">TiGR</a> user <a href="http://habrahabr.ru/blogs/ubuntu/92637/">here</a> </div><p>Source: https://habr.com/ru/post/92637/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../92628/index.html">Writing a driver for a USB device. Pipe 0: what is usb?</a></li>
 <li><a href="../92629/index.html">Wonderful about bugs</a></li>
+<li><a href="../9263/index.html">Firefox 1.5 latest update</a></li>
 <li><a href="../92631/index.html">How much do you need beautiful (and all sorts of other thingies) in the JavaME application on your phone?</a></li>
 <li><a href="../92634/index.html">Installing Guitar Pro 6 on x64 Linux</a></li>
 <li><a href="../92635/index.html">I resent! Unlimited 3G from Ukrtelecom</a></li>
 <li><a href="../92638/index.html">Driving car</a></li>
+<li><a href="../9264/index.html">Microsoft is again suing for "foreign" ActiveX</a></li>
 <li><a href="../92642/index.html">Yii 1.1.3</a></li>
 <li><a href="../92643/index.html">Pool inside</a></li>
 <li><a href="../92646/index.html">And yet it is hacked!</a></li>
-<li><a href="../92648/index.html">Got an iPhone / iPad app? Join the iAppContest!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

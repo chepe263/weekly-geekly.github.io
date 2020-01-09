@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Subversion Installation on Synology DS210j</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage/habraeffect/12/ea/12eaf2a3951fe981305724b2a2325592.jpg" alt="image" align="left">  At the time, I was puzzled by adding a compact server to my small home network, for storing and downloading media content, iTunes / UPnP servers, backup of my projects, TimeMachine, etc. <br>  In the course of reading <a href="http://www.hwp.ru/articles/Synology_DS209__II_i_Synology_DS210j___sravnenie_dvuhdiskovih_NAS_ov_75544/">reviews, I</a> stopped at the recently released <a href="http://www.synology.su/products/30">DS210j</a> model from Synology.  During the transfer of data to the NAS for storing projects, I decided to install a Version Control System - <a href="http://ru.wikipedia.org/wiki/Subversion">Subversion</a> . <br>  If interested, welcome under cat. <br><br><a name="habracut"></a><br><h4>  Initial preparations </h4><br><ul><li>  Enable SSH in Synology Disk Station Manager settings </li><li>  In the same place, create a user for the svnserve daemon (let it be svnowner) </li><li>  In the same place to create a ball for repositories, to give the user svnowner the rights RW </li></ul><br><h4>  Installing ipkg bootstrap </h4><br>  Bootstrap is a script that installs ipkg (package management system).  At the beginning of the installation, you need to find out what processor your NAS has.  This can be viewed <a href="http://www.synology-wiki.de/index.php/Welchen_Prozessortyp_besitzt_mein_System%253F">here</a> and immediately download the desired IPKG.  Copy the installation package to the public ball, go root on the NAS, execute the following commands in the console: <br><br> <code>&gt;sh /volume1/public/syno-mvkw-bootstrap_1.2-7_arm.xsh <br> &gt;rm /volume1/public/syno-mvkw-bootstrap_1.2-7_arm.xsh <br> &gt;ipkg update <br> &gt;ipkg upgrade <br></code> <br><h4>  Subversion installation and setup </h4><br>  Subversion installation is very simple: <br> <code>&gt;ipkg install svn</code> <br>  svnserve can be run as a normal daemon, then it will be permanently in memory and wait for users to wait.  Keeping the memory constantly is not very convenient, considering that the DS210j has only 128MB of memory, so we’ll use the opportunity to launch svnserve through the inetd daemon, it listens to the port that requests to svnserve can come in and “raises” it to process incoming requests. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      run vi text editor <br> <code>&gt;vi /etc/inetd.conf</code> <br>  add <br> <code>svn stream tcp nowait svnowner /opt/bin/svnserve svnserve -i -r /volume1/svn</code> <br>  Saving / exiting: wq, svnowner is a user with access to the / volume1 / svn directory, <br>  add ports for subversion protocol to the / etc / service file <br> <code>svn 3690/tcp # Subversion <br> svn 3690/udp # Subversion</code> <br>  Reboot the NAS. <br><br><h4>  Creating a test repository </h4><br>  Connecting to Diskstation root, switching to swnowner user (su svnowner), if the error “su: cannot run / sbin / nologin: No such file or directory” appears, do the following: <br> <code>&gt;vi /etc/passwd</code> <br>  changing the string <br> <code>some_user:x:1025:100:Descriptive text:/nonexist:/sbin/nologin</code> <br>  on <br> <code>some_user:x:1025:100:Descriptive text:/nonexist:/bin/ash</code> <br>  Create a test repository in the balloon / volume1 / svn <br> <code>cd /volume1/svn <br> svnadmin create test</code> <br> <br><h4>  Access rights </h4><br>  Go to the ball / volume1 / svn / test / conf and add any users to the passwd file with any text editor. <br> <code>[users] <br> testuser = testpassword</code> <br>  Authentication and invitation settings in the svnserve.conf file <br> <code>[general] <br> anon-access = none <br> auth-access = write <br> password-db = passwd <br> realm = My test repository <br></code> <br><br>  We try to connect SVN client or from the console with the command: <br> <code>svn co svn://&lt;IP &gt;/test &lt; &gt;</code> <br> <br>  That's all.  As a conclusion, I recommend a wonderful and completely free <a href="http://svnbook.red-bean.com/">version control</a> book <a href="http://svnbook.red-bean.com/">in Subversion</a> . </div><p>Source: <a href="https://habr.com/ru/post/96300/">https://habr.com/ru/post/96300/</a></p>
+      run vi text editor <br> <code>&gt;vi /etc/inetd.conf</code> <br>  add <br> <code>svn stream tcp nowait svnowner /opt/bin/svnserve svnserve -i -r /volume1/svn</code> <br>  Saving / exiting: wq, svnowner is a user with access to the / volume1 / svn directory, <br>  add ports for subversion protocol to the / etc / service file <br> <code>svn 3690/tcp # Subversion <br> svn 3690/udp # Subversion</code> <br>  Reboot the NAS. <br><br><h4>  Creating a test repository </h4><br>  Connecting to Diskstation root, switching to swnowner user (su svnowner), if the error “su: cannot run / sbin / nologin: No such file or directory” appears, do the following: <br> <code>&gt;vi /etc/passwd</code> <br>  changing the string <br> <code>some_user:x:1025:100:Descriptive text:/nonexist:/sbin/nologin</code> <br>  on <br> <code>some_user:x:1025:100:Descriptive text:/nonexist:/bin/ash</code> <br>  Create a test repository in the balloon / volume1 / svn <br> <code>cd /volume1/svn <br> svnadmin create test</code> <br> <br><h4>  Access rights </h4><br>  Go to the ball / volume1 / svn / test / conf and add any users to the passwd file with any text editor. <br> <code>[users] <br> testuser = testpassword</code> <br>  Authentication and invitation settings in the svnserve.conf file <br> <code>[general] <br> anon-access = none <br> auth-access = write <br> password-db = passwd <br> realm = My test repository <br></code> <br><br>  We try to connect SVN client or from the console with the command: <br> <code>svn co svn://&lt;IP &gt;/test &lt; &gt;</code> <br> <br>  That's all.  As a conclusion, I recommend a wonderful and completely free <a href="http://svnbook.red-bean.com/">version control</a> book <a href="http://svnbook.red-bean.com/">in Subversion</a> . </div><p>Source: https://habr.com/ru/post/96300/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../96289/index.html">SQL-inj to ORACLE</a></li>
-<li><a href="../96291/index.html">PHP interactive console</a></li>
 <li><a href="../96292/index.html">Thunderbird extension: quick search on the web</a></li>
 <li><a href="../96294/index.html">plink: hide IP address and encrypt traffic in 5 minutes</a></li>
 <li><a href="../96298/index.html">Painful compilation of pidgin-2.7.0 and pidgin-sipe-1.10.0</a></li>
+<li><a href="../963/index.html">If I played for Microsoft ...</a></li>
+<li><a href="../9630/index.html">AMD Phenom X4</a></li>
 <li><a href="../96305/index.html">Thinking out loud about protocol X</a></li>
 <li><a href="../96307/index.html">Thunderbird 3.1 RC2 released</a></li>
 <li><a href="../96308/index.html">Black market reopened</a></li>
+<li><a href="../9631/index.html">Bill Gates finally graduated from university</a></li>
 <li><a href="../96310/index.html">Project Offset</a></li>
-<li><a href="../96314/index.html">Overview and installation of the iRedMail mail server</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

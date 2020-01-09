@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Beautiful autologin on active network equipment</h1><div class="post__text post__text-html js-mediator-article">  Good afternoon, dear Habraludi! <br>  I want to share with you my way to simplify the life of the network administrator.  I suggest a way to automatically enter the login and password for all equipment at once.  I do not pretend to the novelty and freshness of the idea, but my own solution is much simpler, more transparent and somehow closer to the subject.  Welcome under cat. <a name="habracut"></a><br><br><h5>  What is </h5><br>  There is a provider network of managed equipment in the amount of hundreds of devices from different manufacturers (Cisco, D'link, Huawei, etc.).  Each device has a canonical name, but there is no dns entry for it.  There is a list of matching names to addresses.  All (more precisely, almost all) devices offer authorization through <a href="http://ru.wikipedia.org/wiki/TACACS%252B">TACACS +</a> .  That is, in the worst case, in order to fix the configuration of the piece of iron, it is necessary to find the device ip by name in the above list, start up, enter the login and password and do what is required. <br><br><h5>  What do you want </h5><br>  I would like to automate the whole thing somehow, and, finally, not to grind this password thousands of times a day.  It is necessary to get access to a piece of equipment by simply entering its name in the system's shell (cisco style) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  Solve the problem </h5><br>  To solve the problem we will use: <br><ul><li>  <b>Of course, linux</b> is also on the workhorse. </li><li>  <b>Of course, python</b> - it also solves all admin problems very quickly, simply and transparently. </li><li>  <b>Of course, <a href="http://ru.wikipedia.org/wiki/Expect">expect</a></b> - what else will help us with autologin? </li></ul><br>  For pyhton, <a href="http://www.noah.org/wiki/pexpect">pexpect</a> is used - the implementation of expect in the contest of this language. <br><br>  <b>First,</b> you need to write a script that takes the ip of the piece of iron and sends us to its shell.  I cite the script code with comments, so in my opinion it is easier, and there is no need to repeat. <br><pre><code class="python hljs"><span class="hljs-comment"><span class="hljs-comment">#!/usr/bin/env python # -*- coding: utf-8 -*- '''   cisco, d'link, huawei    ''' #    import pexpect from sys import argv #  ip     p=pexpect.spawn('telnet %s' % argv[1]) #  tacacs+ login='mylogin' password='mypassword' '''   -   .    ,       'D-Link'  .      . ''' i = p.expect(['.D-Link.','login:','Username:']) if i == 0: print 'D-Link detected' p.expect(['login:','UserName:']) p.sendline(login) p.expect(['Password:','PassWord']) p.sendline(password) i = p.expect(['.4#', '.3#','.Fail.']) if i == 2: '''    -    tacacs,   '.Fail.' -      . ''' print 'Wrong credentials! Trying default' p.expect(['login:','UserName:']) p.sendline('default') p.expect(['Password:','PassWord']) p.sendline('default') '''    -   . #3 -  , #4 -  ''' elif i == 1: print 'enabling admin' p.sendline("enable admin") p.expect('Password:') p.sendline('admin_pass') else: pass p.interact() elif i == 1: '''  cisco   -  enable  ,       ''' print 'Cisco detected' p.sendline(login) p.expect('Password:') p.sendline(password) p.interact() elif i == 2: '''  huawei    ,       sys ''' print 'Huawei detected' p.sendline(login) p.expect('Password:') p.sendline(password) p.expect('.') print 'enabling sys' p.sendline('sys') p.interact()</span></span></code> </pre> <br><br>  Now, running the script and passing the piece of iron to the ip parameter, we fall directly into its shell without question.  Now back to the task.  It is necessary to simply access the canonical name.  For this we will use <a href="http://ru.wikipedia.org/wiki/Alias_(bash)">bash alias</a> . <br>  For each piece of hardware, add a line to bashrc: " <code>alias _="autologin ip_"</code> ", and put the script in the bin directory (for example, / usr / bin / autologin). <br>  Now, by simply entering the name of the piece of iron in the shell, we can access it without asking any questions. <br><br><h5>  Instead of epilogue </h5><br>  I want to say a big thank you to the developers of the python language, thanks to which many, trivial and not so easy tasks are solved.  Thank you for your attention, waiting for your criticism, I will be glad to know your opinion. </div><p>Source: <a href="https://habr.com/ru/post/127748/">https://habr.com/ru/post/127748/</a></p>
+    <h5>  Solve the problem </h5><br>  To solve the problem we will use: <br><ul><li>  <b>Of course, linux</b> is also on the workhorse. </li><li>  <b>Of course, python</b> - it also solves all admin problems very quickly, simply and transparently. </li><li>  <b>Of course, <a href="http://ru.wikipedia.org/wiki/Expect">expect</a></b> - what else will help us with autologin? </li></ul><br>  For pyhton, <a href="http://www.noah.org/wiki/pexpect">pexpect</a> is used - the implementation of expect in the contest of this language. <br><br>  <b>First,</b> you need to write a script that takes the ip of the piece of iron and sends us to its shell.  I cite the script code with comments, so in my opinion it is easier, and there is no need to repeat. <br><pre><code class="python hljs"><span class="hljs-comment"><span class="hljs-comment">#!/usr/bin/env python # -*- coding: utf-8 -*- '''   cisco, d'link, huawei    ''' #    import pexpect from sys import argv #  ip     p=pexpect.spawn('telnet %s' % argv[1]) #  tacacs+ login='mylogin' password='mypassword' '''   -   .    ,       'D-Link'  .      . ''' i = p.expect(['.D-Link.','login:','Username:']) if i == 0: print 'D-Link detected' p.expect(['login:','UserName:']) p.sendline(login) p.expect(['Password:','PassWord']) p.sendline(password) i = p.expect(['.4#', '.3#','.Fail.']) if i == 2: '''    -    tacacs,   '.Fail.' -      . ''' print 'Wrong credentials! Trying default' p.expect(['login:','UserName:']) p.sendline('default') p.expect(['Password:','PassWord']) p.sendline('default') '''    -   . #3 -  , #4 -  ''' elif i == 1: print 'enabling admin' p.sendline("enable admin") p.expect('Password:') p.sendline('admin_pass') else: pass p.interact() elif i == 1: '''  cisco   -  enable  ,       ''' print 'Cisco detected' p.sendline(login) p.expect('Password:') p.sendline(password) p.interact() elif i == 2: '''  huawei    ,       sys ''' print 'Huawei detected' p.sendline(login) p.expect('Password:') p.sendline(password) p.expect('.') print 'enabling sys' p.sendline('sys') p.interact()</span></span></code> </pre> <br><br>  Now, running the script and passing the piece of iron to the ip parameter, we fall directly into its shell without question.  Now back to the task.  It is necessary to simply access the canonical name.  For this we will use <a href="http://ru.wikipedia.org/wiki/Alias_(bash)">bash alias</a> . <br>  For each piece of hardware, add a line to bashrc: " <code>alias _="autologin ip_"</code> ", and put the script in the bin directory (for example, / usr / bin / autologin). <br>  Now, by simply entering the name of the piece of iron in the shell, we can access it without asking any questions. <br><br><h5>  Instead of epilogue </h5><br>  I want to say a big thank you to the developers of the python language, thanks to which many, trivial and not so easy tasks are solved.  Thank you for your attention, waiting for your criticism, I will be glad to know your opinion. </div><p>Source: https://habr.com/ru/post/127748/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../127738/index.html">User experience and color perception</a></li>
 <li><a href="../127739/index.html">Network scanning is easy</a></li>
+<li><a href="../12774/index.html">School diaries leaked to the Web</a></li>
 <li><a href="../127743/index.html">Linux -> github</a></li>
 <li><a href="../127744/index.html">The Japanese are entering the game - first look at the Sony Tablet S and Sony Tablet P tablets</a></li>
 <li><a href="../127747/index.html">First look at the new features for the C ++ developer in the next version of Visual Studio</a></li>
 <li><a href="../127749/index.html">So much for “acquaintance" and why an external client is better</a></li>
+<li><a href="../12775/index.html">Yandex.Direct added the ability to limit the display of ads by IP-addresses of users.</a></li>
 <li><a href="../127752/index.html">Technical tour to the TEL data center</a></li>
 <li><a href="../127753/index.html">Algorithm analysis</a></li>
 <li><a href="../127756/index.html">Thorium in car engine</a></li>
-<li><a href="../127757/index.html">Where is my money or fraud in cellular networks</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

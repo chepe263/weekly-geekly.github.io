@@ -29,12 +29,12 @@ $ myfunc()...">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@ $ myfunc()...">
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>CVE-2014-6271, CVE-2014-7169: remote code execution in bash</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/058/855/d61/058855d61e18ed48cc25d5ea2d377d65.jpg" alt="image"><br>  Details about the vulnerability in Bash were published today. <br>  In short, Bash allows you to export functions as environment variables: <br><br><pre><code class="bash hljs">$ <span class="hljs-function"><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">myfunc</span></span></span></span>() { <span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"Hello"</span></span>; } $ <span class="hljs-built_in"><span class="hljs-built_in">export</span></span> -f myfunc $ env | grep -A1 ^myfunc myfunc=() { <span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"Hello"</span></span> }</code> </pre> <br><br>  The vulnerability is that if you add another command after the function body (after the last "}" character) and export it, it will be executed when the child interpreter is called: <br><a name="habracut"></a><br><pre> <code class="bash hljs">$ env x=<span class="hljs-string"><span class="hljs-string">'() { :; }; echo "Oh..."'</span></span> /bin/bash -c /sbin/nologin Oh... This account is currently not available.</code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,18 +64,18 @@ $ myfunc()...">
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      This, in turn, allows you to do interesting things - for example, if you have a CGI script in Perl that calls Bash - an attacker can construct an HTTP packet that will contain malicious code.  This code will get into Bash through environment variables and will be executed. <br><br>  All versions of Bash are vulnerable, starting with bash-1.14 (information from <a href="https://shellshocker.net/">shellshocker.net</a> ). <br>  In certain circles, vulnerability is called "Bashdoor" - it is not surprising. <br><br>  More details can be easily downloaded using the CVE ID. <br><br>  <b>UPD 2014-09-24:</b> Some “Hindu” security blogs attribute “privilege escalation” to the name of the vulnerability.  This is not true - no privilege escalation, the code is executed with the rights of the same user, under which the “parent” shell runs. <br>  On Twitter, vulnerability dubbed shellshock. <br><br>  <b>UPD 2014-09-25: the</b> fix for CVE-2014-6271 was incomplete, the identifier CVE-2014-7169 was assigned to the new vulnerability.  Details are in the comments to the post. <br><br>  <b>UPD 2014-09-26:</b> fix for CVE-2014-7169 available in the repositories of the main distributions.  Red Hat Product Security posted a <a href="https://securityblog.redhat.com/2014/09/26/frequently-asked-questions-about-the-shellshock-bash-flaws/">small FAQ</a> on their blog. </div><p>Source: <a href="https://habr.com/ru/post/238021/">https://habr.com/ru/post/238021/</a></p>
+      This, in turn, allows you to do interesting things - for example, if you have a CGI script in Perl that calls Bash - an attacker can construct an HTTP packet that will contain malicious code.  This code will get into Bash through environment variables and will be executed. <br><br>  All versions of Bash are vulnerable, starting with bash-1.14 (information from <a href="https://shellshocker.net/">shellshocker.net</a> ). <br>  In certain circles, vulnerability is called "Bashdoor" - it is not surprising. <br><br>  More details can be easily downloaded using the CVE ID. <br><br>  <b>UPD 2014-09-24:</b> Some “Hindu” security blogs attribute “privilege escalation” to the name of the vulnerability.  This is not true - no privilege escalation, the code is executed with the rights of the same user, under which the “parent” shell runs. <br>  On Twitter, vulnerability dubbed shellshock. <br><br>  <b>UPD 2014-09-25: the</b> fix for CVE-2014-6271 was incomplete, the identifier CVE-2014-7169 was assigned to the new vulnerability.  Details are in the comments to the post. <br><br>  <b>UPD 2014-09-26:</b> fix for CVE-2014-7169 available in the repositories of the main distributions.  Red Hat Product Security posted a <a href="https://securityblog.redhat.com/2014/09/26/frequently-asked-questions-about-the-shellshock-bash-flaws/">small FAQ</a> on their blog. </div><p>Source: https://habr.com/ru/post/238021/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../238007/index.html">Generator of functional parsers on JavaScript (with transducers)</a></li>
-<li><a href="../238009/index.html">I was asked to hack the program at the interview. Part 2</a></li>
+<li><a href="../23801/index.html">Vertical alignment in divs</a></li>
 <li><a href="../238011/index.html">Why everyone suddenly began to bend their smartphones and upload photos to the Internet</a></li>
 <li><a href="../238017/index.html">What's new in Laravel 5?</a></li>
 <li><a href="../238019/index.html">Microsoft has released an update for the time zones of Russia</a></li>
+<li><a href="../23802/index.html">Demonoid opened registration, April 19, 4:28 Moscow</a></li>
 <li><a href="../238023/index.html">The Internet of things in Russia and the world: what integrators think and what awaits the market</a></li>
 <li><a href="../238025/index.html">Tithing on software: Putin supported the proposal to impose 10% tax on software sales</a></li>
 <li><a href="../238033/index.html">Come to KRI 2014</a></li>

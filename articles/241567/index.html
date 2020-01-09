@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Strongly typed combinators for constructing a parser and a natural language synthesizer</h1><div class="post__text post__text-html js-mediator-article">  The famous <a href="http://henkelmann.eu/2011/01/13/an_introduction_to_scala_parser_combinators">ParserCombinator</a> 's and <a href="https://github.com/sirthias/parboiled/wiki">Parboiled</a> are intended solely for parsing formal languages.  We solve the problem of parsing a natural language and at the same time we want that with the help of the same grammar it was possible to carry out the synthesis of phrases in natural language, reflecting the semantics we need.  It would be convenient to be able to describe language constructs along with abstraction / concretization rules. <br><br>  For example, <br><br><ol><li>  Conversion of numbers to numbers (“ten” -&gt; 10: Int) </li><li>  and back (10: Int -&gt; "ten" ("tenth", "ten" ...)) </li><li>  Conversion of numerals together with the unit of measurement ("ten rubles" &lt;-&gt; NumberWithMeasurement (10, RUB)) </li><li>  Partial address ("Yablochnaya St. &lt;-&gt; Address (street =" Apple ")) </li><li>  Address within the city (“Apple House street one hundred twenty three apartment forty five” &lt;-&gt; Address (street = “Apple”, building = 123, flat = 45)) </li><li>  Phone (256-00-21 (“two hundred fifty six zero zero twenty one”) &lt;-&gt; NumericalSequence (256,0,0,21)) </li></ol><br>  And I would like to have the following system properties: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <ul><li>  the uniqueness of the description of the rules of abstraction / specification </li><li>  strictly typed representation of semantics at all levels of abstraction </li><li>  the availability of alternative forms of representation of semantics and the ability to influence the choice of the form of representation of semantics </li><li>  coordination of word forms for obtaining a phrase in pure Russian </li><li>  the possibility of forming secondary structures based on the original rules.  In particular, we would like to form parsing grammar corresponding to the rules. </li></ul><br>  Under the cut - a description of the approach implemented in the library synapse-typed-expressions.  Only numerals are considered, but the approach naturally extends to the other aforementioned formal language constructs. <br><a name="habracut"></a><br><br><h2>  Levels of abstraction </h2><br>  The same semantics (meaningful information) is presented in different forms at different levels of abstraction.  Consider for example, how the number 1234 may look at different levels of abstraction: <br><br><ol><li>  1234: Int - at the level of application business logic </li><li>  Number (1234L) </li><li>  TwoClassNumber (Number (1L), Order (1000), Number (234L)) - splitting a number into two classes - thousands and ones </li><li>  Seq (Number (1L), Order (1000), Number (234L)) - a chain of components </li><li>  Seq (Number (1L), Order (1000), TwoRangesNumber (Number (200L), 100, Number (34L))) </li><li>  Seq (Number (1L), Order (1000), TwoRangesNumber (Number (200L), 100, TwoRangesNumber (Number (30L), 10, Number (4L)))) - reduced to the numeral structure </li><li>  Seq (Word (1L), Word (1000L), Word (200L), Word (30L), Word (4L)) - a string of word identifiers </li><li>  Seq (one, one thousand, two hundred, thirty, four) - a string of words after the application of the rules of harmonization of word forms </li><li>  “One thousand two hundred thirty-four” is the text. </li></ol><br>  In this example, one can observe a descending process of concretization from the abstract strongly typed value 1234 to the text in Russian.  Each step of instantiation can be described using substitution rules. <br><br>  To implement a parser, it is necessary, with the same rules of substitution, to make matching attempts using, for example, a cut-off and backtracking mechanism, or a CKY parser. <br><br>  It should be noted that the actual content or semantics at all levels remains unchanged.  Only the form of representation of semantics changes.  In this case, we clearly define the direction on the axis of abstraction / specification. <br><br>  The next observation that can be made is that in the upward movement (increasing the level of abstraction) we consistently discard some details (for example, the shape of a word, splitting a number into its component parts).  And with the downward movement (concretization, synthesis) we must complement the existing semantics with some details (the type of numeral is ordinal or quantitative, the form of a word, etc.).  The specification of missing information is provided <br><br><ul><li>  partly by rules based on semantics proper, </li><li>  partially - determined by the context of the entire transformation (for example, ordinal or cardinal), </li><li>  partially - non-local rules that take into account neighboring elements (choice of the form of the word). </li></ul><br><br><h2>  Grammar rules for numerals </h2><br>  We describe the rules of specificity for different ranges of numbers: <br><br><pre> "Number from 1 to 9": = ID1 or ID2 or ... ID9
@@ -198,20 +198,20 @@
      constructGenerator0 (e)
    }
 </pre><br><br><h3>  Choosing the form of the word </h3><br>  To select the form of the word constituting the numeral, it suffices to use the context consisting of one word to the left and one word to the right of the current one (if available).  Signature word selection rules: <br><br><pre>	 def betterForm (lemma: LemmaInfo, left: Option [LemmaInfo], right: Option [LemmaInfo]): WordFormAssociation
-</pre><br>  The rules themselves are set using pattern-matching above the triplet - the current lemma, the context on the left, the context on the right. <br><br><h2>  Conclusion </h2><br>  The declarative presentation of the grammar allows the description of formal language constructs, such as <br><br><ul><li>  numerals, </li><li>  addresses, </li><li>  phones, </li><li>  various alphanumeric codes, </li><li>  time, dates, time intervals / dates, </li><li>  etc. </li></ul><br>  According to the declarative description, the parser and the generator are built, which carry out the direct conversion of text into semantics and semantics into text in natural language. <br><br>  PS <a href="https://github.com/Primetalk/SynapseGrid/blob/master/synapse-typed-expressions/src/main/scala/ru/primetalk/typed/expressions/Numerals4.scala">Code to article</a> </div><p>Source: <a href="https://habr.com/ru/post/241567/">https://habr.com/ru/post/241567/</a></p>
+</pre><br>  The rules themselves are set using pattern-matching above the triplet - the current lemma, the context on the left, the context on the right. <br><br><h2>  Conclusion </h2><br>  The declarative presentation of the grammar allows the description of formal language constructs, such as <br><br><ul><li>  numerals, </li><li>  addresses, </li><li>  phones, </li><li>  various alphanumeric codes, </li><li>  time, dates, time intervals / dates, </li><li>  etc. </li></ul><br>  According to the declarative description, the parser and the generator are built, which carry out the direct conversion of text into semantics and semantics into text in natural language. <br><br>  PS <a href="https://github.com/Primetalk/SynapseGrid/blob/master/synapse-typed-expressions/src/main/scala/ru/primetalk/typed/expressions/Numerals4.scala">Code to article</a> </div><p>Source: https://habr.com/ru/post/241567/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../241555/index.html">Pebble code optimization</a></li>
 <li><a href="../241557/index.html">Using the power of NHibernate in Orchard.CMS</a></li>
 <li><a href="../241559/index.html">Guests of the Corporate Intrusion Testing Labs Program</a></li>
+<li><a href="../24156/index.html">Wi-Fi radio</a></li>
 <li><a href="../241561/index.html">The digest of interesting materials from the world of web development and IT for the last week №131 (October 20 - 26, 2014)</a></li>
 <li><a href="../241565/index.html">The digest of interesting news and materials from the world of PHP No. 50 (October 6 - October 26, 2014)</a></li>
+<li><a href="../24157/index.html">Report on the conference "The Future of Web Design". Part 1, conference.</a></li>
 <li><a href="../241571/index.html">Conference Connect () - we look together announcements of key products for developers on the Microsoft platform</a></li>
 <li><a href="../241573/index.html">VMware broke the CBT mechanism for backing up virtual machines</a></li>
 <li><a href="../241577/index.html">The book “Getting Started with LLVM Core Libraries” has been released.</a></li>
 <li><a href="../241579/index.html">Deploy Django apps using Ansible for Dummies</a></li>
-<li><a href="../241581/index.html">A brief excursion into the cooling server</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

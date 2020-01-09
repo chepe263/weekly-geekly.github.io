@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>OAuth: protocol description in simple and understandable language</h1><div class="post__text post__text-html js-mediator-article"> <a href=""><img align="left" src="https://habrastorage.org/getpro/geektimes/post_images/ce2/7e3/33e/ce27e333e10df7f4145911fd4932a7da.png" width="319" height="236"></a>  <a href="http://oauth.net/">OAuth</a> is a popular protocol that allows <i>social</i> services to integrate with each other and provides a secure way to share personal information.  OAuth can connect 2 services among themselves, each of which has its own user base - I call them “social” in this case.  When you start working with OAuth, the first feeling is that the protocol is very complicated and redundant.  In this article I will try to explain the basics of OAuth in human language. <br><br><h2>  Sample Cross Authorization </h2><br>  Let's go back to the year 2005 and imagine that we are writing a social network.  It has a form for importing contacts from the GMail address book.  What do you need to access GMail contacts?  Of course, the username and password of the box.  But if we ask to enter them on our site, the user will suspect that something is wrong.  Where is the guarantee that we do not save the entered passwords on the server?  Therefore, we want the password to be entered <i>only on the GMail website</i> , and after that access to contacts through the GMail API is provided to our social network (perhaps for a while). <a name="habracut"></a><table><tbody><tr><td></td><td>  It looks like this: the form consists of a single button - “Import contacts”.  After clicking on it, the user will temporarily redirect to GMail, where he enters his username and password (and if he is already authorized, he does not enter anything).  Next, the user is returned back to our site, where the script already gets the opportunity to download contacts through the internal GMail API. </td></tr></tbody></table>  We agree on terms. <ul><li>  <b>Consumer</b> : consumer;  script processing forms of import contacts in the social network. </li><li>  <b>Service Provider</b> : data provider;  GMail, which contains address book data that is interesting to the consumer. </li><li>  <b>User</b> : a user who has an account with both a Consumer and a Service Provider. </li><li>  <b>Protected Resource</b> : personal data;  contacts from the address book on GMail (i.e. Service Provider resources). </li><li>  <b>Provider API</b> : GMail API, allowing any script to get contacts from the GMail address book. </li></ul><table><tbody><tr><td></td><td>  <i>Now I ask you to close the upper part of the screen with a sheet of paper and, as an exercise, answer the questions: who is the Service Provider?</i>  <i>What is Protected Resource?</i>  <i>who is Consumer and how is it different from User?</i>  <i>Where is the API located?</i>  <i>Further in the article we freely operate with these terms.</i>  <i>If you are not well-versed in them, there may be problems with understanding.</i> </td></tr></tbody></table>  <b>The OAuth task</b> is to ensure that User has the opportunity to work on the Consumer service (on the social network) with the protected data of the Service Provider (GMail), entering the password to this data exclusively on the Service Provider, while remaining on the Consumer site.  Not so difficult, right? <br><br><h2>  How is OAuth different from OpenID? </h2><br>  OAuth is often called the “protocol for robots,” as opposed to OpenID, the “protocol for users.”  Do not confuse them! <ol><li>  <b>OpenID - protocol for accelerated registration.</b>  OpenID allows a user to get an account on any service without entering a password if he is already registered somewhere else on the Internet.  (And then you can log in to the service without having to enter the password, being authorized “somewhere”.) For example, if you have an account on Yandex, you can “log in” with it to any service that supports OpenID authorization. </li><li>  <b>OAuth is a protocol for authorized access to a third-party API.</b>  OAuth allows the Consumer script to get limited API access to the data of a third-party Service Provider, if User gives the go-ahead.  Those.  this is a means to access the API. </li></ol><table><tbody><tr><td></td><td><h2>  Police analogy </h2><br>  Imagine that you are an employee of the Criminal Investigation Department, looking for tips in the case of the theft of WebMoney for the 1973rd year.  Agree on terms: <ul><li>  <b>OAuth Consumer</b> : Criminal Investigation. </li><li>  <b>User</b> : Criminal Investigation Officer. </li><li>  <b>Service Provider</b> : Crime archive file. </li></ul><ol><li>  OpenID: The employee of the Criminal Investigation Department (User) comes to the Service Provider, presents an Authorization at the entrance and searches the cards for information on the spot. </li><li>  OAuth: A Criminal Investigation Officer (User) calls Consumer directly from Work (Service Provider).  He gives his last name;  if they recognize him (Authorization), he asks for a list of all crimes for the year 1973 (API call). </li></ol>  As you can see, OpenID and OAuth are different things.  OpenID allows you on-site access to some resources.  OAuth provides a piece of information from a remote service through an API. </td></tr></tbody></table><h2>  Plan for this article </h2><br>  Before turning to the main part, let's see how we are going to move. <ol><li>  Consider the problems that arise when the "manual" implementation of cross-authorization. </li><li>  Let's talk about what an “app” is and who a Consumer is. </li><li>  Let's touch upon the basics of cryptography. </li><li>  Denote the demo application that we will write in this article. </li><li>  We will be defined with the test OAuth server on which we will experiment. </li><li>  Let's go through all the steps of the OAuth protocol and give the source code of the script. </li></ol><h2>  About the invention of bicycles </h2><br>  A good way to understand something is to do it yourself by stepping on all the rakes that were laid out.  Now we will reinvent the wheel: let's try to imagine how we would solve the problem of interaction between Consumer and Service Provider without any standardized protocols. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       First, let's write the very form of importing contacts with GMail: <table cellspacing="1" cellpadding="6"><tbody><tr><td>  <b>Code Listing 1: Contact import form</b> </td></tr><tr><td><pre>  &lt;form action = "http://gmail.com/auth.php?retpath=http://oursocialnetwork.ru/import.php" method = "get"&gt;
@@ -212,7 +212,7 @@
      &lt;input type = "text" size = "30" name = "msg" /&gt;
      &lt;input type = "submit" value = "Send" /&gt;
  &lt;/ form&gt;
- &lt;/ div&gt; </pre></td></tr></tbody></table><h2>  OAuth useful links </h2><ul><li>  <a href="http://dklab.ru/chicken/nablas/57.html">Original current article on dklab.ru</a> </li><li>  <a href="http://oauth.net/">The official OAuth website</a> . </li><li>  <a href="http://oauth.googlecode.com/svn/code/php/">OAuth.php by Andy Smith</a> . </li><li>  <a href="http://oauth.net/code/">Implementation of the OAuth protocol</a> in various programming languages. </li><li>  <a href="http://hueniverse.com/oauth/">Beginner's Guide to OAuth</a> : The article about OAuth in English, I highly recommend reading. </li></ul>  See also: <ul><li>  <a href="http://rutvit.ru/apps/new">http://rutvit.ru/apps/new</a> : registration of the application on the RuAvit OAuth server. </li><li>  <a href="">Full source code for</a> examples of this article. </li></ul></div><p>Source: <a href="https://habr.com/ru/post/77648/">https://habr.com/ru/post/77648/</a></p>
+ &lt;/ div&gt; </pre></td></tr></tbody></table><h2>  OAuth useful links </h2><ul><li>  <a href="http://dklab.ru/chicken/nablas/57.html">Original current article on dklab.ru</a> </li><li>  <a href="http://oauth.net/">The official OAuth website</a> . </li><li>  <a href="http://oauth.googlecode.com/svn/code/php/">OAuth.php by Andy Smith</a> . </li><li>  <a href="http://oauth.net/code/">Implementation of the OAuth protocol</a> in various programming languages. </li><li>  <a href="http://hueniverse.com/oauth/">Beginner's Guide to OAuth</a> : The article about OAuth in English, I highly recommend reading. </li></ul>  See also: <ul><li>  <a href="http://rutvit.ru/apps/new">http://rutvit.ru/apps/new</a> : registration of the application on the RuAvit OAuth server. </li><li>  <a href="">Full source code for</a> examples of this article. </li></ul></div><p>Source: https://habr.com/ru/post/77648/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -221,11 +221,11 @@
 <li><a href="../77644/index.html">Personal Cabinets are activated on all QIWI terminals (QIWI)</a></li>
 <li><a href="../77645/index.html">Russian users of pirated Windows XP will receive automatic notifications</a></li>
 <li><a href="../77646/index.html">Paper "Computerra" all</a></li>
+<li><a href="../7765/index.html">iGoogle - not only valuable fur, but also funny pictures</a></li>
 <li><a href="../77651/index.html">How we registered Ltd.</a></li>
 <li><a href="../77652/index.html">Computerra closes</a></li>
 <li><a href="../77653/index.html">Windows store programs as I see it</a></li>
 <li><a href="../77654/index.html">Webcam → Pixel Shaders → Fun</a></li>
-<li><a href="../77656/index.html">Strangeness with php-module Memcached</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

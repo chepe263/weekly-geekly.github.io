@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Zabbix: LLD monitoring of IPMI sensors</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/web/0ca/5e7/4b9/0ca5e74b95934153916cddfabe2e90c2.jpg"><br>  Hello everyone, my name is Andrew.  And I love "iron".  And I also love monitoring.  And finally, a real server with IPMI and other adult technologies appeared in my life.  And I hope there will be more.  That is what motivates me to search for universal solutions.  So: LLD detection of IPMI sensors. <br><br>  What do you get out of the box: <br><br><ul><li>  Detection of temperature, voltage, speed sensors </li><li>  <abbr title="Sensor Data Records">SDR</abbr> based <abbr title="Sensor Data Records">triggers</abbr> </li></ul><br><div class="spoiler">  <b class="spoiler_title">Well, it looks like this:</b> <div class="spoiler_text"><img src="https://habrastorage.org/web/5da/d59/d57/5dad59d570024b458dd3266cd4199258.jpg"><br></div></div><a name="habracut"></a><br>  Totally needed: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <ol><li>  Bash script </li><li>  Template </li><li>  Documentation or Internet to rename items </li></ol><br>  First of all, I’ll clarify that you should have a <a href="https://www.zabbix.com/documentation/3.2/ru/manual/config/items/itemtypes/ipmi">prepared</a> Zabbix 3.2 working server with the ipmitool utility installed, a configured IPMI node. <br><br><h3>  Script </h3><br>  It is executed on the server as an external check, therefore it must be located in the <i>externalscripts</i> folder that is specified in the server configuration.  In Ubuntu, the default is <i>/ usr / lib / zabbix / externalscripts</i> .  Do not forget to set the appropriate rights to execute this script. <br><br><div class="spoiler">  <b class="spoiler_title">ipmi.sh</b> <div class="spoiler_text"><div class="oembed"><script type="text/javascript" src="https://gist.github.com/836761acb4fca85ca3436ab636c2201a.js"></script><link rel="stylesheet" href="https://github.githubassets.com/assets/gist-embed-6a0c0e7fc2e433191d469ef5051df9f8.css"><div id="gist49059156" class="gist">
@@ -3026,13 +3026,13 @@
       </div>
     </div>
 </div>
-</div><br></div></div><br><h4>  Little about filtering </h4><br>  Not all sensors need to be read, this is a fact.  For example, why do I need a total stock (Agg Margin) for temperature?  For such cases, each detection has its own filter.  But alas, it is impossible to switch it to the "does not match" mode.  A possible solution is to use global <a href="https://www.zabbix.com/documentation/3.2/ru/manual/regular_expressions">regular expressions</a> (Result is FALSE).  The filter also adds the name of the expression with the @ symbol. <br><br>  For each of the discoveries I made for myself: IPMI-FAN, IPMI-VOLT, IPMI-TEMP (they do not fit into the template). <br><br><div class="spoiler">  <b class="spoiler_title">IPMI-FAN, IPMI-VOLT, IPMI-TEMP</b> <div class="spoiler_text"><img src="https://habrastorage.org/web/51a/62e/064/51a62e06454a4753985562e228900526.png"><br><br><img src="https://habrastorage.org/web/226/450/663/22645066323b4cad9de58516ec819a21.png"><br></div></div><br><h4>  Little about triggers </h4><br>  Values ​​for trigger conditions are taken from the SDR, that is, from the controller itself.  SDR fields contain 6 columns of thresholds: lower dangerous, lower critical, lower non-critical, upper non-critical, upper critical, upper dangerous.  If the value of one of the fields is missing, then the trigger is not created.  IMHO, the most logical way to change the trigger is to change the device's SDR fields to fit your needs.  How to do this - read the instructions for your controller or MP. <br><br><h3>  Total </h3><br>  My zabbix- <s>bikes</s> solutions and periodically refined.  This article presents a starting template.  And it was developed with a small margin for scalability.  For example, replacing the last variable in the key ipmi.sh [..], you can remove power, air flow, other indicators.  The application is limited by your ingenuity. </div><p>Source: <a href="https://habr.com/ru/post/330604/">https://habr.com/ru/post/330604/</a></p>
+</div><br></div></div><br><h4>  Little about filtering </h4><br>  Not all sensors need to be read, this is a fact.  For example, why do I need a total stock (Agg Margin) for temperature?  For such cases, each detection has its own filter.  But alas, it is impossible to switch it to the "does not match" mode.  A possible solution is to use global <a href="https://www.zabbix.com/documentation/3.2/ru/manual/regular_expressions">regular expressions</a> (Result is FALSE).  The filter also adds the name of the expression with the @ symbol. <br><br>  For each of the discoveries I made for myself: IPMI-FAN, IPMI-VOLT, IPMI-TEMP (they do not fit into the template). <br><br><div class="spoiler">  <b class="spoiler_title">IPMI-FAN, IPMI-VOLT, IPMI-TEMP</b> <div class="spoiler_text"><img src="https://habrastorage.org/web/51a/62e/064/51a62e06454a4753985562e228900526.png"><br><br><img src="https://habrastorage.org/web/226/450/663/22645066323b4cad9de58516ec819a21.png"><br></div></div><br><h4>  Little about triggers </h4><br>  Values ​​for trigger conditions are taken from the SDR, that is, from the controller itself.  SDR fields contain 6 columns of thresholds: lower dangerous, lower critical, lower non-critical, upper non-critical, upper critical, upper dangerous.  If the value of one of the fields is missing, then the trigger is not created.  IMHO, the most logical way to change the trigger is to change the device's SDR fields to fit your needs.  How to do this - read the instructions for your controller or MP. <br><br><h3>  Total </h3><br>  My zabbix- <s>bikes</s> solutions and periodically refined.  This article presents a starting template.  And it was developed with a small margin for scalability.  For example, replacing the last variable in the key ipmi.sh [..], you can remove power, air flow, other indicators.  The application is limited by your ingenuity. </div><p>Source: https://habr.com/ru/post/330604/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../330594/index.html">Ansible vs Salt (SaltStack) vs StackStorm</a></li>
 <li><a href="../330596/index.html">We write software that will hate</a></li>
 <li><a href="../330598/index.html">Time of the brave. How to migrate to the clouds without violating the requirements of regulators?</a></li>
+<li><a href="../3306/index.html">Social networks</a></li>
 <li><a href="../330600/index.html">The third IT conference GeekDay - three days of free programming workshops</a></li>
 <li><a href="../330602/index.html">Talk to me completely. Or how to get rid of cold hands at the interview</a></li>
 <li><a href="../330606/index.html">Recruitment for a Python course: why we think that Python 2.7. - this is serious, and Python 3 is fashionable</a></li>

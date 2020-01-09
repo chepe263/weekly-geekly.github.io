@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Scheduled post submissions (php, mongo, cron, regexp)</h1><div class="post__text post__text-html js-mediator-article"> Good day. <br><br>  Recently, I had to write a page to send posts on the walls of social networks.  The task was to post on the wall at a certain time and not immediately. <br><br>  I wrote a page with fields for selecting social networks, the text of the message and the field for entering the dispatch time.  In addition to the usual calendar with the choice of the date and time of sending, I added another field with the input of the criterion of sending according to the cron rule. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Template * * * * * <br><br>  After that, the question arose - how to get only the necessary fields to send? <br><a name="habracut"></a><br>  Cron is triggered every minute and causes the script to send posts, and every minute looking through the entire table of posts prepared for sending and comparing with the current date / time would be an extra operation. <br><br>  I use a MongoDB database, which can select all fields by regular expression.  Here is what I did: <br><br>  We take the current date and time and translate into an array <br><br> <code>$dateTime = explode(' ', date('i G jn w', time()));</code> <br> <br>  Next, we build a regular expression that selects records that are suitable for sending at the current time (current minute). <br><br> <code>$joe_search = new \MongoRegex( <br> '/^(\*|((\d{1,2}\,)|(\*\/))*('.($dateTime[0]*1).'){1}(\,\d{1,2})*)\s'. <br> '(\*|((\d{1,2}\,)|(\*\/))*('.($dateTime[1]).'){1}(\,\d{1,2})*)\s'. <br> '(\*|((\d{1,2}\,)|(\*\/))*('.($dateTime[2]).'){1}(\,\d{1,2})*)\s'. <br> '(\*|((\d{1,2}\,)|(\*\/))*('.($dateTime[3]).'){1}(\,\d{1,2})*)\s'. <br> '(\*|(([1-6]{1}\,)|(\*\/))*('.($dateTime[4]).'){1}(\,[1-6]{1})*)$/i' <br> )); <br> <br> $cursor = $collection-&gt;find(array("sendRule" =&gt; $joe_search)); <br></code> <br>  sendRule is the name of the field in the database that contains our cron rule. <br>  $ dateTime [0] (minutes) can be with zeros at the beginning (for example, 05 minutes), so we multiply them by 1 to remove zero. <br><br>  Tested * 1,12,20 7,8,12 * * / 3 (every minute 1.12 and 20 hours 7.8,12 of every month on Wednesday). <br><br>  That's all, then we cycle the resulting array and send everything we need. </div><p>Source: <a href="https://habr.com/ru/post/139586/">https://habr.com/ru/post/139586/</a></p>
+      Template * * * * * <br><br>  After that, the question arose - how to get only the necessary fields to send? <br><a name="habracut"></a><br>  Cron is triggered every minute and causes the script to send posts, and every minute looking through the entire table of posts prepared for sending and comparing with the current date / time would be an extra operation. <br><br>  I use a MongoDB database, which can select all fields by regular expression.  Here is what I did: <br><br>  We take the current date and time and translate into an array <br><br> <code>$dateTime = explode(' ', date('i G jn w', time()));</code> <br> <br>  Next, we build a regular expression that selects records that are suitable for sending at the current time (current minute). <br><br> <code>$joe_search = new \MongoRegex( <br> '/^(\*|((\d{1,2}\,)|(\*\/))*('.($dateTime[0]*1).'){1}(\,\d{1,2})*)\s'. <br> '(\*|((\d{1,2}\,)|(\*\/))*('.($dateTime[1]).'){1}(\,\d{1,2})*)\s'. <br> '(\*|((\d{1,2}\,)|(\*\/))*('.($dateTime[2]).'){1}(\,\d{1,2})*)\s'. <br> '(\*|((\d{1,2}\,)|(\*\/))*('.($dateTime[3]).'){1}(\,\d{1,2})*)\s'. <br> '(\*|(([1-6]{1}\,)|(\*\/))*('.($dateTime[4]).'){1}(\,[1-6]{1})*)$/i' <br> )); <br> <br> $cursor = $collection-&gt;find(array("sendRule" =&gt; $joe_search)); <br></code> <br>  sendRule is the name of the field in the database that contains our cron rule. <br>  $ dateTime [0] (minutes) can be with zeros at the beginning (for example, 05 minutes), so we multiply them by 1 to remove zero. <br><br>  Tested * 1,12,20 7,8,12 * * / 3 (every minute 1.12 and 20 hours 7.8,12 of every month on Wednesday). <br><br>  That's all, then we cycle the resulting array and send everything we need. </div><p>Source: https://habr.com/ru/post/139586/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../139573/index.html">COBOL: in search of fresh blood</a></li>
 <li><a href="../139575/index.html">What awaits us in the Joomla Framework 12.1</a></li>
 <li><a href="../139576/index.html">onlineMerchant: a convenient payment solution for online stores. Part I</a></li>
 <li><a href="../139578/index.html">Droider Chart. Release 90, synchronized</a></li>
+<li><a href="../139579/index.html">Martha, the geek girl</a></li>
 <li><a href="../139582/index.html">Include creative - submit an idea or ready-made application to the contest Your Business - Your Fame!</a></li>
 <li><a href="../139587/index.html">Why Facebook is not worth $ 100 billion (or what is a business)</a></li>
 <li><a href="../139588/index.html">How to choose a moment to send a letter</a></li>
 <li><a href="../139589/index.html">The whole truth about vertical scaling in PaaS and why you are overpaying for regular hosting</a></li>
+<li><a href="../13959/index.html">Million iPhone sold</a></li>
 <li><a href="../139590/index.html">How to convert Debian Wheezy (or newer) system to btrfs</a></li>
-<li><a href="../139591/index.html">Creating a DAG Cluster on Mailbox Exchange Servers</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

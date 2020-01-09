@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Tarantool Data and Protocol</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage/habraeffect/2b/a1/2ba146b32f80785509f123c8d0bf495a.gif"><br>  <a href="http://github.com/mailru/tarantool/wiki/Home_ru">Tarantool</a> is a great high-performance no-Sql solution developed by Mail.Ru.  <a href="http://github.com/mailru/tarantool/">Sources</a> <br><br>  This solution allows you to use both the key / value mode and the selection of multiple records into a recordset by one or several criteria (search fields).  Analogs in runet and not only, I have not yet met.  With a stretch you can compare radishes.  But in radish - list data and can not be selected by key.  Judging by the claims of the developers, the access speed by the key exceeds memcache, while in the badground it is constantly saving data to disk.  But unfortunately, this development has a single perl client for accessing data, which is why it does not have such popularity as, for example, in redis or memcache. <br><br>  In the doc / box-protocol sources there is a description of the Protocol, which I have currently revised to write the client in C and PHP.  Having studied the Protocol, you can implement a native client in your favorite language.  I hope this article is useful to you. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <a name="habracut"></a><br>  All data in this database is divided into namespace, most likely it is an analogue of the database in MySQL.  The numbering of all neymspeysov - digital (0, 1, 2, etc.).  You can impose a specific index on each namespace.  Indexing numbering is also digital.  Indices are superimposed on one or more fields.  The index can be of type HASH or TREE. <br><br>  All Indices and Neymspaces are registered in Config.  Below is an example where two indices are written, numeric and symbolic.  Moreover, the second composite index is: <code>namespace[0].enabled = 1 <br> namespace[0].index[0].type = "HASH" <br> namespace[0].index[0].unique = 1 <br> namespace[0].index[0].key_field[0].fieldno = 0 <br> namespace[0].index[0].key_field[0].type = "NUM" <br> namespace[0].index[0].key_field[1].fieldno = 1 <br> namespace[0].index[1].type = "TREE" <br> namespace[0].index[1].key_field[0].fieldno = 0 <br> namespace[0].index[1].key_field[0].type = "STR" <br> namespace[0].index[1].key_field[1].fieldno = 1 <br></code> <code>namespace[0].enabled = 1 <br> namespace[0].index[0].type = "HASH" <br> namespace[0].index[0].unique = 1 <br> namespace[0].index[0].key_field[0].fieldno = 0 <br> namespace[0].index[0].key_field[0].type = "NUM" <br> namespace[0].index[0].key_field[1].fieldno = 1 <br> namespace[0].index[1].type = "TREE" <br> namespace[0].index[1].key_field[0].fieldno = 0 <br> namespace[0].index[1].key_field[0].type = "STR" <br> namespace[0].index[1].key_field[1].fieldno = 1 <br></code> <br>  It should be noted about the keys.  The keys can be digital (1,2,3 ... 6.2 * 10 ^ 9) or symbolic. <br><br>  All data in neymspeys stored in the form of tuples.  A card is a collection of fields.  The field can be either numeric or symbolic. <br><br>  The exchange between the client and the server is carried out by Messages.  All Messages in tarantool Protocol are divided into Request Request and Response Response.  Each Message has a mandatory Header Header and may also have a Body. <br><br>  The Message Header includes: Message type, body length and request ID. <br><br>  Header Structure: <br><pre> &lt;blockquote&gt; typedef struct {
@@ -124,11 +124,11 @@
  } FqTuple; </pre></blockquote><br><br>  If the BOX_RETURN_TUPLE flag is set in the InsertRequest request, the response may contain the body: <br><blockquote><pre> typedef struct {
 	 int32_t count;
 	 FqTuple tuple;
- } InsertResponce; </pre></blockquote><br><br>  Similar is the response to the UPDATE request. <br><br>  Delete request returns the number of deleted records.  Since during deletion only the primary index is used, we can delete only one record, respectively, it will return 0 or 1. This is the count field of the Responce structure.  The structure also contains an array of data bytes for data analysis. <br><br>  <i>There may be some inaccuracies in the text, somewhere you can use int32_t instead of uint32_t.</i> <i><br></i>  <i>Maybe something I misunderstood, so I will be happy business criticism from the authors of this wonderful project.</i> </div><p>Source: <a href="https://habr.com/ru/post/118036/">https://habr.com/ru/post/118036/</a></p>
+ } InsertResponce; </pre></blockquote><br><br>  Similar is the response to the UPDATE request. <br><br>  Delete request returns the number of deleted records.  Since during deletion only the primary index is used, we can delete only one record, respectively, it will return 0 or 1. This is the count field of the Responce structure.  The structure also contains an array of data bytes for data analysis. <br><br>  <i>There may be some inaccuracies in the text, somewhere you can use int32_t instead of uint32_t.</i> <i><br></i>  <i>Maybe something I misunderstood, so I will be happy business criticism from the authors of this wonderful project.</i> </div><p>Source: https://habr.com/ru/post/118036/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../118029/index.html">HBO Go - HBO series on Android and iOS</a></li>
+<li><a href="../11803/index.html">The most unexpected startup</a></li>
 <li><a href="../118030/index.html">IE7 - browser for masochists</a></li>
 <li><a href="../118031/index.html">New wave of spam on Facebook</a></li>
 <li><a href="../118032/index.html">Wordrive understands himself and Apple reporting</a></li>
@@ -137,7 +137,7 @@
 <li><a href="../118041/index.html">LINQ for Java: LambdaJ</a></li>
 <li><a href="../118046/index.html">In Finland, Sony called for compensation for the removal of the OtherOS function from the PS3</a></li>
 <li><a href="../118047/index.html">Ruby on RHS ++</a></li>
-<li><a href="../118051/index.html">Web typography culture</a></li>
+<li><a href="../11805/index.html">AI from UGOBE. Already you can leave a pre-order on the Pleo.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

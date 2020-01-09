@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Rip out sms from GOIP for PHP</h1><div class="post__text post__text-html js-mediator-article">  Yes, the Asterisk in this article is only indirectly - the method (and script) is intended for further integration into it, depending on the tasks.  But there was no more successful hub. <br><br>  If you missed - specify, correct.  Thank! <br><br>  So, we have GOIP - GSM gateway.  There is an SMS server developed by the manufacturer, but I didn’t want to allocate resources for vds for a simple task, and it was designed (it makes sense) to work with several gateways and a good volume.  If we have one or two gateways, and we want to see the SMS “insofar - because” - this path may well make sense. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      In the webmord of the gateway, sms-ki are available in the section “Tools” =&gt; “SMS in box”.  Yes, yes, this question is not for me - for the Chinese :) <br>  The gateway stores 5 sms per channel. <br>  From there we will tear them out, a PHP script.  I will try to comment on what is happening in the source. <br><a name="habracut"></a><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-comment"><span class="hljs-comment">/*  SMS  GOIP whoim, whoim</span><span class="hljs-doctag"><span class="hljs-comment"><span class="hljs-doctag">@mail</span></span></span><span class="hljs-comment">.ru */</span></span> $goip_addr = <span class="hljs-string"><span class="hljs-string">"http://goip_external_ip:7454/"</span></span>; <span class="hljs-comment"><span class="hljs-comment"># (    )  goip. ,     , , 7454 =&gt; local_goip_addr:80 $goip_user = "admin"; $goip_password = "goip-password"; #     goip- $context = stream_context_create(array( 'http' =&gt; array( 'header' =&gt; "Authorization: Basic " . base64_encode("$goip_user:$goip_password") ) )); #   - html $data = file_get_contents($goip_addr."/default/en_US/tools.html?type=sms_inbox", false, $context); #    ,  $data = str_replace('\"', '"', $data); //fix #  sms  js-  html,  =  sim preg_match_all("|sms= \[(.*?)\]|is", $data, $sms_dump_arr); $sms = array(); #  -  " sim",   5 -,     .    csv. #      str_getcsv        . foreach($sms_dump_arr[1] as $sim_key =&gt; $sim_val) foreach(str_getcsv($sim_val) as $sms_key =&gt; $sms_val) { $sms[$sim_key][$sms_key] = explode(',', $sms_val, 3); # 0,1,2  , ,  . $sms[$sim_key][$sms_key][] = md5($sms_val); # 3    ,    sms-   } #  print_r($sms); ?&gt;</span></span></code> </pre> <br><br>  This script is a stub.  What to do with the data is your business.  I will check the hash if it is still in the database, and if not, put a nameplate in mysql.  This is necessary, because the page always contains the last 5 sms, that is - the data in the absence of changes will still be, watch for duplicates. <br><br>  Good luck! </div><p>Source: <a href="https://habr.com/ru/post/258561/">https://habr.com/ru/post/258561/</a></p>
+      In the webmord of the gateway, sms-ki are available in the section “Tools” =&gt; “SMS in box”.  Yes, yes, this question is not for me - for the Chinese :) <br>  The gateway stores 5 sms per channel. <br>  From there we will tear them out, a PHP script.  I will try to comment on what is happening in the source. <br><a name="habracut"></a><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-comment"><span class="hljs-comment">/*  SMS  GOIP whoim, whoim</span><span class="hljs-doctag"><span class="hljs-comment"><span class="hljs-doctag">@mail</span></span></span><span class="hljs-comment">.ru */</span></span> $goip_addr = <span class="hljs-string"><span class="hljs-string">"http://goip_external_ip:7454/"</span></span>; <span class="hljs-comment"><span class="hljs-comment"># (    )  goip. ,     , , 7454 =&gt; local_goip_addr:80 $goip_user = "admin"; $goip_password = "goip-password"; #     goip- $context = stream_context_create(array( 'http' =&gt; array( 'header' =&gt; "Authorization: Basic " . base64_encode("$goip_user:$goip_password") ) )); #   - html $data = file_get_contents($goip_addr."/default/en_US/tools.html?type=sms_inbox", false, $context); #    ,  $data = str_replace('\"', '"', $data); //fix #  sms  js-  html,  =  sim preg_match_all("|sms= \[(.*?)\]|is", $data, $sms_dump_arr); $sms = array(); #  -  " sim",   5 -,     .    csv. #      str_getcsv        . foreach($sms_dump_arr[1] as $sim_key =&gt; $sim_val) foreach(str_getcsv($sim_val) as $sms_key =&gt; $sms_val) { $sms[$sim_key][$sms_key] = explode(',', $sms_val, 3); # 0,1,2  , ,  . $sms[$sim_key][$sms_key][] = md5($sms_val); # 3    ,    sms-   } #  print_r($sms); ?&gt;</span></span></code> </pre> <br><br>  This script is a stub.  What to do with the data is your business.  I will check the hash if it is still in the database, and if not, put a nameplate in mysql.  This is necessary, because the page always contains the last 5 sms, that is - the data in the absence of changes will still be, watch for duplicates. <br><br>  Good luck! </div><p>Source: https://habr.com/ru/post/258561/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../258549/index.html">How I became the maintainer of one of the Perl modules on CPAN</a></li>
 <li><a href="../258553/index.html">Hewlett-Packard Webinars</a></li>
 <li><a href="../258555/index.html">How I left the university to develop my own game. Part 1</a></li>
 <li><a href="../258557/index.html">Video conferencing: the future is here</a></li>
 <li><a href="../258559/index.html">Where is the paradise or funny cases from Apple Review Team</a></li>
+<li><a href="../25856/index.html">Symfony Framework Workshop</a></li>
 <li><a href="../258565/index.html">Dynamic call queues in Asterisk</a></li>
 <li><a href="../258567/index.html">Are you a mammoth? (Friday test; which is a lie, but a hint in it)</a></li>
 <li><a href="../258569/index.html">Results of the project competition with the Aviasales API</a></li>
+<li><a href="../25857/index.html">Yandex.Metrica reports broken sites</a></li>
 <li><a href="../258571/index.html">Optical compensation</a></li>
-<li><a href="../258573/index.html">Image and video analysis. Detection of text on images</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

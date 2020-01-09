@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Separate speed of the mouse and touchpad in Linux.</h1><div class="post__text post__text-html js-mediator-article">  Hello, I am a happy laptop user <em>[asked not to advertise the brand]</em> .  In general, a wonderful machine, and one of the most Linux-compatible.  In America, they are sold with pre-installed ubuntas, so there is absolutely no problem with iron.  Everything works absolutely. <br><br>  But I got a little trouble.  Most of the time I use a mouse connected to usb, and I use the touchpad only when it is not possible to attach a rodent.  And being a little gamer-pontovoy, my mouse has a resolution of 1600dpi.  In other words: it is supersensitive. <br>  Of course, this is not a particular problem, since it is solved by reducing the sensitivity of the mouse pointer in the settings of the operating system.  But, after that, trouble begins, since it becomes almost impossible to use a touchpad with such settings (you have to run your finger five times to drag the cursor from one corner of the screen to another.) <br>  Actually, I had a task to separate the sensitivity settings for an external mouse and touchpad. <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Long-term googling and scrolling of the forums did not give a solution, although the guishy configurators of the touchpad, although they exist, do not provide such options.  Rescued me as a result of reading the driver documentation. <br><br>  So, everything is solved really very simply. <br>  Open the good old /etc/X11/xorg.conf <br><br>  If the touchpad driver is installed and configured, there should be an Input Device section that looks like this: <br><br><blockquote><code>Section "InputDevice" <br> Identifier "Synaptics Touchpad" <br> Driver "synaptics" <br> Option "SendCoreEvents" "true" <br> Option "Device" "/dev/psaux" <br> Option "Protocol" "auto-dev" <br> Option "SHMConfig" "true" <br> Option "HorizEdgeScroll" "0" <br> Option "MinSpeed" "0.7" <br> Option "MaxSpeed" "1.2" <br> Option "AccelFactor" "0" <br> EndSection <br> <br></code> </blockquote><br>  It is the last three lines, which most likely do not have your config and are responsible for the sensitivity of the touchpad: <br>  <strong>MinSpeed</strong> - while slowly moving your finger over the surface. <br>  <strong>MaxSpeed</strong> - respectively, when fast. <br>  <strong>AccelFactor</strong> - the degree of acceleration of the cursor. <br><br>  When adding these lines, the speed of moving the cursor using the touchpad (at least in my case) no longer depends on the general settings of the system, and is configured exclusively from here.  The speed of movement of the mouse - in the old manner. <br><br>  Additional information on other interesting touchpad parameters can be found <a href="http://linux.die.net/man/5/synaptics">here</a> .  Including about "hot corners" and imitation of the right click (will be useful for MacBook users) <br><br>  Thank you for your attention, I hope my note will be useful to you. </div><p>Source: <a href="https://habr.com/ru/post/27584/">https://habr.com/ru/post/27584/</a></p>
+      Long-term googling and scrolling of the forums did not give a solution, although the guishy configurators of the touchpad, although they exist, do not provide such options.  Rescued me as a result of reading the driver documentation. <br><br>  So, everything is solved really very simply. <br>  Open the good old /etc/X11/xorg.conf <br><br>  If the touchpad driver is installed and configured, there should be an Input Device section that looks like this: <br><br><blockquote><code>Section "InputDevice" <br> Identifier "Synaptics Touchpad" <br> Driver "synaptics" <br> Option "SendCoreEvents" "true" <br> Option "Device" "/dev/psaux" <br> Option "Protocol" "auto-dev" <br> Option "SHMConfig" "true" <br> Option "HorizEdgeScroll" "0" <br> Option "MinSpeed" "0.7" <br> Option "MaxSpeed" "1.2" <br> Option "AccelFactor" "0" <br> EndSection <br> <br></code> </blockquote><br>  It is the last three lines, which most likely do not have your config and are responsible for the sensitivity of the touchpad: <br>  <strong>MinSpeed</strong> - while slowly moving your finger over the surface. <br>  <strong>MaxSpeed</strong> - respectively, when fast. <br>  <strong>AccelFactor</strong> - the degree of acceleration of the cursor. <br><br>  When adding these lines, the speed of moving the cursor using the touchpad (at least in my case) no longer depends on the general settings of the system, and is configured exclusively from here.  The speed of movement of the mouse - in the old manner. <br><br>  Additional information on other interesting touchpad parameters can be found <a href="http://linux.die.net/man/5/synaptics">here</a> .  Including about "hot corners" and imitation of the right click (will be useful for MacBook users) <br><br>  Thank you for your attention, I hope my note will be useful to you. </div><p>Source: https://habr.com/ru/post/27584/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

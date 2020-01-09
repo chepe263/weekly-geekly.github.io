@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Know where the user came from</h1><div class="post__text post__text-html js-mediator-article"> When you open your <a href="http://www.askdev.ru/">project</a> you start writing about it everywhere, including in the <a href="http://habrahabr.ru/blogs/i_am_advertising/63791/">Habré</a> . <br><br>  Statistics services like Google Analytics will give you a general estimate of traffic, namely how many visitors came from which resource.  You can set goals (goals) and track registration or purchase, but this is often not enough. <br><br>  And what if you need statistics about where more active users come from or the users who created the most topics on the forum for a certain period of time, or made the most purchases in your online store.  There may be a lot of options, and such data analytics services can no longer be given. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,18 +61,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a><br><br>  To solve this problem, we just need to save the data on the resource where the user came from during registration. <br><br>  This data can be obtained, for example, from __utmz Google Analytics Cooks and recorded in some field in the database. <br><br>  A __utmz cookie value usually looks something like this. <br><br>  264345247.1261843448.2.3.utmcsr = habrahabr.ru | utmccn = (referral) | utmcmd = referral | utmcct = / blogs / i_am_advertising / 63791 / <br><br> <code>static function parseGoogleAnalyticsCookies(){ <br> $returnMap = array(); <br> $cookieVal = $_COOKIE["__utmz"]; <br> //now split cookie value by | <br> $arrPairs = explode('|', $cookieVal); <br> foreach($arrPairs as $pair){ <br> $pair = explode('=', $pair); <br> if (sizeof($pair) == 2){ <br> $key = $pair[0];//look for "." <br> if (strpos($key, ".")){ <br> $key = substr($key, strrpos($key, ".")+1 ); <br> } <br> <br> $returnMap[$key] = $pair[1]; <br> } <br> } <br> return $returnMap; <br> }</code> <br> <br>  This code will split the value of __utmz cookies into pairs and write to an associative array. <br><br>  Now when registering a user, you can get this data and record it with the new user. <br><br> <code>$newUser = $model-&gt;create(); <br> //.....  /    <br> $sourceCookiesData = GoogleAnalyticsCookies::parseGoogleAnalyticsCookies();//GoogleAnalyticsCookies    <br> if (isset($sourceCookiesData['utmcsr'])){ <br> $newUser-&gt;source = $sourceCookiesData['utmcsr']; <br> } <br> if (isset($sourceCookiesData['utmcct'])){ <br> $newUser-&gt;sourceUrl = $sourceCookiesData['utmcct']; <br> } <br> $newUser-&gt;save();</code> <br> <br>  We took utmcsr and utmcct which store the host and url of the referring page (there can be more than one page, so we write it down separately). <br><br>  Now all data is stored in the database and any statistics can be collected using simple SQL queries. <br><br>  In such a simple way, you can find out where the more targeted traffic is coming from and where to direct your efforts when moving. </div><p>Source: <a href="https://habr.com/ru/post/80000/">https://habr.com/ru/post/80000/</a></p>
+    <a name="habracut"></a><br><br>  To solve this problem, we just need to save the data on the resource where the user came from during registration. <br><br>  This data can be obtained, for example, from __utmz Google Analytics Cooks and recorded in some field in the database. <br><br>  A __utmz cookie value usually looks something like this. <br><br>  264345247.1261843448.2.3.utmcsr = habrahabr.ru | utmccn = (referral) | utmcmd = referral | utmcct = / blogs / i_am_advertising / 63791 / <br><br> <code>static function parseGoogleAnalyticsCookies(){ <br> $returnMap = array(); <br> $cookieVal = $_COOKIE["__utmz"]; <br> //now split cookie value by | <br> $arrPairs = explode('|', $cookieVal); <br> foreach($arrPairs as $pair){ <br> $pair = explode('=', $pair); <br> if (sizeof($pair) == 2){ <br> $key = $pair[0];//look for "." <br> if (strpos($key, ".")){ <br> $key = substr($key, strrpos($key, ".")+1 ); <br> } <br> <br> $returnMap[$key] = $pair[1]; <br> } <br> } <br> return $returnMap; <br> }</code> <br> <br>  This code will split the value of __utmz cookies into pairs and write to an associative array. <br><br>  Now when registering a user, you can get this data and record it with the new user. <br><br> <code>$newUser = $model-&gt;create(); <br> //.....  /    <br> $sourceCookiesData = GoogleAnalyticsCookies::parseGoogleAnalyticsCookies();//GoogleAnalyticsCookies    <br> if (isset($sourceCookiesData['utmcsr'])){ <br> $newUser-&gt;source = $sourceCookiesData['utmcsr']; <br> } <br> if (isset($sourceCookiesData['utmcct'])){ <br> $newUser-&gt;sourceUrl = $sourceCookiesData['utmcct']; <br> } <br> $newUser-&gt;save();</code> <br> <br>  We took utmcsr and utmcct which store the host and url of the referring page (there can be more than one page, so we write it down separately). <br><br>  Now all data is stored in the database and any statistics can be collected using simple SQL queries. <br><br>  In such a simple way, you can find out where the more targeted traffic is coming from and where to direct your efforts when moving. </div><p>Source: https://habr.com/ru/post/80000/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../79990/index.html">Codeigniter - we carry out sessions in Memcached</a></li>
-<li><a href="../79991/index.html">PayPal or is it RauRal?</a></li>
-<li><a href="../79993/index.html">Invites to the closed XBOX360 tracker</a></li>
 <li><a href="../79997/index.html">Online Password Manager</a></li>
 <li><a href="../79999/index.html">Do Americans dream about pepelats?</a></li>
+<li><a href="../80/index.html">"You are friends with ..."</a></li>
+<li><a href="../800/index.html">Rumors: iPhone will have two batteries</a></li>
+<li><a href="../8000/index.html">Long arm of the law</a></li>
 <li><a href="../80007/index.html">Make a quiet or silent box</a></li>
 <li><a href="../80009/index.html">IGF 2010 Finalists</a></li>
 <li><a href="../80010/index.html">Will Citrix Buy?</a></li>

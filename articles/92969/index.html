@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Kernel message handling</h1><div class="post__text post__text-html js-mediator-article"><h2>  Foreword </h2><br>  A terrible tale: <br><blockquote>  EDAC MC0: 1 CE read ECC error on CPU # 0 Channel # 1_DIMM # ​​0 (channel: 1 slot: 0) <br>  EXT4-fs error: ext4_wait_block_bitmap: 445: Cannot read block bitmap <br>  Out of memory: Kill process 95 (sshd) score 31 or sacrifice child <br>  CMCI storm detected: switching to poll mode <br>  page allocation failure: order: 1, mode: 0x4020 <br>  invalid opcode: 0000 [# 1] SMP <br></blockquote><br>  It looks bad, right?  The list <s>can be very long</s> very long.  In this article I will tell you how to live with it and what we did to it. <br><br>  Some of these messages in the examples above will make you plunge into the abysses of modern processor architecture (“CMCI storm”, good luck in finding the way back, from the wilds of the Internet) ... Strange things in the kernel may violate expectations about how computers work, making subsequent debugging very obstructed  The lack of knowledge about what happened may even leave with a sad answer, "some kind of unknown garbage, rebutted, it seems, has passed." <a name="habracut"></a><br><br>  Strange things can be divided into four groups: <br><ul><li>  Failure of the central equipment (including the processor. How do you get the message "Generic CACHE Level-2 Generic Error"?) </li><li>  Peripheral equipment failure (CMCI storm from network card? Fallen SAS HBA?) </li><li>  Core bugs </li><li>  Lack of resources </li></ul>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,7 +62,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Sometimes errors occur in sad path (a triad of concepts: happy path, sad path, bad path) is sad but predictable.  There is a meaningful code branch that reacts to this problem.  The kernel was divided into zero, the hard disk began to pour Buffer I / O error on device ... etc.  Most often, such errors either mean rebooting the server (ideally, automatic), or are processed in the software area (a single broken hard drive is not even a problem, but rebuild the raid after a replacement), or in the hardware (recoverable ECC error in memory).  Sometimes errors even go unnoticed (for example, IO error for a CD drive, a lone segmentation fault for a program that “has restarted and continues to work”). <br><br><h2>  Sad example </h2><br>  But sometimes errors are not processed in the “expected” way, but they bring the system into a state where “there has never been such a thing, and here it is again” (bad path). <br><br>  A living example from recent practice: the RAID controller on the server went offline and immediately came back (PCI bus reset by watchdog in the driver).  All arrays were discovered as “new” disks and received new letters, the same uuid remained.  Everything that was in the databag of the chef was mounted at the first opportunity along the same paths. <br><br>  The result was a construction, to put it mildly, not provided for by the Administrative Code: <br>  / dev / sda -&gt; / mountpoint (broken) <br>  / dev / sdd -&gt; / mountpoint (working) <br>  At the same time, the files that were opened on the “bat” version of / mountpoint gave IO error for any operations, and new files were created on the working / mountpoint.  Newfound readable files were also taken from there.  At the same time, the swap was on “bat” / dev / sda and fantastic messages could be observed: <br><pre> Read-error on swap-device (8: 0: 330471000)
@@ -78,7 +78,7 @@
  State: CRITICAL<font></font>
 <font></font>
  Date / Time: 01-23-2015 Additional Info: Jan 23 03:59:21 database1984 kernel: [15941700.780017] mce: [Hardware Error]: Machine check events logged
-</pre></div><p>Source: <a href="https://habr.com/ru/post/92969/">https://habr.com/ru/post/92969/</a></p>
+</pre></div><p>Source: https://habr.com/ru/post/92969/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -90,8 +90,8 @@
 <li><a href="../92971/index.html">Comparing the size of the game worlds</a></li>
 <li><a href="../92974/index.html">Project Qubrit (business card) - need Habrapas users advice</a></li>
 <li><a href="../92977/index.html">"National Information Policy: the base model" of UNESCO - now in Russian</a></li>
+<li><a href="../9298/index.html">Russian address search in Google Maps</a></li>
 <li><a href="../92980/index.html">About multiplexing technology for wireless technology</a></li>
-<li><a href="../92985/index.html">ViewSonic 3D projector, do you need it?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

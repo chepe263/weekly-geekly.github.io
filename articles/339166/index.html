@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to find the best flights in the interface of Google-table</h1><div class="post__text post__text-html js-mediator-article"><h2 id="nachalo">  Start </h2><br><p>  I often travel and buy tickets. <br>  And I also often suffer from the interface of air ticket aggregators. <br>  I can not choose a ticket and make a purchase. </p><br><h2 id="keys">  Case </h2><br><p>  I know exactly where I want to go. <br>  I know about how many days. <br>  And at about what dates - for example, this month. </p><br><p>  This time I wanted to fly to Serfaus - this is a ski village in Austria. <br>  Fly no earlier than January 5, return to later January 15.  For 6-8 days. </p><br><p>  Now you need to find the best ticket for these conditions. <br>  The “best” in my case is a combination of an objective price and subjective convenience of a flight — time of departure / arrival, airport of departure, airline, and so on. </p><br><h3 id="kak-keys-reshaetsya-u-agregatora-aviabiletov">  How is the case decided by the airline ticket aggregator </h3><br><ol><li>  Transforming the village of Serfaus into the three nearest airports - Munich, Innsbruck and Zurich with the help of Google maps. </li><li>  I go to the air ticket aggregator.  I find a tool like "Calendar of low prices." </li><li>  I open it in three tabs for three airports. </li><li>  I choose January. </li><li>  I start poking every day in January to see the time of departure / arrival and the price of the ticket. </li><li>  If I liked a ticket, I poke it to make sure that there is a ticket.  Because the cache. </li><li>  To memorize which day I liked which ticket, I write it down in a notebook or table. </li></ol><br><p>  In the last three points I suffer. <br>  Because I do not want to poke and check.  I do not want to switch between tabs. <br>  And I want to see really affordable tickets with departure time and price and choose one of them. <br>  And buy it. </p><br><p>  But, in the end, I do not find the right ticket for a psychologically comfortable time. <br>  And without making a purchase, I leave. </p><br><h3 id="kak-keys-dolzhen-reshatsya">  How should the case be solved </h3><br><ol><li>  I specify "Serfaus" in the "Where to" field in the aggregator. </li><li>  I choose approximate dates. </li><li>  I choose the appropriate duration. </li><li>  I get a list of tickets to buy. </li><li>  I choose the right ticket and buy. </li></ol><br><p>  ... there is no such scenario for aggregators. </p><a name="habracut"></a><br><h3 id="mysli">  Thoughts </h3><br><ul><li>  Aggregators do not know how to work with my script. </li><li>  We have 2017, web 3.0, * aas'y, microservices and generally soon to Mars. </li><li>  There is a million API to search for tickets, I will sip my blackjack. </li></ul><br><h3 id="poisk-resheniya">  Finding a solution </h3><br><p>  Half-hour googling showed that in 2017 there is no free API for searching for tickets. <br>  None of the aggregators. </p><br><ul><li>  But of course, there are a lot of affiliate programs, you say! </li><li>  Yes, there is a lot.  But they do not give access to the API either in general (put our banner / widget and pour traffic to our website), or give, but after an opaque procedure for moderating applications for access to the API. <br>  One of the largest services writes like this - fill out an application, we will think about 4 weeks, then we can answer. </li></ul><br><p>  Google has the only API available.  Called <a href="https://developers.google.com/qpx-express/">QPX Express</a> . </p><br><h2 id="reshenie">  Decision </h2><br><p>  With the help of QPX and Google App Script, in 70 minutes, an add-on was written to a Google table, which reads from it where you need to fly, searches for tickets, and writes all the price options to it. </p><br><p>  The result looks like this: <img src="https://habrastorage.org/webt/59/d2/61/59d261dce7584039557705.png" alt="image"></p><br><p>  At the top of the table I fill in from / to (IATA airport codes separated by commas) and in which date range I want to fly.  I indicate how many days (comma-separated) I am ready to spend on the trip. <br>  On the second half of the sheet, I get the result - a list of air tickets, ranked by price. <br>  On one sheet I have all the appropriate options for air travel. <br>  With the built-in filtering tools I can select the dates / time I need. </p><br><p>  It remains to go to the airline's website and buy a ticket. </p><br><h3 id="minus-resheniya">  Minus Solution </h3><br><p>  Minus the solution - access to the API costs money (the first 50 requests per day are free, then $ 0.035 for 1 request), so it wasn’t possible to create a microsite for everyone. </p><br><p>  While you can not drive a "Serfaus" in the "Where".  I think that this will be solved by one of the Google APIs. </p><br><h2 id="ya-tozhe-tak-hochu">  I want it too </h2><br><p>  If you want to look for tickets in the same way, <a href="https://github.com/MatveiFisenko/flights-search-qpx-gas">here is the</a> instruction how to do it. <br>  Just test the QPX API <a href="https://qpx-express-demo.itasoftware.com/">here</a> for free. </p><br><h2 id="chto-dalshe">  What's next </h2><br><p>  Hotel search is absolutely the same case, which closes just as uncomfortable. </p><br><p>  And the ideal service is the one that will give the best couple of hotel tickets by the given criteria of flexible search. </p><br><p>  If you know which services can give a free / paid API to search for tickets and / or hotels - write in the comment / PM. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,10 +64,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/339166/">https://habr.com/ru/post/339166/</a></p>
+    <p>Source: https://habr.com/ru/post/339166/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

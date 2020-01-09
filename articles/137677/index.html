@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Python sqlite3: Finding slow queries</h1><div class="post__text post__text-html js-mediator-article">  Hello colleagues! <br>  When working with sqlite databases, I had the task of finding slow queries and logging them. <br>  Having asked the omniscient Google, I unfortunately did not find a single <a href="http://stackoverflow.com/questions/6941992/how-can-i-log-queries-in-sqlite3-with-python">solution</a> (I was looking bad?). <br>  Therefore, I want to offer my own version of logging. <br>  UPD: Thanks for the hint, the native solution is called <a href="http://apidoc.apsw.googlecode.com/hg/connection.html">APSW</a> <br><br><img src="https://habrastorage.org/getpro/habr/post_images/56a/375/8ec/56a3758ec81e1f3bd410ff581b08a63b.png" alt="image"><br><a name="habracut"></a><br><br>  Counting the time of the request, we will keep at the cursor level. <br>  To do this, override this class by adding to it the count of the query execution time. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <blockquote>  <font color="#ff7700">import</font> sqlite3 <br>  <font color="#ff7700">import</font> <font color="#dc143c">time</font> <br><br>  <font color="#ff7700">class</font> mycursor <font>(</font> sqlite3. <font>Cursor</font> <font>)</font> : <br>  <font color="#ff7700">def</font> execute <font>(</font> <font color="#008000">self</font> , <font color="#66cc66">*</font> args, <font color="#66cc66">**</font> kwargs <font>)</font> : <br>  timestart = <font color="#dc143c">time</font> .  <font>clock</font> <font>(</font> <font>)</font> <br>  query = <font color="#008000">super</font> <font>(</font> mycursor, <font color="#008000">self</font> <font>)</font> .  <font>execute</font> <font>(</font> <font color="#66cc66">*</font> args, <font color="#66cc66">**</font> kwargs <font>)</font> <br>  idle = <font color="#dc143c">time</font> .  <font>clock</font> <font>(</font> <font>)</font> - timestart <br>  <font color="#ff7700">if</font> idle <font color="#66cc66">&gt;</font> = <font color="#ff4500">0.1</font> : <br>  <font color="#008000">file</font> = <font color="#008000">open</font> <font>(</font> <font color="#483d8b">"sqlite_slow.log"</font> , <font color="#483d8b">"a +"</font> <font>)</font> <br>  <font color="#008000">file</font> .  <font>write</font> <font>(</font> <font color="#66cc66">*</font> args <font>)</font> <br>  <font color="#008000">file</font> .  <font>write</font> <font>(</font> <font color="#483d8b">"IDLE ="</font> + <font color="#008000">str</font> <font>(</font> idle <font>)</font> + <font color="#483d8b">"n"</font> <font>)</font> <br>  <font color="#008000">file</font> .  <font>close</font> <font>(</font> <font>)</font> <br>  <font color="#ff7700">return</font> query <br></blockquote><br><br>  In this example, all requests that exceed 0.1 seconds will get into the log file.  Accordingly, if necessary, you can change the criterion. <br>  The call of the received cursor must be done as follows: <br><br><blockquote>  dbconnection = sqlite3.  <font>connect</font> <font>(</font> <font color="#483d8b">"some_slqite_base.db)</font> <font color="#483d8b"><br></font>  <font color="#483d8b">dbcursor = dbconnection.cursor (mycursor)</font> <font color="#483d8b"><br></font>  <font color="#483d8b">dbcursor.execute ("</font> SELECT <font color="#66cc66">*</font> FROM sqlite_master <font color="#483d8b">")</font> </blockquote><br><br>  The log file information is as follows: <br><br><blockquote>  insert into objects ('comment', 'xmlns', 'name') values ​​('Patch number 125124', 'http://oval.mitre.org/XMLSchema/oval-definitions-5#solaris', 'patch_object') IDLE = 1.5530665503253545 <br><br>  insert into advisory_cpe ('advisory_id', 'cpe_id') values ​​('665', '158') IDLE = 0.19326974126357754 </blockquote><br><br>  Where the IDLE value is the command execution time. <br>  Thank you for your time.  I hope you find this useful too. </div><p>Source: <a href="https://habr.com/ru/post/137677/">https://habr.com/ru/post/137677/</a></p>
+    <blockquote>  <font color="#ff7700">import</font> sqlite3 <br>  <font color="#ff7700">import</font> <font color="#dc143c">time</font> <br><br>  <font color="#ff7700">class</font> mycursor <font>(</font> sqlite3. <font>Cursor</font> <font>)</font> : <br>  <font color="#ff7700">def</font> execute <font>(</font> <font color="#008000">self</font> , <font color="#66cc66">*</font> args, <font color="#66cc66">**</font> kwargs <font>)</font> : <br>  timestart = <font color="#dc143c">time</font> .  <font>clock</font> <font>(</font> <font>)</font> <br>  query = <font color="#008000">super</font> <font>(</font> mycursor, <font color="#008000">self</font> <font>)</font> .  <font>execute</font> <font>(</font> <font color="#66cc66">*</font> args, <font color="#66cc66">**</font> kwargs <font>)</font> <br>  idle = <font color="#dc143c">time</font> .  <font>clock</font> <font>(</font> <font>)</font> - timestart <br>  <font color="#ff7700">if</font> idle <font color="#66cc66">&gt;</font> = <font color="#ff4500">0.1</font> : <br>  <font color="#008000">file</font> = <font color="#008000">open</font> <font>(</font> <font color="#483d8b">"sqlite_slow.log"</font> , <font color="#483d8b">"a +"</font> <font>)</font> <br>  <font color="#008000">file</font> .  <font>write</font> <font>(</font> <font color="#66cc66">*</font> args <font>)</font> <br>  <font color="#008000">file</font> .  <font>write</font> <font>(</font> <font color="#483d8b">"IDLE ="</font> + <font color="#008000">str</font> <font>(</font> idle <font>)</font> + <font color="#483d8b">"n"</font> <font>)</font> <br>  <font color="#008000">file</font> .  <font>close</font> <font>(</font> <font>)</font> <br>  <font color="#ff7700">return</font> query <br></blockquote><br><br>  In this example, all requests that exceed 0.1 seconds will get into the log file.  Accordingly, if necessary, you can change the criterion. <br>  The call of the received cursor must be done as follows: <br><br><blockquote>  dbconnection = sqlite3.  <font>connect</font> <font>(</font> <font color="#483d8b">"some_slqite_base.db)</font> <font color="#483d8b"><br></font>  <font color="#483d8b">dbcursor = dbconnection.cursor (mycursor)</font> <font color="#483d8b"><br></font>  <font color="#483d8b">dbcursor.execute ("</font> SELECT <font color="#66cc66">*</font> FROM sqlite_master <font color="#483d8b">")</font> </blockquote><br><br>  The log file information is as follows: <br><br><blockquote>  insert into objects ('comment', 'xmlns', 'name') values ​​('Patch number 125124', 'http://oval.mitre.org/XMLSchema/oval-definitions-5#solaris', 'patch_object') IDLE = 1.5530665503253545 <br><br>  insert into advisory_cpe ('advisory_id', 'cpe_id') values ​​('665', '158') IDLE = 0.19326974126357754 </blockquote><br><br>  Where the IDLE value is the command execution time. <br>  Thank you for your time.  I hope you find this useful too. </div><p>Source: https://habr.com/ru/post/137677/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,11 +73,11 @@
 <li><a href="../137672/index.html">Handling all exceptions in controllers using an attribute</a></li>
 <li><a href="../137673/index.html">Satellite speedometer on STM32F1 and FreeRTOS</a></li>
 <li><a href="../137674/index.html">7app chart # 10</a></li>
+<li><a href="../137678/index.html">We collect sensor readings from an Android smartphone</a></li>
 <li><a href="../137679/index.html">Windows v Enikey</a></li>
 <li><a href="../137680/index.html">Comparing Objects in C # .NET</a></li>
 <li><a href="../137681/index.html">Hello world on ESB Toolkit</a></li>
 <li><a href="../137682/index.html">Javascript Prefix Trees</a></li>
-<li><a href="../137684/index.html">D-Link PowerLine: DHP-306AV Review</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

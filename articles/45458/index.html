@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>RESTful routing</h1><div class="post__text post__text-html js-mediator-article">  In the <a href="http://habrahabr.ru/blogs/ruby/45377/">last article</a> about routs, I haven’t written a lot about anything yet, but <a href="https://habrahabr.ru/users/iskin/" class="user_link">Iskin</a> noticed that I didn’t write anything about RESTful routing.  This is a very important part of routing on rails.  I did not have a general picture of REST, there were only general ideas taken out of here.  So I decided to tackle it more fundamentally. <br><br>  There is a lot of literature, but it is certainly not translated.  And there are a couple of screencasts that I viewed: <br>  <a href="http://railscasts.com/episodes/35-custom-rest-actions">Screencast №35 "Custom REST Actions" Ryan Bates</a> <br>  <a href="http://www.rubyplus.org/episodes/93-RESTful-Rails.html">Screencast number 93 "RESTful Rails" Bala Paranzh</a> - it is more solid and is a lecture at the university hour.  He also has Indian English =). <br>  <a href="http://www.taknado.com/2007/8/31/rest-on-rails">Excellent translation of articles about REST</a> <br><br><a name="habracut"></a>  '/&gt; <br><h1>  REST </h1><br>  REpresentational State Transfer of Resources <br>  For the sake of simplicity, I will formulate as follows: this is such a system of link organization.  And links are client-server requests.  And requests is first of all HTTP method! 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       <b>REST is more than just reference systems, but practical use on rails is precisely the creation of queries and work with resources.</b> <br><br>  In the old days, it never occurred to me to specify the request method in a link (in the form it is another matter, and that was limited to GET and POST).  Now to help us we have (of course, they were before) four HTTP methods: GET, POST, PUT, DELETE.  Now the main thing is not the controller methods, but the HTTP methods. <br><br>  Another news: URLs are no longer for us.  Now we use the URI - Uniform Resource Identifier - link to the resource.  The RESTful path specifies the URI and HTTP method. <br><br>  For example, we have a resource - books (books).  Each book corresponds to its unique ID.  The link to delete, view and update data of some instance (c ID = 1, say) will look like this: <br><br> <code>mysite/books/1</code> <br> <br>  But how does the program understand which of the three actions we want to perform?  This is where the HTTP method comes in: <br><br>  GET mysite / books / 1 - show us information about the book with ID = 1 <br>  POST mysite / books / 1 - update book info <br>  DELETE mysite / books / 1 - will delete a book <br><br>  Rail link will look like (delete, let's say) like this: <br><br> <code>&lt;%= link_to 'Delete book', book_url(ID), :method =&gt; :delete %&gt;</code> <br> <br><h1>  Magic </h1><br>  Such routes are not taken from the air, but are written in the routes.rb configuration file. <br><br>  # routes.rb <br> <code>map.resources :books</code> <br> <br>  This short line will create for us seven standard routes: <br><pre> # HTTP path_var path action
@@ -73,20 +73,20 @@
    GET antique_books_path / books / antique antique </pre><br>  There are two options for resources:: member and: collection.  In this case, our method works (returns) a collection — a list of books (that is, many books, although it may not return any), so we use the: collection option.  In addition, since antique _ returns a list to us, we must use the HTTP GET method.  If this is difficult to understand, then you can act by analogy: our method essentially does the same thing as the index method - it means that their HTTP methods should be the same. <br><br> <code>#routes.rb <br> map.resources :books, :collection =&gt; { :antique =&gt; :get }</code> <br> <br>  Now create two more methods: <br>  fire - burn all foleanty <br>  repeblish - republish a book <br>  Then the routes will look like this: <br><br> <code>#routes.rb <br> map.resorces :books, :collection =&gt; { :antique =&gt; :get, :fire =&gt; :delete}, :member =&gt; { :republish =&gt; :put }</code> <br> <br><pre> # HTTP path_var path action
    GET antique_books_path / books / antique antique
    DELETE fire_books_path / books fire
-   PUT book_path (id) / books / id republish </pre><br>  Why does republish use the PUT method?  Because it updates the data (analogue update) <br>  Why does fire_books_path use the DELETE method?  Because it deletes (analog of destroy) <br><br><h1>  Warm up </h1><br>  And now let's look at the following links and think about why they are not RESTful and how to make them RESTful <br><br> <code>1. GET /books/edit <br> 2. DELETE /books/1/update <br> 3. DELETE /books/1/destroy</code> <br> <br>  1. If we are editing something, then we are obliged to specify the ID (do not forget that everything is a link to the resource! URI!).  Therefore, it would be correct to write <br>  GET / books / 1 / edit <br><br>  2. To update the data, we use the PUT method, not the DELETE method.  To coma, an indication of the HTTP method is sufficient, therefore an indication of the update method is superfluous <br>  PUT / books / 1 <br><br>  3. Again, specifying the controller method is superfluous. <br>  DELETE / books / 1 <br><br>  And now let's discuss what is missing here =) </div><p>Source: <a href="https://habr.com/ru/post/45458/">https://habr.com/ru/post/45458/</a></p>
+   PUT book_path (id) / books / id republish </pre><br>  Why does republish use the PUT method?  Because it updates the data (analogue update) <br>  Why does fire_books_path use the DELETE method?  Because it deletes (analog of destroy) <br><br><h1>  Warm up </h1><br>  And now let's look at the following links and think about why they are not RESTful and how to make them RESTful <br><br> <code>1. GET /books/edit <br> 2. DELETE /books/1/update <br> 3. DELETE /books/1/destroy</code> <br> <br>  1. If we are editing something, then we are obliged to specify the ID (do not forget that everything is a link to the resource! URI!).  Therefore, it would be correct to write <br>  GET / books / 1 / edit <br><br>  2. To update the data, we use the PUT method, not the DELETE method.  To coma, an indication of the HTTP method is sufficient, therefore an indication of the update method is superfluous <br>  PUT / books / 1 <br><br>  3. Again, specifying the controller method is superfluous. <br>  DELETE / books / 1 <br><br>  And now let's discuss what is missing here =) </div><p>Source: https://habr.com/ru/post/45458/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../45449/index.html">Opera mini Mod</a></li>
-<li><a href="../45451/index.html">Notebook furniture</a></li>
-<li><a href="../45453/index.html">iLike is looking for a buyer</a></li>
-<li><a href="../45454/index.html">Vahu.Ru - Portal about products and companies</a></li>
 <li><a href="../45457/index.html">Revived nightmares: "Get your own monster"</a></li>
+<li><a href="../454570/index.html">Recreating an old DOS game in C ++ 17</a></li>
+<li><a href="../454574/index.html">Machine learning in microfinance: building a scoring model for customers with a blank credit history</a></li>
+<li><a href="../454576/index.html">GandCrab authors stop working: they claim they stole enough</a></li>
+<li><a href="../454578/index.html">How to connect the PhotoSwipe gallery in WebView android</a></li>
+<li><a href="../454584/index.html">Interface development school: analysis of tasks for Minsk and a new set in Moscow</a></li>
+<li><a href="../454586/index.html">Solving Japanese crosswords with P̶y̶t̶h̶o̶̶n̶ Rust and WebAssembly</a></li>
+<li><a href="../454588/index.html">Gazprom Neft invites: GPN Data Science Meetup</a></li>
 <li><a href="../45459/index.html">Creating splash screen in .net 3.5 SP1</a></li>
-<li><a href="../45460/index.html">All the flaws of non-click sites</a></li>
-<li><a href="../45463/index.html">Too easy.</a></li>
-<li><a href="../45465/index.html">Best startups in November</a></li>
-<li><a href="../45467/index.html">How to promote your video on YouTube</a></li>
+<li><a href="../454590/index.html">Zimbra Collaboration Suite and Mobile Device Control with ABQ</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

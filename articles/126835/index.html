@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Software sound generation</h1><div class="post__text post__text-html js-mediator-article"> Sound can be represented as an infinite number of waves of different frequencies <br>  and amplitudes.  Waves, in turn, can have almost any shape. <br>  The most common and most commonly used ones are: sinusoidal (sine), square (square), sawy (saw), triangular (triangle), and noise (noise).  First, let's try to understand the basic parameters of the wave: the period and amplitude. <br><br><a name="habracut"></a><br><br>  Frequency (measured in hertz) - the number of periods per second.  For example, at a frequency of 44100Hz, the number of periods is 44100. Now, when the basic terms have been studied, we proceed directly to the wave generation algorithm. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      1) Sine wave <br><br> <code>float samplerate; //   <br> float wavefrequency; //   <br> float wavevolume; //   <br> <br> float period=samplerate/wavefrequency/2; //   <br> float pi=3.14; // pi <br> int n; <br> <br> for(int a=0;a&lt;samplelenght;a++) //     <br> { <br> n=wavevolume*sin(a*pi/period); // sine- <br> buffer[a]=n; //     <br> }</code> <br> <br>  For example, we need to get a 16-kilobyte sinusoidal sound with a frequency of 1000Hz and the quality of the sample should be 44100Hz, then our parameters will have the following values: samplerate = 44100, wavefrequency = 1000, samplelenght = 16384. <br><br>  The wavevolume parameter requires special explanation.  It has long been known that sound quality is proportional to its bit-rate (8-bit, 16-bit, 24-bit, etc.).  For 8-bit - a value from 0..255, for 16 - 0 ... 65536, for 24-x - 0 ... 16777216.  Which to choose?  It depends on what your task is, but less than 16, I would not advise (although there are exceptions - when it is necessary to reduce the volume of the sample instead of quality). <br><br>  2) Sawtooth wave (saw) <br><br> <code>float sr_2m=samplerate/wavefrequency; //  <br> int c=0; //    <br> //   <br> <br> for(int a=0;a&lt;samplelenght;a++) //    <br> { <br> if(c&gt;=sr_2m) c=0; //  ,    <br> buffer[a]=wavevolume*(c/period)-wavevolume; //  <br> c++; <br> }</code> <br> <br>  3) Triangular <br><br> <code>float period=samplerate/wavefrequency/2; //   <br> int c=period*2; <br> int c2=-1; <br> float sr_2m=period; <br> float sr=samplerate/wavefrequency/4; <br> <br> for(int a=0;a&lt;samplelenght;a++) <br> { <br> if(c&gt;sr_2m) c=sr_2m,c2=-1; <br> if(c&lt;0) c=0,c2=1; <br> buffer[a]=wavevolume*(c/sr)-wavevolume; <br> c+=c2; <br> }</code> <br> <br><br>  4) Noise (noise) <br><br> <code>srand(wavevolume); <br> s1=mv.samplerate/wor,psc=s1+1,wov&gt;&gt;=7; <br> <br> if(tabcnt==0) <br> { <br> for(ps=0;ps&lt;mv.samplelenght;ps++) <br> { <br> if(psc&gt;s1) <br> { <br> psc-=s1; <br> n=256*((rand()%(wov+1))-wov/2); <br> } <br> buffer[ps]=n; <br> psc++; <br> } <br> } <br></code> <br><br>  Now we will complicate the task - we will add two waves of different frequency and amplitude. <br><br>  ... <br> <code>char buffer[16384]; <br> <br> float tone1=65,tone2=131; <br> float samplerate=44100/2; //   <br> int a,b,amp1=128,amp2=64; <br> <br> for(a=0;a&lt;16384;a++) <br> { <br> b=amp1*sin(a*pi/samplerate/tone1)+amp2*sin(a*pi/samplerate/tone2); <br> if(b&gt;128) b=128; <br> if(b&lt;-128) b=-128; <br> buffer[a]=b; <br> }</code> <br>  ... <br><br>  With this sample you can already write melodies.  Basically, this is the basis of wave <br>  synthesis with which you can create any sound. <br><br>  And finally, a couple of tips: <br><br>  1) To get a richer sound, add waves with different <br>  Forms: sine + square, triangle + saw, or such a monster: saw + square + <br>  triangle + saw. <br>  2) Percussion (hat) is best obtained by adding noise + sine. </div><p>Source: <a href="https://habr.com/ru/post/126835/">https://habr.com/ru/post/126835/</a></p>
+      1) Sine wave <br><br> <code>float samplerate; //   <br> float wavefrequency; //   <br> float wavevolume; //   <br> <br> float period=samplerate/wavefrequency/2; //   <br> float pi=3.14; // pi <br> int n; <br> <br> for(int a=0;a&lt;samplelenght;a++) //     <br> { <br> n=wavevolume*sin(a*pi/period); // sine- <br> buffer[a]=n; //     <br> }</code> <br> <br>  For example, we need to get a 16-kilobyte sinusoidal sound with a frequency of 1000Hz and the quality of the sample should be 44100Hz, then our parameters will have the following values: samplerate = 44100, wavefrequency = 1000, samplelenght = 16384. <br><br>  The wavevolume parameter requires special explanation.  It has long been known that sound quality is proportional to its bit-rate (8-bit, 16-bit, 24-bit, etc.).  For 8-bit - a value from 0..255, for 16 - 0 ... 65536, for 24-x - 0 ... 16777216.  Which to choose?  It depends on what your task is, but less than 16, I would not advise (although there are exceptions - when it is necessary to reduce the volume of the sample instead of quality). <br><br>  2) Sawtooth wave (saw) <br><br> <code>float sr_2m=samplerate/wavefrequency; //  <br> int c=0; //    <br> //   <br> <br> for(int a=0;a&lt;samplelenght;a++) //    <br> { <br> if(c&gt;=sr_2m) c=0; //  ,    <br> buffer[a]=wavevolume*(c/period)-wavevolume; //  <br> c++; <br> }</code> <br> <br>  3) Triangular <br><br> <code>float period=samplerate/wavefrequency/2; //   <br> int c=period*2; <br> int c2=-1; <br> float sr_2m=period; <br> float sr=samplerate/wavefrequency/4; <br> <br> for(int a=0;a&lt;samplelenght;a++) <br> { <br> if(c&gt;sr_2m) c=sr_2m,c2=-1; <br> if(c&lt;0) c=0,c2=1; <br> buffer[a]=wavevolume*(c/sr)-wavevolume; <br> c+=c2; <br> }</code> <br> <br><br>  4) Noise (noise) <br><br> <code>srand(wavevolume); <br> s1=mv.samplerate/wor,psc=s1+1,wov&gt;&gt;=7; <br> <br> if(tabcnt==0) <br> { <br> for(ps=0;ps&lt;mv.samplelenght;ps++) <br> { <br> if(psc&gt;s1) <br> { <br> psc-=s1; <br> n=256*((rand()%(wov+1))-wov/2); <br> } <br> buffer[ps]=n; <br> psc++; <br> } <br> } <br></code> <br><br>  Now we will complicate the task - we will add two waves of different frequency and amplitude. <br><br>  ... <br> <code>char buffer[16384]; <br> <br> float tone1=65,tone2=131; <br> float samplerate=44100/2; //   <br> int a,b,amp1=128,amp2=64; <br> <br> for(a=0;a&lt;16384;a++) <br> { <br> b=amp1*sin(a*pi/samplerate/tone1)+amp2*sin(a*pi/samplerate/tone2); <br> if(b&gt;128) b=128; <br> if(b&lt;-128) b=-128; <br> buffer[a]=b; <br> }</code> <br>  ... <br><br>  With this sample you can already write melodies.  Basically, this is the basis of wave <br>  synthesis with which you can create any sound. <br><br>  And finally, a couple of tips: <br><br>  1) To get a richer sound, add waves with different <br>  Forms: sine + square, triangle + saw, or such a monster: saw + square + <br>  triangle + saw. <br>  2) Percussion (hat) is best obtained by adding noise + sine. </div><p>Source: https://habr.com/ru/post/126835/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -76,8 +76,8 @@
 <li><a href="../126836/index.html">A modest wish for Windows 8 - system spell checker</a></li>
 <li><a href="../126837/index.html">All-terrain vehicle from China</a></li>
 <li><a href="../126839/index.html">Everything about Chrome OS on OsByGoogle.com</a></li>
+<li><a href="../12684/index.html">So in most cases, formulate the task for Web developers.</a></li>
 <li><a href="../126840/index.html">A simple way to get around local proxy restrictions</a></li>
-<li><a href="../126841/index.html">What is Prey and how it hunts for your computer</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

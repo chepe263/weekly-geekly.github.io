@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Deploy billing for a small network from scratch</h1><div class="post__text post__text-html js-mediator-article">  <b>Background</b> : <br>  Some good people decided to start a provider business.  Stretched and unwound the optics in a small area, put the boxes, put there minimal switches with which you can organize VLAN-Per-User, bought a small, for a start, channel from the nearest highway.  They have a question about what users should consider traffic / money and cut speeds. <br>  The general network layout should look like this: <br><br><img src="https://habrastorage.org/storage1/8fd86e8c/d6da58eb/9052dab5/9b72b429.png"><br><br>  To whom it is interesting, further under the cut there are a lot of letters and pictures. <br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       <b>Conventions</b> : <br>  - Gateway uplink will be 1.2.3.3 <br>  - NAS network adapters looking at the uplink will be on the network 1.2.3.3/24 <br>  - The network provided to users will be 172.16.0.0/18, or, if you like, 255.255.192.0 <br>  - we reserve IP addresses 172.16.0.0-172.16.0.10 for access servers and other own needs <br>  - The user statistics server will be available at <a href="http://stat.isp/">stat.isp</a> and, taking into account the budget of the solution, will be located on the same host as the billing server, although it is good practice not only to separate the billing and subscriber traffic, but also to distribute the database, the billing core and the web to separate hosts. -interface. <br><br>  <b>Initial requirements were clearly stated:</b> <br>  - Design network capacity - up to 10,000 subscribers <br>  - Distribution of IP to subscribers using DHCP <br>  - Authorization or on a bunch of IP + MAC <br>  - Several fully unlimited fares <br>  - Traffic is still necessary to control <br>  - It is very desirable to see the activity of each individual user. <br>  - The division of the rights of cashiers / accountants / managers / administrators <br>  - Ability to scale decisions regarding the growth in the number of subscribers <br>  “Since there is no speaker yet, and there are three and a half ip cards issued by an aplink, the first users are supposed to be NAT. <br>  - Naturally, all this is the most budget :) <br>  A cursory examination of the range of opensource billing systems showed that <a href="http://stg.dp.ua/">Stargazer</a> might be optimal in this situation for the following reasons: <br>  - The project is open, actively developing, new versions are released with enviable consistency. <br>  - It does not suffer from congenital monostroid and allows you to finish the functional without becoming attached to the internal mechanics <br>  - The kernel is written in C / C ++ and absolutely fast <br>  - A large selection of methods for counting traffic <br>  - Optional storage support in Files / MySQL / Firebird / PostgreSQL <br>  - The magic mechanism for executing commands on remote servers <br>  The installation will run on the bare FreeBSD 8.2-RELEASE installed in the kern-developer + ports option.  All user traffic will be driven through a remote NAS to all <br>  the same FreeBSD 8.2, producing NAT / Shape / NetFlow and drawing schedules for the subscriber channel using bandwidthd.  As a webinterface for stargazer 2.407-p1, we will be the last one at the time of writing the topic Ubilling 0.1.7, although Stargazer has a wide choice of frontends - from the Win-configurator to several console and XML-RPC API. <br>  Further direct copy-paste from the console with periodic focus on conceptual points. <br><br>  <b>So let's start setting up the billing server</b> . <br><br>  1. Moral prepare <br>  2. Installing dependencies <br><pre>   # cd / usr / ports / databases / mysql51-server / &amp;&amp; make install
@@ -361,7 +361,7 @@
 </pre><br>  And as a final touch, we add more or less universal things that help to somehow improve the speed in future in /etc/sysctl.conf <br><pre> net.inet.ip.fw.one_pass = 1 
  net.inet.ip.fastforwarding = 1 
  net.inet.tcp.nolocaltimewait = 1
-</pre><br>  After a reboot, we get a working NAS, remotely receiving commands from the billing system, sending it traffic information and everything else that was required of it. <br>  I would also like to write about setting up a user account, undocumented "features" with the transition to the next month and other things that you can stumble at first.  But the article was already too monstrous and boring.  I promise, if karma allows, to describe all these things in a separate legend in a week. <br><br>  <a href="http://stg.dp.ua/">Offsite Stargazer</a> <br>  <a href="http://ubilling.net.ua/">Offsite Ubilling</a> </div><p>Source: <a href="https://habr.com/ru/post/130937/">https://habr.com/ru/post/130937/</a></p>
+</pre><br>  After a reboot, we get a working NAS, remotely receiving commands from the billing system, sending it traffic information and everything else that was required of it. <br>  I would also like to write about setting up a user account, undocumented "features" with the transition to the next month and other things that you can stumble at first.  But the article was already too monstrous and boring.  I promise, if karma allows, to describe all these things in a separate legend in a week. <br><br>  <a href="http://stg.dp.ua/">Offsite Stargazer</a> <br>  <a href="http://ubilling.net.ua/">Offsite Ubilling</a> </div><p>Source: https://habr.com/ru/post/130937/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -371,10 +371,10 @@
 <li><a href="../130935/index.html">How to bypass the security code on ipad2 using the smart cover</a></li>
 <li><a href="../130936/index.html">Making Releases with Maven in Java</a></li>
 <li><a href="../130938/index.html">How does knowing MVP help save a startup time and effort?</a></li>
+<li><a href="../13094/index.html">Hardened Gentoo: description</a></li>
 <li><a href="../130943/index.html">Logitech Squeezebox Radio - for those who love radio and the Internet</a></li>
 <li><a href="../130945/index.html">Dynamic programming and lazy computing</a></li>
 <li><a href="../130946/index.html">Ants AI Challenge. Tutorial novice bosses</a></li>
-<li><a href="../130947/index.html">As a web studio does not quarrel with the customer</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

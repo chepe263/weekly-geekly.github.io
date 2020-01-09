@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>WeakRef - proposal for adding to ECMAScript standard</h1><div class="post__text post__text-html js-mediator-article"><p>  <i>I wrote a small post in my telegram channel.</i>  <i>Thought it might be interesting to Habr's readers.</i> </p><br><p>  Recently, an article on the V8 blog devoted to WeakRef (Stage 3) - "Weak references and finalizers". </p><br><p> I will try to explain in my own words its essence with an example.  Imagine that some kind of image processing takes place in your browser, for example, a watermark is superimposed on them (I agree, the example is not very realistic), and then these images are somehow used.  The watermark is superimposed by a function that consumes the CPU intensively.  Images can be repeated, therefore, in order not to load the processor once again, we create a cache of images with a watermark in the <code>Map</code> ; the key is the name of the image file.  But here a problem arises, if some image will not be used by us, it will still be in memory, since the <code>Map</code> will refer to it by a key (strong reference).  Therefore, in order for our <code>Map</code> not to wipe out excess memory, it is necessary to somehow determine such situations and clean the cache with our hands.  This is not very convenient. </p><a name="habracut"></a><br><p>  This is where WeakRef comes to the rescue.  With WeakRef, you can create a weak link to an image and write it down by key instead of the image itself: </p><br><pre> <code class="plaintext hljs">const wr = new WeakRef(image); cache.set(name, wr); //    const ref = cache.get(name); const image = ref.deref();</code> </pre> <br><p>  In this case, the garbage collector will be able to independently determine situations when the image in the cache is no longer needed and clear the memory.  To clear the keys from the Map in proposal, it is proposed to use the additional API FinalizationGroup. </p><br><p>  Interesting fact.  At the very beginning of the article a small overview is given of those already included in the standard WeakMap and WeakSet.  It turns out that the most formal name for the relationship used in WeakMap is Ephemeron. </p><br><p>  <a href="https://v8.dev/features/weak-references">https://v8.dev/features/weak-references</a> </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/460297/">https://habr.com/ru/post/460297/</a></p>
+    <p>Source: https://habr.com/ru/post/460297/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

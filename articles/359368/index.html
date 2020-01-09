@@ -30,12 +30,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -57,7 +57,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Depla webpack applications on github.io using Travis CI</h1><div class="post__text post__text-html js-mediator-article"><h1 id="zadacha">  Task </h1><br><p> There is an application generated using <code>create-react-app</code> .  Need to deploy it on github.io. </p><br><p>  The problem is that Github Pages only works with static code and Jekyll. </p><a name="habracut"></a><br><h1 id="reshenie">  Decision </h1><br><p>  Of course, it's enough for us to simply compile the application somewhere else and then upload it on github.io </p><br><p>  Travis CI was the perfect match for this task.  as it turned out, he has the possibility of deploying a github out of the box (no need to quit and write complex scripts for this). </p><br><p>  I started two repositories: </p><br><ul><li>  Application code </li><li>  A repository with a compiled version that github.io uses </li></ul><br><h3 id="kak-proishodit-ruchnoy-deploy">  How is the manual deployment </h3><br><ol><li>  Compile code ( <code>yarn build</code> ) </li><li>  In the folder of the second repository do <code>git rm -r .</code>  - this will remove all files (cap). </li><li>  Copy the compiled code into the second repository ( <code>cp -r build/ ../compiled-app</code> ) </li><li> <code>git add .</code> </li> <li> <code>git commit</code> </li> <li> <code>git push</code> </li> </ol><br><h3 id="travisyml">  .travis.yml </h3><br><pre> <code class="hljs sql">language: node_js node_js: - '9.11' <span class="hljs-keyword"><span class="hljs-keyword">cache</span></span>: directories: - <span class="hljs-string"><span class="hljs-string">"node_modules"</span></span> script: - yarn <span class="hljs-keyword"><span class="hljs-keyword">test</span></span> - yarn <span class="hljs-keyword"><span class="hljs-keyword">build</span></span> - echo my-custom-domain.ru &gt; <span class="hljs-keyword"><span class="hljs-keyword">build</span></span>/CNAME deploy: provider: pages github-token: $GITHUB_TOKEN <span class="hljs-comment"><span class="hljs-comment"># Set in the settings page of your repository, as a secure variable committer-from-gh: true skip-cleanup: true keep-history: true local-dir: build repo: Yourname/compiled-app target-branch: master on: branch: master</span></span></code> </pre> <br><p>  Explanations: </p><br><ul><li>  In the script section you can see a strange echo.  This crutch is needed for sites with their own domain, because  github uses the CNAME file to store this setting (I don’t know why).  Since  all current repository code will be deleted, this file will not be saved. </li><li>  <code>github-token</code> - it needs to be generated in github settings.  Read more <a href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/">here</a> .  The environment variable must be set in the project settings on travis-ci.com </li><li>  <code>keep-history</code> - without this option, the repository will essentially be created every time anew (push -f) and it will be impossible to track the history.  With him, everything will be just about the same (approximately as I described it in the "manual deployment" section). </li><li>  <code>local-dir</code> - after the build has completed, the trace needs to know what to save to the repository.  Without this option, it will save the entire current code, and with it the specific folder.  Keeping the project completely can be useful if you do not want to use two repositories, like me, but using the <code>docs/</code> folder or a separate branch not related to the code. </li><li>  <code>repo</code> is exactly the option that allows the deployment to another repository.  Do not forget to specify the owner. </li><li>  <code>target-branch</code> - to which branch the push should occur.  By default, <code>gh-pages</code> , I use master, because  I have a separate repository. </li></ul><br><h1 id="vozmozhnye-problemy">  Possible problems </h1><br><p>  Personally, I ran into only one problem. </p><br><p>  If the custom domain is not used, the site will be located at <code>yourname.github.io/projectname</code> , and thus the absolute paths (for example, <code>/favicon.ico</code> ) would <code>/favicon.ico</code> .  I did not think about the decision, because  I use a separate domain. </p><br><h1 id="dokumentaciya">  Documentation </h1><br><ul><li>  <a href="https://docs.travis-ci.com/user/getting-started/">Getting started with Travis CI</a> </li><li>  <a href="https://docs.travis-ci.com/user/deployment/pages/">Depla on github</a> </li><li>  <a href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/">Creating an access key on github</a> </li></ul><br><h1 id="zaklyuchenie">  Conclusion </h1><br><p>  I love github.io and have long wanted to pick it up, is it possible to deploy compiled sites other than Jekyll.  It was very nice to find out that they already thought about this in travis-ci. </p><br><p>  I also thought today that perhaps it would be better not to create a separate repository, but simply to use a separate branch.  In order not to clutter up my list of repositories, which is already full of rubbish.  Well, as they say, c'est la vie </p><br><h1 id="offtop-dlya-teh-komu-interesno-chto-imenno-ya-delal">  Offtop for those who are interested in exactly what I was doing </h1><br><p>  I play the game Heroes of the Storm and wanted to make a small application that would make it easier for me to select a character during the draft.  If shorter: filter characters by their features. </p><br><p>  <a href="https://github.com/Nondv/storm-picker">Here is the main repository</a> . </p><br><p>  <a href="https://github.com/Nondv/storm-picker-compiled">Compiled code repository</a> </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -65,10 +65,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/359368/">https://habr.com/ru/post/359368/</a></p>
+    <p>Source: https://habr.com/ru/post/359368/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

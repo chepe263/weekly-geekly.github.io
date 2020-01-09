@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Vim and Cyrillic: a couple of tricks</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/781/133/90c/78113390c111310961018697ab1f9b22.png" alt="image"><br><br>  Previously, to edit ordinary Russian texts, I used to put Vim aside and use the help of other editors.  The reason for this was a couple of very unpleasant shoals: <br><ol><li>  For each sneeze, you had to switch the layout a hundred times to correctly enter a couple of commands and go back.  For example, replacing a typo in a newly written word poured into: switch → get to the letter, press r → switch → [desired letter] → switch → A → [write further].  Hell! </li><li>  The staff spell checker didn’t like the letter , and any word with her participation suggested replacing it with an analogue through .  And I love it, it upset me. </li></ol><br>  And finally, I found a solution to both problems.  I sit now and type this text in Vim.  It is curious that both barriers cost by standard means, without additional plug-ins.  Since there are more materials in English and on them based on more than native Russians, it was not easy for me to find this information.  Therefore, I want to share it with those who are interested. <br><a name="habracut"></a><br><h4>  Switch Layouts </h4><br>  I have met many times with the proposal to remap Cyrillic characters into Latin letters like this: <br><br> <code>map  q <br> map  w <br> map  e <br> map  r <br> map  t <br> map  y <br> " ...  .. <br></code> <br>  I did not like this decision because it left several problems.  For example, you can not remap the punctuation, so the colon and slash on the Russian layout in any case move to new places.  Also in paste mode, you cannot use combinations like Ctrl + W or Ctrl + R.  All this was annoying. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      We need another solution and it was found!  In .vimrc: <br><br> <code>set keymap=russian-jcukenwin <br> set iminsert=0 <br> set imsearch=0 <br> highlight lCursor guifg=NONE guibg=Cyan <br></code> <br>  Now clarification.  In Vim there is such a thing as lmap.  It sets the conversion for all cases when it comes to entering characters as part of the text, but not as part of a command.  So lmap is taken into account when inserting, entering a search pattern, after the r and f commands. <br><br>  The "set keymap = russian-jcukenwin" command sets up a bunch of such lmap that correspond to the usual Windows keyboard.  russian-jcukenwin is just the name of the mapped file.  We need one already in the standard package. <br><br>  After installing the keymap, you can switch between Cyrillic and Latin by pressing Ctrl + ^.  At the same time, what happened was achieved: the teams and shortcuts do not suffer in any way with the active Russian layout.  Hooray! <br><br>  Resetting iminsert and imsearch is necessary so that the very first time the insertion and entry of the search pattern starts from the Latin alphabet.  In effect, Ctrl + ^ switches these values ​​between 0 and 1. <br><br>  The last line changes the color of the cursor to blue when the alternative layout is enabled.  That is Cyrillic in our case.  Very comfortably. <br><br><h4>  Letter yo </h4><br>  Proposals not to be clever and type through "e" or add words through "e" to the dictionary of additions in the course of work, I also did not like.  We needed a different solution and it was under our feet! <br><br> <code>:setlocal spell spelllang=ru_yo,en_us <br></code> <br>  ... instead of being promoted everywhere <br><br> <code>:setlocal spell spelllang=ru_ru,en_us <br></code> <br>  ... asks Vim to use a dictionary with words through "e".  And this is exactly what you need.  After this command] s and [s no longer stumble over every "e". <br><br>  Everything, now other editors are not necessary.  Thanks to all.  Hope to be helpful. </div><p>Source: <a href="https://habr.com/ru/post/98393/">https://habr.com/ru/post/98393/</a></p>
+      We need another solution and it was found!  In .vimrc: <br><br> <code>set keymap=russian-jcukenwin <br> set iminsert=0 <br> set imsearch=0 <br> highlight lCursor guifg=NONE guibg=Cyan <br></code> <br>  Now clarification.  In Vim there is such a thing as lmap.  It sets the conversion for all cases when it comes to entering characters as part of the text, but not as part of a command.  So lmap is taken into account when inserting, entering a search pattern, after the r and f commands. <br><br>  The "set keymap = russian-jcukenwin" command sets up a bunch of such lmap that correspond to the usual Windows keyboard.  russian-jcukenwin is just the name of the mapped file.  We need one already in the standard package. <br><br>  After installing the keymap, you can switch between Cyrillic and Latin by pressing Ctrl + ^.  At the same time, what happened was achieved: the teams and shortcuts do not suffer in any way with the active Russian layout.  Hooray! <br><br>  Resetting iminsert and imsearch is necessary so that the very first time the insertion and entry of the search pattern starts from the Latin alphabet.  In effect, Ctrl + ^ switches these values ​​between 0 and 1. <br><br>  The last line changes the color of the cursor to blue when the alternative layout is enabled.  That is Cyrillic in our case.  Very comfortably. <br><br><h4>  Letter yo </h4><br>  Proposals not to be clever and type through "e" or add words through "e" to the dictionary of additions in the course of work, I also did not like.  We needed a different solution and it was under our feet! <br><br> <code>:setlocal spell spelllang=ru_yo,en_us <br></code> <br>  ... instead of being promoted everywhere <br><br> <code>:setlocal spell spelllang=ru_ru,en_us <br></code> <br>  ... asks Vim to use a dictionary with words through "e".  And this is exactly what you need.  After this command] s and [s no longer stumble over every "e". <br><br>  Everything, now other editors are not necessary.  Thanks to all.  Hope to be helpful. </div><p>Source: https://habr.com/ru/post/98393/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../98394/index.html">Throw the mouse and keyboard! Almost a startup from Ukraine: CrossView</a></li>
 <li><a href="../98396/index.html">Blogger stats</a></li>
 <li><a href="../98399/index.html">How to reduce piracy and satisfy honest psp user</a></li>
+<li><a href="../984/index.html">An unofficial database of guglobagov has opened</a></li>
 <li><a href="../98402/index.html">Twitter hashtag against censorship</a></li>
-<li><a href="../98404/index.html">IPad Air Display Review</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

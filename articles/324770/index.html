@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>OpenVPN, easy reissue of root certificate</h1><div class="post__text post__text-html js-mediator-article">  Good day.  The background is as follows: ten years ago I raised the infrastructure of a network of mobile phone salons, distributed over the region.  The 1C: Enterprise 7.7 system was used as the accounting solution in the distributed database mode.  For data exchange, the usual windows network folder was used, which was accessed through the OpenVPN tunnel.  And once a week ago, the exchange of information between the center and the periphery completely stopped.  For some reason, the thought immediately crept in - ten years had passed (it was for this period that the root certificate was made).  Analysis of the logs confirmed the problem, the scheme has proven itself well over these ten years, but the time has come.  And now, to re-generate the entire amount of client and server keys / certificates ???  No, you can do a little easier ... <br><a name="habracut"></a><br>  OpenSSL allows you to reissue the certificate and sign it with the old private key, while maintaining the structure of the Modulus certificate and the new certificate successfully verifies the old client certificates. <br><br>  Create a new certificate: <br><br><pre><code class="bash hljs">openssl x509 -<span class="hljs-keyword"><span class="hljs-keyword">in</span></span> ca.crt -days 3650 -out ca-new.crt -signkey ca.key</code> </pre> <br>  We get the answer: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="bash hljs">Getting Private key</code> </pre> <br>  and new certificate ca-new.crt <br><br>  Let's check the client certificate with a new root certificate: <br><br><pre> <code class="bash hljs">openssl verify -CAfile ca-new.crt client9.crt</code> </pre> <br>  All is well: <br><br><pre> <code class="bash hljs">client9.crt: OK</code> </pre> <br>  The next command can look at the contents of the certificate and make sure that the new and old Modulus certificate is the same: <br><br><pre> <code class="bash hljs">openssl x509 -noout -text -<span class="hljs-keyword"><span class="hljs-keyword">in</span></span> ca-new.crt</code> </pre> <br>  Everything seems to be very good, we are sending a new certificate, after renaming it in the same way as the old one, with instructions to the user where to put it (we overwrite the old one). <br><br>  Restart the service on the server and see how the clients connect.  Unfortunately, not all clients did it successfully.  Some have received in the log: <br><br><pre> <code class="bash hljs">Tue Mar 21 15:12:18 2017 VERIFY ERROR: depth=1, error=certificate signature failure: /C=RU...</code> </pre> <br>  It was here that I had to lose a few hours, in the end it turned out that the client certificate verification also fails on client computers: <br><br><pre> <code class="bash hljs">openssl verify -CAfile ca-new.crt client9.crt</code> </pre> <br>  The openssl version (as part of OpenVPN) turned out to be old and did not want to check successfully. <br><br>  Accordingly, the problematic clients had to update OpenVPN to version 2.3.3 (this was used by me, I can’t say anything about others, but I believe that newer versions will also behave positively) and the system has been sent for another 10 years. </div><p>Source: <a href="https://habr.com/ru/post/324770/">https://habr.com/ru/post/324770/</a></p>
+    <pre> <code class="bash hljs">Getting Private key</code> </pre> <br>  and new certificate ca-new.crt <br><br>  Let's check the client certificate with a new root certificate: <br><br><pre> <code class="bash hljs">openssl verify -CAfile ca-new.crt client9.crt</code> </pre> <br>  All is well: <br><br><pre> <code class="bash hljs">client9.crt: OK</code> </pre> <br>  The next command can look at the contents of the certificate and make sure that the new and old Modulus certificate is the same: <br><br><pre> <code class="bash hljs">openssl x509 -noout -text -<span class="hljs-keyword"><span class="hljs-keyword">in</span></span> ca-new.crt</code> </pre> <br>  Everything seems to be very good, we are sending a new certificate, after renaming it in the same way as the old one, with instructions to the user where to put it (we overwrite the old one). <br><br>  Restart the service on the server and see how the clients connect.  Unfortunately, not all clients did it successfully.  Some have received in the log: <br><br><pre> <code class="bash hljs">Tue Mar 21 15:12:18 2017 VERIFY ERROR: depth=1, error=certificate signature failure: /C=RU...</code> </pre> <br>  It was here that I had to lose a few hours, in the end it turned out that the client certificate verification also fails on client computers: <br><br><pre> <code class="bash hljs">openssl verify -CAfile ca-new.crt client9.crt</code> </pre> <br>  The openssl version (as part of OpenVPN) turned out to be old and did not want to check successfully. <br><br>  Accordingly, the problematic clients had to update OpenVPN to version 2.3.3 (this was used by me, I can’t say anything about others, but I believe that newer versions will also behave positively) and the system has been sent for another 10 years. </div><p>Source: https://habr.com/ru/post/324770/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

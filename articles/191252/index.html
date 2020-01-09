@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Parsing and building syntax trees with PLY. The basics</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/storage2/178/82c/79e/17882c79e4443998a0e1020819cc3d3b.png"><br><h2>  What is PLY? </h2><br>  <a href="http://www.dabeaz.com/ply/ply.html">PLY</a> is an abbreviation of the first letters of an expression: <strong>P</strong> ython <strong>L</strong> ex- <strong>Y</strong> acc. <br>  In fact, this is the port of the lex and yacc utilities on python in a nice wrapper. <br>  Working with ply is very simple and the threshold for starting to use is almost zero. <br>  It is written on pure python and is a <a href="http://ru.wikipedia.org/wiki/LALR%25281%2529">LALR (1) parser</a> , but who cares? <br>  I am by nature a practitioner (like most of you) therefore went into battle! <br><br><h2>  What do we do? </h2><br>  <a href="http://www.dabeaz.com/ply/example.html">The site has an example of</a> writing the next calculator, so we will not repeat.  And let's do something like a parser of a very very narrow PHP subset :) <br>  Our task at the end of the article is to build a syntax tree for such an example: <br><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> $val = <span class="hljs-number"><span class="hljs-number">5</span></span>; $result = substr( <span class="hljs-string"><span class="hljs-string">"foobar"</span></span>, <span class="hljs-number"><span class="hljs-number">2</span></span>*(<span class="hljs-number"><span class="hljs-number">7</span></span>-$val) ); <span class="hljs-keyword"><span class="hljs-keyword">echo</span></span> <span class="hljs-string"><span class="hljs-string">"  : $result"</span></span>;</code> </pre> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The example is very small and taken from the ceiling.  But to build a tree of code you need a lot and the campaign we will use such a mechanism PLY as state. <br><br><a name="habracut"></a><br><br><h4>  Lex </h4><br>  <a href="http://ru.wikipedia.org/wiki/Lex">Lex</a> is the thing that breaks the text down into basic language elements.  Well, or groups the text into basic elements.  Something like this. <br><br>  What do we see here, except for the useless code?  We see tokens (basic elements): <br>  PHP_START - '&lt;? Php' <br>  PHP_VAR - '$ result' <br>  PHP_EQUAL - '=' <br>  PHP_NAME - 'substr' <br>  PHP_OPEN - '(' <br>  PHP_STRING - "foobar", 'this is our result: $ result' <br>  PHP_NUM - '2', '7' <br>  PHP_CLOSE - ')' <br>  PHP_ECHO - "echo" <br>  PHP_COLON - ';' <br>  PHP_COMA - ',' <br>  PHP_PLUSMINUS - '-' <br>  PHP_DIVMUL - '*' <br><br>  To parse the text on tokens in PLY there is <i>ply.lex</i> .  And it works with regular expressions. <br>  And he is very picky about what we write in the code.  It requires the presence of an array called tokens. <br>  For each element of this array, we are obliged to have a regular code or function in the code named t_ILEMENT. <br>  Why is he so picky?  Because it does not work directly during the execution of the program, but is executed only once at the first launch of the program and creates the lextab.py file, which describes transition tables and regular tables.  The next time you start the program, it checks the presence of this file and, if it is present, it no longer tries to build the tables again, but uses the generated ones. <br>  Back to the code. <br>  If the PHP syntax were limited to the thirteen tokens listed above, we would write the following: <br><br><pre> <code class="python hljs"><span class="hljs-comment"><span class="hljs-comment"># coding=utf8 import ply.lex as lex #      ,                tokens = ( 'PHPSTART', 'PHPVAR', 'PHPEQUAL', 'PHPFUNC', 'PHPSTRING', 'PHPECHO', 'PHPCOLON', 'PHPCOMA', 'PHPOPEN', 'PHPCLOSE', 'PHPNUM', 'PLUSMINUS', 'DIVMUL' ) #      ident = r'[az]\w*' #            t_ =  t_PHPSTART = r'\&lt;\?php' t_PHPVAR = r'\$'+ident #  , ? t_PHPEQUAL = r'\=' t_PHPFUNC = ident t_PHPSTRING = r'"(\\.|[^"])*"' t_PHPECHO = r'echo' t_PHPCOLON = r';' t_PHPCOMA = r',' t_PHPOPEN = r'\(' t_PHPCLOSE = r'\)' t_PHPNUM = r'\d+' t_PLUSMINUS = r'\+|\-' t_DIVMUL = r'/|\*' #     .    ,  $var=$value  $var   =  $value t_ignore = ' \r\n\t\f' #     .      def t_error(t): print "Illegal character '%s'" % t.value[0] t.lexer.skip(1) lexer = lex.lex(reflags=re.UNICODE | re.DOTALL) data = ''' &lt;?php $result = substr("foobar", "bar"); echo $result; ''' lexer.input(data) while True: tok = lexer.token() #    if not tok: break #   print tok</span></span></code> </pre><br><br>  In the comments to the code, I roughly described what we have going on there.  I will only note that instead of regulars defining a token, <a href="http://www.dabeaz.com/ply/ply.html">you can write functions</a> in which there will be the same regulars, but in addition you can write something else of your own there.  For example: <br><br><pre> <code class="python hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">t_PHPVAR</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(t)</span></span></span><span class="hljs-function">:</span></span> <span class="hljs-string"><span class="hljs-string">r'\$[a-zA-Z]\w*'</span></span> <span class="hljs-keyword"><span class="hljs-keyword">print</span></span> <span class="hljs-string"><span class="hljs-string">',    '</span></span> + t.value <span class="hljs-comment"><span class="hljs-comment"># value -      return t</span></span></code> </pre><br><br>  By the way, the output of the example that is written above will be: <br><br><pre>  LexToken (PHPSTART, '&lt;? Php', 1,1)
@@ -155,20 +155,20 @@
 			 arg:
 				 var:
 					 $ result
-</pre><br></div></div><br><br><h2>  Conclusion </h2><br><br>  If there are any comments or suggestions, I will gladly add / change the post. <br><br>  <a href="https://github.com/dyatlov/habr-ply-microphp">Article code here</a> <br><br>  Well, if I'm wondering why I suddenly decided to write about ply - <a href="https://github.com/dyatlov/Pyfox">pyfox</a> .  I do little by little css processing on python.  Rather, the css parser is written, but the walk through the dom is not fully implemented yet (not all pseudo-selectors work).  Now specifically the problem with nth-child.  Not at the level of css but at the level of effective matching - in dom there is no such property as a number among neighbors, but I don’t want to consider previous neighbors.  Apparently you have to customize HTMLParser.  Can anyone decide to join me?  All welcome :) </div><p>Source: <a href="https://habr.com/ru/post/191252/">https://habr.com/ru/post/191252/</a></p>
+</pre><br></div></div><br><br><h2>  Conclusion </h2><br><br>  If there are any comments or suggestions, I will gladly add / change the post. <br><br>  <a href="https://github.com/dyatlov/habr-ply-microphp">Article code here</a> <br><br>  Well, if I'm wondering why I suddenly decided to write about ply - <a href="https://github.com/dyatlov/Pyfox">pyfox</a> .  I do little by little css processing on python.  Rather, the css parser is written, but the walk through the dom is not fully implemented yet (not all pseudo-selectors work).  Now specifically the problem with nth-child.  Not at the level of css but at the level of effective matching - in dom there is no such property as a number among neighbors, but I don’t want to consider previous neighbors.  Apparently you have to customize HTMLParser.  Can anyone decide to join me?  All welcome :) </div><p>Source: https://habr.com/ru/post/191252/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../191240/index.html">Elliptical cryptography: practice</a></li>
 <li><a href="../191242/index.html">Programmer's brain</a></li>
 <li><a href="../191246/index.html">Conflict Resolution in Transitive Dependencies - Good, Bad, Angry</a></li>
 <li><a href="../191248/index.html">ASP.NET MVC client-side routing</a></li>
+<li><a href="../19125/index.html">FSB shared with Durov ...</a></li>
 <li><a href="../191250/index.html">Internal device llst, part 2 or Little Smalltalk + LLVM =</a></li>
 <li><a href="../191254/index.html">The German government warns the country's authorities against using Windows 8</a></li>
 <li><a href="../191256/index.html">Features parsing block HTML-code screen access programs</a></li>
+<li><a href="../19126/index.html">Transparent PNG avatars on Habré acquires the background</a></li>
 <li><a href="../191262/index.html">RosVybory Danger</a></li>
-<li><a href="../191266/index.html">Meet-in-the-middle: brute force optimization and more</a></li>
-<li><a href="../191268/index.html">Record Records</a></li>
+<li><a href="../191264/index.html">The digest of interesting materials from the world of web development and IT for the last week №71 (August 18 - 24, 2013)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

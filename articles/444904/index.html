@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Extract the master password from the locked password manager SafeInCloud</h1><div class="post__text post__text-html js-mediator-article">  After reading <a href="https://habr.com/ru/post/441166">this</a> article, I wanted to study another password manager for similar vulnerabilities. <br><br>  In the comments to the article, the user <a href="https://habr.com/ru/users/dark_angel/" class="user_link">Dark_Angel</a> asked: <br><blockquote>  And what about SafeInCloud? </blockquote><div style="text-align:center;"><img src="https://habrastorage.org/webt/nk/4c/xb/nk4cxb70whzyekpxtirvwd-ds0c.png"></div><br><a name="habracut"></a><br>  The study was conducted on the free Windows version of SafeInCloud v.19.0.2 <br><br>  When I first met the product, he made a very good impression on me. <br>  However, further research revealed exactly the same vulnerability. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,21 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Unlike 1Password, SafeInCloud stores <b>all your passwords in the clear</b> even in the locked state (after the first unlock). <br><br>  To obtain a password from the database, simply read the application memory.  <b>Obfuscation of</b> data is completely absent!  The master password (and all other passwords and records) is never overwritten after the first successful unlock of the database, even if the user locks it. <br><br>  Your passwords may leak in the following cases: <br><br>  + Sending a bug report in any software.  Very often, developers make memory dumps of all applications for debugging purposes. <br>  + If you use a computer, not only you. <br>  + When gaining physical access to a computer intruders. <br>  + When launching malware. <br>  + Anything else ... <br><br>  The Windows application is written in .net, which greatly simplifies the analysis of the source code. <br><br><img src="https://habrastorage.org/webt/to/pn/fv/topnfvmlynrwt3glfx43zugho9k.png"><br><br>  The application is written on .net <br><br>  After successful decryption of the database (XDatabase), the decrypted database and master password are saved as class fields in the Singleton instanc of the DatabaseModel class. <br><br><img src="https://habrastorage.org/webt/yw/du/rz/ywdurzwnab3rjofwfd48aendj7c.png"><br><br>  Setting fields with database and master password from it <br><br>  All records and passwords are stored in memory in clear text even after the application is locked by the user.  Master password is in clear view next. <br><br><img src="https://habrastorage.org/webt/3n/ry/nl/3nrynlysvwnm9wq4bkkkgdvs3ym.png"><br><br>  The password is stored in the Password property, _database is the field of the XDatabase class containing the decrypted database. <br><br><img src="https://habrastorage.org/webt/ty/el/e6/tyele6fkjdezjvnjoosjcikg1l4.png"><br>  <i>Database in XML format.</i> <br><br>  When you unlock again, the application performs an elementary check: <br><br><img src="https://habrastorage.org/webt/im/2c/ms/im2cmsp5v4t50kj8pv8p2n_uaqe.png"><br><br>  If the password entered by the user coincides with the stored in memory - unlocking is completed. <br><br>  A simple utility <a href="https://github.com/hexnone/SafeInCloudExtractor">SafeInCloudExtractor</a> was written to automate the extraction of the master password. <br>  The utility performs the extraction of the master password and the local path to the database file. <br><br>  And which password manager do you use?  Write in the comments! </div><p>Source: <a href="https://habr.com/ru/post/444904/">https://habr.com/ru/post/444904/</a></p>
+      Unlike 1Password, SafeInCloud stores <b>all your passwords in the clear</b> even in the locked state (after the first unlock). <br><br>  To obtain a password from the database, simply read the application memory.  <b>Obfuscation of</b> data is completely absent!  The master password (and all other passwords and records) is never overwritten after the first successful unlock of the database, even if the user locks it. <br><br>  Your passwords may leak in the following cases: <br><br>  + Sending a bug report in any software.  Very often, developers make memory dumps of all applications for debugging purposes. <br>  + If you use a computer, not only you. <br>  + When gaining physical access to a computer intruders. <br>  + When launching malware. <br>  + Anything else ... <br><br>  The Windows application is written in .net, which greatly simplifies the analysis of the source code. <br><br><img src="https://habrastorage.org/webt/to/pn/fv/topnfvmlynrwt3glfx43zugho9k.png"><br><br>  The application is written on .net <br><br>  After successful decryption of the database (XDatabase), the decrypted database and master password are saved as class fields in the Singleton instanc of the DatabaseModel class. <br><br><img src="https://habrastorage.org/webt/yw/du/rz/ywdurzwnab3rjofwfd48aendj7c.png"><br><br>  Setting fields with database and master password from it <br><br>  All records and passwords are stored in memory in clear text even after the application is locked by the user.  Master password is in clear view next. <br><br><img src="https://habrastorage.org/webt/3n/ry/nl/3nrynlysvwnm9wq4bkkkgdvs3ym.png"><br><br>  The password is stored in the Password property, _database is the field of the XDatabase class containing the decrypted database. <br><br><img src="https://habrastorage.org/webt/ty/el/e6/tyele6fkjdezjvnjoosjcikg1l4.png"><br>  <i>Database in XML format.</i> <br><br>  When you unlock again, the application performs an elementary check: <br><br><img src="https://habrastorage.org/webt/im/2c/ms/im2cmsp5v4t50kj8pv8p2n_uaqe.png"><br><br>  If the password entered by the user coincides with the stored in memory - unlocking is completed. <br><br>  A simple utility <a href="https://github.com/hexnone/SafeInCloudExtractor">SafeInCloudExtractor</a> was written to automate the extraction of the master password. <br>  The utility performs the extraction of the master password and the local path to the database file. <br><br>  And which password manager do you use?  Write in the comments! </div><p>Source: https://habr.com/ru/post/444904/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../444886/index.html">Reverse engineering applications after obfuscation</a></li>
-<li><a href="../444888/index.html">English and IT specialist: English owl on Russian globe?</a></li>
 <li><a href="../444892/index.html">Scammer from the US earned millions of dollars, pretending to be Microsoft tech support</a></li>
 <li><a href="../444896/index.html">Recycling hard drives as e-garbage is a partial solution to iNEMI's problem.</a></li>
 <li><a href="../444898/index.html">How to choose a broadband modem for unmanned aerial vehicle (UAV) or robotics</a></li>
+<li><a href="../4449/index.html">"Yandex" puts the network wider</a></li>
+<li><a href="../44490/index.html">The most powerful graphics card in the world</a></li>
 <li><a href="../444906/index.html">Read old</a></li>
 <li><a href="../444908/index.html">Where to grow smartphones</a></li>
+<li><a href="../44491/index.html">Fx 3.0.4</a></li>
 <li><a href="../444910/index.html">Sound and light stimulation helps with Alzheimer's disease while in mice, but the results are encouraging</a></li>
+<li><a href="../444912/index.html">LCD matrix management F-51543NFU-LW-ADN / PWB51543C-2-V0 (from tape library)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>ScrollAll (script for greasemonkey)</h1><div class="post__text post__text-html js-mediator-article">  I read Habralent in Google Reader, and I noticed a long time ago that blocks with scrolling by a couple of pixels appear in it with enviable regularity, which prevent the entire tape from scrolling further.  You have to take the mouse to the window scroll bar - not difficult, of course, but annoying, especially when you read “diagonally”.  Therefore, a script was written that finds all such elements and temporarily blocks scrolling when the element is scrolled to the end, thereby allowing the page to scroll down. <br><br><a name="habracut"></a><br><br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#008000">// ==UserScript==</font> <br> <font color="#008000">// @name ScrollAll</font> <br> <font color="#008000">// @version 0.4</font> <br> <font color="#008000">// @namespace http://zij.habrahabr.ru</font> <br> <font color="#008000">// @description   ,       </font> <br> <font color="#008000">// @author ZIJ</font> <br> <font color="#008000">// @include http://www.google.com/reader/*</font> <br> <font color="#008000">// @include https://www.google.com/reader/*</font> <br> <font color="#008000">// ==/UserScript==</font> <br> <br> <font color="#008000">// &lt;&gt;</font> <br> <font color="#0000ff">var</font> maxScrolls = 4 <font color="#008000">//   " ", </font> <br> <font color="#0000ff">var</font> hideTime = 4000 <font color="#008000">//   , ms</font> <br> <font color="#0000ff">var</font> checkInterval = 2000 <font color="#008000">//    DOM, ms</font> <br> <font color="#008000">// &lt;/&gt;</font> <br> <br> <font color="#0000ff">var</font> DOMModified = <font color="#0000ff">false</font> <br> <font color="#0000ff">var</font> scrollCount = 0 <br> <font color="#0000ff">var</font> lastScrollTop = -1 <br> <font color="#0000ff">var</font> lastScrollTime = 0 <br> <br> <font color="#0000ff">document</font> .addEventListener( <font color="#A31515">"DOMSubtreeModified"</font> , <font color="#0000ff">function</font> () { DOMModified = <font color="#0000ff">true</font> }, <font color="#0000ff">false</font> ) <br> <br> <font color="#0000ff">var</font> I = setInterval(scan, checkInterval) <br> <br> <font color="#0000ff">function</font> scan() { <font color="#008000">//    </font> <br> <font color="#0000ff">if</font> (DOMModified) { <br> DOMModified = <font color="#0000ff">false</font> <br> <font color="#0000ff">for</font> each (element <font color="#0000ff">in</font> <font color="#0000ff">document</font> .getElementsByTagName( <font color="#A31515">"*"</font> )) { <br> <font color="#0000ff">if</font> (IsScrollable(element)) { <br> element.addEventListener( <font color="#A31515">"DOMMouseScroll"</font> , handleScroll, <font color="#0000ff">false</font> ) <br> } <br> } <br> } <br> } <br> <br> <font color="#0000ff">function</font> IsScrollable(element) { <font color="#008000">//   </font> <br> <font color="#0000ff">if</font> (element.scrollHeight &gt; element.clientHeight) { <br> with (window.getComputedStyle(element, <font color="#0000ff">null</font> )) { <br> <font color="#0000ff">return</font> (overflow == <font color="#A31515">"scroll"</font> ) || (overflow == <font color="#A31515">"auto"</font> ) <br> } <br> } <font color="#0000ff">else</font> <font color="#0000ff">return</font> <font color="#0000ff">false</font> <br> } <br> <br> <font color="#0000ff">function</font> handleScroll( <font color="#0000ff">event</font> ) { <font color="#008000">//   " "</font> <br> <font color="#0000ff">if</font> ( <font color="#0000ff">event</font> .timeStamp != lastScrollTime) { <br> <font color="#0000ff">var</font> newScrollTop = <font color="#0000ff">event</font> .currentTarget.scrollTop <br> <font color="#0000ff">if</font> (newScrollTop == lastScrollTop) { <br> scrollCount++ <br> <font color="#0000ff">if</font> (scrollCount &gt;= maxScrolls) { <br> scrollCount = 0 <br> hideScrollbars( <font color="#0000ff">event</font> .currentTarget) <br> } <br> } <font color="#0000ff">else</font> { <br> scrollCount = 0 <br> lastScrollTop = newScrollTop <br> } <br> lastScrollTime = <font color="#0000ff">event</font> .timeStamp <br> } <br> } <br> <br> <font color="#0000ff">function</font> hideScrollbars(element) { <font color="#008000">//    </font> <br> <font color="#0000ff">var</font> prev = window.getComputedStyle(element, <font color="#0000ff">null</font> ).overflow <br> element.style.overflow = <font color="#A31515">"hidden"</font> <br> setTimeout( <font color="#0000ff">function</font> () { element.style.overflow = prev }, hideTime) <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Download Greasemonkey <a href="https://addons.mozilla.org/ru/firefox/addon/748">here.</a> <br>  The name of the script file must end with <b>.user.js</b> <br>  The script is installed by drag-n-drop in the FF window (with Greasemonkey enabled), after which the page needs to be updated <br><br>  <b>UPD:</b> Made a more visual and correct check of the document modification </div><p>Source: <a href="https://habr.com/ru/post/67651/">https://habr.com/ru/post/67651/</a></p>
+      Download Greasemonkey <a href="https://addons.mozilla.org/ru/firefox/addon/748">here.</a> <br>  The name of the script file must end with <b>.user.js</b> <br>  The script is installed by drag-n-drop in the FF window (with Greasemonkey enabled), after which the page needs to be updated <br><br>  <b>UPD:</b> Made a more visual and correct check of the document modification </div><p>Source: https://habr.com/ru/post/67651/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../67641/index.html">Apple UK "divulged" the date of the start of sales of OS X Snow Leopard — August 28, 2009</a></li>
 <li><a href="../67647/index.html">LiveAndroid 0.3 released</a></li>
 <li><a href="../67648/index.html">GIZMO! or friday movie</a></li>
 <li><a href="../67649/index.html">Qlocktwo</a></li>
+<li><a href="../6765/index.html">Nigmashokoladki</a></li>
 <li><a href="../67650/index.html">My solution to the problem with hp2400 in Linux</a></li>
 <li><a href="../67652/index.html">The future of the OS market: verticality, scalability and freedom</a></li>
 <li><a href="../67654/index.html">Logitech mice to work on any surface</a></li>

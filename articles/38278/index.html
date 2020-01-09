@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Delphi + PostgreSQL</h1><div class="post__text post__text-html js-mediator-article"> In one of the projects, it was necessary to get access to the PostgreSQL database from Delphi and, in particular, to read BLOB fields from this database.  Of course, in order not to reinvent the wheel, I decided to look for ready-made components.  There were two solutions: <br><br>  -free.  <a href="http://sourceforge.net/projects/zeoslib">ZeosLib</a> . <br>  - paid.  <a href="http://www.microolap.com/products/connectivity/postgresdac/">PostgresDAC</a> . <br><br>  Performance was key, so I decided to compare them. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a>  Testing was based on PostgreSQL 8.2.5, dll of the same version was used in both components.  Previously, the request was executed a couple of times, in order for the database to be cached. <br><br>  The brackets indicate the average value for the next three attempts that were made without closing the program.  The request was of the form “select * from table”, where table is a table with 450 thousand unequal records, not processed by vacuum.  Positioning is the code: <br><br> <code>Query.First; <br> repeat <br> Query.Next; <br> until Query.Eof; <br></code> <br>  Results: <br><br>  <b>PostgresDAC</b> <br>  <i>Connection with base:</i> 170 ms (65 ms) *. <br>  <i>Query execution:</i> 5900 ms (5900 ms). <br>  <i>Positioning:</i> 4150 ms (4150 ms) <br><br>  <b>Zeoslib</b> <br>  <i>Connection with base:</i> 60 ms (60 ms). <br>  <i>Query execution:</i> 5200 ms (5200 ms). <br>  <i>Positioning:</i> 8100 ms (1900 ms) <br><br>  But the most interesting, as it turned out, was waiting for me further. <br>  When trying to get data from BLOB fields, both components returned nil.  Short-lived and simple experiments have shown that this happens when the Binary Object exceeds the size of 20 kilobytes. <br><br>  Google did not help solve the problem, I had to take on the file myself.  I converted libpq.h from the PostgreSQL delivery to pas, with the help of a wonderful <a href="http://ftp.univer.kharkov.ua/pub/docs/fpc~bak/tools/h2pas.html">utility</a> and started checking. <br><br>  Indeed, the standard PQexec function gave nil instead of data.  The problem was solved only using an asynchronous request. <br><br>  This code, with standard functions from libpq.dll, receives a BLOB field of any length from the database (of course, this requires a unit with certain functions and a pre-established myConnection connection): <br><br> <code>PQsendQuery(myonnection, pchar(myQuery)); <br> myResult:=PQGetResult(myConnection); <br> buf:=PQunescapeBytea(PQgetvalue(myResult, 0, 0), resultKey); <br></code> <br><br>  PS: My first topic on Habré.  I hope that writing really helps someone. <br><br>  PPS: Oh yes, there is another way of access through ADO, but by all indications it is somewhere 2-2.5 times slower than Zeos and DAC.  Yes, and I was looking for exactly specialized components, so there is no ADO in the tests. <br></div><p>Source: <a href="https://habr.com/ru/post/38278/">https://habr.com/ru/post/38278/</a></p>
+    <a name="habracut"></a>  Testing was based on PostgreSQL 8.2.5, dll of the same version was used in both components.  Previously, the request was executed a couple of times, in order for the database to be cached. <br><br>  The brackets indicate the average value for the next three attempts that were made without closing the program.  The request was of the form “select * from table”, where table is a table with 450 thousand unequal records, not processed by vacuum.  Positioning is the code: <br><br> <code>Query.First; <br> repeat <br> Query.Next; <br> until Query.Eof; <br></code> <br>  Results: <br><br>  <b>PostgresDAC</b> <br>  <i>Connection with base:</i> 170 ms (65 ms) *. <br>  <i>Query execution:</i> 5900 ms (5900 ms). <br>  <i>Positioning:</i> 4150 ms (4150 ms) <br><br>  <b>Zeoslib</b> <br>  <i>Connection with base:</i> 60 ms (60 ms). <br>  <i>Query execution:</i> 5200 ms (5200 ms). <br>  <i>Positioning:</i> 8100 ms (1900 ms) <br><br>  But the most interesting, as it turned out, was waiting for me further. <br>  When trying to get data from BLOB fields, both components returned nil.  Short-lived and simple experiments have shown that this happens when the Binary Object exceeds the size of 20 kilobytes. <br><br>  Google did not help solve the problem, I had to take on the file myself.  I converted libpq.h from the PostgreSQL delivery to pas, with the help of a wonderful <a href="http://ftp.univer.kharkov.ua/pub/docs/fpc~bak/tools/h2pas.html">utility</a> and started checking. <br><br>  Indeed, the standard PQexec function gave nil instead of data.  The problem was solved only using an asynchronous request. <br><br>  This code, with standard functions from libpq.dll, receives a BLOB field of any length from the database (of course, this requires a unit with certain functions and a pre-established myConnection connection): <br><br> <code>PQsendQuery(myonnection, pchar(myQuery)); <br> myResult:=PQGetResult(myConnection); <br> buf:=PQunescapeBytea(PQgetvalue(myResult, 0, 0), resultKey); <br></code> <br><br>  PS: My first topic on Habré.  I hope that writing really helps someone. <br><br>  PPS: Oh yes, there is another way of access through ADO, but by all indications it is somewhere 2-2.5 times slower than Zeos and DAC.  Yes, and I was looking for exactly specialized components, so there is no ADO in the tests. <br></div><p>Source: https://habr.com/ru/post/38278/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../38275/index.html">Habraimprover</a></li>
 <li><a href="../38276/index.html">Man 2.0</a></li>
 <li><a href="../38277/index.html">N.V.Gogol - "Viy"</a></li>
+<li><a href="../3828/index.html">Have mercy!</a></li>
 <li><a href="../38280/index.html">Vulnerability of iPhone with new firmware</a></li>
 <li><a href="../38281/index.html">Hubrashtuki, Inc.</a></li>
 <li><a href="../38282/index.html">Social network "7 hands". How important it is to do everything on time.</a></li>
 <li><a href="../38283/index.html">My Smarty Plugins</a></li>
-<li><a href="../38284/index.html">Using debugging tools</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

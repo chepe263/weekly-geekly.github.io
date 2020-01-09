@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Determining the blocking mode of a TCP socket under Windows</h1><div class="post__text post__text-html js-mediator-article">  Those who work with TCP sockets know that the socket can work in blocking or nonblocking mode.  Windows-sockets, after creation, are in blocking mode, but they can be converted to non-blocking function ioctlsocket (). <br><br>  When working on one project, I had a task to determine in which mode the socket, provided by the DLL function, works.  Those.  besides the socket itself, I did not have any information and they came in an unpredictable mode. <br><br>  Under * nix, blocking mode is determined without any problems by calling the fcntl () function, but under WinSock2 nothing of the kind has been found, and there’s nothing on the forums “Windows doesn’t have no one answered. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      But the method of determining does exist: <br><a name="habracut"></a><br><pre><code class="cpp hljs"><span class="hljs-comment"><span class="hljs-comment">// GetBlockingMode : 1 - nonblocking | 0 - blocking | -1 - error | -2 - timeout reseted! int GetBlockingMode(int Sock) { int iSize, iValOld, iValNew, retgso; iSize = sizeof(iValOld); retgso = getsockopt(Sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&amp;iValOld, &amp;iSize); // Save current timeout value if (retgso == SOCKET_ERROR) return (-1); iValNew = 1; retgso = setsockopt(Sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&amp;iValNew, iSize); // Set new timeout to 1 ms if (retgso == SOCKET_ERROR) return (-1); // Ok! Try read 0 bytes. char buf[1]; // 1 - why not :) int retrcv = recv(Sock, buf, 0, MSG_OOB); // try read MSG_OOB int werr = WSAGetLastError(); retgso = setsockopt(Sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&amp;iValOld, iSize); // Set timeout to initial value if (retgso == SOCKET_ERROR) return (-2); if (werr == WSAENOTCONN) return (-1); if (werr == WSAEWOULDBLOCK) return 1; return 0; }</span></span></code> </pre> <br>  The function takes the socket number and returns 1 if the socket is in nonblocking mode, 0 is blocking, -1 if a detection error occurred, and -2 if the socket after the mode definition is left with a small timeout. <br><br>  In short, the sequence of actions is as follows: <br><br>  1. Save the socket timeout value (by default there is 0 - “wait forever”). <br>  2. Set the timeout to 1 millisecond. <br>  3. We read from socket 0 (zero) byte of out of band data.  An explanation is needed here: If OOB data is transmitted, the function may lie, but I have never encountered OOB since Windows NT4 crashed into a blue screen while trying to accept this ( <a href="https://en.wikipedia.org/wiki/WinNuke">WinNuke</a> ). <br>  4. We get an error that occurred as a result of reading. <br>  5. Restore the old timeout value of the socket. <br>  6. We look at what a reading error we had: if WSAEWOULDBLOCK, then the socket is in nonblocking mode, as required. <br><br>  The disadvantages of this method, in addition to the already mentioned MSG_OOB, include the detection delay of 1 millisecond and the non-zero probability of spoiling the socket read timeout (although the load test has never revealed this behavior). </div><p>Source: <a href="https://habr.com/ru/post/335762/">https://habr.com/ru/post/335762/</a></p>
+      But the method of determining does exist: <br><a name="habracut"></a><br><pre><code class="cpp hljs"><span class="hljs-comment"><span class="hljs-comment">// GetBlockingMode : 1 - nonblocking | 0 - blocking | -1 - error | -2 - timeout reseted! int GetBlockingMode(int Sock) { int iSize, iValOld, iValNew, retgso; iSize = sizeof(iValOld); retgso = getsockopt(Sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&amp;iValOld, &amp;iSize); // Save current timeout value if (retgso == SOCKET_ERROR) return (-1); iValNew = 1; retgso = setsockopt(Sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&amp;iValNew, iSize); // Set new timeout to 1 ms if (retgso == SOCKET_ERROR) return (-1); // Ok! Try read 0 bytes. char buf[1]; // 1 - why not :) int retrcv = recv(Sock, buf, 0, MSG_OOB); // try read MSG_OOB int werr = WSAGetLastError(); retgso = setsockopt(Sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&amp;iValOld, iSize); // Set timeout to initial value if (retgso == SOCKET_ERROR) return (-2); if (werr == WSAENOTCONN) return (-1); if (werr == WSAEWOULDBLOCK) return 1; return 0; }</span></span></code> </pre> <br>  The function takes the socket number and returns 1 if the socket is in nonblocking mode, 0 is blocking, -1 if a detection error occurred, and -2 if the socket after the mode definition is left with a small timeout. <br><br>  In short, the sequence of actions is as follows: <br><br>  1. Save the socket timeout value (by default there is 0 - “wait forever”). <br>  2. Set the timeout to 1 millisecond. <br>  3. We read from socket 0 (zero) byte of out of band data.  An explanation is needed here: If OOB data is transmitted, the function may lie, but I have never encountered OOB since Windows NT4 crashed into a blue screen while trying to accept this ( <a href="https://en.wikipedia.org/wiki/WinNuke">WinNuke</a> ). <br>  4. We get an error that occurred as a result of reading. <br>  5. Restore the old timeout value of the socket. <br>  6. We look at what a reading error we had: if WSAEWOULDBLOCK, then the socket is in nonblocking mode, as required. <br><br>  The disadvantages of this method, in addition to the already mentioned MSG_OOB, include the detection delay of 1 millisecond and the non-zero probability of spoiling the socket read timeout (although the load test has never revealed this behavior). </div><p>Source: https://habr.com/ru/post/335762/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

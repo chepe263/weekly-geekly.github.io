@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Packet balancing in aggregated interfaces (bond) linux at the source or sender address</h1><div class="post__text post__text-html js-mediator-article">  In a small telecommunications operator, the Cisco SCE 2020 is used to control Internet access, which is installed between the Cisco 6500 and the debian server that functions as NAT.  An aggregated link of 2 Gb is configured between the server and the switch.  As the operator grows, loading of channels began to approach 1.8 Gbps, which is the limit of the SCE 2020 bandwidth, at which it is able to adequately apply traffic processing policies.  In this regard, it was decided to install the second SCE, expanding the link to 4Gbps. <br><a name="habracut"></a><br>  The standard scheme for the inclusion of several SCE 2020, according to the Cisco documentation, is as follows (1): <br><img src="https://habrastorage.org/getpro/habr/post_images/c2e/349/8ae/c2e3498aef5bf5db2fdedfc310b5a4e0.jpg" alt="image"><br>  But, as usual, due to the lack of ports on the 6500, it was decided to include SCE between the server and the Catalyst. <br><br>  In order for the DPI functionality to work correctly (protocol definition, http redirection), it is necessary to ensure symmetrical traffic flow through the SCE, i.e., the packets of a specific user must always pass through both sides of the same port and, accordingly, the same SCE.  On the Cisco 6500 side, the problem is solved by the command “port-channel load-balance src-ip” (2), after which packets from the same source always go to the same port. <br><br>  Accordingly, from the server side it was required to enable traffic balancing by the recipient's IP address.  It would seem that such a simple type of balancing should be implemented in the bonding module of the linux kernel, however, after studying the documentation, we found that it was not.  As a result, a small patch was born to the kernel 2.6.32 (3), which adds balancing modes to the source or destination address. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      After applying the patch, to use these types of balancing, you must include bonding with the parameter bond_mode = 2 (Mode of operation: balance-xor), and in the parameter xmit_hash_policy select the necessary type of balancing: 3 for balancing by the IP address of the recipient or 4 for balancing by the IP address the sender. <br><br>  1) “10 Gigabit and Multi-Gigabit Solution” <a href="http://www.cisco.com/en/US/prod/collateral/ps7045/ps6129/ps6133/ps6151/product_data_sheet0900aecd801d8574.html">www.cisco.com/en/US/prod/collateral/ps7045/ps6129/ps6133/ps6151/product_data_sheet0900aecd801d8574.html</a> <br>  2) Configuring EtherChannel Load Balancing <a href="http://www.cisco.com/en/US/docs/switches/lan/catalyst6500/ios/12.2SX/configuration/guide/channel.html">www.cisco.com/en/US/docs/switches/lan/catalyst6500/ios/12.2SX/configuration/guide/channel.html#wp1020804</a> <br>  3) Patch for kernel 2.6.32 <a href="http://pastebin.com/5YPNZBiy">pastebin.com/5YPNZBiy</a> </div><p>Source: <a href="https://habr.com/ru/post/172897/">https://habr.com/ru/post/172897/</a></p>
+      After applying the patch, to use these types of balancing, you must include bonding with the parameter bond_mode = 2 (Mode of operation: balance-xor), and in the parameter xmit_hash_policy select the necessary type of balancing: 3 for balancing by the IP address of the recipient or 4 for balancing by the IP address the sender. <br><br>  1) “10 Gigabit and Multi-Gigabit Solution” <a href="http://www.cisco.com/en/US/prod/collateral/ps7045/ps6129/ps6133/ps6151/product_data_sheet0900aecd801d8574.html">www.cisco.com/en/US/prod/collateral/ps7045/ps6129/ps6133/ps6151/product_data_sheet0900aecd801d8574.html</a> <br>  2) Configuring EtherChannel Load Balancing <a href="http://www.cisco.com/en/US/docs/switches/lan/catalyst6500/ios/12.2SX/configuration/guide/channel.html">www.cisco.com/en/US/docs/switches/lan/catalyst6500/ios/12.2SX/configuration/guide/channel.html#wp1020804</a> <br>  3) Patch for kernel 2.6.32 <a href="http://pastebin.com/5YPNZBiy">pastebin.com/5YPNZBiy</a> </div><p>Source: https://habr.com/ru/post/172897/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../172881/index.html">Successful double spending bitcoins on $ 10 thousand</a></li>
 <li><a href="../172885/index.html">Finger control: looking for the perfect interface</a></li>
+<li><a href="../17289/index.html">Reports of the conference "Business of online stores and online services"</a></li>
 <li><a href="../172891/index.html">Exercise for continuous improvement</a></li>
 <li><a href="../172893/index.html">Webinar "Testing Applications with Microsoft Visual Studio Test Professional 2012 and Team Foundation Server 2012"</a></li>
 <li><a href="../172895/index.html">Miniature boards Odroid U2 and Odroid X2</a></li>
 <li><a href="../172899/index.html">Once again about inventory management</a></li>
+<li><a href="../1729/index.html">Mordovia to picket provider VolgaTelecom</a></li>
 <li><a href="../172903/index.html">Meeting with members of the Virt2real team</a></li>
 <li><a href="../172905/index.html">Podcast number 297. News start-up industry and Internet business: March 11 - 15</a></li>
 <li><a href="../172907/index.html">JDeveloper 11g Working with Bounded Task Flows, Regions and Routers in Russian</a></li>
-<li><a href="../172911/index.html">Claw drone</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

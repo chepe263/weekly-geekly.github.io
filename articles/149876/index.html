@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Would not spend a day trying to restore Windows Server 2008R2</h1><div class="post__text post__text-html js-mediator-article"><h4>  Lyrical introduction </h4><br>  A few weeks ago, the following situation occurred: the 1C programmer asked me to update the platform and said that this was done using the “two clicks + on and on” method, without hesitation and having previously made a backup, installed the platform.  Backup is done by standard means 2008r2 on a separate screw in addition.  This screw was <b>completely allocated by Windows itself for backups and hidden</b> - the system itself suggested to do so in order to avoid wear and fragmentation, in the future such a disk can be connected as an NTFS folder.  So it happened, after installing 1C, my eyes had a pristine clean 1C cluster, that is, the database was still alive in SQL, but I didn’t see the possibility to fasten it to 1C, and there was no time to study, as it was late Wednesday evening, and by morning everything should be tiptop.  In perfect peace I rang the office - they left the keys on the watch.  I arrived, rebooted the server in recovery mode, it is also the Windows 7 installation mode. The next thirty hours passed in sweat and panic, with the re-creation of RAID, killing the file system on the backup screw, restoring it, and so on. <a name="habracut"></a><br><br><h4>  How not to do when installing the OS </h4><br>  I want to note a small moment and give a small recommendation: when installing Windows, please be more careful with naming partitions.  How do I see the rules of good tone: <b>Floppy</b> disks - <b>A:</b> - <b>B:,</b> local <b>hard</b> disks <b>C:,</b> <b>D:</b> and so on, then <b>removable</b> media <b>E:</b> - <b>H:</b> depending on the number, it is advisable to take out the <b>CD / DVD</b> drives to the end, since their number changes least of all, this is <b>X:,</b> <b>Y:,</b> <b>Z:,</b> in the remaining space <b>H:</b> - <b>W: I</b> recommend placing <b>network</b> drives. <br><br>  So the thing is that I got this server ready, <b>C:</b> is the first local logical, <b>D:</b> is the drive, <b>E:</b> is the second local logical.  Disk without label - our hard for backups.  I'm not sure that the cause of the problem lies precisely in the order of the drive letters, but just in case I would like to warn. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  We are trying to start a system restore </h4><br>  Since Windows Server 2008r2 already has a recovery.wim <i>recovery</i> image on its local disk (the name of the items may differ, I’m writing from memory), without inserting the DVD with Windows, we press <b>F8</b> and choose the very first top recovery option.  Select the recovery in the lower left corner of the graphical shell, the search for previously installed systems begins.  Since this is a server and is used by RAID, it is advisable for us to have a carrier with <br>  drivers thereof (I personally store them on the same backup disk), otherwise the system simply will not find what to restore. <br><br>  Everything seemed fine and wonderful, the drivers were successfully installed, the recovery system was found, and recovery options were offered.  Here I have to stop and remind: <b>in this system, we cannot somehow use control points</b> - they simply do not exist, only a complete rollback of the disk image. <br>  We select the appropriate item for our goals - the hard drive starts to look for saved system images.  I warn you: <b>it will be impossible to manually specify the location of the image</b> , as in this mode, I did not search on the network. <br><br>  And so, after a long search, we see a rather unexpected sign: <i>“Images for recovery were not found, insert a disk with the image and press Retry”</i> . <br><br><h4>  Where did the time go </h4><br>  I will not describe the entire agonizing way through which I came to this method, I will say briefly how it is solved: <br><ul><li>  1. The system has loaded the recovery mode GUI - insert the media with the RAID controller driver </li><li>  2. Click <i>"System Restore"</i> , wait for the failed end of the search for installed systems </li><li>  3. Click <i>"Browse"</i> , which implies searching for a controller driver </li><li>  4. <b>Attention!</b>  Find the driver and copy it to a virtual RAM disk created by the recovery system. </li><li>  5. <b>We take out any extra media</b> (disk with the image for recovery, flash drives with drivers) </li><li>  6. Click " <i>Browse"</i> again, we find and install the RAID driver. </li><li>  7. The system finds its damaged instance and asks for an administrator password, we perform obvious actions. </li><li>  8. It is time to attach the media with the image of the system and now start the search for backup copies </li><li>  9. On the thumb </li></ul><br><br>  Have a good trip! </div><p>Source: <a href="https://habr.com/ru/post/149876/">https://habr.com/ru/post/149876/</a></p>
+    <h4>  We are trying to start a system restore </h4><br>  Since Windows Server 2008r2 already has a recovery.wim <i>recovery</i> image on its local disk (the name of the items may differ, I’m writing from memory), without inserting the DVD with Windows, we press <b>F8</b> and choose the very first top recovery option.  Select the recovery in the lower left corner of the graphical shell, the search for previously installed systems begins.  Since this is a server and is used by RAID, it is advisable for us to have a carrier with <br>  drivers thereof (I personally store them on the same backup disk), otherwise the system simply will not find what to restore. <br><br>  Everything seemed fine and wonderful, the drivers were successfully installed, the recovery system was found, and recovery options were offered.  Here I have to stop and remind: <b>in this system, we cannot somehow use control points</b> - they simply do not exist, only a complete rollback of the disk image. <br>  We select the appropriate item for our goals - the hard drive starts to look for saved system images.  I warn you: <b>it will be impossible to manually specify the location of the image</b> , as in this mode, I did not search on the network. <br><br>  And so, after a long search, we see a rather unexpected sign: <i>“Images for recovery were not found, insert a disk with the image and press Retry”</i> . <br><br><h4>  Where did the time go </h4><br>  I will not describe the entire agonizing way through which I came to this method, I will say briefly how it is solved: <br><ul><li>  1. The system has loaded the recovery mode GUI - insert the media with the RAID controller driver </li><li>  2. Click <i>"System Restore"</i> , wait for the failed end of the search for installed systems </li><li>  3. Click <i>"Browse"</i> , which implies searching for a controller driver </li><li>  4. <b>Attention!</b>  Find the driver and copy it to a virtual RAM disk created by the recovery system. </li><li>  5. <b>We take out any extra media</b> (disk with the image for recovery, flash drives with drivers) </li><li>  6. Click " <i>Browse"</i> again, we find and install the RAID driver. </li><li>  7. The system finds its damaged instance and asks for an administrator password, we perform obvious actions. </li><li>  8. It is time to attach the media with the image of the system and now start the search for backup copies </li><li>  9. On the thumb </li></ul><br><br>  Have a good trip! </div><p>Source: https://habr.com/ru/post/149876/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,9 +74,9 @@
 <li><a href="../149875/index.html">These Funny Broadcast Receivers</a></li>
 <li><a href="../149878/index.html">GTD vs Agile Results. Correcting the mistakes of David Allen</a></li>
 <li><a href="../149879/index.html">Apple will get rid of intermediaries in Russia</a></li>
+<li><a href="../14988/index.html">error: "early!"</a></li>
 <li><a href="../149880/index.html">Three new smartphones and a Sony Xperia tablet</a></li>
 <li><a href="../149881/index.html">Unity Unite: Amsterdam in 3D</a></li>
-<li><a href="../149882/index.html">“Smooth” object model or what is “syntactic sugar” worth?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

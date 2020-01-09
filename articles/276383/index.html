@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Habra graph, community and where did all the karma go</h1><div class="post__text post__text-html js-mediator-article"><h1>  Introduction </h1><br>  Today we, along with graph analysis, data mining, subgroup discovery and all the fun stuff, take a look at Habr.  All <a href="https://github.com/SergeyParamonov/HabraData">code and data</a> are attached - everyone can look at them on their own, it is easy to repeat the calculations from the article and find something interesting on their own. <br><br><br> <a href=""><img src="https://habrastorage.org/files/2f2/561/574/2f256157458d4da58f33c72ec91cd08b.png"></a> <br><br>  <em>(this is not just a picture for attracting attention, but a graph of connections ~ 45000 Habr users by who is subscribed to; the size of the peak is proportional to the number of subscribers; all the pictures are clickable; details below)</em> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <br><br>  The problems discussed did not arise, of course, yesterday, but some of their aspects seem to me to be fairly new and therefore worthy of discussion based on unbiased and representative data.  For example, in the comments of <a href="https://habrahabr.ru/post/274219/">this</a> article, I saw an interesting statement: <br><br><blockquote>  <i>Here the problem is that in the whole of Habré today there are no more than 50-80 people who can vote at all.</i>  <i>In 90% of users, the karma is simply below 5. As a result, comments and articles are selected only by favorites.</i>  <i>This is how the jury comes out like that.</i> </blockquote><br>  And I decided that it would be worthwhile to formulate it as a hypothesis and to check: <br><br><blockquote>  <b>Q1:</b> Is it true that Habr turned into a jury-based community where two and a half people vote for articles? </blockquote><br>  Here in <a href="https://habrahabr.ru/company/tm/blog/273921">this</a> article the "Iron" Hubs returned to us and it became interesting, but how are the different communities inside Habr represented?  We formulate a hypothesis: <br><br><blockquote>  <b>Q2:</b> How is the community segmented, or in other words, how many interest groups do we have here and do they correspond to the existing hubs? </blockquote><br>  Last but no less interesting observation is that the activity on Habré has fallen (according to Habr-Pulse and my subjective observations), that they even <a href="https://geektimes.ru/company/tm/blog/269922/">decided to</a> enter "read &amp; comment" accounts.  Therefore, I decided to assess the activity of the community and consider how information about the community structure can help us: <blockquote>  <b>Q3:</b> How active is the community and how can the structure of internal groups help us? </blockquote><br><br>  For details, welcome under cat. <br><br>  <strong>Article structure</strong> <br><br><ul><li>  <a href="https://habrahabr.ru/post/276383/">Data collection methodology</a> </li><li>  <a href="https://habrahabr.ru/post/276383/">Distributions of karma, posts, comments ...</a> </li><li>  <a href="https://habrahabr.ru/post/276383/">Communities Habra</a> </li><li>  <a href="https://habrahabr.ru/post/276383/">Hub connectivity</a> </li><li>  <a href="https://habrahabr.ru/post/276383/">Activity and conclusions</a> <br><a name="habracut"></a></li></ul><br><a name="methodology"></a><br><h1>  Data collection methodology </h1><br>  As you know, a new version of Duke Nukem Forever is written on the Habra API, so you have to collect all the interesting data yourself (well, ok, in fact, it does not provide all the interesting data).  What data do we need to collect? <br><br><ul><li>  User base: go through all the posts (let's go through all the id from 2 * 10 ^ 5 to 2.76 * 10 ^ 5) </li><li>  Their personal data: karma, rating, posts, etc </li><li>  Communication between users (for community analysis): note the followers for each user and the hubs of each article. </li></ul><br>  Since Habr has a limit on the number of connections, it is best to use the distributed architecture of the parsa, for example, to break all the articles into N groups and ||  4 threads on each machine to parse.  All data is collected in github <a href="https://github.com/SergeyParamonov/HabraData">HabraData</a> (if you write a master's degree or some other diploma in data analysis, especially if suddenly in Russian, then there you can find a lot of interesting things). <br><br>  General scheme of collection: <br> <a href=""><img src="https://habrastorage.org/files/c11/663/dbb/c11663dbb3954674a8665ce784827246.png"></a> <br><br>  All users who for the last 2 years left comments and / or wrote an article gathered.  Then those who were banned were filtered, went to minus, etc.  In parallel, data was collected under the articles, namely to which hubs they belong.  The data used in each experiment are explained in the course of the story. <br><br>  An unfiltered list of users ~ 25k is available <a href="https://github.com/SergeyParamonov/HabraData/blob/master/users">here</a> , and <a href="">here a</a> filtered dataset with key indicators of users in the form of: <br><br><pre><code>user,karma,rating,publications,comments,favourites,followers
@@ -203,20 +203,20 @@ varerysan,16.0,0.0,9,26,0,3
 <br>
 <br>
  ,    ,   ,                .    ,      ,      ,    ,    ,  .<br>
-</div><p>Source: <a href="https://habr.com/ru/post/276383/">https://habr.com/ru/post/276383/</a></p>
+</div><p>Source: https://habr.com/ru/post/276383/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../276369/index.html">Machine learning from Octave \ Matlab to Python</a></li>
+<li><a href="../27637/index.html">Interview with Steve Ballmer with Anton Nosik</a></li>
 <li><a href="../276371/index.html">"Digital Rain" for Windows in 314 bytes</a></li>
 <li><a href="../276373/index.html">Social CRM. Collecting the interest of Internet users</a></li>
 <li><a href="../276377/index.html">Reducing the size of a thin disk in ESXi</a></li>
 <li><a href="../276381/index.html">Who should live and who should die: priorities of processes in Android</a></li>
 <li><a href="../276385/index.html">Hyper-scale server farm Amazon, Apple, Google, Switch, Toyota</a></li>
 <li><a href="../276389/index.html">Telegram bot framework</a></li>
+<li><a href="../27639/index.html">Analytic functions on the example of Oracle</a></li>
 <li><a href="../276391/index.html">MonCaché - implementation of the MongoDB API based on InterSystems Caché</a></li>
 <li><a href="../276393/index.html">Smart babysitter based on Intel Edison and Ubidots</a></li>
-<li><a href="../276395/index.html">Cache it: increase the stability of the ONLYOFFICE server with Redis</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

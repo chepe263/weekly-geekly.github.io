@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>boolean - fighting for Java memory ...</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/getpro/habr/post_images/446/bbc/308/446bbc308b2b8d8f41cb6e0ef28c9f18.jpg">  Have you ever had such situations when your Java application is cracking at the seams?  In my case it happened due to the lack of available RAM.  And, of course, there was a shortage at the most inopportune moment: another long-awaited release is on the nose, one of the servers is stopped for updating the code and data and the reincarnation of the old code is no longer possible; In general, the emergency has not gone unnoticed. <br><br>  By the way, if I had made the correct backup and the emergency work on the restoration of viability would have passed much more calmly, but this would have been a completely different story.  So at my disposal there is a code that lacks 15Gb of RAM for normal operation and a very long and expensive startup process (about 5 hours), during which you can only sit with crossed fingers and hope that this time the cherished words OutOfMemoryException are not appear in the console of the remote server. <br>  I will not describe all the tricks that had to be done to restore the stopped server within three days, but I’ll share one of my mini discoveries - <b><i>boolean</i></b> is not the type of data that you want to use in high-load systems.  Attention question: <br><a name="habracut"></a><br>  How do you think, how much memory does boolean take for example on Ubuntu server x64? <br><br>  The correct answer is: <i>unknown and depends only on the implementation of the JVM.</i> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Consider the common Sun JVM and read in the virtual machine specification that <a href="http://java.sun.com/docs/books/jvms/second_edition/html/Overview.doc.html">there is no boolean type as such</a> , int is used instead!  This means that exactly 32 bits are used to store a “yes / no” value, regardless of the processor architecture.  However, in the same section, we see that optimization has been made for working with boolean arrays, which are converted into an array of bytes, which gives an increase in available memory by 4 times.  And yet, paying for storing a zero or one family with seven extra bits - sometimes just blasphemy and mockery of servers (especially with arrays of 500 million items). <br><br>  The salvation in such cases will be the BitSet class, which behaves like a boolean array, but packs the data so that only one bit of memory is allocated for one bit (with low overhead for the entire array).  BitSet stores an array of the long type inside it, and when requesting or setting the value of a specific bit, it calculates the index of the desired long, and using bitwise and shift operations it performs calculations on a single bit. <br>  There is an even more interesting BitSet implementation, <a href="http://lucene.apache.org/java/2_4_0/api/org/apache/lucene/util/OpenBitSet.html">OpenBitSet</a> is an Apache implementation that is used for Lucene.  It is much faster, but it misses some of the checks carried out on the original BitSet.  What to use is up to you. <br></div><p>Source: <a href="https://habr.com/ru/post/76481/">https://habr.com/ru/post/76481/</a></p>
+      Consider the common Sun JVM and read in the virtual machine specification that <a href="http://java.sun.com/docs/books/jvms/second_edition/html/Overview.doc.html">there is no boolean type as such</a> , int is used instead!  This means that exactly 32 bits are used to store a “yes / no” value, regardless of the processor architecture.  However, in the same section, we see that optimization has been made for working with boolean arrays, which are converted into an array of bytes, which gives an increase in available memory by 4 times.  And yet, paying for storing a zero or one family with seven extra bits - sometimes just blasphemy and mockery of servers (especially with arrays of 500 million items). <br><br>  The salvation in such cases will be the BitSet class, which behaves like a boolean array, but packs the data so that only one bit of memory is allocated for one bit (with low overhead for the entire array).  BitSet stores an array of the long type inside it, and when requesting or setting the value of a specific bit, it calculates the index of the desired long, and using bitwise and shift operations it performs calculations on a single bit. <br>  There is an even more interesting BitSet implementation, <a href="http://lucene.apache.org/java/2_4_0/api/org/apache/lucene/util/OpenBitSet.html">OpenBitSet</a> is an Apache implementation that is used for Lucene.  It is much faster, but it misses some of the checks carried out on the original BitSet.  What to use is up to you. <br></div><p>Source: https://habr.com/ru/post/76481/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../76471/index.html">PicPick is a simple image and screenshots editor.</a></li>
 <li><a href="../76473/index.html">Invitamania over?</a></li>
 <li><a href="../76477/index.html">Three questions at a project manager interview</a></li>
 <li><a href="../76478/index.html">14th StartupPoint and Investor Community Meeting StartupPoint (Moscow, November 29, Sunday)</a></li>
 <li><a href="../76479/index.html">John Birrell, one of the FreeBSD project committers, died.</a></li>
+<li><a href="../7648/index.html">Why can not take a comment / blog plus, since I gave him?</a></li>
 <li><a href="../76482/index.html">What I found interesting on the mail server meteorologists</a></li>
 <li><a href="../76483/index.html">Romeo and Juliet</a></li>
 <li><a href="../76485/index.html">Debugging Javascript</a></li>

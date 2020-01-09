@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Open files in external applications</h1><div class="post__text post__text-html js-mediator-article"> Emacs has a cool learning curtain, but the further you go, the more you want to do everything you can and cannot do.  In particular, it has a large number of tools for navigating the file system. <br>  I, for example, use Dired mode, ido, Org mode and bookmarks.  But there is a problem with opening files in external applications: pdf in evince, avi in ​​mplayer, etc.  And I want to ask these links in one place.  Emacs would not be Emacs if it didn’t allow me to do some dirty hack =) <br><a name="habracut"></a><br>  Application associations with file types will be defined as a list of pairs in which the first element is a string, separated by a space of extensions, and the second is a command to launch the application: <br><br> <code>(defvar command-list <br> '(("jpg jpeg png bmp" . <br> "gqview") <br> ("pdf djvu ps" . <br> "evince") <br> ("html htm" . <br> "firefox -new-tab") <br> ("ogv mpg mpeg avi flv <br> VOB wmv mp4 mov mkv divx <br> ogm m4v asf rmvb" . <br> "mplayer -fs") <br> ("doc odf odt rtf" . <br> "ooffice"))) <br></code> <br>  From a line of extensions we will make a regular session: <br><br> <code>(defun build-re (str) <br> (let ((re "\\.\\(") <br> (ext-list (split-string str))) <br> (dotimes (n (- (length ext-list) 1)) <br> (setq re (concat re (nth n ext-list) "$\\|"))) <br> (setq re (concat re (car (last ext-list)) "$\\)$")) <br> re)) <br></code> <br>  Write a function that gets the path to the file 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>(defun try-open-external (filename) <br> (let ((success nil)) <br> ;;    , <br> (dolist (command command-list) <br> (let ((cmd (cdr command)) <br> ;;     , <br> (re (build-re (car command)))) <br> ;;     . <br> (when (string-match re filename) <br> ;;     , <br> (shell-command-to-string (concat cmd <br> " " <br> (shell-quote-argument filename) <br> " &amp;&gt; /dev/null &amp;")) <br> (setq success t)))) <br> ;;        . <br> success)) <br></code> <br>  Now we need to force Emacs to run our function when trying to open a file.  The documentation tells us that functions like find-file use find-file-noselect. <br><br>  Therefore, we will keep the system function <br><br> <code>(fset 'old-find-file-noselect (symbol-function 'find-file-noselect)) <br></code> <br>  and redefine it so that it tries to open the file in an external program, <br><br> <code>(defun find-file-noselect (filename &amp;optional nowarn rawfile wildcards) <br> (if (try-open-external filename) <br> nil <br> ;;       . <br> (old-find-file-noselect filename nowarn rawfile wildcards))) <br></code> <br>  For Org mode, we write a small function so that when opening links <br>  switching to another window was only for files opened inside Emacs <br><br> <code>(defun my-org-find-file (file) <br> (when (not (try-open-external file)) <br> (find-file-other-window file))) <br></code> <br>  and we will use it for all types of files <br><br> <code>(org-file-apps (quote ((".*" my-org-find-file file)))) <br></code> <br><br>  So far there have been no special problems with this, although, for example, launching external applications via tramp does not work, but it seems to be right. <br><br>  <a href="">Download the code.</a> <br><br>  Any criticism and advice, as they say, well. </div><p>Source: <a href="https://habr.com/ru/post/47524/">https://habr.com/ru/post/47524/</a></p>
+     <code>(defun try-open-external (filename) <br> (let ((success nil)) <br> ;;    , <br> (dolist (command command-list) <br> (let ((cmd (cdr command)) <br> ;;     , <br> (re (build-re (car command)))) <br> ;;     . <br> (when (string-match re filename) <br> ;;     , <br> (shell-command-to-string (concat cmd <br> " " <br> (shell-quote-argument filename) <br> " &amp;&gt; /dev/null &amp;")) <br> (setq success t)))) <br> ;;        . <br> success)) <br></code> <br>  Now we need to force Emacs to run our function when trying to open a file.  The documentation tells us that functions like find-file use find-file-noselect. <br><br>  Therefore, we will keep the system function <br><br> <code>(fset 'old-find-file-noselect (symbol-function 'find-file-noselect)) <br></code> <br>  and redefine it so that it tries to open the file in an external program, <br><br> <code>(defun find-file-noselect (filename &amp;optional nowarn rawfile wildcards) <br> (if (try-open-external filename) <br> nil <br> ;;       . <br> (old-find-file-noselect filename nowarn rawfile wildcards))) <br></code> <br>  For Org mode, we write a small function so that when opening links <br>  switching to another window was only for files opened inside Emacs <br><br> <code>(defun my-org-find-file (file) <br> (when (not (try-open-external file)) <br> (find-file-other-window file))) <br></code> <br>  and we will use it for all types of files <br><br> <code>(org-file-apps (quote ((".*" my-org-find-file file)))) <br></code> <br><br>  So far there have been no special problems with this, although, for example, launching external applications via tramp does not work, but it seems to be right. <br><br>  <a href="">Download the code.</a> <br><br>  Any criticism and advice, as they say, well. </div><p>Source: https://habr.com/ru/post/47524/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../47515/index.html">Table lamp-bonfire</a></li>
 <li><a href="../47516/index.html">Korean Twitter has found an investor</a></li>
 <li><a href="../47518/index.html">Table lamp aquarium</a></li>
+<li><a href="../4752/index.html">Daripodarki.ru told what personnel needs in 2007</a></li>
 <li><a href="../47520/index.html">VirtualBox 2.1.0 and OpenGL Call Translation</a></li>
 <li><a href="../47523/index.html">And would you like to live and work abroad (in the USA, Australia, etc.)?</a></li>
 <li><a href="../47526/index.html">The idea of ​​the big pictures and limitations of hosting</a></li>
 <li><a href="../47528/index.html">What design tool do you use (for database design and for UML)?</a></li>
+<li><a href="../4753/index.html">Google may be testing an ad network for elite customers.</a></li>
 <li><a href="../47530/index.html">Improvement for tree comments Habr</a></li>
 <li><a href="../47531/index.html">The fifth eTarget conference will be held in March 2009</a></li>
-<li><a href="../47536/index.html">GMDesk allows you to use many Google applications from one window.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

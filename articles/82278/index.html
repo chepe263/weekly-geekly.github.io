@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Can't find what you need? Do it yourself</h1><div class="post__text post__text-html js-mediator-article">  It so happened that I needed to set up a backup of the MySQL and PostgreSQL databases.  I wanted quite certain, namely: <br><ul><li>  Ease of solution </li><li>  Each database in a separate file </li><li>  The name in the format “bdname.YYYY-MM-DD-HH: mm: ss.sql.gz” </li><li>  For each database a certain number of archives is stored. </li><li>  A set of database archives is in rotation </li><li>  Solving specific problems with the password for pg_dump </li><li>  etc. </li></ul>  I did not find ready-made scripts in the network, but I picked up and combined several solutions, having received the required one. <br><a name="habracut"></a><br>  The general algorithm of scripts is such that a list of databases is selected, and archives are saved by it.  Outdated are removed.  The scripts have the possibility and necessity of setting: specifying the number of copies of the archive for rotation, the login / password for the DBMS and the folder for storing the results of the work. <br><br>  <b>MySQL:</b> <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">#!/bin/bash <br> <br> # user &amp; password <br> USER=root <br> PASS=pass <br> <br> # number of backups to be saved <br> KEEP=14 <br> <br> # dir to backup <br> DIR=/ <font color="#0000ff">var</font> /backups/mysql <br> <br> NOW=$(date + <font color="#A31515">"%Y-%m-%d"</font> ) <br> DBS= <font color="#A31515">"$(mysql -u $USER -p$PASS -Bse 'show databases')"</font> <br> <br> <font color="#0000ff">for</font> db <font color="#0000ff">in</font> $DBS <br> <font color="#0000ff">do</font> <br> <br> BACKUPS=`find $DIR -name <font color="#A31515">"$db.*.gz"</font> | wc -l | sed <font color="#A31515">'s/\ //g'</font> ` <br> <font color="#0000ff">while</font> [ $BACKUPS -ge $KEEP ] <br> <font color="#0000ff">do</font> <br> ls -tr1 $DIR/$db.*.gz | head -n 1 | xargs rm -f <br> BACKUPS=`expr $BACKUPS - 1` <br> done <br> <br> FILE=$DIR/$db.$NOW-$(date + <font color="#A31515">"%T"</font> ).sql.gz <br> mysqldump -u $USER -p$PASS $db | gzip -9 &gt; $FILE <br> <br> done <br> <br> exit 0</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  I spent a lot of time with PostgreSQL due to the fact that I could not transfer the password, but the solution was found. <br><br>  <b>PostgreSQL:</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">#!/bin/bash <br> <br> # user &amp; password <br> USER=postgres <br> PASS=pass <br> <br> # number of backups to be saved <br> KEEP=14 <br> <br> # dir to backup <br> DIR=/ <font color="#0000ff">var</font> /backups/pgsql <br> <br> PGPASSWORD=$PASS <br> export PGPASSWORD <br> <br> NOW=$(date + <font color="#A31515">"%Y-%m-%d"</font> ) <br> DBS= <font color="#A31515">"$(psql -U $USER -lt |awk '{ print $1}' |grep -vE '^-|^List|^Name|template[0|1]')"</font> <br> <br> <font color="#0000ff">for</font> db <font color="#0000ff">in</font> $DBS <br> <font color="#0000ff">do</font> <br> <br> BACKUPS=`find $DIR -name <font color="#A31515">"$db.*.gz"</font> | wc -l | sed <font color="#A31515">'s/\ //g'</font> ` <br> <font color="#0000ff">while</font> [ $BACKUPS -ge $KEEP ] <br> <font color="#0000ff">do</font> <br> ls -tr1 $DIR/$db.*.gz | head -n 1 | xargs rm -f <br> BACKUPS=`expr $BACKUPS - 1` <br> done <br> <br> FILE=$DIR/$db.$NOW-$(date + <font color="#A31515">"%T"</font> ).sql.gz <br> <br> pg_dump -U $USER $db | gzip -c &gt; $FILE <br> <br> done <br> <br> PGPASSWORD= <br> export PGPASSWORD <br> <br> exit 0</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  These great scripts have long and successfully been working on a machine running Debian.  Just add <s>water</s> to the crowns. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,23 +63,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/82278/">https://habr.com/ru/post/82278/</a></p>
+    <p>Source: https://habr.com/ru/post/82278/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../82267/index.html">Drupalogiya - the first magazine about Drupal</a></li>
 <li><a href="../82268/index.html">Intel Clarkdale or race for megahertz reborn?</a></li>
+<li><a href="../8227/index.html">Universalization.</a></li>
 <li><a href="../82271/index.html">Bacon And Eggs. Bicycle with eggs and linear algebra!</a></li>
 <li><a href="../82272/index.html">Folding @ home: Let's show bourgeoisie what our boots, balalaikas and bears are worth!</a></li>
 <li><a href="../82273/index.html">Goodbye, Karma, or Who Needs an iPad?</a></li>
 <li><a href="../82279/index.html">iPad. Russian language out of the box</a></li>
+<li><a href="../8228/index.html">Television Made in Russia</a></li>
 <li><a href="../82280/index.html">iPad ... iPad ... And about iPhone OS 3.2, everyone is silent</a></li>
 <li><a href="../82281/index.html">Homemade wooden devices</a></li>
-<li><a href="../82291/index.html">Self-motivation: my 5 kopecks to the conversation</a></li>
-<li><a href="../82292/index.html">SETI goes to open source</a></li>
+<li><a href="../8229/index.html">Unable to respond to comments</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

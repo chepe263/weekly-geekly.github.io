@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Ruby Threading</h1><div class="post__text post__text-html js-mediator-article">  <i>Translation of the Multithreading chapter by David Thomas and Andrew Hunt Programming Ruby: The Pragmatic Programmers' Guide, Second Edition.</i> <br><br>  Often the easiest way to do two things at the same time is to use threads in Ruby.  They are in-process, embedded in the Ruby interpreter.  This makes Ruby threads fully portable, i.e.  independent of the operating system.  But at the same time, you will definitely not benefit from the use of native, native streams.  What does it mean? <br><br>  You may experience starvation ( <a href="http://java.sun.com/docs/books/tutorial/essential/concurrency/starvelive.html">thread starvation</a> is when a thread with a small priority has no chance to start).  If you want to block your threads, then the whole process will stop with a screech.  And if a situation arises that some threads will send calls to the operating system, which require a considerable amount of time to complete, then all threads will hang until the interpreter gets control back.  Finally, if your machine has more than one processor, Ruby threads will not use it, because  they run in the same process, and in a single native thread they will be forced to run on the same processor at a time. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       It all sounds scary.  However, in practice, in many cases, the benefits of using threads largely outweigh any potential problems that may arise.  Ruby streams are an efficient and easy way to achieve concurrency in your code.  You just have to understand the basic problems of implementation, and, accordingly, the architecture. <br><a name="habracut"></a><br><h4>  Creating Ruby Threads </h4><br>  Creating a new thread is pretty straightforward.  The following code is a simple example.  He simultaneously downloads a set of Web pages.  For each URL requested for download, the code creates a separate stream that controls the HTTP transaction. <br><br><blockquote><code><font color="#008000">require</font> <font color="#BA2121">'net/http'</font> <br> pages <font color="#666666">=</font> <font color="#008000">%w( www.rubycentral.com slashdot.org www.google.com )</font> <br> threads <font color="#666666">=</font> <font color="#666666">[]</font> <br> <font color="#008000"><strong>for</strong></font> page_to_fetch <font color="#008000"><strong>in</strong></font> pages <br> threads <font color="#666666">&lt;&lt;</font> <font color="#880000">Thread</font> <font color="#666666">.</font> new(page_to_fetch) <font color="#008000"><strong>do</strong></font> <font color="#666666">|</font> url <font color="#666666">|</font> <br> h <font color="#666666">=</font> <font color="#880000">Net</font> <font color="#666666">::</font> <font color="#880000">HTTP</font> <font color="#666666">.</font> new(url, <font color="#666666">80</font> ) <br> <font color="#008000">puts</font> <font color="#BA2121">"Fetching:</font> <font color="#BB6688"><strong>#{</strong></font> url <font color="#BB6688"><strong>}</strong></font> <font color="#BA2121">"</font> <br> resp <font color="#666666">=</font> h <font color="#666666">.</font> get( <font color="#BA2121">'/'</font> , <font color="#008000">nil</font> ) <br> <font color="#008000">puts</font> <font color="#BA2121">"Got</font> <font color="#BB6688"><strong>#{</strong></font> url <font color="#BB6688"><strong>}</strong></font> <font color="#BA2121">:</font> <font color="#BB6688"><strong>#{</strong></font> resp <font color="#666666">.</font> message <font color="#BB6688"><strong>}</strong></font> <font color="#BA2121">"</font> <br> <font color="#008000"><strong>end</strong></font> <br> <font color="#008000"><strong>end</strong></font> <br> threads <font color="#666666">.</font> each { <font color="#666666">|</font> thr <font color="#666666">|</font> thr <font color="#666666">.</font> join }</code> </blockquote> <br><br>  Result: <br><pre>  Fetching: www.rubycentral.com
@@ -95,7 +95,7 @@
  A: 3
  B: 5
  A: 4
- A: 5 </pre><br><br>  However, it is not so easy to use such elementary actions to achieve synchronization in real code - the state of the races will constantly haunt you.  And when you work with general data, the state of racing guarantees you a long and disappointing debugging.  In fact, the previous example contains an error: it is possible to increment a counter in one thread, but before displaying its value, another thread starts and displays the value of its counter.  As a result, the output will be in the wrong order. <br><br>  Fortunately, streams have one additional possibility - the idea of ​​mutual exclusion (mutual exclusion).  Using this, we can create secure synchronization schemes. </div><p>Source: <a href="https://habr.com/ru/post/94574/">https://habr.com/ru/post/94574/</a></p>
+ A: 5 </pre><br><br>  However, it is not so easy to use such elementary actions to achieve synchronization in real code - the state of the races will constantly haunt you.  And when you work with general data, the state of racing guarantees you a long and disappointing debugging.  In fact, the previous example contains an error: it is possible to increment a counter in one thread, but before displaying its value, another thread starts and displays the value of its counter.  As a result, the output will be in the wrong order. <br><br>  Fortunately, streams have one additional possibility - the idea of ​​mutual exclusion (mutual exclusion).  Using this, we can create secure synchronization schemes. </div><p>Source: https://habr.com/ru/post/94574/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

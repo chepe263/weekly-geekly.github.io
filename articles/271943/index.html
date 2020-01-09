@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Change desktop background and lock screen from CW / XAML UWP application</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/files/229/aad/50d/229aad50de554be19ce60c60dbfd2e7e.png"></div><br>  A rather interesting feature of UWP applications is that you can change the background and screen saver lock screen without any problems.  What is strange is that even no warning is issued and no installation of permissions is required in the manifest (although something like the User Account Information item from the Capabilities manifest might well be required). <br><br>  Under the cut description of a simple but funny trick. <br><a name="habracut"></a><br>  As just mentioned, the background change does not require any permissions.  It is enough to add an image file to the application (I added a ninja cat file - ninjacat.png) and use this snippet: <br><br><pre><code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (UserProfilePersonalizationSettings.IsSupported()) { StorageFile file = <span class="hljs-keyword"><span class="hljs-keyword">await</span></span> StorageFile.GetFileFromApplicationUriAsync(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Uri(<span class="hljs-string"><span class="hljs-string">"ms-appx:///ninjacat.png"</span></span>)); <span class="hljs-comment"><span class="hljs-comment">//          ,       StorageFile localFile = await file.CopyAsync(ApplicationData.Current.LocalFolder,"ninjacat.png", NameCollisionOption.ReplaceExisting); UserProfilePersonalizationSettings settings = UserProfilePersonalizationSettings.Current; bool isSuccess = await settings.TrySetWallpaperImageAsync(localFile); }</span></span></code> </pre> <br>  Two namespaces have been added to use the snippet: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">using</span></span> Windows.System.UserProfile; <span class="hljs-keyword"><span class="hljs-keyword">using</span></span> Windows.Storage;</code> </pre><br>  To set the background, we use the class <font color="#777700">UserProfilePersonalizationSettings</font> , first checking whether the background profile change is supported.  Please note that in order to use the image, it was necessary to copy it from the application directory to another available folder (I used the local application folder). <br><br>  To install the image on the lock screen, in the snippet, replace the last line with: <br><br><pre> <code class="cs hljs"> <span class="hljs-keyword"><span class="hljs-keyword">bool</span></span> isSuccess = <span class="hljs-keyword"><span class="hljs-keyword">await</span></span> settings.TrySetLockScreenImageAsync(localFile);</code> </pre><br>  By the way, it is obvious that the value of isSuccess will be true if successful, and false if unsuccessful. <br><br>  It is also possible to upload a picture from the network  In this case, our snippet will change to this: <br><br><pre> <code class="cs hljs"> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (UserProfilePersonalizationSettings.IsSupported()) { StorageFile localFile = <span class="hljs-keyword"><span class="hljs-keyword">await</span></span> ApplicationData.Current.LocalFolder.CreateFileAsync(<span class="hljs-string"><span class="hljs-string">"cat.png"</span></span>, CreationCollisionOption.ReplaceExisting); BackgroundDownloader downloader = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> BackgroundDownloader(); DownloadOperation dl = downloader.CreateDownload(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Uri(<span class="hljs-string"><span class="hljs-string">"http://az648995.vo.msecnd.net/win/2015/07/Windows_Insider_Ninjacat_Unicorn-1024x768-Desktop.png"</span></span>), localFile); <span class="hljs-keyword"><span class="hljs-keyword">await</span></span> dl.StartAsync(); UserProfilePersonalizationSettings settings = UserProfilePersonalizationSettings.Current; <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> isSuccess = <span class="hljs-keyword"><span class="hljs-keyword">await</span></span> settings.TrySetWallpaperImageAsync(localFile); }</code> </pre><br>  But in this case, do not forget in the application manifest, in the possibilities of ticking "Internet (client)" and add a namespace <br><br><pre> <code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">using</span></span> Windows.Networking.BackgroundTransfer;</code> </pre></div><p>Source: <a href="https://habr.com/ru/post/271943/">https://habr.com/ru/post/271943/</a></p>
+    <pre> <code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">using</span></span> Windows.System.UserProfile; <span class="hljs-keyword"><span class="hljs-keyword">using</span></span> Windows.Storage;</code> </pre><br>  To set the background, we use the class <font color="#777700">UserProfilePersonalizationSettings</font> , first checking whether the background profile change is supported.  Please note that in order to use the image, it was necessary to copy it from the application directory to another available folder (I used the local application folder). <br><br>  To install the image on the lock screen, in the snippet, replace the last line with: <br><br><pre> <code class="cs hljs"> <span class="hljs-keyword"><span class="hljs-keyword">bool</span></span> isSuccess = <span class="hljs-keyword"><span class="hljs-keyword">await</span></span> settings.TrySetLockScreenImageAsync(localFile);</code> </pre><br>  By the way, it is obvious that the value of isSuccess will be true if successful, and false if unsuccessful. <br><br>  It is also possible to upload a picture from the network  In this case, our snippet will change to this: <br><br><pre> <code class="cs hljs"> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (UserProfilePersonalizationSettings.IsSupported()) { StorageFile localFile = <span class="hljs-keyword"><span class="hljs-keyword">await</span></span> ApplicationData.Current.LocalFolder.CreateFileAsync(<span class="hljs-string"><span class="hljs-string">"cat.png"</span></span>, CreationCollisionOption.ReplaceExisting); BackgroundDownloader downloader = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> BackgroundDownloader(); DownloadOperation dl = downloader.CreateDownload(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Uri(<span class="hljs-string"><span class="hljs-string">"http://az648995.vo.msecnd.net/win/2015/07/Windows_Insider_Ninjacat_Unicorn-1024x768-Desktop.png"</span></span>), localFile); <span class="hljs-keyword"><span class="hljs-keyword">await</span></span> dl.StartAsync(); UserProfilePersonalizationSettings settings = UserProfilePersonalizationSettings.Current; <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> isSuccess = <span class="hljs-keyword"><span class="hljs-keyword">await</span></span> settings.TrySetWallpaperImageAsync(localFile); }</code> </pre><br>  But in this case, do not forget in the application manifest, in the possibilities of ticking "Internet (client)" and add a namespace <br><br><pre> <code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">using</span></span> Windows.Networking.BackgroundTransfer;</code> </pre></div><p>Source: https://habr.com/ru/post/271943/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../271931/index.html">How is the rendering frame in GTA V</a></li>
 <li><a href="../271935/index.html">What is under the hood of travel startups or why does a programmer need to go to Hack`n`Roll</a></li>
 <li><a href="../271937/index.html">5 major risks in custom software development</a></li>
 <li><a href="../271939/index.html">Asterisk + LUA: quick start</a></li>
+<li><a href="../27194/index.html">Vertical search engines - some parts of the report</a></li>
 <li><a href="../271941/index.html">Getting Started with Java 9 and the Jigsaw Project - Part One</a></li>
 <li><a href="../271945/index.html">Development of a parser, code generator and SQL editor using EMFText</a></li>
 <li><a href="../271947/index.html">Opera Link closes in December</a></li>
+<li><a href="../27195/index.html">Hard bits</a></li>
 <li><a href="../271951/index.html">Application implementation - device owner for Android</a></li>
 <li><a href="../271953/index.html">Dispelling myths about secure passwords</a></li>
-<li><a href="../271955/index.html">We invite you to the December meetings of the IT community in Samara, Novosibirsk and Krasnoyarsk</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

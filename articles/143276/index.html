@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A typical error when installing COOKIE in PHP</h1><div class="post__text post__text-html js-mediator-article">  I want to share one feature when setting COOKIE values, which is often forgotten by web developers. <br>  In my practice of researching web applications on vulnerabilities, for 2009-2011, this error occurred in 87% of web applications written in PHP. <br>  In order to somehow reduce this figure, I decided to write this text. <br><br>  It's not even about the httpOnly flag, although its use is equally important and must be applied. <br><a name="habracut"></a><br>  Consider the sample code: <br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> setcookie(<span class="hljs-string"><span class="hljs-string">'foo'</span></span>,<span class="hljs-string"><span class="hljs-string">'bar1'</span></span>); header(<span class="hljs-string"><span class="hljs-string">'Set-cookie: foo1=bar11'</span></span>); <span class="hljs-meta"><span class="hljs-meta">?&gt;</span></span></code> </pre> <br><br>  This code obviously sets two COOKIE values ​​with the names foo and foo1. <br>  Now the main question - <b>for what domain and with what flags</b> ? 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Referring to the source - the HTTP response of the web server: <br><img src="https://habrastorage.org/getpro/habr/post_images/27d/371/4b6/27d3714b617df04e37d0fbf73767bef3.png" alt="image"><br><br>  As you can see, the server says nothing about the domain or the flags. <br>  Then the question goes to another plane - <b>which domain and flags will the browser choose for such a header?</b> <br><br>  In the case of Chrome (current version 18.0.1025.168), everything will be more than good and the domain will be exactly the one from which the request came.  In my example, foo.bar.com: <br><img src="https://habrastorage.org/getpro/habr/post_images/281/fd9/876/281fd9876331f500976b186fe3d039dd.png" alt="image"><br><br>  If everything was so good, probably, there would be no text here ... <br><br>  Check Internet Explorer.  Since I don’t know beautiful plugins for viewing COOKIE, set cookies for the foo.com domain and output document.cookie from the bar.foo.com domain: <br><img src="https://habrastorage.org/getpro/habr/post_images/d9f/2e2/e60/d9f2e2e603387b44bcb65b443f1ac4cf.png" alt="image"><br><br>  This is very sad.  And funny from the other side. <br>  <b>When the server receives an HTTP response</b> <b><br> <code>Set-cookie: foo=bar <br></code></b>  <b>Internet Explorer sets foo = bar for ALL subdomains, that is, * .foo.com in my example without any flags, such as httpOnly.</b> <br><br>  The attacker, whose role I often have to play when performing audits, remains to find XSS on any subdomain of the target host, which in practice is very easy to implement. <br><br>  But what about other browsers? <br><table><tbody><tr><td>  Firefox </td><td>  12.0 </td><td>  <font color="red">httpOnly</font> </td><td>  <font color="green">wildcard</font> </td></tr><tr><td>  Safari </td><td>  5.1.5 </td><td>  <font color="red">httpOnly</font> </td><td>  <font color="green">wildcard</font> </td></tr><tr><td>  Opera </td><td>  11.62 </td><td>  <font color="red">httpOnly</font> </td><td>  <font color="green">wildcard</font> </td></tr></tbody></table><br><br>  Thus, using designs <br><pre> <code class="php hljs">setcookie(<span class="hljs-string"><span class="hljs-string">'foo'</span></span>,<span class="hljs-string"><span class="hljs-string">'bar1'</span></span>);</code> </pre><br>  and <br><pre> <code class="php hljs">header(<span class="hljs-string"><span class="hljs-string">'Set-cookie: foo1=bar11'</span></span>);</code> </pre><br>  if the client uses Internet Explorer (8-9), <b>you put a COOKIE on ALL subdomains from this one</b> . <br><br>  Remember this! </div><p>Source: <a href="https://habr.com/ru/post/143276/">https://habr.com/ru/post/143276/</a></p>
+      Referring to the source - the HTTP response of the web server: <br><img src="https://habrastorage.org/getpro/habr/post_images/27d/371/4b6/27d3714b617df04e37d0fbf73767bef3.png" alt="image"><br><br>  As you can see, the server says nothing about the domain or the flags. <br>  Then the question goes to another plane - <b>which domain and flags will the browser choose for such a header?</b> <br><br>  In the case of Chrome (current version 18.0.1025.168), everything will be more than good and the domain will be exactly the one from which the request came.  In my example, foo.bar.com: <br><img src="https://habrastorage.org/getpro/habr/post_images/281/fd9/876/281fd9876331f500976b186fe3d039dd.png" alt="image"><br><br>  If everything was so good, probably, there would be no text here ... <br><br>  Check Internet Explorer.  Since I don’t know beautiful plugins for viewing COOKIE, set cookies for the foo.com domain and output document.cookie from the bar.foo.com domain: <br><img src="https://habrastorage.org/getpro/habr/post_images/d9f/2e2/e60/d9f2e2e603387b44bcb65b443f1ac4cf.png" alt="image"><br><br>  This is very sad.  And funny from the other side. <br>  <b>When the server receives an HTTP response</b> <b><br> <code>Set-cookie: foo=bar <br></code></b>  <b>Internet Explorer sets foo = bar for ALL subdomains, that is, * .foo.com in my example without any flags, such as httpOnly.</b> <br><br>  The attacker, whose role I often have to play when performing audits, remains to find XSS on any subdomain of the target host, which in practice is very easy to implement. <br><br>  But what about other browsers? <br><table><tbody><tr><td>  Firefox </td><td>  12.0 </td><td>  <font color="red">httpOnly</font> </td><td>  <font color="green">wildcard</font> </td></tr><tr><td>  Safari </td><td>  5.1.5 </td><td>  <font color="red">httpOnly</font> </td><td>  <font color="green">wildcard</font> </td></tr><tr><td>  Opera </td><td>  11.62 </td><td>  <font color="red">httpOnly</font> </td><td>  <font color="green">wildcard</font> </td></tr></tbody></table><br><br>  Thus, using designs <br><pre> <code class="php hljs">setcookie(<span class="hljs-string"><span class="hljs-string">'foo'</span></span>,<span class="hljs-string"><span class="hljs-string">'bar1'</span></span>);</code> </pre><br>  and <br><pre> <code class="php hljs">header(<span class="hljs-string"><span class="hljs-string">'Set-cookie: foo1=bar11'</span></span>);</code> </pre><br>  if the client uses Internet Explorer (8-9), <b>you put a COOKIE on ALL subdomains from this one</b> . <br><br>  Remember this! </div><p>Source: https://habr.com/ru/post/143276/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,8 +75,8 @@
 <li><a href="../143277/index.html">Accurate determination of the region by GPS coordinates</a></li>
 <li><a href="../143278/index.html">Certificate Planning for Exchange</a></li>
 <li><a href="../143279/index.html">Jazz and java</a></li>
+<li><a href="../14328/index.html">Laptop for $ 200 entered the pre-sale</a></li>
 <li><a href="../143280/index.html">Startup preparation</a></li>
-<li><a href="../143283/index.html">QML and QtQuick Webinars: Lists. Models and representations</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

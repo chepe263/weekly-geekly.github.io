@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Setting up a Linux server backup in 5 minutes</h1><div class="post__text post__text-html js-mediator-article">  Before me it became necessary to set up a backup on a new Linux server, this task is very important, but painfully boring: you need to write and debug scripts that will archive the necessary folders (and it is desirable to make incremental archives), databases, subversion repositories, and then transfer these archives to a remote server.  That's why I tried to google a ready-made solution for this task and as a result I came across a <a href="http://www.backup-manager.org/about/">backup-manager</a> , a wonderful open source set of bash scripts that allow: <ul><li>  archive any folders, including creating incremental archives.  The config simply indicates the list of directories to be copied, as well as the “black list” of files that will not be copied. </li><li>  back up MySQL databases.  In the config, the username and password of the mysql user who has access to the databases are specified, and the rest of the work is done by the backup manager itself. </li><li>  backup svn-repositories, and the backup is done not by copying the folder with the vault, but using the <em>svnadmin dump</em> command. </li><li>  encrypt archives. </li><li>  copy the archives to remote servers via FTP, SSH or (this is the most important feature for me) in the Amazon S3 storage, and burn them to DVD. </li></ul><br>  Thus, this one set of scripts solved absolutely all my backup tasks.  All this economy is configured in no more than five minutes, since in the configuration file each parameter has detailed comments, so no one should have problems with the settings. <br><a name="habracut"></a><br>  You can download it from here: <a href="http://www.backup-manager.org/downloads/">www.backup-manager.org/downloads</a> , or you can simply install the <i>backup-manager</i> package (example for Debian): <br><br> <code>aptitude install backup-manager <br></code> <br>  In addition, you need to take into account that in order to copy data to the Amazon S3 repository, the libnet-amazon-s3-perl and libfile-slurp-perl packages must be installed on the system: <br><br> <code>aptitude install libnet-amazon-s3-perl libfile-slurp-perl <br></code> <br>  Now it remains only to configure the start-up backup-manager on the krone and you can sleep peacefully. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <strong>Upd.</strong> <br>  All settings are stored in the /etc/backup-manager.conf file, here are its main parameters: <br><br> <code># ,       <br> export BM_REPOSITORY_ROOT="/var/archives" <br> <br> #     <br> export BM_ARCHIVE_METHOD="tarball-incremental mysql svn" <br> <br> #            <br> #  ,     <br> BM_TARBALL_TARGETS[0]="/etc" <br> BM_TARBALL_TARGETS[1]="/boot" <br> BM_TARBALL_TARGETS[2]="/var/www" <br> export BM_TARBALL_TARGETS <br> <br> #  ,       ,     <br> export BM_TARBALL_BLACKLIST="/dev /sys /proc /tmp *imagecache*" <br> <br> #      -    <br> export BM_TARBALLINC_MASTERDATETYPE="weekly" <br> export BM_TARBALLINC_MASTERDATEVALUE="1" <br> <br> #   MySQL         mysql- <br> export BM_MYSQL_DATABASES="__ALL__" <br> export BM_MYSQL_ADMINLOGIN="user" <br> export BM_MYSQL_ADMINPASS="1234" <br> <br> #   subversion-     <br> export BM_SVN_REPOSITORIES="/var/repositories" <br> <br> #         <br> # (   ftp, ssh, ssh-gpg, rsync) <br> export BM_UPLOAD_METHOD="s3" <br> <br> #     Amazon S3   , access key  secret key <br> export BM_UPLOAD_S3_DESTINATION="basket-name" <br> export BM_UPLOAD_S3_ACCESS_KEY="ABC123" <br> export BM_UPLOAD_S3_SECRET_KEY="DEF456" <br></code> <br><br>  These are the most basic settings, in the config itself there are a couple of dozen of parameters, all of which are commented in detail. </div><p>Source: <a href="https://habr.com/ru/post/87435/">https://habr.com/ru/post/87435/</a></p>
+      <strong>Upd.</strong> <br>  All settings are stored in the /etc/backup-manager.conf file, here are its main parameters: <br><br> <code># ,       <br> export BM_REPOSITORY_ROOT="/var/archives" <br> <br> #     <br> export BM_ARCHIVE_METHOD="tarball-incremental mysql svn" <br> <br> #            <br> #  ,     <br> BM_TARBALL_TARGETS[0]="/etc" <br> BM_TARBALL_TARGETS[1]="/boot" <br> BM_TARBALL_TARGETS[2]="/var/www" <br> export BM_TARBALL_TARGETS <br> <br> #  ,       ,     <br> export BM_TARBALL_BLACKLIST="/dev /sys /proc /tmp *imagecache*" <br> <br> #      -    <br> export BM_TARBALLINC_MASTERDATETYPE="weekly" <br> export BM_TARBALLINC_MASTERDATEVALUE="1" <br> <br> #   MySQL         mysql- <br> export BM_MYSQL_DATABASES="__ALL__" <br> export BM_MYSQL_ADMINLOGIN="user" <br> export BM_MYSQL_ADMINPASS="1234" <br> <br> #   subversion-     <br> export BM_SVN_REPOSITORIES="/var/repositories" <br> <br> #         <br> # (   ftp, ssh, ssh-gpg, rsync) <br> export BM_UPLOAD_METHOD="s3" <br> <br> #     Amazon S3   , access key  secret key <br> export BM_UPLOAD_S3_DESTINATION="basket-name" <br> export BM_UPLOAD_S3_ACCESS_KEY="ABC123" <br> export BM_UPLOAD_S3_SECRET_KEY="DEF456" <br></code> <br><br>  These are the most basic settings, in the config itself there are a couple of dozen of parameters, all of which are commented in detail. </div><p>Source: https://habr.com/ru/post/87435/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../87436/index.html">Linux backup</a></li>
 <li><a href="../87438/index.html">Google is 99% sure of closing its Chinese search engine: report</a></li>
 <li><a href="../87439/index.html">Habraklient for mobile devices</a></li>
+<li><a href="../8744/index.html">Happy birthday, Deniskin!</a></li>
 <li><a href="../87440/index.html">Simpler! Simpler! Even easier! How to get out when not enough hands</a></li>
-<li><a href="../87441/index.html">40 beautifully illustrated examples of web design (part 1)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

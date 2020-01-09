@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>AmazonVPC IPsec bypassing standard tools</h1><div class="post__text post__text-html js-mediator-article"><h4>  Introduction and conditions of the problem </h4><br>  We have an Amazon VPC with multiple subnets. <br>  Inside the VPC is divided into several subnets. <br>  Take two of them. <br>  In the first (10.0.0.0/24 network), we call it net1, routing outwards is performed by the native Amazonian Internet Gateway, which is different for each subnet.  You can bind Elastic IP to instances on this network and they will work. <br>  The second (subnet 10.0.1.0/24), let it be net2 - a completely closed subnet, access from which to external resources is possible only through a separate instance with NAT configured on it (let's call it service).  Direct access to this subnet from the outside, except through any instance from net1, will not work.  The service itself also exists in net1. <br>  Inside the VPC, the instances of both subnets see each other. <br>  There is also an office network, even if it is called net0 (subnet 192.168.5.0/24). <br>  There is a need to provide secure access from the office to the instances in net1 and back.  This can be done in a native way for Amazon - using Virtual Private Gateway and its associated services.  But there is one problem - routing is done through BGP, which is not and is not expected at the border router of the office.  It has only pure IPsec with password authorization.  In this situation, we must act through it. <br>  The following implementation scheme comes to mind: at the service instance, which has access to the Internet and to all instances inside net1, and also has an Elastic IP, deploy an IPSec client, connect to an office router, and set up routing between networks. <br><br><a name="habracut"></a><br><h4>  Instance setup </h4><br>  I did not use the native instance that is supplied by Amazon, I didn’t use it as a gate, it was painfully cut off, so I installed Ubuntu. <br>  In order for the server to perform its main function, it is necessary, in addition to the routing settings in the VPC control panel, to configure NAT on the instance. <br>  In this case - masquerading. <br>  This is done simply: <br> <code>iptables -t nat -A POSTROUTING -o eth0 -s _vpc -j MASQUERADE</code> <br>  Now we need to install the ipsec utilities: <br> <code>sudo aptitude install ipsec-tools</code> <br>  After installation is complete, you can begin to customize. <br> <code>sudo nano /etc/ipsec.conf</code> <br>  For key authorization, the configuration is as follows: <br><pre> <code class="bash hljs">config setup nat_traversal=yes plutodebug=<span class="hljs-string"><span class="hljs-string">"all"</span></span> protostack=netkey conn home left=%defaultroute <span class="hljs-comment"><span class="hljs-comment">#    ,    leftsubnet=%net1_network% leftid=%instance_ip% leftnexthop=%vpc_gateway% right=%dst_ip% rightid=%dst_ip% rightsubnet=%dst_net% authby=secret ike=3des-sha1-modp1024 #       esp=3des-sha1-96 #     pfs=yes forceencaps=yes auto=start</span></span></code> </pre><br>  In the file /etc/ipsec.secret we write: <br><pre> <code class="bash hljs">%instance_ip% %dst_ip%: PSK <span class="hljs-string"><span class="hljs-string">"YOUR_AUTH_KEY"</span></span></code> </pre> <br><br>  Where: <br>  1.% net1_network% - subnet that you announce for access from net0.  In my case, this is 10.0.1.0/24. <br>  2.% instance_ip% - ip insansa service on which you configure all this. <br>  3.% vpc_gateway% is the default router for your VPC.  It is specified as the default route in the service instance routing table. <br>  4.% dst_ip% - ip of the net0 router to which you will connect. <br>  5.% dst_net% - office network announced for net1.  In this case, 192.168.5.0/24. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Encryption algorithms set to taste, as you like. <br><br>  Do not forget to change the NAT settings to the following in order to eliminate the tension on the direction we don’t need: <br> <code>iptables -t nat -A POSTROUTING -o eth0 -s _vpc ! -d %dst_net% -j MASQUERADE</code> <br>  I will omit the setting of the second side, since everything is specific there depending on the piece of iron.  My Asus is done quite simply in a completely visual mode in 2 minutes. <br><br>  Thereafter <br> <code>sudo /etc/init.d/ipsec restart</code> <br>  Everything should start. <br>  If not, by the situation.  A common problem is a mismatch of encryption. <br>  In general, this is all that I wanted to tell. <br>  Successful setting! </div><p>Source: <a href="https://habr.com/ru/post/148434/">https://habr.com/ru/post/148434/</a></p>
+      Encryption algorithms set to taste, as you like. <br><br>  Do not forget to change the NAT settings to the following in order to eliminate the tension on the direction we don’t need: <br> <code>iptables -t nat -A POSTROUTING -o eth0 -s _vpc ! -d %dst_net% -j MASQUERADE</code> <br>  I will omit the setting of the second side, since everything is specific there depending on the piece of iron.  My Asus is done quite simply in a completely visual mode in 2 minutes. <br><br>  Thereafter <br> <code>sudo /etc/init.d/ipsec restart</code> <br>  Everything should start. <br>  If not, by the situation.  A common problem is a mismatch of encryption. <br>  In general, this is all that I wanted to tell. <br>  Successful setting! </div><p>Source: https://habr.com/ru/post/148434/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

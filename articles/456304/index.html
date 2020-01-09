@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to publish a console utility in PyPI in 1 minute</h1><div class="post__text post__text-html js-mediator-article"><p></p><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/fb5/b6d/1ea/fb5b6d1ea304ce38d776e35db4804a8d.png"></div><br><p>  Having developed a console utility, you decide to publish it on PyPI.  Well, is it true that what could be better than making it available through <strong>pip install</strong> ?  Googling what is needed for this, you may stumble <a href="https://gehrcke.de/2014/02/distributing-a-python-command-line-application/">upon the only post I have found on a topic</a> that is not only from 2014, it also requires you to create a bunch of folders and files for completely unnecessary things. </p><br><p>  How to solve this problem without a headache in 2019?  I already asked this question and therefore, having read a ton of documentation, I created this tutorial for you.  Here is a step by step guide. </p><a name="habracut"></a><br><p>  1. Create an account on PyPI ( <a href="https://pypi.org/account/register/">link for registration</a> ) </p><br><p>  2. Create an entry point to the application (for example, <strong>entry.py</strong> with the following contents) </p><br><pre><code class="plaintext hljs">def main(): print("It's alive!")</code> </pre> <br><p>  3. Install <strong>poetry</strong> </p><br><pre> <code class="plaintext hljs">curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python source $HOME/.poetry/env</code> </pre><br><p>  <em>( <strong>poetry</strong> can be <a href="https://github.com/sdispater/poetry">installed</a> differently, for example, <strong>pip install - user poetry</strong> - approx. transl.)</em> </p><br><p>  4. Create an environment </p><br><pre> <code class="plaintext hljs">cd myproject #    ,    poetry init</code> </pre><br><p>  5. Configure the console command (to do this, add the following lines in the appeared file <strong>pyproject.toml</strong> ) </p><br><pre> <code class="plaintext hljs">[tool.poetry.scripts] APPLICATION-NAME = 'entry:main'</code> </pre><br><p>  <strong>APPLICATION-NAME</strong> <em>&nbsp;</em>  need to change the name of the console command. </p><br><p>  6. Publish the utility!  (use the username and password from step 1) </p><br><pre> <code class="plaintext hljs">poetry publish --username PYPI_USERNAME --password PYPI_PASS --build</code> </pre> <br><p>  Done!  Now another person needs only two commands to install: </p><br><pre> <code class="plaintext hljs">$ sudo pip install PROJECT-NAME $ APPLICATION-NAME</code> </pre><br><p>  Where <strong>PROJECT-NAME</strong> is the name you gave the project in step 4, and <strong>APPLICATION-NAME</strong> <em>is</em> the name of the command from step 5. </p><br><hr><br><h2>  Version update </h2><br><p>  Whenever you want to update a module, just change the version number in the <strong>pyproject.toml</strong> file <em>:</em> </p><br><pre> <code class="plaintext hljs">version = "0.1.0"</code> </pre> <br><p>  And repeat step 6: </p><br><pre> <code class="plaintext hljs">poetry publish --username PYPI_USERNAME --password PYPI_PASS --build</code> </pre> <br><hr><br><h2>  Bonus: set up Travis for auto-publishing </h2><br><p>  Add the following lines to the <strong>.travis.yml</strong> file </p><br><pre> <code class="plaintext hljs">language: python dist: xenial before_install: - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - source $HOME/.poetry/env install: - poetry install script: - poetry build deploy: - provider: script skip_cleanup: true script: poetry publish --username $PYPI_USER --password $PYPI_PASS on: branch: master python: '3.7' tags: true</code> </pre><br><p>  And set the PYPI_USER and PYPI_PASS environment variables at <a href="https://travis-ci.com/">travis-ci.com</a> .  After that, it will be possible to publish the package using the commands: </p><br><pre> <code class="plaintext hljs">git tag -a v1.2 # Replace version number with yours git push --tags</code> </pre></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/456304/">https://habr.com/ru/post/456304/</a></p>
+    <p>Source: https://habr.com/ru/post/456304/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

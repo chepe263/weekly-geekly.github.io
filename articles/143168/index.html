@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -67,7 +67,7 @@
  --1BEF0A57BE110FD467A - \ r \ n
 </pre><br>  What we are particularly interested in in the headers is the <i>boundary = 1BEF0A57BE110FD467A</i> and <i>Content-Length: 209</i> , after which the request body begins.  The request consists of several parts, while the separator will be what is written as the boundary, the length of the request body must also be specified - this is the Content-Length field.  The request body is everything from the first line <i>--1BEF0A57BE110FD467A</i> .  In each section, the name is the name of the corresponding form field, after two line breaks \ r \ n \ r \ n there is a field value <br><br>  To send a file, you must create a section of the following format: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -75,7 +75,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <pre> --1BEF0A57BE110FD467A \ r \ n
@@ -84,7 +84,7 @@
  Content-Transfer-Encoding: binary \ r \ n
  \ r \ n
  But such news, which lies in the file news.txt \ r \ n
-</pre><br>  Here, in addition, the file name is specified - news.txt, as well as the data encoding in the Content-Transfer-Encoding field.  There are several different encodings, including the presented binary - unencoded data.  Given Qt's capabilities, base64 encoding is very convenient.  If the file is not just some kind of (application / octet-stream), but of a known type, then you can specify this type in the Content-Type field, for example, <i>Content-Type: image / png</i> . <br><br><h4>  Simple example </h4><br>  Let us turn to the practical example of the formation of the request.  We have: <br><br><pre><code class="cpp hljs"><span class="hljs-comment"><span class="hljs-comment">// ++   Qt QNetworkAccessManager *manager; // 1 - - ,  2 -  QByteArray param1Name="param1" ,param1Value="value1"; QByteArray param2Name="param2", param2FileName="news.txt", param2ContentType="text/plain",param2Data="   ,     news.txt";</span></span></code> </pre> <br>  First we create the request body: <br><br><pre> <code class="cpp hljs"><span class="hljs-comment"><span class="hljs-comment">//  QByteArray postData,boundary="1BEF0A57BE110FD467A"; //  postData.append("--"+boundary+"\r\n");// //  postData.append("Content-Disposition: form-data; name=\""); postData.append(param1Name); postData.append("\"\r\n\r\n"); //  postData.append(param1Value); postData.append("\r\n"); // 2 -  postData.append("--"+boundary+"\r\n");// //  postData.append("Content-Disposition: form-data; name=\""); postData.append(param2Name); //  postData.append("\"; filename=\""); postData.append(param2FileName); postData.append("\"\r\n"); //   postData.append("Content-Type: "+param2ContentType+"\r\n"); //  base64 postData.append("Content-Transfer-Encoding: base64\r\n\r\n"); // postData.append(param2Data.toBase64()); postData.append("\r\n"); //""  postData.append("--"+boundary+"--\r\n");</span></span></code> </pre><br>  In the variable postData, we get a ready-made request body — all that remains is to send and remember to install additional request headers: <br><br><pre> <code class="cpp hljs"><span class="hljs-function"><span class="hljs-function">QNetworkRequest </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">request</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(QUrl(</span></span><span class="hljs-string"><span class="hljs-function"><span class="hljs-params"><span class="hljs-string">"http://example.com/submit.php"</span></span></span></span><span class="hljs-function"><span class="hljs-params">))</span></span></span></span>; request.setHeader(QNetworkRequest::ContentTypeHeader, <span class="hljs-string"><span class="hljs-string">"multipart/form-data; boundary="</span></span>+boundary); request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(postData.length())); QNetworkReply *reply=manager-&gt;post(request,postData);</code> </pre><br>  Well, then - on the thumb track, as for any other requests. <br><br><h4>  Eventually... </h4><br>  The example given is, of course, too simple for everyday use.  But based on it, you can easily implement a function, class or class library for each specific task, depending on the complexity of the requests you have to generate. <br><br>  Useful information: <br>  <a href="http://www.codenet.ru/webmast/php/HTTP-POST.php">http://www.codenet.ru/webmast/php/HTTP-POST.php</a> - description of filling http requests. <br>  <a href="http://www.ietf.org/rfc/rfc2388.txt">http://www.ietf.org/rfc/rfc2388.txt</a> - Standard "Returning Values ​​from Forms: multipart / form-data" </div><p>Source: <a href="https://habr.com/ru/post/143168/">https://habr.com/ru/post/143168/</a></p>
+</pre><br>  Here, in addition, the file name is specified - news.txt, as well as the data encoding in the Content-Transfer-Encoding field.  There are several different encodings, including the presented binary - unencoded data.  Given Qt's capabilities, base64 encoding is very convenient.  If the file is not just some kind of (application / octet-stream), but of a known type, then you can specify this type in the Content-Type field, for example, <i>Content-Type: image / png</i> . <br><br><h4>  Simple example </h4><br>  Let us turn to the practical example of the formation of the request.  We have: <br><br><pre><code class="cpp hljs"><span class="hljs-comment"><span class="hljs-comment">// ++   Qt QNetworkAccessManager *manager; // 1 - - ,  2 -  QByteArray param1Name="param1" ,param1Value="value1"; QByteArray param2Name="param2", param2FileName="news.txt", param2ContentType="text/plain",param2Data="   ,     news.txt";</span></span></code> </pre> <br>  First we create the request body: <br><br><pre> <code class="cpp hljs"><span class="hljs-comment"><span class="hljs-comment">//  QByteArray postData,boundary="1BEF0A57BE110FD467A"; //  postData.append("--"+boundary+"\r\n");// //  postData.append("Content-Disposition: form-data; name=\""); postData.append(param1Name); postData.append("\"\r\n\r\n"); //  postData.append(param1Value); postData.append("\r\n"); // 2 -  postData.append("--"+boundary+"\r\n");// //  postData.append("Content-Disposition: form-data; name=\""); postData.append(param2Name); //  postData.append("\"; filename=\""); postData.append(param2FileName); postData.append("\"\r\n"); //   postData.append("Content-Type: "+param2ContentType+"\r\n"); //  base64 postData.append("Content-Transfer-Encoding: base64\r\n\r\n"); // postData.append(param2Data.toBase64()); postData.append("\r\n"); //""  postData.append("--"+boundary+"--\r\n");</span></span></code> </pre><br>  In the variable postData, we get a ready-made request body — all that remains is to send and remember to install additional request headers: <br><br><pre> <code class="cpp hljs"><span class="hljs-function"><span class="hljs-function">QNetworkRequest </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">request</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(QUrl(</span></span><span class="hljs-string"><span class="hljs-function"><span class="hljs-params"><span class="hljs-string">"http://example.com/submit.php"</span></span></span></span><span class="hljs-function"><span class="hljs-params">))</span></span></span></span>; request.setHeader(QNetworkRequest::ContentTypeHeader, <span class="hljs-string"><span class="hljs-string">"multipart/form-data; boundary="</span></span>+boundary); request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(postData.length())); QNetworkReply *reply=manager-&gt;post(request,postData);</code> </pre><br>  Well, then - on the thumb track, as for any other requests. <br><br><h4>  Eventually... </h4><br>  The example given is, of course, too simple for everyday use.  But based on it, you can easily implement a function, class or class library for each specific task, depending on the complexity of the requests you have to generate. <br><br>  Useful information: <br>  <a href="http://www.codenet.ru/webmast/php/HTTP-POST.php">http://www.codenet.ru/webmast/php/HTTP-POST.php</a> - description of filling http requests. <br>  <a href="http://www.ietf.org/rfc/rfc2388.txt">http://www.ietf.org/rfc/rfc2388.txt</a> - Standard "Returning Values ​​from Forms: multipart / form-data" </div><p>Source: https://habr.com/ru/post/143168/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -94,10 +94,10 @@
 <li><a href="../143166/index.html">What do we know about executors of IT projects?</a></li>
 <li><a href="../143167/index.html">Evernote Dev Meetup Moscow Results</a></li>
 <li><a href="../143169/index.html">An inside look: matrix digital cameras</a></li>
+<li><a href="../14317/index.html">Flash Platform and Multitouch Table.</a></li>
 <li><a href="../143170/index.html">Mikogo for Linux</a></li>
 <li><a href="../143171/index.html">JAXB vs. org.hibernate.LazyInitializationException</a></li>
 <li><a href="../143172/index.html">Saga: check the code coverage tests</a></li>
-<li><a href="../143173/index.html">Programming, as we know it, is coming to an end.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

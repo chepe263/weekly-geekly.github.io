@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Real virtuality, or “640 kilobytes of memory is enough for everyone”</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage/habraeffect/86/41/8641324012f0f70ed70c3b3016a6eed4.jpg" alt="image" align="left"><br>  With this article, I open the series of articles devoted to working with memory in Windows Server 2008 R2 SP1 Hyper-V.  Basically, SP1 has two interesting innovations regarding Hyper-V: <br><ul><li>  Remote FX - allows you to use all the functions of 3D acceleration in a virtual environment, and, accordingly, to run powerful graphics applications and games on a virtual machine and work with them remotely even from a thin client </li><li>  Dynamic Memory - allowing you to achieve greater density of virtual machines on hosts due to the possibility of dynamic memory allocation virtualkam "on the fly." </li></ul><br>  In this series of articles (there will be several of them, so stock up on beer;) it will be said about dynamic memory.  At the same time, it is most likely that dynamic memory in Hyper-V will be discussed only in the last article :) <br><a name="habracut"></a><br>  Why was server virtualization originally invented?  As I mentioned in the article “Why is virtualization necessary?” - one of the reasons is the increase in consolidation and a more rational use of hardware resources.  You can either use a separate server for each individual task that will use its resources at best in half, or you can consolidate them all as multiple virtual servers on one physical server, using its resources almost 100% and eliminating the need to buy a mountain of iron. <br>  So, what am I talking about?  And the fact that many customers want to climb on the Christmas tree, and not scratch anything, but in scientific language they want to place as many virtual machines on one server as possible, and not lose productivity.  Unfortunately, many people make a mistake at the first stage - determining the requirements for server resources.  A simple example: ask any friend working in the relevant field - how much memory does it take when it orders a new server?  And then - concretizing questions: <br><ul><li>  And if this will be a web server? <br>  - Internal web server to run a business application? <br>  - An external web server, with hundreds / thousands / tens of thousands of hits per day? </li><li>  And for a file server? <br>  - Internal “file-cleaner” for, say, one department in a dozen-another users? <br>  - Hefty corporate file server that stores documents of several thousand employees? </li><li>  And how much memory is needed for a domain controller? </li><li>  And for the print server? </li><li>  And for &lt;insert your server application here&gt; </li></ul><br>  Questions can be further specified, and therefore it is very difficult to unequivocally answer the question “How much memory is needed by the server”.  Evaluation of the necessary system resources is called "sizing" and has grown into a whole science.  No wonder that most often act on one of the three options listed: <br><ul><li>  Put on all servers 2 (4, 8, 16, 32, etc.) GB of memory, and if users start complaining about the “brakes” - add more </li><li>  View the minimum system requirements for operating systems and applications and add a “margin” of 25% (50%, 100%, etc.) It doesn't matter how this memory will be used, as long as users don't complain. </li><li>  Do as recommended by the vendor.  If the datasheet says that for 100 users for this application you need 4 GB of memory - I will put 4 GB plus some as a reserve.  Calculations and testing is too long and tedious, as a rule, there is neither time nor desire. </li></ul><br>  Of course, with any of the above options, we get not quite (or not at all) the optimal solution.  Either we will acquire more memory than we need, and spend money in vain, or we will get less than we need, and we will get performance problems.  Of course, it will be much more interesting if the memory can be allocated flexibly, depending on the loads, and used most efficiently. <br><br><h4>  Memory overcommitment </h4><br>  Since we are talking about memory and virtualization, it is impossible not to mention the phrase, often causing heated debates: memory overcommitment.  Translated into Russian IT, this expression means “allocate resources to a virtual machine (in our case, memory, auth. Note) more than it exists physically.”  That is, roughly speaking, to give three virtuals with 1 GB of memory, when physically the server has only 2.5 GB.  The main reason why the phrase “memory overcommitment” itself caused such wild battles between supporters of different virtualization platforms is that Microsoft doesn’t provide such technologies: if the server has 3 GB of memory, then that’s what you can give to virtual machines, and nothing more.  It seems that this is considered to be bad: the possibility of so-called overselling disappears.  What is overselling?  Internet providers are a prime example.  They provide Internet access at speeds of up to 8 Mbps, in fact, the speed is likely to fluctuate around 4-6 Mbit / s due to the fact that the provider’s uplink channel is slightly narrower than 8 Mbps multiplied by its subscribers.  However, at certain phases of the moon, at midnight, when Mercury is in the sign of Aquarius and nobody watches your favorite videos on the Internet except you - the speed may well reach the promised 8 Mbit.  If you want to get exactly 8 Mbit / s and not less baud - there are tariffs with guaranteed bandwidth, and, oddly enough, with a completely different price.  So, when using Hyper-V, there is no possibility of overselling, and therefore a fixed amount of RAM is allocated to each virtual machine, which, however, can also be changed, but only when the guest OS is shaded. <br>  But we are still (I hope) techies and creepy materialists, and according to this, the phases of the moon and other bioenergy do not interest us.  So we will see what really lies behind the phrase “memory overcommitment”. <br>  Strangely enough, there is no single opinion: there are as many as three technologies that can be described with these words.  So this: <br><ul><li>  Page sharing </li><li>  Second Level Paging </li><li>  Dynamic Memory Balancing (aka ballooning) </li></ul><br>  <i>The next article will be devoted to Page Sharing technology, in which the sharing of memory pages technology itself, as well as pros and cons of its use, will be discussed in detail.</i>  <i>You can <a href="http://habrahabr.ru/blogs/virtualization/93274/">read</a> it <a href="http://habrahabr.ru/blogs/virtualization/93274/">here</a> .</i>  <i>In future articles, I will try to talk about the other technologies listed, as well as about the Dynamic Memory feature itself in Windows Server 2008 R2, and why it does not fit the term “memory overcommitment”.</i> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/93241/">https://habr.com/ru/post/93241/</a></p>
+    <p>Source: https://habr.com/ru/post/93241/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../93247/index.html">Distribution Ultimate Edition 2.6</a></li>
 <li><a href="../93248/index.html">Your boss forgot about the advance payment and paid the salary in full. Leave the money yourself or return?</a></li>
 <li><a href="../93249/index.html">The same day, 1951, the birth of RAM</a></li>
-<li><a href="../93251/index.html">Asterisk continues to speak Russian!</a></li>
+<li><a href="../9325/index.html">Search images with the image of persons</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

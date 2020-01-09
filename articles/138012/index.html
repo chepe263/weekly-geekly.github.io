@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Debug methods in Documentum Process Builder</h1><div class="post__text post__text-html js-mediator-article">  Good day! <br>  By the nature of the work (Documentum developer), I was faced with the need to debug the processes that I create in Process Builder.  Found an easy way to do this.  And I would like to share this knowledge with Documentum developers, who are certainly present at Habré. <br><br><h4>  Introduction </h4><br>  Consider the process of local debugging method caused by activities in Process Builder (PB) in mode in Debug.  The reasons for this are obvious - to debug and check for minimal operability of the methods, you do not need to “flood” them into the Java Method Server (JMS) with its restart.  And it’s okay if only you work with him alone, and if several people at the same time develop their methods? <br><a name="habracut"></a><br><h4>  What do you need? </h4><br>  Process Builder version 6.6 and higher (tested and at 6.7).  IDE with remote debug support. <br>  Add PB startup parameters for debug mode -Xdebug -Xnoagent -Djava.compiler = NONE -Xrunjdwp: transport = dt_socket, address = 4444, server = y, suspend = n.  Since after this the launch line has become too long and does not fit in the shortcut (here we are talking about Windows 7), then you need to create a bat-file to start PB.  It will contain the following lines: <br><br>  cd "C: \ Program Files \ Documentum \ bpm \ classes" <br>  "C: \ Program Files \ Documentum \ jreForPB \ bin \ javaw.exe" -Xdebug -Xnoagent -Djava.compiler = NONE -Xrunjdwp: transport = dt_socket, address = 4444, server = y, suspend = n -Xms128m -Xmx512m - Dfile.encoding = UTF-8 -Dawt.useSystemAAFontSettings = on -cp ".; Lib \ bpm.jar; .. \ .. \ dctm.jar; C: \ Documentum \ config" WorkflowEditor -locale en_US 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,16 +60,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      All methods that will run in PB debugging mode (and not just those that will be debugged in the IDE!) And that use the session in DQL queries should receive it not through the workitem.getSession () method, but completely through the connection to the content server .  This is due to the fact that the DfQuery object, when executing a DQL query, uses a specific ISession class, which is only present in the DfSession object.  PB, when debugging, uses its IDfSessionManager and IDfSession implementations.  In which class ISession is missing.  As a result, when using the session object obtained using workitem.getSession (), DfQuery generates an error of class reduction (ClassCastException). <br>  Copy the jar files with the code of the methods being debugged and the dependent classes (of course, except for DFC) in the &lt;BPM DIRECTORY PATH&gt; directory bpm \ classes \ custom \.  (eg C: \ Program Files \ Documentum \ bpm \ classes \ custom \) <br><br>  The methods used must be installed on the content server.  Those.  you need to create a method artifact in Composer with the correct path to the method class and install it on the content server. <br><br>  In PB, create a process with automatic activity that will execute the method being debugged. <br><br><h4>  Launch </h4><br>  For debugging itself, you need to run PB with the above parameters.  Join the IDE to the debug port.  Put a breakpoint on the desired method.  In PB, start the process being debugged in debug mode.  (Debug process button) As soon as the process on the PB screen reaches the execution of the automatic activity that starts the debugged method (which has a breakpoint), the debugging process starts in the IDE.  Everything after that you can debug the code as usual. <br><br><h4>  Restrictions </h4><br>  The behavior of both Java methods and activities in debug mode in PB is different from what happens during live execution on BPM and JMS.  This is expressed not only by the specific implementation of the session.  I also noticed the inability to perform activities to start a child process. </div><p>Source: <a href="https://habr.com/ru/post/138012/">https://habr.com/ru/post/138012/</a></p>
+      All methods that will run in PB debugging mode (and not just those that will be debugged in the IDE!) And that use the session in DQL queries should receive it not through the workitem.getSession () method, but completely through the connection to the content server .  This is due to the fact that the DfQuery object, when executing a DQL query, uses a specific ISession class, which is only present in the DfSession object.  PB, when debugging, uses its IDfSessionManager and IDfSession implementations.  In which class ISession is missing.  As a result, when using the session object obtained using workitem.getSession (), DfQuery generates an error of class reduction (ClassCastException). <br>  Copy the jar files with the code of the methods being debugged and the dependent classes (of course, except for DFC) in the &lt;BPM DIRECTORY PATH&gt; directory bpm \ classes \ custom \.  (eg C: \ Program Files \ Documentum \ bpm \ classes \ custom \) <br><br>  The methods used must be installed on the content server.  Those.  you need to create a method artifact in Composer with the correct path to the method class and install it on the content server. <br><br>  In PB, create a process with automatic activity that will execute the method being debugged. <br><br><h4>  Launch </h4><br>  For debugging itself, you need to run PB with the above parameters.  Join the IDE to the debug port.  Put a breakpoint on the desired method.  In PB, start the process being debugged in debug mode.  (Debug process button) As soon as the process on the PB screen reaches the execution of the automatic activity that starts the debugged method (which has a breakpoint), the debugging process starts in the IDE.  Everything after that you can debug the code as usual. <br><br><h4>  Restrictions </h4><br>  The behavior of both Java methods and activities in debug mode in PB is different from what happens during live execution on BPM and JMS.  This is expressed not only by the specific implementation of the session.  I also noticed the inability to perform activities to start a child process. </div><p>Source: https://habr.com/ru/post/138012/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../138005/index.html">VMware vSphere: Convert Virtual IDE Disk to SCSI</a></li>
 <li><a href="../138006/index.html">Learn jQuery for 30 days</a></li>
 <li><a href="../138008/index.html">PowerShell and GUI. It is not difficult</a></li>
+<li><a href="../13801/index.html">Mail.Ru is looking for Miss Internet 2007</a></li>
 <li><a href="../138010/index.html">We create our own framework based on symfony2. (Part 5)</a></li>
 <li><a href="../138011/index.html">+ 2GB for your DropBox account. Samsung Brazil Promotion</a></li>
 <li><a href="../138013/index.html">Arduino LCD Informer</a></li>

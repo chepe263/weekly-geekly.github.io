@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Mahou updated to version 2.0</h1><div class="post__text post__text-html js-mediator-article"><p><img src="http://i.imgur.com/89okhxP.jpg"><br>  Probably you have already read my introductory <a href="https://habrahabr.ru/post/321518/">article about Mahou</a> , in it I described how I created the first function and described what the program does in general.  Since then, not a little time has passed in Mahou. A lot of things have changed and been added, and this article will be discussed in fact. </p><br><a name="habracut"></a><br><h2 id="izmeneniya-v-interfeyse">  Interface changes </h2><br><p>  The interface has changed a lot, for the better, everything has become convenient and visible, this is how Mahou looked like before: </p><br><p><img src="https://habrastorage.org/getpro/habr/post_images/2a4/006/ea9/2a4006ea980f42df8b170885fbd4eda6.png"></p><br><p>  And now it looks like this: </p><br><p><img src="http://i.imgur.com/gDMYOUq.jpg"></p><br><h2 id="kak-ya-pisal-plagin-dlya-sublime-text-3">  As I wrote a plugin for Sublime Text 3 </h2><br><p>  The function "Hint of the current layout near the text cursor (carriage)" got the ability to display in Sublime Text 3, using a <a href="https://github.com/BladeMight/MahouCaretDisplayServer">plugin</a> which I wrote specifically for this. </p><br><p> It all started when I was looking for an opportunity to take a position on which the text cursor is now, searched for a method and found it on the Sublime Text → <code>view.rowcol(view.sel()[0].begin())</code> that returned a line and the number of letters on which is now a text cursor, it was what you need.  Then I thought, "How do you transfer this data to Mahou from Sublime Text?", And remembered the sockets (I knew about them quite a bit) and decided to write a server that will work on 127.0.0.1 (localhost) and port 7777 , at first nothing worked, then I read a couple of articles about sockets and began to understand how they work.  Then I started reading the <a href="https://www.sublimetext.com/docs/3/api_reference.html">Sublime Text 3 API</a> , then I started creating a plugin: </p><br><p>  First, I initialized the server to which the data will be issued, then I created EvenListener with listening to the events: </p><br><ol><li>  on_window_command When showing / hiding, etc.  windows (window), in particular, I used it for the sidebar. </li><li>  on_modified When the view is changed. </li><li>  on_activated When activating the editor / tab / panel. </li><li>  on_text_command When you press any key on the keyboard / mouse. </li></ol><br><p>  Then I began to look for a way to get the X, Y coordinates of the carriage position, from ST3API I learned that you can get the height of the line and the width of the text, if you multiply them by lines and the number of letters, you can get the necessary coordinates.  But there was one problem - the tab character was considered as 1 character, so I decided that it was necessary to count the number of Tabs per line and multiply them by 3 and add to the number of letters - and it worked! </p><br><p>  Then I added the definition of the sidebar width, but it wasn’t as simple as when it was hidden / shown, it uses animation, and the EventListener returned the width before the animation finished, looking at other possible APIs, I came to the conclusion that another solution to this problem except how to add time to wait for the end of the animation before sending data to the server - no, and added 300 ms of waiting - and it worked fine! </p><br><p>  Then I created the settings for the plugin, created a client that received data from the server in Mahou and everything worked. </p><br><h2 id="silno-uluchsheny-funkcii-ispolzuyuschie-taymery">  Strongly improved functions using timers. </h2><br><h3 id="funkcii-kotorye-ispolzuyut-taymery">  Functions that use timers: </h3><br><ul><li>  Language tips near the mouse / carriage. </li><li>  Timer switch CapsLock. </li><li>  Highlight Scroll-Lock when layout # 1 is active. </li><li>  Flags of countries in the tray. </li></ul><br><h3 id="kak-ya-uluchshil-ih">  How I improved them: </h3><br><p>  Previously, when a timer tick is valid for the flags of countries in the tray, the icon always changed, which ultimately put a heavy load on the CPU and sometimes even drove GDI +, so I decided to implement a variable that will store the name of the last changed language, and the condition that The current language is equal to the previous one, then not to change the icon, which <strong>significantly</strong> reduced the load on the CPU, I improved the other functions in a similar way. </p><br><h2 id="mahou-teper-ispolzuet-nastroyki-v-ozu">  Mahou now uses settings in RAM. </h2><br><p>  What does it mean?  This means that earlier when reading a particular setting, a disk was used, creating an extra load, I decided to create variables for each setting in order not to use the disk but to use them (RAM).  Now, reading / writing from / to disk occurs only when saving / loading settings. </p><br><h2 id="chto-esche-novogo">  What are other news? </h2><br><ul><li>  Text case conversion functions. </li><li>  Memory clearing, now Mahou consumes 3 ~ 5MB of RAM. </li><li>  Improved support for Microsoft applications (Office, Skype, etc.) </li><li>  Added the ability to change the text for language tips. </li><li>  Updated debug information. </li><li>  Updated Wiki for Mahou 2.0. </li></ul><br><h2 id="ssylki">  Links </h2><br><ul><li>  <a href="https://github.com/BladeMight/Mahou">Repository</a> </li><li>  <a href="http://blademight.github.io/Mahou/">Site</a> </li><li>  <a href="https://github.com/BladeMight/Mahou/wiki">Wiki</a> </li><li>  <a href="https://github.com/BladeMight/Mahou/releases">Releases</a> (download) </li></ul></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/324592/">https://habr.com/ru/post/324592/</a></p>
+    <p>Source: https://habr.com/ru/post/324592/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../324594/index.html">JNI Receive and Connect to JVM in Delphi</a></li>
 <li><a href="../324596/index.html">Statistics on property values ​​- visualization on the map</a></li>
 <li><a href="../324598/index.html">Quadstor - performance and reliability</a></li>
+<li><a href="../3246/index.html">Release: Asp.Net Ajax 1.0</a></li>
 <li><a href="../324600/index.html">GitHub introduces SHA-1 collision detection system</a></li>
-<li><a href="../324604/index.html">Detection and elimination of hacker attacks: how the system GOSPKA works</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

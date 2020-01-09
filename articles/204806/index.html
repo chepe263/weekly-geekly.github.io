@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>[Non-obvious algorithms of obvious things] Algorithm 2. The point belongs to a triangle in space</h1><div class="post__text post__text-html js-mediator-article">  A series of posts [Unobvious algorithms of obvious things] will contain action algorithms that seem obvious and simple, but if you ask yourself the question “how is this done?”, The answer is far from obvious.  Of course, all these algorithms can be found in the literature.  Under the cat is the algorithm for determining <b>whether a point P belongs to a triangle ABC in space</b> . <br><a name="habracut"></a><br><h2>  The belonging of the point P to the triangle ABC in space </h2><br><h3>  Idea </h3><br>  Sometimes it is necessary to determine whether a point belongs to a geometric shape.  The simplest is the triangle ABC. <br><h4>  Given: </h4><br>  Point P (P_x, P_y, P_z), a triangle with vertices: A (A_x, A_y, A_z), B (B_x, B_y, B_z), C (C_x, C_y, C_z). <br><h4>  technique </h4><br>  Three triangles are formed: ABP, ACP, BCP.  After that, their areas are calculated S <sub>ABP</sub> , S <sub>ACP</sub> , S <sub>BCP</sub> .  After that, the sum of these areas is verified with the area of ​​the triangle S <sub>ABC</sub> .  If the point lies on the triangle ABC, then the triangles ABP, ACP, BCP will be simply parts of the triangle ABC, and the sum of their areas will be equal to its area S <sub>ABC</sub> .  If the point does not belong to a triangle, the sum of the areas S <sub>ABP</sub> , S <sub>ACP</sub> , S <sub>BCP</sub> will exceed the area of ​​the triangle ABC. <br>  Easy lyrical digression for those who do not remember what the area of ​​the triangle is equal to: it is easiest to use the <a href="http://ru.wikipedia.org/wiki/%25D0%25A4%25D0%25BE%25D1%2580%25D0%25BC%25D1%2583%25D0%25BB%25D0%25B0_%25D0%2593%25D0%25B5%25D1%2580%25D0%25BE%25D0%25BD%25D0%25B0">formula of Gerona</a> , which allows you to find the area of ​​the triangle, knowing only its sides, very good.  conveniently <br><h3>  Function code: </h3><br><pre><code class="hljs mel">#define EPS <span class="hljs-number"><span class="hljs-number">1e-10</span></span> <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> triangle_square(<span class="hljs-keyword"><span class="hljs-keyword">float</span></span> a,<span class="hljs-keyword"><span class="hljs-keyword">float</span></span> b, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> c){ <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> p=(a+b+c)/<span class="hljs-number"><span class="hljs-number">2</span></span>; <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> <span class="hljs-keyword"><span class="hljs-keyword">sqrt</span></span>(p*(pa)*(pb)*(pc)); } <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> inside_triangle(<span class="hljs-keyword"><span class="hljs-keyword">float</span></span> P_x,<span class="hljs-keyword"><span class="hljs-keyword">float</span></span> P_y, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> P_z, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> A_x, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> A_y, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> A_z, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> B_x, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> B_y, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> B_z, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> C_x, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> C_y, <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> C_z){ <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> inside=<span class="hljs-number"><span class="hljs-number">0</span></span>; <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> AB=<span class="hljs-keyword"><span class="hljs-keyword">sqrt</span></span>( (A_x-B_x)*(A_x-B_x) + (A_y-B_y)*(A_y-B_y) + (A_z-B_z)*(A_z-B_z) ); <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> BC=<span class="hljs-keyword"><span class="hljs-keyword">sqrt</span></span>( (B_x-C_x)*(B_x-C_x) + (B_y-C_y)*(B_y-C_y) + (B_z-C_z)*(B_z-C_z) ); <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> CA=<span class="hljs-keyword"><span class="hljs-keyword">sqrt</span></span>( (A_x-C_x)*(A_x-C_x) + (A_y-C_y)*(A_y-C_y) + (A_z-C_z)*(A_z-C_z) ); <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> AP=<span class="hljs-keyword"><span class="hljs-keyword">sqrt</span></span>( (P_x-A_x)*(P_x-A_x) + (P_y-A_y)*(P_y-A_y) + (P_z-A_z)*(P_z-A_z) ); <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> BP=<span class="hljs-keyword"><span class="hljs-keyword">sqrt</span></span>( (P_x-B_x)*(P_x-B_x) + (P_y-B_y)*(P_y-B_y) + (P_z-B_z)*(P_z-B_z) ); <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> CP=<span class="hljs-keyword"><span class="hljs-keyword">sqrt</span></span>( (P_x-C_x)*(P_x-C_x) + (P_y-C_y)*(P_y-C_y) + (P_z-C_z)*(P_z-C_z) ); <span class="hljs-keyword"><span class="hljs-keyword">float</span></span> diff=(triangle_square(AP,BP,AB)+triangle_square(AP,CP,CA)+triangle_square(BP,CP,BC))-triangle_square(AB,BC,CA); <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (fabs(diff)&lt;EPS) inside=<span class="hljs-number"><span class="hljs-number">1</span></span>; <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> inside; }</code> </pre> <br>  If suddenly someone is too lazy to attach math.h, then you can use the root function from <a href="http://habrahabr.ru/post/128468/">this post</a> . <br></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/204806/">https://habr.com/ru/post/204806/</a></p>
+    <p>Source: https://habr.com/ru/post/204806/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../204794/index.html">The British company proposes to extract energy using drones hovering at a height of 15 kilometers.</a></li>
-<li><a href="../204796/index.html">Alert users about password expiration and account validity</a></li>
 <li><a href="../204798/index.html">DEV Labs, Part 3. Online C ++ Conference</a></li>
+<li><a href="../2048/index.html">MySpace sweep is about opening a music store.</a></li>
+<li><a href="../20480/index.html">This post is an example of how virtuals can make a mess</a></li>
 <li><a href="../204800/index.html">Aluminum fuel vehicle</a></li>
 <li><a href="../204804/index.html">Space company Blue Origin successfully tested the engines for its launch vehicle</a></li>
 <li><a href="../204808/index.html">How to make a dosimeter and bind it to Android</a></li>
+<li><a href="../20481/index.html">We are nano-bugs!</a></li>
 <li><a href="../204810/index.html">Prototyping in Axure RP PRO 7</a></li>
 <li><a href="../204814/index.html">Grants for Ukrainian mobile developers from AppCampus</a></li>
 <li><a href="../204816/index.html">Russia's first competence center for solutions on the IBM System z platform</a></li>
-<li><a href="../204834/index.html">CUBA - a platform for rapid development of business applications in Java</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Vulnerability in reCaptcha allows you to activate up to 30 actions on the same token</h1><div class="post__text post__text-html js-mediator-article">  I thought for a long time whether it was worth telling, but last night I had some free time, and I nevertheless decided to continue my series of articles about small problems in large projects.  Yes, and perhaps this is already known to everyone, and I worry for nothing. <br><br>  We all know the <a href="http://www.google.com/recaptcha">reCaptcha</a> service that Google acquired a couple of years ago.  We see it in many large projects, for example, when registering with <a href="">LiveJournal</a> .  I must say that I like to download files in the list directly from my server, and when on one of the sites from which I occasionally download something, such a thing appeared, it became a bit annoying to me.  When I don’t like something, I don’t give up and try to think of a way to avoid it. <br><br>  So I decided to overcome reCaptcha and I think I did it ... <br><a name="habracut"></a><br>  Starting the analysis, first of all, I ask myself questions.  What is the biggest problem of such a large project?  Most likely, this storage of a very large amount of unnecessary information, statuses and actions.  ReCaptcha must create a token, check it and deactivate it. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      If the first two actions can be replaced by encryption (without storage), then deactivating is a bit more complicated.  And the service must perform its "main" function of scanning documents.  Where does all this store?  I'd like to save on this.  And, usually, this is the biggest mistake of developers. <br><br>  How reCaptcha works: <br><ol><li>  The service asks you for two words, if he likes, what you have answered, you are given a token. </li><li>  Time limiter sewn into token </li><li>  After a request for verification from the site, the token is deactivated and cannot be used a second time. </li></ol><br>  It was in these last two points that the weak spot turned out to be.  It is known that the service limits the effect of the token to about five hours.  But, as I found out, reCaptcha does not store your activated token all this time, but it seems to keep the lock list and remove the token from it after about ten minutes of inactivity.  That is, if you did not try to activate this token again for ten minutes, it will be removed from the blocking list.  Thus, in five hours one single token can be used up to <b>thirty times</b> , the main thing here is to be patient and not pull it before the ten-minute interval. <br><br>  How to use it?  Very simple!  By creating 10 tokens, you can activate the action on the site every minute for five hours automatically.  300 activations in just 10 tokens.  I think a very good offer.  More tokens - more often activation. <br><br>  Unfortunately, on the site reCaptcha ( <a href="http://code.google.com/intl/en-EN/apis/recaptcha/intro.html">Google Code</a> ) I have not found a single word about this problem.  However, there is a very simple way to protect against it, it’s enough to store activated tokens (recaptcha_challenge_field) on the site side for five hours.  After all, the probability of issuing exactly the same token during this time is almost zero. <br><br>  PS Usually my posts are accompanied by a small example of the use of vulnerabilities, but this time I decided that it would be enough just to tell.  Inquisitive mind% username% will be able to test the performance of this method. </div><p>Source: <a href="https://habr.com/ru/post/120265/">https://habr.com/ru/post/120265/</a></p>
+      If the first two actions can be replaced by encryption (without storage), then deactivating is a bit more complicated.  And the service must perform its "main" function of scanning documents.  Where does all this store?  I'd like to save on this.  And, usually, this is the biggest mistake of developers. <br><br>  How reCaptcha works: <br><ol><li>  The service asks you for two words, if he likes, what you have answered, you are given a token. </li><li>  Time limiter sewn into token </li><li>  After a request for verification from the site, the token is deactivated and cannot be used a second time. </li></ol><br>  It was in these last two points that the weak spot turned out to be.  It is known that the service limits the effect of the token to about five hours.  But, as I found out, reCaptcha does not store your activated token all this time, but it seems to keep the lock list and remove the token from it after about ten minutes of inactivity.  That is, if you did not try to activate this token again for ten minutes, it will be removed from the blocking list.  Thus, in five hours one single token can be used up to <b>thirty times</b> , the main thing here is to be patient and not pull it before the ten-minute interval. <br><br>  How to use it?  Very simple!  By creating 10 tokens, you can activate the action on the site every minute for five hours automatically.  300 activations in just 10 tokens.  I think a very good offer.  More tokens - more often activation. <br><br>  Unfortunately, on the site reCaptcha ( <a href="http://code.google.com/intl/en-EN/apis/recaptcha/intro.html">Google Code</a> ) I have not found a single word about this problem.  However, there is a very simple way to protect against it, it’s enough to store activated tokens (recaptcha_challenge_field) on the site side for five hours.  After all, the probability of issuing exactly the same token during this time is almost zero. <br><br>  PS Usually my posts are accompanied by a small example of the use of vulnerabilities, but this time I decided that it would be enough just to tell.  Inquisitive mind% username% will be able to test the performance of this method. </div><p>Source: https://habr.com/ru/post/120265/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../120258/index.html">Device for replacing news in WiFi traffic</a></li>
 <li><a href="../120259/index.html">Version Control with Bundler</a></li>
+<li><a href="../12026/index.html">About iPhone hacking</a></li>
 <li><a href="../120261/index.html">Evolution of the TDL4 rootkit or field reports of recent months</a></li>
 <li><a href="../120262/index.html">EasyPay: Payment of fines for traffic violations</a></li>
 <li><a href="../120264/index.html">Google's learning rap</a></li>
@@ -75,7 +75,7 @@
 <li><a href="../120267/index.html">Digest Wanted.VC # 4</a></li>
 <li><a href="../120268/index.html">Designing visitor behavior for receiving a discount card in an online store</a></li>
 <li><a href="../120269/index.html">Multiple inheritance in ActionScript. Traits Language in RASE Beta 10</a></li>
-<li><a href="../120272/index.html">Use a bandler instead of practicing rvm gemset per project</a></li>
+<li><a href="../12027/index.html">Decorative button Review. We do the impossible.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

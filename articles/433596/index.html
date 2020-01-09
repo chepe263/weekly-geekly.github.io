@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Magellan error: Buffer overrun or world expedition using SQLite FTS</h1><div class="post__text post__text-html js-mediator-article"><p>  Somehow bypassed the recent <a href="https://blade.tencent.com/magellan/index_en.html">Magellan</a> error and related vulnerabilities on Habré, I will try to correct this omission. </p><br><h4 id="nemnogo-istorii">  A bit of history </h4><br><ul><li>  On November 1, 2018 a bug report number 900910 flew to Chromium: "Multiple issues in SQLite via WebSQL."  The error is reported by the Wenxiang Qian of the Tencent Blade Team. </li><li>  On November 5, 2018, the <a href="https://www.sqlite.org/src/vinfo/940f2adc8541a838%3Fdiff%3D1">error is closed</a> in the core of the SQLite library (FTS3), where it actually lives almost since the creation of the module, i.e.  since November of 2009. </li><li>  November 28, 2018 it merges into <a href="https://chromium.googlesource.com/chromium/src/%2B/c368e30ae55600a1c3c9cb1710a54f9c55de786e">Chromium</a> </li><li>  A little later, Tencent Blade Team <a href="https://blade.tencent.com/magellan/index_en.html">publishes</a> an error message, giving it the name Magellan, especially without disclosing details, and indicating that the publication of ready-made exploits and PoC is not planned yet. </li><li>  A week later, the Internet is full of PoC, cracking Chrome, Electron dev-framework, etc.  There is still no evidence and any other information that the vulnerability was used for malicious purposes. </li><li>  <abbr title="Dr. D. Richard Hipp, creator of SQLite and author of the fix">DRH</abbr> , confirmed the <a href="https://news.ycombinator.com/item%3Fid%3D18686305">suspicion of Hacker News</a> that a vulnerability exists (at least if the execution of a "foreign" SQL query, or SQL Injection of such a script is allowed). </li></ul><br><h4 id="chto-mozhet-byt-podverzheno-uyazvimosti">  What could be vulnerable? </h4><br><p>  Potentially, all devices and programs using SQLite (with FTS enabled) or using or based on applications (such as Chromium).  The extent to which they can be affected and the effect of a possible “defeat” depend on whether a suitable attack vector has been found. </p><br><h4 id="nemnogo-podrobnee-o-magellan-sqlite-bughttpsbladetencentcommagellanindex_enhtml">  A little more about <a href="https://blade.tencent.com/magellan/index_en.html">Magellan SQLite BUG</a> </h4><a name="habracut"></a><br><p>  The error is related to the overflow of the sum of integers aka <abbr title="in programming, the sum of the two terms can be suddenly less than the larger of them">integer overflow</abbr> , which can be caused in the <abbr title="built-in SQLite full-text index module">FTS3 / 4</abbr> subsystem by changing the FTS index of the table, which in turn can lead to memory rewriting or completion with an exception. </p><br><p>  Targeted artificial use of this integer overflow, by literally "truncating" the write buffers, leads to memory overflow, and can be used further by specially created SQL queries. </p><br><p>  As a result, in theory, <a href="https://en.wikipedia.org/wiki/SQLite">many applications</a> that use SQLite (with virtual FTS tables), and in particular, popular browsers that support SQLite-based WebSQL with FTS enabled (for example, Google Chrome, Chromium, Opera, Slimjet Browser, SRWare Iron, Torch, Comodo Dragon, CoolNovo, Yandex Browser, Vivaldi, etc.). </p><br><p>  SQLite databases are generally very popular, are provided by means of more than a dozen programming languages, toolchain, frameworks, etc., are used by applications for both mobile devices and full-fledged computers, and are often found even in server solutions.  For example, data in this format is stored in popular web browsers such as Google Chrome, Mozilla Firefox and Yandex Browser, many instant messengers (for example, WhatsApp, Viber, WeChat and others), etc.  etc. </p><br><p>  The same <a href="https://fossil-scm.org/">Fossil SCM</a> , for example, uses the SQLite database for storing revision history and allows using full-text indexing via FTS (and provides access to it from the UI / web snout, for example, it is possible to create your own SQL queries, for example, custom ticket reports etc.). </p><br><p>  <em>Update: DRH, being part-time co-author and developer of Fossil, apparently thought about the same thing, and already “ <a href="https://fossil-scm.org/index.html/info/e0a6ff0adb3da828">closed the hole</a> ” with updating SQLite to 3.26.0</em> </p><br><p>  Such a “predictable” overflow is not a very pleasant thing in and of itself, but if we recall what specifically can be stored in the bank itself (from the contents of the logs to the actual tables) ... <br>  So that comrades are not lazy ..., and we are updated, updated. </p><br><h4 id="gde-vzyat-fiks">  Where to get fix? </h4><br><p>  The fix <a href="https://www.sqlite.org/src/vinfo/940f2adc8541a838%3Fdiff%3D1">[940f2adc8541a838] is</a> provided as part of the SQLite 3.25.3 update (to which Chromium and Co. were also updated, for example, Chrome in version 71.0.3578.80). </p><br><p>  SQLite 3.26 also provides additional security features for FTS containers, for example: </p><blockquote>  support for read-only shadow tables when SQLITE_DBCONFIG_DEFENSIVE option is enabled </blockquote><br><h4 id="kakova-opasnost-etoy-uyazvimosti">  What is the danger of this vulnerability? </h4><br><p>  Critical.  Allows remote code execution.  A memory leak and program crashes are also likely. </p><br><h4 id="est-li-primery-gotovyh-exploit-ov-pozvolyayuschie-ispolzovat-uyazvimost">  Are there any examples of ready-made exploits to exploit the vulnerability? </h4><br><p>  Yes. </p><br><p>  In particular, Tencent Blade Team declares that they have successfully launched an attack on Google Home using this vulnerability (access to the description issue on the Google bug tracker is closed), and as has already been said above, no exploit code is currently planned to be disclosed. </p><br><h4 id="usloviya-ispolzovaniya-uyazvimosti">  Terms of use vulnerability? </h4><br><p>  Vulnerability can be performed remotely, for example, when a certain web page is called in a browser, or in any similar scenario, for example, allowing to execute SQL statements (if the FTS is not disabled, when a possible attack vector and / or the presence or occurrence of some other factors contributing to the exploitation is detected) vulnerabilities). </p><br><p>  By the way, this is not the first error of the type overflow &amp; buffer overrun in SQLite specifically and in the FTS module in particular (for example <a href="https://www.sqlite.org/src/info/56be976859294027">[56be976859294027]</a> ), but it is probably the largest of its kind in terms of significance, theoretical impact and relative “scale” in the ways of possible use and assessment of of this. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,23 +63,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/433596/">https://habr.com/ru/post/433596/</a></p>
+    <p>Source: https://habr.com/ru/post/433596/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../433580/index.html">Roskomnadzor plans to introduce a new blocking system worth 20 billion rubles</a></li>
 <li><a href="../433582/index.html">What if the 30/70 profit sharing ceases to be the gamedev standard?</a></li>
 <li><a href="../433586/index.html">How we didn't win the hackathon</a></li>
 <li><a href="../433588/index.html">The amazing performance of parallel C ++ 17 algorithms. Myth or Reality?</a></li>
+<li><a href="../43359/index.html">Obama = Nokia, McCain = Apple</a></li>
 <li><a href="../433592/index.html">Background: Yandex. Phone</a></li>
+<li><a href="../4336/index.html">Google and Skype cross VoIP services</a></li>
 <li><a href="../433600/index.html">Phone Pixel 3 is learning to determine the depth in photos</a></li>
 <li><a href="../433602/index.html">The basis of the rate of evolution may be mathematical simplicity.</a></li>
 <li><a href="../433604/index.html">Comfortable work with Android Studio</a></li>
 <li><a href="../433606/index.html">SIEM depths: out-of-box correlations. Part 3.2. Event Normalization Methodology</a></li>
-<li><a href="../433608/index.html">Car of the future. Screens instead of autoglass?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

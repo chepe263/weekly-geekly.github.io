@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Nginx and Websockets</h1><div class="post__text post__text-html js-mediator-article">  Nginx finally added the long awaited Websockets proxying functionality. <br>  In this regard, I hasten to share configs and small details. <br><br>  For those who did not know, earlier proxying was possible through a third-party module, with restrictions that did not suit many.  Well, we are not talking about that. <br><a name="habracut"></a><br><br>  Now on one port you can proxy http and ws traffic, moreover, for example, under one SSL certificate, and all this with <s>a</s> familiar familiar syntax. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Ws are available starting from version 1.3.13, and just today they added support to the ngx_http_uwsgi_module and ngx_http_scgi_module modules for 1.3.14 <br><br><h4>  This is what the documentation says about the mechanism used. <br></h4><br>  To convert the connection between the client and the server from HTTP / 1.1 to WebSocket, the protocol change mechanism available in HTTP / 1.1 is used. <br><br>  But there is a difficulty: since “Upgrade” is a hop-by-hop header, it is not transferred from the client to the proxied server.  For direct proxying, clients can use the CONNECT method to get around this problem.  However, during reverse proxying, this approach does not work, because the client does not know anything about the proxy server, and special processing is required on the proxy server. <br><br>  Starting with version 1.3.13, nginx has a special mode of operation that allows you to establish a tunnel between the client and the proxied server if the proxied server returned a response with code 101 (Switching Protocols), and the client asked to change the protocol using the “Upgrade” header in the request . <br><br>  As noted above, hop-by-hop headers, including “Upgrade” and “Connection”, are not transmitted from the client to the proxied server, therefore, in order for the proxied server to know about the client’s intention to change the protocol to WebSocket, these headers should be sent explicitly : <br><br><h4>  Config </h4><br>  A simple example: <br><br><pre><code class="bash hljs">location /ws/ { proxy_pass http://localhost:8080; proxy_http_version 1.1; proxy_set_header Upgrade <span class="hljs-variable"><span class="hljs-variable">$http_upgrade</span></span>; proxy_set_header Connection <span class="hljs-string"><span class="hljs-string">"upgrade"</span></span>; }</code> </pre> <br><br>  A more complex example in which the value of the “Connection” field in the request header to the proxied server depends on the presence of the “Upgrade” field in the client request header: <br><br><pre> <code class="bash hljs">http { map <span class="hljs-variable"><span class="hljs-variable">$http_upgrade</span></span> <span class="hljs-variable"><span class="hljs-variable">$connection_upgrade</span></span> { default upgrade; <span class="hljs-string"><span class="hljs-string">''</span></span> close; } server { ... location /ws/ { proxy_pass http://localhost:8080; proxy_http_version 1.1; proxy_set_header Upgrade <span class="hljs-variable"><span class="hljs-variable">$http_upgrade</span></span>; proxy_set_header Connection <span class="hljs-variable"><span class="hljs-variable">$connection_upgrade</span></span>; } }</code> </pre><br><br>  And a little non-obvious, but the important parameter is proxy_read_timeout, which is defaulted to 60s, after which the connection is terminated, which is usually not necessary for ws. <br><br>  Therefore, we added: <br><br><pre> <code class="bash hljs">http { ... proxy_read_timeout 950s; ... }</code> </pre><br>  Most likely your application will need other timeout digits, so don't copy-paste mindlessly;) </div><p>Source: <a href="https://habr.com/ru/post/171757/">https://habr.com/ru/post/171757/</a></p>
+      Ws are available starting from version 1.3.13, and just today they added support to the ngx_http_uwsgi_module and ngx_http_scgi_module modules for 1.3.14 <br><br><h4>  This is what the documentation says about the mechanism used. <br></h4><br>  To convert the connection between the client and the server from HTTP / 1.1 to WebSocket, the protocol change mechanism available in HTTP / 1.1 is used. <br><br>  But there is a difficulty: since “Upgrade” is a hop-by-hop header, it is not transferred from the client to the proxied server.  For direct proxying, clients can use the CONNECT method to get around this problem.  However, during reverse proxying, this approach does not work, because the client does not know anything about the proxy server, and special processing is required on the proxy server. <br><br>  Starting with version 1.3.13, nginx has a special mode of operation that allows you to establish a tunnel between the client and the proxied server if the proxied server returned a response with code 101 (Switching Protocols), and the client asked to change the protocol using the “Upgrade” header in the request . <br><br>  As noted above, hop-by-hop headers, including “Upgrade” and “Connection”, are not transmitted from the client to the proxied server, therefore, in order for the proxied server to know about the client’s intention to change the protocol to WebSocket, these headers should be sent explicitly : <br><br><h4>  Config </h4><br>  A simple example: <br><br><pre><code class="bash hljs">location /ws/ { proxy_pass http://localhost:8080; proxy_http_version 1.1; proxy_set_header Upgrade <span class="hljs-variable"><span class="hljs-variable">$http_upgrade</span></span>; proxy_set_header Connection <span class="hljs-string"><span class="hljs-string">"upgrade"</span></span>; }</code> </pre> <br><br>  A more complex example in which the value of the “Connection” field in the request header to the proxied server depends on the presence of the “Upgrade” field in the client request header: <br><br><pre> <code class="bash hljs">http { map <span class="hljs-variable"><span class="hljs-variable">$http_upgrade</span></span> <span class="hljs-variable"><span class="hljs-variable">$connection_upgrade</span></span> { default upgrade; <span class="hljs-string"><span class="hljs-string">''</span></span> close; } server { ... location /ws/ { proxy_pass http://localhost:8080; proxy_http_version 1.1; proxy_set_header Upgrade <span class="hljs-variable"><span class="hljs-variable">$http_upgrade</span></span>; proxy_set_header Connection <span class="hljs-variable"><span class="hljs-variable">$connection_upgrade</span></span>; } }</code> </pre><br><br>  And a little non-obvious, but the important parameter is proxy_read_timeout, which is defaulted to 60s, after which the connection is terminated, which is usually not necessary for ws. <br><br>  Therefore, we added: <br><br><pre> <code class="bash hljs">http { ... proxy_read_timeout 950s; ... }</code> </pre><br>  Most likely your application will need other timeout digits, so don't copy-paste mindlessly;) </div><p>Source: https://habr.com/ru/post/171757/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../171743/index.html">Arbitrary view of the file field in html-form, the same in all browsers</a></li>
 <li><a href="../171745/index.html">PostgreSQL performance scaling with table partitioning</a></li>
 <li><a href="../171747/index.html">CeBIT'13. The first day</a></li>
 <li><a href="../171749/index.html">Caution: Intruders</a></li>
+<li><a href="../17175/index.html">Unik from SUP can cost an advertiser $ 200-300</a></li>
 <li><a href="../171751/index.html">Differential Evolution: Genetic Function Optimization Algorithm</a></li>
 <li><a href="../171759/index.html">Entropy and decision trees</a></li>
+<li><a href="../17176/index.html">256 pixels art</a></li>
 <li><a href="../171761/index.html">Space Invaders in space</a></li>
 <li><a href="../171763/index.html">Google prepares rival Amazon Prime</a></li>
 <li><a href="../171765/index.html">14 computer games on display at the Museum of Modern Art</a></li>
-<li><a href="../171767/index.html">Google redirected Picasa Web Albums to Google+ Photos</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

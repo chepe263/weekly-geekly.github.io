@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Async / await emulation in Delphi</h1><div class="post__text post__text-html js-mediator-article">  In C #, the async / await construction appeared.  The following is an example of how to achieve this behavior in Delphi. <a name="habracut"></a><br><br>  I assume that you are familiar with async / await.  It is convenient to use it for operations where the participation of the processor is not required.  The processor is just starting the operation, and from the outside world comes a message about its termination.  A good example is a call to a web server.  Suppose our web server is able to perform two operations: addition and multiplication. <br><pre><code class="cs hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">async</span></span></span><span class="hljs-function"> Task&lt;</span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">int</span></span></span><span class="hljs-function">&gt; </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">MakeAsyncTask_Plus</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> aArg1, </span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> aArg2, </span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> aDurationMs</span></span></span><span class="hljs-function">)</span></span> { <span class="hljs-comment"><span class="hljs-comment">//      await Task.Delay(aDurationMs); return aArg1 + aArg2; } async Task&lt;int&gt; MakeAsyncTask_Mult(int aArg1, int aArg2, int aDurationMs) { //      await Task.Delay(aDurationMs); return aArg1 * aArg2; }</span></span></code> </pre> <br>  The client wants to calculate the expression (1 + 2) * (3 + 4).  Since  results of additions are independent, they can be performed simultaneously: <br><pre> <code class="cs hljs"> <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">async</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">CalcAsync</span></span></span><span class="hljs-function">(</span><span class="hljs-params"></span><span class="hljs-function"><span class="hljs-params"></span>)</span></span> { Task&lt;<span class="hljs-keyword"><span class="hljs-keyword">int</span></span>&gt; aPlus1 = MakeAsyncTask_Plus(<span class="hljs-number"><span class="hljs-number">1</span></span>, <span class="hljs-number"><span class="hljs-number">2</span></span>, <span class="hljs-number"><span class="hljs-number">2000</span></span>); <span class="hljs-comment"><span class="hljs-comment">// 1 Task&lt;int&gt; aPlus2 = MakeAsyncTask_Plus(3, 4, 2000); // 2 int aArg1 = await aPlus1; // 3 int aArg2 = await aPlus2; // 4 Task&lt;int&gt; aMult = MakeAsyncTask_Mult(aArg1, aArg2, 1000); // 5 int aRes = await aMult; // 6 Log(string.Format("{0} * {1} = {2}", aArg1, aArg2, aRes)); }</span></span></code> </pre><br>  Before the string "// 3" (the first await) method works in the usual way.  The await method exits the method, and continues (until the next await) at the end of the operation.  The control will be transferred by the message engine or in another thread - it is configured in the environment.  In C #, this is achieved by the compiler features.  In Delphi, similar behavior on a single thread can be achieved using Fiber.  This method will look like: <br><pre> <code class="delphi hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">procedure</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">TCalcAsync</span></span></span><span class="hljs-function">.</span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">Execute</span></span></span><span class="hljs-function">;</span></span> <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> aPlus1: TAsyncTask&lt;Integer&gt;; aPlus2: TAsyncTask&lt;Integer&gt;; aMult: TAsyncTask&lt;Integer&gt;; aArg1, aArg2: Integer; aRes: Integer; <span class="hljs-keyword"><span class="hljs-keyword">begin</span></span> aPlus1 := <span class="hljs-keyword"><span class="hljs-keyword">nil</span></span>; aPlus2 := <span class="hljs-keyword"><span class="hljs-keyword">nil</span></span>; aMult := <span class="hljs-keyword"><span class="hljs-keyword">nil</span></span>; <span class="hljs-keyword"><span class="hljs-keyword">try</span></span> aPlus1 := TAsyncTask_Plus.Create(Self, <span class="hljs-number"><span class="hljs-number">1</span></span>,<span class="hljs-comment"><span class="hljs-comment">{+}</span></span><span class="hljs-number"><span class="hljs-number">2</span></span>, <span class="hljs-number"><span class="hljs-number">2000</span></span><span class="hljs-comment"><span class="hljs-comment">{ms}</span></span>); aPlus2 := TAsyncTask_Plus.Create(Self, <span class="hljs-number"><span class="hljs-number">3</span></span>,<span class="hljs-comment"><span class="hljs-comment">{+}</span></span><span class="hljs-number"><span class="hljs-number">4</span></span>, <span class="hljs-number"><span class="hljs-number">2000</span></span><span class="hljs-comment"><span class="hljs-comment">{ms}</span></span>); aArg1 := aPlus1.Await; aArg2 := aPlus2.Await; aMult := TAsyncTask_Mult.Create(Self, aArg1,<span class="hljs-comment"><span class="hljs-comment">{*}</span></span>aArg2, <span class="hljs-number"><span class="hljs-number">1000</span></span><span class="hljs-comment"><span class="hljs-comment">{ms}</span></span>); aRes := aMult.Await; Example.Log(<span class="hljs-string"><span class="hljs-string">'%d * %d = %d'</span></span>, [aArg1, aArg2, aRes]); <span class="hljs-keyword"><span class="hljs-keyword">finally</span></span> aMult.Free; aPlus2.Free; aPlus1.Free; <span class="hljs-keyword"><span class="hljs-keyword">end</span></span>; <span class="hljs-keyword"><span class="hljs-keyword">end</span></span>;</code> </pre><br>  <a href="https://drive.google.com/open%3Fid%3D0B0QVjOftrvZvR1MwbkE3VWZES0U">The example</a> works for Delphi 2007, XE2, XE8. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/278985/">https://habr.com/ru/post/278985/</a></p>
+    <p>Source: https://habr.com/ru/post/278985/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../278969/index.html">What's new in Rails 5.0. You can plan a move</a></li>
+<li><a href="../27897/index.html">Night call to webdesign spammer or "Porn sites is illegal"</a></li>
 <li><a href="../278971/index.html">All nil zero: almost all programming languages ​​do it</a></li>
 <li><a href="../278973/index.html">The program of the conference DUMP-2016: look who is speaking this year</a></li>
 <li><a href="../278975/index.html">Mike Shapiro, DSSD / EMC: “When the puzzle was formed, we got a solution ten times ahead of competitors' products”</a></li>
 <li><a href="../278977/index.html">1.1 SFML and Visual Studio</a></li>
 <li><a href="../278987/index.html">SonataAdminBundle: Creating an Object from a List View (Part 1)</a></li>
 <li><a href="../278989/index.html">Android N makes it easy to work with encryption</a></li>
+<li><a href="../27899/index.html">Testing browsers on low-speed connection</a></li>
 <li><a href="../278991/index.html">Report with MoscowJS February 25</a></li>
 <li><a href="../278995/index.html">Calltracking in Minecraft or how to quickly make a three-dimensional UI</a></li>
-<li><a href="../278997/index.html">Release Webix 3.2. New widgets for working with data and other features</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

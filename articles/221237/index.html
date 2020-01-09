@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -61,7 +61,7 @@
 	 testSet = cases not covered by the best rule;
  END OF CYCLE </pre><br>  Consider the sequential steps of the algorithm. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -69,7 +69,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h5>  Initialization of Pheromone Values </h5><br>  All edges of the graph are initialized by the initial pheromone value according to the following formula: <br><img src="https://habrastorage.org/getpro/habr/post_images/7ec/38f/e15/7ec38fe1597ee7e2ddd7326ef839e81c.png"><br>  , where a is the total number of attributes, b <sub>i</sub> is the number of possible values ​​of the i-th attribute. <br><br><h5>  Rule building </h5><br>  Each rule in the AntMiner algorithm contains an antecedent (term set Attribute = Value) and the class it represents.  In the original algorithm, the source data contains only categorical attributes.  Suppose that the term <sub>ij</sub> ≈ Ai = V <sub>ij</sub> , where A <sub>i</sub> is the i-th attribute, and V <sub>ij</sub> is the j-th value of A <sub>i</sub> . <br><br>  The probability that this term will be added to the current partial rule compiled by an ant is determined by the following formula: <br><img src="https://habrastorage.org/getpro/habr/post_images/69d/db8/906/69ddb8906009dc8924c44518cb45fd6d.png"><br>  , where ηij is the heuristic value (to be defined later), τ <sub>ij</sub> is the pheromone value on this edge of the graph, and I is the set of attributes not yet used by the current ant. <br><br><h5>  Heuristic </h5><br>  In the traditional ant colony algorithm for solving the transport problem, the weight of the ribs is used together with the pheromone value to decide on the choice of the next vertex.  In the AntMiner algorithm, the heuristic is the amount of information - a term used in information theory.  Quality here is measured using entropy, to prefer some rules over others: <br><img src="https://habrastorage.org/getpro/habr/post_images/65a/fd2/9c4/65afd29c4087fcb0901af2b896457ed3.png"><br><img src="https://habrastorage.org/getpro/habr/post_images/f14/ee6/fc3/f14ee6fc33d1100d484ec3b48fc35e9f.png"><br>  where k is the number of classes, T <sub>ij</sub> is a subset containing all data units, where the attribute Ai has the value V <sub>ij</sub> , | T <sub>ij</sub> |  the number of elements in Tij, freq (T <sup>w</sup> <sub>ij</sub> ) is the number of data units that have class w, a is the total number of attributes, b <sub>i</sub> is the number of possible values ​​of the i-th attribute. <br>  The higher the value of Info T <sub>ij</sub> , the less likely it is that the ant will choose this term. <br><br><h5>  Update pheromone values </h5><br>  After each ant has completed the construction of the rule, the pheromones are updated using the following formula: <br>  τ <sub>ij</sub> (t +1) = τ <sub>ij</sub> (t) + τ <sub>ij</sub> (t) .Q ∀ term ij the current rule <br>  where Q is the quality of the rule, which is calculated by the following formula: <br><img src="https://habrastorage.org/getpro/habr/post_images/de2/003/d8c/de2003d8cabe7a41813ea6986339e829.png"><br>  Here TruePos is the number of data units that are covered by the rule and whose class matches the class represented by the rule, FaslePos is the number of data units that are covered by the rule, but the class differs from the class represented by the rule, TrueNeg is the number of data units that are not covered by the rule and whose class does not coincide with the class represented by the rule, FalseNeg is the number of data units that are not covered by the rule, but whose class coincides with the class represented by the rule. <br>  It is also required to perform the recalculation of pheromones, imitating its evaporation.  This can be done by a simple normalization of the values, taking into account the updated value of the pheromones. <br><br><h5>  Improved pheromone update </h5><br>  For a more flexible setting of the algorithm execution, the following formula for updating the probabilities of edges belonging to the current rule is used: <br><img src="https://habrastorage.org/getpro/habr/post_images/96f/4f5/01e/96f4f501e40e59ebb0e0f208b3e21a23.png"><br><br>  where p is the evaporation coefficient (the value is usually set to ~ 0.1), Q is the quality of the rule described above.  Edges not covered by the current rule are simply normalized.  This method provides a reduction in the value of pheromone at low Q and an increase at high (unlike the original method). <br><br><h5>  Elite ants </h5><br>  You can also improve the convergence of the algorithm by introducing a number of so-called “elite” ants, who choose a term for which P = max Pij. <br>  In the original algorithm, the term selection is selected according to the following algorithm: <br><pre>  FOR ALL (i, j) ∈ Ji
@@ -77,7 +77,7 @@
 		 FOR ALL (i, j) ∈ Ji
 			 IF q2 ≤ ∑ Pij TO Select termij
 	 ANYWAY
-		 Choose a term with P = max Pij </pre><br><br>  Here q <sub>1</sub> and q <sub>2 are</sub> random variables [0..1] with a uniform distribution. <br><br><h5>  Some observations </h5><br>  Analogue of AntMiner is the famous Naive Bayes algorithm.  According to my experiments on their comparison, AntMiner either slightly surpasses Naive Bayes, or is completely inferior to it on various data sets.  The AntMiner implementation presented <a href="http://sourceforge.net/projects/guiantminer/">here</a> and the Naive Bayes implementation from the <a href="http://www.cs.waikato.ac.nz/ml/weka/">WEKA</a> library were used for <a href="http://www.cs.waikato.ac.nz/ml/weka/">comparison</a> .  In addition, AntMiner is significantly inferior in computation time.  Perhaps there are situations or some preconditions under which AntMiner turns out to be really the best choice. </div><p>Source: <a href="https://habr.com/ru/post/221237/">https://habr.com/ru/post/221237/</a></p>
+		 Choose a term with P = max Pij </pre><br><br>  Here q <sub>1</sub> and q <sub>2 are</sub> random variables [0..1] with a uniform distribution. <br><br><h5>  Some observations </h5><br>  Analogue of AntMiner is the famous Naive Bayes algorithm.  According to my experiments on their comparison, AntMiner either slightly surpasses Naive Bayes, or is completely inferior to it on various data sets.  The AntMiner implementation presented <a href="http://sourceforge.net/projects/guiantminer/">here</a> and the Naive Bayes implementation from the <a href="http://www.cs.waikato.ac.nz/ml/weka/">WEKA</a> library were used for <a href="http://www.cs.waikato.ac.nz/ml/weka/">comparison</a> .  In addition, AntMiner is significantly inferior in computation time.  Perhaps there are situations or some preconditions under which AntMiner turns out to be really the best choice. </div><p>Source: https://habr.com/ru/post/221237/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Datetime or timestamp</h1><div class="post__text post__text-html js-mediator-article"> The other day I was faced with the fact that many developers do not know what is the difference between the DATETIME and TIMESTAMP data types in MySQL, and also how to store the date and time if you need to take into account different time zones for different users of the web application.  Therefore, I want to give below explanations with explanations. <br><br>  <b>DATETIME</b> <br>  Stores the time as an integer of the form YYYYMMDDHHMMSS, using 8 bytes for this.  This time <b>does not depend on the time zone</b> .  It is always displayed when sampling exactly as it was saved, no matter what time zone is set in MySQL.  I give an example: <br><a name="habracut"></a><br> <code>mysql&gt; create table `dt1` ( col datetime NOT NULL ); <br> mysql&gt; SET @@session.time_zone='+00:00'; <br> mysql&gt; select now(); <br> +---------------------+ <br> | now() | <br> +---------------------+ <br> | 2009-06-04 18:13:56 | <br> +---------------------+ <br> <br> mysql&gt; insert into dt1 values(now()); <br> <br> mysql&gt; SET @@session.time_zone='+01:00'; <br> mysql&gt; select now(); <br> +---------------------+ <br> | now() | <br> +---------------------+ <br> | 2009-06-04 19:14:20 | <br> +---------------------+ <br> <br> mysql&gt; insert into dt1 values(now()); <br> <br> mysql&gt; SET @@session.time_zone='+00:00'; <br> mysql&gt; select * from dt1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 18:14:10 | <br> | 2009-06-04 19:14:27 | <br> +---------------------+ <br></code> <br><br>  <b>TIMESTAMP</b> <br>  Stores a 4-byte integer equal to the number of seconds elapsed since midnight on January 1, 1970 at the Greenwich Mean Time (i.e., the zero time zone, the starting point of time zones).  <b>When received from the database is displayed taking into account the time zone.</b>  The time zone can be set in the operating system, MySQL global settings, or in a specific session.  Remember that the number of seconds is always UTC (universal coordinated time, solar time on the Greenwich meridian), and not the local time zone.  Example: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>mysql&gt; create table tm1 (col timestamp not null); <br> mysql&gt; set @@session.time_zone = '+00:00'; <br> mysql&gt; select now(); <br> +---------------------+ <br> | now() | <br> +---------------------+ <br> | 2009-06-04 18:24:54 | <br> +---------------------+ <br> mysql&gt; insert into tm1 values(now()); <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 18:25:08 | <br> +---------------------+ <br> <br> mysql&gt; set @@session.time_zone = '+01:00'; <br> mysql&gt; select now(); <br> +---------------------+ <br> | now() | <br> +---------------------+ <br> | 2009-06-04 19:25:21 | <br> +---------------------+ <br> mysql&gt; insert into tm1 values(now()); <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 19:25:08 | <br> | 2009-06-04 19:25:26 | <br> +---------------------+ <br> <br> mysql&gt; set @@session.time_zone = '+00:00'; <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 18:25:08 | <br> | 2009-06-04 18:25:26 | <br> +---------------------+ <br></code> <br><br>  Another difference!  TIMESTAMP is NOT NULL by default, and its default value is NOW (). <br><br> <code>mysql&gt; insert into dt1 values(null); <br> ERROR 1048 (23000): Column 'col' cannot be null <br> mysql&gt; insert into tm1 values(null); <br> Query OK, 1 row affected (0.00 sec) <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 18:25:08 | <br> | 2009-06-04 18:25:26 | <br> | 2009-06-04 18:32:50 | <br> +---------------------+ <br></code> <br><br>  <b>Addition.</b>  For those who are confused by the use of the function NOW (). <br><br> <code>mysql&gt; set @@session.time_zone = '+00:00'; <br> mysql&gt; insert into dt1 values('2009-06-04 22:00:00'); <br> mysql&gt; set @@session.time_zone = '+01:00'; <br> mysql&gt; select * from dt1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 22:00:00 | <br> +---------------------+ <br> <br> mysql&gt; set @@session.time_zone = '+00:00'; <br> mysql&gt; insert into tm1 values('2009-06-04 22:00:00'); <br> mysql&gt; set @@session.time_zone = '+01:00'; <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 23:00:00 | <br> +---------------------+ <br></code> </div><p>Source: <a href="https://habr.com/ru/post/61391/">https://habr.com/ru/post/61391/</a></p>
+     <code>mysql&gt; create table tm1 (col timestamp not null); <br> mysql&gt; set @@session.time_zone = '+00:00'; <br> mysql&gt; select now(); <br> +---------------------+ <br> | now() | <br> +---------------------+ <br> | 2009-06-04 18:24:54 | <br> +---------------------+ <br> mysql&gt; insert into tm1 values(now()); <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 18:25:08 | <br> +---------------------+ <br> <br> mysql&gt; set @@session.time_zone = '+01:00'; <br> mysql&gt; select now(); <br> +---------------------+ <br> | now() | <br> +---------------------+ <br> | 2009-06-04 19:25:21 | <br> +---------------------+ <br> mysql&gt; insert into tm1 values(now()); <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 19:25:08 | <br> | 2009-06-04 19:25:26 | <br> +---------------------+ <br> <br> mysql&gt; set @@session.time_zone = '+00:00'; <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 18:25:08 | <br> | 2009-06-04 18:25:26 | <br> +---------------------+ <br></code> <br><br>  Another difference!  TIMESTAMP is NOT NULL by default, and its default value is NOW (). <br><br> <code>mysql&gt; insert into dt1 values(null); <br> ERROR 1048 (23000): Column 'col' cannot be null <br> mysql&gt; insert into tm1 values(null); <br> Query OK, 1 row affected (0.00 sec) <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 18:25:08 | <br> | 2009-06-04 18:25:26 | <br> | 2009-06-04 18:32:50 | <br> +---------------------+ <br></code> <br><br>  <b>Addition.</b>  For those who are confused by the use of the function NOW (). <br><br> <code>mysql&gt; set @@session.time_zone = '+00:00'; <br> mysql&gt; insert into dt1 values('2009-06-04 22:00:00'); <br> mysql&gt; set @@session.time_zone = '+01:00'; <br> mysql&gt; select * from dt1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 22:00:00 | <br> +---------------------+ <br> <br> mysql&gt; set @@session.time_zone = '+00:00'; <br> mysql&gt; insert into tm1 values('2009-06-04 22:00:00'); <br> mysql&gt; set @@session.time_zone = '+01:00'; <br> mysql&gt; select * from tm1; <br> +---------------------+ <br> | col | <br> +---------------------+ <br> | 2009-06-04 23:00:00 | <br> +---------------------+ <br></code> </div><p>Source: https://habr.com/ru/post/61391/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../61385/index.html">What is most important to you?</a></li>
 <li><a href="../61388/index.html">Solyanka</a></li>
 <li><a href="../61390/index.html">Ten best themes for 5800 and future N97</a></li>
+<li><a href="../61392/index.html">STALKER: Shadow of Chernobyl free then</a></li>
 <li><a href="../61393/index.html">I resent Megaphone - kidalovo</a></li>
 <li><a href="../61394/index.html">PrivatBank distributes free Skype vouchers</a></li>
 <li><a href="../61395/index.html">Igrozhurskoe about sore</a></li>
 <li><a href="../61398/index.html">I resent, TELE 2 - kidalovo</a></li>
-<li><a href="../61400/index.html">Implementation of the RSA (PHP) algorithm</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

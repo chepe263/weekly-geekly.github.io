@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How many returns should there be in a function / method?</h1><div class="post__text post__text-html js-mediator-article">  Recently, my colleague and I had a dispute about the number of returns that should be in the function / method.  He believes that the return function should be one, and the result can be prepared in a local variable.  I think that you should put return in every place where you can return a value from a function. <br>  And how the respected Habrasoobschestvo thinks? <br><a name="habracut"></a><br>  For example, a piece of Java code that illustrates an approach I like: <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#2B91AF">String</font> getSystemLookAndFeelClassName() { <br> <font color="#2B91AF">String</font> systemLAF = ( <font color="#2B91AF">String</font> )AccessController.doPrivileged( <br> <font color="#0000ff">new</font> GetPropertyAction( <font color="#A31515">"swing.systemlaf"</font> )); <br> <font color="#0000ff">if</font> (systemLAF != <font color="#0000ff">null</font> ) { <br> <font color="#0000ff">return</font> systemLAF; <br> } <br> <font color="#2B91AF">String</font> osName = ( <font color="#2B91AF">String</font> )AccessController.doPrivileged( <br> <font color="#0000ff">new</font> GetPropertyAction( <font color="#A31515">"os.name"</font> )); <br> <br> <font color="#0000ff">if</font> (osName != <font color="#0000ff">null</font> ) { <br> <font color="#0000ff">if</font> (osName.indexOf( <font color="#A31515">"Windows"</font> ) != -1) { <br> <font color="#0000ff">return</font> <font color="#A31515">"com.sun.java.swing.plaf.windows.WindowsLookAndFeel"</font> ; <br> } <br> <font color="#0000ff">else</font> { <br> <font color="#2B91AF">String</font> desktop = ( <font color="#2B91AF">String</font> )AccessController.doPrivileged( <br> <font color="#0000ff">new</font> GetPropertyAction( <font color="#A31515">"sun.desktop"</font> )); <br> <font color="#0000ff">if</font> ( <font color="#A31515">"gnome"</font> .equals(desktop)) { <br> <font color="#008000">// May be set on Linux and Solaris boxs.</font> <br> <font color="#0000ff">return</font> <font color="#A31515">"com.sun.java.swing.plaf.gtk.GTKLookAndFeel"</font> ; <br> } <br> <font color="#0000ff">if</font> ((osName.indexOf( <font color="#A31515">"Solaris"</font> ) != -1) || <br> (osName.indexOf( <font color="#A31515">"SunOS"</font> ) != -1)) { <br> <font color="#0000ff">return</font> <font color="#A31515">"com.sun.java.swing.plaf.motif.MotifLookAndFeel"</font> ; <br> } <br> } <br> } <br> <font color="#0000ff">return</font> getCrossPlatformLookAndFeelClassName(); <br> } <br></font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  In the style of my colleague, this code would look like this: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#2B91AF">String</font> getSystemLookAndFeelClassName() { <br> <font color="#2B91AF">String</font> result = getCrossPlatformLookAndFeelClassName(); <br> <br> <font color="#2B91AF">String</font> systemLAF = ( <font color="#2B91AF">String</font> )AccessController.doPrivileged( <br> <font color="#0000ff">new</font> GetPropertyAction( <font color="#A31515">"swing.systemlaf"</font> )); <br> <font color="#0000ff">if</font> (systemLAF != <font color="#0000ff">null</font> ) { <br> result = systemLAF; <br> } <br> <font color="#2B91AF">String</font> osName = ( <font color="#2B91AF">String</font> )AccessController.doPrivileged( <br> <font color="#0000ff">new</font> GetPropertyAction( <font color="#A31515">"os.name"</font> )); <br> <br> <font color="#0000ff">if</font> (osName != <font color="#0000ff">null</font> ) { <br> <font color="#0000ff">if</font> (osName.indexOf( <font color="#A31515">"Windows"</font> ) != -1) { <br> result = <font color="#A31515">"com.sun.java.swing.plaf.windows.WindowsLookAndFeel"</font> ; <br> } <br> <font color="#0000ff">else</font> { <br> <font color="#2B91AF">String</font> desktop = ( <font color="#2B91AF">String</font> )AccessController.doPrivileged( <br> <font color="#0000ff">new</font> GetPropertyAction( <font color="#A31515">"sun.desktop"</font> )); <br> <font color="#0000ff">if</font> ( <font color="#A31515">"gnome"</font> .equals(desktop)) { <br> <font color="#008000">// May be set on Linux and Solaris boxs.</font> <br> result = <font color="#A31515">"com.sun.java.swing.plaf.gtk.GTKLookAndFeel"</font> ; <br> } <br> <font color="#0000ff">if</font> ((osName.indexOf( <font color="#A31515">"Solaris"</font> ) != -1) || <br> (osName.indexOf( <font color="#A31515">"SunOS"</font> ) != -1)) { <br> result = <font color="#A31515">"com.sun.java.swing.plaf.motif.MotifLookAndFeel"</font> ; <br> } <br> } <br> } <br> <font color="#0000ff">return</font> result; <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  <b>UPD</b> : the first option is a function taken unchanged from the Sun JDK 6.0 sources, the second option is the first version that I quickly adapted from my colleague’s style. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/67430/">https://habr.com/ru/post/67430/</a></p>
+    <p>Source: https://habr.com/ru/post/67430/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../67420/index.html">iDeath</a></li>
 <li><a href="../67421/index.html">ADSL modem loses connection before rebooting? No problem!</a></li>
 <li><a href="../67424/index.html">BBC experiments with HTML5 video</a></li>
 <li><a href="../67428/index.html">Tele2 starts selling modems</a></li>
 <li><a href="../67429/index.html">Corporate Web 2.0 in Russia</a></li>
+<li><a href="../6743/index.html">The car was in deep water. How to behave and stay alive!?</a></li>
 <li><a href="../67431/index.html">Dynamic code compilation in C #</a></li>
 <li><a href="../67433/index.html">How a baby programmer cradles</a></li>
 <li><a href="../67434/index.html">Enthusiastic Project Part 1: People</a></li>

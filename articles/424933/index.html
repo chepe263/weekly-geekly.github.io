@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How we reworked bad prediction for a little more good (continued)</h1><div class="post__text post__text-html js-mediator-article"><p>  In the last article I described how for the purposes of forecasting revenue, people built a large and complex excel file ( <a href="https://habr.com/post/424917/">you can read here</a> ).  We decided to intervene in this shame and offered to alter the forecast model so that there were fewer errors, easier operation, flexibility in customization. </p><br><h3 id="kakie-klyuchevye-problemy-v-opisannoy-modeli">  What are the key problems in the described model: </h3><br><ol><li>  Data, model and views are mixed into one entity.  Because of this, a change in at least one of the elements destroys this whole monolith. </li><li>  Excessive manual processing, which produces errors and typos in huge quantities. </li></ol><br><h3 id="chto-my-predlozhili">  What we suggested: </h3><br><ol><li>  In the initial model, the initial data on which it was built did not appear anywhere.  We offered to enter this data in the format of the 2nd normal form into the Excel file itself on 2 separate sheets (sales and number of customers).  Fortunately, the sales data in our aggregation by months is just tens of thousands of rows, not millions.  We also configured to get this data using Power Query directly from the database. <a name="habracut"></a></li><li>  We have created a simulation sheet, which consists of 3 blocks: <br><ul><li>  Revenue summary table </li><li>  Summary table of clients </li><li>  Calculated table of average checks <br>  Each pivot table is a pivot table built on the source data in the necessary for the current modeling detailing by departments and divisions, in the necessary detailing by periods (months). <br><img src="https://habrastorage.org/webt/uv/3z/mh/uv3zmh-wl4awfrj6rfexngymb5q.png"></li></ul></li><li>  In the Modeling Sheet, we built simple forecasting models based on historical time series.  We extended the number of clients and the average bill, and the total projected revenue was considered as the product of these values.  After reviewing the data, we came up with 3 prediction models: the median for past periods, exponential triple smoothing and zeroing (when we need 0 prediction). <br><img src="https://habrastorage.org/webt/xn/-e/x7/xn-ex79q2h2-u1ntngvxiavkr0m.png"></li><li>  Calculations of the average check (fact) and revenue (forecast) are not made by reference to the cells, but by using the CDF and the offset mark, which makes the calculations resistant to changes in the source data. <br><img src="https://habrastorage.org/webt/gn/y7/sw/gny7swii7rerdwbdgdswbbbllps.png"></li><li>  It is clear that now the model is not readable by the user, because  there are too many meanings.  For this we have built separate sheets of units.  Each sheet has a cell that selects which data should be added to this sheet.  Based on the CDF, we pull the data from the model sheet into the sheet. </li><li>  The very creation of 30 sheets by divisions is done by a special procedure.  First, create the first sheet of one of the divisions, which contains all the possible names of departments.  If there is no department in the subdivision, then the formulas pull in there 0. To make all 30 subdivisions, we create duplicates and change the names in the control cell (it is used to generate the control key) and we have the necessary data in the form of a representation.  VPR can use more than 1 cell as a key if you use a trick: combine the cells you need into one using concatenation (the CLUTCH function or the &amp; symbol). </li><li>  An element has been added to the presentation form that allows you to manage the model: a simple factor to the predicted values ​​of the average check and quantity.  This element is collected on a special technical sheet with the help of the FEDEX function, which allows you to use the generated link.  From this technical sheet, all these adjustments are transferred to the model sheet using the CDF. <br><img src="https://habrastorage.org/webt/nn/pw/zv/nnpwzvykp3sqghpaimfbouefgkk.png"></li><li>  Generalization sheets are no longer a summation of presentation sheets, but are constructed in the same way as all other sheets by summing up data on a sheet with a model.  As a result, representations are pure representations and do not have dependencies among themselves. </li></ol><br><h3 id="chto-my-poluchili">  What we got: </h3><br><ol><li>  It is always clear from which numbers we received the data (as the power Query query was saved). </li><li>  We can change the data without breaking the model. </li><li>  Changes in the structure and hierarchy will require minor modifications (you only need to change the names in 1 presentation sheet and then make duplicates of it). </li><li>  We have drastically reduced the number of potential errors, because  Most of the data is filled with formulas, links and keys. </li><li>  The customer received an interactive forecast in which he can change the values ​​himself and immediately receive the forecast. </li><li>  We were able to simultaneously satisfy the requirements that we need data both in annual and monthly terms. </li><li>  Can be used in the next budget period. </li><li>  You can change the forecasting model, if these seem to us not suitable. </li></ol><br><h3 id="pochemu-my-reshili-ostatsya-v-eksele-a-ne-peredelali-eto-na-kakie-to-drugie-tehnologii">  Why did we decide to stay in Excel instead of redoing it into some other technology? </h3><br><ol><li>  We needed to leave this file in operation with current employees.  In Excel, it's easier for us to show how it all works and what they can fix. </li><li>  Excel does the job and other solutions are redundant entities. </li><li>  The customer is accustomed to this form and his "retraining" individual labor costs, which we could not afford. </li></ol><br><p>  How much time it took us: about 5 working days, where 1 person spent 2-4 hours a day and at the end of the day we did a review of the results with him. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/424933/">https://habr.com/ru/post/424933/</a></p>
+    <p>Source: https://habr.com/ru/post/424933/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../424935/index.html">Product Design Digest, September 2018</a></li>
 <li><a href="../424937/index.html">Digital events in Moscow from October 1 to 7</a></li>
 <li><a href="../424939/index.html">Polymorphic Quine</a></li>
+<li><a href="../42494/index.html">How I Zend stormed.</a></li>
 <li><a href="../424941/index.html">Stream data from a REST service to an MQ queue</a></li>
-<li><a href="../424945/index.html">Smartphone drives a toy car</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

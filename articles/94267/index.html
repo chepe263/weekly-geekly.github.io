@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
  DATABASE_USER = "mario"
  DATABASE_PASSWORD = "princess_peach" </pre><br>  You write the following: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,7 +62,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <pre>  DATABASES = {
@@ -81,20 +81,20 @@
 </pre><br>  Ultimately, all projects will have to be translated into this form, although the old format will be supported in Django up to version 1.4.  The only key that has a critical meaning in the <i>DATABASES</i> dictionary is <i>“default”</i> - “default”.  If you are using a database, you need to define a <i>“default”</i> database. <br><br>  Now that you have told Django about all of your databases, you need to find a way to tell Django how to use them.  The first interface change in this area is the <i>using ()</i> method.  <i>using ()</i> takes a single parameter <acronym>database</acronym> name ( <acronym>database</acronym> names are keys of the <i>DATABASES</i> dictionary), and binds the <i>QuerySet</i> to this database.  Like any other tool of the <i>QuerySet</i> class, it can be chained if necessary (as, for example, the <i>order_by ()</i> method, which updates the results of the first query upon a second query).  In fact, it gives you the opportunity to fully control where the data will be read from (and when deftly using the <i>create ()</i> , <i>delete ()</i> and <i>update ()</i> methods even makes it possible to control the recording): <br><br><pre>  &gt;&gt;&gt; User.objects.filter (username__startswith = "admin"). Using ("credentials") </pre><br>  New methods for working with the <i>QuerySet</i> class <i>delete ()</i> and <i>save ()</i> take an additional argument of using, to which, again, the name of the <acronym>database</acronym> is passed. <br><br>  In addition, a new class method <i>Managers</i> , <i>db_manager ()</i> , which also takes the name of the <acronym>database</acronym> .  Its function is essentially close to the function of the <i>using ()</i> method.  The main difference is this: instead of returning a <i>QuerySet</i> , it returns a new <i>Manager</i> .  The script to use it makes it possible to chain it with those methods of the class Managers that do not return a <i>QuerySet</i> (for example, such as <i>create_user () of the</i> class <i>UserManager</i> ). <br><br><h1>  DB routers </h1>  Using all these methods, you get the opportunity to implement any system that uses multiple databases.  Including <nobr>master-slave</nobr> replication, partitioning and sharding.  However, this will not necessarily be convenient.  You will often have to use requests to the method <i>using ()</i> in the code, which is not best compatible with the principle of reusable Django applications (for this reason the <i>using</i> option was removed from the <i>Meta</i> model class).  In addition, in some cases, the <i>QuerySet</i> class is not fully defined.  So, for example, to access the data of the <i>User</i> class, the <i>my_obj.user</i> method <i>will</i> implicitly create a <i>QuerySet</i> , but the <i>using ()</i> method will have no place to send the request.  This was the reason for the emergence of the concept of a “ <acronym>database</acronym> router”.  The <acronym>DB</acronym> routers receive all the information about the request that you want to complete, and determine which database needs to be accessed.  Routers are set in the configuration file as a list of <i>DATABASE_ROUTERS</i> : <br><br><pre>  DATABASE_ROUTERS = [
       "path.to.AuthRouter",
       "path.to.MasterSlaveRouter",
-  ] </pre><br>  <i>DATABASE_ROUTERS</i> is set by the list, because the router at any stage can return the value None and then Django will go to the next router from the list.  Routers can define the following methods: <br><ul><li>  <i>db_for_read</i> </li><li>  <i>db_for_write</i> </li><li>  <i>allow_relation</i> </li><li>  <i>allow_syncdb</i> </li></ul>  The first two methods are obvious; they return the name of the <acronym>database</acronym> against which the query is being executed.  The <i>allow_relation</i> method <i>is</i> designed to control the reasonableness of requests.  Django will not allow you to create deliberately incorrect connections between <acronym>databases</acronym> .  That is, if you try to create a relationship between two data structures from different <acronym>databases</acronym> (for <i>ForeignKey</i> or for <i>ManyToManyField</i> ), using this method, Django will request the necessary confirmation.  And the last method <i>allow_syncdb</i> allows <i>you</i> to determine which of the databases will create a specific model. <br><br>  The Django documentation for working <a href="http://docs.djangoproject.com/en/dev/topics/db/multi-db/">with several <acronym>databases</acronym></a> , as always, gives a lot of practical examples.  Including examples that describe how to start applying common patterns with database routers.  Supporting multiple databases offers tremendous advantages and greatly expands the scope of Django. </div><p>Source: <a href="https://habr.com/ru/post/94267/">https://habr.com/ru/post/94267/</a></p>
+  ] </pre><br>  <i>DATABASE_ROUTERS</i> is set by the list, because the router at any stage can return the value None and then Django will go to the next router from the list.  Routers can define the following methods: <br><ul><li>  <i>db_for_read</i> </li><li>  <i>db_for_write</i> </li><li>  <i>allow_relation</i> </li><li>  <i>allow_syncdb</i> </li></ul>  The first two methods are obvious; they return the name of the <acronym>database</acronym> against which the query is being executed.  The <i>allow_relation</i> method <i>is</i> designed to control the reasonableness of requests.  Django will not allow you to create deliberately incorrect connections between <acronym>databases</acronym> .  That is, if you try to create a relationship between two data structures from different <acronym>databases</acronym> (for <i>ForeignKey</i> or for <i>ManyToManyField</i> ), using this method, Django will request the necessary confirmation.  And the last method <i>allow_syncdb</i> allows <i>you</i> to determine which of the databases will create a specific model. <br><br>  The Django documentation for working <a href="http://docs.djangoproject.com/en/dev/topics/db/multi-db/">with several <acronym>databases</acronym></a> , as always, gives a lot of practical examples.  Including examples that describe how to start applying common patterns with database routers.  Supporting multiple databases offers tremendous advantages and greatly expands the scope of Django. </div><p>Source: https://habr.com/ru/post/94267/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../94255/index.html">Django vs Rails: The Beginner Web Developer's Dilemma</a></li>
-<li><a href="../94256/index.html">Emacs starter kit</a></li>
 <li><a href="../94259/index.html">Introduction to DSL. Part 1 - Problems of design and coding</a></li>
 <li><a href="../94260/index.html">Using the VPN service from Hide My Ass on GNU \ Linux Slackware 13.0</a></li>
+<li><a href="../94261/index.html">Life hacking or How to significantly reduce the cost of office Internet</a></li>
+<li><a href="../94263/index.html">SDK for Windows 7 and .NET 4.0 released</a></li>
 <li><a href="../94264/index.html">The draft law, toughening the punishment for plagiarism, contains plagiarism</a></li>
 <li><a href="../94268/index.html">MonoDroid - Mono testing program for Android</a></li>
 <li><a href="../94269/index.html">Robot small dog improves his walking skills</a></li>
+<li><a href="../9427/index.html">Habrolage</a></li>
 <li><a href="../94270/index.html">Kodak PlaySport - are you ready for an extreme video?</a></li>
 <li><a href="../94271/index.html">E-learning today or what LMS is used today? (Part 1)</a></li>
-<li><a href="../94276/index.html">Under the castle</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

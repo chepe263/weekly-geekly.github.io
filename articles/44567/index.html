@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Load time counter</h1><div class="post__text post__text-html js-mediator-article">  Colleagues, friends and simply habraklyudi.  A week ago, the code for the download counter was posted on <a href="http://webo.in/">Web Optimizator</a> (for more details on measuring page load time, see the articles about <a href="http://webo.in/articles/habrahabr/16-optimization-page-load-time/">load speed analysis</a> and <a href="http://webo.in/articles/habrahabr/66-online-store-speed-up/" title="speeding up online store downloads">online store overclocking</a> ). <br><br>  Now everyone (not) highly loaded project can afford to see what the <strong>actual</strong> download speed of its pages is for end users. <br><br> <a href="http://webo.in/my/action/counter/%3Furl%3Dwebo.in" rel="nofollow"><img src="https://habrastorage.org/getpro/habr/post_images/e16/08e/a34/e1608ea34a4dd84e9835f9bf5e1e3d7e.png" alt="Load Time Web Optimizator"></a> <br>  <em>Graph of webo.in users distribution by loading time of this site</em> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <a name="habracut"></a><br>  An example of current statistics and getting the code is organized here. <br>  <a href="http://webo.in/my/action/counter/%3Furl%3Dwebo.in" rel="nofollow">http://webo.in/my/action/counter/?url=webo.in</a> <br>  So far, everything is in enough test mode (all statistics are collected, but so far it is displayed only in general form).  To view you need to register. <br><br>  What is already there: <br>  1. Data collection :) <br>  2. Displays a graph of the distribution of the number of users by load time <br>  3. Display average load time <br>  4. Display the number of users who loaded the page up to 4 seconds, inclusive (some characteristic parameter for optimization). <br>  5. Ability to set a date range. <br>  6. The ability to display data for individual browsers and families (18 total) <br><br>  What is planned to add in just a couple of days: <br>  1. Close statistics for an individual site. <br><del>  2. Slice download time for individual browsers (now in the database of 17 major) </del><br>  3. Add any slices for the fastest / slowest pages and view statistics for individual pages. <br><br>  Several thousand hits per day for an average blog / store service will survive without difficulty.  If there are interruptions in the processing of statistics (now the logs are pushed into the database every ten minutes) - I will shake the main “heavyweights” :) For the server is not rubber. <br><br>  What issues are not resolved: <br>  1. What is the most convenient way to display a list of pages by loading time?  Page by table with the ability to sort or invented some other more convenient mode for this? <br>  2. If someone has ideas on how to track a user’s re-entry (when static can be taken from the cache) to the same page <strong>without setting a cookie</strong> , I will be grateful.  To drive a cookie to the statistics server is not very desirable. <br>  3. Yes, how to disable <code>Last-Modified</code> in nginx for the image?  Headings want to cut to a minimum. <br><br>  Naturally, any comments are welcome.  The code and available functionality can be obtained on the page. <br>  <a href="http://webo.in/my/action/counter/" rel="nofollow">http://webo.in/my/action/counter/</a> <br><br><h3>  Principle of operation </h3><br>  JavaScript adds an external image from the statistics server with the main parameters to the <code>window.onload</code> event.  window.onload only works when the <strong>entire page</strong> is loaded in the browser.  There should be no conflicts with other handlers, the code looks like this (formatted a little to improve understanding, thoughts are more fully described in a note about the <a href="http://webo.in/articles/habrahabr/61-counters-optimization/">organization of statistics counters</a> ): <br><br><blockquote><pre>  var __WEBO_UA = 0;
@@ -73,7 +73,7 @@
 			 escape (location.href) + "; 0;" +
 			 Math.random ()
 		 }, false)
- } ()); </pre></blockquote><br>  Naturally, if you want to try on the initial appearance of the page in the browser, you can hang on a slightly earlier event - the <a href="http://webo.in/articles/habrahabr/05-delayed-loading/">combined onDOMReady</a> , but this is already a matter of taste.  The current version of the counter does not affect the performance at all (more precisely, the influence is much less than almost all the current Runet counters). <br><br>  The idea is not new, but I have never seen a publicly available implementation.  In general, IMHO, this should be a handy tool for “dot” profiling of the site’s speed - the code can only be installed on one page, for example. <br><br>  As usual, I <a href="http://webo.in/my/action/counter/%3Furl%3Dwebo.in" rel="nofollow">am</a> waiting for comments and fresh ideas: <a href="http://webo.in/my/action/counter/%3Furl%3Dwebo.in" rel="nofollow">an example of output statistics for webo.in</a> <br><br>  PS I hope that the counter will not put habraeffekt :) <br></div><p>Source: <a href="https://habr.com/ru/post/44567/">https://habr.com/ru/post/44567/</a></p>
+ } ()); </pre></blockquote><br>  Naturally, if you want to try on the initial appearance of the page in the browser, you can hang on a slightly earlier event - the <a href="http://webo.in/articles/habrahabr/05-delayed-loading/">combined onDOMReady</a> , but this is already a matter of taste.  The current version of the counter does not affect the performance at all (more precisely, the influence is much less than almost all the current Runet counters). <br><br>  The idea is not new, but I have never seen a publicly available implementation.  In general, IMHO, this should be a handy tool for “dot” profiling of the site’s speed - the code can only be installed on one page, for example. <br><br>  As usual, I <a href="http://webo.in/my/action/counter/%3Furl%3Dwebo.in" rel="nofollow">am</a> waiting for comments and fresh ideas: <a href="http://webo.in/my/action/counter/%3Furl%3Dwebo.in" rel="nofollow">an example of output statistics for webo.in</a> <br><br>  PS I hope that the counter will not put habraeffekt :) <br></div><p>Source: https://habr.com/ru/post/44567/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

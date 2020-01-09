@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Parallelization of long operations</h1><div class="post__text post__text-html js-mediator-article">  I often have to deal with tasks that require a very large database performance when processing large amounts of data.  Today I will talk about a very simple but effective method that can help you out if the database is no longer keeping up with the amount of data that is accumulated and must be processed.  The method does not depend on the database, but out of habit I publish it on the PostgreSQL blog, and the example will be on it.  Let's go straight to the example. <br><a name="habracut"></a><br><h4>  Spherical horse </h4><br>  Suppose we are talking about the simplest billing (it is clear that the method is applicable not only for billing, but with it it will look quite clearly).  The table in which data on calls of subscribers is accumulated will in our case be in the following format: <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">CREATE</font> <font color="#0000ff">TABLE</font> billing.calls <br> ( <br> call_id BIGINT, <br> call_time <font color="#0000ff">TIMESTAMP</font> , <br> subscriber_id <font color="#0000ff">INTEGER</font> , <br> duration <font color="#0000ff">INTERVAL</font> <br> );</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  This is how everything is simple.  Call details are stored at this rate with insane speed, and must be charged in a reasonable time. <br><br>  For billing, we have a database function with the following signature: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">FUNCTION</font> calculate( <font color="#0000ff">IN</font> subscriber_id <font color="#0000ff">INTEGER</font> , <font color="#0000ff">IN</font> duration <font color="#0000ff">INTERVAL</font> , <font color="#0000ff">OUT</font> status_code text) <font color="#0000ff">RETURNS</font> void</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  We carry out tariffing by running once every 5 minutes the following request: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">SELECT</font> calculate(subscriber_id, duration) <font color="#0000ff">FROM</font> billing.calls;</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  And at one point, we understand that this request simply does not have time to be completed in 5 minutes.  During this time, more data is accumulated, then again, and here we sit and wait for the night, when the stream will weaken a little, and the queue will finally be raked.  Such is the perspective.  I must say that we sat and waited, not alone.  Together with us we sat 3 (for example) the remaining cores of our server, while one pored over the request.  PostgreSQL, unfortunately, does not know how to parallelize queries itself, but in our case this is not necessary.  Much better results will be given by a very simple and obvious trick.  Create an index on the function "the remainder of the subscriber_id division by 4": <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">CREATE</font> <font color="#0000ff">INDEX</font> billing.calls_subscriber_id_mod_idx <font color="#0000ff">ON</font> billing.calls <font color="#0000ff">USING</font> btree ((subscriber_id % 4));</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  And now we run in four threads (for example, four different jobs): <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">SELECT</font> calculate(subscriber_id, duration) <font color="#0000ff">FROM</font> billing.calls <font color="#0000ff">WHERE</font> subscriber_id % 4 = @mod;</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  where <a href="https://habrahabr.ru/users/mod/" class="user_link">mod</a> is 0,1,2 or 3 (for each stream its own). <br><br><h4>  As a result </h4><br>  This technique solves problems with blocking that can occur if two different threads get a call from one subscriber.  Also, in parallel, these jobs will work faster than if we had hoped for the parallelization of the database itself (if we do not postgame, but oracle, for example). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The method is applicable to any database supporting an index by function (Oracle, Postgresql).  In the case of MSSQL, you can create a calculated column and an index on it.  MySQL does not support functional indexes, but, as a workaround, you can create a new column with an index on it, and update it with a trigger. </div><p>Source: <a href="https://habr.com/ru/post/76309/">https://habr.com/ru/post/76309/</a></p>
+      The method is applicable to any database supporting an index by function (Oracle, Postgresql).  In the case of MSSQL, you can create a calculated column and an index on it.  MySQL does not support functional indexes, but, as a workaround, you can create a new column with an index on it, and update it with a trigger. </div><p>Source: https://habr.com/ru/post/76309/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../76303/index.html">Mobile Technology Conference November 27 in Minsk. Program</a></li>
 <li><a href="../76304/index.html">The problem of the removal of customers by employees of the company</a></li>
 <li><a href="../76305/index.html">Find good people</a></li>
+<li><a href="../7631/index.html">Web 2.0 for raising babies</a></li>
 <li><a href="../76311/index.html">Search on a site based on Yandex.XML</a></li>
 <li><a href="../76313/index.html">PR fail</a></li>
 <li><a href="../76314/index.html">Half a year with iPhone</a></li>
 <li><a href="../76315/index.html">nginx, once again about caching</a></li>
-<li><a href="../76316/index.html">KOffice 2.1 - Release</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -30,12 +30,12 @@ $result = file_get_contents("http://geocode-map...">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -57,7 +57,7 @@ $result = file_get_contents("http://geocode-map...">
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>HttpRequest - a library for easy work with the HTTP protocol</h1><div class="post__text post__text-html js-mediator-article">  <a href="http-request">https://github.com/Garik-/http-request</a> <br><br>  Very often in the code you can find the following lines: <br><br><pre><code class="php hljs">$result = file_get_contents(<span class="hljs-string"><span class="hljs-string">"http://geocode-maps.yandex.ru/1.x/?geocode="</span></span>.urlencode(<span class="hljs-string"><span class="hljs-string">""</span></span>)); $handle = fopen(<span class="hljs-string"><span class="hljs-string">"http://www.example.com/"</span></span>, <span class="hljs-string"><span class="hljs-string">"rb"</span></span>); $result = fgets($handle);</code> </pre> <br><ul><li>  It does not matter to the person that the <a href="http://www.php.net/manual/ru/filesystem.configuration.php">allow_url_fopen</a> directive can be disabled on the server. </li><li>  It does not matter that the cURL library is installed on the server, which easily downloads a 100 MB file. </li><li>  No matter what answer the server returns, 200, 301, maybe 404, maybe 502? </li><li>  It does not matter that the network is not an ideal environment and the answer may come in part or it will not be at all for a long time.  The script will simply hang on waiting indefinitely or return an incorrect result. </li></ul><br><pre> <code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">try</span></span> { $http = HttpRequest::get(<span class="hljs-string"><span class="hljs-string">"http://geocode-maps.yandex.ru/1.x/?format=json"</span></span>,<span class="hljs-keyword"><span class="hljs-keyword">array</span></span>(<span class="hljs-string"><span class="hljs-string">"geocode"</span></span>=&gt;$city))-&gt;acceptJson(); $json = $http-&gt;ok() ? json_decode($http-&gt;body()) : <span class="hljs-keyword"><span class="hljs-keyword">null</span></span>; } <span class="hljs-keyword"><span class="hljs-keyword">catch</span></span> (HttpRequestException $e) { <span class="hljs-keyword"><span class="hljs-keyword">exit</span></span>($e-&gt;getMessage()); }</code> </pre><br>  Now it really does not matter. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -65,23 +65,23 @@ $result = file_get_contents("http://geocode-map...">
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The Http Request library is based on <a href="http-request/">the Kevin Sawicki library of the same name</a> , which should be well known to Android developers, since GitHub itself uses it in its application. <a name="habracut"></a><br><br><h5>  Small examples </h5><br><h6>  Submitting a form using the POST method with its own headers </h6><br><pre> <code class="php hljs">$http = HttpRequest::post(<span class="hljs-string"><span class="hljs-string">"http://example.com/"</span></span>)-&gt;form( <span class="hljs-keyword"><span class="hljs-keyword">array</span></span>( <span class="hljs-string"><span class="hljs-string">"param1"</span></span> =&gt; <span class="hljs-string"><span class="hljs-string">"value"</span></span>, <span class="hljs-string"><span class="hljs-string">"param2"</span></span> =&gt; <span class="hljs-string"><span class="hljs-string">"value"</span></span>, <span class="hljs-string"><span class="hljs-string">"file"</span></span> =&gt; <span class="hljs-string"><span class="hljs-string">"@/home/vasya/attach.txt"</span></span> )) -&gt;header(HttpRequest::HEADER_USER_AGENT, <span class="hljs-string"><span class="hljs-string">"Opera/9.60 (J2ME/MIDP; Opera Mini/4.2.14912/812; U; ru)"</span></span>) -&gt;header(HttpRequest::HEADER_REFERER,<span class="hljs-string"><span class="hljs-string">"http://google.com"</span></span>);</code> </pre><br><h6>  Sending a file using the PUT method </h6><br><pre> <code class="php hljs">$http = HttpRequest::put(<span class="hljs-string"><span class="hljs-string">"http://example.com/"</span></span>)-&gt;upload(<span class="hljs-string"><span class="hljs-string">"/home/vasja/attach.txt"</span></span>);</code> </pre><br><h6>  Display all server response headers </h6><br><pre> <code class="php hljs">print_r(HttpRequest::head(<span class="hljs-string"><span class="hljs-string">"http://example.com"</span></span>)-&gt;headers());</code> </pre><br><h6>  File upload from server </h6><br><pre> <code class="php hljs">$image=fopen(<span class="hljs-string"><span class="hljs-string">'image.jpg'</span></span>,<span class="hljs-string"><span class="hljs-string">'wb'</span></span>); $loaded=HttpRequest::get(<span class="hljs-string"><span class="hljs-string">"http://example.com/file.jpg"</span></span>)-&gt;receive($image)-&gt;ok(); <span class="hljs-comment"><span class="hljs-comment">// boolean</span></span></code> </pre><br>  The library includes only 3 files, and can be a good alternative to monstrous frameworks for your own projects. </div><p>Source: <a href="https://habr.com/ru/post/187164/">https://habr.com/ru/post/187164/</a></p>
+      The Http Request library is based on <a href="http-request/">the Kevin Sawicki library of the same name</a> , which should be well known to Android developers, since GitHub itself uses it in its application. <a name="habracut"></a><br><br><h5>  Small examples </h5><br><h6>  Submitting a form using the POST method with its own headers </h6><br><pre> <code class="php hljs">$http = HttpRequest::post(<span class="hljs-string"><span class="hljs-string">"http://example.com/"</span></span>)-&gt;form( <span class="hljs-keyword"><span class="hljs-keyword">array</span></span>( <span class="hljs-string"><span class="hljs-string">"param1"</span></span> =&gt; <span class="hljs-string"><span class="hljs-string">"value"</span></span>, <span class="hljs-string"><span class="hljs-string">"param2"</span></span> =&gt; <span class="hljs-string"><span class="hljs-string">"value"</span></span>, <span class="hljs-string"><span class="hljs-string">"file"</span></span> =&gt; <span class="hljs-string"><span class="hljs-string">"@/home/vasya/attach.txt"</span></span> )) -&gt;header(HttpRequest::HEADER_USER_AGENT, <span class="hljs-string"><span class="hljs-string">"Opera/9.60 (J2ME/MIDP; Opera Mini/4.2.14912/812; U; ru)"</span></span>) -&gt;header(HttpRequest::HEADER_REFERER,<span class="hljs-string"><span class="hljs-string">"http://google.com"</span></span>);</code> </pre><br><h6>  Sending a file using the PUT method </h6><br><pre> <code class="php hljs">$http = HttpRequest::put(<span class="hljs-string"><span class="hljs-string">"http://example.com/"</span></span>)-&gt;upload(<span class="hljs-string"><span class="hljs-string">"/home/vasja/attach.txt"</span></span>);</code> </pre><br><h6>  Display all server response headers </h6><br><pre> <code class="php hljs">print_r(HttpRequest::head(<span class="hljs-string"><span class="hljs-string">"http://example.com"</span></span>)-&gt;headers());</code> </pre><br><h6>  File upload from server </h6><br><pre> <code class="php hljs">$image=fopen(<span class="hljs-string"><span class="hljs-string">'image.jpg'</span></span>,<span class="hljs-string"><span class="hljs-string">'wb'</span></span>); $loaded=HttpRequest::get(<span class="hljs-string"><span class="hljs-string">"http://example.com/file.jpg"</span></span>)-&gt;receive($image)-&gt;ok(); <span class="hljs-comment"><span class="hljs-comment">// boolean</span></span></code> </pre><br>  The library includes only 3 files, and can be a good alternative to monstrous frameworks for your own projects. </div><p>Source: https://habr.com/ru/post/187164/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../187148/index.html">Comparison of two GPS Data Loggers</a></li>
-<li><a href="../187152/index.html">Newcomer</a></li>
 <li><a href="../187154/index.html">Spaghetti article about spaghetti code</a></li>
+<li><a href="../187156/index.html">Product strategy implies the answer - “No!”</a></li>
 <li><a href="../187158/index.html">Russian Open Quadcopter Championship</a></li>
+<li><a href="../18716/index.html">Apple QuickTime, iTunes, Safari for Windows, what next?</a></li>
 <li><a href="../187162/index.html">Just5 Brick Presentation: How I Met Thomofon + Answers to Habroid Questions</a></li>
 <li><a href="../187166/index.html">Sound transmission through pictures in social networks</a></li>
 <li><a href="../187168/index.html">Small office scan optimization</a></li>
+<li><a href="../18717/index.html">Macworld: live</a></li>
 <li><a href="../187170/index.html">Sony is preparing a camera that connects to the smartphone</a></li>
 <li><a href="../187172/index.html">Simple Inter-Process Communication in C #</a></li>
-<li><a href="../187176/index.html">Map with projections from Proj4js to Canvas</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

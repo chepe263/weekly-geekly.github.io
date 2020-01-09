@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Improving border-radius.htc</h1><div class="post__text post__text-html js-mediator-article"> I think many layout designers know the solution that makes IE draw rounded corners: " <a href="http://code.google.com/p/curved-corner/">curved-corner</a> " (or border-radius.htc). <br><br>  In this article I will tell you how to get rid of “Invalid argument” errors when using it, and also how to speed up its work at times. <br><a name="habracut"></a><br>  In one project where this method was applied, in IE 7 windows crashed with the following error: <br><br><img src="https://habrastorage.org/storage/habraeffect/fe/ad/fead6b966b88569a4c267fcc3635682a.gif">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      It appeared exactly in border-radius.htc and this is what caused it: <br><br> <code>var css = el.document.createStyleSheet();</code> <br> <br>  <a href="http://www.spravkaweb.ru/css/reference/methods/createstylesheet/">It</a> <code>createStyleSheet</code> <a href="http://www.spravkaweb.ru/css/reference/methods/createstylesheet/">out</a> that using the <code>createStyleSheet</code> method, <code>createStyleSheet</code> can add up to 31 style sheets.  After this value will be displayed error Invalid Argument. <br><br>  Opening the DebugBar, I saw the following: <br><br><img src="https://habrastorage.org/storage/habraeffect/39/05/3905ed32a371d20c774eaa743d0b15cc.gif"><br><br>  &lt;Built-in style sheet&gt; is the style sheet created by the script.  And there were about 38 of them and they all contained the same code. <br><br> <code>v\:roundrect { <br> BEHAVIOR: url(#default#VML) <br> } <br> v\:fill { <br> BEHAVIOR: url(#default#VML) <br> }</code> <br> <br>  Hence the obvious solution: we simply paste this code into a css-file, which we connect via Conditional comments only for IE.  And in border-radius.htc, we delete (or comment on) these 3 lines: <br><br> <code>var css = el.document.createStyleSheet(); <br> css.addRule("v\\:roundrect", "behavior: url(#default#VML)"); <br> css.addRule("v\\:fill", "behavior: url(#default#VML)");</code> <br> <br>  As a result, Invalid Argument errors disappeared and the site loading time in IE decreased, since  no longer need to generate 38 style sheets. <br><br>  Profit! </div><p>Source: <a href="https://habr.com/ru/post/102904/">https://habr.com/ru/post/102904/</a></p>
+      It appeared exactly in border-radius.htc and this is what caused it: <br><br> <code>var css = el.document.createStyleSheet();</code> <br> <br>  <a href="http://www.spravkaweb.ru/css/reference/methods/createstylesheet/">It</a> <code>createStyleSheet</code> <a href="http://www.spravkaweb.ru/css/reference/methods/createstylesheet/">out</a> that using the <code>createStyleSheet</code> method, <code>createStyleSheet</code> can add up to 31 style sheets.  After this value will be displayed error Invalid Argument. <br><br>  Opening the DebugBar, I saw the following: <br><br><img src="https://habrastorage.org/storage/habraeffect/39/05/3905ed32a371d20c774eaa743d0b15cc.gif"><br><br>  &lt;Built-in style sheet&gt; is the style sheet created by the script.  And there were about 38 of them and they all contained the same code. <br><br> <code>v\:roundrect { <br> BEHAVIOR: url(#default#VML) <br> } <br> v\:fill { <br> BEHAVIOR: url(#default#VML) <br> }</code> <br> <br>  Hence the obvious solution: we simply paste this code into a css-file, which we connect via Conditional comments only for IE.  And in border-radius.htc, we delete (or comment on) these 3 lines: <br><br> <code>var css = el.document.createStyleSheet(); <br> css.addRule("v\\:roundrect", "behavior: url(#default#VML)"); <br> css.addRule("v\\:fill", "behavior: url(#default#VML)");</code> <br> <br>  As a result, Invalid Argument errors disappeared and the site loading time in IE decreased, since  no longer need to generate 38 style sheets. <br><br>  Profit! </div><p>Source: https://habr.com/ru/post/102904/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

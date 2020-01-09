@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Reverse engineering integer division by constant</h1><div class="post__text post__text-html js-mediator-article">  So it happens that sometimes you reverse the code that deals with some kind of routine that does not involve any serious calculations and then suddenly multiply by a large constant (cry that there is no asylum highlighter for Habré): <br><br><pre><code class="dos hljs">mov edx, [ebp+end_of_buffer] mov eax, [ebp+src] mov ecx, edx sub ecx, eax mov edx, <span class="hljs-number"><span class="hljs-number">80808081</span></span>h mov eax, ecx imul edx lea eax, [edx+ecx] mov edx, eax sar edx, <span class="hljs-number"><span class="hljs-number">7</span></span> mov eax, ecx sar eax, <span class="hljs-number"><span class="hljs-number">1</span></span>Fh sub edx, eax mov eax, edx</code> </pre> <br><a name="habracut"></a><br>  For those who do not know x86 assembler, I will explain: <br><br><pre> <code class="dos hljs">mov edx, [ebp+end_of_buffer] mov eax, [ebp+src] mov ecx, edx sub ecx, eax ; ecx =   mov edx, <span class="hljs-number"><span class="hljs-number">80808081</span></span>h ; edx = -<span class="hljs-number"><span class="hljs-number">2</span></span> <span class="hljs-number"><span class="hljs-number">139</span></span> <span class="hljs-number"><span class="hljs-number">062</span></span> <span class="hljs-number"><span class="hljs-number">143</span></span> mov eax, ecx ; eax = ecx imul edx ;   eax*edx ;    edx:eax</code> </pre><br>  At first glance, this is surprising, especially for a beginner, but my goal is not to puzzle, but to explain, therefore I reveal the cards: this is how the integer division by constant is optimized.  Yes Yes.  Integer division by a previously known Kostant can be replaced by integer multiplication by another constant and by processing the result with a file.  This will be faster, since the multiplication takes place somewhere around five processor cycles, and the division is about 25. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I wasn’t banned in Google, but I didn’t find how to find the original divider, but I found several optimization guides telling how to calculate the multiplier for such a replacement.  However, it was reported in the form of a ready-made algorithm, with no explanation behind the mathematics behind it. <br><br>  The math associated with the possibility of such a replacement is to replace the divisor b by the inverse number 1 / b and multiply by it.  But what if we deal with integer arithmetic and 1 / b will be rounded to zero whenever b&gt; 1?  Very simple: to do this, you need to represent the number 1 / b as a number with a fixed point.  In this case, the integer part of the number will always be zero, and the zeros after the point are dropped to the first unit.  The number of zeroes thrown away is remembered in order to make later acc.  shift. <br><br>  So.  How to understand what constant division occurs in the source code?  Perform the inverse operation: translate a binary number with a fixed point in decimal format: <br>  0x80808081 = 2 ^ (- 1) + 2 ^ (- 9) + 2 ^ (- 17) + 2 ^ (- 25) + 2 ^ (- 31) = A <br>  We get the inverse number B = 1 / A. <br><br>  Further in the listing we see that there is a shift to the right by 7 digits: <br><br><pre> <code class="dos hljs">sar edx, <span class="hljs-number"><span class="hljs-number">7</span></span></code> </pre><br>  This is compensation for discarding leading zeros.  It corresponds to division by 2 ^ 7 degrees, that is, by 128. We do the inverse operation: <br><br>  X = B * 128 ~ 255. <br><br>  But you can solve it differently: <br>  X ~ 1 / (2 ^ (- 1 - 7) + 2 ^ (- 9 - 7) + 2 ^ (- 17 - 7) + 2 ^ (- 25 - 7) + 2 ^ (- 31 - 7)) <br><br>  Rounding in this case is not terrible, since integer division is also performed with rounding. <br><br>  Thus, in my case, the authors divided the buffer size by 255. <br><br>  PS: In this case, the study of the driver of one closed USB-glands was performed.  No copy protection program was harmed. </div><p>Source: <a href="https://habr.com/ru/post/256827/">https://habr.com/ru/post/256827/</a></p>
+      I wasn’t banned in Google, but I didn’t find how to find the original divider, but I found several optimization guides telling how to calculate the multiplier for such a replacement.  However, it was reported in the form of a ready-made algorithm, with no explanation behind the mathematics behind it. <br><br>  The math associated with the possibility of such a replacement is to replace the divisor b by the inverse number 1 / b and multiply by it.  But what if we deal with integer arithmetic and 1 / b will be rounded to zero whenever b&gt; 1?  Very simple: to do this, you need to represent the number 1 / b as a number with a fixed point.  In this case, the integer part of the number will always be zero, and the zeros after the point are dropped to the first unit.  The number of zeroes thrown away is remembered in order to make later acc.  shift. <br><br>  So.  How to understand what constant division occurs in the source code?  Perform the inverse operation: translate a binary number with a fixed point in decimal format: <br>  0x80808081 = 2 ^ (- 1) + 2 ^ (- 9) + 2 ^ (- 17) + 2 ^ (- 25) + 2 ^ (- 31) = A <br>  We get the inverse number B = 1 / A. <br><br>  Further in the listing we see that there is a shift to the right by 7 digits: <br><br><pre> <code class="dos hljs">sar edx, <span class="hljs-number"><span class="hljs-number">7</span></span></code> </pre><br>  This is compensation for discarding leading zeros.  It corresponds to division by 2 ^ 7 degrees, that is, by 128. We do the inverse operation: <br><br>  X = B * 128 ~ 255. <br><br>  But you can solve it differently: <br>  X ~ 1 / (2 ^ (- 1 - 7) + 2 ^ (- 9 - 7) + 2 ^ (- 17 - 7) + 2 ^ (- 25 - 7) + 2 ^ (- 31 - 7)) <br><br>  Rounding in this case is not terrible, since integer division is also performed with rounding. <br><br>  Thus, in my case, the authors divided the buffer size by 255. <br><br>  PS: In this case, the study of the driver of one closed USB-glands was performed.  No copy protection program was harmed. </div><p>Source: https://habr.com/ru/post/256827/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../256817/index.html">Native Script. One code for all platforms</a></li>
 <li><a href="../256819/index.html">Interesting notes on C # and CLR</a></li>
+<li><a href="../25682/index.html">Some news from the world of Pixar</a></li>
 <li><a href="../256821/index.html">How IQueryable and LINQ Data Providers Work</a></li>
 <li><a href="../256823/index.html">Features of conceptual domain modeling</a></li>
 <li><a href="../256825/index.html">What prepares us for C # 7 (Part 1. Tuples)</a></li>
 <li><a href="../256829/index.html">Features of the introduction of DLL and installation of hooks in Modern-applications Windows 8/10</a></li>
+<li><a href="../25683/index.html">Eclipse hotkeys</a></li>
 <li><a href="../256831/index.html">As we thought out the designer for children's robotics. #one</a></li>
 <li><a href="../256835/index.html">Fans of Chinese pioneers</a></li>
 <li><a href="../256839/index.html">Remote control of lighting on standard wiring</a></li>
-<li><a href="../256841/index.html">The Telecommunications Regulatory Authority of India (TRAI) leaked more than 2 million email addresses; revenge on Anonymous India</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

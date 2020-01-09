@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>MySQL optimization</h1><div class="post__text post__text-html js-mediator-article">  It's no secret that working with a database takes up most of the work of almost any site.  And it is the work with the database that most often is the bottleneck of web applications. <br>  In this article I would like to give practical advice on the use of MySQL. <br>  Immediately make a reservation: <br><ul><li>  This article is written about MySQL, although common things are likely to be true for any DBMS. </li><li>  Everything written in the article is my personal point of view, and is not the ultimate truth. </li><li>  The councils do not claim to be new and are the result of a synthesis of read literature and personal experience. <br></li><li>  In this article, I will not deal with MySQL configuration issues. </li></ul><br>  Problems using MySQL can be divided into the following three groups (in order of importance): <br><ol><li>  Non-use or misuse of indexes. </li><li>  Incorrect database structure. </li><li>  Incorrect \ non-optimal SQL queries. </li></ol><br>  Let us dwell on each of these groups in more detail. <a name="habracut"></a><br><br>  The use of indexes. <br>  Non-use or misuse of indexes is what most often slows down queries.  For those who are not familiar with the mechanism of the index or have not read about it in the manual, I strongly advise you to <a title="chapter from manual" href="http://dev.mysql.com/doc/refman/5.1/en/mysql-indexes.html">read</a> . <br>  Tips for using indexes: <br><ul><li>  No need to index everything.  Quite often, without understanding the meaning, people simply index all the fields in the table.  Indexes speed sampling, but slow down inserts and row updates, so the choice of each index should be meaningful. </li><li>  One of the main parameters characterizing the index is selectivity - the number of different elements in the index.  It makes no sense to index the field in which two or three possible values.  The benefits of such an index will be small. </li><li>  The choice of indexes should begin with an analysis of all queries to this table.  Very often, after such an analysis, instead of three or four indices, it is possible to make one composite. <br></li><li>  When using composite indices, the order of the fields in the index is decisive. <br></li><li>  Do not forget about covering indexes.  If all the data in the query can be obtained from the index, then MySQL will not access the table directly.  Such requests will be executed very quickly.  For example, for a SELECT name query FROM user WHERE login = “test”, if there is an index (login, name), no access to the table is required.  Sometimes it makes sense to add an additional field to the composite index, which will make the index cover and speed up queries. </li><li>  For row indices, it is often sufficient to index only a portion of the row.  This can significantly reduce the size of the index. <br></li><li>  If% is at the beginning of the LIKE (SELECT * FROM table WHERE field LIKE '% test') indexes will not be used. </li><li>  The FULLTEXT index is used only with the MATCH ... AGAINST syntax. </li></ul><br>  DB structure. <br>  Competently designed database - a pledge of fast and efficient work with the base.  On the other hand, a badly designed database is always a headache for developers. <br>  Database Design Tips: <br><ul><li>  Use the lowest possible data types.  The larger the data type, the larger the table, the more disk accesses are needed to retrieve data.  Use a very convenient procedure: SELECT * FROM table_name PROCEDURE ANALYSE ();  to determine the lowest possible data types. <br></li><li>  At the design stage, follow normal forms.  Often, programmers resort to denormalization already at this stage.  However, in most cases at the beginning of the project it is far from obvious what this can lead to.  Denormalizing a table is much easier than suffering from a suboptimally denormalized table.  Yes, and sometimes the JOIN works faster than incorrectly denormalized tables. <br></li><li>  Do not use NULL columns unless you consciously need them. </li></ul>  SQL queries. <br><ul><li>  Avoid querying in a loop.  SQL is a language of sets and the writing of queries must be approached not by the language of functions, but by the language of sets. </li><li>  Avoid * (asterisks) in queries.  Do not be lazy to list exactly the fields that you choose.  This will reduce the number of selectable and forwarding data.  In addition, do not forget about covering indexes.  Even if you really select all the fields in the table, it is better to list them.  First, it improves the readability of the code.  When using asterisks, it is impossible to find out which fields are in the table without looking into it.  Secondly, today there are five INT columns in your table, and in a month one more TEXT and BLOB was added, and the asterisk was, as it was, and remained. </li><li>  For paged selection, use SQL_CALC_FOUND_ROWS and SELECT FOUND_ROWS () to get the total number of records;  When using SQL_CALC_FOUND_ROWS, MySQL caches the selected number of rows (before using LIMIT) and with SELECT FOUND_ROWS () only returns this cached value without having to re-execute the query. </li><li>  Don't forget that INSERT has syntax for multiple inserts.  One query will be executed an order of magnitude faster than multiple queries in a loop. </li><li>  Use LIMIT where you don't need all the data. <br></li><li>  Use INSERT ... ON DUPLICATE KEY UPDATE ... instead of selecting and INSERT or UPDATE after it, and often instead of REPLACE. <br></li><li>  Do not forget about the great function GROUP_CONCAT.  She can help out with complex queries. </li></ul><br><br></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/20246/">https://habr.com/ru/post/20246/</a></p>
+    <p>Source: https://habr.com/ru/post/20246/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

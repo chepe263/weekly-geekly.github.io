@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Linq-To-Sql - some experience or “a few words about long sessions”</h1><div class="post__text post__text-html js-mediator-article">  I want to tell a little about Linq-To-Sql to those who have not yet used it, but there are ideas to use in future projects (and I can also hear some comments about how you can still work with it).  So to say - a few words about how you need to develop an application architecture to use DLinq painlessly. <br>  I had a little experience with the NHiber ORM system before exploring Linq-To-Sql, so I’m imagining what a complete ORM should look like.  At once I will say that Linq-To-Sql is not a full-fledged ORM, but rather just a representation in objects of table entries.  You can make objects as they please (not similar in their essence to mappin database objects), and it will be necessary to proceed just from the relational structure (with some reservations). <br>  So, I think everyone knows how to work with DLinq.  If we have a ModelDataContext model created with Entities objects, here’s an example of loading an object <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">using</font> (ModelDataContext dataContext = <font color="#0000ff">new</font> ModelDataContext()) <br> { <br> <font color="#0000ff">Entity</font></font> <font>obj</font> <font color="black">= ( <font color="#0000ff">from</font> e <font color="#0000ff">in</font> dataContext.Entities <br> <font color="#0000ff">where</font> e.EntityID = 10 <br> <font color="#0000ff">select</font> e).FirstOrDefault(); <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote>  Then we work with the obj object, and at some point we need to save the changed data.  How to do it?  In full-fledged ORM systems, it is possible to use the Detach and Attach methods, their meaning is simple, we detach the object from the first DataContext and twist it to another.  In DLinq, there is an Attach method, but there is no Detach, which is why we have to load the object again in the ModelDataContext and expose the changes to it (for each property, so to speak).  Maybe there is another option: to clone an object, then it will not depend on the previous ModelDataContext, BUT, then if this object has links to other objects, then you will also need to do something with them. <br>  You can do differently.  Work with long sessions - open ModelDataContext to a task, for example: loading, displaying an object, and saving it, and only then call Dispose on the ModelDataContext.  This method frees us from repeated loadings of the object.  But other difficulties will arise - if the life of the ModelDataContext continues to grow, say you will now keep open the ModelDataContext to load the list of objects, select one of the objects, edit one of the objects, add, delete, then in case you have errors in the database (for example, it is impossible to delete, because it is referred to), then you will need to: delete those objects (call DeleteOnSubmit (entity)) that you tried to add (InsertOnSubmit (entity)) from the ModelDataContext, also add those objects that you tried to update Well, and Refresh-it object  s who just wanted to upgrade.  In general, it is strange, why the standard Rollback method was not done in DLinq, everything seems to be transparent. <br>  The choice of the way in which you will use DLinq in your project depends only on you and on your project.  If there are any other methods of working with Linq-To-Sql, I will listen and take note with pleasure. <br><br></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/58666/">https://habr.com/ru/post/58666/</a></p>
+    <p>Source: https://habr.com/ru/post/58666/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Installing Mercurial Server and Using SSH Authorization</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/4a7/ed2/725/4a7ed272599c40c280da72051d44a647.png" align="left">  A few days ago, I was assigned the task of raising a mercurial repository on one of the local machines, and set one condition - mandatory authorization via SSH.  Installation will be performed using the Mercurial Server on a 64-bit server Ubunt. <br><a name="habracut"></a><br><h4>  Installing Mercurial Server </h4><br>  The first thing that came to mind was the installation from the repositories.  Updating packages and running the command: <br><pre><code class="bash hljs">apt-get install -y mercurial-server</code> </pre> <br>  I found that version 1.0.1-1 was installed, which is not the latest. <br>  A deb-package with version 1.2-1 was found on the <a href="http://www.lshift.net/mercurial-server.html">official website</a> , which was installed by the command <br><pre> <code class="bash hljs">dpkg -i mercurial-server_1.2-1_all.deb</code> </pre> <br><br><h4>  Setting up SSH for key authentication </h4><br>  Because  I wanted all the keys of users who have access to the server via ssh to be stored in one place, then the following line was added to the <b>/ etc / ssh / sshd_config</b> file: <br> <code>AuthorizedKeysFile /etc/ssh/keys/%u.pub</code> <br>  It means that the key files should be stored in the <b>/ etc / ssh / keys /</b> folder and look like <b>username.pub</b> <br><br><h4>  Configuring Mercurial Server </h4><br>  Mercurial Server configs home directory is located in <b>/ var / lib / mercurial-server</b> .  We are interested in the <b>.mercurial-server</b> file, which is where the main server configuration is stored.  There you can change the paths to repositories, directories with public keys, etc. Because  my repositories are moved to another disk, then I changed the <b>repos</b> variable accordingly. <br>  Users are divided into two groups: <b>root</b> (have full rights to all repositories, including the creation) and <b>users</b> (have the right to pull and push). <br>  The keys of the users who should have access to the server should be placed in the <b>/ etc / mercurial-server / keys / users</b> folder, and the keys of the administrators should be placed <b>/ etc / mercurial-server / keys / root</b> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  Hgadmin special repository </h5><br>  After the server is installed, the hgadmin service repository is automatically created in which you can store user and administrator keys.  This is very convenient, because  There is no need to manually upload user keys. <br>  The structure is exactly the same as in the system, i.e.  The keys are stored in <b>/ hgadmin / keys / users</b> and <b>/ hgadmin / keys / root</b> for users and administrators, respectively. <br>  You can also store the <b>access.conf</b> file <b>,</b> which is responsible for user access rights. <br><br><h4>  Final setting </h4><br>  Since the default hg user access keys are stored in <b>~ / .ssh / authorized_keys,</b> we need to create a symbolic link in the <b>/ etc / ssh / keys /</b> directory.  To do this, run the command: <br><pre> <code class="bash hljs"> ln -s /var/lib/mercurial-server/.ssh/authorized_keys /etc/ssh/keys/hg.pub</code> </pre> <br><br>  After we put the key in / etc / mercurial-server / keys, you need to update the access rights, for this you need to run the following command: <br><pre> <code class="bash hljs">sudo -u hg /usr/share/mercurial-server/refresh-auth</code> </pre> <br>  <i>If keys were added using hgadmin, then the changes take effect automatically.</i> <br><br><h4>  Accessing the repository with TortoiseHg </h4><br>  The first step is to download Pageant, it will transfer a private key to TortoiseHg if necessary.  For convenience, I wrote bat'nik, which starts at system startup.  Its meaning is to add a private key to Pageant. <br> <code>start pageant.exe node.ppk</code> <br> <br>  After starting pageant, all that remains is to clone the repository. <br>  We clone the special hgadmin repository with the command: <br> <code>hg clone ssh://hg@server/hgadmin</code> <br> <br>  You can create a new repository with the command: <br> <code>hg init ssh://hg@server/myrep</code> <br> <br><h4>  useful links </h4><ul><li>  <a href="http://www.lshift.net/mercurial-server.html">The official website of the Mercurial Server</a> </li><li>  <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY official website</a> </li></ul></div><p>Source: <a href="https://habr.com/ru/post/140347/">https://habr.com/ru/post/140347/</a></p>
+    <h5>  Hgadmin special repository </h5><br>  After the server is installed, the hgadmin service repository is automatically created in which you can store user and administrator keys.  This is very convenient, because  There is no need to manually upload user keys. <br>  The structure is exactly the same as in the system, i.e.  The keys are stored in <b>/ hgadmin / keys / users</b> and <b>/ hgadmin / keys / root</b> for users and administrators, respectively. <br>  You can also store the <b>access.conf</b> file <b>,</b> which is responsible for user access rights. <br><br><h4>  Final setting </h4><br>  Since the default hg user access keys are stored in <b>~ / .ssh / authorized_keys,</b> we need to create a symbolic link in the <b>/ etc / ssh / keys /</b> directory.  To do this, run the command: <br><pre> <code class="bash hljs"> ln -s /var/lib/mercurial-server/.ssh/authorized_keys /etc/ssh/keys/hg.pub</code> </pre> <br><br>  After we put the key in / etc / mercurial-server / keys, you need to update the access rights, for this you need to run the following command: <br><pre> <code class="bash hljs">sudo -u hg /usr/share/mercurial-server/refresh-auth</code> </pre> <br>  <i>If keys were added using hgadmin, then the changes take effect automatically.</i> <br><br><h4>  Accessing the repository with TortoiseHg </h4><br>  The first step is to download Pageant, it will transfer a private key to TortoiseHg if necessary.  For convenience, I wrote bat'nik, which starts at system startup.  Its meaning is to add a private key to Pageant. <br> <code>start pageant.exe node.ppk</code> <br> <br>  After starting pageant, all that remains is to clone the repository. <br>  We clone the special hgadmin repository with the command: <br> <code>hg clone ssh://hg@server/hgadmin</code> <br> <br>  You can create a new repository with the command: <br> <code>hg init ssh://hg@server/myrep</code> <br> <br><h4>  useful links </h4><ul><li>  <a href="http://www.lshift.net/mercurial-server.html">The official website of the Mercurial Server</a> </li><li>  <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY official website</a> </li></ul></div><p>Source: https://habr.com/ru/post/140347/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../140338/index.html">cache-js. caching function</a></li>
+<li><a href="../140339/index.html">Writing compiler LALR (1) -parser. LR Generator Description</a></li>
 <li><a href="../140340/index.html">Overview of the router NETGEAR WNDR3800</a></li>
 <li><a href="../140344/index.html">What is travis-ci.org and what is it eaten with?</a></li>
 <li><a href="../140345/index.html">Notification of unread incoming letter using Yoctupuce-Demo</a></li>
 <li><a href="../140346/index.html">Blog-based social network XenForo</a></li>
 <li><a href="../140348/index.html">Car super-watch</a></li>
 <li><a href="../140349/index.html">Broker Factor Revealed</a></li>
+<li><a href="../14035/index.html">Snake cursor</a></li>
 <li><a href="../140350/index.html">Development: proper timing</a></li>
 <li><a href="../140351/index.html">"Autoswitch layouts" in php-applications</a></li>
-<li><a href="../140352/index.html">We disassemble xlsx in PHP without ready libraries</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

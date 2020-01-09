@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>SSH VPN over Internet (SSH tun tunneling)</h1><div class="post__text post__text-html js-mediator-article"> There was a need to organize a tunnel between your work computer and the home server, with the subsequent transport of all work traffic through the home server to the Internet. <br><br>  To solve this problem, the best technology is Vitual Private Network (VPN).  But with what help to implement this technology? <br>  - I chose SSH. <br>  The fact is that OpenSSH since version 4.3 supports tun tunneling.  I took advantage of this ... <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Schematically it will look like this: <br><br><img src="https://habrastorage.org/storage3/0b4/902/32f/0b490232f7eff5e98e3094cb86047e15.jpg"><br><br>  First you need to install OpenSSH on the server.  I have Ubuntu Server, and I do it like this: <br><br> <code>sudo aptitude install openssh-server <br></code> <br>  Although, most likely, it is already installed.  I have - exactly installed;) <br><br>  Take a look at a more detailed scheme, and discuss it. <br><br><img src="https://habrastorage.org/storage3/888/4d8/238/8884d8238e0c6bffc3cd232551652187.png"><br><br>  As can be seen from the figure, the work computer has IP 172.16.0.1 with a mask of 255.255.255.0 and a default gateway of 172.16.0.254, and IP 8.8.8.8 is specified as the DNS <br><br> <code> Work: <br> IP address: 172.16.0.1 <br> Netmask: 255.255.255.0 <br> Default Gateway: 172.16.0.254 <br> DNS: 8.8.8.8 <br></code> <br>  Client routing table (Work): <br><br><pre>   172.16.0.0 0.0.0.0 255.255.255.0 U 1 0 0 eth0
@@ -78,20 +78,20 @@
      172.16.0.0 0.0.0.0 255.255.255.0 U 1 0 0 eth0
      169.254.0.0 0.0.0.0 255.255.0.0 U 1000 0 0 eth0
      0.0.0.0 10.0.0.1 0.0.0.0 UG 0 0 0 tun0
-</pre><br>  Now all traffic that goes to unknown subnets, and all unknowns, except addresses 8.8.8.8 and 74.125.87.104, goes through 10.0.0.1, that is, through an <b>encrypted</b> SSH tunnel.  But the server does not do anything with it, traffic.  Because you need to configure NAT for the client.  To do this, add a rule to iptables <br> <code><br> iptables -t nat -A POSTROUTING -s 10.0.0.2 -j MASQUERADE <br></code> <br>  Enable ip forward-ing in the kernel <br> <code><br> sysctl -w net.ipv4.ip_forward=1 <br></code> <br>  Do not forget to make it so that it turns on when the system boots ... <br> <code><br> mcedit /etc/sysctl.conf <br></code> <br><h6>  PS&gt; mcedit is a text editor.  You can use any other. </h6><br>  We find the commented line <code>net.ipv4.ip_forward=1</code> and uncomment it. <br><br>  All, <b>mission complete</b> , now all traffic is sent through the ssh tunnel and NAT to the Internet.  The tunnel is encrypted, the traffic to the server is protected! </div><p>Source: <a href="https://habr.com/ru/post/87197/">https://habr.com/ru/post/87197/</a></p>
+</pre><br>  Now all traffic that goes to unknown subnets, and all unknowns, except addresses 8.8.8.8 and 74.125.87.104, goes through 10.0.0.1, that is, through an <b>encrypted</b> SSH tunnel.  But the server does not do anything with it, traffic.  Because you need to configure NAT for the client.  To do this, add a rule to iptables <br> <code><br> iptables -t nat -A POSTROUTING -s 10.0.0.2 -j MASQUERADE <br></code> <br>  Enable ip forward-ing in the kernel <br> <code><br> sysctl -w net.ipv4.ip_forward=1 <br></code> <br>  Do not forget to make it so that it turns on when the system boots ... <br> <code><br> mcedit /etc/sysctl.conf <br></code> <br><h6>  PS&gt; mcedit is a text editor.  You can use any other. </h6><br>  We find the commented line <code>net.ipv4.ip_forward=1</code> and uncomment it. <br><br>  All, <b>mission complete</b> , now all traffic is sent through the ssh tunnel and NAT to the Internet.  The tunnel is encrypted, the traffic to the server is protected! </div><p>Source: https://habr.com/ru/post/87197/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../87184/index.html">The easiest thumb</a></li>
 <li><a href="../87187/index.html">We are eager to make a social media conference!</a></li>
 <li><a href="../87189/index.html">III Annual Conference "PR on the Internet"</a></li>
+<li><a href="../8719/index.html">Design is ... part 2. What are the origins?</a></li>
 <li><a href="../87194/index.html">Deal on a million</a></li>
 <li><a href="../87196/index.html">New technology transfer of emotions on a mobile phone</a></li>
 <li><a href="../87198/index.html">Poison began to massively block accounts?</a></li>
 <li><a href="../87199/index.html">Git on Windows in Technicolor</a></li>
+<li><a href="../872/index.html">novka.net, talkstream.ru</a></li>
 <li><a href="../87201/index.html">Simple Time Manager for Android</a></li>
 <li><a href="../87202/index.html">Development by testing with Zend Framework and PHPUnit</a></li>
-<li><a href="../87205/index.html">OOP with examples (part 2)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

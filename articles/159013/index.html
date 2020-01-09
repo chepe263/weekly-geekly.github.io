@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Making your local DNS (PDNSD), with blackjack and faster Google Public DNS</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/548/42c/265/54842c26583fa7609daeb4482f27f7b8.png" align="right">  Every year the speed of the Internet - as the last mile, and the main channels is becoming higher.  Only one thing invariably - the latency has already come up against physical limitations: the speed of light in optical fiber is about 200 thousand kilometers per second, and accordingly, in less than ~ 150ms, the response from the server across the Atlantic Ocean cannot be obtained in the foreseeable future (although of course there are delights, like optical fiber with air core or radio-relay communication, but it is hardly available for mere mortals). <br><br>  When we are trying, for example, from Russia to open a web site located in the USA (its NS server is probably there), and the domain was not found in your provider’s DNS cache — you will have to wait a long time even on the Gigabit Internet, maybe even a full second: while we across the ocean, we will get the names of the NS servers of the domain, while we split their IP, while we send and receive the actual DNS request itself ... <br><br>  A couple of years ago, Google started its public DNS servers, and to campaign for them, they developed the NameBench <a href="http://code.google.com/p/namebench/">utility</a> , which <a href="http://code.google.com/p/namebench/">runs</a> DNS tests on your surfing history and shows how much Google DNS is faster than your provider's DNS server. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,25 +59,25 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       But I managed to make my DNS server, which is faster than Google Public DNS, and in this brief note I want to share the results. <a name="habracut"></a><br><br><h1>  PDNSD </h1>  <a href="http://members.home.nl/p.a.rombouts/pdnsd/"><b>pdnsd</b></a> is a caching DNS proxy.  In addition to the banal DNS query caching (with the ability to set the minimum TTL hard - it may be necessary on a very bad Internet), he can send a request to several “parent” DNS servers at the same time, and give the first return answer to the client. <br><br>  <b>It is the inclusion of a parallel survey and gives us the main advantage in speed</b> , because  when finding the result in the cache of any of the providers, we get the result very quickly, and do not expect complete and slow resolution if the first provider does not have a response in the cache. <br><br>  Put in Ubuntu - the commonplace apt-get. <br><br><h2>  A couple of moments in the config </h2><br><pre><code class="cpp hljs">global { perm_cache=<span class="hljs-number"><span class="hljs-number">10240</span></span>; <span class="hljs-comment"><span class="hljs-comment">//    . //   1024,      . cache_dir="/var/cache/pdnsd"; [...] min_ttl=60m; //      . //  TTL   60 -  60 max_ttl=1w; //       neg_ttl=5m; //    (..    ) [..] par_queries=3; //   "" DNS  } server { label = "main"; ip = 85.21.192.5 // 4 ,   3  ,      4- , 213.234.192.7 // 2  -    ,  -  , 8.8.4.4 // Google Public DNS -          , 8.8.8.8 ; [..] }</span></span></code> </pre> <br><br>  In principle, caching can be made less aggressive (min_ttl = 1m for example), but in the course of the year of operation there were no particular problems.  In case of problems, if you wish, you can wipe one cache entry: <br><pre> <code class="bash hljs">sudo pdnsd-ctl record 3.14.by delete</code> </pre>  or all at once: <br><pre> <code class="bash hljs">sudo pdnsd-ctl empty-cache</code> </pre><br><br><h2>  Test results in NameBench </h2><br><img src="https://habrastorage.org/getpro/habr/post_images/488/e48/e41/488e48e412fba73e19c7fd49da50b6aa.png"><br>  We see that for 50% of requests we get a response in less than 10ms, for 85% faster than Google Public DNS, and then the results naturally coincide with Google. <br><br>  According to the test results, NameBench happily informs us: <br><blockquote><pre> 8.8.8.8 Slower replica of SYS-192.167.0.98 [192.167.0.98]
  8.8.4.4 Slower replica of SYS-192.167.0.98 [192.167.0.98]
-</pre></blockquote><br>  Thus, a smart caching DNS proxy with parallel queries allows you to speed up even the 100 Mbit Internet.  And for slow (radio) links with high latency and packet loss, the difference can be like between heaven and earth. </div><p>Source: <a href="https://habr.com/ru/post/159013/">https://habr.com/ru/post/159013/</a></p>
+</pre></blockquote><br>  Thus, a smart caching DNS proxy with parallel queries allows you to speed up even the 100 Mbit Internet.  And for slow (radio) links with high latency and packet loss, the difference can be like between heaven and earth. </div><p>Source: https://habr.com/ru/post/159013/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../159001/index.html">The effect of turning the page. Now - patented</a></li>
 <li><a href="../159003/index.html">Lambda functions and implementation of a convenient mechanism for Callbacks in C ++</a></li>
 <li><a href="../159005/index.html">How to become a millionaire in the AppStore or a few formulas about promotion and sales. Part 2</a></li>
 <li><a href="../159009/index.html">A small overview of Ingress or how to privatize the sights</a></li>
+<li><a href="../15901/index.html">Microsoft launched the final version of Windows Live</a></li>
 <li><a href="../159011/index.html">Simple clock on MSP430</a></li>
 <li><a href="../159017/index.html">SVG text</a></li>
 <li><a href="../159019/index.html">Agile + UX: how to make friends with high-quality user interface and flexible methodologies</a></li>
+<li><a href="../15902/index.html">EvilWM - the “evil” minimalist window manager</a></li>
 <li><a href="../159023/index.html">We build Sypex Dumper into our admin area</a></li>
 <li><a href="../159027/index.html">CSS sprites: basic techniques and useful tools</a></li>
-<li><a href="../159029/index.html">The easiest way to use Hulu, Pandora, etc. without any VPN</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

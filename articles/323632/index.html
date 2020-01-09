@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -67,7 +67,7 @@
 
  &lt;? php &lt;strong&gt; endforeach &lt;/ strong&gt;;  ?&gt; </pre></blockquote><p>  You do not need to load the model from catalog / product in each foreach cycle, because the $ _product variable already defines the model from catalog / product.  If the set of goods is large enough, you may have many, many unnecessary hits. </p><br><p>  This is just one of the examples of how non-optimized php code can be. </p><br><p>  To reduce the time to send the first byte and speed up your site, you need to view all the .phtml files and audit the code in them.  Particular attention is paid to the structures of cycles. </p><br><h3>  Update Magento to the latest version. </h3><br><p>  The Magento team is constantly working to improve its product.  If you have an older version of Magento, please upgrade.  New releases contain changes to the code in many kernel files, which is aimed at improving the internal logic of Magento. </p><br><h2>  Frontend Optimization </h2><br><p>  Now we will look at how to speed up rendering in the browser with a real example. </p><br><h3>  1. Category page </h3><br><p>  Initially, Google Page Speed ​​shows 68/100. </p><br><p><img alt="6be07336add449e68c2d4e81228aa432.png" src="https://habrastorage.org/files/6be/073/36a/6be07336add449e68c2d4e81228aa432.png">  First of all, we need to postpone loading of JS, that is, “remove the blocking rendering of Javascript and CSS in the content that is visible on the screen immediately (above-the-fold - ATF)”. </p><br><p>  <strong>Remove blocking rendering</strong> <strong>JS / CSS</strong> </p><br><p>  How to do it?  It is necessary to select internal Javascript and place it in one function.  Then access this function at the end of the download and process the entire external JS. </p><br><p>  <strong>Shorten</strong> <strong>JS / CSS</strong> </p><br><p>  Compressing and shortening JS / CSS files is available as separate extensions for Magento. </p><br><p>  <strong>Provide priority</strong> <strong>CSS</strong> <strong>for immediately visible content.</strong> </p><br><p><img alt="ee3486f92a164e6698e4664c8bf4e3a3.png" src="https://habrastorage.org/files/ee3/486/f92/ee3486f92a164e6698e4664c8bf4e3a3.png">  This means that we have too much content placed in the part of the page that is visible on the screen immediately (ATF).  Therefore, you need to determine the most important CSS that is needed to render this content and include it inside the file, the rest of the CSS should be loaded asynchronously. </p><br><p>  By doing this, we get the following result: </p><br><p><img alt="9e02aa67e25045bc878b9b936dcd3390.png" src="https://habrastorage.org/files/9e0/2aa/67e/9e02aa67e25045bc878b9b936dcd3390.png">  As we can see, the tab with the filter is open by default, and this leads to the fact that all the html-content associated with the filter must be loaded. </p><br><p><img alt="e5597bf6889b46efab3e4c2c75bea0a3.png" src="https://habrastorage.org/files/e55/97b/f68/e5597bf6889b46efab3e4c2c75bea0a3.png"></p><br><p>  You can make the bookmark with the filter invisible by default by adding “display: none” to the corresponding CSS <a href="https://habrahabr.ru/users/media/" class="user_link">media</a> request. </p><br><p>  Now we got a speed estimate of 100/100! </p><br><p><img alt="dc29823478f34945822b348f5af94094.png" src="https://habrastorage.org/files/dc2/982/347/dc29823478f34945822b348f5af94094.png"></p><br><h3>  2. Other pages </h3><br><p>  Now that we have already done the work on TTFB and on JS and CSS deferred loading, all we have to do is to go through the remaining pages and work on the immediately visible content (ATF). </p><br><p>  Here are the results that were achieved for the product card, the page with the cart and the typical site page: </p><br><p><img alt="d91c67f0d5384e96b976d948a6a6eee9.png" src="https://habrastorage.org/files/d91/c67/f0d/d91c67f0d5384e96b976d948a6a6eee9.png">  <em>Score by</em> <em>Google</em> <em>PageSpeed</em> <em>typical site page</em> </p><br><p><img alt="3a49fee946d24cb0bd06831f5ba86da0.png" src="https://habrastorage.org/files/3a4/9fe/e94/3a49fee946d24cb0bd06831f5ba86da0.png">  <em>Score by</em> <em>Google</em> <em>PageSpeed</em> <em>Item Cards</em> </p><br><p><img alt="0bbc5c5a3b67408cb9b0b8cf75cd9139.gif" src="https://habrastorage.org/files/0bb/c5c/5a3/0bbc5c5a3b67408cb9b0b8cf75cd9139.gif">  <em>Score by</em> <em>Google</em> <em>PageSpeed</em> <em>basket page</em> </p><br><p>  Thus, we managed to get a 100/100 speed estimate for almost all pages of the site. </p><br><p>  In conclusion, we note that the work on the acceleration of the site can be difficult and monotonous, but the results will please you.  Pages of your site will load much faster even without a cache.  Cache! = Performance.  Therefore, first of all you need to optimize the TTFB that you receive on your Magento-site, and then optimize the frontend display. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -75,10 +75,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/323632/">https://habr.com/ru/post/323632/</a></p>
+    <p>Source: https://habr.com/ru/post/323632/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

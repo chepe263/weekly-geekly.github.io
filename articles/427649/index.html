@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Cooking Matrix at home</h1><div class="post__text post__text-html js-mediator-article">  It all started with a small experiment on installing the Synapse messaging server on a <a href="https://habr.com/post/402307">smartphone with the Ubuntu Touch operating system</a> , and ended up creating a small home data center on 5 ARM mini servers (Raspberry Pi and ODROID-XU4), whose main function is to provide the exchange system messages / calls via Matrix and WebRTS for 10 users. <br><img src="https://habrastorage.org/webt/ip/pf/58/ippf58cr2kjtyb_hoedu-ztcxla.png"><br>  Matrix is ​​an open instant messaging protocol (based on decentralized servers) that allows users to exchange text messages and files, make voice and video calls, create chat channels, etc. <br><br>  The most well-known client for the Matrix network is Riot.im, implemented as a mobile, web or desktop application.  In terms of functionality, it is not inferior to customers of modern Slack / Telegram / WhatsApp messengers. <br><a name="habracut"></a><br>  So, after installing on a smartphone (the server is difficult to use when it is in your pocket and all the time changes its address and connection method - WiFi / 3G / 4G), the next step was to transfer the system to one Raspberry Pi.  Front-end is the implementation of <a href="https://github.com/matrix-org/synapse">the Synapse server in Python</a> , back-end is the PostgreSQL database from the standard Raspbian for Raspberry Pi distribution. <br><br>  Connection to the Internet - via port forwarding (port 8448) on a home vDSL modem with a static external IP address. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Everything worked, but sometimes with a “scratch” - there were occasional delays - connecting clients took a few seconds, timeouts when connecting to third-party channels / rooms matrix.org. <br><br>  After transferring the PostgreSQL database to the second Raspberry Pi, performance improved noticeably, but still 100% load of one of the processor cores occurred within a few minutes (on the front-end side). <br><br>  To improve the situation, the front-end was transferred to the fanless <a href="https://www.hardkernel.com/main/products/prdt_info.php">ODROID-XU4</a> (8 ARM cores, 2 Gb of RAM, server price - $ 59), and then the PostgreSQL database was transferred to the second ODROID-XU4. <br><br><img src="https://habrastorage.org/webt/ik/yn/yf/ikynyfae-ugugqkhpmcx4oef3ni.png"><br><br>  A USB Ethernet switch ($ 20) was added to connect servers over a twisted pair, an external USB drive of 2 Tb, as well as a 6-port USB charging for powering 3 Raspberry Pi and Ethernet switches. <br>  The released Raspberry Pi was converted: firewall to provide DMZ, Zabbix server for monitoring, hot standby server for PostgreSQL database (located in another room).  Another Raspberry Pi with a mobile Internet access module was added to receive the second communication channel through the 4G module for the Raspberry Pi. <br><br>  In addition, an uninterruptible power supply UPS was added. <br><br>  During installation, the system looked like this (placed inside the electric fire): <br><br><img src="https://habrastorage.org/webt/q2/qm/oa/q2qmoavyqubvuats9e-2q6stpyk.png"><br><br>  The size of the Synapse back-end database has grown in half a year by ~ 325 Mb: <br><br><img src="https://habrastorage.org/webt/u5/so/um/u5soumafdxnj_vjvzogrhbuhdqu.png"><br><br>  The size of the Zabbix monitoring system database has grown to 1.25 Gb and will soon stabilize: <br><br><img src="https://habrastorage.org/webt/dr/cp/xs/drcpxskuut9fezwurui2i-hdgbo.png"><br><br>  Download external network (schedule for 7 days): <br><br><img src="https://habrastorage.org/webt/mg/jc/im/mgjcim8wsszcymk1ujrzrbv8h1s.png"><br><br>  Download the internal network (schedule for 7 days): <br><br><img src="https://habrastorage.org/webt/ed/ch/wi/edchwinyrugyns4j6ekgdndcg1k.png"><br><br>  The load graph on the front end for 3 days: <br><br><img src="https://habrastorage.org/webt/at/ry/_r/atry_rniy3efn5gm0d2akdl0c_o.png"><br><br>  When encryption is enabled on clients, encrypted data is stored in the database, so even physical access to the server will not lead to data leakage. <br><br>  All of the above can be implemented on low-cost VPS in any data center, but if it works stably at home, why not do it on home equipment? </div><p>Source: <a href="https://habr.com/ru/post/427649/">https://habr.com/ru/post/427649/</a></p>
+      Everything worked, but sometimes with a “scratch” - there were occasional delays - connecting clients took a few seconds, timeouts when connecting to third-party channels / rooms matrix.org. <br><br>  After transferring the PostgreSQL database to the second Raspberry Pi, performance improved noticeably, but still 100% load of one of the processor cores occurred within a few minutes (on the front-end side). <br><br>  To improve the situation, the front-end was transferred to the fanless <a href="https://www.hardkernel.com/main/products/prdt_info.php">ODROID-XU4</a> (8 ARM cores, 2 Gb of RAM, server price - $ 59), and then the PostgreSQL database was transferred to the second ODROID-XU4. <br><br><img src="https://habrastorage.org/webt/ik/yn/yf/ikynyfae-ugugqkhpmcx4oef3ni.png"><br><br>  A USB Ethernet switch ($ 20) was added to connect servers over a twisted pair, an external USB drive of 2 Tb, as well as a 6-port USB charging for powering 3 Raspberry Pi and Ethernet switches. <br>  The released Raspberry Pi was converted: firewall to provide DMZ, Zabbix server for monitoring, hot standby server for PostgreSQL database (located in another room).  Another Raspberry Pi with a mobile Internet access module was added to receive the second communication channel through the 4G module for the Raspberry Pi. <br><br>  In addition, an uninterruptible power supply UPS was added. <br><br>  During installation, the system looked like this (placed inside the electric fire): <br><br><img src="https://habrastorage.org/webt/q2/qm/oa/q2qmoavyqubvuats9e-2q6stpyk.png"><br><br>  The size of the Synapse back-end database has grown in half a year by ~ 325 Mb: <br><br><img src="https://habrastorage.org/webt/u5/so/um/u5soumafdxnj_vjvzogrhbuhdqu.png"><br><br>  The size of the Zabbix monitoring system database has grown to 1.25 Gb and will soon stabilize: <br><br><img src="https://habrastorage.org/webt/dr/cp/xs/drcpxskuut9fezwurui2i-hdgbo.png"><br><br>  Download external network (schedule for 7 days): <br><br><img src="https://habrastorage.org/webt/mg/jc/im/mgjcim8wsszcymk1ujrzrbv8h1s.png"><br><br>  Download the internal network (schedule for 7 days): <br><br><img src="https://habrastorage.org/webt/ed/ch/wi/edchwinyrugyns4j6ekgdndcg1k.png"><br><br>  The load graph on the front end for 3 days: <br><br><img src="https://habrastorage.org/webt/at/ry/_r/atry_rniy3efn5gm0d2akdl0c_o.png"><br><br>  When encryption is enabled on clients, encrypted data is stored in the database, so even physical access to the server will not lead to data leakage. <br><br>  All of the above can be implemented on low-cost VPS in any data center, but if it works stably at home, why not do it on home equipment? </div><p>Source: https://habr.com/ru/post/427649/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../427653/index.html">Share and Conquer: Layout Layout Then and Now</a></li>
 <li><a href="../427655/index.html">Traefik as Ingress Controller for K8S</a></li>
 <li><a href="../427657/index.html">Using the Animation Inspector in Chrome Developer Tools</a></li>
+<li><a href="../42766/index.html">Smile Coffee Cups</a></li>
 <li><a href="../427661/index.html">Sportiduino - the system of electronic mark for sports, part 3</a></li>
-<li><a href="../427663/index.html">Frog bears and crab</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

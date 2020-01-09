@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Parallel notes №4 - we continue to get acquainted with the structures of OpenMP</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/getpro/habr/post_images/e02/f65/023/e02f650235769fc35f565f7d76e13cee.png" alt="image"><br>  Let's continue our introduction to OpenMP technology and consider some features and new directives. <br><a name="habracut"></a><br>  <a href="http://www.viva64.com/terminology/OpenMP_rus.html">OpenMP</a> has a number of helper functions.  To use them, do not forget to include the header file &lt;omp.h&gt;. <br><br><h5>  Functions of the Runtime Environment </h5><br>  These functions allow you to query and set various parameters of the OpenMP environment: <br><ul><li>  omp_get_num_procs - returns the number of compute nodes (processors / cores) in a computer. </li><li>  omp_in_parallel - allows a <a href="http://www.viva64.com/terminology/Thread_Parallel_thread_rus.html">thread to</a> find out if it is currently engaged in the execution of a parallel region. </li><li>  omp_get_num_threads - returns the number of threads included in the current thread group. </li><li>  omp_set_num_thread - sets the number of threads to execute the next parallel region that will meet the current executed thread.  The function can help allocate resources.  For example, if we simultaneously process sound and video on a processor with four cores, then we can create one stream for sound, and three for sound processing. </li><li>  omp_get_max_threads - returns the maximum allowed number of threads for use in the next parallel area. </li><li>  omp_set_nested - allows or denies nested parallelism.  If nested parallelism is allowed, then each thread in which the description of a parallel region occurs will generate a new group of threads for its execution and will become the main one in it. </li><li>  omp_get_nested - Returns whether nested parallelism is allowed or not. </li></ul><br>  If the function name begins with omp_set_, then it can only be called outside of parallel regions.  All other functions can be used both inside parallel regions and outside those. <br><br><h5>  Sync / Lock Functions </h5><br>  OpenMP allows you to build parallel code without using these functions, as there are directives that allow for certain types of synchronization.  However, in some cases, these functions are convenient and even necessary. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       OpenMP has two types of locks: simple and nested.  Nested have suffix "nest".  Locks can be in one of three states - uninitialized, locked and unlocked. <br><ul><li>  omp_init_lock / omp_init_nest_lock - initialization of a variable of type omp_lock_t / omp_nest_lock_t.  Analogue InitializeCriticalSection. </li><li>  omp_destroy_lock / omp_destroy_nest_lock - release of a variable of type omp_lock_t / omp_nest_lock_t.  Analogue DeleteCriticalSection. </li><li>  omp_set_lock / omp_set_nest_lock - one thread sets a lock, and the remaining threads wait until the thread that calls this function releases the lock using the omp_unset_lock () function.  Analogue EnterCriticalSection. </li><li>  omp_unset_lock / omp_unset_nest_lock - unlock.  Analogue LeaveCriticalSection. </li><li>  omp_test_lock / omp_test_nest_lock - non-blocking attempt to lock the lock.  This function tries to lock the specified lock.  If it succeeds, then for a simple lock, the function returns 1. If the lock cannot be captured, then it returns 0. The analogue of TryEnterCriticalSection. </li></ul><br>  Simple locks (omp_lock_t) cannot be set more than once, even by the same thread.  Nested locks (omp_nest_lock_t) are identical to simple ones with the exception that when a thread tries to establish a locking that already belongs to it, it is not blocked. <br><br>  Let's give an example of the code using the described functions.  All created threads in turn will display the message “Begin work” and “End work”.  Between these two messages from the same thread, messages from other threads that are output when an unsuccessful attempt to enter a closed section may occur. <br><br><pre>  omp_lock_t lock;
@@ -104,15 +104,15 @@
  parallelized with 4 threads </pre><br><br><h5>  num_threads </h5><br>  Explicitly specifying the number of threads that will execute the parallel area.  By default, the last value set using the omp_set_num_threads () function is selected. <br><br>  If we modify the example above as follows: <br><br><pre>  ...
  #pragma omp parallel if (x) num_threads (3)
  ... </pre><br><br>  then we get the following output: <br><br><pre>  single thread
- parallelized with 3 threads </pre><br><br>  In the next issue of "Parallel Notes" we will continue ... </div><p>Source: <a href="https://habr.com/ru/post/86820/">https://habr.com/ru/post/86820/</a></p>
+ parallelized with 3 threads </pre><br><br>  In the next issue of "Parallel Notes" we will continue ... </div><p>Source: https://habr.com/ru/post/86820/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../86810/index.html">Visit to Juniper Networks office</a></li>
 <li><a href="../86812/index.html">Monetization forum. Part two</a></li>
 <li><a href="../86815/index.html">Alternative announcement of the new release of UMI.CMS</a></li>
 <li><a href="../86817/index.html">Two ATMs</a></li>
 <li><a href="../86818/index.html">Raise the software business</a></li>
+<li><a href="../8682/index.html">We connect live Habrahabra using Google AJAX Feed API</a></li>
 <li><a href="../86821/index.html">Sony's “Degrading” Games</a></li>
 <li><a href="../86822/index.html">Final Fantasy XIII: Xbox 360 vs PlayStation 3</a></li>
 <li><a href="../86823/index.html">How to make friends with Visual Studio 2005/2008 with Firebird ADO.NET Data Provider</a></li>

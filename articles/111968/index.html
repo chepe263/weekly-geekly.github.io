@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Audit of system calls in Linux</h1><div class="post__text post__text-html js-mediator-article"><h4>  Theory </h4><br>  For auditd to work, it is necessary that the kernel be compiled with the AUDIT and AUDITSYSCALL options. <br> <code>$ grep AUDIT /boot/config-`uname -r` <br> # CONFIG_AUDIT_ARCH is not set <br> CONFIG_AUDIT=y <br> CONFIG_AUDITSYSCALL=y <br> CONFIG_AUDIT_TREE=y <br> CONFIG_AUDIT_GENERIC=y</code> <br>  AUDIT is responsible for the general audit subsystem in the Linux kernel, which SELinux also uses.  AUDITSYSCALL is responsible for the system call audit infrastructure, which is also used in SELinux. <br>  The main features of the audit system in the Linux kernel: <br><ul><li>  Minimum overhead, both with activated and disabled auditing </li><li>  Kernel-level filtering for the lowest cost </li><li>  Using Netlink in custom applications </li></ul><br><a name="habracut"></a><br><h4>  Installation </h4><br>  Installing auditd is quite simple, for Debian / Ubuntu: <br> <code>$sudo apt-get install auditd</code> <br>  for CentOS: <br> <code>#yum install audit</code> <br>  Project home page: <a href="http://people.redhat.com/sgrubb/audit/">people.redhat.com/sgrubb/audit</a> <br><br><h4>  Customization </h4><br>  Configuration file auditd /etc/audit/auditd.conf.  Each line may contain no more than one directive.  The name is direct and the value separates the equal sign.  Most directives are responsible for setting up logging and do not require changes.  For more information you can read man auditd.conf. <br><br><h4>  Audit rules </h4><br>  Audit rules are contained in the /etc/audit/audit.rules file. <br>  auditctl -l view the list of rules and auditctl -D to delete all rules 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  File Access Audit </h5><br>  The main arguments for file access audit rules are: <br><ul><li>  -p [r | w | x | a] - filter by access character </li><li>  -w path - path to monitored files </li></ul><br>  Add rules to the runtime for the / sys directory <br> <code>sudo auditctl -w /sys/ -p ra</code> <br>  Run skype and see the result: <br> <code>sudo aureport -f <br> /sbin/audispd permissions should be 0750 <br> <br> File Report <br> =============================================== <br> # date time file syscall success exe auid event <br> =============================================== <br> 1. 16.01.2011 22:42:04 /sys/class/video4linux/video0/dev 5 yes /usr/bin/skype -1 23 <br> 2. 16.01.2011 22:42:03 /sys/devices/system/cpu 5 yes /usr/bin/skype -1 22 <br> 3. 16.01.2011 22:42:04 /sys/class/video4linux/video0/device/modalias 5 yes /usr/bin/skype -1 24 <br> 4. 16.01.2011 22:42:04 /sys/class/dmi/id/sys_vendor 5 yes /usr/bin/skype -1 25 <br> 5. 16.01.2011 22:42:04 /sys/class/dmi/id/product_name 5 yes /usr/bin/skype -1 26 <br> 6. 16.01.2011 22:42:04 /sys/class/dmi/id/product_version 5 yes /usr/bin/skype -1 27 <br> 7. 16.01.2011 22:42:04 /sys/class/dmi/id/board_vendor 5 yes /usr/bin/skype -1 28 <br> 8. 16.01.2011 22:42:04 /sys/class/dmi/id/board_name 5 yes /usr/bin/skype -1 29 <br> 9. 16.01.2011 22:42:04 /sys/class/dmi/id/board_version 5 yes /usr/bin/skype -1 30</code> <br> <br><h5>  System call audit </h5><br>  Key attributes: <br><ul><li>  -a list, action and -A list, action adds an action rule to the end (-A to the beginning) of the list.  You can read about available lists in man auditctl.  Actions never does not generate an event, and always creates an event. </li><li>  -S [Syscall name or number | all] - watched calls </li><li>  -F [n = v |  n! = v |  n &lt;v |  n&gt; v |  n &lt;= v |  n&gt; = v |  n &amp; v |  n &amp; = v] all sorts of filters </li></ul><br>  auditctl -a exit, always -S open -F success = 0 activates the audit of all open () calls with a return code less than 0 and generating an event during the exit from the system call. <br> <code>#auditctl -a exit,always -S open -F success=0 <br> # touch /tmp/foo <br> # tail -1 /var/log/audit/audit.log <br> type=SYSCALL msg=audit(1295200915.069:14977): arch=c000003e syscall=2 success=no exit=-2 a0=7ff2f0ad4f60 a1=0 a2=7ff2f0d05010 a3=7fff56687650 items=1 ppid=1915 pid=16551 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts0 ses=4294967295 comm="tail" exe="/usr/bin/tail" key=(null)</code> <br>  You can find the name of the system call by number from include / linux / unistd.h. </div><p>Source: <a href="https://habr.com/ru/post/111968/">https://habr.com/ru/post/111968/</a></p>
+    <h5>  File Access Audit </h5><br>  The main arguments for file access audit rules are: <br><ul><li>  -p [r | w | x | a] - filter by access character </li><li>  -w path - path to monitored files </li></ul><br>  Add rules to the runtime for the / sys directory <br> <code>sudo auditctl -w /sys/ -p ra</code> <br>  Run skype and see the result: <br> <code>sudo aureport -f <br> /sbin/audispd permissions should be 0750 <br> <br> File Report <br> =============================================== <br> # date time file syscall success exe auid event <br> =============================================== <br> 1. 16.01.2011 22:42:04 /sys/class/video4linux/video0/dev 5 yes /usr/bin/skype -1 23 <br> 2. 16.01.2011 22:42:03 /sys/devices/system/cpu 5 yes /usr/bin/skype -1 22 <br> 3. 16.01.2011 22:42:04 /sys/class/video4linux/video0/device/modalias 5 yes /usr/bin/skype -1 24 <br> 4. 16.01.2011 22:42:04 /sys/class/dmi/id/sys_vendor 5 yes /usr/bin/skype -1 25 <br> 5. 16.01.2011 22:42:04 /sys/class/dmi/id/product_name 5 yes /usr/bin/skype -1 26 <br> 6. 16.01.2011 22:42:04 /sys/class/dmi/id/product_version 5 yes /usr/bin/skype -1 27 <br> 7. 16.01.2011 22:42:04 /sys/class/dmi/id/board_vendor 5 yes /usr/bin/skype -1 28 <br> 8. 16.01.2011 22:42:04 /sys/class/dmi/id/board_name 5 yes /usr/bin/skype -1 29 <br> 9. 16.01.2011 22:42:04 /sys/class/dmi/id/board_version 5 yes /usr/bin/skype -1 30</code> <br> <br><h5>  System call audit </h5><br>  Key attributes: <br><ul><li>  -a list, action and -A list, action adds an action rule to the end (-A to the beginning) of the list.  You can read about available lists in man auditctl.  Actions never does not generate an event, and always creates an event. </li><li>  -S [Syscall name or number | all] - watched calls </li><li>  -F [n = v |  n! = v |  n &lt;v |  n&gt; v |  n &lt;= v |  n&gt; = v |  n &amp; v |  n &amp; = v] all sorts of filters </li></ul><br>  auditctl -a exit, always -S open -F success = 0 activates the audit of all open () calls with a return code less than 0 and generating an event during the exit from the system call. <br> <code>#auditctl -a exit,always -S open -F success=0 <br> # touch /tmp/foo <br> # tail -1 /var/log/audit/audit.log <br> type=SYSCALL msg=audit(1295200915.069:14977): arch=c000003e syscall=2 success=no exit=-2 a0=7ff2f0ad4f60 a1=0 a2=7ff2f0d05010 a3=7fff56687650 items=1 ppid=1915 pid=16551 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts0 ses=4294967295 comm="tail" exe="/usr/bin/tail" key=(null)</code> <br>  You can find the name of the system call by number from include / linux / unistd.h. </div><p>Source: https://habr.com/ru/post/111968/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,11 +73,11 @@
 <li><a href="../111965/index.html">My first PDA: Casio E-15</a></li>
 <li><a href="../111966/index.html">Atomic tablet Odeon TPC-10, part one</a></li>
 <li><a href="../111967/index.html">Introducing Kohana 3.0 - Part 6</a></li>
+<li><a href="../11197/index.html">Wonderful site - livents.ru</a></li>
+<li><a href="../111971/index.html">Not quite the usual XMPP bot in Python: tunneling</a></li>
 <li><a href="../111972/index.html">Fire Fox Anatomy</a></li>
 <li><a href="../111974/index.html">Install Juniper JunOS 10 M / T series</a></li>
 <li><a href="../111975/index.html">January Startup Crash Test - in search of projects</a></li>
-<li><a href="../111976/index.html">Automation in the service of relevance</a></li>
-<li><a href="../111977/index.html">Automated checking of PHP code at commit</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

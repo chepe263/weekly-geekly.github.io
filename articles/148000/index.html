@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Edit-in-place on Bootstrap components</h1><div class="post__text post__text-html js-mediator-article">  Hi, Habr! <br>  In this article I will briefly talk about the <a href="http://vitalets.github.com/bootstrap-editable">Editable for Bootstrap</a> library, which allows you to enter data on the page using the edit-in-place method and based on the <a href="http://twitter.github.com/bootstrap">Bootstrap</a> components.  I use it in the admin part of projects, or when I need to quickly make an interface with user input. <br>  Details under the cut. <br><a name="habracut"></a><br><img src="https://habrastorage.org/storage2/54e/cc9/123/54ecc9123b661403e8dafc96713813c1.png" align="right"><br>  The data entry mechanism is based on the Bootstrap Form and Popover plugins.  When you click on an item, a popover pops up, in which there is a control depending on the specified type.  Now 4 types of controls are supported: <br><ul><li>  Text </li><li>  Select </li><li>  Date </li><li>  Textarea </li></ul><br>  For <i>Date,</i> use the jQuery UI Datepicker, <a href="http://addyosmani.github.com/jquery-ui-bootstrap">styled as a bootstrap</a> . <br>  The type of control and all other parameters can be specified both through <i>data- *</i> attributes, and as options when called. <br>  For example, to make plain text editable and send data to post.php, you need: <br><pre><code class="html hljs xml"><span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">a</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">href</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"#"</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">id</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"firstname"</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">data-type</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"text"</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">data-pk</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"1"</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">data-name</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"firstname"</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">data-url</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"post.php"</span></span></span><span class="hljs-tag">&gt;</span></span>John<span class="hljs-tag"><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">a</span></span></span><span class="hljs-tag">&gt;</span></span></code> </pre> <br>  Javascript: <br><pre> <code class="javascript hljs">$(<span class="hljs-string"><span class="hljs-string">'#firstname'</span></span>).editable();</code> </pre><br>  Or: <br><pre> <code class="html hljs xml"><span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">a</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">href</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"#"</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">id</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"firstname"</span></span></span><span class="hljs-tag">&gt;</span></span>John<span class="hljs-tag"><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">a</span></span></span><span class="hljs-tag">&gt;</span></span></code> </pre><br><pre> <code class="javascript hljs">$(<span class="hljs-string"><span class="hljs-string">'#firstname'</span></span>).editable({ <span class="hljs-attr"><span class="hljs-attr">url</span></span>: <span class="hljs-string"><span class="hljs-string">'post.php'</span></span>, <span class="hljs-attr"><span class="hljs-attr">type</span></span>: <span class="hljs-string"><span class="hljs-string">'text'</span></span>, <span class="hljs-attr"><span class="hljs-attr">pk</span></span>: <span class="hljs-number"><span class="hljs-number">1</span></span>, <span class="hljs-attr"><span class="hljs-attr">name</span></span>: <span class="hljs-string"><span class="hljs-string">'firstname'</span></span>, <span class="hljs-attr"><span class="hljs-attr">title</span></span>: <span class="hljs-string"><span class="hljs-string">'Enter your firstname'</span></span> });</code> </pre><br>  When sending to the server, the request will contain the field name, the object identifier (primary key) and the new value: <br><pre> <code class="javascript hljs">{<span class="hljs-attr"><span class="hljs-attr">name</span></span>: <span class="hljs-string"><span class="hljs-string">'firstname'</span></span>, <span class="hljs-attr"><span class="hljs-attr">pk</span></span>: <span class="hljs-number"><span class="hljs-number">1</span></span>, <span class="hljs-attr"><span class="hljs-attr">value</span></span>: <span class="hljs-string"><span class="hljs-string">'John2'</span></span>}</code> </pre> <br>  This is enough to save a new value in the database. <br><br>  A complete list of parameters and examples of working with other types are described in detail in the documentation.  Also there is an example of <i>creating a new record</i> . <br><br>  Any ideas / comments will be glad to hear in the comments or on <a href="http://github.com/vitalets/bootstrap-editable/issues">github</a> . <br>  Thanks for attention! </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,18 +60,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/148000/">https://habr.com/ru/post/148000/</a></p>
+    <p>Source: https://habr.com/ru/post/148000/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../147990/index.html">We translate from Bencode to XML</a></li>
-<li><a href="../147991/index.html">Quadcopter-R2. Upgrade</a></li>
-<li><a href="../147993/index.html">The largest index of pirated content</a></li>
 <li><a href="../147996/index.html">Networks for the smallest. Part Five ACL and NAT</a></li>
 <li><a href="../147999/index.html">"Toy" cartography or 3D cards do it yourself</a></li>
+<li><a href="../148/index.html">Mapping - online card branding</a></li>
+<li><a href="../1480/index.html">Launch of the Runet Award 2006 competition</a></li>
+<li><a href="../14800/index.html">X-Wing fell apart</a></li>
 <li><a href="../148001/index.html">Review of fresh materials, April-June 2012</a></li>
 <li><a href="../148002/index.html">The ideal student, or what is silent in machine learning</a></li>
 <li><a href="../148003/index.html">Completed the contest on VK messenger for Android</a></li>

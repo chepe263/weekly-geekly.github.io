@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Decryption of updates of one popular cellular modem: Dmitry Sklyarov method</h1><div class="post__text post__text-html js-mediator-article"> <a href="https://habrahabr.ru/company/pt/blog/276949/"><img src="https://habrastorage.org/files/57a/a3d/184/57aa3d1842b14680807dda10915ba656.png"></a> <br><br>  Sometimes you want to look into the firmware code of a device.  But apart from the firmware itself, which is encrypted, there is nothing.  And how can the reverse with this live?  The article discusses the real situation when, using basic knowledge in computer science and logic, we managed to solve an almost hopeless task. <br><br>  The name of the modem manufacturer is removed, and some file names are specially changed, as I want to focus on the task itself - and on an interesting approach to its solution.  By the way, this method does not work in the latest models of modems from this manufacturer.  But it is possible that it can be used in other cases. <a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  1. Definition of structure </h4><br>  Let's start by defining the firmware file structure.  There are three update files of different versions for one modem: <br><br><ul><li>  v2.8_image.bin </li><li>  v3.7_image.bin </li><li>  v3.7.4_image.bin </li></ul><br>  At a close look, all three files have inside the structure described by the TLV (Tag-Length-Value) scheme.  For example, for <code>v3.7.4_image.bin</code> : <br><br><img src="https://habrastorage.org/files/fd9/7a2/6ea/fd97a26ea2e14776864e12f769a8eb78.png"><br><br>  All values ​​are Little-endian, Tag has a length of 16 bits, Length - 32 bits. <br>  At the first level of nesting in the file there is only a tag 0x7240, and the data for it occupies the entire file.  At the second level of nesting (inside the tag data 0x7240) the tag 0x0003 (0x0A bytes) is located, then 0x0000 (0x4BDE0E bytes), then the tags 0x0001 and 0x0002 (in the screenshot did not fit).  At the third level of nesting (inside the tag data 0x0003) the tag 0x0002 is encapsulated, storing the 4-byte version number of the file 030704FF (if you discard all FF, you get 3.7.4). <br><br>  The remaining tags located on the second level of nesting (tags 0x0000, 0x0001 and 0x0002) contain descriptions of individual files “packaged” in one image. <br>  For each file, the name (tag 0x0001), flags (tag 0x0002), size (tag 0x0003), a 16-byte value (tag 0x0004) and the actual file data (tag 0x0005) are indicated. <br><br>  If you disassemble the tags on all three levels of nesting, you get something like this structure: <br><br><img src="https://habrastorage.org/files/106/29d/f71/10629df7164949909cf52e073cc40a63.png"><br><br>  Thus, you can extract encrypted data for all components from the firmware files ( <code>CPUImage</code> , <code>AutoInstall</code> and <code>WebUI</code> ).  As it turned out, the contents of <code>AutoInstall</code> in all three versions of the firmware are the same, the insides of <code>WebUI</code> same for v3.7 and v3.7.4, but differ in v2.8, and the <code>CPUImage</code> is unique for each version. <br><br><h4>  2. Guesses by algorithms </h4><br>  Tag 0x0004 at the third level of nesting contains a 16-byte data set with high entropy.  This hash value is quite possible, and the most popular 128-bit hash is MD5. <br><br>  If you look at the extracted files, you will notice that in them many bytes at the same offset coincide.  Here, for example, the beginning of two files (highlighted differences): <br><br><img src="https://habrastorage.org/files/aa7/c1f/6ee/aa7c1f6eef78454b800a6a00f6d0b5b1.png"><br><br>  However, if you try to find the same sequence within the same file, there will not be long repeats. <br><br>  A similar effect occurs when using encryption by superimposing a constant gamut of a very long length.  And the most popular encryption algorithm that works this way is RC4. <br><br><h4>  3. Attack on stream cipher with constant key </h4><br>  If several messages are encrypted using the same key (and therefore the gamma), you can try to uncover fragments of these messages by copying them together.  And in those places where there were zero bytes in one of the messages, the plaintext will appear in the other. <br><br>  Taking the files <code>AutoInstall</code> and <code>WebUI</code> , we get interesting results: <br><br><pre>  00000000: EB 3C 90 6D 6B 64 6F 73 66 73 00 00 02 04 01 00 l &lt;ђmkdosfs
@@ -131,20 +131,20 @@
  ROM: 0008ADFC BL sub_27C0EC
  ROM: 0008AE00 SUBS R11, R11, # 1
  ROM: 0008AE04 AND R0, R1, # 0xFF
- ROM: 0008AE08 BNE loc_8ADD0 </pre><br>  This is nothing more than loading the encryption key, located at 0x2ADC60 and having a length of 0x15 bytes, into the RC4 algorithm.  However, <code>0x2ADC60==2'808'928</code> , that is, the key, is located outside the area for which we know the gamma. <br><br>  True, we have three versions of updates.  Suddenly in v3.7 or v2.8 key in a better place?  Alas, in earlier firmware, the key location address will be <code>0x2AD70C</code> and <code>0x2A852C</code> , which is also outside the decoded area :( <br><br><h4>  7. And again XOR </h4><br>  If we interconnect CPUImage from v3.7 and v3.7.4 updates, then at <code>0x34C + 0x2AD70C == 0x2ADA58</code> we will find the line "SungKook" James "Shin", which is the same RC4 key, on which all files included in in updates. <br><br>  It remains to make sure that the gamma at the output of RC4, initialized with this key, coincides with that obtained earlier from <code>AutoInstall</code> and <code>WebUI</code> , and that the MD5 from the decoded <code>CPUImage</code> coincides with the value from the update header. <br><br>  Now you can begin to analyze the actual firmware, but that's another story. <br><br>  <b>Author</b> : Dmitry Sklyarov, Head of Application Research, Positive Technologies </div><p>Source: <a href="https://habr.com/ru/post/276949/">https://habr.com/ru/post/276949/</a></p>
+ ROM: 0008AE08 BNE loc_8ADD0 </pre><br>  This is nothing more than loading the encryption key, located at 0x2ADC60 and having a length of 0x15 bytes, into the RC4 algorithm.  However, <code>0x2ADC60==2'808'928</code> , that is, the key, is located outside the area for which we know the gamma. <br><br>  True, we have three versions of updates.  Suddenly in v3.7 or v2.8 key in a better place?  Alas, in earlier firmware, the key location address will be <code>0x2AD70C</code> and <code>0x2A852C</code> , which is also outside the decoded area :( <br><br><h4>  7. And again XOR </h4><br>  If we interconnect CPUImage from v3.7 and v3.7.4 updates, then at <code>0x34C + 0x2AD70C == 0x2ADA58</code> we will find the line "SungKook" James "Shin", which is the same RC4 key, on which all files included in in updates. <br><br>  It remains to make sure that the gamma at the output of RC4, initialized with this key, coincides with that obtained earlier from <code>AutoInstall</code> and <code>WebUI</code> , and that the MD5 from the decoded <code>CPUImage</code> coincides with the value from the update header. <br><br>  Now you can begin to analyze the actual firmware, but that's another story. <br><br>  <b>Author</b> : Dmitry Sklyarov, Head of Application Research, Positive Technologies </div><p>Source: https://habr.com/ru/post/276949/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../276937/index.html">Algorithm for creating a list of all permutations or placements</a></li>
 <li><a href="../276939/index.html">DUMP-2016 Developer Conference: Ekaterinburg, April 8</a></li>
+<li><a href="../27694/index.html">Eclipse PDT 1.0.3</a></li>
 <li><a href="../276941/index.html">Deploying Linux distribution with SCCM 2012</a></li>
 <li><a href="../276943/index.html">GPU vs CPU: Why are GPUs used to analyze financial data</a></li>
 <li><a href="../276945/index.html">How we ported the good old Russian quest</a></li>
+<li><a href="../27695/index.html">The whole truth o 12111</a></li>
 <li><a href="../276951/index.html">WhatsApp architecture Facebook bought for $ 19 billion</a></li>
 <li><a href="../276953/index.html">We are looking for Mega developers: turn on the idea generator</a></li>
 <li><a href="../276955/index.html">Rumors confirmed - Opera Software is sold to China</a></li>
 <li><a href="../276957/index.html">Carefully about counting single bits</a></li>
-<li><a href="../276961/index.html">Nginx 1.9.11 released with support for dynamic modules</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

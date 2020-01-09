@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Software Internet gateway for not a small company (Shorewall, buns). Part 4</h1><div class="post__text post__text-html js-mediator-article">  I present the fourth article in the series, aimed at "continuing" system administrators, for experienced ones, I can hardly discover something new. <br><br>  In these articles, we will look at building an Internet gateway on linux, allowing you to link several company offices, and provide limited access to the network, traffic prioritization (QoS) and simple load balancing with redundancy between two providers. <br><br>  Specifically in this part: <br><ul><li>  Automatic events </li><li>  Macros </li></ul><br>  And in the <a href="http://habrahabr.ru/post/274639/">first part</a> were considered: <br><ul><li>  The simplest setting is Shorewall </li><li>  Awfully tricky dnsmasq setup </li><li>  No less complicated setting OpenVPN </li><li>  And for many continuing admins atypical, dynamic routing, for example, OSPF </li></ul><br>  And in the <a href="http://habrahabr.ru/post/274677/">second</a> : <br><ul><li>  More detailed setting Shorewall </li><li>  Terrible and not clear QoS </li><li>  Load balancing and redundancy </li></ul><br>  And in the <a href="http://habrahabr.ru/post/277983/">third</a> : <br><ul><li>  Full QoS in Shorewall </li><li>  More detailed setting Shorewall </li><li>  Channel traffic scaling according to protocols </li><li>  Crutches, without them, nowhere </li></ul><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Developments </h4><br>  Everything is both simple and difficult.  For interest, consider PortKnocking. <br><div class="spoiler">  <b class="spoiler_title">/ etc / shorewall / actions</b> <div class="spoiler_text"><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#ACTION OPTION DESCRIPTION Knock #Port Knocking</span></span></code> </pre> <br></div></div><br>  Here we simply announced our action on the event. <br><br><div class="spoiler">  <b class="spoiler_title">/etc/shorewall/action.Knock</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># # Shorewall version 4 - SSH_BLACKLIST Action # ?format 2 ############################################################################### #ACTION SOURCE DEST PROTO DPORT IfEvent(SSH,ACCEPT:info,60,1,src,reset)\ - - tcp 22 SetEvent(SSH,ACCEPT) - - tcp 1600 ResetEvent(SSH,DROP:info)</span></span></code> </pre><br></div></div><br>  Here we do event handling, the idea is this: <br>  If there is a request for port 1600, open port 22 for the same source address for 60 seconds.  If there is a request for port 1599 or 1601, close port 22. <br><br><div class="spoiler">  <b class="spoiler_title">/ etc / shorewall / rules</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#ACTION SOURCE DEST PROTO DPORT Knock net $FW tcp 22,1599-1601</span></span></code> </pre><br></div></div><br>  And here we have included work with PortKnoking on the appropriate connections. <br>  The topic of event handling is extensive, so you should carefully read the manuals. <br><br><h4>  Macros </h4><br>  They allow you to write rules effectively (we have already mentioned a little about macros). <br><div class="spoiler">  <b class="spoiler_title">/etc/shorewall/macto.TEST</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#ACTION SOURCE DEST PROTO DPORT SPORT ORIGDEST RATE USER PARAM - - udp 6745 PARAM DEST SOURCE tcp 35067</span></span></code> </pre><br></div></div><br>  Apply the rules: <br><div class="spoiler">  <b class="spoiler_title">/ etc / shorewall / rules</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#ACTION SOURCE DEST PROTO DPORT TEST(ACCEPT) loc $FW #  : #ACTION SOURCE DEST PROTO DPORT SPORT ACCEPT loc $FW udp 6745 ACCEPT $FW loc tcp 35067</span></span></code> </pre><br></div></div></div><p>Source: <a href="https://habr.com/ru/post/274765/">https://habr.com/ru/post/274765/</a></p>
+    <h4>  Developments </h4><br>  Everything is both simple and difficult.  For interest, consider PortKnocking. <br><div class="spoiler">  <b class="spoiler_title">/ etc / shorewall / actions</b> <div class="spoiler_text"><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#ACTION OPTION DESCRIPTION Knock #Port Knocking</span></span></code> </pre> <br></div></div><br>  Here we simply announced our action on the event. <br><br><div class="spoiler">  <b class="spoiler_title">/etc/shorewall/action.Knock</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># # Shorewall version 4 - SSH_BLACKLIST Action # ?format 2 ############################################################################### #ACTION SOURCE DEST PROTO DPORT IfEvent(SSH,ACCEPT:info,60,1,src,reset)\ - - tcp 22 SetEvent(SSH,ACCEPT) - - tcp 1600 ResetEvent(SSH,DROP:info)</span></span></code> </pre><br></div></div><br>  Here we do event handling, the idea is this: <br>  If there is a request for port 1600, open port 22 for the same source address for 60 seconds.  If there is a request for port 1599 or 1601, close port 22. <br><br><div class="spoiler">  <b class="spoiler_title">/ etc / shorewall / rules</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#ACTION SOURCE DEST PROTO DPORT Knock net $FW tcp 22,1599-1601</span></span></code> </pre><br></div></div><br>  And here we have included work with PortKnoking on the appropriate connections. <br>  The topic of event handling is extensive, so you should carefully read the manuals. <br><br><h4>  Macros </h4><br>  They allow you to write rules effectively (we have already mentioned a little about macros). <br><div class="spoiler">  <b class="spoiler_title">/etc/shorewall/macto.TEST</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#ACTION SOURCE DEST PROTO DPORT SPORT ORIGDEST RATE USER PARAM - - udp 6745 PARAM DEST SOURCE tcp 35067</span></span></code> </pre><br></div></div><br>  Apply the rules: <br><div class="spoiler">  <b class="spoiler_title">/ etc / shorewall / rules</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#ACTION SOURCE DEST PROTO DPORT TEST(ACCEPT) loc $FW #  : #ACTION SOURCE DEST PROTO DPORT SPORT ACCEPT loc $FW udp 6745 ACCEPT $FW loc tcp 35067</span></span></code> </pre><br></div></div></div><p>Source: https://habr.com/ru/post/274765/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../274743/index.html">Understanding the syntax of templates in Angular2</a></li>
 <li><a href="../274745/index.html">Quickly create phar files using Box</a></li>
 <li><a href="../274749/index.html">LetsEncrypt in Go</a></li>
 <li><a href="../274757/index.html">Rust in 2016</a></li>
 <li><a href="../274759/index.html">Well tuned emacs</a></li>
+<li><a href="../27476/index.html">Microsoft Remote Desktop Connection Client for Mac.</a></li>
 <li><a href="../274767/index.html">ProDBG switches to Rust</a></li>
 <li><a href="../274771/index.html">Details of the test-first, which is so lacking</a></li>
+<li><a href="../274773/index.html">Steam CEG from Valve and what it eats. Everything is complicated - just</a></li>
 <li><a href="../274775/index.html">Automatically launching Libre / OpenOffice in listening mode from Python</a></li>
 <li><a href="../274779/index.html">Work with PGP digital signatures using the Bouncy Castle Cryptography Library in Java</a></li>
-<li><a href="../274785/index.html">The digest of interesting materials from the world of web development and IT for the last week №193 (January 3 - 10, 2016)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

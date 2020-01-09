@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Security issue when using forms authentication in ASP.NET</h1><div class="post__text post__text-html js-mediator-article"> Tells <a href="http://visualstudiomagazine.com/forms/emailtoauthor.aspx%3FAuthorItem%3D%257BDD0073EE-E182-4F32-B5FB-3F183FCFA220%257D%26ArticleItem%3D%257BD74E8DAD-34EF-460E-AF36-56058B6D51C0%257D">Peter Vogel</a> <br><br>  Two security researchers, Thai Duong and Juliano Rizzo, discovered a bug in the default encryption mechanism involved in protecting cookies commonly used to implement Forms Authentication in ASP.NET.  Using the tools developed by the researchers ( <a href="http://netifera.com/research/">Padding Oracle Exploit Tool</a> or POET), you can modify cookies encrypted using the AES encryption mechanism and, by examining returned errors, calculate the Machine Key used to encrypt cookies.  According to the researchers, the process is 100% reliable and takes from 30 to 50 minutes for any site. <br><br><a name="habracut"></a><br>  Once the machine key has been determined, the attacker can create dummy authentication cookies.  And if the site developers have chosen the option of embedding information about the role of this user in cookies, then the attacker can assign himself the role of administrator.  This security hole may affect other functions of the role membership provider, protection against ViewState spoofing, other encrypted data that may be stored in cookies or otherwise available on the client side. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The bad news is that the problem is extensive and requires an immediate solution.  The good thing is that its solution is quite simple.  This hack exploits a bug in the .NET encryption implementation using AES.  The solution is simple - you need to switch to using another encryption mechanism - for example, 3DES.  And since the encryption of membership and role providers is handled by ASP.NET, no modification of existing code using form authentication is needed. <br><br>  The encryption method can be changed in the web.config file for the site, in IIS 7 for the web server, or in the .NET configuration file on the server in the% SYSTEMROOT% \ Microsoft.NET \ Framework \ version \ CONFIG \ directory.  On 64-bit systems, it is also necessary to change the configuration file in the% SYSTEMROOT% \ Microsoft.NET \ Framework64 \ version \ CONFIG \ directory.  A typical entry would look like this: <br><br> <code>&lt;machineKey validationKey="AutoGenerate,IsolateApps" <br> validation="3DES" <br> decryptionKey="AutoGenerate,IsolateApps" <br> decryption="3DES" /&gt;</code> <br> <br>  On the web farm, this setting should be changed on all servers in the farm. <br><br>  These parameters are also used to prevent ViewState from being spoofed (ViewState data is encoded, but not encrypted).  Therefore, if you make these changes, it will also lead to ViewState encryption using 3DES. <br><br>  Developers who use AES to encrypt information available on the client should consider changing the code to use a different encryption mechanism. <br><br>  Dong and Rizzo intend to provide more detailed information on this issue <a href="http://ekoparty.org/index.php">at a security conference to</a> be held on Friday, September 17 in Buenos Aires. </div><p>Source: <a href="https://habr.com/ru/post/104258/">https://habr.com/ru/post/104258/</a></p>
+      The bad news is that the problem is extensive and requires an immediate solution.  The good thing is that its solution is quite simple.  This hack exploits a bug in the .NET encryption implementation using AES.  The solution is simple - you need to switch to using another encryption mechanism - for example, 3DES.  And since the encryption of membership and role providers is handled by ASP.NET, no modification of existing code using form authentication is needed. <br><br>  The encryption method can be changed in the web.config file for the site, in IIS 7 for the web server, or in the .NET configuration file on the server in the% SYSTEMROOT% \ Microsoft.NET \ Framework \ version \ CONFIG \ directory.  On 64-bit systems, it is also necessary to change the configuration file in the% SYSTEMROOT% \ Microsoft.NET \ Framework64 \ version \ CONFIG \ directory.  A typical entry would look like this: <br><br> <code>&lt;machineKey validationKey="AutoGenerate,IsolateApps" <br> validation="3DES" <br> decryptionKey="AutoGenerate,IsolateApps" <br> decryption="3DES" /&gt;</code> <br> <br>  On the web farm, this setting should be changed on all servers in the farm. <br><br>  These parameters are also used to prevent ViewState from being spoofed (ViewState data is encoded, but not encrypted).  Therefore, if you make these changes, it will also lead to ViewState encryption using 3DES. <br><br>  Developers who use AES to encrypt information available on the client should consider changing the code to use a different encryption mechanism. <br><br>  Dong and Rizzo intend to provide more detailed information on this issue <a href="http://ekoparty.org/index.php">at a security conference to</a> be held on Friday, September 17 in Buenos Aires. </div><p>Source: https://habr.com/ru/post/104258/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

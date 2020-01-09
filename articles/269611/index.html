@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Platform "1C: Enterprise" - what's under the hood?</h1><div class="post__text post__text-html js-mediator-article">  Hi, Habr! <br>  In this article we will begin the story about how the <a href="http://v8.1c.ru/overview/Platform.htm">1C: Enterprise 8 platform is</a> built inside and what technologies are used in its development. <br><br><img src="https://habrastorage.org/files/2ad/a84/9e2/2ada849e24ed496282f813539b750f7d.png" alt="image"><br><br>  Why do we think this is interesting?  First, because the “1C: Enterprise 8” platform is a large (more than 10 million lines of code) application in C ++ (client, server, etc.), JavaScript (web client), and, more recently, and <a href="http://www.1c.ru/news/info.jsp%3Fid%3D19821">java</a> .  Large projects are interesting, if only by virtue of scale, because the issues invisible in a small code base in such projects stand in full growth.  Secondly, “1C: Enterprise” is a replicable, “boxed” product, and there are very few articles about such developments on Habré.  And it is always interesting to find out how they live in other teams and firms. <br><a name="habracut"></a><br>  So let's get started.  In this article we will give an overview of some technologies that are used in the platform, outline the landscape, without deep immersion in the implementation.  After all, for many mechanisms a detailed story will pull on a separate article, and for some - on a whole book! <br>  To begin with, it’s worth deciding on the basic things - what is the 1C: Enterprise platform and what components it consists of.  The answer to this question is not so simple, because the term “Platform” (for brevity, we will call it that way) is understood both as a tool for developing business applications, and an execution environment, and means of administration.  Conventionally, the following components can be identified: <br><ul><li>  server cluster </li><li>  “Thin” client capable of connecting to the server via http and its own binary protocol </li><li>  client for working in a two-tier architecture with a database located on a hard disk or network folder </li><li>  web client </li><li>  application server administration tools </li><li>  development environment (known as Configurator) </li><li>  Runtime for iOS, Android and Windows Phone (1C mobile platform) </li></ul><br>  All of these parts, with the exception of the web client, are written in C ++.  In addition, there is a recently announced <a href="http://www.1c.ru/news/info.jsp%3Fid%3D19821">new generation Configurator</a> written in Java. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h3>  Native applications </h3><br>  C ++ 03 is used to develop native applications.  Under Windows, Microsoft Visual C ++ 12 (a profile compatible with Windows XP) is used as a compiler, and under Linux and Android - gcc 4.8, for iOS - clang 5.0.  The standard library is used uniformly for all OS and compilers - STLPort.  This solution reduces the likelihood of errors specific to the implementation of STL.  Now we are planning to switch to the implementation of STL supplied with CLang, since STLPort has stopped its development and is incompatible with C ++ 11 support mode enabled in gcc. <br>  At the same time, the code base of the server is 99% common, and the client's percentage is 95%.  Moreover, even the mobile platform uses the same C ++ code as the “big” one, although there the percentage of unification is somewhat lower. <br>  Like most C ++ users, we do not claim to use 100% of the capabilities of the language and its libraries.  So, at us Boost is practically not used, and from language possibilities - dynamic type conversion.  In this case, we actively use: <br><ul><li>  STL (in particular, strings, containers and algorithms) </li><li>  multiple inheritance, incl.  multiple inheritance implementation </li><li>  templates </li><li>  exceptions </li><li>  smart pointers (own implementation) </li></ul><br>  Due to the use of multiple inheritance of interfaces (completely abstract classes), the component model becomes possible, which will be discussed below. <br><br><h3>  Components </h3><br>  To ensure modularity, all functionality is divided into components, which are dynamic libraries (* .dll under Windows, * .so - under Linux).  In total components more than one and a half hundreds, we will provide descriptions of some of them: <br><table><tbody><tr><td width="100">  backend </td><td>  Contains the "engine" platform metadata </td></tr><tr><td>  accnt </td><td>  Objects that application developers use to build accounting (charts of accounts and accounting registers) </td></tr><tr><td>  bsl </td><td>  Integrated language performance engine </td></tr><tr><td>  nuke </td><td>  Own implementation of memory allocator </td></tr><tr><td>  dbeng8 </td><td>  File database engine.  A simple file server-based database engine based on ISAM, which also includes a simple SQL processor. </td></tr><tr><td>  wbase </td><td>  Contains the base classes and functions for implementing the Windows user interface — window classes, GDI access, and so on. </td></tr></tbody></table><br>  Separating into many components is useful from several points of view: <br><ul><li>  Separation promotes better design, in particular better code isolation. </li><li>  From the set of components, you can flexibly assemble various delivery options: <br><ul><li>  For example, a thin client installation will contain wbase, but there will be no backend </li><li>  on the contrary, wbase will not be available </li><li>  both options will of course contain nuke and bsl </li></ul></li></ul><br>  All the necessary components for this launch option are loaded when the program starts.  This, in particular, is necessary for registering SCOM classes, which will be discussed below. <br><br><h3>  Scom </h3><br>  For decomposition at a lower level, the SCOM system is used - ideologically similar to ATL library.  For those who did not work with ATL, briefly list the main features and features. <br>  For the specially designed SCOM class: <br><ul><li>  Provides factory methods that allow you to create a class from another component, knowing only its name (without disclosing the implementation) </li><li>  Provides an infrastructure of smart pointers with reference counting.  There is no need to manually monitor the lifetime of the SCOM class. </li><li>  Allows you to find out if an object implements a specific interface and automatically bring a pointer to an object to an interface pointer </li><li>  Create a service object, always accessible via the get_service method, etc. </li></ul><br>  For example, you can describe in the json.dll component a class for reading JSON (for example, JSONStreamReader). <br>  Classes, instances can be created from other components you need to register in the SCOM machine: <br><pre><code class="cpp">SCOM_CLASS_ENTRY(JSONStreamReader)
@@ -126,7 +126,7 @@ if (process)
    -? <br>
 ,  ,        ,   ?<br>
  <br>
-  !</div><p>Source: <a href="https://habr.com/ru/post/269611/">https://habr.com/ru/post/269611/</a></p>
+  !</div><p>Source: https://habr.com/ru/post/269611/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -138,8 +138,8 @@ if (process)
 <li><a href="../269613/index.html">Updated Codebattle: a game for programmers</a></li>
 <li><a href="../269615/index.html">Analyze it: how to get additional benefit from client logs</a></li>
 <li><a href="../269619/index.html">Introduction to working with ORTC in Microsoft Edge</a></li>
+<li><a href="../26962/index.html">And again about the St. Petersburg coworking. We work in a new way, reduce prices!</a></li>
 <li><a href="../269621/index.html">Duke, take out the trash! - Part 1</a></li>
-<li><a href="../269625/index.html">VII Hi-Tech Tour "Cloudy Oktoberfest". How it was?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to avoid collisions when writing to Memcache from PHP</h1><div class="post__text post__text-html js-mediator-article">  Usually, programmers use technologies for their intended purpose, but I decided to conduct an experiment and try to use the memcached server as a scalable temporary key = value store. <br>  Memcached is designed for simple caching of static data, because it does not provide a system for avoiding collisions. <br><br><h4>  Data recording </h4><br><h5>  Standard situation </h5><br>  Suppose that our PHP application runs on a single server, and memcached runs on a remote machine.  We can easily read and write to the same cell, because the application is not WEB, so the process is one.  Due to the linearity of the process, it will not be able to simultaneously write different data to the same cell. <br><h5>  Two or more processes </h5><br>  Today we needed to split the application into two servers and problems started.  There were collisions while writing to memcache.  It turned out that in 80% of cases, applications try to simultaneously write their data into one cell.  The ideal solution would be to use shared memory, but it does not scale in contrast to Memcached.  Due to the large amount of code and the estimated time for rewriting applications, it was decided to add a crutch. <br><a name="habracut"></a><br><h4>  Read-Write AgloRtim </h4><br><br>  Imagine that two daemons are accessing a single data cell at the same moment for writing, which is inevitable.  Under normal conditions, we get a collision.  We will act like this: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <ul><li>  Process1 reads uniqid from the memory cell, it is empty. </li><li>  Process1 writes uniqid with its pid and server number </li><li>  Process1 checks the uniqid value.  If it matches its key, writes the data. <br>  Depending on the situation, removes the key.  You can add the recording time, which will unlock the data cell when the process terminates abnormally 1 </li><li>  Process2 reads uniqid from a memory location; it is not empty. </li><li>  Process2 waits, for example, usleep (rand (1.5));  (cyclically) in case you need to record data despite access to the cell of a neighboring object.  We may not need to write, but just lock the cell to disable recording. </li><li>  Process2 reads uniqid from the memory cell, it is empty.  Further, the same as with the first process. </li><li>  Process3 reads uniqid from the memory cell, it is empty. </li><li>  Process3 writes uniqid with its pid and server number </li><li>  Process3 checks the uniqid value.  It does not match his key. </li><li>  Process3 returns an error, or acts as something else according to an algorithm. </li><li>  After recording, the processes should remove the pid from uniqid (it depends on the situation) </li></ul><br><br>  The test results of two demons overwriting the same cell in memcache with different PIDs. <br><br> <code> : <br> <br>  : 17699 <br>  : 100000 <br>  : 89.012994 . <br>  : <br> <br>  : 92999 <br>  : 100000 <br>  : 139.522396 .</code> <br>  Daemon Algorithm: <br><ul><li>  while the mutex is closed, check again. </li><li>  if the mutex is open, write your mutex. </li><li>  if the mutex is correct, we write; if the wrong one, go to the beginning. </li><li>  We write data </li><li>  delete mutex </li></ul><br><br>  From the tests it is clear that almost half of the data was lost. <br><br>  For normal developers: Redis, MemcacheDB and the like, we still have to rewrite this miracle. <br><br>  With this algorithm, Memcache can even be used as a <a href="http://gearman.org/">Gearman</a> .  Disadvantages of the caching server itself remain, but in most cases they do not appear. </div><p>Source: <a href="https://habr.com/ru/post/126418/">https://habr.com/ru/post/126418/</a></p>
+    <ul><li>  Process1 reads uniqid from the memory cell, it is empty. </li><li>  Process1 writes uniqid with its pid and server number </li><li>  Process1 checks the uniqid value.  If it matches its key, writes the data. <br>  Depending on the situation, removes the key.  You can add the recording time, which will unlock the data cell when the process terminates abnormally 1 </li><li>  Process2 reads uniqid from a memory location; it is not empty. </li><li>  Process2 waits, for example, usleep (rand (1.5));  (cyclically) in case you need to record data despite access to the cell of a neighboring object.  We may not need to write, but just lock the cell to disable recording. </li><li>  Process2 reads uniqid from the memory cell, it is empty.  Further, the same as with the first process. </li><li>  Process3 reads uniqid from the memory cell, it is empty. </li><li>  Process3 writes uniqid with its pid and server number </li><li>  Process3 checks the uniqid value.  It does not match his key. </li><li>  Process3 returns an error, or acts as something else according to an algorithm. </li><li>  After recording, the processes should remove the pid from uniqid (it depends on the situation) </li></ul><br><br>  The test results of two demons overwriting the same cell in memcache with different PIDs. <br><br> <code> : <br> <br>  : 17699 <br>  : 100000 <br>  : 89.012994 . <br>  : <br> <br>  : 92999 <br>  : 100000 <br>  : 139.522396 .</code> <br>  Daemon Algorithm: <br><ul><li>  while the mutex is closed, check again. </li><li>  if the mutex is open, write your mutex. </li><li>  if the mutex is correct, we write; if the wrong one, go to the beginning. </li><li>  We write data </li><li>  delete mutex </li></ul><br><br>  From the tests it is clear that almost half of the data was lost. <br><br>  For normal developers: Redis, MemcacheDB and the like, we still have to rewrite this miracle. <br><br>  With this algorithm, Memcache can even be used as a <a href="http://gearman.org/">Gearman</a> .  Disadvantages of the caching server itself remain, but in most cases they do not appear. </div><p>Source: https://habr.com/ru/post/126418/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../126411/index.html">Virus analysis by example - investigating Trojan-Downloader.Win32.Zanoza.ab</a></li>
 <li><a href="../126412/index.html">Synchronization of LanBilling and RTU class 4 & 5 account status</a></li>
+<li><a href="../126413/index.html">Using iDRAC6 kvm virtual media to install the OS</a></li>
 <li><a href="../126415/index.html">Cluster systems</a></li>
 <li><a href="../126416/index.html">Results of the competition Part 3. Quiz</a></li>
 <li><a href="../126417/index.html">Social graph</a></li>
 <li><a href="../126419/index.html">PS3 steering wheel overview</a></li>
+<li><a href="../12642/index.html">Automatic Border Control System</a></li>
 <li><a href="../126421/index.html">Amazing near or how to make fun of stock analysts (using Excel)</a></li>
 <li><a href="../126422/index.html">Creating an application on the Cocos2d framework for iOS</a></li>
 <li><a href="../126423/index.html">Mouse over translation in Lingvo x5</a></li>
-<li><a href="../126425/index.html">NuGet - download packages from the Internet during the build process</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

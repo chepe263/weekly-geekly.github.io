@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -74,7 +74,7 @@
  1 row IN SET (0.00 sec)
 </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -82,7 +82,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The most obvious solution is to expand the right key from column “a” to two columns (a, b).  It seems that this should not adversely affect other requests. <br><br><pre> mysql&gt; ALTER TABLE idxitest DROP KEY a, ADD KEY (a, b);
@@ -162,7 +162,7 @@
  |  1 |  SIMPLE |  idxitest |  INDEX |  a, a_2 |  PRIMARY |  4 |  NULL |  2247 |  USING WHERE 
  + ---- + ------------- + ---------- + ------- + ----------- ---- + --------- + --------- + ------ + ------ + ----------- - +
  1 row IN SET (0.00 sec)
-</pre><br><br>  The query optimizer considers the possibility of using both indices and eventually rejects both, doing a full index scan before finding a = 100.  It looks like the optimizer is buggy.  It is going to scan 2247 lines, whereas one line is enough using the index (a). <br><br>  Therefore, you will have to force the optimizer to choose the correct query execution plan by adding FORCE INDEX (a). <br><br>  As this example showed, you have to be very careful when playing with indices.  If you have queries whose execution plan benefits from sorting InnoDB by the primary key, then they may be significantly affected. <br><br>  The optimizer may behave differently in different versions of MySQL.  We checked in version 5.1.45, although the same behavior was found in 5.0. </div><p>Source: <a href="https://habr.com/ru/post/99310/">https://habr.com/ru/post/99310/</a></p>
+</pre><br><br>  The query optimizer considers the possibility of using both indices and eventually rejects both, doing a full index scan before finding a = 100.  It looks like the optimizer is buggy.  It is going to scan 2247 lines, whereas one line is enough using the index (a). <br><br>  Therefore, you will have to force the optimizer to choose the correct query execution plan by adding FORCE INDEX (a). <br><br>  As this example showed, you have to be very careful when playing with indices.  If you have queries whose execution plan benefits from sorting InnoDB by the primary key, then they may be significantly affected. <br><br>  The optimizer may behave differently in different versions of MySQL.  We checked in version 5.1.45, although the same behavior was found in 5.0. </div><p>Source: https://habr.com/ru/post/99310/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

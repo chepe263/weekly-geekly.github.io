@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Dense code and testing</h1><div class="post__text post__text-html js-mediator-article"> This article is written in the wake of <a href="http://steve-yegge.blogspot.com/2008/02/portrait-of-n00b.html">Steve Yegge's article.</a>  <a href="http://steve-yegge.blogspot.com/2008/02/portrait-of-n00b.html">A portrait of a n00b</a> .  For me, the main message of the article sounded like this: less comments, fewer classes, fewer methods, more code.  Make the code tighter, do not be zealous in modeling.  I find it difficult to judge this vision of the world, and indeed the question of comments as such is more speculative.  But what has become a steel needle in me is the problem of testing such a dense code. <br><br><a name="habracut"></a><br><br>  To describe the problem, let's look at a small example.  Suppose you have a server and commands come from outside.  You need to write the processing logic of these commands.  I would model this problem something like this: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <img src="https://habrastorage.org/storage1/bb736ea0/cbfba1e8/7bf07d16/b284f198.png"><br><br>  Why so and so much: firstly, we adhere to the principle of <em>Code to Interface</em> , which allows us, for example, when testing a server to forge (mock) a command handler;  secondly, by isolating the logic of each team in a separate class, we can easily test this logic.  You might think, why don't we just make one <code>Handler</code> class and add public methods for each team and submit these methods to tests, why make a bunch of classes?  But, in my opinion, the problem is that the function of the class in this case is somehow “smeared” by the class, in a sense, we open to the outside world the unnecessary details of the implementation of our handler.  After all, all that the server needs to know is that this class can process <em>any</em> command, and not that it can process command 1, command 2 and command 3. <br><br>  Now let's try to think about how this problem would be implemented in the form of a “dense code”.  Of course, I can not speak and think for the author, a person with 20-25 years of experience.  Perhaps he means something else.  But in this context, for me, code compression is, for example, spike all handlers into one class.  And even better in one method: <br><br><pre> public class Handler {
@@ -92,20 +92,20 @@
          }
      }
  }
-</pre><br><br>  How do you intend <strong>to</strong> test it?  Only integration tests can somehow save the father of Russian democracy.  Perhaps the author meant something completely different?  I would be glad if Habraguru was enlightened by me and other “teenagers” on this topic. <br><br>  In multi-paradigm languages ​​like Lisp or Python, the situation is somewhat different.  Functions in them tend to turn into multi-layered map-filter-reduce layers. <br>  Here, it seems to me, there is not much point in separating each map, filter or reduce operation into a separate function.  It is enough to use well-tested predicates instead of deranged lambdas, comment on the most important layers of map-filter-reduce, and also test the final functions well. <br><br>  <strong>PS</strong> I’ll make a reservation that I fully admit the dense implementation in imperative languages ​​of some algorithms like sorting.  Such algorithms as jugglers - there is no point in juggling with one ball, the meaning appears only when juggling with a set of balls (objects, variables, etc.) at the same time.  Although here, too, it seems to me, there are options. </div><p>Source: <a href="https://habr.com/ru/post/133957/">https://habr.com/ru/post/133957/</a></p>
+</pre><br><br>  How do you intend <strong>to</strong> test it?  Only integration tests can somehow save the father of Russian democracy.  Perhaps the author meant something completely different?  I would be glad if Habraguru was enlightened by me and other “teenagers” on this topic. <br><br>  In multi-paradigm languages ​​like Lisp or Python, the situation is somewhat different.  Functions in them tend to turn into multi-layered map-filter-reduce layers. <br>  Here, it seems to me, there is not much point in separating each map, filter or reduce operation into a separate function.  It is enough to use well-tested predicates instead of deranged lambdas, comment on the most important layers of map-filter-reduce, and also test the final functions well. <br><br>  <strong>PS</strong> I’ll make a reservation that I fully admit the dense implementation in imperative languages ​​of some algorithms like sorting.  Such algorithms as jugglers - there is no point in juggling with one ball, the meaning appears only when juggling with a set of balls (objects, variables, etc.) at the same time.  Although here, too, it seems to me, there are options. </div><p>Source: https://habr.com/ru/post/133957/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../133946/index.html">As the customer remained the performer. Part II</a></li>
 <li><a href="../133947/index.html">Letters and scribbles</a></li>
+<li><a href="../13395/index.html">If it has shoals, then it is skillful. What flows, then the brains.</a></li>
 <li><a href="../133953/index.html">FiveGUI - beautiful buttons for canvas'a</a></li>
 <li><a href="../133954/index.html">Review of the book “Programming the Arduino / Freeduino microcontroller cards”</a></li>
 <li><a href="../133956/index.html">Creating a proxy dll to run DirectDraw games in the window</a></li>
+<li><a href="../13396/index.html">The main reasons that you have lost the data ...</a></li>
 <li><a href="../133960/index.html">US Antimonopoly Committee authorized Google to buy Admeld</a></li>
 <li><a href="../133961/index.html">Microdata & the microdata DOM API</a></li>
 <li><a href="../133962/index.html">About the history of memcpy implementations and their performance</a></li>
 <li><a href="../133963/index.html">Skype vulnerability allows you to determine the IP address of a particular user.</a></li>
-<li><a href="../133964/index.html">Glory 1809 - how a wrist watch is sorted out and what it consists of</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How I bought an apartment</h1><div class="post__text post__text-html js-mediator-article">  I wanted to write an article about linear regression, but then I thought, well, well, better buy an apartment.  And he went to look for what they offer.  A offer, as it turned out, a lot of things.  More than 500 apartments fell into the price range that suits me.  And what, I now see all this?  Well nooo, I am a programmer in the end or not a programmer.  We must somehow automate this matter. <br><a name="habracut"></a><br><h4>  Data collection </h4><br>  Before you decide something, it would be nice to look at the big picture, to see some sort of squeeze from the data.  And for this, data must first be collected.  I was interested in apartments in Minsk up to $ 60k (I hope the Muscovites did not choke on saliva, having learned that for such money to actually buy an apartment?).  Google immediately issued several websites about real estate, among which the largest number of search settings I needed turned out to be on <a href="http://irr.by/realestate/sale-flats/incity/">irr.by.</a>  The design of him, of course, is not a fountain, but I, too, am not a blonde girl, to choose a real estate site by color.  And the data in the form of HTML-pages in any case did not suit me. <br><br>  For a couple of hours, I threw in the parser, which took the search string as input, ran through the first 5 pages of results and collected the parameters of interest to me.  And I was interested in the following things: <br><br><ul><li>  price (hereinafter - the variable price) </li><li>  age </li><li>  distance to metro (dist_to_subway) </li><li>  floor (storey) and storey of the house (storey_no) </li><li>  availability of a balcony or loggia (balcony) </li><li>  total (total_space) and living area (living_space), as well as kitchen area (kitchen_space) </li><li>  number of separate rooms (room_no) </li><li>  bathroom type (restroom_com for general, restroom_sep for separate) </li></ul>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The only thing that raised questions was the distance to the metro.  Real estate sites usually do not provide this information.  There is only the name of the street, the house number and the nearest station, but how many times to go there is not a word about it.  Fortunately, it turned out that the problem of determining the coordinates at an address is not new, and the corresponding process is called <a href="http://en.wikipedia.org/wiki/Geocoding">geocoding</a> , and the Babla Corporation even provides a <a href="https://developers.google.com/maps/documentation/geocoding/">free service</a> for this good deed.  After half an hour of programming with a break for coffee and cookies, the module for determining the distance to the metro at the address was ready.  (It should be noted that the results were very accurate - out of about 50 verified addresses, only 2 indicated the street, but not the house; the rest were completely correct. You should also pay attention to the fact that the service is better not to DDOS - if you don’t small breaks between requests, errors may occur.) <br><br>  Since sellers are far from always carefully and accurately filling in the fields for describing an apartment, the data were incomplete.  In an amicable way, the blank fields had to be marked as NA (Not Available) and passed them on in this form.  But it was in the evening, and there was still something to do, so I decided to follow a simplified scheme and, at the data collection stage, to score the default values.  In the absence of information about the year of construction, I scored 1980 (respectively, age - 32 years), the distance to the metro - 2000 meters, floor - 4, number of floors - 7. Very simple and almost at random.  The number of rooms, the area and the price were obligatory parameters, and in their absence the apartment was simply discarded (although in the end there was not a single case of the absence of at least one of these parameters). <br><br>  Separately, you need to tell about the type of bathroom.  Anticipating numerical calculations, I realized that working with common / separate values ​​was much more difficult than with numbers, so I had to create 2 separate variables, one for each type.  Moreover, if one variable was equal to 1, then the second was necessarily equal to 0. In statistics, this is called fictitious or <a href="http://en.wikipedia.org/wiki/Dummy_variable_(statistics)">indicator variables</a> . <br><br>  But enough about the toilets, it's time to look at the data. <br><br><h4>  First look at the data </h4><br>  One of the most popular data analysis tools is <b><a href="http://www.r-project.org/">the R project</a></b> .  R is a development environment and a programming language with extensive capabilities for manipulating and visualizing data, as well as statistical analysis and machine learning.  There are several development environments for easy editing of scripts, such as <a href="http://rstudio.org/">RStudio</a> and <a href="http://ess.r-project.org/">Emacs plugin</a> , but for most tasks a regular console is sufficient.  All this is cross-platform and completely free, that is, in vain.  R undoubtedly deserves a separate detailed article, here I will limit myself to a description of the functions and constructions of the language that I will use directly. <br><br>  The ad parser, which I described above, saved the data as a CSV file on disk.  To load it into R, just call the following function: <br><br><pre><code class="bash hljs">  &gt; dat &lt;- read.csv(<span class="hljs-string"><span class="hljs-string">"/path/to/dataset.csv"</span></span>)
@@ -241,13 +241,13 @@
 <b>:</b><br>
 <br>
 1. <a href="https://github.com/faithlessfriend/flatparser"> </a>.      flatparser.jar (   ,   View Raw)      README.<br>
- 2. <a href="https://www.coursera.org/course/ml">     Coursera</a>, ,  ,     .</div><p>Source: <a href="https://habr.com/ru/post/148782/">https://habr.com/ru/post/148782/</a></p>
+ 2. <a href="https://www.coursera.org/course/ml">     Coursera</a>, ,  ,     .</div><p>Source: https://habr.com/ru/post/148782/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../148777/index.html">Model of functional separation of consciousness and unconscious. Introduction</a></li>
 <li><a href="../148778/index.html">Model of manifestation of consciousness or ANN without the effect of forgetting</a></li>
 <li><a href="../148779/index.html">Chrome even caches HTTP DELETE requests</a></li>
+<li><a href="../14878/index.html">Why simple things are made so difficult or cunning web design</a></li>
 <li><a href="../148780/index.html">Choose the plural form of the word SERVER</a></li>
 <li><a href="../148781/index.html">A small call stack logger for C ++</a></li>
 <li><a href="../148783/index.html">Ukraine abolished VAT for IT-companies</a></li>

@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Work with subdomains in MODx</h1><div class="post__text post__text-html js-mediator-article">  Here a question came from a friend: <br><blockquote>  Good afternoon! <br><br>  I read an article about the <a href="http://habrahabr.ru/post/151540/">friendship of ModX and LS</a> , and decided to ask a question that I myself can’t decide in ModX how to implement the logic of Revo depending on the current subdomain of the main site? <br><br>  I see on pro-cent.ru that the name of the city is placed in the subdomain (http://kaliningrad.pro-cent.ru/).  Does ModX help in handling this, or is everything done with your hands and your code? </blockquote>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,18 +62,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I decided to give an answer to the audience, probably someone will come in handy too. <a name="habracut"></a><br><br>  In general, it was already written on Habré that to work with several domains (more precisely, switching between them), you need to use the $ modx-&gt; switchContext ($ ctx) method;  This is certainly a very useful thing, but in our case it does not save us, as in the case of switching to another context, we lose the opportunity to just access the documents of our basic context (in this case, the web), as well as with the subtlety context settings there is.  In general, $ modx-&gt; switchContext () is needed when the target context is completely independent, has its own documents, etc. <br><br>  In my case, I have a basic context and it already has all the documents I need, and contexts in cities a la krasnodar are needed only to reload some settings (each context has its own settings such as basic domain, city, code I .Metrics, etc.), in general, all that is easy to determine which shares to display, etc. <br><br>  So, I advise everyone to pay more attention to plugins.  They are not so much dedicated to those, but it is the plugins that allow you to arbitrarily wedge into the logic of MODx, while not touching the code of the engine itself. <br><br>  In general, in order to solve our problem, we do the following: <br><br>  1. Create the necessary contexts and write the necessary settings in them. <br><br>  2. Create a plugin and specify the execution of the OnHandleRequest event <br><br>  3. In the plugin we write the following (or something like that) <br><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-comment"><span class="hljs-comment">//         switch($modx-&gt;context-&gt;key){ case 'web': break; default: return; } //    3-   ,     if(preg_match('/([^\.]+)\.[^\.]+\.[^\.]+$/',$_SERVER['HTTP_HOST'], $match)){ if($ctx = $modx-&gt;getObject('modContext', $match[1])){ //    if($ctx-&gt;prepare()) { //   MODx- //   ,         API $modx-&gt;getOption(); //   ,         [[++site_name]],       //   $modx-&gt;config = array_merge($modx-&gt;config, $ctx-&gt;config); } } } //      // -   ,         , //  -    //    if(!$host &amp;&amp; (!$host = $modx-&gt;config['mainHost'])) { // print "      ".$modx-&gt;context-&gt;key; return; } // print $host; $redir_host = ''; $redir_url = ''; //         switch($modx-&gt;event-&gt;name){ case 'OnPageNotFound': break; case 'OnHandleRequest': break; default: ; } //      if(!preg_match('/^'.$host.'$/i', $_SERVER['HTTP_HOST'])){ $redir_host = $host; $redir_url = $_SERVER['REQUEST_URI']; } //       ,   301-  (  ) if($redir_host || $redir_url){ $params = array(); $redir_url ? $params['url'] = $redir_url : ""; $redir_host ? $params['hostl'] = $redir_host : ""; $modx-&gt;runSnippet('redirect', $params); }</span></span></code> </pre> <br><br>  Actually everything. </div><p>Source: <a href="https://habr.com/ru/post/151751/">https://habr.com/ru/post/151751/</a></p>
+      I decided to give an answer to the audience, probably someone will come in handy too. <a name="habracut"></a><br><br>  In general, it was already written on Habré that to work with several domains (more precisely, switching between them), you need to use the $ modx-&gt; switchContext ($ ctx) method;  This is certainly a very useful thing, but in our case it does not save us, as in the case of switching to another context, we lose the opportunity to just access the documents of our basic context (in this case, the web), as well as with the subtlety context settings there is.  In general, $ modx-&gt; switchContext () is needed when the target context is completely independent, has its own documents, etc. <br><br>  In my case, I have a basic context and it already has all the documents I need, and contexts in cities a la krasnodar are needed only to reload some settings (each context has its own settings such as basic domain, city, code I .Metrics, etc.), in general, all that is easy to determine which shares to display, etc. <br><br>  So, I advise everyone to pay more attention to plugins.  They are not so much dedicated to those, but it is the plugins that allow you to arbitrarily wedge into the logic of MODx, while not touching the code of the engine itself. <br><br>  In general, in order to solve our problem, we do the following: <br><br>  1. Create the necessary contexts and write the necessary settings in them. <br><br>  2. Create a plugin and specify the execution of the OnHandleRequest event <br><br>  3. In the plugin we write the following (or something like that) <br><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-comment"><span class="hljs-comment">//         switch($modx-&gt;context-&gt;key){ case 'web': break; default: return; } //    3-   ,     if(preg_match('/([^\.]+)\.[^\.]+\.[^\.]+$/',$_SERVER['HTTP_HOST'], $match)){ if($ctx = $modx-&gt;getObject('modContext', $match[1])){ //    if($ctx-&gt;prepare()) { //   MODx- //   ,         API $modx-&gt;getOption(); //   ,         [[++site_name]],       //   $modx-&gt;config = array_merge($modx-&gt;config, $ctx-&gt;config); } } } //      // -   ,         , //  -    //    if(!$host &amp;&amp; (!$host = $modx-&gt;config['mainHost'])) { // print "      ".$modx-&gt;context-&gt;key; return; } // print $host; $redir_host = ''; $redir_url = ''; //         switch($modx-&gt;event-&gt;name){ case 'OnPageNotFound': break; case 'OnHandleRequest': break; default: ; } //      if(!preg_match('/^'.$host.'$/i', $_SERVER['HTTP_HOST'])){ $redir_host = $host; $redir_url = $_SERVER['REQUEST_URI']; } //       ,   301-  (  ) if($redir_host || $redir_url){ $params = array(); $redir_url ? $params['url'] = $redir_url : ""; $redir_host ? $params['hostl'] = $redir_host : ""; $modx-&gt;runSnippet('redirect', $params); }</span></span></code> </pre> <br><br>  Actually everything. </div><p>Source: https://habr.com/ru/post/151751/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../151744/index.html">Method of geometric parallelism and some more about MPI</a></li>
-<li><a href="../151745/index.html">Mir station telemetry generator, or why it is impossible to offend programmers</a></li>
 <li><a href="../151746/index.html">Change from Growl to Notification Center</a></li>
 <li><a href="../151747/index.html">LG and Qualcomm jointly unveiled the LG Optimus G, the first smartphone on the Snapdragon S4 Pro</a></li>
+<li><a href="../151748/index.html">Tower of Babel Management 2</a></li>
 <li><a href="../151749/index.html">Microsoft updates old versions of Skype, regardless of the desires of users</a></li>
+<li><a href="../15175/index.html">The biggest scandal in the history of online poker</a></li>
 <li><a href="../151752/index.html">Traffic police are planning to equip ... iPad'om</a></li>
 <li><a href="../151753/index.html">Humble Indie Bundle 6</a></li>
 <li><a href="../151754/index.html">The meaning of software life</a></li>

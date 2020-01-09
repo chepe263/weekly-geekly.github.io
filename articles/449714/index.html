@@ -30,12 +30,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -57,7 +57,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Nil is not always nil</h1><div class="post__text post__text-html js-mediator-article"><h1 id="nil-ne-vsegda-nil">  Nil is not always nil </h1><br><p>  "What? What is it all written here?"  you ask.  Now everything will decompose. </p><br><p>  When I started to learn a language, I did not think that I would go into this narrow case.  This is also not rational as changing the iterated collection. </p><a name="habracut"></a><br><h6 id="na-primere">  For example: </h6><br><pre><code class="plaintext hljs">func Foo() error { var err *os.PathError = nil return err } func main() { err := Foo() fmt.Println(err) // &lt;nil&gt; fmt.Println(err == nil) // false }</code> </pre> <br><p>  WAT! </p><br><h6 id="chto-predstavlyaet-soboy-interfeys">  What is the interface </h6><br><p>  Go to the go runtime / runtime2.go package file and see: </p><br><pre> <code class="plaintext hljs">type itab struct { // 40 bytes on a 64bit arch inter *interfacetype _type *_type ... }</code> </pre> <br><p>  The interface stores the type of interface and the type of the value itself. </p><br><p>  The value of any interface, not just error, is nil in the case when AND value and type are nil. </p><br><p>  The foo function returns nil of the * os.PathError type, we compare the result with nil of the nil type, whence their inequality follows. </p><br><p>  Perhaps many people knew about this, but few people think how to get into this in practice. </p><br><h6 id="moy-primer">  My example </h6><br><pre> <code class="plaintext hljs">type Response struct { Result ResponseResult `json:"result,omitempty"` Error *ResponseError `json:"error,omitempty"` } type ResponseError struct { Message string `json:"message"` } func (e *ResponseError) Error() string { return e.Message } ... func (s *NotificationService) NotifyIfError(w *ResponseWriter) error { ... var res handlers.Response _ = json.Unmarshal(body, &amp;res) if res.Error == nil { return } return s.NotifyError(err) }</code> </pre> <br><p>  Response always has a result or error. </p><br><p>  If there is an error, we send it where it is necessary through the notification service. <br>  Inside the service, the Error method is called, and since our value is nil, we get a panic. </p><br><h6 id="chto-delat">  What to do? </h6><br><p>  Return interface is strictly interface type. </p><br><p>  In the event of an error, the type of error. </p><br><ul><li>  Add an error type ad </li></ul><br><pre> <code class="plaintext hljs">func (s *NotificationService) NotifyIfError(w *ResponseWriter) error { ... var res Response _ = json.Unmarshal(body, &amp;res) var err error = res.Error return s.NotifyError(err) }</code> </pre> <br><p>  To my surprise, this technique does not work either. </p><br><p>  It turns out that when assigning a value to the err variable, we also give it initial information about a type that is not nil. </p><br><ul><li>  Let's try to get our source type from the interface type and check its value. </li></ul><br><pre> <code class="plaintext hljs">func (s *NotificationService) NotifyIfError(w *ResponseWriter) error { ... if e, ok := err.(*ResponseError); ok &amp;&amp; e == nil { return s.NotifyError(err) } return nil }</code> </pre> <br><p>  Yes, this technique works. </p><br><p>  But let's be honest, we cannot afford to check all types of errors that we will transmit. </p><br><p>  These can be all errors from the database driver, all our internal errors and other garbage. </p><br><h6 id="kakoy-naibolee-racionalnyy-variant-ya-vizhu">  What is the most rational option I see: </h6><br><pre> <code class="plaintext hljs">func (s *NotificationService) NotifyIfError(w *ResponseWriter) error { var err error ... var res Response _ = json.Unmarshal(body, &amp;res) if res.Error != nil { return s.NotifyError(err) } return nil }</code> </pre> <br><p>  At first, we have declared a variable of type error, as it turns out with the value and type nil. <br>  And before passing our type and value of this variable, we check our type and its value for nil. </p><br><p>  This will allow us not to fall with panic. </p><br><h6 id="naposledok">  At last </h6><br><p>  You can go even further and implement an "optional" error for the Response, OptionalError or ErrorOrNil type, like this: </p><br><pre> <code class="plaintext hljs">func (r *Response) ErrorOrNil() error { if r.Error == nil { return nil } return r.Error }</code> </pre> <br><h6 id="na-zametku">  On a note </h6><br><p>  In the <a href="https://github.com/golang/go/wiki/CodeReviewComments">notes Go wiki code review a</a> note in the topic about the interface: </p><br><p>  I will note that the dances given by me above are not about that. </p><br><p>  My notes allow you not to fall down with a panic when you know that you want to return interest, and in case of errors, you always want to return the interface. </p><br><p>  But if you can afford to return a certain type, return it. </p><br><h6 id="ssylki">  Links </h6><br><p>  <a href="https://github.com/teh-cmc/go-internals/tree/master/chapter2_interfaces">go-internals</a> </p><br><h6 id="ya">  I </h6><br><p>  <a href="https://www.linkedin.com/in/%25D0%25B4%25D0%25B5%25D0%25BD%25D0%25B8%25D1%2581-%25D0%25B4%25D0%25B2%25D0%25BE%25D1%2580%25D0%25BD%25D0%25B8%25D0%25BA%25D0%25BE%25D0%25B2-33399812b/">LinkedIn</a> <br>  <a href="https://t.me/it_patifon">Telegram</a> <br>  <a href="https://twitter.com/denny_penta/followers">Twitter</a> <br>  <a href="https://github.com/dennypenta">Github</a> </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -65,23 +65,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/449714/">https://habr.com/ru/post/449714/</a></p>
+    <p>Source: https://habr.com/ru/post/449714/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../44969/index.html">Married to a programmer</a></li>
-<li><a href="../449696/index.html">Participate in the competition for overclocking memory - HyperX Memory OC Competition 2019</a></li>
-<li><a href="../4497/index.html">A new worm makes clicking on AdSense links</a></li>
 <li><a href="../44970/index.html">Free seminar "IT for small business"</a></li>
+<li><a href="../449700/index.html">Why traffic suddenly turns into traffic jam</a></li>
+<li><a href="../449702/index.html">The laureates of the international SSH and sudo competitions are on stage again. Under the leadership of the distinguished conductor of Active Directory</a></li>
 <li><a href="../44971/index.html">Freerunner is already in Russia</a></li>
-<li><a href="../44973/index.html">Horror as I would like to have ...</a></li>
-<li><a href="../449730/index.html">Cryptocurrency: lives or dies? Part 2. Political and economic trends</a></li>
-<li><a href="../449740/index.html">We look "Window to the city" in high quality</a></li>
-<li><a href="../44975/index.html">Fuzzy customers</a></li>
-<li><a href="../449750/index.html">An open network monitoring tool with IoT devices</a></li>
+<li><a href="../449712/index.html">News for the week: HDD demand is declining, the law on the sovereign Internet is approved, the production of 5G equipment in Russia</a></li>
+<li><a href="../449716/index.html">Acronis opens API for developers for the first time.</a></li>
+<li><a href="../449718/index.html">AI taught to determine the post-traumatic syndrome by human voice</a></li>
+<li><a href="../449720/index.html">How to ride a rainbow: the story of a dark theme</a></li>
+<li><a href="../449722/index.html">Angular effects</a></li>
+<li><a href="../449724/index.html">Steel liquidators</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

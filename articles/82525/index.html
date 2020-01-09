@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>interface post-up on CentOS</h1><div class="post__text post__text-html js-mediator-article"> Half a day I was tormented on how to make CentOS run a script after raising the interface.  After the <s>first unsuccessful googling, the</s> appearance of the first difficulties forced myself, however, not to act according to the principle “A dirty hack is better than a long haemorrhoid”: refrained from sticking a crutch into <code>/etc/sysconfig/network-scripts/ifup-eth</code> <br>  In order to keep my colleagues from this, I am writing here the result of my research. <br><a name="habracut"></a><br>  1. In its pure form, there is no analogue of the debian post-up on CentOS.  Do not even try to look for him. <br>  2. All that is is a certain feature described in Red Hat Knowledgebase <a href="http://kbase.redhat.com/faq/docs/DOC-8695">DOC-8695</a> <br><br>  If at a Glance: it is proposed to create a certain / sbin / ifup-local.  In which you then put your useful (or useless) code.  For example: <br> <code>#Set the MTU for eth0 only using the ip command <br> if [ "$1" = "eth0" ]; then <br> exec /sbin/ip link set dev ${1} mtu 1200 <br> fi</code> <br>  But this is not our method.  I consider storing something related to the configuration in <code>/sbin/</code> unobvious, and even criminal with respect to other admins.  Which may have to work with this system in the future. <br><br>  3. Described in the article <a href="http://habrahabr.ru/blogs/linux/47230/">Network configuration in Linux through config files, Part 1</a> , the <code>ifup.d</code> and <code>ifdown.d</code> simply did not <code>ifdown.d</code> .  There is not even a mention of <code>/etc/sysconfig/network-scripts/*</code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Based on 1,2,3, the only correct solution is to place the following in <code>/sbin/</code> <code>ifup-local</code> script: <br> <code>#!/bin/bash <br> <br> POSTUPNAME="/etc/sysconfig/network-scripts/post-up-$1" <br> if [ -x $POSTUPNAME ]; then <br> exec $POSTUPNAME <br> fi</code> <br> <br>  Accordingly, <code>post-up-eth0</code> files are then placed in <code>/etc/sysconfig/network-scripts/</code> .  with useful code inside. <br><br>  And finally, the situation is similar with the launch of the code before raising the interface ( <code>/sbin/ifup-pre-local</code> ), before disabling it ( <code>/sbin/ifdown-pre-local</code> ) and after disabling it ( <code>/sbin/ifdown-local</code> ). <br><br>  <b>PS</b> Work was carried out on CentOS release 5.4 (Final).  Not a single server was damaged as a result of the autopsy. </div><p>Source: <a href="https://habr.com/ru/post/82525/">https://habr.com/ru/post/82525/</a></p>
+      Based on 1,2,3, the only correct solution is to place the following in <code>/sbin/</code> <code>ifup-local</code> script: <br> <code>#!/bin/bash <br> <br> POSTUPNAME="/etc/sysconfig/network-scripts/post-up-$1" <br> if [ -x $POSTUPNAME ]; then <br> exec $POSTUPNAME <br> fi</code> <br> <br>  Accordingly, <code>post-up-eth0</code> files are then placed in <code>/etc/sysconfig/network-scripts/</code> .  with useful code inside. <br><br>  And finally, the situation is similar with the launch of the code before raising the interface ( <code>/sbin/ifup-pre-local</code> ), before disabling it ( <code>/sbin/ifdown-pre-local</code> ) and after disabling it ( <code>/sbin/ifdown-local</code> ). <br><br>  <b>PS</b> Work was carried out on CentOS release 5.4 (Final).  Not a single server was damaged as a result of the autopsy. </div><p>Source: https://habr.com/ru/post/82525/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../82511/index.html">Nginx + server Javascript</a></li>
-<li><a href="../82514/index.html">Fight Memory Leaks (C ++ CRT)</a></li>
 <li><a href="../82516/index.html">Idea: direct mail in web studios and advertising agencies</a></li>
 <li><a href="../82518/index.html">Google Analytics: Notes are now available for all accounts.</a></li>
+<li><a href="../82519/index.html">Apple has allowed VoIP over 3G</a></li>
+<li><a href="../8252/index.html">We write correctly</a></li>
 <li><a href="../82521/index.html">Canobuvosti, 24th edition</a></li>
 <li><a href="../82528/index.html">We change books for reviews</a></li>
 <li><a href="../82529/index.html">Beautiful PR or how disappointed we are in VDS on Hyper-V from parking.ru</a></li>
+<li><a href="../8253/index.html">Mozilla is going to release a mobile version of Firefox</a></li>
 <li><a href="../82531/index.html">What Wikipedia spends money on. 2008/2009 Report</a></li>
 <li><a href="../82533/index.html">Intel office</a></li>
-<li><a href="../82535/index.html">Microsoft transferred opensource code to Zend Framework</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Another C ++ plugin framework</h1><div class="post__text post__text-html js-mediator-article"><h2 id="vstuplenie">  Introduction </h2><br><p>  Who did not visit, using the open-source libraries, the thought: <em>“Thanks to these guys for this cool liba!</em>  <em>Someday I will write something worthwhile and put it in public so that others can use it! ”</em> </p><br><p>  Yes, everyone!  Or no ?.. </p><a name="habracut"></a><br><p> With the advent of the standard C ++ 17, our <code></code> solved much faster and more elegant, you just need to want to realize the conceived idea, and be able to apply in practice the sweets that we are spoiled by the guys from <strong>WG21</strong> . <br> <code>    ? : #,     )) ...</code> </p> <br><h2 id="predystoriya">  Prehistory </h2><br><p>  The theme of plug-ins is quite interesting because it allows you to add new functionality to the Software (software) without making changes to the program's core, but the interface for interaction should be thought out and written: <strong>Software</strong> &lt;-&gt; <strong>Plug-in</strong> <strong>Manager</strong> &lt;-&gt; <strong>Plug-ins</strong> . </p><br><p>  I have an experience (unsuccessful) of an interview with a company that has its own plugin system for embedded systems, because of the complexity of the architecture of which I filled up a test task.  There are a lot of macros inside the base classes from which it is inherited, and many other things that make the programmer’s everyday life gray when using such solutions ... </p><br><p>  At one of the moments of self-education, and reading articles on C ++ 17, it was decided to consolidate the knowledge gained when writing a plugin system that would be understandable and easy to use. </p><br><p>  How bad or good it turned out for me is to judge you, dear habrovchane ... </p><br><h2 id="obzor">  Overview </h2><br><h3 id="vozmozhnosti-biblioteki">  Library features </h3><br><ul><li>  Plugins as services (run in separate trades) </li><li>  Automatic unloading of unused plugins </li></ul><br><h3 id="plyusy">  pros </h3><br><ul><li>  Ease of use </li><li>  Asynchronous task execution </li><li>  Header-only design </li></ul><br><h3 id="minusy">  Minuses </h3><br><ul><li>  If a new plugin is added to the system, then it must be compiled with the same version of the compiler as its loading manager (as well as libstdc ++) for ABI compatibility </li><li>  Permanent caches from std :: any to the types used? </li><li>  Check futures for validity? </li></ul><br><h3 id="sozdanie-plagina">  Creating a plugin </h3><br><pre> <code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">myplugin</span></span></span><span class="hljs-class"> :</span></span> <span class="hljs-keyword"><span class="hljs-keyword">public</span></span> micro::iplugin { <span class="hljs-keyword"><span class="hljs-keyword">public</span></span>: myplugin(<span class="hljs-keyword"><span class="hljs-keyword">int</span></span> ver, <span class="hljs-keyword"><span class="hljs-keyword">const</span></span> <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::<span class="hljs-built_in"><span class="hljs-built_in">string</span></span>&amp; nm):micro::iplugin(ver, nm) { <span class="hljs-comment"><span class="hljs-comment">//     subscribe&lt;2&gt;("sum2", [](std::any a, std::any b)-&gt; std::any { return std::any_cast&lt;int&gt;(a) + std::any_cast&lt;int&gt;(b); }, "  " ); } };</span></span></code> </pre> <br><h3 id="zagruzka-plagina">  Plugin loading </h3><br><pre> <code class="hljs cpp"><span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::<span class="hljs-built_in"><span class="hljs-built_in">shared_ptr</span></span>&lt;micro::plugins&gt; manager = micro::plugins::get(); <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::<span class="hljs-built_in"><span class="hljs-built_in">shared_ptr</span></span>&lt;micro::iplugin&gt; myplugin = manager-&gt;get_plugin(<span class="hljs-string"><span class="hljs-string">"myplugin"</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (myplugin &amp;&amp; myplugin-&gt;has&lt;<span class="hljs-number"><span class="hljs-number">2</span></span>&gt;(<span class="hljs-string"><span class="hljs-string">"sum2"</span></span>)) { <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::shared_future&lt;<span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::any&gt; result = myplugin-&gt;run&lt;<span class="hljs-number"><span class="hljs-number">2</span></span>&gt;(<span class="hljs-string"><span class="hljs-string">"sum2"</span></span>, <span class="hljs-number"><span class="hljs-number">25</span></span>, <span class="hljs-number"><span class="hljs-number">25</span></span>); result.wait(); <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::<span class="hljs-built_in"><span class="hljs-built_in">cout</span></span> &lt;&lt; <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::any_cast&lt;<span class="hljs-keyword"><span class="hljs-keyword">int</span></span>&gt;(result.get()) &lt;&lt; <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::<span class="hljs-built_in"><span class="hljs-built_in">endl</span></span>; }</code> </pre> <br><p>  See more detailed examples <a href="http://github.com/dmxvlx/microplugins">on the project page.</a> </p><br><h2 id="vmesto-zaklyucheniya">  Instead of conclusion </h2><br><p>  I am very pleased to read informative articles on Habré in C ++ (and not only in C ++), <br>  I hope this article will be interesting to you and at least somewhat informative. </p><br><p>  In my humble opinion, you can use it in prode, let the more authoritative C ++ 's take a look and say their word, the sources are well documented and there are not many of them - about 1000 lines. </p><br><h2 id="ssylka-na-proekt">  Link to the project </h2><br><p>  <a href="http://github.com/dmxvlx/microplugins">microplugins</a> </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,18 +62,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/422401/">https://habr.com/ru/post/422401/</a></p>
+    <p>Source: https://habr.com/ru/post/422401/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../422385/index.html">Virtual memory in ARMv7</a></li>
-<li><a href="../422389/index.html">The forgotten art of bending: as in other cultures cherish the spine</a></li>
+<li><a href="../42239/index.html">jQuery and Nokia</a></li>
 <li><a href="../422395/index.html">Well forgotten new: years later, the successor to MikroTik RB2011 comes out</a></li>
 <li><a href="../422397/index.html">"The main thing - passed": what and how to teach the future IT people in Berlin</a></li>
 <li><a href="../422399/index.html">Process code review in hh.ru</a></li>
+<li><a href="../4224/index.html">Russian online stores are certified by international standards in a year</a></li>
 <li><a href="../422403/index.html">September 20, Moscow - a meeting for analysts</a></li>
 <li><a href="../422407/index.html">How to find similar texts and sort</a></li>
 <li><a href="../422409/index.html">Python: metaprogramming in production. Part one</a></li>

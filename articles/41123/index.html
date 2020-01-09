@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How do I know that the directory is actually a recycle bin?</h1><div class="post__text post__text-html js-mediator-article"> Here is a question caused by a real customer request: <br><br>  <i>I need a function that determines by its path whether it is part of the Recycle Bin.</i>  <i>I tried to use <code>SHGetSpecialFolderPath</code> with <code>CSIDL_BITBUCKET</code> , but this does not work because the Recycle Bin is a virtual directory that is a combination of <code>SHGetSpecialFolderPath</code> <code>CSIDL_BITBUCKET</code> from all disks.</i> <br><br><a name="habracut"></a>  The client writes that he does not want to hard-write (hard code) the words <code>RECYLCED</code> and <code>RECYCLER</code> - a good solution, since these names depend on a lot.  I already wrote that it <a href="http://blogs.msdn.com/oldnewthing/archive/2006/01/31/520225.aspx">depends on the file system</a> .  It also depends on whether the disk is accessed locally or remotely: the basket accessible via the network is called differently.  This may depend on the operating system that is installed on the user.  No, it’s a bad idea to prescribe the folder names for the recycle bin in the program. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The <code>SHDESCRIPTIONID</code> structure reports a bit more about the shell folder.  In addition to the “description ID”, it also gives the <code>CLSID</code> , and this is what is important in this case. <br><br> <code>#include &lt;windows.h&gt; <br> #include &lt;shlobj.h&gt; <br> #include &lt;tchar.h&gt; <br> #include &lt;stdio.h&gt; <br> <br> HRESULT <br> GetFolderDescriptionId(LPCWSTR pszPath, SHDESCRIPTIONID *pdid) <br> { <br> HRESULT hr; <br> LPITEMIDLIST pidl; <br> if (SUCCEEDED(hr = SHParseDisplayName(pszPath, NULL, <br> &amp;pidl, 0, NULL))) { <br> IShellFolder *psf; <br> LPCITEMIDLIST pidlChild; <br> if (SUCCEEDED(hr = SHBindToParent(pidl, IID_IShellFolder, <br> (void**)&amp;psf, &amp;pidlChild))) { <br> hr = SHGetDataFromIDList(psf, pidlChild, <br> SHGDFIL_DESCRIPTIONID, pdid, sizeof(*pdid)); <br> psf-&gt;Release(); <br> } <br> CoTaskMemFree(pidl); <br> } <br> return hr; <br> } <br> <br> int __cdecl wmain(int argc, WCHAR **argv) <br> { <br> SHDESCRIPTIONID did; <br> if (SUCCEEDED(GetFolderDescriptionId(argv[1], &amp;did)) &amp;&amp; <br> did.clsid == CLSID_RecycleBin) { <br> printf("is a recycle bin\n"); <br> } else { <br> printf("is not a recycle bin\n"); <br> } <br> return 0; <br> } <br></code> <br><br>  The <code>GetFolderDescriptionId</code> function takes the path to the folder and turns it into <code>ITEMIDLIST</code> to call <code>SHGetDataFromIDList</code> and get the <code>SHDESCRIPTIONID</code> .  All we care about is whether <code>CLSID</code> is Baskets or not. <br><br> <code>C:\&gt; checkrecycle C:\Windows <br> is not a recycle bin <br> C:\&gt; checkrecycle C:\RECYCLER\S-1-5-21-2127521184-1604012920-1887927527-72713 <br> is a recycle bin <br></code> <br><br>  Of course, after I said how to do it, I have to say how <i>not to do it</i> .  This is another example of how a client has a problem, he solves half and asks for advice on <a href="http://blogs.msdn.com/oldnewthing/archive/2006/03/23/558887.aspx">how to solve the other</a> , without noticing that he approaches the problem from the wrong side.  Next time we look at the <i>real</i> problem of the client. <br></div><p>Source: <a href="https://habr.com/ru/post/41123/">https://habr.com/ru/post/41123/</a></p>
+      The <code>SHDESCRIPTIONID</code> structure reports a bit more about the shell folder.  In addition to the “description ID”, it also gives the <code>CLSID</code> , and this is what is important in this case. <br><br> <code>#include &lt;windows.h&gt; <br> #include &lt;shlobj.h&gt; <br> #include &lt;tchar.h&gt; <br> #include &lt;stdio.h&gt; <br> <br> HRESULT <br> GetFolderDescriptionId(LPCWSTR pszPath, SHDESCRIPTIONID *pdid) <br> { <br> HRESULT hr; <br> LPITEMIDLIST pidl; <br> if (SUCCEEDED(hr = SHParseDisplayName(pszPath, NULL, <br> &amp;pidl, 0, NULL))) { <br> IShellFolder *psf; <br> LPCITEMIDLIST pidlChild; <br> if (SUCCEEDED(hr = SHBindToParent(pidl, IID_IShellFolder, <br> (void**)&amp;psf, &amp;pidlChild))) { <br> hr = SHGetDataFromIDList(psf, pidlChild, <br> SHGDFIL_DESCRIPTIONID, pdid, sizeof(*pdid)); <br> psf-&gt;Release(); <br> } <br> CoTaskMemFree(pidl); <br> } <br> return hr; <br> } <br> <br> int __cdecl wmain(int argc, WCHAR **argv) <br> { <br> SHDESCRIPTIONID did; <br> if (SUCCEEDED(GetFolderDescriptionId(argv[1], &amp;did)) &amp;&amp; <br> did.clsid == CLSID_RecycleBin) { <br> printf("is a recycle bin\n"); <br> } else { <br> printf("is not a recycle bin\n"); <br> } <br> return 0; <br> } <br></code> <br><br>  The <code>GetFolderDescriptionId</code> function takes the path to the folder and turns it into <code>ITEMIDLIST</code> to call <code>SHGetDataFromIDList</code> and get the <code>SHDESCRIPTIONID</code> .  All we care about is whether <code>CLSID</code> is Baskets or not. <br><br> <code>C:\&gt; checkrecycle C:\Windows <br> is not a recycle bin <br> C:\&gt; checkrecycle C:\RECYCLER\S-1-5-21-2127521184-1604012920-1887927527-72713 <br> is a recycle bin <br></code> <br><br>  Of course, after I said how to do it, I have to say how <i>not to do it</i> .  This is another example of how a client has a problem, he solves half and asks for advice on <a href="http://blogs.msdn.com/oldnewthing/archive/2006/03/23/558887.aspx">how to solve the other</a> , without noticing that he approaches the problem from the wrong side.  Next time we look at the <i>real</i> problem of the client. <br></div><p>Source: https://habr.com/ru/post/41123/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../411151/index.html">iMX6ULL. Transition to processor modules</a></li>
 <li><a href="../411153/index.html">Nine circles of bureaucracy: how the airport in Denver is trying to get a license to the spaceport</a></li>
 <li><a href="../41116/index.html">Final version of phpMyAdmin 3.0.0 released</a></li>
 <li><a href="../41119/index.html">Which domain zone is better to use for a personal site?</a></li>
+<li><a href="../4112/index.html">Digg earns nearly $ 1 million per month</a></li>
 <li><a href="../41121/index.html">MJ # one - a blog about mobile and portable devices</a></li>
 <li><a href="../41126/index.html">Firefox and spell checker</a></li>
 <li><a href="../41127/index.html">Zend_Mail send authentication via SMTP</a></li>
 <li><a href="../41129/index.html">Do it yourself - device for digitizing filmstrips</a></li>
+<li><a href="../4113/index.html">Rambler Media is preparing to buy a large</a></li>
 <li><a href="../41130/index.html">IT shabashki as an alternative to freelancing and studios</a></li>
-<li><a href="../41131/index.html">My idea for a better world</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

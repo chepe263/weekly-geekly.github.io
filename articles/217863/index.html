@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Habrachat or using the ARM server</h1><div class="post__text post__text-html js-mediator-article">  <a href="http://habrahabr.ru/post/216471/">Last time</a> I launched my site on the ARM server from <a href="http://habrahabr.ru/company/globatel_ltd/">GlobalTel</a> , and now I decided to write a project with 0 for this server. <br>  It turned out this: <a href="http://www.habrachat.org/">habrachat.org</a> .  Small details under the cut. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/993/3d1/213/9933d1213b635bf7dfc810e2353a8640.jpg"><br><a name="habracut"></a><br><br><h2>  Motivation </h2><br><ul><li>  I wanted to load the ARM server with something easy, such a task where powerful x86 cores would be unnecessary.  That's why I chose the asynchronous tornado server and the classic chat task. </li><li>  I have not seen the chat for habrahabr.  There is IRC, but I am there less and less, and I see people less often there. </li><li>  I did not find a ready, simple chat on tornado + redis with room support.  In general, for this bundle and tornado in particular, there are very few examples of the finished chat.  In addition, these chats could not work on several kernels at once (only one instance). </li></ul>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h2>  Implementation </h2><br><ul><li>  Components took simple nginx (WebsocketProxy), Tornado (WebSocket), tornado-redis, Redis.  On the bootstrap + dojo client. </li><li>  Authorization implemented through the ulogin service for speed of development.  And in general, convenient service. </li><li>  Text formatting implemented through bbcode library for python. </li><li>  At first I did everything in one day and quite simply (where it is 300 lines), but it worked only in one instance.  When I decided to make synchronization between instances, I suffered.  As a result, the code has grown to 540 lines. </li><li>  If sending messages to a user is a fairly simple task and is described everywhere, then sending a message to a neighboring chat room (instance) is already more difficult.  Every “chat” I sign in redis on the same channel, and in a separate connection (as this is a blocking operation).  When you turn on each "chat" sends a request to inform all of its users, all who receive this message also send their lists to everyone.  In the future, I send the created message not only to users of a specific “chat” but also in all the other “chats” where a special callback function works.  There are a lot of details, it is better to watch the code immediately. </li><li>  The code itself is <a href="https://github.com/stalkerg/habrachat">github.com/stalkerg/habrachat</a> .  There are a lot of mistakes there, many not beautiful approaches, so that if you find something, write on gitahb or push patches (wrote in a hurry and on the result).  In addition, if I like the idea, I will develop it. </li></ul><br><br><h2>  Addition </h2><br><ul><li>  The Ubuntu kernel for ARM is built only with a basic set of netfilters, which is why you cannot even port a port.  As a result, I collected nginx from source and proxy WebSocket on it.  :( </li><li>  Recently, GlobalTel had an accident and after the light was turned off, the server lost time at 0, that is,  73 year  Probably ARM has this problem.  I wondered for a long time why my ssl is buggy wherever possible. </li></ul><br><br>  PS If really it will be necessary for someone, then the service will grow into features and other things, and the crutches will be removed.  Write in the comments your wishes. <br>  PS2 I hope the effect will not drop the poor 4th nuclear ARM server. </div><p>Source: <a href="https://habr.com/ru/post/217863/">https://habr.com/ru/post/217863/</a></p>
+    <h2>  Implementation </h2><br><ul><li>  Components took simple nginx (WebsocketProxy), Tornado (WebSocket), tornado-redis, Redis.  On the bootstrap + dojo client. </li><li>  Authorization implemented through the ulogin service for speed of development.  And in general, convenient service. </li><li>  Text formatting implemented through bbcode library for python. </li><li>  At first I did everything in one day and quite simply (where it is 300 lines), but it worked only in one instance.  When I decided to make synchronization between instances, I suffered.  As a result, the code has grown to 540 lines. </li><li>  If sending messages to a user is a fairly simple task and is described everywhere, then sending a message to a neighboring chat room (instance) is already more difficult.  Every “chat” I sign in redis on the same channel, and in a separate connection (as this is a blocking operation).  When you turn on each "chat" sends a request to inform all of its users, all who receive this message also send their lists to everyone.  In the future, I send the created message not only to users of a specific “chat” but also in all the other “chats” where a special callback function works.  There are a lot of details, it is better to watch the code immediately. </li><li>  The code itself is <a href="https://github.com/stalkerg/habrachat">github.com/stalkerg/habrachat</a> .  There are a lot of mistakes there, many not beautiful approaches, so that if you find something, write on gitahb or push patches (wrote in a hurry and on the result).  In addition, if I like the idea, I will develop it. </li></ul><br><br><h2>  Addition </h2><br><ul><li>  The Ubuntu kernel for ARM is built only with a basic set of netfilters, which is why you cannot even port a port.  As a result, I collected nginx from source and proxy WebSocket on it.  :( </li><li>  Recently, GlobalTel had an accident and after the light was turned off, the server lost time at 0, that is,  73 year  Probably ARM has this problem.  I wondered for a long time why my ssl is buggy wherever possible. </li></ul><br><br>  PS If really it will be necessary for someone, then the service will grow into features and other things, and the crutches will be removed.  Write in the comments your wishes. <br>  PS2 I hope the effect will not drop the poor 4th nuclear ARM server. </div><p>Source: https://habr.com/ru/post/217863/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../217849/index.html">Entertaining statistics from HFLabs</a></li>
 <li><a href="../217851/index.html">Ciklum invites everyone to Kharkiv on April 12 for .NET Saturday</a></li>
 <li><a href="../217855/index.html">WAI-ARIA 1.0 received the official status recommended by W3C: what to expect in the future and where to run now?</a></li>
 <li><a href="../217859/index.html">The Ministry of Communications of the Republic of Belarus launched in a test mode a resource for assessing the quality of data services. Speed ​​tests are no longer needed.</a></li>
+<li><a href="../21786/index.html">Very fast movie</a></li>
 <li><a href="../217861/index.html">University timetable: they made an “Alarm Clock” in front of couples and an online form to fill in the schedule</a></li>
+<li><a href="../217865/index.html">Production humor: requests from Acronis True Image users</a></li>
 <li><a href="../217867/index.html">Build 2014 conference tomorrow!</a></li>
 <li><a href="../217869/index.html">Git friends with Putty</a></li>
+<li><a href="../21787/index.html">Updated Airport Express</a></li>
 <li><a href="../217871/index.html">State and the Internet: how to avoid a force scenario</a></li>
-<li><a href="../217873/index.html">Is it easy for a person with a disability to find a job in IT</a></li>
-<li><a href="../217877/index.html">What awaits IntelliJ IDEA ahead?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

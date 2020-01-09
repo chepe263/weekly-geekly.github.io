@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A simple tool for testing PHP applications</h1><div class="post__text post__text-html js-mediator-article"><h2>  Who is this article for? </h2><br>  Most likely for those who have not yet begun to test, but has such a desire.  Experienced developers in this case will not be able to surprise, but those who have not yet moved to the side of the world, I will try to push on this step. <br><br><h2>  Prehistory </h2><br>  I decided to deal with automatic testing.  Previously, this was not necessary, and even then it was not particularly necessary.  But there was free time, which I decided to spend with benefit for the future. <br>  After reading the theory, I began to look for a tool for this.  Predictably <a href="https://github.com/sebastianbergmann/phpunit">PhpUnit</a> appeared first on the horizon.  But he seemed somehow cumbersome, or something. <br>  <a href="https://github.com/Codeception/Codeception">Codeception</a> seemed more convenient - different types of tests, expressive syntax.  But, after looking at the dependencies, I realized that I did not need so much. <br>  Moving towards simplicity, I found <a href="https://github.com/atoum/atoum">atoum</a> , and then generally a cool thing called <a href="https://github.com/marco-fiset/Testify.php">Testify.php</a> .  It was then that I thought that I had finally found what I needed. <br><a name="habracut"></a><br>  But I was happy early.  Testify.php did not match when writing the first test.  A caching class was tested, which, depending on whether debugging is enabled or not, could process or ignore calls.  Since the debugging mode assumed the presence of a <b>DEBUG</b> constant with a value of <b>true</b> / <b>false</b> , it will not be possible to redefine it in one process. <br><br><h2>  Requirements </h2><br>  After these searches, I realized that I needed a simple tool that: <br><ul><li>  It will test in different processes to determine the necessary constants, to mock the same classes for different tests in different ways, etc. </li><li>  It will be as easy to use </li><li>  It can work both through the browser and from the command line </li><li>  It can be used together with <a href="https://travis-ci.org/">Travis CI</a> (console version - should return status 0 in case of successful testing) </li></ul><br><h2>  Implementation </h2><br>  A small script was written that opened the tests for http, collected the results, and issued it in presentable HTML.  In order to make the testing process similar for the console version, it was decided to use the built-in PHP 5.4+ web server.  It starts like this: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre><code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">// $web_server_pid = exec("php -S localhost:$this-&gt;port &gt;/dev/null 2&gt;/dev/null &amp; echo $!"); // //... // exec("kill $web_server_pid");</span></span></code> </pre> <br>  And it worked as it should.  So, I did not find a similar tool - I decided to arrange it in the form of an independent composer package, added interactivity (the progress of test sets execution is displayed in real time both in HTML and in the console version). <br><br>  Running tests: <br><br><pre> <code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">// test.php require __DIR__.'/vendor/autoload.php'; (new \nazarpc\CSTester(__DIR__.'/tests'))-&gt;run();</span></span></code> </pre><br>  Now this file can be opened either in the browser or in the console. <br><br><pre> <code class="bash hljs">php test.php</code> </pre><br>  The tests themselves are not much harder: <br><br><pre> <code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">return</span></span> <span class="hljs-number"><span class="hljs-number">5</span></span> != <span class="hljs-number"><span class="hljs-number">3</span></span> ? <span class="hljs-number"><span class="hljs-number">0</span></span> : <span class="hljs-string"><span class="hljs-string">'Strange PHP'</span></span>;</code> </pre><br>  That is, each individual test is a file that returns <i>0</i> after a successful test or an <i>error text</i> , if any. <br><br>  Example of the result of the console version: <br><br><img src="https://habrastorage.org/storage2/0c7/d72/f81/0c7d72f81d56440bffe6babe9ebac8e5.png"><br><br>  It is possible to execute general commands both before all test suites, and before all tests of one test kit. <br><br>  I am sure that it can be done even better, therefore I am waiting for constructive criticism and suggestions. <br>  No dependencies, bare PHP 5.4+ will do. <br><br>  GitHub repository: <a href="https://github.com/nazar-pc/CSTester">github.com/nazar-pc/CSTester</a> <br>  Composer package: <a href="https://packagist.org/packages/nazar-pc/cstester">packagist.org/packages/nazar-pc/cstester</a> </div><p>Source: <a href="https://habr.com/ru/post/188342/">https://habr.com/ru/post/188342/</a></p>
+    <pre><code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">// $web_server_pid = exec("php -S localhost:$this-&gt;port &gt;/dev/null 2&gt;/dev/null &amp; echo $!"); // //... // exec("kill $web_server_pid");</span></span></code> </pre> <br>  And it worked as it should.  So, I did not find a similar tool - I decided to arrange it in the form of an independent composer package, added interactivity (the progress of test sets execution is displayed in real time both in HTML and in the console version). <br><br>  Running tests: <br><br><pre> <code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">// test.php require __DIR__.'/vendor/autoload.php'; (new \nazarpc\CSTester(__DIR__.'/tests'))-&gt;run();</span></span></code> </pre><br>  Now this file can be opened either in the browser or in the console. <br><br><pre> <code class="bash hljs">php test.php</code> </pre><br>  The tests themselves are not much harder: <br><br><pre> <code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">return</span></span> <span class="hljs-number"><span class="hljs-number">5</span></span> != <span class="hljs-number"><span class="hljs-number">3</span></span> ? <span class="hljs-number"><span class="hljs-number">0</span></span> : <span class="hljs-string"><span class="hljs-string">'Strange PHP'</span></span>;</code> </pre><br>  That is, each individual test is a file that returns <i>0</i> after a successful test or an <i>error text</i> , if any. <br><br>  Example of the result of the console version: <br><br><img src="https://habrastorage.org/storage2/0c7/d72/f81/0c7d72f81d56440bffe6babe9ebac8e5.png"><br><br>  It is possible to execute general commands both before all test suites, and before all tests of one test kit. <br><br>  I am sure that it can be done even better, therefore I am waiting for constructive criticism and suggestions. <br>  No dependencies, bare PHP 5.4+ will do. <br><br>  GitHub repository: <a href="https://github.com/nazar-pc/CSTester">github.com/nazar-pc/CSTester</a> <br>  Composer package: <a href="https://packagist.org/packages/nazar-pc/cstester">packagist.org/packages/nazar-pc/cstester</a> </div><p>Source: https://habr.com/ru/post/188342/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../188332/index.html">REG.RU offers a new approach to the use of domains</a></li>
 <li><a href="../188334/index.html">Build 2013 for developers on Windows Phone and additional news</a></li>
 <li><a href="../188336/index.html">IP telephony: from copper wires to digital signal processing</a></li>
 <li><a href="../188338/index.html">Changing calculators on a website without programmers</a></li>
+<li><a href="../18834/index.html">Why update iPod Touch paid?</a></li>
 <li><a href="../188340/index.html">Digest of upcoming IT events in August 2013</a></li>
 <li><a href="../188344/index.html">A detailed review of Android 4.3</a></li>
 <li><a href="../188346/index.html">Three trips to customs</a></li>
 <li><a href="../188348/index.html">Translated by professional programmers, or the difficulties of gaming localization</a></li>
+<li><a href="../188350/index.html">Apache Mahout. Metrics for determining user similarities</a></li>
 <li><a href="../188352/index.html">SIP client interaction. Part 1</a></li>
-<li><a href="../188354/index.html">A brief introduction to GNU autoconf</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

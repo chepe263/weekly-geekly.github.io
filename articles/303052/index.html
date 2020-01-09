@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Oh, I have these databases: Sybase (ASE) and datetime</h1><div class="post__text post__text-html js-mediator-article">  Hi, Habr! <br>  Actually a post about one line in the documentation, as it turned out.  But it was unexpected, so I decided to share with you the found. <br><a name="habracut"></a><br>  A new project, a new table, decided to write tests for them, and, in general, was surprised when the first test I wrote broke down on the fact that the object I threw into the database is not equal to the same object that was extracted from the database. <br>  After re-launches, it became clear that milliseconds did not converge.  Well, that is, you take such an object, say “here's a new Date () for you, and now write it in the database.  And now read on the ID.  And now equals.  Whatooooo  O_o.  Something like this.  And, yes, all of a sudden the test can succeed. <br>  After some digging it turned out an interesting thing. <br>  The documentation on the Sybase site has a description of the data types used.  For the datetime data type, in the ASE version 15.0 there was only this: <br>  <a href="http://infocenter-archive.sybase.com/help/index.jsp%3Ftopic%3D/com.sybase.help.ase_15.0.blocks/html/blocks/blocks36.htm">if the link breaks, then Adaptive Server Enterprise 15.0&gt; Reference Manual: Building Blocks&gt; System and User-Defined Datatypes&gt; Date and time datatypes</a> , where it is said that <blockquote>  <i>datetime</i> columns hold dates between January 1, 1753 and December 31, 9999. The level of granularity.  Since the date of January 1, 1900 and 4 bytes for the time of day. </blockquote>  Once again I draw attention to the fact that <blockquote>  <i>datetime</i> values ​​are accurate to 1/300 second </blockquote>  In the upper 4 bytes the days are stored, and in the lower 4 bytes the time of the day.  In 24 hours of the day * 60 minutes * 60 seconds * 1000 milliseconds = 86_400_000 milliseconds per day, a number that is quite 4 bytes (0x5_26_5C_00).  Even for the sign bit there is a place.  Somebody share, please, how is it necessary to store the time of day so that it does not fit? <br>  For ASE 15.7, the description of how this data type behaves is slightly extended. <br>  <a href="http://infocenter.sybase.com/help/index.jsp%3Ftopic%3D/com.sybase.infocenter.dc36271.1570/html/blocks/X58954.htm">Adaptive Server Enterprise 15.7&gt; Reference Manual: Building Blocks&gt; System and User-Defined Datatypes&gt; Date and time datatypes</a> <br><blockquote>  <i>datetime</i> columns hold dates between January 1, 1753 and December 31, 9999. The level of granularity.  The last digit of the second digit is always 0, 3, or 6. Other digits are rounded up;  2, 3, and 4 round to 3;  5, 6, 7, and 8 round to 6;  and 9 rounds to 10, since the date of January 1, 1900 and 4 bytes: 4 bytes: 4 bytes: </blockquote>  That is, you record an object with one timestamp, and read “almost the same, sometimes even the same”.  You can even a little into the future (for a millisecond) to go if the nine falls out. <br>  Well, this is documented, so this is “not a bug, but a feature”, no complaints about Sybase. <br>  With all this, in ASE 15.7 there is <blockquote>  <i>bigdatetime</i> columns hold dates from January 1, 0001 to December 31, 9999 and 12: 00: 00.000000 AM to 11: 59: 59.999999 PM.  Its storage size is 8 bytes.  <i>Bigdatetime</i> is a 64 bit integer containing the number of microseconds since 01/01/0000. </blockquote><br>  The moral of this post: RTFM and use bigdatetime, Luke! </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,17 +62,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/303052/">https://habr.com/ru/post/303052/</a></p>
+    <p>Source: https://habr.com/ru/post/303052/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../303040/index.html">Slowly but surely: choose the optimal strategy for a trading robot</a></li>
 <li><a href="../303042/index.html">Be wary of online invoices with a cryptographer: a recently discovered threat has already manifested itself in different countries</a></li>
 <li><a href="../303044/index.html">Marketing is war</a></li>
 <li><a href="../303046/index.html">Digest of gaming industry events for 2016</a></li>
+<li><a href="../30305/index.html">What does Microsoft prepare for us after Windows?</a></li>
 <li><a href="../303050/index.html">DevOps - automate everything</a></li>
 <li><a href="../303058/index.html">Where to get logins or VoIP to help</a></li>
 <li><a href="../303060/index.html">Virtual GPIO driver with QEMU-based ivshmem interrupt controller for Linux</a></li>

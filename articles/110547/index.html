@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The policy of controlling the frequency of the processor "ondemand" and iowait in Ubuntu</h1><div class="post__text post__text-html js-mediator-article"> In modern versions of Ubuntu, the ondemand frequency control policy is enabled by default.  This thing is very useful in terms of energy saving, since it sets the frequency of the processor to the lowest possible when the load on the processor is small. <br><br>  However, I recently noticed that it has one drawback: “ondemand” takes the load on the processor caused by I / O operations as “idle”.  What does it mean?  This means that when I load the processor with I / O operations, the frequency of the processor often remains at a reduced level, which creates problems if your system suffers from the infamous Linux bug with iowait. <a name="habracut"></a><br><br>  There are two ways to deal with this “ondemand” behavior. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The first option is to turn off the power saving mode of the processor.  For example, correcting the script that includes it.  It hides under the quite logical name "ondemand" and is located in <code>/etc/init.d</code> .  If you fix the line in this file <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> -n ondemand &gt; <span class="hljs-variable"><span class="hljs-variable">$CPUFREQ</span></span></code> </pre> <br><br>  on <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> -n performance &gt; <span class="hljs-variable"><span class="hljs-variable">$CPUFREQ</span></span></code> </pre> <br><br>  , the processor will constantly operate at maximum frequency. <br><br>  The second option is to enable for “ondemand” a mode in which it will not ignore iowait.  This is controlled by the parameter in <code>/sys/devices/system/cpu/cpufreq/ondemand/io_is_busy</code> .  To do this, I wrote a small init script: <br><br><pre> <code class="bash hljs"> <span class="hljs-comment"><span class="hljs-comment">#! /bin/sh ### BEGIN INIT INFO # Provides: io-is-busy # Required-Start: $ondemand # Required-Stop: # Default-Start: 2 3 4 5 # Default-Stop: # Short-Description: makes "ondemand" frequency governor to respect iowait load ### END INIT INFO case "$1" in start) start-stop-daemon --start --background --exec /etc/init.d/io-is-busy -- background ;; background) sleep 65 # waiting till ondemand finish its' work echo 1 &gt; /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy ;; restart|reload|force-reload) echo "Error: argument '$1' not supported" &gt;&amp;2 exit 3 ;; stop) echo 0 &gt; /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy ;; *) echo "Usage: $0 start|stop" &gt;&amp;2 exit 3 ;; esac</span></span></code> </pre> <br><br>  After this, the script is saved to the <code>/etc/init.d/io-is-busy</code> file, made executable, and written to the system with the command <code>sudo update-rc.d io-is-busy defaults 99 99</code> . <br><br>  Everything.  Now, when the CPU load is increased by I / O operations, the frequency automatically rises to the maximum, as I wanted. </div><p>Source: <a href="https://habr.com/ru/post/110547/">https://habr.com/ru/post/110547/</a></p>
+      The first option is to turn off the power saving mode of the processor.  For example, correcting the script that includes it.  It hides under the quite logical name "ondemand" and is located in <code>/etc/init.d</code> .  If you fix the line in this file <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> -n ondemand &gt; <span class="hljs-variable"><span class="hljs-variable">$CPUFREQ</span></span></code> </pre> <br><br>  on <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> -n performance &gt; <span class="hljs-variable"><span class="hljs-variable">$CPUFREQ</span></span></code> </pre> <br><br>  , the processor will constantly operate at maximum frequency. <br><br>  The second option is to enable for “ondemand” a mode in which it will not ignore iowait.  This is controlled by the parameter in <code>/sys/devices/system/cpu/cpufreq/ondemand/io_is_busy</code> .  To do this, I wrote a small init script: <br><br><pre> <code class="bash hljs"> <span class="hljs-comment"><span class="hljs-comment">#! /bin/sh ### BEGIN INIT INFO # Provides: io-is-busy # Required-Start: $ondemand # Required-Stop: # Default-Start: 2 3 4 5 # Default-Stop: # Short-Description: makes "ondemand" frequency governor to respect iowait load ### END INIT INFO case "$1" in start) start-stop-daemon --start --background --exec /etc/init.d/io-is-busy -- background ;; background) sleep 65 # waiting till ondemand finish its' work echo 1 &gt; /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy ;; restart|reload|force-reload) echo "Error: argument '$1' not supported" &gt;&amp;2 exit 3 ;; stop) echo 0 &gt; /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy ;; *) echo "Usage: $0 start|stop" &gt;&amp;2 exit 3 ;; esac</span></span></code> </pre> <br><br>  After this, the script is saved to the <code>/etc/init.d/io-is-busy</code> file, made executable, and written to the system with the command <code>sudo update-rc.d io-is-busy defaults 99 99</code> . <br><br>  Everything.  Now, when the CPU load is increased by I / O operations, the frequency automatically rises to the maximum, as I wanted. </div><p>Source: https://habr.com/ru/post/110547/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../110544/index.html">Qt + QML on a simple example</a></li>
 <li><a href="../110546/index.html">Website Creative Commons translated into Russian at 100%</a></li>
 <li><a href="../110549/index.html">Website launched on Windows Phone 7 for iPhone developers</a></li>
+<li><a href="../11055/index.html">SPb of all countries - unite !!!</a></li>
 <li><a href="../110553/index.html">Review of the Kingmax Hercules Nano RAM Kit - Ancient Greek Hero in Nano-armor</a></li>
+<li><a href="../110554/index.html">Skype Malfunctions - Clarification</a></li>
 <li><a href="../110555/index.html">Platform 2011: Video of 70 conference reports became available.</a></li>
-<li><a href="../110556/index.html">Plasticine Yandex.Mail: how it was</a></li>
-<li><a href="../110557/index.html">How to do FULLTEXT search in CMS on CodeIgniter</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

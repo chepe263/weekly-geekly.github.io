@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Two points</h1><div class="post__text post__text-html js-mediator-article"><img alt="screenshot of the console that rips the template" src="https://habrastorage.org/files/866/f19/a97/866f19a9793a4a57adfa4f900ff9c887.png"><br><br>  In the picture above you can see how ls thinks that <font>linkylink / ..</font> is not the same as the current directory.  At the same time cd seems to disagree with him. <br><br>  I will begin the story with all the familiar web addresses that are similar to the system paths. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h1>  Two points in the URI paths (on the web) </h1><a name="habracut"></a><br>  Interpretation of points is described in <a href="http://tools.ietf.org/html/rfc3986">section 5.2.4 of RFC 3986</a> . <br>  It works like this: each segment of two points destroys the previous segment: <br><br><pre>  /a/b/c/../../g &lt;=&gt; / a / g </pre><br>  Moreover, if there is nothing to destroy, two points are ignored: <br><br><pre>  example.com/../../../etc/passwd &lt;=&gt; example.com/etc/passwd </pre><br>  The rules were designed so that relative paths (../img/pic.png) can be converted to absolute prefixes from the uri context: <br><br><ol><li>  /a/css/index.css refers to ../img/pic.png </li><li>  in /a/css/index.css everything is destroyed after the last slash =&gt; / a / css / </li><li>  ../img/pic.png is added to / a / css / =&gt; /a/css/../img/pic.png </li><li>  points are interpreted =&gt; /a/img/pic.png </li></ol><br>  These operations are usually done by the browser when it converts relative uri to absolute.  Also, <a href="http://tools.ietf.org/html/rfc3986">according to the standard</a> , the operation of destroying points should be performed when uri is reduced to a canonical form — normalization — including absolute uri. <br><br>  Web servers in the wild do not encounter requests containing points and each processes them in its own way. <br><br>  <em>In general, based on the normalization rule, it follows that in the uri of the form 'http://example.com/a/b/../c' 'b' it is not obliged to exist.</em> <br><br><h1>  Two points in the shell </h1><br>  The cd shell command behaves in a similar way: two points <em>always</em> lead one segment of the path above, as if canceling the previous transition to the subdirectory.  But, unlike uri, the shell checks for the existence of intermediate directories. <br><br>  If you consider the first natural, then this publication is for you.  In fact, the shell emulates this cd behavior: in all other places * nix ".." works differently. <br><br><img src="https://habrastorage.org/files/20f/8eb/0b2/20f8eb0b211043719f3ea5b110cb519b.png"><br>  <font color="#808080">Even the source command (or its synonym ".") Has excellent behavior from cd</font> <br><br>  The difference manifests itself in symbolic links to directories: for cd, the transition to such a link is reversible through "..", while the rest of the system will perceive ".." as the physical parent of the directory to which the link points. <br><br>  Differently, the first behavior is called logical (-L for pwd and cd), as opposed to physical (-P). <br><br><h1>  Two points in the file system </h1><br>  In * nix, ".." is a real subdirectory, the only physical parent independent of symbolic links.  If you look inside the ext2 file system, then the description of the ".." and "." Subdirectories  nothing will differ from others, except that they are listed at the beginning. <br><br>  In some cases (for example, <a href="">in FreeBSD</a> ) this fact is even used to calculate the path to the working directory (which is not stored separately there) through successive transitions through "..". <br><br>  Going along a path is <a href="http://man7.org/linux/man-pages/man7/path_resolution.7.html">the same as</a> moving to subdirectories. <br><br>  It is easy to notice that if we hit a certain directory by a symbolic link, then we will not have information left to return: ".." will indicate to the physical parent.  But how then does cd work with logical paths that include symlinks?  For this, the shell remembers the way it came to the directory.  <i>The logical</i> path built by the shell is accessible through the $ PWD environment variable or via pwd [-L]. <br><br><br><h5>  <em>Two points require attention, especially in scripts.</em> </h5><br>  PS: There are a lot of symbolic links to directories in sysfs: <br><br><pre> bug @ earth / sys / class / net / lo% ls
@@ -74,7 +74,7 @@
  / sys / class / net / lo
  bug @ earth / sys / class / net / lo% cd ..;  ls
  eth0 lo
-</pre></div><p>Source: <a href="https://habr.com/ru/post/253049/">https://habr.com/ru/post/253049/</a></p>
+</pre></div><p>Source: https://habr.com/ru/post/253049/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -83,11 +83,11 @@
 <li><a href="../253041/index.html">New version of mobile SDK VoxImplant with support for WebRTC, P2P, video calls for iOS and Android</a></li>
 <li><a href="../253045/index.html">Steganography in the XXI century. Goals Practical use. Relevance</a></li>
 <li><a href="../253047/index.html">Perl 6 / Rakudo Sequences</a></li>
+<li><a href="../25305/index.html">New generation of e-paper</a></li>
 <li><a href="../253051/index.html">Creating objects inherited from null on Node.js</a></li>
 <li><a href="../253053/index.html">Computer graphics, online course</a></li>
+<li><a href="../25306/index.html">Arch Therapeutics 'NanoBint'</a></li>
 <li><a href="../253063/index.html">Our experience using AWS at launch</a></li>
-<li><a href="../253067/index.html">Phase AC load control with FLProg</a></li>
-<li><a href="../253069/index.html">Old school, hardcore, AY-3-8912. "Iron" chiptune with sequential input</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

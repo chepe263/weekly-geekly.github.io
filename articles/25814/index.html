@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Javascript dynamic loading</h1><div class="post__text post__text-html js-mediator-article">  Good day to all habrasoobschestvu!  Recently, I fell to develop a huge web project (or rather finish), which was just a lot of Ajax.  The problem was that all javascript files were loaded immediately.  Tobish, if I wanted to add more functionality - this is a new js-file that should be loaded to the user (although it may not even require this functionality).  A recently read article " <a href="http://habrahabr.ru/blog/javascript/42315.html">Dynamic loading of modules on Javascript</a> " made me understand that js can be loaded dynamically, so I began to look for a solution method. <br><a name="habracut"></a><br>  And what a solution found.  Since I had no time to rewrite the project, I could only find a quick way to get the js-files on-demand fast loading.  On the Internet, I stumbled upon such a library as JSAN (JavaScript Archive Network, not to be confused with JSON).  The developers of this library are trying to make an analogue of CPAN only for JavaScript. <br><br>  Here is a link to the <a href="http://openjsan.org/doc/c/cw/cwest/JSAN/0.10/lib/JSAN.html">source</a> . <br>  There everything is beautifully described, but I will explain the most basic.  JSAN provides tools for dynamically loading code using XMLHttpRequest to the server.  The library is contained in a single js-file, which must be connected to the page.  Further - easier.  For example: <br><br><blockquote>  JSAN.require ('js.creating'); <br>  var creating = new js.creating (); </blockquote>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The following JSAN.require call will try to load js / creating.js, trying to look in all sources specified in the include jsan JSAN, which by default is ['.', 'Lib'].  And that's it! <br><br>  The only requirement is that all modules are inside their namespace, so for the example above, the beginning of s / creating.js will look something like this: <br><br><blockquote>  if (js == undefined) var js = {}; <br>  if (js.creating == undefined) js.creating = {}; </blockquote><br><br>  But I would refer it more to a plus than to a minus, because it forces the developer to isolate their libraries from the outside world, thereby reducing the problem of name conflicts to almost zero.  By the way, besides JSAN.require, there is also a JSAN.use method that allows you to export only the necessary functionality from the module, which is what I needed.  The first thing I had to do was convert the look of the old functions with <br><br><blockquote>  function foo (var1, var2) {... <br>  } </blockquote><br><br>  at <br><br><blockquote>  foo = function (var1, var2) {... <br>  } </blockquote><br><br>  since only in this way were the functions loaded.  Then I just added a simple replacement in the templates.  For example, there is a itemsCreating function in the js / creating.js file.  By clicking on the object on the page, it should be executed. For this instead of <br><br><blockquote>  onclick = "javascript: itemsCreating (this); </blockquote><br><br>  replaced by <br><br><blockquote>  onclick = "javascript: if (typeof itemsCreating! = 'function') JSAN.use ('js.creating');  itemsCreating (this); </blockquote><br><br>  Now the project got rid of excess code (and traffic for users), and the necessary js-files were called only when their functionality is required.  By the way, <em><strong>if (typeof itemsCreating! = 'Function')</strong></em> makes it so that you will not need to load this js-file again, because the itemsCreating function will already be defined (until you reload the page;).  Well, that's all. <br><br>  Threat My first article on Habré, so criticism is not a little important. </div><p>Source: <a href="https://habr.com/ru/post/25814/">https://habr.com/ru/post/25814/</a></p>
+      The following JSAN.require call will try to load js / creating.js, trying to look in all sources specified in the include jsan JSAN, which by default is ['.', 'Lib'].  And that's it! <br><br>  The only requirement is that all modules are inside their namespace, so for the example above, the beginning of s / creating.js will look something like this: <br><br><blockquote>  if (js == undefined) var js = {}; <br>  if (js.creating == undefined) js.creating = {}; </blockquote><br><br>  But I would refer it more to a plus than to a minus, because it forces the developer to isolate their libraries from the outside world, thereby reducing the problem of name conflicts to almost zero.  By the way, besides JSAN.require, there is also a JSAN.use method that allows you to export only the necessary functionality from the module, which is what I needed.  The first thing I had to do was convert the look of the old functions with <br><br><blockquote>  function foo (var1, var2) {... <br>  } </blockquote><br><br>  at <br><br><blockquote>  foo = function (var1, var2) {... <br>  } </blockquote><br><br>  since only in this way were the functions loaded.  Then I just added a simple replacement in the templates.  For example, there is a itemsCreating function in the js / creating.js file.  By clicking on the object on the page, it should be executed. For this instead of <br><br><blockquote>  onclick = "javascript: itemsCreating (this); </blockquote><br><br>  replaced by <br><br><blockquote>  onclick = "javascript: if (typeof itemsCreating! = 'function') JSAN.use ('js.creating');  itemsCreating (this); </blockquote><br><br>  Now the project got rid of excess code (and traffic for users), and the necessary js-files were called only when their functionality is required.  By the way, <em><strong>if (typeof itemsCreating! = 'Function')</strong></em> makes it so that you will not need to load this js-file again, because the itemsCreating function will already be defined (until you reload the page;).  Well, that's all. <br><br>  Threat My first article on Habré, so criticism is not a little important. </div><p>Source: https://habr.com/ru/post/25814/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

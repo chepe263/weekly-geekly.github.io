@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Maven - build automation project</h1><div class="post__text post__text-html js-mediator-article"> For a long time I heard about the tool for automating the assembly of the project - <a href="http://ant.apache.org/">Ant</a> , but somehow I could not find him a real use in PHP projects.  You don't need to compile anything, you can easily connect external libraries via <code>svn:externals</code> , there were only tests that were freely executed via <code>$ phpunit AllTests.php</code> , and the transfer of changes to the <code>$ phpunit AllTests.php</code> server ( <code>svn export</code> + small self-written script).  Even a fairly good <a href="http://www.artlebedev.ru/tools/technogrette/soft/eclipse-ant/">article about using ant in eclipse</a> did not make me use this tool, and I didn’t want to write any build files either ... <br><br>  In general, everything is as usual.  It would seem that some such thing would not hurt, but everything worked so well and was too lazy to learn pseudo-assisted technology.  That was until I became acquainted with Java ... <br><br><a name="habracut"></a><br>  With the arrival of Java in my life, a glance at the question of whether to use the automatic builder has disappeared by itself - to use.  After all, what kind of freak will manually compile all the files in all the project directories and copy them for deployment to the servlet container directory?  Only a very patient and not lazy person.  But laziness is the engine of progress, and I began to read about ... <a href="http://maven.apache.org/">maven</a> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       I do not even know how he turned up.  Probably after one of the queries in Google in the process of learning the basics of tomcat, I got knowledge of the existence of this program.  Already the fourth Apache product that I needed on my way to deploying the first java project. <br><br>  Maven combines ant capabilities (build and copy files, conduct tests), but besides this it helps to solve dependencies of project libraries, has a completely formal lifecycle, has many plug-ins and takes all the same three characters in the command line: <code>mvn</code> vs <code>ant</code> . <br><br>  The life cycle of the maven is quite expected: <br><br><ul><li>  <code>validate</code> - validates project metadata </li><li>  <code>compile</code> - compiles sources </li><li>  <code>test</code> - runs class tests from the previous step </li><li>  <code>package</code> - packs compiled classes in a conveniently movable format (jar or war, for example) </li><li>  <code>integration-test</code> - sends packed classes to the integration testing environment and runs tests </li><li>  <code>verify</code> - verifies the package’s correctness and quality requirements </li><li>  <code>install</code> - pushes the package to the local repository, from where it (pec) will be available for use as a dependency in other projects </li><li>  <code>deploy</code> - sends the package to a remote production server, from where other developers can get it and use it </li></ul><br>  In this case, all the steps are consistent.  And if, for example, you run <code>$ mvn package</code> , then the steps will actually be executed: validate, compile, test, and package.  Thus, using maven is quite simple.  You wrote the code, executed the mvn test and you can continue to work, making sure that the code does not contain syntax and logical errors. <br><br>  Separately, it is worth mentioning dependencies.  Maven is configured by the pom.xml file, which can contain the &lt;dependencies /&gt; block.  It describes which libraries the project needs for full operation.  At the validate step, the maven checks whether the dependencies are satisfied and, if not, downloads the necessary components from the remote repository to the local repository.  So, if 10 projects depend on the same SomeSpecificOrm library, then we no longer need to connect it in 10 places via <code>svn:external</code> , especially if the library takes up enough space, but it is enough to specify it in the dependency file and it will be taken from the local repository mavena.  When specifying dependencies, you can specify not only the library name, but also its version - in this way there will be no problems with backward compatibility. <br><br>  And now we come directly to the question “what does maven do for web development”.  In addition to compiling, testing and packaging, maven allows you to deploy a project in tomcat using the <code>tomcat-maven-plugin</code> .  It is configured in pom.xml and has approximately the following form: <br><br><pre> [...]
@@ -89,20 +89,20 @@
    -DarchetypeGroupId = org.apache.maven.archetypes \
    -DgroupId = com.mycompany.app \
    -DartifactId = my-app
-</pre><br>  And for eclipse there is a special <a href="http://maven.apache.org/eclipse-plugin.html">plugin</a> that will simplify the creation and maintenance of the project. <br><br>  PS I understand that the material was not fully disclosed, so if some points remained completely unclear or simply not complete - write, and I will supplement the article. <br><br>  PPS in the <a href="http://alexey.tokar.net.ua/2009/12/sudo-aptitude-install-maven/">original article</a> is still a small survey, in which, for the most part, developers of PHP are invited, while the rest are invited by interest. <br></div><p>Source: <a href="https://habr.com/ru/post/77333/">https://habr.com/ru/post/77333/</a></p>
+</pre><br>  And for eclipse there is a special <a href="http://maven.apache.org/eclipse-plugin.html">plugin</a> that will simplify the creation and maintenance of the project. <br><br>  PS I understand that the material was not fully disclosed, so if some points remained completely unclear or simply not complete - write, and I will supplement the article. <br><br>  PPS in the <a href="http://alexey.tokar.net.ua/2009/12/sudo-aptitude-install-maven/">original article</a> is still a small survey, in which, for the most part, developers of PHP are invited, while the rest are invited by interest. <br></div><p>Source: https://habr.com/ru/post/77333/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../77316/index.html">Alan Kay in the world of computers</a></li>
-<li><a href="../77317/index.html">Now you can share .Net 4 and Silverlight 4 assemblies</a></li>
+<li><a href="../7732/index.html">ICQ will be able to communicate with Gtalk users</a></li>
 <li><a href="../77321/index.html">Hybrid film and CCD / CMOS matrix is ​​not possible? Try saying this to the Foveon X3!</a></li>
 <li><a href="../77329/index.html">Softkey and Digital Zone hold an online seminar "Safe'n'Sec Realite Enterprise Suite"</a></li>
+<li><a href="../7733/index.html">Caution - 2.0</a></li>
 <li><a href="../77331/index.html">Ubuntu Customization Kit, your LiveCD Ubuntu for half an hour without dancing with a tambourine</a></li>
 <li><a href="../77335/index.html">First jQuery 1.4 alpha released</a></li>
+<li><a href="../7734/index.html">Here are such PirOgi :-(</a></li>
 <li><a href="../77347/index.html">A small wrapper for several Yandex-Direct blocks on a page with “delayed” loading</a></li>
 <li><a href="../77348/index.html">Short-term UFO exposure observed</a></li>
-<li><a href="../77350/index.html">The Stockholm court accepted the appeal of the founders of The Pirate Bay</a></li>
-<li><a href="../77351/index.html">Overclocking Canon 400d to 3200 ISO</a></li>
+<li><a href="../7735/index.html">In the United States developed a system for duplicating GPS</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

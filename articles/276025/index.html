@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>SLES 12, Watchdog Timer and IBM / Lenovo Servers</h1><div class="post__text post__text-html js-mediator-article">  UPD: The latest research is outlined here: <a href="https://habrahabr.ru/post/281565/">IBM / Lenovo servers and watchdog: episode II</a> .  The further presentation is a prologue to the article by reference. <br><br>  Faced a significant regression in SLES version 12 related to watchdog timer support (device / dev / watchdog) on ​​IBM / Lenovo servers. <br><a name="habracut"></a><br>  First, a short educational program, if someone is not in the subject.  How should it work and why is it needed?  Who already knows the subject, can safely skip the next paragraph. <br><br>  The server and industrial platforms have a special scheme - a watchdog timer.  When activated, it starts to count down the specified time (for example, one minute).  If during this time it is not re-addressed, then at the end of the interval the hardware will be executed.  If you turn, the interval begins to re-count.  This is necessary in order to automatically restore the computer in the event of an operating system freezing or providing some important software service.  Such a solution is mandatory applied in high availability (HA) clusters and other applications that require constant system availability.  For computers with Intel architecture, several watchdog timer hardware interfaces are used, depending on the system manufacturer, of which Intel TCO (iTCO) is the most common.  In Linux, watchdog drivers are implemented as kernel modules that provide a programming interface to it in the form of a / dev / watchdog device. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      In IBM's IBM servers, which are now being manufactured by Lenovo, the interface to the watchdog timer is the Intel TCO hardware level and the iTCO_wdt Linux kernel module that supports it.  <s>With SLES version 11, everything was fine with this and worked automatically; the device / dev / watchdog, supported by the iTCO_wdt driver, appeared on the system with the default settings.</s>  <s>However, in the 12th version of SLES, iTCO_wdt driver was rewritten, reducing its size by 3 times, and something was broken.</s>  As it turned out, everything in SLES 11 was also bad, the file / dev / watchdog was created, but it was not connected to the driver and did not provide timer functionality. <br><br>  Now (in SLES12) the following happens.  The iTCO_wdt module loads, leaves the diagnosis in the system log: “iTCO_wdt: unable to reset NO_REBOOT flag, device disabled by hardware / BIOS”, remains loaded into memory, but does nothing, and the device / dev / watchdog does not appear.  Manual loading and unloading of the module does not change anything in this behavior.  The BIOS settings and the integrated service module (IMM) also do not affect this in any way.  The problem is exactly the same on several IBM / Lenovo HS23 and x3250 servers.  <s>If you load SLES11 on the same machine, everything works fine.</s> <br><br>  Bypassing the issue can be prescribing a softdog module in /etc/modules-load.d, which provides an interface to the watchdog timer by its software emulation at the OS kernel level.  But in fact, this is just a stub, not at all a decisive question of the possible failure of the operating system itself. <br><br>  Worse, in one of the recent interim updates of the SLES12, the softdog driver was loaded by default.  Although this behavior was turned off very soon, we can’t be sure now that the hardware or software driver provides you with a watchdog service until we check for a specific version of Linux. <br><br>  <s>I passed diagnostic information and error description to kernel developers from Novell and have been working on the incident with IBM / Lenovo support, but for two months the situation has not been resolved, although formally SLES12 is a fully supported and recommended operating system for the specified servers.</s>  <s>So, if the reader suddenly faces the inoperability of the watchdog timer (resulting in, for example, the inability to start a cluster) or the incomplete implementation of its functions associated with replacing the hardware driver with software, then at least it will know where to dig.</s> <br><br>  It seems that there was a way to solve the problem, wrote a new article about it, mentioned at the top. </div><p>Source: <a href="https://habr.com/ru/post/276025/">https://habr.com/ru/post/276025/</a></p>
+      In IBM's IBM servers, which are now being manufactured by Lenovo, the interface to the watchdog timer is the Intel TCO hardware level and the iTCO_wdt Linux kernel module that supports it.  <s>With SLES version 11, everything was fine with this and worked automatically; the device / dev / watchdog, supported by the iTCO_wdt driver, appeared on the system with the default settings.</s>  <s>However, in the 12th version of SLES, iTCO_wdt driver was rewritten, reducing its size by 3 times, and something was broken.</s>  As it turned out, everything in SLES 11 was also bad, the file / dev / watchdog was created, but it was not connected to the driver and did not provide timer functionality. <br><br>  Now (in SLES12) the following happens.  The iTCO_wdt module loads, leaves the diagnosis in the system log: “iTCO_wdt: unable to reset NO_REBOOT flag, device disabled by hardware / BIOS”, remains loaded into memory, but does nothing, and the device / dev / watchdog does not appear.  Manual loading and unloading of the module does not change anything in this behavior.  The BIOS settings and the integrated service module (IMM) also do not affect this in any way.  The problem is exactly the same on several IBM / Lenovo HS23 and x3250 servers.  <s>If you load SLES11 on the same machine, everything works fine.</s> <br><br>  Bypassing the issue can be prescribing a softdog module in /etc/modules-load.d, which provides an interface to the watchdog timer by its software emulation at the OS kernel level.  But in fact, this is just a stub, not at all a decisive question of the possible failure of the operating system itself. <br><br>  Worse, in one of the recent interim updates of the SLES12, the softdog driver was loaded by default.  Although this behavior was turned off very soon, we can’t be sure now that the hardware or software driver provides you with a watchdog service until we check for a specific version of Linux. <br><br>  <s>I passed diagnostic information and error description to kernel developers from Novell and have been working on the incident with IBM / Lenovo support, but for two months the situation has not been resolved, although formally SLES12 is a fully supported and recommended operating system for the specified servers.</s>  <s>So, if the reader suddenly faces the inoperability of the watchdog timer (resulting in, for example, the inability to start a cluster) or the incomplete implementation of its functions associated with replacing the hardware driver with software, then at least it will know where to dig.</s> <br><br>  It seems that there was a way to solve the problem, wrote a new article about it, mentioned at the top. </div><p>Source: https://habr.com/ru/post/276025/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../276019/index.html">Fuzzy search in the dictionary with the universal Levenshtein automaton. Part 2</a></li>
 <li><a href="../276023/index.html">Install / Update Veeam B & R v9 on Hyper-V Server</a></li>
 <li><a href="../276027/index.html">Debugging and Profiling in Visual Studio 2015</a></li>
+<li><a href="../27603/index.html">bad karma</a></li>
 <li><a href="../276031/index.html">From Phone to Cloud: Azure Mobile Services. Where to begin?</a></li>
 <li><a href="../276033/index.html">BPG format can replace animated gif and not only</a></li>
 <li><a href="../276035/index.html">BEM methodology: how it all began and why it is all needed</a></li>
-<li><a href="../276037/index.html">Prime numbers: history and facts</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

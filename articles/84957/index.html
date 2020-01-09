@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Patch rootkit is not a friend!</h1><div class="post__text post__text-html js-mediator-article">  On Tuesday, last week, there was an unplanned update from Microsoft, number <a href="http://www.microsoft.com/rus/technet/security/bulletin/ms10-015.mspx"><b>MS10-015</b></a> .  This patch eliminated a vulnerability that allows you to locally enhance your privileges, and made modifications directly to the OS kernel.  This update had rather unexpected consequences - some users experienced problems after installing it.  More specifically, after rebooting the system, which is required to install this update, a critical error began to appear in one of the system drivers, which was further demonstrated by BSoD. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/822/130/e9b/822130e9bf4d5275e46e84e4b4e8e4d6.png" alt="image"><a name="habracut"></a><br><br>  On the part of Microsoft, this situation caused some confusion, since before the release of the update they undergo a rather rigorous testing.  But, as it turned out during the internal investigation, the culprit was the TDSS rootkit in its latest reincarnation, which infected the driver, and due to incompatibility with the modifications made to the kernel, a critical error occurred.  By the way, the rootkit could infect other system drivers. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Let's take a closer look at what happened and for what reason BSoD arose.  So, we are talking about the latest modification of the TDSS rootkit, which has long been actively distributed on the Internet.  But why does this error occur? <br>  The answer turned out to be quite simple: the rootkit uses implicit calls to the WinAPI functions and searches for them by a memory offset, but when updating, modifications occurred that changed the code that was located at different memory addresses.  This was the reason for the critical error. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/39d/15d/5c5/39d15d5c545320878d25cf197d74ab0e.png" alt="image"><br><br><img src="https://habrastorage.org/getpro/habr/post_images/0be/f41/1c3/0bef411c31f62b23032efb5cd83448d7.png" alt="image"><br><br>  According to Microsoft, the problem with this error manifested itself exclusively on 32-bit operating systems.  And as arguments, information was given about the impossibility of loading unsigned drivers in 64-bit versions of Vista and Win7.  All this is also explainable, since the rootkit makes modifications directly to the driver, the digital signature no longer passes the verification, and the driver cannot be loaded. <br><br>  According to our data, the activity of infected users with a TDSS rootkit after the release of this update subsided quite strongly, which made the attackers release an updated version with the correction of this error.  The attackers approached with an irony to update their offspring, and in one of the configuration files we encountered the following line of obscene content: <i>“F * ck damnation, man!</i>  <i>F * ck redemption!</i>  <i>We are God's unwanted children! ”</i> <br><br>  The situation has shown that the number of users infected with this rootkit is quite large.  Moreover, the concentration of victims in the United States is by no means small.  Perhaps this is what caused the rapid response and investigation of the incident by Microsoft. </div><p>Source: <a href="https://habr.com/ru/post/84957/">https://habr.com/ru/post/84957/</a></p>
+      Let's take a closer look at what happened and for what reason BSoD arose.  So, we are talking about the latest modification of the TDSS rootkit, which has long been actively distributed on the Internet.  But why does this error occur? <br>  The answer turned out to be quite simple: the rootkit uses implicit calls to the WinAPI functions and searches for them by a memory offset, but when updating, modifications occurred that changed the code that was located at different memory addresses.  This was the reason for the critical error. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/39d/15d/5c5/39d15d5c545320878d25cf197d74ab0e.png" alt="image"><br><br><img src="https://habrastorage.org/getpro/habr/post_images/0be/f41/1c3/0bef411c31f62b23032efb5cd83448d7.png" alt="image"><br><br>  According to Microsoft, the problem with this error manifested itself exclusively on 32-bit operating systems.  And as arguments, information was given about the impossibility of loading unsigned drivers in 64-bit versions of Vista and Win7.  All this is also explainable, since the rootkit makes modifications directly to the driver, the digital signature no longer passes the verification, and the driver cannot be loaded. <br><br>  According to our data, the activity of infected users with a TDSS rootkit after the release of this update subsided quite strongly, which made the attackers release an updated version with the correction of this error.  The attackers approached with an irony to update their offspring, and in one of the configuration files we encountered the following line of obscene content: <i>“F * ck damnation, man!</i>  <i>F * ck redemption!</i>  <i>We are God's unwanted children! ”</i> <br><br>  The situation has shown that the number of users infected with this rootkit is quite large.  Moreover, the concentration of victims in the United States is by no means small.  Perhaps this is what caused the rapid response and investigation of the incident by Microsoft. </div><p>Source: https://habr.com/ru/post/84957/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../84950/index.html">About the accuracy of maps, Google, NAVTEQ and "freebies"</a></li>
 <li><a href="../84956/index.html">Sony Ericsson X10 Mini video in Russian</a></li>
 <li><a href="../84958/index.html">Riot policeman cordoned off the Tsaritsyn radio market. Looking for pornography and counterfeit</a></li>
+<li><a href="../8496/index.html">Free Software Ideology</a></li>
 <li><a href="../84963/index.html">Attention: a paper mailing with a fraudulent use of the name of Google!</a></li>
 <li><a href="../84964/index.html">#ifdef in PHP</a></li>
 <li><a href="../84966/index.html">Is it possible to create your own "Silicon Valley" in Russia?</a></li>
-<li><a href="../84967/index.html">The first ad for Windows Phone 7 Series</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

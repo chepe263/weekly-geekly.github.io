@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Accelerate the vagrant shared-folder on the Windows host (UPD. Not everything is so smooth)</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/webt/59/e3/38/59e338a218a34674224980.png"><br><br>  I suffered a year and a half with one unpleasant feature of ubuntu under vagrant — a damn slow shared folder.  Simple benchmarks showed a drop in the performance of I / O operations by almost 2 orders of magnitude; projects in php worked up to 10 times slower than on the native host.  So, today I’ve finally gotten bogged down, I searched well ... and it turned out that there is a solution, and now I just can’t help sharing it with someone.  The solution is simple, it will seem obvious to someone, someone knew about it from birth (well, or it will be argued that way), but I am sure that not everyone knows about it. <br><a name="habracut"></a><br><h3>  And what's the problem then? </h3><br>  By default, vagrant uses the vboxsf file system, which sometimes works extremely slowly (when this “sometimes” happens - I don't know, it always slowed me down).  You can find out your file system type using the mount command. <br><br><img src="https://habrastorage.org/webt/59/e3/41/59e341b25a22b984878776.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      You can replace the file system, but the problem is that the official documentation ... is lying!  She says they say yes, sometimes there are problems with the performance of shared folders, in such cases use nfs and you will be happy.  And below the postscript - on windows does not work, and do not try. <br><br><img src="https://habrastorage.org/webt/59/e3/3b/59e33be633a72175466071.png"><br><br>  Do you know what the salt is?  Yes, it works on windows, you can not believe the documentation! <br><br>  And what to do? <br><br>  Go here <a href="https://github.com/winnfsd/vagrant-winnfsd">https://github.com/winnfsd/vagrant-winnfsd</a> , read, set, rejoice.  For those who are too lazy to read: <br><br><ul><li>  run in windows console “vagrant plugin install vagrant-winnfsd” </li><li>  add two lines to vagrantfile </li></ul><br>  config.vm.network "private_network", type: "dhcp" <br>  config.vm.synced_folder ".", "/ vagrant", type: "nfs" <br><br>  Reboot vagrant, done!  I do not know, maybe there are some pitfalls, maybe someone will not help, but for me, it seems, it works fine.  My configuration: Windows 10 (host) + ubuntu 14.04 (guest).  My project on laravel accelerated the return of the page from 6.5 seconds to 0.5, which is good news. <br><br>  PS The post turned out to be short, muddled, but if I had gotten it a year ago, I would have been extremely happy. <br><br>  UPD.  <a href="https://habrahabr.ru/post/340108/">The comments</a> say that it is unstable.  After a day of work, I was convinced myself - there are problems with file synchronization.  So, not everything is as perfect as it seemed at first glance ... </div><p>Source: <a href="https://habr.com/ru/post/340108/">https://habr.com/ru/post/340108/</a></p>
+      You can replace the file system, but the problem is that the official documentation ... is lying!  She says they say yes, sometimes there are problems with the performance of shared folders, in such cases use nfs and you will be happy.  And below the postscript - on windows does not work, and do not try. <br><br><img src="https://habrastorage.org/webt/59/e3/3b/59e33be633a72175466071.png"><br><br>  Do you know what the salt is?  Yes, it works on windows, you can not believe the documentation! <br><br>  And what to do? <br><br>  Go here <a href="https://github.com/winnfsd/vagrant-winnfsd">https://github.com/winnfsd/vagrant-winnfsd</a> , read, set, rejoice.  For those who are too lazy to read: <br><br><ul><li>  run in windows console “vagrant plugin install vagrant-winnfsd” </li><li>  add two lines to vagrantfile </li></ul><br>  config.vm.network "private_network", type: "dhcp" <br>  config.vm.synced_folder ".", "/ vagrant", type: "nfs" <br><br>  Reboot vagrant, done!  I do not know, maybe there are some pitfalls, maybe someone will not help, but for me, it seems, it works fine.  My configuration: Windows 10 (host) + ubuntu 14.04 (guest).  My project on laravel accelerated the return of the page from 6.5 seconds to 0.5, which is good news. <br><br>  PS The post turned out to be short, muddled, but if I had gotten it a year ago, I would have been extremely happy. <br><br>  UPD.  <a href="https://habrahabr.ru/post/340108/">The comments</a> say that it is unstable.  After a day of work, I was convinced myself - there are problems with file synchronization.  So, not everything is as perfect as it seemed at first glance ... </div><p>Source: https://habr.com/ru/post/340108/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../340092/index.html">Microsoft Bot Framework + IBM Watson = ... bi-linguistic bot</a></li>
 <li><a href="../340096/index.html">Another post "why Agile does not work" (with pictures)</a></li>
+<li><a href="../3401/index.html">Large construction und know your place</a></li>
 <li><a href="../340100/index.html">Hilbert curve vs Z-order</a></li>
 <li><a href="../340104/index.html">Western Digital released the first 14 terabyte HDD</a></li>
 <li><a href="../340106/index.html">How we drove drug dealers out of the runet</a></li>

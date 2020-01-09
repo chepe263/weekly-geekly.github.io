@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Qt driver assembly for working with PostgreSQL (Windows)</h1><div class="post__text post__text-html js-mediator-article">  <b>Small lyrical digression:</b> <b><br></b>  <b>Write this note I was inspired by the presence on the Internet of a huge number of instructions that simply cite the documentation, but do not really work.</b>  <b>Since</b>  <b>I work with Qt from time to time, I don’t know how things are with this problem in Qt5.</b> <br><br><h4>  Problem </h4><br>  The default installation (at least for version 4.8.4) is not included in the driver for working with Postgres. <br>  The official documentation suggests collecting it in a very simple way <a href="http://qt-project.org/doc/qt-4.8/sql-driver.html">http://qt-project.org/doc/qt-4.8/sql-driver.html#qpsql</a> , but if you downloaded the already assembled Qt, you will be pretty puzzled that the build takes place without errors, but nothing works. <br><a name="habracut"></a><br><h4>  Qt and SQL </h4><br>  Here it is necessary to go deep into the specifics of working with the sql drivers in Qt.  Perhaps two options for their implementation: <br><ul><li>  embedding the driver in the QtSql library </li><li>  driver compilation as plugin </li></ul><br>  When building Qt ( <a href="http://doc.qt.digia.com/4.7/configure-options.html">http://doc.qt.digia.com/4.7/configure-options.html</a> ) the following options are responsible for this <br><ul><li>  -qt-sql- &lt;driver&gt; Enable a SQL &lt;driver&gt; in the Qt Library. </li><li>  -plugin-sql- &lt;driver&gt; Enable SQL &lt;driver&gt; </li></ul><br>  You can see which drivers in your installation are assembled as plugines along this path: <br> <code>%QTDIR%\plugins\sqldrivers</code> <br> <br><h4>  Decision </h4><br>  And now we come to the essence of the problem and its simple solution. <br>  As far as I understand, by default, SQL drivers are collected statically, i.e.  for linking with QtSql.  Therefore, as a result of the assembly according to the documentation, we only get * .a files that cannot be attached to the existing QtSql4.dll.  The solution that is often found on the network is to rebuild Qt entirely by including the necessary drivers in the configuration.  In principle, the option is normal, but only very long. <br><br>  Naturally, we can manually fix makefiles and build the necessary driver as a plugin, but this is a thankless task - let the computer do it for us. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,17 +60,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Further it is assumed that PostgreSQL with the necessary libraries and header files is installed in C: \ psql (I usually put it in Program Files, and C: \ psql is a junction). <br><br>  Well, then everything is quick and simple: <br><ol><li>  Start Qt command line (Start-&gt; Programs-&gt; Qt by Digia ...-&gt; Qt xxx Command Promt) </li><li>  Configuring the source and including the necessary driver as a plugin <br> <code>configure -I "c:\psql\include" -L "c:\psql\lib" -plugin-sql-psql</code> </li> <li> <code>cd src\plugins\sqldrivers\psql</code> </li> <li> <code>qmake psql.pro</code> </li> <li> <code>make debug</code> </li> <li> <code>make release</code> </li> </ol><br>  We are checking% QTDIR% \ plugins \ sqldrivers.  Bingo! </div><p>Source: <a href="https://habr.com/ru/post/173283/">https://habr.com/ru/post/173283/</a></p>
+      Further it is assumed that PostgreSQL with the necessary libraries and header files is installed in C: \ psql (I usually put it in Program Files, and C: \ psql is a junction). <br><br>  Well, then everything is quick and simple: <br><ol><li>  Start Qt command line (Start-&gt; Programs-&gt; Qt by Digia ...-&gt; Qt xxx Command Promt) </li><li>  Configuring the source and including the necessary driver as a plugin <br> <code>configure -I "c:\psql\include" -L "c:\psql\lib" -plugin-sql-psql</code> </li> <li> <code>cd src\plugins\sqldrivers\psql</code> </li> <li> <code>qmake psql.pro</code> </li> <li> <code>make debug</code> </li> <li> <code>make release</code> </li> </ol><br>  We are checking% QTDIR% \ plugins \ sqldrivers.  Bingo! </div><p>Source: https://habr.com/ru/post/173283/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../173271/index.html">Why HTML coders don't like web designers</a></li>
 <li><a href="../173273/index.html">On artificial intelligence in poker</a></li>
 <li><a href="../173275/index.html">Dependency injection in a Doctrine entity using the Symfony Dependency Injection Component</a></li>
 <li><a href="../173277/index.html">Tetris first person</a></li>
+<li><a href="../17328/index.html">Began open beta testing of Microsoft Office Live Workspace</a></li>
 <li><a href="../173281/index.html">Single Instance Applications on Qt</a></li>
 <li><a href="../173285/index.html">Freelancer - the story of one pentest</a></li>
 <li><a href="../173287/index.html">Rapidly Deploy Development Environment for Ruby on Rails</a></li>

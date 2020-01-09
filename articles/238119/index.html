@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>As it turned out, everyone knows, but not everyone understands. Transactions in mysql and SELECT FOR UPDATE</h1><div class="post__text post__text-html js-mediator-article">  On duty, I sometimes have to hold interviews for the position "[senior | junior] developer python / django", "team leader".  To my great surprise, I found out that 9 out of 10 applicants, in whose summaries the words "Mysql / Innodb / transactions / triggers / stored proc etc." appear, can tell absolutely nothing about their past experience of working with them.  Unfortunately, I never received a single description of the use case. <br><a name="habracut"></a><br>  Further on the interview I suggested to try to suggest a solution for the following situation: <br><br>  Suppose we are an online service that in turn uses some kind of external paid API (service activation, paid content, or whatever your heart desires), that is, our service pays money for using the API itself.  A user in our system creates a request to activate the service, fills in all the fields and presses the “Activate service” button on the last page.  That is, at the time of sending the HTTP request, we have an entry in our database (a request to activate the service).  What is our algorithm? - I ask myself continue: <br><br>  - we get user balance from the base; <br>  - if the balance is enough, then we pull the API; <br>  - if everything is good, then we deduct the amount for the service from the balance, we do UPDATE, commit, otherwise we roll back; <br>  - we respond to the user. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      It seems to be trivial, but when I cite the first and most obvious problem in the form of 10 competitive requests (that they all get the same balance at the beginning and start calling the API), solutions start to offer the most sophisticated ones, starting from the execution of 5 selections (I have to admit I did not understand anything in this version), the use of auto-increment counters, external caches, new tables in database, slips, and still don’t understand what. <br><br>  As you know (and all the candidates knew it!), Innodb in mysql provides a transactional mechanism and the possibility of line-by-line blocking.  In order to apply this most line-wise lock, it is enough to add a FOR UPDATE statement to the end of the SELECT, for example: <br><br>  SELECT * FROM requests WHERE id = 5 FOR UPDATE <br><br>  A transaction will start and all other sessions to the database will not be able to perform a similar request until the completion of our transaction, they will just wait.  For reading, the same record will be available in a state that depends on the isolation level of the transaction. <br><br>  It is also worth noting that the use of FOR UPDATE is best done with autocommit turned off, since regardless of what you have done, the lock will be removed after the first update. <br><br>  It seems a trifle, it seems obvious, but 9 out of 10 ... <br><br>  upd <br>  the former name “Transactions in mysql”, not disclosed in the article was replaced by “Transactions in mysql and SELECT FOR UPDATE” <br><br>  PS <br>  The article does not say that the API should be pulled within the framework of a transaction and what to do in the event of a failure and how to handle exceptions. </div><p>Source: <a href="https://habr.com/ru/post/238119/">https://habr.com/ru/post/238119/</a></p>
+      It seems to be trivial, but when I cite the first and most obvious problem in the form of 10 competitive requests (that they all get the same balance at the beginning and start calling the API), solutions start to offer the most sophisticated ones, starting from the execution of 5 selections (I have to admit I did not understand anything in this version), the use of auto-increment counters, external caches, new tables in database, slips, and still don’t understand what. <br><br>  As you know (and all the candidates knew it!), Innodb in mysql provides a transactional mechanism and the possibility of line-by-line blocking.  In order to apply this most line-wise lock, it is enough to add a FOR UPDATE statement to the end of the SELECT, for example: <br><br>  SELECT * FROM requests WHERE id = 5 FOR UPDATE <br><br>  A transaction will start and all other sessions to the database will not be able to perform a similar request until the completion of our transaction, they will just wait.  For reading, the same record will be available in a state that depends on the isolation level of the transaction. <br><br>  It is also worth noting that the use of FOR UPDATE is best done with autocommit turned off, since regardless of what you have done, the lock will be removed after the first update. <br><br>  It seems a trifle, it seems obvious, but 9 out of 10 ... <br><br>  upd <br>  the former name “Transactions in mysql”, not disclosed in the article was replaced by “Transactions in mysql and SELECT FOR UPDATE” <br><br>  PS <br>  The article does not say that the API should be pulled within the framework of a transaction and what to do in the event of a failure and how to handle exceptions. </div><p>Source: https://habr.com/ru/post/238119/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../238107/index.html">Transition from an approximate solution to an exact one: the problem of splitting a square into 50 similar acute-angled triangles</a></li>
 <li><a href="../238109/index.html">Monitoring the availability of servers from Infobox</a></li>
+<li><a href="../23811/index.html">The growth of HSPA users in 2007 was 727%</a></li>
 <li><a href="../238113/index.html">The problems of high-frequency trading are deeper than it seems</a></li>
 <li><a href="../238115/index.html">Seven A / B tests, without which not a single good email newsletter can do</a></li>
 <li><a href="../238117/index.html">uLogin, as a means of cheating customers likes</a></li>
+<li><a href="../23812/index.html">© V.I. Pupkin, 2008</a></li>
 <li><a href="../238121/index.html">Windows Identity Foundation - for ASP.NET MVC projects</a></li>
 <li><a href="../238123/index.html">Do it yourself! Kite Aerial Kite Aerial Photography</a></li>
 <li><a href="../238125/index.html">The Martian orbital satellites MAVEN and Mangalyaan transmitted the first photos of Mars</a></li>
 <li><a href="../238127/index.html">Controlled Internet: is the devil so scary how it is painted?</a></li>
-<li><a href="../238129/index.html">Analysis of existing approaches to face recognition</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>RFID UHF inventory. How to find all tags?</h1><div class="post__text post__text-html js-mediator-article">  In this article I will not go into the descriptions of RFID technology, there are many resources devoted to this topic.  I will touch on only one nuance of the settings, and the algorithm for controlling the RFID scanner, which no one notices, but which allows to achieve phenomenal accuracy and completeness of reading tags in a stationary format.  When there is some kind of closed volume and it is necessary to constantly and accurately monitor all the tags present, their appearance and disappearance. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/bcc/2dd/a6f/bcc2dda6fd823eef265be94abf534c9e.jpg" alt="image"><br><a name="habracut"></a><br>  Introducing RFID UHF technology to inventory a large quantity of goods in one volume, we faced the problem of unstable reading of the entire volume of tags.  When the scanner was working, some of the tags were well read and repeatedly responded to the reader signal.  But there were tags in the worst conditions of admission, and these.  Tags were not read every cycle, they simply did not reach the turn. <br><br>  For us, for the successful implementation of the project, it was necessary to reduce the label skip error, at least to 1 error per 1000 read cycles.  Moreover, the number of tags could reach 250 pieces.  And we managed to solve this problem.  In the process, many issues related to hardware and software were optimized.  But the key was the technology that I want to describe here. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The main problem of error-free reading of a large volume of tags was the different quality of communication with different tags.  Tags are in good communication conditions, for the read cycle responded hundreds of times.  Tags that are in poor conditions of communication, located far away, or being screened, never responded.  It was possible to solve this problem by setting up the operation of the scanner and its polling algorithm. <br><br>  The idea was that the tags should not interrupt each other, and even the most poorly readable tag could respond and transmit information to the scanner. <br><br>  In the EPC gen 2 exchange protocol, which is used to exchange data between the scanner and the tags, there is a mode of operation that allows us to achieve the goal we need.  This is called "session."  There are 4 of them.  0 and 1 are not interested in us.  But 2 and 3 Work exactly in the mode that we need.  There is still such a thing as a flag.  Flags 2 "A" and "B". <br><br>  It all works as follows: Turn on the scanner in the “Session 2” mode and set the flag “A”.  In this mode, each label responds only once and is locked until the scanner switches the flag to mode “B”.  The program runs several scan cycles on the “A” flag until the scanner stops receiving responses from the tags.  In this mode, the tags do not interfere with each other, those who have the best communication conditions respond first and become silent without interfering with the rest in the worst conditions.  And we get a response from all the tags that are in the field of action of the scanner.  After working with the flag "A", the scanner switches to the flag mode "B" and re-reads all the tags.  As a result, combining the list of tags obtained from 1 and 2 scans, we get a list of tags with very high reliability of reading all the tags present. <br><br>  In the case of our project, with a read cycle every 10 minutes, the error of not reading the label present is encountered no more than once a week. <br><br>  If you have questions I will answer with pleasure. </div><p>Source: <a href="https://habr.com/ru/post/429598/">https://habr.com/ru/post/429598/</a></p>
+      The main problem of error-free reading of a large volume of tags was the different quality of communication with different tags.  Tags are in good communication conditions, for the read cycle responded hundreds of times.  Tags that are in poor conditions of communication, located far away, or being screened, never responded.  It was possible to solve this problem by setting up the operation of the scanner and its polling algorithm. <br><br>  The idea was that the tags should not interrupt each other, and even the most poorly readable tag could respond and transmit information to the scanner. <br><br>  In the EPC gen 2 exchange protocol, which is used to exchange data between the scanner and the tags, there is a mode of operation that allows us to achieve the goal we need.  This is called "session."  There are 4 of them.  0 and 1 are not interested in us.  But 2 and 3 Work exactly in the mode that we need.  There is still such a thing as a flag.  Flags 2 "A" and "B". <br><br>  It all works as follows: Turn on the scanner in the “Session 2” mode and set the flag “A”.  In this mode, each label responds only once and is locked until the scanner switches the flag to mode “B”.  The program runs several scan cycles on the “A” flag until the scanner stops receiving responses from the tags.  In this mode, the tags do not interfere with each other, those who have the best communication conditions respond first and become silent without interfering with the rest in the worst conditions.  And we get a response from all the tags that are in the field of action of the scanner.  After working with the flag "A", the scanner switches to the flag mode "B" and re-reads all the tags.  As a result, combining the list of tags obtained from 1 and 2 scans, we get a list of tags with very high reliability of reading all the tags present. <br><br>  In the case of our project, with a read cycle every 10 minutes, the error of not reading the label present is encountered no more than once a week. <br><br>  If you have questions I will answer with pleasure. </div><p>Source: https://habr.com/ru/post/429598/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../429588/index.html">The whole truth about the RTOS. Article # 20. Semaphores: helper services and data structures</a></li>
+<li><a href="../42959/index.html">Yandex + Afisha = Palevo</a></li>
 <li><a href="../429590/index.html">Speech analytics for call centers based on SOLR</a></li>
 <li><a href="../429592/index.html">How bank cards affect the economy and why the cue ball does not soar</a></li>
 <li><a href="../429594/index.html">Analysis of the speed of molecular micromotors for HIV diagnosis</a></li>
 <li><a href="../429596/index.html">What does Java need to do to fully support machine learning</a></li>
+<li><a href="../4296/index.html">The most interesting hacker reports on Defcon 14</a></li>
 <li><a href="../429600/index.html">Glitter and poverty 1C for an online store. Gold glitter for franchisees and functional poverty for the user</a></li>
 <li><a href="../429602/index.html">Unexpected Turing fullness everywhere</a></li>
 <li><a href="../429604/index.html">Review of the laptop Lenovo S730-13 (2018): powerful iron in a stylish aluminum case</a></li>
 <li><a href="../429606/index.html">Damn dozen for PM: book list for project managers</a></li>
-<li><a href="../429610/index.html">The story of how to run the Android emulator or save on intel processor</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

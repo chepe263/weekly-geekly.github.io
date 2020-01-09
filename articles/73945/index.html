@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>RAR: creating a store archive</h1><div class="post__text post__text-html js-mediator-article">  The other day I told you how <a href="http://habrahabr.ru/blogs/php/73637/">to get a list of files</a> that contains a rar-archive without using third-party extensions or libraries.  In one of the comments <a href="http://habrahabr.ru/blogs/php/73637/">flashed the thought</a> that, in principle, despite the closeness of the RAR algorithm, you can manually create an archive without compression.  After sitting one evening over the code, I present to your attention a class for creating stored-RAR archives. <a name="habracut"></a><br><br>  I will not describe the format again, it is described quite well <a href="http://www.win-rar.ru/support/knowledge/detail.php%3FID%3D1081">here</a> or in my previous article.  This time, we will simply consider what the library can do and how we will have ways to expand it in the future. <br><br><h4>  Work example </h4><br><blockquote><ol><li>  <font color="#000088">$ rar</font> <font color="#339933">=</font> <font color="#000000">new</font> store_rar <font color="#339933">;</font>  <font color="#666666"># create an instance of the class</font> </li><li>  <font color="#000088">$ rar</font> <font color="#339933">-&gt;</font> <font color="#004000">create</font> <font color="#009900">(</font> <font color="#0000ff">"archive.rar"</font> <font color="#009900">)</font> <font color="#339933">;</font>  <font color="#666666"># create archive</font> </li><li>  <font color="#000088">$ rar</font> <font color="#339933">-&gt;</font> <font color="#004000">addFile</font> <font color="#009900">(</font> <font color="#0000ff">"a.txt"</font> <font color="#009900">)</font> <font color="#339933">;</font>  <font color="#666666"># write a.txt file to it</font> </li><li>  <font color="#000088">$ rar</font> <font color="#339933">-&gt;</font> <font color="#004000">addDirectory</font> <font color="#009900">(</font> <font color="#0000ff">"b / c"</font> <font color="#009900">)</font> <font color="#339933">;</font>  <font color="#666666"># create archive directory "b" with subdirectory "c"</font> </li><li>  <font color="#000088">$ rar</font> <font color="#339933">-&gt;</font> <font color="#004000">addFile</font> <font color="#009900">(</font> <font color="#0000ff">"d / e.txt"</font> <font color="#009900">)</font> <font color="#339933">;</font>  <font color="#666666"># create the "d" directory and write e.txt into it</font> </li><li>  <font color="#000088">$ rar</font> <font color="#339933">-&gt;</font> <font color="#004000">close</font> <font color="#009900">(</font> <font color="#009900">)</font> <font color="#339933">;</font>  <font color="#666666"># close archive</font> </li></ol></blockquote>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      You can get the code with comments on <a href="https://github.com/rembish/TextAtAnyCost">GitHub</a> . <br><br><h4>  And in fact? </h4><br>  Let's see what this class is capable of: <br><ul><li>  Create “empty” rar-archives :) </li><li> Create any nesting of directories with one call to <code>addDirectory</code> ; </li><li>  When creating an existing directory in the archive, a new directory will not be created; </li><li>  Write the file to a subdirectory without first creating it. </li></ul><br>  What is worth keeping in mind: <br><ul><li>  <s>If the “archived” file has already been added to the archive, there will be two (and so on) files with the same name in the archive;</s> </li><li>  The class does not support unicode-characters (which, I note, is in 3.x version of RAR); </li><li>  There are no functions to rename, delete, move files inside the archive, add files to the archive, unzip files; </li><li>  No support for multitome archives. </li></ul><br>  Why do you need this library: <br><ul><li>  To quickly archive a certain amount of files and then send them to the user in the form of a single archive; </li><li>  As proof of the fact that you can archive in rar without rar.dll :) </li></ul><br>  What I would like to do in the future: <br><ul><li>  Support for file operations inside the archive; </li><li>  Support for unicode names; </li><li>  Breakdown of archives in volumes; </li><li>  “Archiving” with a password is not sure what is possible. </li></ul></div><p>Source: <a href="https://habr.com/ru/post/73945/">https://habr.com/ru/post/73945/</a></p>
+      You can get the code with comments on <a href="https://github.com/rembish/TextAtAnyCost">GitHub</a> . <br><br><h4>  And in fact? </h4><br>  Let's see what this class is capable of: <br><ul><li>  Create “empty” rar-archives :) </li><li> Create any nesting of directories with one call to <code>addDirectory</code> ; </li><li>  When creating an existing directory in the archive, a new directory will not be created; </li><li>  Write the file to a subdirectory without first creating it. </li></ul><br>  What is worth keeping in mind: <br><ul><li>  <s>If the “archived” file has already been added to the archive, there will be two (and so on) files with the same name in the archive;</s> </li><li>  The class does not support unicode-characters (which, I note, is in 3.x version of RAR); </li><li>  There are no functions to rename, delete, move files inside the archive, add files to the archive, unzip files; </li><li>  No support for multitome archives. </li></ul><br>  Why do you need this library: <br><ul><li>  To quickly archive a certain amount of files and then send them to the user in the form of a single archive; </li><li>  As proof of the fact that you can archive in rar without rar.dll :) </li></ul><br>  What I would like to do in the future: <br><ul><li>  Support for file operations inside the archive; </li><li>  Support for unicode names; </li><li>  Breakdown of archives in volumes; </li><li>  “Archiving” with a password is not sure what is possible. </li></ul></div><p>Source: https://habr.com/ru/post/73945/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../73937/index.html">Screenshots of car breakdowns (Truckers 3)</a></li>
 <li><a href="../73939/index.html">Object 221, reserve command post of the Black Sea Fleet</a></li>
+<li><a href="../7394/index.html">My little startup or a thousand loyal users</a></li>
 <li><a href="../73941/index.html">Rospotrebnadzor buys SEO services for 280t.r and insists on using SEOPult</a></li>
 <li><a href="../73942/index.html">Pictures make your information more interesting.</a></li>
 <li><a href="../73944/index.html">Serious talk about VLC</a></li>
 <li><a href="../73946/index.html">On various plugins and tips on the "wonderful" weaning of Firefox to eat RAM</a></li>
+<li><a href="../7395/index.html">Balance Restoration</a></li>
 <li><a href="../73950/index.html">Billing selection for provider</a></li>
 <li><a href="../73951/index.html">We write our first application in python for s60</a></li>
 <li><a href="../73952/index.html">How to make friends MD5 in Java and PHP for UTF8 strings</a></li>
-<li><a href="../73954/index.html">Separating the wheat from the chaff in Google Reader</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

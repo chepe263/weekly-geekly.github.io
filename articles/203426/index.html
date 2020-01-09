@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Updating certificates on the build server</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/f3b/2a5/f1f/f3b2a5f1fd68d8cbe4ac88c078d3877f.png" align="left"><br>  Many companies use <a href="http://ru.wikipedia.org/wiki/%25D0%259D%25D0%25B5%25D0%25BF%25D1%2580%25D0%25B5%25D1%2580%25D1%258B%25D0%25B2%25D0%25BD%25D0%25B0%25D1%258F_%25D0%25B8%25D0%25BD%25D1%2582%25D0%25B5%25D0%25B3%25D1%2580%25D0%25B0%25D1%2586%25D0%25B8%25D1%258F">Continuous Integration</a> . <br>  For example, in Git there can be three branches: customer, master, test. <br>  Push to customer or test initiates the creation of the assembly, as well as its delivery to the customer’s devices or testers. <br><br>  For distribution of test builds on iOS, <a href="https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/TestingYouriOSApp/TestingYouriOSApp.html">Ad Hoc profiles are used</a> .  The bottom line is that the assembly must be signed by a profile that indicates the UUID of the devices on which it can be installed. <br><br>  The procedure for adding / removing a device to an ad hoc profile requires its re-creation.  After the profile is updated, it should be installed on the assembly node (the computer on which the assembly is being assembled).  Usually the profile update procedure is performed via Xcode, which requires access to the build node via VNC and direct human participation. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,18 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Fortunately, everything can be automated, including the process of updating profiles at the start of an assembly. <br><a name="habracut"></a><br><br>  As far as I know, there are two ways to automate profile updates using <a href="http://jenkins-ci.org/">Jenkins</a> . <br><br><h4>  Store profile in repository </h4><br><ol><li>  We download the necessary profile from Apple Dev Center and put it in Git as "profiles / customer.mobileprovision". </li><li>  In the build settings in the field Embedded Profile write the path "profiles / customer.mobileprovision". </li><li>  In Xcode for the corresponding configuration in Build Settings, select the profile - None and identity - automatic. </li></ol><br><br><h4>  We update a profile before assembly </h4><br>  A very good man named Matt Thompson (I recommend his <a href="http://nshipster.com/">Blog</a> ) created a client to work with the Apple Dev Center from the console.  The client is called <a href="https://github.com/nomad/cupertino">Cupertino</a> , written in Ruby and put in one line: <br><pre><code class="bash hljs">gem install cupertino</code> </pre> <br>  Now you can not put “profiles / customer.mobileprovision” in Git, but instead write something like this in the bash script: <br><pre> <code class="bash hljs">rm -rf profiles mkdir profiles update_cert <span class="hljs-string"><span class="hljs-string">"TestCert"</span></span> profiles/customer.mobileprovision</code> </pre><br>  Similar to the previous method, it is necessary in XCode for the corresponding configuration in Build Settings to select a profile - None and identity - automatic. <br><br>  The update_cert script looks like this: <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash if [ ! $# == 2 ]; then echo "Usage: $0 (certificate name) (file name)" exit fi cert_name=$1 new_file_name=$2 res=`ios profiles:download "${cert_name}" --username some_user_name --password some_password --team some_team_name -type distribution` if [ $? -gt 0 ]; then echo "ERROR!" exit fi echo "$res" file_name=$(echo "$res" | cut -d"'" -f 2) mv "${file_name}" "${new_file_name}"</span></span></code> </pre><br>  You can do without update_cert, but in this case the name of the downloaded certificate will be the same as in the Apple Dev Center. <br><br>  Obviously, the scripts can be customized to fit your needs.  For example, if you can not download a certificate (problem with the network), then use the existing one and so on. <br><br><h3>  Conclusion </h3><br>  Auto-update profiles is easy and convenient. <br>  Use on health. </div><p>Source: <a href="https://habr.com/ru/post/203426/">https://habr.com/ru/post/203426/</a></p>
+      Fortunately, everything can be automated, including the process of updating profiles at the start of an assembly. <br><a name="habracut"></a><br><br>  As far as I know, there are two ways to automate profile updates using <a href="http://jenkins-ci.org/">Jenkins</a> . <br><br><h4>  Store profile in repository </h4><br><ol><li>  We download the necessary profile from Apple Dev Center and put it in Git as "profiles / customer.mobileprovision". </li><li>  In the build settings in the field Embedded Profile write the path "profiles / customer.mobileprovision". </li><li>  In Xcode for the corresponding configuration in Build Settings, select the profile - None and identity - automatic. </li></ol><br><br><h4>  We update a profile before assembly </h4><br>  A very good man named Matt Thompson (I recommend his <a href="http://nshipster.com/">Blog</a> ) created a client to work with the Apple Dev Center from the console.  The client is called <a href="https://github.com/nomad/cupertino">Cupertino</a> , written in Ruby and put in one line: <br><pre><code class="bash hljs">gem install cupertino</code> </pre> <br>  Now you can not put “profiles / customer.mobileprovision” in Git, but instead write something like this in the bash script: <br><pre> <code class="bash hljs">rm -rf profiles mkdir profiles update_cert <span class="hljs-string"><span class="hljs-string">"TestCert"</span></span> profiles/customer.mobileprovision</code> </pre><br>  Similar to the previous method, it is necessary in XCode for the corresponding configuration in Build Settings to select a profile - None and identity - automatic. <br><br>  The update_cert script looks like this: <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash if [ ! $# == 2 ]; then echo "Usage: $0 (certificate name) (file name)" exit fi cert_name=$1 new_file_name=$2 res=`ios profiles:download "${cert_name}" --username some_user_name --password some_password --team some_team_name -type distribution` if [ $? -gt 0 ]; then echo "ERROR!" exit fi echo "$res" file_name=$(echo "$res" | cut -d"'" -f 2) mv "${file_name}" "${new_file_name}"</span></span></code> </pre><br>  You can do without update_cert, but in this case the name of the downloaded certificate will be the same as in the Apple Dev Center. <br><br>  Obviously, the scripts can be customized to fit your needs.  For example, if you can not download a certificate (problem with the network), then use the existing one and so on. <br><br><h3>  Conclusion </h3><br>  Auto-update profiles is easy and convenient. <br>  Use on health. </div><p>Source: https://habr.com/ru/post/203426/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
+<li><a href="../203418/index.html">The Internet and the credibility of people. Prepayment, implementation details</a></li>
+<li><a href="../20342/index.html">Popular digital content</a></li>
+<li><a href="../203420/index.html">Holiday comes to us: a review of NG-gifts for geeks</a></li>
+<li><a href="../203422/index.html">Motorola will use 3D printing to produce a Project Ara modular phone.</a></li>
+<li><a href="../203424/index.html">Microsoft sold 1 million Xbox One in less than a day</a></li>
 <li><a href="../203428/index.html">The digest of news from the world of mobile development for the last week №32 (November 18—24, 2013)</a></li>
+<li><a href="../20343/index.html">Does the group decide everything?</a></li>
 <li><a href="../203432/index.html">We analyze the interface details-errors on the example of one bank client</a></li>
 <li><a href="../203434/index.html">How to reinstall Windows 8 Single Language pre-installed on a laptop?</a></li>
 <li><a href="../203438/index.html">Northern Lights right in your browser as a panoramic movie</a></li>
-<li><a href="../203440/index.html">Layout for the smallest. We impose a page on BEM</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

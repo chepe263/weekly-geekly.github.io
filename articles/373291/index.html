@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Error handling nested interrupts in STM8 (not described in errata)</h1><div class="post__text post__text-html js-mediator-article">  The STM8 family has a very useful opportunity to save energy when fast and time-critical processing is performed on interrupts, while low-priority tasks run in the background.  To do this, use the AL bit in the GCR register and the WFI machine command.  However, an underwater stone was discovered here that is not described in the current version of <a href="http://www.st.com/en/microcontrollers/stm8l152c6.html">errata</a> on crystal. <br><a name="habracut"></a><br>  This problem was detected on the stm8l152c6t6 crystal installed on the STM8L-Discovery board. <br>  In the main process, the TIM4 timer was initialized for interrupt operation.  The interrupt handler for it is almost empty (well, except for the procedure for resetting the TIM_SR1_UIF bit in the TIM4-&gt; SR1 register).  Further, the main process allowed writing to the EEPROM by unlocking the MASS and initiating the byte writing procedure with the generation of the IRQ after it was completed.  Then in the GCR register the AL bit was set and the WFI command was executed. <br>  In the interrupt handler, upon completion of a write operation in the EEPROM, after reading the contents of the FLASH-&gt; IAPSR, the priority of the executed code is reduced by the RIM command or the PUSH # val / POP CC combination.  Those.  within the EEPROM ISR, all other interrupts are enabled.  And the following was discovered: if the EEPROM ISR was interrupted by another interrupt, then after returning from a nested interrupt, the EEPROM processing of the ISR stops (that is, the impression that the CPU core switches to the WFI state performed by the main process). <br>  This error occurs only when the following conditions exist: <br><ol><li>  Before running WFI in the main process, the AL bit in the GCR register was set </li><li>  The priority of EEPROM IRQ is left by default (i.e. the contents of the register ITC-&gt; ISPR1 is 0xFF) </li></ol><br><br>  Possible workarounds: <br><ol><li>  In the main process, before executing the WFI instruction, clear the AL bit in the GCR.  In this case, after each interruption, the main process will resume its execution, which does not have a very good impact on energy consumption. </li><li>  Before lowering the priority inside the ISR EEPROM (i.e. before the RIM or PUSH # val / POP CC commands), also reset the AL bit in the GCR.  Again, in this case, after the completion of the EEPROM ISR, the main process will continue its execution, which will not have a very good impact on energy consumption. </li><li>  Change the priority of the EEPROM IRQ in the ITC-&gt; ISPR1 register, for example, by writing the value 0b11110111 to it.  What is most incomprehensible, after that, the RIM or PUSH # val / POP CC commands start working inside the EEPROM ISR (that is, after returning from the nested interrupt, the EEPROM processing of the ISR resumes). </li></ol><br><br>  Gentlemen, who have the desire / opportunity, try to reproduce this bug on other crystals of the STM8 / STM8L family.  For if this bug is truly reproducible, then it is necessary to kick the STM in order to fix it or at least include it in the errata sheet. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Received an official response from the ST MCU Support Team: <br><blockquote>  SOLUTION PROPOSED BY SUPPORTER - 5/4/2017 15:52:59: <br>  - Dear customer, <br><br>  If you’re trying to complete the process, you’ll have to go ahead. <br><br>  I recommend to use SW rather than using RIM in the interrupt routine. <br><br>  Best regards, <br>  ST MCU Support Team <br></blockquote></div><p>Source: <a href="https://habr.com/ru/post/373291/">https://habr.com/ru/post/373291/</a></p>
+      Received an official response from the ST MCU Support Team: <br><blockquote>  SOLUTION PROPOSED BY SUPPORTER - 5/4/2017 15:52:59: <br>  - Dear customer, <br><br>  If you’re trying to complete the process, you’ll have to go ahead. <br><br>  I recommend to use SW rather than using RIM in the interrupt routine. <br><br>  Best regards, <br>  ST MCU Support Team <br></blockquote></div><p>Source: https://habr.com/ru/post/373291/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../373295/index.html">On a plane without a passport</a></li>
 <li><a href="../373297/index.html">HYDROP: a reliable way to protect your shoes and clothes from dirt without galoshes and rubber boots</a></li>
 <li><a href="../373299/index.html">The history of open world games</a></li>
-<li><a href="../373301/index.html">Standard settings - the most stupid. Why is the new fast drive failing and not “going” after the upgrade?</a></li>
+<li><a href="../37330/index.html">Scientists have registered the transfer of information faster than the speed of light.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

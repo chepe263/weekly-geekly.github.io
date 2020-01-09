@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Live debian</h1><div class="post__text post__text-html js-mediator-article">  Good all the time of day! <br><br>  Imagine the situation: you have a well-tuned and debugged system running Debian.  At some point you want to make this system installed on the HDD start to boot from a USB flash drive or from a CD and work in ReadOnly mode.  A typical application of such a solution is various street kiosks or thin clients, the state of which is reset to its original state upon each reboot. <br><br>  Today I want to talk about how to achieve a similar result, but first a little theory. <br>  As you know, the Linux operating system Debian being installed on the HDD consists of 4 fairly independent components, each of which can be selected or customized to your taste, namely: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      1. The loader is what runs after the BIOS and loads Debian.  The default is “GRUB”, but you can use any other.  We will use Syslinux because  able to load the OS from a flash drive, CD-ROM and the network. <br>  2. Kernel or “core” is actually the central part of the OS around which everything is spinning.  We will use what comes as part of the distribution. <br>  3. initrd is an intermediate file system that helps the kernel find RootFS.  Requires a small modification, fortunately not manual. <br>  4. RootFS - root FS.  This is what we have to convert so that the OS can boot in RO mode. <br><a name="habracut"></a><br>  We believe that you already have a system with all the programs and packages that interest you.  Let us analyze the work of the script that will do everything for us: <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash #      initrd   "/boot",   ,      VMLINUZ="vmlinuz-3.2.0-4-amd64" INITRD="initrd.img-3.2.0-4-amd64" ISO="iso"&lt;source lang="bash"&gt; #   ,      : apt-get install squashfs-tools apt-get install live-boot live-boot-initramfs-tools apt-get install mtools syslinux dosfstools #       [ -d /$ISO ] &amp;&amp; rm -rf /$ISO mkdir /$ISO mkdir /$ISO/binary mkdir /$ISO/binary/live mkdir /$ISO/binary/syslinux mkdir /$ISO/fscopy #    RootFS       tar -cpf - --directory=/ --exclude=proc --exclude=sys --exclude=dev/pts --exclude=boot --exclude=$ISO . | tar xf - -C /$ISO/fscopy/ rm -r /$ISO/fscopy/tmp/* /$ISO/fscopy/var/tmp/* rm /$ISO/fscopy/var/cache/apt/archives/*.deb rm /$ISO/fscopy/etc/udev/rules.d/*-persistent-net.rules rm /$ISO/fscopy/initrd.img /$ISO/fscopy/vmlinuz &gt; /$ISO/fscopy/etc/fstab mkdir /$ISO/fscopy/proc mkdir /$ISO/fscopy/sys mkdir /$ISO/fscopy/dev/pts #   RootFS    squashfs mksquashfs /$ISO/fscopy/* /$ISO/binary/live/filesystem.squashfs #    initrd    cp /boot/$INITRD /$ISO/binary/live/initrd.img cp /boot/$VMLINUZ /$ISO/binary/live/vmlinuz #    "syslinux.cfg"   Syslinux cat &gt; /$ISO/binary/syslinux/syslinux.cfg &lt;&lt;EOF CONSOLE 0 default linux label linux kernel /live/vmlinuz append initrd=/live/initrd.img boot=live quiet splash noconfig ro EOF #  ,     "/iso/binary/"  ,     dd     #  ,        "/iso/binary/" # /iso/binary/live/vmlinuz —  # /iso/binary/live/initrd.img — initrd,        Squashfs # /iso/binary/live/filesystem.squashfs — RootFS    # /iso/binary/syslinux/syslinux.cfg —    dd if=/dev/zero of=/$ISO/Debian_ro.img bs=10M count=35 LOFI=`losetup -f` losetup $LOFI /$ISO/Debian_ro.img mkdosfs -I $LOFI syslinux $LOFI TMP_DIR="/tmp/$$" mkdir $TMP_DIR mount $LOFI $TMP_DIR cp -r /$ISO/binary/* $TMP_DIR umount $TMP_DIR; rm -r $TMP_DIR losetup -d $LOFI #       "Debian_ro.img",      </span></span></code> </pre> <br><br>  Some useful links: <br><br>  A rather detailed description in Russian of the features of the Squashfs file system: <a href="http://ru.wikipedia.org/wiki/Squashfs">ru.wikipedia.org/wiki/Squashfs</a> <br>  Description of all additional parameters that can be passed to the kernel: <a href="http://live.debian.net/manpages/2.x/en/html/live-boot.7.html">live.debian.net/manpages/2.x/en/html/live-boot.7.html</a> <br><br>  <b>PS</b> If there is a sufficiently large number of applicants, then the topic can be continued with the articles “Live CentOS” and “Live Solaris 10”. </div><p>Source: <a href="https://habr.com/ru/post/226973/">https://habr.com/ru/post/226973/</a></p>
+      1. The loader is what runs after the BIOS and loads Debian.  The default is “GRUB”, but you can use any other.  We will use Syslinux because  able to load the OS from a flash drive, CD-ROM and the network. <br>  2. Kernel or “core” is actually the central part of the OS around which everything is spinning.  We will use what comes as part of the distribution. <br>  3. initrd is an intermediate file system that helps the kernel find RootFS.  Requires a small modification, fortunately not manual. <br>  4. RootFS - root FS.  This is what we have to convert so that the OS can boot in RO mode. <br><a name="habracut"></a><br>  We believe that you already have a system with all the programs and packages that interest you.  Let us analyze the work of the script that will do everything for us: <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash #      initrd   "/boot",   ,      VMLINUZ="vmlinuz-3.2.0-4-amd64" INITRD="initrd.img-3.2.0-4-amd64" ISO="iso"&lt;source lang="bash"&gt; #   ,      : apt-get install squashfs-tools apt-get install live-boot live-boot-initramfs-tools apt-get install mtools syslinux dosfstools #       [ -d /$ISO ] &amp;&amp; rm -rf /$ISO mkdir /$ISO mkdir /$ISO/binary mkdir /$ISO/binary/live mkdir /$ISO/binary/syslinux mkdir /$ISO/fscopy #    RootFS       tar -cpf - --directory=/ --exclude=proc --exclude=sys --exclude=dev/pts --exclude=boot --exclude=$ISO . | tar xf - -C /$ISO/fscopy/ rm -r /$ISO/fscopy/tmp/* /$ISO/fscopy/var/tmp/* rm /$ISO/fscopy/var/cache/apt/archives/*.deb rm /$ISO/fscopy/etc/udev/rules.d/*-persistent-net.rules rm /$ISO/fscopy/initrd.img /$ISO/fscopy/vmlinuz &gt; /$ISO/fscopy/etc/fstab mkdir /$ISO/fscopy/proc mkdir /$ISO/fscopy/sys mkdir /$ISO/fscopy/dev/pts #   RootFS    squashfs mksquashfs /$ISO/fscopy/* /$ISO/binary/live/filesystem.squashfs #    initrd    cp /boot/$INITRD /$ISO/binary/live/initrd.img cp /boot/$VMLINUZ /$ISO/binary/live/vmlinuz #    "syslinux.cfg"   Syslinux cat &gt; /$ISO/binary/syslinux/syslinux.cfg &lt;&lt;EOF CONSOLE 0 default linux label linux kernel /live/vmlinuz append initrd=/live/initrd.img boot=live quiet splash noconfig ro EOF #  ,     "/iso/binary/"  ,     dd     #  ,        "/iso/binary/" # /iso/binary/live/vmlinuz —  # /iso/binary/live/initrd.img — initrd,        Squashfs # /iso/binary/live/filesystem.squashfs — RootFS    # /iso/binary/syslinux/syslinux.cfg —    dd if=/dev/zero of=/$ISO/Debian_ro.img bs=10M count=35 LOFI=`losetup -f` losetup $LOFI /$ISO/Debian_ro.img mkdosfs -I $LOFI syslinux $LOFI TMP_DIR="/tmp/$$" mkdir $TMP_DIR mount $LOFI $TMP_DIR cp -r /$ISO/binary/* $TMP_DIR umount $TMP_DIR; rm -r $TMP_DIR losetup -d $LOFI #       "Debian_ro.img",      </span></span></code> </pre> <br><br>  Some useful links: <br><br>  A rather detailed description in Russian of the features of the Squashfs file system: <a href="http://ru.wikipedia.org/wiki/Squashfs">ru.wikipedia.org/wiki/Squashfs</a> <br>  Description of all additional parameters that can be passed to the kernel: <a href="http://live.debian.net/manpages/2.x/en/html/live-boot.7.html">live.debian.net/manpages/2.x/en/html/live-boot.7.html</a> <br><br>  <b>PS</b> If there is a sufficiently large number of applicants, then the topic can be continued with the articles “Live CentOS” and “Live Solaris 10”. </div><p>Source: https://habr.com/ru/post/226973/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../226959/index.html">A summary of the USSR space exploration, types of missiles and the most significant victories in this field. Part 2</a></li>
 <li><a href="../226965/index.html">Zen Diary - a personal diary with the ability to encrypt</a></li>
 <li><a href="../226967/index.html">On the prerequisites of the socialist revolution in copyright</a></li>
 <li><a href="../226969/index.html">Each by Landing Page. Sore</a></li>
+<li><a href="../22697/index.html">Airplane from google</a></li>
 <li><a href="../226971/index.html">Safe and smart web server on debian 7</a></li>
 <li><a href="../226975/index.html">"Correct" speed limit in nginx. Myth or reality?</a></li>
 <li><a href="../226977/index.html">Listening Ukrainian mobile phones: how it is done and how to protect</a></li>
 <li><a href="../226979/index.html">Google Web Starter Kit: Mobile Website Builder</a></li>
+<li><a href="../22698/index.html">Weather informer from Yandex with the choice of the city by the visitor</a></li>
 <li><a href="../226981/index.html">"Dauria" in space</a></li>
-<li><a href="../226983/index.html">A simple way to monitor the response time of Sphinx indexes using Zabbix</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

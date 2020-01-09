@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How I Symfony2 with Vagrant made friends</h1><div class="post__text post__text-html js-mediator-article">  Not so long ago I got acquainted with the tool for creating a virtual environment Vagrant, which I use for web development and I am very happy about it.  But not everything is so joyful with the implementation of the Symfony2 project in this environment.  Namely, the problem is in the slowness of loading (generating) the page!  So there was a task to increase the speed, since the page load time is more than 10 seconds, well, not so hot. <br><br>  Who had the same problem, or who just wondered please under the cat. <br><a name="habracut"></a><br>  Having walked around the Internet, I found a wonderful <a href="http://www.whitewashing.de/2013/08/19/speedup_symfony2_on_vagrant_boxes.html">article</a> about how updates of the cache and logs in the Symfony2 project affect performance.  The author, using <a href="https://github.com/facebook/xhprof">XHProf, found</a> “bottlenecks” and describing all the details, came to the conclusion that updating the cache and logs in a shared directory leads to the problem of slow page generation and the solution to this problem is to override these directories by transferring them from shared to some another in the virtual OS.  And exactly like this: <br><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">AppKernel</span></span></span><span class="hljs-class"> </span><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">extends</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Kernel</span></span></span><span class="hljs-class"> </span></span>{ <span class="hljs-comment"><span class="hljs-comment">// ... public function getCacheDir() { if (in_array($this-&gt;environment, array('dev', 'test'))) { return '/dev/shm/appname/cache/' . $this-&gt;environment; } return parent::getCacheDir(); } public function getLogDir() { if (in_array($this-&gt;environment, array('dev', 'test'))) { return '/dev/shm/appname/logs'; } return parent::getLogDir(); } }</span></span></code> </pre> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Having done this, I missed the page load time but it still remained great.  The server's response was already shorter, but loading the asset files took about 7-9 seconds, so I took another tip from the above article and ran the command to automatically generate and regenerate the assets: <br><br><pre> <code class="bash hljs">$ php app/console assetic:dump --watch</code> </pre> <br><br>  before this, disable their automatic updates on every request: <br><br><pre> <code class="hljs lua"># app/<span class="hljs-built_in"><span class="hljs-built_in">config</span></span>/config_dev.yml assetic: use_controller: <span class="hljs-literal"><span class="hljs-literal">false</span></span></code> </pre><br><br>  More about this can be found here <a href="http://symfony.com/doc/2.3/cookbook/assetic/asset_management.html">Dumping Asset Files in the dev environment</a> <br><br>  As a result, after carrying out just two simple actions, I managed to speed up the page loading time from more than 10 to less than 1 second, depending on the particular page, which accordingly allowed me to increase the development time and debagging in the virtual Vagrant environment. </div><p>Source: <a href="https://habr.com/ru/post/212663/">https://habr.com/ru/post/212663/</a></p>
+      Having done this, I missed the page load time but it still remained great.  The server's response was already shorter, but loading the asset files took about 7-9 seconds, so I took another tip from the above article and ran the command to automatically generate and regenerate the assets: <br><br><pre> <code class="bash hljs">$ php app/console assetic:dump --watch</code> </pre> <br><br>  before this, disable their automatic updates on every request: <br><br><pre> <code class="hljs lua"># app/<span class="hljs-built_in"><span class="hljs-built_in">config</span></span>/config_dev.yml assetic: use_controller: <span class="hljs-literal"><span class="hljs-literal">false</span></span></code> </pre><br><br>  More about this can be found here <a href="http://symfony.com/doc/2.3/cookbook/assetic/asset_management.html">Dumping Asset Files in the dev environment</a> <br><br>  As a result, after carrying out just two simple actions, I managed to speed up the page loading time from more than 10 to less than 1 second, depending on the particular page, which accordingly allowed me to increase the development time and debagging in the virtual Vagrant environment. </div><p>Source: https://habr.com/ru/post/212663/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../212653/index.html">Decentralization: What services already exist?</a></li>
 <li><a href="../212655/index.html">Ubuntu goes to systemd</a></li>
 <li><a href="../212657/index.html">It's time to tie the declining Latin</a></li>
 <li><a href="../212659/index.html">How to make friends your Nokia Lumia with Mac?</a></li>
+<li><a href="../21266/index.html">Germans will be shocked :-) (flash mob)</a></li>
 <li><a href="../212661/index.html">Raspberry Pi as an information board - using VNC on localhost</a></li>
 <li><a href="../212665/index.html">Playing from scratch</a></li>
 <li><a href="../212667/index.html">Become the ruler of the dungeon for free!</a></li>

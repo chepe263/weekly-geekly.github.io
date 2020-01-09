@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Several ways not to lose data when Gnome hangs (Ubuntu and others)</h1><div class="post__text post__text-html js-mediator-article"> After the respected Ubuntarians have studied keyboard shortcuts with <i>Ctrl + Backspace</i> and <i>Ctrl + SysRq + *</i> , we can move to more mundane ways to remove stalled programs without destroying the entire workspace and unsaved documents. <br><a name="habracut"></a><br>  <b>Because of what the gnome hangs most often:</b> <br>  1. Nautilus hangs when communication with smb / sftp / usb is lost, sometimes with drag-n-drop <br>  2. When copying huge texts into or out of a text editor <br>  3. OpenGL screensavers sometimes manage to overload the processor and do not allow it into the system. <br>  4. Hangs all beloved monster - Firefox <br><br>  <b>The system is frozen, the mouse is moving.</b>  <b>(the most universal option)</b> <br>  Press <i>Ctrl + Alt + F1</i> , get into the text terminal (for laptops on the external screen - look at the laptop screen). <br>  <i>Thanks to odessky for reminding that the same method is also relevant for external connection via SSH if your system is so blocked that it does not respond to keystrokes.</i> <i><br></i>  Log in to the system under your login and get to the command line: <br> <code>genius@notable:~$</code> <br>  Enter the command top (enter) <br>  In response, we get a sign of the form: <br><br> <code>PID USER PR NI VIRT RES SHR S <b>%CPU</b> %MEM TIME+ COMMAND <br> 12218 genius 20 0 377m 252m 29m S <b>90</b> 8.3 16:27.35 firefox <br> 16633 genius 20 0 2304 1052 764 R 4 0.0 0:00.02 top <br> 10501 root 20 0 69176 61m 7204 S 2 2.0 7:51.39 Xorg</code> <br> <br>  In this example, we see that the firefox process is hanging (% CPU). <br>  By pressing the hot key k we get the ability to reprint the PID of our ill-fated process. <br>  <i>PID to kill:</i> <br>  We enter 12218 (enter) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Now we see a calmed system.  Go back to the graphic terminal by pressing <i>Ctrl + Alt + F7</i> <br><br>  Instead of top, we can use the ps command like this: <br>  For example, we are sure that nautilus is frozen: <br> <code>ps aux | grep nautilus</code> <br> <br>  Using <i>|</i>  <i>grep nautilus</i> we filter out the necessary keywords from the “sheet”.  As you will see below, the team that we give will also fall here. <br> <code>genius@notable:~$ ps auxw | grep nautilus <br> genius 6943 0.0 1.0 81744 31412 ? Sl Nov11 0:05 <b>nautilus --no-default-window --sm-client-id default2</b> <br> genius 16962 0.0 0.0 3008 780 pts/0 R+ 19:04 0:00 grep nautilus</code> <br> <br>  And we kill the disagreeable process: <br> <code>genius@notable:~$ kill 6943</code> <br>  You may have to add the <i>-9</i> parameter (SIG_KILL) if the process does not want to end. <br><br>  <b>Now, having studied the basics, we can automate the process of merciless murder:</b> <br><br>  This tip concerns the configuration of <u>Gnome + Metacity</u> (i.e. most ubuntarians).  In KDE and XFSE, the combination for launching xkill - Ctrl + Alt + Esc is configured by default. <br><br>  Run gconf-editor from the console or from the Main Menu: Applications -&gt; System Tools -&gt; Configuration Editor (sorry for my english interface) <br><br>  In the configurator, go to apps -&gt; metacity -&gt; keybinding_commands and select the first free cell, for example command_1, double-click and enter the value <i>xkill</i> <br><br>  Go to the apps -&gt; metacity -&gt; global_keybindings section and find there run_command_1 (the number corresponds to the command number) and write to the value for example: <code>&lt;Control&gt;&lt;Shift&gt;F1</code> (you can make variants of the names of special combinations by analogy with the next section entries) <br><br>  Voila!  Now, to celebrate, you can press <i>Ctrl + Shift + F1</i> (the cursor will turn into an ominous cross) and give the first victim to the bloodthirsty xkill!  Left click on the application window - it kills the application that originated it (note that clicking on the panel will kill the gnome-panel and not the application that is displayed in it), right click - cancels the kill. <br><br>  As the commentators rightly noted - xkill does not guarantee complete destruction of the application, it disconnects the hung application from the session and gives it a signal to end.  The application, in turn, can ignore this signal.  To do this, you already need to use one of the options kill, killall with the <i>-9</i> parameter (SIG_KILL). <br></div><p>Source: <a href="https://habr.com/ru/post/44455/">https://habr.com/ru/post/44455/</a></p>
+      Now we see a calmed system.  Go back to the graphic terminal by pressing <i>Ctrl + Alt + F7</i> <br><br>  Instead of top, we can use the ps command like this: <br>  For example, we are sure that nautilus is frozen: <br> <code>ps aux | grep nautilus</code> <br> <br>  Using <i>|</i>  <i>grep nautilus</i> we filter out the necessary keywords from the “sheet”.  As you will see below, the team that we give will also fall here. <br> <code>genius@notable:~$ ps auxw | grep nautilus <br> genius 6943 0.0 1.0 81744 31412 ? Sl Nov11 0:05 <b>nautilus --no-default-window --sm-client-id default2</b> <br> genius 16962 0.0 0.0 3008 780 pts/0 R+ 19:04 0:00 grep nautilus</code> <br> <br>  And we kill the disagreeable process: <br> <code>genius@notable:~$ kill 6943</code> <br>  You may have to add the <i>-9</i> parameter (SIG_KILL) if the process does not want to end. <br><br>  <b>Now, having studied the basics, we can automate the process of merciless murder:</b> <br><br>  This tip concerns the configuration of <u>Gnome + Metacity</u> (i.e. most ubuntarians).  In KDE and XFSE, the combination for launching xkill - Ctrl + Alt + Esc is configured by default. <br><br>  Run gconf-editor from the console or from the Main Menu: Applications -&gt; System Tools -&gt; Configuration Editor (sorry for my english interface) <br><br>  In the configurator, go to apps -&gt; metacity -&gt; keybinding_commands and select the first free cell, for example command_1, double-click and enter the value <i>xkill</i> <br><br>  Go to the apps -&gt; metacity -&gt; global_keybindings section and find there run_command_1 (the number corresponds to the command number) and write to the value for example: <code>&lt;Control&gt;&lt;Shift&gt;F1</code> (you can make variants of the names of special combinations by analogy with the next section entries) <br><br>  Voila!  Now, to celebrate, you can press <i>Ctrl + Shift + F1</i> (the cursor will turn into an ominous cross) and give the first victim to the bloodthirsty xkill!  Left click on the application window - it kills the application that originated it (note that clicking on the panel will kill the gnome-panel and not the application that is displayed in it), right click - cancels the kill. <br><br>  As the commentators rightly noted - xkill does not guarantee complete destruction of the application, it disconnects the hung application from the session and gives it a signal to end.  The application, in turn, can ignore this signal.  To do this, you already need to use one of the options kill, killall with the <i>-9</i> parameter (SIG_KILL). <br></div><p>Source: https://habr.com/ru/post/44455/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../444548/index.html">Personal experience: how we were engaged in the Spanish-speaking startup promotion in Latin America</a></li>
 <li><a href="../444550/index.html">On the issue of division</a></li>
 <li><a href="../444552/index.html">TDMS Fairway. Work with expertise</a></li>
+<li><a href="../444554/index.html">Simplest JSON RESTful API on Elixir</a></li>
 <li><a href="../444556/index.html">The color of the moon and sun from space in terms of RGB and color temperature</a></li>
 <li><a href="../44456/index.html">Problem with bashorga</a></li>
-<li><a href="../444560/index.html">We invite you to the conference “Clouds. Fashion trends "March 26, 2019</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

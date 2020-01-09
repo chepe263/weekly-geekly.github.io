@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to cheap print a book in Linux</h1><div class="post__text post__text-html js-mediator-article"> I think almost everyone faced the problem of printing large pdf files.  Recently, I had to print a 600 page manual.  Since the document consists entirely of text, I didn’t really want to print all 300 sheets of a4.  In search of a solution, I came across an <a href="http://habrahabr.ru/post/79921/">article</a> from <a href="https://habrahabr.ru/users/rapkasta/" class="user_link">rapkasta</a> . <br><br>  That's how I came across a wonderful psutils package, only the method of binding it did not make me happy.  Too much work.  And I want to lazy automation, suddenly in the future come in handy. <br><a name="habracut"></a><br>  Then I remembered that at the university I had to flash my graduation drafts and it turned out pretty cheap.  It was worth 79 rubles to flash 300 sheets with a plastic spring.  The problem remained in the script, how to remake it so that it was convenient to type with a minimum of human influence in the future. <br><br>  First you need to install 2 packages: <br>  1. <code>texlive-core</code> <br>  2. <code>psutils</code> <br>  They are put simply, if you have Ubuntu then <code>sudo apt-get install texlive texlive-extra psutils</code> <br>  In my case, <code>pacman -S texlive-core psutils</code> <br>  Use your package manager. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  I will sign step by step: </h4><br><h5>  We crop the fields to get maximum working coverage with text. </h5><br>  1) <code>pdfcrop yourFile.pdf book.pdf</code> <br><br><h5>  Convert pdf to ps file </h5><br>  2) <code>pdftops book.pdf book.ps</code> <br><blockquote>  There are two ways to convert pdf to psutils.  pdf2ps and pdftops.  The difference between them is that the first one rasterizes the fonts in good resolution and the second one tries to keep as much information as possible o pdf </blockquote><br><h5>  Sort pages </h5><br><blockquote>  We will re-sort the pages so that the first two and the last two pages alternate, so that with double-sided printing and subsequent cutting of a4 in two, sorted pages will turn out that could be folded together and flashed. </blockquote><br>  3) <code>psbook book.ps &gt; sorted_book.ps</code> <br><blockquote>  This command adds blank pages to the file so that the total number of pages is a multiple of four, and also sorts the pages in two at first and two at the end.  By default, the entire file is one brochure, but you can set a different number of pages for the brochure. </blockquote><br><h5>  Redoing the file, 2 pages each centered </h5><br>  4) Open the resulting file in Evince (the program for viewing documents by default in Ubuntu) choose printing to a file as the resulting file will be called result.ps, printing in Postscript, in the Page Setup tab select 2 pages per side, paper size a4, portrait orientation go to the Page Handling tab and select Page Scaling: Fit to Printable Area, and tick off the autorotation and centering, click on the seal. <br><blockquote>  The same result can be achieved using the command <code>psnup -p a4 -l -2 &gt; result.ps</code> , but I could not get a result that would suit me. </blockquote><br><h5>  Sort files </h5><br>  5) <code>psselect -e -r result.ps book-even-reverse.ps &amp;&amp; psselect -o result.ps book-odd.ps</code> <br><blockquote>  As a result, we get two files for printing, in one of which the pages go backwards.  The same could be obtained from evince by selecting the seal and acc.  options. </blockquote><br><h5>  Delete rudimentary files </h5><br>  6) <code>rm book.pdf book.ps sorted_book.ps result.ps</code> <br><br><h5>  We print files </h5><br>  7) <code>lpr book-odd.ps</code> turn over the printed and re-type <code>lpr book-even-reverse.ps</code> <br><br>  So, finally, a small cost estimate: <br><ol><li>  Refill printer 236 rubles. </li><li>  A printer resource on one gas station of 1500 passes </li><li>  Xerox paper 500 sheets 118 rub. </li><li>  Stitching more than 200 sheets - 79 rubles. </li></ol><br>  Total 150 sheets = 35.4 rubles were used.  + 300 passes of the printer = 47.2 rubles.  + 79 rub.  binding. <br>  35.4 + 47.20 + 79 = 161.6 rubles. <br>  In your area, the amount may be somewhat different. <br><br>  PS  Ideally, I would like to get a ready-made bash script to almost completely take the human factor out of this routine operation.  I would appreciate any comments on improving the scripts.  Especially the moment that concerns the use of Evince for centering and scaling images. </div><p>Source: <a href="https://habr.com/ru/post/196922/">https://habr.com/ru/post/196922/</a></p>
+    <h4>  I will sign step by step: </h4><br><h5>  We crop the fields to get maximum working coverage with text. </h5><br>  1) <code>pdfcrop yourFile.pdf book.pdf</code> <br><br><h5>  Convert pdf to ps file </h5><br>  2) <code>pdftops book.pdf book.ps</code> <br><blockquote>  There are two ways to convert pdf to psutils.  pdf2ps and pdftops.  The difference between them is that the first one rasterizes the fonts in good resolution and the second one tries to keep as much information as possible o pdf </blockquote><br><h5>  Sort pages </h5><br><blockquote>  We will re-sort the pages so that the first two and the last two pages alternate, so that with double-sided printing and subsequent cutting of a4 in two, sorted pages will turn out that could be folded together and flashed. </blockquote><br>  3) <code>psbook book.ps &gt; sorted_book.ps</code> <br><blockquote>  This command adds blank pages to the file so that the total number of pages is a multiple of four, and also sorts the pages in two at first and two at the end.  By default, the entire file is one brochure, but you can set a different number of pages for the brochure. </blockquote><br><h5>  Redoing the file, 2 pages each centered </h5><br>  4) Open the resulting file in Evince (the program for viewing documents by default in Ubuntu) choose printing to a file as the resulting file will be called result.ps, printing in Postscript, in the Page Setup tab select 2 pages per side, paper size a4, portrait orientation go to the Page Handling tab and select Page Scaling: Fit to Printable Area, and tick off the autorotation and centering, click on the seal. <br><blockquote>  The same result can be achieved using the command <code>psnup -p a4 -l -2 &gt; result.ps</code> , but I could not get a result that would suit me. </blockquote><br><h5>  Sort files </h5><br>  5) <code>psselect -e -r result.ps book-even-reverse.ps &amp;&amp; psselect -o result.ps book-odd.ps</code> <br><blockquote>  As a result, we get two files for printing, in one of which the pages go backwards.  The same could be obtained from evince by selecting the seal and acc.  options. </blockquote><br><h5>  Delete rudimentary files </h5><br>  6) <code>rm book.pdf book.ps sorted_book.ps result.ps</code> <br><br><h5>  We print files </h5><br>  7) <code>lpr book-odd.ps</code> turn over the printed and re-type <code>lpr book-even-reverse.ps</code> <br><br>  So, finally, a small cost estimate: <br><ol><li>  Refill printer 236 rubles. </li><li>  A printer resource on one gas station of 1500 passes </li><li>  Xerox paper 500 sheets 118 rub. </li><li>  Stitching more than 200 sheets - 79 rubles. </li></ol><br>  Total 150 sheets = 35.4 rubles were used.  + 300 passes of the printer = 47.2 rubles.  + 79 rub.  binding. <br>  35.4 + 47.20 + 79 = 161.6 rubles. <br>  In your area, the amount may be somewhat different. <br><br>  PS  Ideally, I would like to get a ready-made bash script to almost completely take the human factor out of this routine operation.  I would appreciate any comments on improving the scripts.  Especially the moment that concerns the use of Evince for centering and scaling images. </div><p>Source: https://habr.com/ru/post/196922/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../196904/index.html">RAD Studio XE5 World Tour in Lviv, Ufa, Kiev, Minsk</a></li>
-<li><a href="../196910/index.html">Opera 17 release</a></li>
 <li><a href="../196912/index.html">SlideStackView or Extending ViewGroup on Android (part 2)</a></li>
 <li><a href="../196916/index.html">Agile application in a fixed phase contract</a></li>
+<li><a href="../196918/index.html">Coroutines in python</a></li>
+<li><a href="../19692/index.html">Opera 9.50 beta vs Habr</a></li>
 <li><a href="../196920/index.html">God bless Dynamic SQL</a></li>
 <li><a href="../196924/index.html">Overview of the new TI Launchpad (MSP-EXP430F5529LP or MSP430F5529 USB LaunchPad)</a></li>
 <li><a href="../196926/index.html">Booting Linux without bootloader</a></li>
+<li><a href="../19693/index.html">The official position of Google in relation to MS OOXML and ODF</a></li>
 <li><a href="../196930/index.html">Implementation of 802.1x for computers behind "stupid" phones</a></li>
 <li><a href="../196932/index.html">11 years of playing Civilization II without restarting: continuing the story</a></li>
-<li><a href="../196936/index.html">Subtleties in the process of design for startups</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

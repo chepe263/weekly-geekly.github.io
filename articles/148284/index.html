@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to define HTTP_REFERER flash</h1><div class="post__text post__text-html js-mediator-article">  The background is as follows.  There is a flash widget on some resource that performs some operations with user content.  In my particular case, these are photos.  The task was as follows.  It is necessary to collect impression statistics from external resources, i.e.  how many times and where the flash drive lit up on user screens.  the task was also complicated by the fact that in fact the shows had to be taken into account <strong>not of the flash drive itself, but of the photos changing in it</strong> .  If you also need to take into account the display of content inside the flash, then, alas, you will have to contact the flasher who made this widget.  Why, I will explain later. <br><a name="habracut"></a><br>  So let's get started.  We all know perfectly well that the flash drive can not refer the referrer, or rather can, but this referrer will be the physical address of the location of the flash drive itself.  What is not good and we absolutely do not need.  So how do you refer a referrer?  Very simple, just wrap the issue of a flash drive in a php script.  In which we will grab the referrer to consider the show.  If you have a task, just like mine, with an "asterisk", then we do a simple trick with redirecting and adding a parameter to the request, in this way.  Having received the referrer in a PHP script, we generate a new request to the flash drive and redirect it.  The flash drive, in turn, after receiving this parameter, adds it to each request (in my case, photos) to our server, where this request is processed by a script that takes into account all the information we need, including the referrer.  Now so that everything becomes completely clear, I will give a small example of a utopian code (without checks, etc., only logic, so please do not be outraged): <br><br><pre><code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">//  flashcatch.php $file = './flash.swf'; $referer = $_SERVER['HTTP_REFERER']; //       ,      // ... //    header('Content-Type: application/x-shockwave-flash'); //    . echo file_get_content($file); exit();</span></span></code> </pre> <br><br>  If you need to add a parameter for the subsequent accounting of content within the flash drive itself, the code becomes a bit more complicated. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">//  flashcatch-trick.php $file = './flash.swf'; $referer = $_SERVER['HTTP_REFERER']; //        referer. if (strpos($_SERVER['REQUEST_URI'], '?')) { $connector = '&amp;'; } else { $connector = '?'; } $newRequest = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] . $connector . 'referer=' . $referer; //            referer    if (isExternalRequest() &amp;&amp; !$_REQUEST['referer']) { header ('Location: ' . $newRequest); exit(); } //    header('Content-Type: application/x-shockwave-flash'); //    . echo file_get_content($file); exit();</span></span></code> </pre><br><br>  And here, we remember about the flasher, we transfer a new parameter to the flash drive, in which the referer is registered, in my case it is the referer parameter.  A flasher, forming requests to the server for receiving photos (audio, video), substitutes it and the server when issuing the contents of the flash drive, takes into account the referrer and display, respectively. <br><br>  The <i>isExternalRequest</i> function <i>is</i> not shown, it is not difficult to write it yourself.  I think its essence is clear, it will return true if it is an external request and false if its server requested a USB flash drive. </div><p>Source: <a href="https://habr.com/ru/post/148284/">https://habr.com/ru/post/148284/</a></p>
+    <pre> <code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">//  flashcatch-trick.php $file = './flash.swf'; $referer = $_SERVER['HTTP_REFERER']; //        referer. if (strpos($_SERVER['REQUEST_URI'], '?')) { $connector = '&amp;'; } else { $connector = '?'; } $newRequest = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] . $connector . 'referer=' . $referer; //            referer    if (isExternalRequest() &amp;&amp; !$_REQUEST['referer']) { header ('Location: ' . $newRequest); exit(); } //    header('Content-Type: application/x-shockwave-flash'); //    . echo file_get_content($file); exit();</span></span></code> </pre><br><br>  And here, we remember about the flasher, we transfer a new parameter to the flash drive, in which the referer is registered, in my case it is the referer parameter.  A flasher, forming requests to the server for receiving photos (audio, video), substitutes it and the server when issuing the contents of the flash drive, takes into account the referrer and display, respectively. <br><br>  The <i>isExternalRequest</i> function <i>is</i> not shown, it is not difficult to write it yourself.  I think its essence is clear, it will return true if it is an external request and false if its server requested a USB flash drive. </div><p>Source: https://habr.com/ru/post/148284/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../148279/index.html">Invites to the Windows Store before its opening to Russian developers</a></li>
+<li><a href="../14828/index.html">Intel has launched a clone of Digg for software and web development</a></li>
 <li><a href="../148280/index.html">How we created an introductory video for Vector</a></li>
 <li><a href="../148281/index.html">Django people - like-minded community</a></li>
 <li><a href="../148282/index.html">On the possibility of AI to self-knowledge and knowledge of the creator</a></li>

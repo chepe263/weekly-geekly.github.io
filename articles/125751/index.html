@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Search for a path on a hexagonal grid</h1><div class="post__text post__text-html js-mediator-article">  In fact, I will not reveal anything new to anyone, <a href="http://playtechs.blogspot.com/2007/04/hex-grids.html">but what I found</a> was with cunning mathematics (or rather, not so cunning, but still difficult for me personally to comprehend), and then my bike turned out to be simple. <br><a name="habracut"></a><br>  <i>And so we already have:</i> <br>  Search on a regular rectangular grid. <br>  <i>What we need:</i> <br>  Search the hexagonal grid with minimal effort. <br><br><h5>  General grid structure </h5><br>  The first idea is simply to shift everything through the column: <br><img src="https://habrastorage.org/getpro/habr/post_images/62f/936/64b/62f93664b092aaa14014020fbc985aee.png" alt="image"><br>  Then the neighbors of the current cell look like this: <br><img src="https://habrastorage.org/getpro/habr/post_images/992/660/f5c/992660f5c9dfaa755badc0fd1a9c17af.png" alt="image"><br>  As you can see, the connections between the cells in theory should form just a hex: <br><img src="https://habrastorage.org/getpro/habr/post_images/22d/805/44c/22d80544c91b7df6b16679183f55f589.png" alt="image"><br>  But immediately suspicions creep in that there should be no squares at all, but rectangles: <br><img src="https://habrastorage.org/getpro/habr/post_images/49b/9aa/5e4/49b9aa5e486a472453432d5689948b33.png" alt="image"><br>  How not difficult to calculate the k in the figure will be equal to sqrt (3) / 2 <br>  As a result, we get a grid <br><img src="https://habrastorage.org/getpro/habr/post_images/61a/fc6/6f7/61afc66f7ecad5788119b997b24d0dd0.png" alt="image"><br>  Where the size of each cell is w = sqrt (3) / 2, h = 1, with each odd column (if starting from 0) shifted by 0.5 <br><br><h5>  Coordinate transformation </h5><br>  Then everything goes easier to translate the coordinates in the cell number, adjusted for even / odd column: <br> <code>(x,y)=&gt;(x/w, (y-(x/w)%2)/h)</code> <br>  To the contrary, a cell of the field is transferred to the coordinates: <br> <code>(i,k)=&gt;(i*w, k*h+h/2*(i%2))</code> <br> <br><h5>  Neighbors </h5><br>  Now we need to get all the neighbors of the selected cell. <br>  They will look something like this for even columns (and symmetrically for odd columns). <br><img src="https://habrastorage.org/getpro/habr/post_images/d8a/cee/114/d8acee11432341f63a2e1ac6984e0656.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>(i,k)=&gt;( <br> (i+1,k), <br> (i-1,k), <br> (i,k+1), <br> (I,k-1), <br> (i+1,k+(1-2*i%2)), <br> (i-1,k+(1-2*i%2))) <br></code> <br><br><h5>  Distance between two cells </h5><br>  Now, for a full-fledged implementation, there’s just a lack of a way to find the distance between two cells, you can of course use the trite Euclidean, but this is not our option.  We take the diagonal distance on a regular grid as the base: <br> <code>xd = abs(p1.X - p2.X); <br> yd = abs(p1.Y - p2.Y); <br> diagonal = min(xd, yd); <br> straight = xd + yd; <br> result = sqrt(2) * diagonal + (straight - (2 * diagonal))); <br></code> <br><br>  Our situation is similar (there are also diagonal moves), only to shift vertically (considering the orientation of the grid as in the example), you can either take one vertical step, or 2 horizontally. <br> <code>//    <br> if (xd &gt;= yd * 2) <br> { <br> result = xd; <br> } <br> //      <br> else <br> { <br> result = xd + (yd – xd/2); <br> } <br></code> <br>  But there is a small detail here, if the distance is measured between two cells from different columns, then there will still be an unrecorded displacement in the cell floor.  Therefore, yd should be defined a little differently: <br> <code>yd =abs((p1.Y + (p1.X%2)/2) – (p2.Y + (p2.X%2)/2));</code> <br> <br>  It now remains to incite A * to this all, for example, as I did <a href="http://code.google.com/p/motion-plan/">here</a> , and tadam: <br><img src="https://habrastorage.org/getpro/habr/post_images/81b/d42/7ba/81bd427ba0bf178da9eab90f53df8ecc.png" alt="image"><br><br><h5>  Instead of epilogue </h5><br>  Of course, there are more beautiful mathematical ways of manipulating the hexagonal grid, but in my opinion this method turned out to be simple enough to have the right to life (and plus in the performance test it showed quite good results). </div><p>Source: <a href="https://habr.com/ru/post/125751/">https://habr.com/ru/post/125751/</a></p>
+     <code>(i,k)=&gt;( <br> (i+1,k), <br> (i-1,k), <br> (i,k+1), <br> (I,k-1), <br> (i+1,k+(1-2*i%2)), <br> (i-1,k+(1-2*i%2))) <br></code> <br><br><h5>  Distance between two cells </h5><br>  Now, for a full-fledged implementation, there’s just a lack of a way to find the distance between two cells, you can of course use the trite Euclidean, but this is not our option.  We take the diagonal distance on a regular grid as the base: <br> <code>xd = abs(p1.X - p2.X); <br> yd = abs(p1.Y - p2.Y); <br> diagonal = min(xd, yd); <br> straight = xd + yd; <br> result = sqrt(2) * diagonal + (straight - (2 * diagonal))); <br></code> <br><br>  Our situation is similar (there are also diagonal moves), only to shift vertically (considering the orientation of the grid as in the example), you can either take one vertical step, or 2 horizontally. <br> <code>//    <br> if (xd &gt;= yd * 2) <br> { <br> result = xd; <br> } <br> //      <br> else <br> { <br> result = xd + (yd – xd/2); <br> } <br></code> <br>  But there is a small detail here, if the distance is measured between two cells from different columns, then there will still be an unrecorded displacement in the cell floor.  Therefore, yd should be defined a little differently: <br> <code>yd =abs((p1.Y + (p1.X%2)/2) – (p2.Y + (p2.X%2)/2));</code> <br> <br>  It now remains to incite A * to this all, for example, as I did <a href="http://code.google.com/p/motion-plan/">here</a> , and tadam: <br><img src="https://habrastorage.org/getpro/habr/post_images/81b/d42/7ba/81bd427ba0bf178da9eab90f53df8ecc.png" alt="image"><br><br><h5>  Instead of epilogue </h5><br>  Of course, there are more beautiful mathematical ways of manipulating the hexagonal grid, but in my opinion this method turned out to be simple enough to have the right to life (and plus in the performance test it showed quite good results). </div><p>Source: https://habr.com/ru/post/125751/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../125746/index.html">Packet classification at the access level</a></li>
 <li><a href="../125747/index.html">PlayBook screenshots: what’s right and what’s wrong</a></li>
 <li><a href="../125748/index.html">Why did vSphere nearly become more expensive than RHEV 5 times?</a></li>
 <li><a href="../125749/index.html">Google+ Crossposting on WordPress</a></li>
+<li><a href="../12575/index.html">Postmoderation introduced in Russia</a></li>
 <li><a href="../125750/index.html">Intel Partner Program One Year Later: New Opportunities for Software Developers</a></li>
 <li><a href="../125752/index.html">Geoffrey Moore's Double Penetration Theory</a></li>
 <li><a href="../125754/index.html">How does the web-spider</a></li>

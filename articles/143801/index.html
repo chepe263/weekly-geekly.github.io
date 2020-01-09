@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Always cache, cache everywhere!</h1><div class="post__text post__text-html js-mediator-article">  Already at the time of the announcement of the IBM XIV Gen3 system, it was announced that SSD support within the modules would be forthcoming.  “Soon” it is already and now you can not only order a new XIV Gen3 with installed SSD drives, but also install the SSD into an already installed XIV Gen3 system (the procedure does not require stopping - only the microcode update).  You can install a single 400GB SSD disk into each XIV node (this will total from 2.4TB to 6TB per system, the size is slightly underestimated - the disks were initially promised at 500GB).  Why so little?  Because this space can only be used as a read cache, and not to store the data itself, and 6TB cache memory is not so little.  Only read operations are cached — for the caching of write operations, the operative memory of the XIV nodes is used (the total volume of which reaches 360GB).  To ensure a long and cloudless existence for SSD modules under high load, a special optimization mechanism is used: initially, 512KB blocks are formed in the node's RAM and these blocks are written sequentially and cyclically to the SSD.  Thus, write operations on SSD always go sequentially, and the cells are used evenly.  They promise a good performance boost: <br><img src="https://habrastorage.org/storage2/594/a6d/681/594a6d681d9d5cb587e4e81deff742a1.png"><br><a name="habracut"></a><br>  The solution proposed in XIV is certainly not a technological breakthrough - everyone remembered both EMC FastCache and NetApp FlashCache.  Each of these solutions has its own advantages and disadvantages.  From EMC FastCache, the customer receives not only caching when reading, but also caching write operations.  The price for this is a significant reduction in the cache in the RAM of the SP and a relatively small amount - for the “top” VNX7500 it is 2.1TB (when using 100GB disks).  In the case of NetApp, FlashCache caches only reads, but the cache is deduplicated and can reach 16TB.  In addition, FlashCache is a PCI-e card, so the “road” from the cache to the processor (and therefore to the host) is much shorter than using SSD drives.  And this, in turn, potentially allows to get a fairly low latency.  On the other hand, if we want to get 16TB of cache, then we will have to use 16 expansion slots from 24x possible, which will significantly limit the expansion options (both on disks and on the host connection protocols used). <br><br>  EMC also checked out and noisefully rolled out their VFCache caching solution (Very Fast Cache).  What is it and how is it tied to the disk system?  In fact, VFCache is a regular PCI-e card (like the analogs of FusionIO, LSI, etc.) 300GB (manufactured by Micron), which is used not as a super-fast disk in the operating system, but as a cache for read operations. <br><br><img src="https://habrastorage.org/storage2/c19/beb/9ec/c19beb9ec1d6432aa73372f20860d129.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      In principle (as I understand from the read / found), no one bothers to use VFCache with any disk system (and without it, including).  You can even “cut off” a part of VFCache and use it as a hard disk.  Among the obvious disadvantages is that only one card in the server is supported, so using part of VFCache as DAS cannot provide fault tolerance.  In addition, support in VMware seriously limits such functionality as vMotion (or rather, it is simply not supported).  In this case, the EMC solution is also not unique.  One of the pioneers in the release of PCI-e SSD cards - FusionIO has been offering a similar product ioCache for some time (which, by the way, just supports vMotion).  It is hoped that in future releases, VFCache will be substantially refined and will appear not only closer integration with VMware, but also with its own products (FAST Cache / FAST VP). </div><p>Source: <a href="https://habr.com/ru/post/143801/">https://habr.com/ru/post/143801/</a></p>
+      In principle (as I understand from the read / found), no one bothers to use VFCache with any disk system (and without it, including).  You can even “cut off” a part of VFCache and use it as a hard disk.  Among the obvious disadvantages is that only one card in the server is supported, so using part of VFCache as DAS cannot provide fault tolerance.  In addition, support in VMware seriously limits such functionality as vMotion (or rather, it is simply not supported).  In this case, the EMC solution is also not unique.  One of the pioneers in the release of PCI-e SSD cards - FusionIO has been offering a similar product ioCache for some time (which, by the way, just supports vMotion).  It is hoped that in future releases, VFCache will be substantially refined and will appear not only closer integration with VMware, but also with its own products (FAST Cache / FAST VP). </div><p>Source: https://habr.com/ru/post/143801/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

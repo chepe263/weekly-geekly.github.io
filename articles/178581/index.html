@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Paravirtualization in Xen: no bootloader anywhere</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/b42/1a2/9ae/b421a29ae146ddd5d878077bc3a344ec.png" align="left" alt="Xen mascot">  <a href="http://wiki.xen.org/wiki/PvGrub">PV-GRUB</a> (not to be confused with the <a href="http://xgu.ru/wiki/xen/pygrub">pygrub</a> crutch) is a <a href="http://www.gnu.org/software/grub/">GRUB</a> 0.9x-based boot loader for Xen para-virtual machines, which allows you to load the OS kernel directly from the DomU (guest) environment, which adds significant independence from the host system to the guest launch process.  One of the largest implementations can be considered Amazon EC2 cloud hosting, which also uses the Xen hypervisor and allows customers to use PV-GRUB to download any custom kernel ( <a href="http://aws.typepad.com/aws/2010/07/use-your-own-kernel-with-amazon-ec2.html">Use your own kernel with Amazon EC2</a> ) for paravirtual systems. <br><br>  In this matter, everything would be extremely positive if the problem is not quite common for free software: the development of this branch of GRUB has been completely stopped for the benefit of GRUB2 for several years, and the Xen developer community seems to be based on the current version of GRUB in the coming years PV replacement loader is not ready to provide.  PV-GRUB itself, despite being, in general, part of the official Xen distribution, is currently excluded at least from the corresponding packages in the Debian and Ubuntu repositories, and users who are used to the conveniences, meanwhile, demand (Debian bug # 588839: <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi%3Fbug%3D588839">Include pv-grub to securely boot guest kernels</a> ) and require (Ubuntu bug # 798583: <a href="https://bugs.launchpad.net/ubuntu/%2Bsource/xen/%2Bbug/798583">xen-utils-4.1 does not have pvgrub</a> ) ... Although for me personally the motivation of Xen package maintainers referring to some vague problems is not very clear to me with dependencies, while packages with GRUB 0.97 are still available and workable, and to the existing functionality  no complaints. <br><br>  <strong>Here I will try to describe, perhaps, the most acceptable solution to the immediate problem at the moment - the self-assembly of PV-GRUB and the necessary configuration of DomU for its use</strong> , since no supernatural efforts are required for this. <br><a name="habracut"></a><br>  For those interested in understanding the implementation of the almost traditional bootloader for the Xen para-virtual environment, it would be appropriate to immediately throw up some materials about the functional stub domains that appeared in Xen 3.3.  A brief introduction is on the Xen.org blog ( <a href="http://blog.xen.org/index.php/2008/08/28/xen-33-feature-stub-domains/">Xen 3.3 Feature: Stub Domains</a> , <a href="http://blog.xen.org/index.php/2008/08/28/xen-33-feature-hvm-device-model-domain/">Xen 3.3 Feature: HVM Device Model Domain</a> ).  The rest is to <a href="http://www.slideshare.net/xen_com_mgr/xs-boston-2008-stub-domains">look through the presentation</a> ( <a href="http://www.xen.org/files/xensummitboston08/SamThibault_XenSummit.pdf">PDF</a> ) and <a href="http://vimeo.com/12847666">listen to the</a> report "Stub domains: A step towards Dom0 disaggregation", presented at Xen Summit North America. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       To build the bootloader, you need the Xen source code.  It is best to take the version that is already used on your host system.  Since I use Debian GNU / Linux "Wheezy", for me it will be Xen 4.1.4.  You can build on any system with a minimum developer set (gcc + binutils + make).  From the official Xen website ( <a href="http://www.xenproject.org/downloads/xen-archives/supported-xen-41-series.html">Xen 4.1 series</a> , <a href="http://www.xenproject.org/downloads/xen-archives/supported-xen-42-series.html">Xen 4.2 series</a> ), download and unpack the tarball with the source code: <br><blockquote><pre>  $ wget http://bits.xensource.com/oss-xen/release/4.1.4/xen-4.1.4.tar.gz
@@ -100,20 +100,20 @@
  root (hd0)
  kernel /vmlinuz-3.2.0-4-amd64 root = UUID = f5731cf7-420a-4094-acf7-bec5976a0b62 ro single
  initrd /initrd.img-3.2.0-4-amd64 </pre></blockquote><br>  If it is necessary to transfer any additional parameters to the kernel that were previously specified directly in the virtual machine configuration via the <code>extra</code> option, this can be done by modifying <code>kopt</code> in the same / <code>kopt</code> . <br><br>  As a final chord, it remains to reconfigure the DomU startup process: the bootloader file name must be specified in the <code>kernel</code> option.  If the boot loader image is in the default directory (in the same place as the <code>hvmloader</code> ), then the full path is not required.  The <code>extra</code> option specifies the partition and path to the GRUB menu file. <br><blockquote><pre>  kernel = 'pv-grub-x86_64.gz'
- extra = '(hd0) /grub/menu.lst' </pre></blockquote><br>  It is necessary to get rid of the previous <code>ramdisk</code> and <code>root</code> options. <br>  To make sure that the new configuration is fully operational, the first launch of DomU should be done in the auto-connect mode to the console ( <code>xm start -c</code> ).  If everything is done correctly, you will see the GRUB menu and the subsequent kernel boot process with mounting the root partition. <br><br>  <em>Note</em> : The most likely reason for the absence of PV-GRUB in Xen packages of various distributions is voiced on <a href="http://lists.xen.org/archives/html/xen-users/2010-09/msg00794.html">the xen-users mailing list</a> . <br><blockquote>  Do you need to support the construction of a jail box? </blockquote></div><p>Source: <a href="https://habr.com/ru/post/178581/">https://habr.com/ru/post/178581/</a></p>
+ extra = '(hd0) /grub/menu.lst' </pre></blockquote><br>  It is necessary to get rid of the previous <code>ramdisk</code> and <code>root</code> options. <br>  To make sure that the new configuration is fully operational, the first launch of DomU should be done in the auto-connect mode to the console ( <code>xm start -c</code> ).  If everything is done correctly, you will see the GRUB menu and the subsequent kernel boot process with mounting the root partition. <br><br>  <em>Note</em> : The most likely reason for the absence of PV-GRUB in Xen packages of various distributions is voiced on <a href="http://lists.xen.org/archives/html/xen-users/2010-09/msg00794.html">the xen-users mailing list</a> . <br><blockquote>  Do you need to support the construction of a jail box? </blockquote></div><p>Source: https://habr.com/ru/post/178581/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../178567/index.html">Backup and Restore in PostgreSQL</a></li>
 <li><a href="../178573/index.html">10 grants of € 25,000 to create Massive Open Online Courses. Everybody votes!</a></li>
 <li><a href="../178575/index.html">Anonymous site</a></li>
 <li><a href="../178577/index.html">Runetology (196): Yegor Rudi, co-founder of the Eruditor Group</a></li>
 <li><a href="../178579/index.html">Open source phone "Gongkai" for $ 12</a></li>
+<li><a href="../17858/index.html">Christmas logos;) start</a></li>
 <li><a href="../178583/index.html">Google maps engine</a></li>
 <li><a href="../178585/index.html">The court acquitted the noble cybersquatter</a></li>
 <li><a href="../178587/index.html">Useful projects for xna developers</a></li>
+<li><a href="../17859/index.html">HTPC distribution</a></li>
 <li><a href="../178593/index.html">Create dynamic websites using PHP, MySQL, JavaScript and CSS. 2nd ed</a></li>
-<li><a href="../178597/index.html">Hulk hovercraft part 2</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

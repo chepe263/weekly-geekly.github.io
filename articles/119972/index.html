@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Migration from one physical server to another</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/storage/habraeffect/e1/02/e1024935613483ce825f46654dc34978.PNG" alt="image"></div><br><br>  A typical situation, the project starts, the simplest server is taken under it, which works six months, the project grows and asks for a big and angry server. <br><br>  Usually they put a new OS on a new piece of hardware, raise software, set up, transfer content, databases, etc., change DNS and turn off the old server in two days.  It would seem a simple procedure, hundreds of times any sysadmin did it.  BUT, in the process, as practice shows, something is forgotten and already on the battle server you need to make edits and settings, haul old crutches and adapt them to a new place. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       This option is sometimes inevitable, for example, when servers are in different data centers.  But if the servers (new and old) are in neighboring racks, then you can simply move the OS to a new piece of iron and immediately redeem the old one.  I will write a short checklist article on how to do this.  So let's go! <br><a name="habracut"></a><br>  Default: <br>  - Servers in one datacenter at one collar / dedikator <br>  - You have agreed with the collar / dedikikator that you link the IP address from the old server to the new one.  If this is not done, there may be jambs in case the servers are in different VLANs. <br>  - You are given IP-KVM at least on a new server, ideally you may need an old one if you suddenly want to keep it accessible. <br>  - I will show witchcraft on the example of CentOS 5.x <br>  - Your server has pxe server with emergency (so-called rescue) image of CentOS 5.x and your platform. <br>  - You know the root password from the source server. <br>  - You have copied, on a blank sheet of paper, from the old network configuration server and disk partitioning. <br><br>  So, all the conditions are met, we begin the work! <br>  We are loading the new server over the network. To do this, for example, Supermicro needs to enable pxe boot for the first network adapter in the BIOS, reboot the server and press F12.  If STP on the access ports are enabled on the network switch, when a message appears about an attempt to get ip via dhcp, press the pause button and wait 30 seconds.  Then press the space bar and boot into CentOS 5.x 64 rescue. <br><br>  fdisk -l see if the disks are hooked, if not, then we screw the controller's RAID driver using insmod.  If disks are visible, we mark them the same way as on the old server, if there is no controller and there are disks we collect using mdadm software RAID.  Oh, and do not forget about the swap. <br><br>  Create a file system: <br><pre> mkswap / dev / md5 
@@ -126,15 +126,15 @@
  / boot / grub / stage2 /boot/grub/grub.conf
 </pre><br><br>  Now we need to create a new initrd, because  in the old may not be for example mdadm. <br><pre> gzip /boot/initrd-2.6.18-238.9.1.el5.img
  mkinitrd /boot/initrd-2.6.18-238.9.1.el5.img 2.6.18-238.9.1.el5
-</pre><br><br>  Enable firstboot with the command: <br><pre>  chkconfig firstboot on </pre><br><br>  And we reboot the server several times by pressing Ctrl + D <br><br>  While the server reboots, let's go to the old one and depending on whether we need it any further, disconnect the network or change the ip address.  If it is not necessary for all network adapters in the / etc / sysconfig / network-scripts / ifcfg-ethX config (where X is the network adapter number), ONBOOT = yes is set to ONBOOT = no and the network is /etc/init.d/network stop .  If we need the old server, then in the same configs we set new network settings and “restart” the network /etc/init.d/network restart <br><br>  So with the old server, we have finished, moving to a new one.  In IP-KVM, we already see the blue window ncurses which gave us the firstboot, go to the network configuration and drive in the old network settings.  Then restart the server for the purity of the experiment. <br><br>  Perhaps all of the above will seem difficult for you and the hand will reach out to write a comment in the spirit of “well, and why this hemorrhoids?”, Do not rush, in practice all operations are performed very quickly and the downtime is minimal. <br><br>  If you find an error in the text, please write to me in PM, I will be extremely grateful. <br><br>  If you need to clarify some points, do not hesitate to ask!  The above procedure was performed at least half to hundreds of times. <br><br>  If you are interested in migration issues, I can tell you about the migration of the OpenVZ container from the server to which there is no root access or about the migration of the physical machine to the OpenVZ container. </div><p>Source: <a href="https://habr.com/ru/post/119972/">https://habr.com/ru/post/119972/</a></p>
+</pre><br><br>  Enable firstboot with the command: <br><pre>  chkconfig firstboot on </pre><br><br>  And we reboot the server several times by pressing Ctrl + D <br><br>  While the server reboots, let's go to the old one and depending on whether we need it any further, disconnect the network or change the ip address.  If it is not necessary for all network adapters in the / etc / sysconfig / network-scripts / ifcfg-ethX config (where X is the network adapter number), ONBOOT = yes is set to ONBOOT = no and the network is /etc/init.d/network stop .  If we need the old server, then in the same configs we set new network settings and “restart” the network /etc/init.d/network restart <br><br>  So with the old server, we have finished, moving to a new one.  In IP-KVM, we already see the blue window ncurses which gave us the firstboot, go to the network configuration and drive in the old network settings.  Then restart the server for the purity of the experiment. <br><br>  Perhaps all of the above will seem difficult for you and the hand will reach out to write a comment in the spirit of “well, and why this hemorrhoids?”, Do not rush, in practice all operations are performed very quickly and the downtime is minimal. <br><br>  If you find an error in the text, please write to me in PM, I will be extremely grateful. <br><br>  If you need to clarify some points, do not hesitate to ask!  The above procedure was performed at least half to hundreds of times. <br><br>  If you are interested in migration issues, I can tell you about the migration of the OpenVZ container from the server to which there is no root access or about the migration of the physical machine to the OpenVZ container. </div><p>Source: https://habr.com/ru/post/119972/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../119961/index.html">erlanger.ru rides Erlang Factory 2011 in London</a></li>
 <li><a href="../119966/index.html">Learning to create a small template parser</a></li>
 <li><a href="../119967/index.html">NASA has stopped trying to contact "Spirit"</a></li>
 <li><a href="../119968/index.html">A smooth transition of the company's network to IPv6</a></li>
 <li><a href="../119969/index.html">SkypeKit Description (headless Skype)</a></li>
+<li><a href="../11997/index.html">Free Form Hosting Essay</a></li>
 <li><a href="../119973/index.html">June 9 - RoR developers meeting with Rendell Thomas</a></li>
 <li><a href="../119974/index.html">PRIUT.KZ - Help for homeless animals</a></li>
 <li><a href="../119979/index.html">5 minutes about the war</a></li>

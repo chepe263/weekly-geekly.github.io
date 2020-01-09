@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Downloading music from VK using VK api and Python3</h1><div class="post__text post__text-html js-mediator-article"> More recently, it was the first of June, and here it was already the first of September.  Autumn in the yard. <br><br>  Yes, recently, too, so turned away, and woke up - Mail absorbed VK.  And so it began: you will not look at the video without advertising, you will not listen to the music - the copyright holders have prohibited it.  Rumor has it that generally banned.  I sensed something was wrong.  And then this is the time of year.  So I thought, why don't I collect my stocks?  I will conserve my music on my computer, I will transfer it to disk - it will be sweeter than any jam!  And it will help me, if not strangely, the VC itself, or rather its api.  And still the third python, the built-in urllib library and the library for working with this in json format. <br><a name="habracut"></a><br>  You can request information about the user's audio recordings from api vk.  The answer will come to us in json format, and it will contain the number of user audio recordings, as well as extended information about each song, if such information is available.  And most importantly, each song will have a url address where it lies on VK servers.  Just what we need. <br><br>  To work with most api methods, you need a special key (hereinafter referred to as access_token), which vk issues to applications.  How to get it - I'll tell you a little later. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Remember the window that appears as soon as the application requests access to information from your page?  By clicking on “Allow”, you give the application the right to get access_token in your name, which will contain the parameters for accessing information from your page. <br><br>  Well, let's start? <br><br>  Open the " <a href="http://vk.com/dev">developers</a> " tab and create a new application: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/50f/4fb/afb/50f4fbafb494313ea52a1363ac3bb686.png" alt="image"><br><br>  Enter the name of your application and select its type: standalone application: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/b68/370/8da/b683708da0f7b8545cda8e927c43db1e.png" alt="image"><br><br>  We confirm the action via SMS, which falls into your mobile: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/3be/dcd/ae1/3bedcdae1aa7385ca8e6d6ada4d90724.png" alt="image"><br><br>  As soon as we have completed all the formalities, we get the id of our application, which we will use to get access_token-a.  Let's open that part of the documentation, which is dedicated to the authorization of client <a href="http://vk.com/dev/auth_mobile">standalone-applications</a> . <br><br><img src="https://habrastorage.org/getpro/habr/post_images/a09/ca4/9b8/a09ca49b83cbdc3f0b0158f30aaf7cd4.png" alt="image"><br><br><img src="https://habrastorage.org/getpro/habr/post_images/d35/9cc/401/d359cc401f70f38317ccbde875a4b9ac.png" alt="image"><br><br>  <i>Important</i> <br>  redirect_uri in our case should be equal to <code><a href="https://oauth.vk.com/blank.html"></a> oauth.vk.com/blank.html</code>  <code><a href="https://oauth.vk.com/blank.html"></a> oauth.vk.com/blank.html</code> , since a different address needs to be specified only if we are developing a browser-based javascript application. <br><br>  Since we will work with audio recordings in our application, we will pass the audio parameter to the scope attribute.  Normally access_token is issued for a while.  To get it indefinitely, you can pass an offline parameter to the scope attribute. <br><br>  Notes: <br><ul><li>  several parameters in the same attribute are written separated by commas. </li><li>  attributes in the request are written via ampersand (&amp;) </li></ul><br>  For a complete table of parameters for the scope attribute, see the <a href="http://vk.com/dev/permissions">link</a> . <br><br>  As a result, in the address bar, we drive in something like: <br><blockquote><pre>  https://oauth.vk.com/authorize/client_id=YOUR_CLIENT_ID&amp;redirect_uri=https://oauth.vk.com/blank.html&amp;display=page&amp;response_type=token </pre></blockquote><br>  If everything worked out for you, you will see this window. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/53f/db2/546/53fdb25460942ccaed3675d6ec9cc5f4.png" alt="image"><br><br>  After successful authorization and access rights, you will be redirected to <code><a href="https://oauth.vk.com/blank.html"></a> oauth.vk.com/blank.html</code>  <code><a href="https://oauth.vk.com/blank.html"></a> oauth.vk.com/blank.html</code> .  In the address bar, you will see the <code>access_token= YOUR_ACCESS_TOKEN</code> .  Be sure to save this key in order not to lose it in the future.  That is what we will use when writing requests for api. <br><br>  In order to get a list of audio records of a user, we will use the api audio.get method.  As I said above, the audio.get method returns us the answer in json-format.  Here is an example of a json object that returns this method. <br><pre> {
@@ -113,20 +113,20 @@
         file = open (filename, 'wb')
         file.write (cached_song)
         file.close ()
-</pre><br></div></div><br>  Enjoy music and love programming.  Before communication! </div><p>Source: <a href="https://habr.com/ru/post/266671/">https://habr.com/ru/post/266671/</a></p>
+</pre><br></div></div><br>  Enjoy music and love programming.  Before communication! </div><p>Source: https://habr.com/ru/post/266671/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../266661/index.html">Google has released a security update for Android</a></li>
 <li><a href="../266663/index.html">Technical support of computer forensics - continued</a></li>
 <li><a href="../266665/index.html">Using React JSX with TypeScript 1.6</a></li>
 <li><a href="../266667/index.html">Connecting to Git over SSH in Windows without PuttyGen using BitBucket as an example</a></li>
 <li><a href="../266669/index.html">Setting up Vim-like controls in GTK</a></li>
+<li><a href="../26667/index.html">Revecter - new ECMAScript framework for SVG</a></li>
 <li><a href="../266673/index.html">A small Java-RuleZ FAQ - or why Java is used in 1C: Programmers' Club to prepare for school computer science competitions</a></li>
 <li><a href="../266675/index.html">Security Week 37: Bug-bugzilla, Karbanak from back, C & C on fishing</a></li>
 <li><a href="../266677/index.html">A little ZPL guide</a></li>
+<li><a href="../26668/index.html">Minnesota says a decisive "no" to Google!</a></li>
 <li><a href="../266681/index.html">Correct work with date and time in Ruby on Rails</a></li>
-<li><a href="../266683/index.html">React v0.14 release candidate overview</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

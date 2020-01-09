@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Problems of the modules in Joomla 1.5 using two or more templates and component Joomfish</h1><div class="post__text post__text-html js-mediator-article"> In my practice, it has often happened to use two or more templates for the Cale's site.  In Joomla 1.5, this is quite conveniently implemented, one template is chosen default (applied to all newly created menu items), and the second one is “selective”. Usually, the content itself is published in this case on the default template.  This is all done quite simply and quickly, but there are also disadvantages.  I wanted to tell about one of them in this post. <br><a name="habracut"></a><br>  The fact is that when the module is published (search, news) on the main one, and if it is also “selective” here, i.e.  the content is called in another template, an interesting thing happens.  Each news item is assigned a Itemid corresponding menu in which the module is published, and for the main one it is “1”.  Thus, Zhumla tries to open this URL under this Itemid, and since it does not contain a content call, the transition to the internal page does not occur, the news is not displayed, that is, everything remains unchanged.  I am not familiar, closely, with the Jumlava IPA, but for me it became a very unpleasant surprise.  The flexibility of the Jumbles in terms of the independence of the structure elements from the content elements was one of those factors that I took up with studying the engine.  Moreover, this process began to manifest itself only after installing the Joomfish component.  Nevertheless, it was necessary to find a way out.  I found a way out perhaps not the most correct, but working.  Long tormented by this Itemid = 1, I decided to get rid of it.  In order not to cause conflicts I equated Itemid to “0” (The fact is that equating Itemid to other values ​​not equal to zero, I risked assigning it to an existing structure (menu) element, and the unit is the very first element, ie <br>  "0" is absolutely free.) Below, I will give the changes made in the file mod_newsflash / helper.php <br>  Original code: <br><br> <code>$item-&gt;linkOn = JRoute::_(ContentHelperRoute::getArticleRoute($item-&gt;slug, $item-&gt;catslug, $item-&gt;sectionid)); <br></code> <br><br>  In this line, the URLA news is assembled (the ordinal number of the article id, the title of the article, the ordinal number of the catid category, as well as the ordinal number of the structure element (menu) Itemid). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      All I did was “forcibly” assign the itemid “0” to all items.  Thus, my news has ceased to belong to any menu. <br>  Code: <br><br> <code>$item-&gt;linkOn = JRoute::_(ContentHelperRoute::getArticleRoute($item-&gt;slug, $item-&gt;catslug.'&amp;Itemid=0', $item-&gt;sectionid)); <br></code> <br><br>  After this change, all the news began to follow its internal links, that is, the default template was called. <br><br>  A similar change was made to the search module, but this time it was necessary to edit the component. <br>  Opening the components / com_search / controller.php file made changes in this line: <br><br> <code>$this-&gt;setRedirect(JRoute::_('index.php'.$uri-&gt;toString(array('query', 'fragment')), false)); <br></code> <br><br>  Replaced with: <br><br> <code>$this-&gt;setRedirect(JRoute::_('index.php'.$uri-&gt;toString(array('query', 'fragment')).'&amp;Itemid=0', false)); <br></code> <br><br>  Again forcibly assigning Itemid = 0 to it <br><br>  I missed a lot of details when writing a post, but I managed to convey the essence.  Perhaps this method is not literate, but I achieved my goal, but for me this is the main thing. <br><br>  Thank! </div><p>Source: <a href="https://habr.com/ru/post/123874/">https://habr.com/ru/post/123874/</a></p>
+      All I did was “forcibly” assign the itemid “0” to all items.  Thus, my news has ceased to belong to any menu. <br>  Code: <br><br> <code>$item-&gt;linkOn = JRoute::_(ContentHelperRoute::getArticleRoute($item-&gt;slug, $item-&gt;catslug.'&amp;Itemid=0', $item-&gt;sectionid)); <br></code> <br><br>  After this change, all the news began to follow its internal links, that is, the default template was called. <br><br>  A similar change was made to the search module, but this time it was necessary to edit the component. <br>  Opening the components / com_search / controller.php file made changes in this line: <br><br> <code>$this-&gt;setRedirect(JRoute::_('index.php'.$uri-&gt;toString(array('query', 'fragment')), false)); <br></code> <br><br>  Replaced with: <br><br> <code>$this-&gt;setRedirect(JRoute::_('index.php'.$uri-&gt;toString(array('query', 'fragment')).'&amp;Itemid=0', false)); <br></code> <br><br>  Again forcibly assigning Itemid = 0 to it <br><br>  I missed a lot of details when writing a post, but I managed to convey the essence.  Perhaps this method is not literate, but I achieved my goal, but for me this is the main thing. <br><br>  Thank! </div><p>Source: https://habr.com/ru/post/123874/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../123868/index.html">The long-awaited Ciklum .NET Subbotnik - in Dnepropetrovsk</a></li>
+<li><a href="../12387/index.html">Apple's iRing ring will manage players and phones.</a></li>
 <li><a href="../123870/index.html">Programming in nanoCAD: how to register your team in the nanoCAD environment?</a></li>
 <li><a href="../123871/index.html">E-public services: they have been waiting for the promised three years. TCEF Report</a></li>
 <li><a href="../123872/index.html">Installing openSUSE 11.3 with a kettle</a></li>
 <li><a href="../123873/index.html">INNOPROM for IT specialist - what to see, where to show yourself</a></li>
 <li><a href="../123876/index.html">Nokia N9. WebKit2 browser with HTML5 support</a></li>
+<li><a href="../12388/index.html">Cheers, comrades !!! Meet Papervision3D 1.5 (AS3) Official Release</a></li>
 <li><a href="../123882/index.html">About the removal of unimportant parts of the pages during site indexing</a></li>
 <li><a href="../123883/index.html">Synchronous RTS engines and desync history</a></li>
 <li><a href="../123884/index.html">It is a little about database design for the search engine</a></li>
-<li><a href="../123888/index.html">2D Glasses. If you don't like 3D</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

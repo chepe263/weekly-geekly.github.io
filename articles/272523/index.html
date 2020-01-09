@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Editing a Raspberry Pi image with qemu-user-static (Ubuntu 14.04)</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/97a/20d/8d7/97a20d8d775501aee2869b587b46b5af.jpg" alt="image"><br><br>  Sometimes you need to edit the standard boot images, as well as the configuration of systems, followed by replication on a large number of Raspberry Pi boards.  To solve such problems, it is convenient to use the qemu-user-static and binfmt-support packages. <br><a name="habracut"></a><br>  We start the terminal and install the qemu-user-static and binfmt-support packages: <br><br><pre><code class="bash hljs">sudo apt-get install qemu qemu-user-static binfmt-support</code> </pre> <br>  QEMU in qemu-user-static mode allows you to run binary files compiled for one processor using a processor of a different architecture.  The binfmt-support package allows you to run binary files directly. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       After installation, see the list of supported binary files: <br><br><pre> <code class="bash hljs">update-binfmts --display</code> </pre><br><br><pre> qemu-aarch64 (enabled):
@@ -149,20 +149,20 @@
   1 4194kB 62.9MB 58.7MB primary fat16 lba
   2 62.9MB 4351MB 4288MB primary ext4 
 </pre><br><pre> <code class="bash hljs">(parted) quit</code> </pre><br>  Clean loop devices: <br><br><pre> <code class="bash hljs">losetup -d /dev/loop0 /dev/loop1</code> </pre><br>  Mount the image: <br><br><pre> <code class="bash hljs">sudo mkdir ~/rpi_mnt sudo mount ~/rpi_image/2015-05-05-raspbian-wheezy.img -o loop,offset=$((122880*512)),rw ~/rpi_mnt</code> </pre><br>  (optional) Mount / boot: <br><br><pre> <code class="bash hljs">sudo mount ~/rpi_image/2015-05-05-raspbian-wheezy.img -o loop,offset=$((8192*512)),rw ~/rpi_mnt/boot</code> </pre><br>  (not necessary): <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> ~/rpi_mnt sudo mount --<span class="hljs-built_in"><span class="hljs-built_in">bind</span></span> /dev dev/ sudo mount --<span class="hljs-built_in"><span class="hljs-built_in">bind</span></span> /sys sys/ sudo mount --<span class="hljs-built_in"><span class="hljs-built_in">bind</span></span> /proc proc/ sudo mount --<span class="hljs-built_in"><span class="hljs-built_in">bind</span></span> /dev/pts dev/pts</code> </pre><br>  For everything to work correctly (for example, a network), before changing the root directory, you need to comment out all the lines in the ~ / rpi_mnt / etc / ld.so.preload file: <br><br><pre> <code class="bash hljs">sudo vi ~/rpi_mnt/etc/ld.so.preload</code> </pre><br>  To edit, press the i key, enter # before each line, then press ESC: wq ENTER <br><br>  Changing the root directory (CHROOT). <br><br>  First of all, you need to make sure that binfmt-support will run our code as soon as we change the root file system.  To do this, copy the file to the root directory of the image: <br><br><pre> <code class="bash hljs">sudo cp /usr/bin/qemu-arm-static ~/rpi_mnt/usr/bin</code> </pre><br>  Change the root: <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> ~/rpi_mnt sudo chroot . bin/bash</code> </pre><br>  Check the root directory change: <br><br><pre> <code class="bash hljs">uname -a</code> </pre><br><pre> Linux simm-UX32VD 3.19.0-33-generic # 38 ~ 14.04.1-Ubuntu SMP Fri Nov 6 18:17:28 UTC 2015 armv7l GNU / Linux
-</pre><br><br>  Now you can add and remove programs, configure the system, and then copy the resulting image to multiple Raspberry Pi devices, without the need to connect a monitor and keyboard to each individual board. <br><br>  Entering the Raspberry Pi configuration menu: <br><br><pre> <code class="bash hljs">sudo raspi-config</code> </pre><br>  Deleting the desktop environment: <br><br><pre> <code class="bash hljs">apt-get remove --dry-run --auto-remove --purge libx11-.*</code> </pre><br>  Make sure there are no unnecessary packages in the list and run it again without "--dry-run". <br><br>  System update.  To upgrade to a new version (for example, jessie, stretch, etc.), / boot must be mounted (also check all the files in /etc/apt/sources.list.d for an update).  Before upgrading, save the necessary configuration files. <br><br><pre> <code class="bash hljs">sed -i <span class="hljs-string"><span class="hljs-string">'s/wheezy/jessie/g'</span></span> /etc/apt/sources.list apt-get update apt-get dist-upgrade -o Dpkg::Options::=<span class="hljs-string"><span class="hljs-string">"--force-confold"</span></span></code> </pre><br>  To record an image on an SD card: <br><br>  1. Exit CHROOT (type exit) <br>  2. Uncomment the lines in the /etc/ld.so.preload file: <br><br><pre> <code class="bash hljs">sudo vi ~/rpi_mnt/etc/ld.so.preload</code> </pre><br>  remove previously added # characters by pressing x, then press ESC: wq ENTER <br><br>  3. Unmount all partitions: <br><br><pre> <code class="bash hljs">sudo umount ~/rpi_mnt/sys sudo umount ~/rpi_mnt/proc sudo umount ~/rpi_mnt/dev/pts sudo umount ~/rpi_mnt/boot sudo umount ~/rpi_mnt/dev <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> .. sudo umount ~/rpi_mnt</code> </pre><br>  Insert the SD card, look at the path and record the image: <br><br><pre> <code class="bash hljs">sudo fdisk -l sudo dd <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>=~/rpi_image/2015-05-05-raspbian-wheezy.img of=/dev/mmcblk0</code> </pre><br><br>  Download the article in pdf - <a href="http://prom-electric.ru/media/raspi_img_edit.pdf">http://prom-electric.ru/media/raspi_img_edit.pdf</a> </div><p>Source: <a href="https://habr.com/ru/post/272523/">https://habr.com/ru/post/272523/</a></p>
+</pre><br><br>  Now you can add and remove programs, configure the system, and then copy the resulting image to multiple Raspberry Pi devices, without the need to connect a monitor and keyboard to each individual board. <br><br>  Entering the Raspberry Pi configuration menu: <br><br><pre> <code class="bash hljs">sudo raspi-config</code> </pre><br>  Deleting the desktop environment: <br><br><pre> <code class="bash hljs">apt-get remove --dry-run --auto-remove --purge libx11-.*</code> </pre><br>  Make sure there are no unnecessary packages in the list and run it again without "--dry-run". <br><br>  System update.  To upgrade to a new version (for example, jessie, stretch, etc.), / boot must be mounted (also check all the files in /etc/apt/sources.list.d for an update).  Before upgrading, save the necessary configuration files. <br><br><pre> <code class="bash hljs">sed -i <span class="hljs-string"><span class="hljs-string">'s/wheezy/jessie/g'</span></span> /etc/apt/sources.list apt-get update apt-get dist-upgrade -o Dpkg::Options::=<span class="hljs-string"><span class="hljs-string">"--force-confold"</span></span></code> </pre><br>  To record an image on an SD card: <br><br>  1. Exit CHROOT (type exit) <br>  2. Uncomment the lines in the /etc/ld.so.preload file: <br><br><pre> <code class="bash hljs">sudo vi ~/rpi_mnt/etc/ld.so.preload</code> </pre><br>  remove previously added # characters by pressing x, then press ESC: wq ENTER <br><br>  3. Unmount all partitions: <br><br><pre> <code class="bash hljs">sudo umount ~/rpi_mnt/sys sudo umount ~/rpi_mnt/proc sudo umount ~/rpi_mnt/dev/pts sudo umount ~/rpi_mnt/boot sudo umount ~/rpi_mnt/dev <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> .. sudo umount ~/rpi_mnt</code> </pre><br>  Insert the SD card, look at the path and record the image: <br><br><pre> <code class="bash hljs">sudo fdisk -l sudo dd <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>=~/rpi_image/2015-05-05-raspbian-wheezy.img of=/dev/mmcblk0</code> </pre><br><br>  Download the article in pdf - <a href="http://prom-electric.ru/media/raspi_img_edit.pdf">http://prom-electric.ru/media/raspi_img_edit.pdf</a> </div><p>Source: https://habr.com/ru/post/272523/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../272509/index.html">Randomness in PHP7 - Will I get lucky?</a></li>
 <li><a href="../272513/index.html">Implement Bootstrap 3 Datepicker in SonataAdminBundle</a></li>
 <li><a href="../272517/index.html">Presentation of the e-government portal in Kiev</a></li>
 <li><a href="../272519/index.html">Simple Blender. Part 1</a></li>
+<li><a href="../27252/index.html">Usability as an interface between the halves of the brain</a></li>
 <li><a href="../272521/index.html">Detailing, reflections and post effects in GTA V</a></li>
 <li><a href="../272525/index.html">Speed ​​chase: 4 ways to reduce delays when trading on the stock exchange</a></li>
 <li><a href="../272529/index.html">Security and microservices</a></li>
+<li><a href="../27253/index.html">LogMeIn service overview</a></li>
 <li><a href="../272531/index.html">Best Pull Request</a></li>
 <li><a href="../272535/index.html">The final schedule of Community DevCamp (Moscow, December 12)</a></li>
-<li><a href="../272539/index.html">Laboratory penetration testing "Test lab v.8": the bank is broken</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>OSPF (Quagga), Shorewall and Policy Routing: inactive route problem</h1><div class="post__text post__text-html js-mediator-article">  If someone uses quagga (OSPF) and plans to do balancing of channels through which OSPF works, using Shorewall, I ask under kat. <br><a name="habracut"></a><br><h3>  So the problem itself </h3><br>  We have a normally working OSPF, which perfectly exchanges routes, and everything is fine.  But you decided that you need a second provider, and to improve the QoS situation, you applied something like <a href="https://habrahabr.ru/post/309124/">LXC to the QoS service (replacing ifb with veth)</a> (started balancing on interfaces with OSPF).  Here you will have a problem: with quite normal and live channels, routes, etc.  quagga does not put routes in the routing table.  What is even more confusing, the command in vtysh: <i>show ip osfp route</i> shows all the routes, and in <i>show ip route</i> these routes are in the <b>inactive route</b> status. <br><br><h3>  Cause </h3><br>  It turned out that “Shorewall” is to blame, which on interfaces with balancing adds extra routes like: <br><br><pre><code class="bash hljs">10.0.11.0/24 dev eth1 proto kernel scope link src 10.0.11.2 10.0.11.1 dev eth1 scope link src 10.0.11.2 &lt;=============    10.0.12.0/24 dev eth2 proto kernel scope link src 10.0.12.2 10.0.12.1 dev eth2 scope link src 10.0.12.2 &lt;=============   </code> </pre> <br>  Having met such a quagga is lost, and does not set the routes going through such. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h3>  Decision </h3><br>  A small script that we will execute when running shorewall: <br><br><div class="spoiler">  <b class="spoiler_title">/usr/local/bin/shorewall-prov-fix.sh</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash IF=$(grep -v -e '^#' -e '^?' /etc/shorewall/providers | sort -u -t $'\t' -k1,1 | cut -d$'\t' -f 5 | eval $(for i in $(grep -v -e '^#' -e '^\[' /etc/shorewall/params);do echo -e "$i \c";done;echo '') envsubst) for IF_ in $IF; do IP=$(ip as $IF_ | grep 'inet ' | cut -d ' ' -f 6 |sed -e 's/\/.*$//') SRC=$(ip route show dev $IF_ scope link src $IP |grep -v kernel) eval "ip route del dev $IF_ $SRC scope link src $IP" done</span></span></code> </pre> </div></div><br>  And write it in: <br><br><div class="spoiler">  <b class="spoiler_title">/ etc / shorewall / started</b> <div class="spoiler_text"><pre> <code class="bash hljs">/usr/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/bin/shorewall-prov-fix.sh &gt; /dev/null 2&gt;&amp;1</code> </pre> </div></div><br><h3>  PS </h3><br>  The clue to the solution was not found immediately, but here is a link to the appropriate <a href="https://sourceforge.net/p/shorewall/mailman/message/31418613/">source</a> . </div><p>Source: <a href="https://habr.com/ru/post/309386/">https://habr.com/ru/post/309386/</a></p>
+    <h3>  Decision </h3><br>  A small script that we will execute when running shorewall: <br><br><div class="spoiler">  <b class="spoiler_title">/usr/local/bin/shorewall-prov-fix.sh</b> <div class="spoiler_text"><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash IF=$(grep -v -e '^#' -e '^?' /etc/shorewall/providers | sort -u -t $'\t' -k1,1 | cut -d$'\t' -f 5 | eval $(for i in $(grep -v -e '^#' -e '^\[' /etc/shorewall/params);do echo -e "$i \c";done;echo '') envsubst) for IF_ in $IF; do IP=$(ip as $IF_ | grep 'inet ' | cut -d ' ' -f 6 |sed -e 's/\/.*$//') SRC=$(ip route show dev $IF_ scope link src $IP |grep -v kernel) eval "ip route del dev $IF_ $SRC scope link src $IP" done</span></span></code> </pre> </div></div><br>  And write it in: <br><br><div class="spoiler">  <b class="spoiler_title">/ etc / shorewall / started</b> <div class="spoiler_text"><pre> <code class="bash hljs">/usr/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/bin/shorewall-prov-fix.sh &gt; /dev/null 2&gt;&amp;1</code> </pre> </div></div><br><h3>  PS </h3><br>  The clue to the solution was not found immediately, but here is a link to the appropriate <a href="https://sourceforge.net/p/shorewall/mailman/message/31418613/">source</a> . </div><p>Source: https://habr.com/ru/post/309386/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../309376/index.html">SPA is not a silver bullet, or an alternative approach to web development. Part 1</a></li>
 <li><a href="../309378/index.html">Tower Defense on the Unity engine - Part 1</a></li>
+<li><a href="../30938/index.html">Excerpt from Gibson's “Academy Leader”</a></li>
 <li><a href="../309380/index.html">Introduction to GitLab CI</a></li>
 <li><a href="../309382/index.html">Elixir: Preparing parsing correctly - yecc and leex</a></li>
 <li><a href="../309384/index.html">Compensation of lags for weapons in MechWarrior Online</a></li>
 <li><a href="../309388/index.html">Bad code kills</a></li>
 <li><a href="../309390/index.html">Selection of equipment for corporate cloud storage</a></li>
 <li><a href="../309394/index.html">The myth of RAM and O (1)</a></li>
-<li><a href="../309400/index.html">The book “HTML5 and CSS3. Website development for any browsers and devices. 2nd ed. "</a></li>
-<li><a href="../309402/index.html">Microsoft StorSimple virtual array. Part 2</a></li>
+<li><a href="../3094/index.html">And what with www. profile domains don't work?</a></li>
+<li><a href="../30940/index.html">Saving lives</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

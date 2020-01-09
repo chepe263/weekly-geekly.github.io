@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Javascript and time zones - the correct time on the site</h1><div class="post__text post__text-html js-mediator-article">  There is still confusion when implementing local time on the site.  A significant contribution to this confusion was made by Russian lawmakers with the periodic abolition of the transition to winter time.  Do you know what time zone we have now +3 or +4 hours?  That is the majority of users do not know.  But there is a very simple solution how not to burden the user with this problem!  It is necessary to use the time of the device (we assume that this is the correct local time).  The obvious solution is to use the getTimezoneOffset javascript function is fundamentally wrong.  Why?  Read on. <br><a name="habracut"></a><br>  How should everything work?  If the user sends his message for example on the forum at 12:15 (according to the time on his device), then he should see his message on the site with the same time.  It would seem that if you use the time zone offset (taken from the browser from getTimezoneOffset), then everything should work.  But it is not so! <br><br>  The paradox is that the time zone may be incorrectly set on the user's device.  And this is a very common case, because when you change the time zone, many simply transfer the time to a few hours without touching the time zone.  And as a result, we have endless branches on the “Set Up Time” technical support forums, which bloom with every winter / summer transfer or during the return from holidays. <br><br>  The most correct thing is to set the local time on the site in accordance with the time set on the user's device, not paying attention to the time zone.  We presume that on the server all dates are stored in the database in GMT format (and this is correct).  Thus, for the correct output of dates (time) in the user's browser, it is necessary to calculate the offset between the browser and server times. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      On the server, the current time in php can be obtained by the function time (), in the browser by the function javascript Date ().  And then the time zone offset can be calculated using javacript like this: <br><br><pre><code class="javascript hljs"><span class="hljs-comment"><span class="hljs-comment">//  time_zone     var d = new Date(); var loc = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds()); var time_zone = ((&lt;? echo time();?&gt; - loc/1000)/60).toFixed(0);</span></span></code> </pre> <br>  Next, you need to transfer the time_zone value to the server and output the time from the database, taking into account this offset.  For example, if the time is stored in the database in seconds, then for output to the browser we use the following (in php): <br><br><pre> <code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">//      -    $t = $time_fromDB - $time_zone*60;</span></span></code> </pre><br>  The above is a two-step method: <br>  1. First, time_zone is calculated <br>  2. time_zone is sent to the server and is used for further time output. <br><br>  But you can do everything in one stage.  In this case, when the page is first loaded into the browser, the time_zone is also calculated (see above) and then all time values ​​are displayed using javacript.  For example, using the following mydate () function: <br><br><pre> <code class="javascript hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">two</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">num</span></span></span><span class="hljs-function">) </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> (<span class="hljs-string"><span class="hljs-string">"0"</span></span> + num).slice(<span class="hljs-number"><span class="hljs-number">-2</span></span>);} <span class="hljs-comment"><span class="hljs-comment">//    // t -       // mydate      12.08.2015 19:03 function mydate(t) { var d = new Date((t-time_zone*60)*1000); return two(d.getUTCDate())+'.'+ two(d.getUTCMonth()+1)+'.'+d.getUTCFullYear()+' '+ two(d.getUTCHours())+':'+ two(d.getUTCMinutes()); }</span></span></code> </pre><br>  All of the above is successfully used in our project of a messenger, where it has proven itself in all browsers and operating systems (mobile and desktop).  Unlimited use of the algorithm given here is possible in your projects.  Welcome to the source code link to our project <a href="http://magdialog.ru/">magdialog.ru</a> . </div><p>Source: <a href="https://habr.com/ru/post/264657/">https://habr.com/ru/post/264657/</a></p>
+      On the server, the current time in php can be obtained by the function time (), in the browser by the function javascript Date ().  And then the time zone offset can be calculated using javacript like this: <br><br><pre><code class="javascript hljs"><span class="hljs-comment"><span class="hljs-comment">//  time_zone     var d = new Date(); var loc = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds()); var time_zone = ((&lt;? echo time();?&gt; - loc/1000)/60).toFixed(0);</span></span></code> </pre> <br>  Next, you need to transfer the time_zone value to the server and output the time from the database, taking into account this offset.  For example, if the time is stored in the database in seconds, then for output to the browser we use the following (in php): <br><br><pre> <code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">//      -    $t = $time_fromDB - $time_zone*60;</span></span></code> </pre><br>  The above is a two-step method: <br>  1. First, time_zone is calculated <br>  2. time_zone is sent to the server and is used for further time output. <br><br>  But you can do everything in one stage.  In this case, when the page is first loaded into the browser, the time_zone is also calculated (see above) and then all time values ​​are displayed using javacript.  For example, using the following mydate () function: <br><br><pre> <code class="javascript hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">two</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">num</span></span></span><span class="hljs-function">) </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> (<span class="hljs-string"><span class="hljs-string">"0"</span></span> + num).slice(<span class="hljs-number"><span class="hljs-number">-2</span></span>);} <span class="hljs-comment"><span class="hljs-comment">//    // t -       // mydate      12.08.2015 19:03 function mydate(t) { var d = new Date((t-time_zone*60)*1000); return two(d.getUTCDate())+'.'+ two(d.getUTCMonth()+1)+'.'+d.getUTCFullYear()+' '+ two(d.getUTCHours())+':'+ two(d.getUTCMinutes()); }</span></span></code> </pre><br>  All of the above is successfully used in our project of a messenger, where it has proven itself in all browsers and operating systems (mobile and desktop).  Unlimited use of the algorithm given here is possible in your projects.  Welcome to the source code link to our project <a href="http://magdialog.ru/">magdialog.ru</a> . </div><p>Source: https://habr.com/ru/post/264657/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../264645/index.html">Office as Platform issue 3: Power BI. Get data from REST API</a></li>
 <li><a href="../264647/index.html">Traffic lights can also be hacked</a></li>
+<li><a href="../26465/index.html">What does the clerk thinking, riding in the subway car.</a></li>
 <li><a href="../264651/index.html">Calculating cell height in a UITableView dynamic table</a></li>
 <li><a href="../264653/index.html">Kaggle. Prediction of sales, depending on weather conditions</a></li>
 <li><a href="../264655/index.html">Algorithmic and Automated Trading: Introduction</a></li>
 <li><a href="../264659/index.html">Making a game with Gideros</a></li>
+<li><a href="../26466/index.html">The company offers people money so that they do not work there.</a></li>
 <li><a href="../264661/index.html">Report from Dribbble Meetup 2015 in Moscow</a></li>
+<li><a href="../264663/index.html">Redirecting data from the COM port to the Web</a></li>
 <li><a href="../264665/index.html">Google released the first public security bulletin for Android</a></li>
-<li><a href="../264667/index.html">Our million, year and first eight years</a></li>
-<li><a href="../264669/index.html">Docker in the bank. Video from the lecture by Alexander Tarasov from Alfa-Bank</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

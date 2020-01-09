@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Report on missed calls per day</h1><div class="post__text post__text-html js-mediator-article">  It took a script for one of the clients to notify the mail of calls missed during the day.  Perhaps he is not very tricky, but I think others can come in handy.  The query selects data on unanswered incoming calls for yesterday.  Such information is quite relevant to many organizations, because if customers do not get through to them, they can get through to others.  <a href="http://xtelekom.ru/asterisk">Asterisk 1.6</a> , MySQL DBMS is installed on the server. <br><a name="habracut"></a><br>  Here is the script itself: <br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-comment"><span class="hljs-comment">/*       */</span></span> $hostname = <span class="hljs-string"><span class="hljs-string">"localhost"</span></span>; $username = <span class="hljs-string"><span class="hljs-string">"dbuser"</span></span>; $password = <span class="hljs-string"><span class="hljs-string">"dbpass"</span></span>; $dbName = <span class="hljs-string"><span class="hljs-string">"dbname"</span></span>; <span class="hljs-comment"><span class="hljs-comment">/*  MySQL,     */</span></span> $cdrtable = <span class="hljs-string"><span class="hljs-string">"cdr"</span></span>; <span class="hljs-comment"><span class="hljs-comment">/*      */</span></span> $time = mktime(date(<span class="hljs-string"><span class="hljs-string">'H'</span></span>), date(<span class="hljs-string"><span class="hljs-string">'i'</span></span>), date(<span class="hljs-string"><span class="hljs-string">'s'</span></span>), date(<span class="hljs-string"><span class="hljs-string">'m'</span></span>), date(<span class="hljs-string"><span class="hljs-string">'d'</span></span>)<span class="hljs-number"><span class="hljs-number">-1</span></span>, date(<span class="hljs-string"><span class="hljs-string">'Y'</span></span>)); $ydate = date(<span class="hljs-string"><span class="hljs-string">"dmY"</span></span>, $time); <span class="hljs-comment"><span class="hljs-comment">/*   */</span></span> mysql_connect($hostname,$username,$password) <span class="hljs-keyword"><span class="hljs-keyword">OR</span></span> <span class="hljs-keyword"><span class="hljs-keyword">DIE</span></span>(<span class="hljs-string"><span class="hljs-string">"    "</span></span>); <span class="hljs-comment"><span class="hljs-comment">/*   .    -   */</span></span> mysql_select_db($dbName) <span class="hljs-keyword"><span class="hljs-keyword">or</span></span> <span class="hljs-keyword"><span class="hljs-keyword">die</span></span>(mysql_error()); <span class="hljs-comment"><span class="hljs-comment">/*   .    ,  LENGTH( `src` ) &gt;3,    */</span></span> $query = <span class="hljs-string"><span class="hljs-string">"SELECT `dst` , `src` , `duration` , `dstchannel` , `calldate` FROM `cdr` WHERE DATE_SUB( CURDATE( ) , INTERVAL 1 DAY ) &lt;= `calldate` AND CURDATE( ) &gt; `calldate` AND `disposition` = 'NO ANSWER' AND LENGTH( `src` ) &gt;3"</span></span>; <span class="hljs-comment"><span class="hljs-comment">/*  .    -  . */</span></span> $res=mysql_query($query) <span class="hljs-keyword"><span class="hljs-keyword">or</span></span> <span class="hljs-keyword"><span class="hljs-keyword">die</span></span>(mysql_error()); <span class="hljs-comment"><span class="hljs-comment">/*     */</span></span> $number = mysql_num_rows($res); <span class="hljs-comment"><span class="hljs-comment">/*   */</span></span> $mes=<span class="hljs-string"><span class="hljs-string">"     $ydate.\r\n\r\n"</span></span>; <span class="hljs-comment"><span class="hljs-comment">/*   */</span></span> <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> ($number == <span class="hljs-number"><span class="hljs-number">0</span></span>) { $mes .= <span class="hljs-string"><span class="hljs-string">"   "</span></span>; } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> { <span class="hljs-comment"><span class="hljs-comment">/*         $row,     */</span></span> <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> ($row=mysql_fetch_array($res)) { $mes .= <span class="hljs-string"><span class="hljs-string">" "</span></span>.$row[<span class="hljs-string"><span class="hljs-string">'calldate'</span></span>].<span class="hljs-string"><span class="hljs-string">".  "</span></span>.$row[<span class="hljs-string"><span class="hljs-string">'src'</span></span>]; $mes .= <span class="hljs-string"><span class="hljs-string">"  "</span></span>.mb_substr($row[<span class="hljs-string"><span class="hljs-string">'dstchannel'</span></span>],<span class="hljs-number"><span class="hljs-number">4</span></span>,<span class="hljs-number"><span class="hljs-number">3</span></span>); $mes .= <span class="hljs-string"><span class="hljs-string">".  "</span></span>.$row[<span class="hljs-string"><span class="hljs-string">'duration'</span></span>].<span class="hljs-string"><span class="hljs-string">" .\r\n"</span></span>; } } <span class="hljs-comment"><span class="hljs-comment">/*   */</span></span> mail(<span class="hljs-string"><span class="hljs-string">'admin@mail.domain'</span></span>, $ydate.<span class="hljs-string"><span class="hljs-string">' report'</span></span>, $mes); <span class="hljs-meta"><span class="hljs-meta">?&gt;</span></span></code> </pre> <br><br>  I tried to comment in sufficient detail, if something does not work, ask. <br><br>  Sample letter: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <i>Report on missed calls for 10/29/2012.</i> <i><br><br></i>  <i>2012-10-29 11:46:38.</i>  <i>From 4959819231 Subscriber 109. Waiting 45 seconds.</i> <i><br></i>  <i>2012-10-29 13:18:45.</i>  <i>From 4956103380 Subscriber 104. Waiting 47 seconds.</i> <i><br></i>  <i>2012-10-29 14:33:13.</i>  <i>From 4959819331 Subscriber 104. Waiting 53 seconds.</i> <i><br></i>  <i>2012-10-29 16:58:40.</i>  <i>From 9030293453 Subscriber 101. Wait 12 sec.</i> </div><p>Source: <a href="https://habr.com/ru/post/156751/">https://habr.com/ru/post/156751/</a></p>
+      <i>Report on missed calls for 10/29/2012.</i> <i><br><br></i>  <i>2012-10-29 11:46:38.</i>  <i>From 4959819231 Subscriber 109. Waiting 45 seconds.</i> <i><br></i>  <i>2012-10-29 13:18:45.</i>  <i>From 4956103380 Subscriber 104. Waiting 47 seconds.</i> <i><br></i>  <i>2012-10-29 14:33:13.</i>  <i>From 4959819331 Subscriber 104. Waiting 53 seconds.</i> <i><br></i>  <i>2012-10-29 16:58:40.</i>  <i>From 9030293453 Subscriber 101. Wait 12 sec.</i> </div><p>Source: https://habr.com/ru/post/156751/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../156737/index.html">As we entered the mobile market</a></li>
-<li><a href="../156739/index.html">The Windows Store apps I use everyday, part 2</a></li>
 <li><a href="../156741/index.html">How to evaluate the professional skills of a programmer and why do we need trainees?</a></li>
 <li><a href="../156745/index.html">Cubieboard - a worthy contender Raspberry Pi</a></li>
+<li><a href="../156747/index.html">30 CSS frameworks for responsive web design</a></li>
 <li><a href="../156749/index.html">It turns out that in Windows there are also redirects, pipes, / dev, / dev / null, / etc / fstab, grub.cfg</a></li>
+<li><a href="../15675/index.html">Russians have forgotten how to meet in the street</a></li>
 <li><a href="../156753/index.html">AirFiber is a new revolution from Ubiquiti. Test results</a></li>
 <li><a href="../156757/index.html">48 cores for smartphones and tablets</a></li>
+<li><a href="../15676/index.html">Yandex.Webmaster</a></li>
 <li><a href="../156761/index.html">To hell with such innovations!</a></li>
 <li><a href="../156763/index.html">The age of your smartphone (age model)</a></li>
-<li><a href="../156771/index.html">Curiosity conducted the most detailed geological research on Mars</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Nuances of encryption in git</h1><div class="post__text post__text-html js-mediator-article">  If you want to use a public resource like GitHub or GoogleDrive to store your repository, but are not ready to share the results of your work with the whole world, then you will be helped by encrypting files in the git repository.  This is not a top-secret technology and there are a number of small articles on the Internet on this topic (and even on Habré), but all of them are a variation of a piece of git documentation on attributes and the topic is not disclosed at all.  In addition, in the process of using git in this mode, there are nuances of use that are not always easy to understand and solve and which I will try to highlight in this article. <br><a name="habracut"></a><br><h4>  Environment </h4><br>  Initially it is assumed the presence of encryption software on the computer.  The natural choice is to use openssl.  In Linux, it is by default.  On windows, it comes with mingw in a git installation for windows.  The only thing we need to take care of under Windows is that the folder in which openssl is located (for example, “C: \ Program Files \ Git \ mingw64 \ bin \”) is in the PATH environment variable.  Then we don’t have to create additional utilities (as recommended in the articles about encryption in gita) and the whole configuration is much simpler. <br><br><h4>  Git setup </h4><br>  Now let's do the magic of creating attributes in git.  First we need to figure out what we want to encrypt in the tree.  If you are a hard-core paranoid like me, then you decide to encrypt everything.  Create a file in the root of the empty .gitattributes repository: <br><br> <code>* filter=openssl diff=openssl <br> .git* !filter !diff <br> init.txt !filter !diff <br></code> <br>  If you are not so paranoid, you can replace wildcard with * .java or * .cpp to taste. <br>  Why init.txt?  Let's make a small memo for yourself so that in case of cloning the repository you do not have to frantically search for instructions on the Internet.  <b>In addition, it can be very successfully used as a Shelowski script</b> for initializing encryption in a newly cloned copy. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Now create the mentioned init.txt file: <br><br><pre>  &lt;code&gt; #This is protected repository.  To initialize it you need:
@@ -72,7 +72,7 @@
  git config filter.openssl.clean "openssl enc -base64 -aes-256-ecb -S 123456789 -k $ 1"
  git config filter.openssl.smudge "openssl enc -d -base64 -aes-256-ecb -k $ 1"
  git config diff.openssl.textconv "openssl enc -d -base64 -aes-256-ecb -k $ 1 2 &amp;&gt; / dev / null || cat"
- git checkout master &lt;/ code&gt; </pre><br>  After making sure that git and openssl are accessible in the paths, we run the file as shown in the comment (If you are in Windows, this must be run from git-bash). <br><br> <code>. init.txt my_repo_pass</code> <br> <br>  Or just use your hands to launch 3 git config commands from this file, replacing $ 1 in the line with the password for the repository. <br><br>  Now add this to the repository: <br><br> <code>git add . <br> git commit -m "protection initialization" <br> git push <br> git tag init <br> git push --tags</code> <br> <br>  Voila, everything is ready for work.  Now we can add new files and they will be automatically encrypted. <br><br><h4>  Intelij Integration </h4><br>  Now the fun part.  If you create a java-encrypted project on github and start working with it, you will notice very soon that the IDE plugin in the IDE doesn’t want to compare files with previous versions.  This is due to the fact that intelij pulls up previous versions of a file from the repository using the <b>git show</b> command.  And now attention: the <b>git show</b> and <b>git format-patch</b> commands do not use filters by default.  To do this, they need to specify the option --textconv.  I could not force this to do the Gitovsky plugin myself, so I did a little wrapper for git and specified it in the settings.  It automatically adds this option to the show command. <br><br><h4>  git4idea.bat </h4><br> <code>@echo off <br> set ARGS=%* <br> "C:\Program Files\Git\bin\git.exe" %ARGS: show = show --textconv % <br></code> <br><br>  Option for Linux (unfortunately not verified): <br><br> <code>#!/bin/bash <br> export ARGS="$*" <br> git "${ARGS/ show / show --textconv }" <br></code> <br><br>  Now, I hope, the topic is revealed. </div><p>Source: <a href="https://habr.com/ru/post/340076/">https://habr.com/ru/post/340076/</a></p>
+ git checkout master &lt;/ code&gt; </pre><br>  After making sure that git and openssl are accessible in the paths, we run the file as shown in the comment (If you are in Windows, this must be run from git-bash). <br><br> <code>. init.txt my_repo_pass</code> <br> <br>  Or just use your hands to launch 3 git config commands from this file, replacing $ 1 in the line with the password for the repository. <br><br>  Now add this to the repository: <br><br> <code>git add . <br> git commit -m "protection initialization" <br> git push <br> git tag init <br> git push --tags</code> <br> <br>  Voila, everything is ready for work.  Now we can add new files and they will be automatically encrypted. <br><br><h4>  Intelij Integration </h4><br>  Now the fun part.  If you create a java-encrypted project on github and start working with it, you will notice very soon that the IDE plugin in the IDE doesn’t want to compare files with previous versions.  This is due to the fact that intelij pulls up previous versions of a file from the repository using the <b>git show</b> command.  And now attention: the <b>git show</b> and <b>git format-patch</b> commands do not use filters by default.  To do this, they need to specify the option --textconv.  I could not force this to do the Gitovsky plugin myself, so I did a little wrapper for git and specified it in the settings.  It automatically adds this option to the show command. <br><br><h4>  git4idea.bat </h4><br> <code>@echo off <br> set ARGS=%* <br> "C:\Program Files\Git\bin\git.exe" %ARGS: show = show --textconv % <br></code> <br><br>  Option for Linux (unfortunately not verified): <br><br> <code>#!/bin/bash <br> export ARGS="$*" <br> git "${ARGS/ show / show --textconv }" <br></code> <br><br>  Now, I hope, the topic is revealed. </div><p>Source: https://habr.com/ru/post/340076/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

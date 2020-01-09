@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>BIND: store zones in mysql (Dynamically Loadable Zones - BIND DLZ)</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/677/762/053/677762053fdd8909ba41857b9372a87d.gif" align="left">  Berkeley's Internet Name Daemon (BIND) ability to store DNS zones in the mysql database is not very well known and extremely poorly documented.  Documentation is frozen at the time of the inclusion of a separate <a href="http://bind-dlz.sourceforge.net/">DLZ</a> patch in the main BIND branch, and this is BIND 9.4. * And 2005-2006.  I will try to at least partially fill this gap, having laid out the workers at the moment with instructions and examples under the habrakat.  My description does not claim to be complete, but it will allow to register the simplest zone. <br>  Separately, I want to note that DLZ supports not only mysql, the list of supported repositories is also under habrakat. <br><a name="habracut"></a><br><br>  I'll start with the list of storages <a href="http://bind-dlz.sourceforge.net/driver_docs.html">that DLZ supports</a> : <br><ol><li>  File system - all data is stored in the names of files and directories, a certain way structured </li><li>  Berkeley db </li><li>  PostgreSQL </li><li>  Mysql </li><li>  ODBC (Firebird, Oracle, DB2, Sybase, SAPDB, MS SQL Server, etc.) </li><li>  Ldap </li></ol><br><br>  To work with DLZ, bind must be compiled with DLZ support and the appropriate storage drivers.  How to achieve this - see the manual for your OS. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       <b>Specifically, the mysql driver does not work with BIND, compiled with support for threads (threads), on some operating systems, including linux.</b>  <b>The list of OS in which the mysql driver can be used in multi-thread BIND is in the <a href="http://bind-dlz.sourceforge.net/mysql_driver.html">description of the mysql driver on the official DLZ website</a> .</b> <br><br>  In gentoo, we include the following USE for BIND with the following USE = dlz mysql -threads (the rest is up to you). <br><br>  We create a database, for example, “dns”, in it a table, for example, “records” and a user who has the right to SELECT from this database.  In general, dlz supports any variant of the structure, since in the BIND config we will specify specific sql queries for receiving data.  Here I bring what is taken from official documentation and refined to current realities (BIND 9.7.4_p1). <br><br>  <u>My version of the records table structure is:</u> <br><br><pre> CREATE TABLE IF NOT EXISTS `records` (
@@ -97,7 +97,7 @@
  unexpected end of input
  Jun 22 19: 51: 10.147 dns_sdlz_putrr returned error.  Error code was:
  unexpected end of input
-</pre>  and non-working zone. <br><br>  These lines indicate that the DLZ receives data in the wrong format or order as it expects.  A and NS records must have ttl, type and data, in that order and only them (the other fields are NULL).  MX - all of the above + mx_priority, SOA - ttl, type, data, responsible_person, refresh, retry, expire, minimum.  (The information in this paragraph was dug out of the <a href="http://sourceforge.net/mailarchive/message.php%3Fmsg_id%3D4197464">mail archive</a> ). <br><br>  There are two more query options associated with the transfer (xfer) zones, I did not use them, so I refer to the official documentation. <br><br>  It really helps to debug, oddly enough, the BIND debug mode (-d 9).  In gentoo, write OPTIONS = "- d 9" in /etc/conf.d/named. <br><br>  I will be very happy if in the comments, users of Habr will share their experience and configs for working with BIND DLZ.  I'm only at the initial stage of setting, I have a lot to do.  For example, reverse zones. </div><p>Source: <a href="https://habr.com/ru/post/137399/">https://habr.com/ru/post/137399/</a></p>
+</pre>  and non-working zone. <br><br>  These lines indicate that the DLZ receives data in the wrong format or order as it expects.  A and NS records must have ttl, type and data, in that order and only them (the other fields are NULL).  MX - all of the above + mx_priority, SOA - ttl, type, data, responsible_person, refresh, retry, expire, minimum.  (The information in this paragraph was dug out of the <a href="http://sourceforge.net/mailarchive/message.php%3Fmsg_id%3D4197464">mail archive</a> ). <br><br>  There are two more query options associated with the transfer (xfer) zones, I did not use them, so I refer to the official documentation. <br><br>  It really helps to debug, oddly enough, the BIND debug mode (-d 9).  In gentoo, write OPTIONS = "- d 9" in /etc/conf.d/named. <br><br>  I will be very happy if in the comments, users of Habr will share their experience and configs for working with BIND DLZ.  I'm only at the initial stage of setting, I have a lot to do.  For example, reverse zones. </div><p>Source: https://habr.com/ru/post/137399/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -106,11 +106,11 @@
 <li><a href="../137395/index.html">Metrolinc and new materials in the metro-hub on MSDN</a></li>
 <li><a href="../137396/index.html">Infographics of the intellectual system “i-feature” for processing typical elements in details</a></li>
 <li><a href="../137397/index.html">Synchronous performance of mini-quadcopters</a></li>
+<li><a href="../13740/index.html">My school</a></li>
 <li><a href="../137400/index.html">The twelfth Moscow habrakstrecha</a></li>
 <li><a href="../137401/index.html">Opened repository with games for Ubuntu 10.04, 10.10, 11.04, 11.10</a></li>
 <li><a href="../137402/index.html">Ways to obtain information from the customer</a></li>
 <li><a href="../137403/index.html">Windows 7 and Music Player Daemon</a></li>
-<li><a href="../137404/index.html">Bootstrap 2.0 - HTML + CSS + JS UI Framework</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

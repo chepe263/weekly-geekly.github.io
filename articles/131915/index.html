@@ -31,12 +31,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -58,7 +58,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Catastrophic backtracking in regular expressions</h1><div class="post__text post__text-html js-mediator-article">  Is it possible to kill a system with a simple and innocent regular routine?  Yes you can. <br><br>  For example: <br><br><pre><code class="python hljs"><span class="hljs-meta"><span class="hljs-meta">&gt;&gt;&gt; </span></span>r = <span class="hljs-string"><span class="hljs-string">'(a+)*b'</span></span></code> </pre> <br>  Just yes.  Innocent - like yes.  Certainly stupid, because the brackets and the asterisk are superfluous, but it should work.  Let's try: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -66,23 +66,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="python hljs"><span class="hljs-meta"><span class="hljs-meta">&gt;&gt;&gt; </span></span>re.findall(<span class="hljs-string"><span class="hljs-string">'(a+)*b'</span></span>, <span class="hljs-string"><span class="hljs-string">'aaaaaab'</span></span>) [<span class="hljs-string"><span class="hljs-string">'aaaaaa'</span></span>]</code> </pre><br>  Cool, working, let's go drink beer. <br><br>  But no ... <br><a name="habracut"></a><br>  If the string in which we are looking for does not contain the desired pattern, for example, just <i>'aaaaaa'</i> , the compiler will try to find it with the following algorithm: <br><br>  1. The whole drain satisfies <i>'a +'</i> , but we do not find the <i>'b'</i> , a step back. <br>  2. Now <i>'a +'</i> satisfies only <i>'aaaaa'</i> (everything except the last one), the latter satisfies the repetition <i>'*'</i> , <i>'b'</i> is still not found, a step back. <br>  3. The first <i>'a +'</i> satisfies only <i>'aaaa'</i> , the last two <i>'aa'</i> satisfy the repetition of <i>'*'</i> , <i>'b'</i> is still not found, a step backwards. <br>  4. The first <i>'a +'</i> satisfies <i>'aaaa'</i> , the last but one <i>'a'</i> satisfies one repeat of <i>'*'</i> , the next <i>'a'</i> still does not repeat another <i>'*'</i> , <i>'b'</i> ... <br><br>  Well, you understand - and so on.  Up to complete search of a line. <br><br>  Some statistics: <br><pre> <code class="python hljs"><span class="hljs-meta"><span class="hljs-meta">&gt;&gt;&gt; </span></span>timeit.timeit(<span class="hljs-string"><span class="hljs-string">"import re; re.findall('(a+)*n', 'a'*20)"</span></span>, number=<span class="hljs-number"><span class="hljs-number">1</span></span>) <span class="hljs-number"><span class="hljs-number">0.24741506576538086</span></span> &gt;&gt;&gt; timeit.timeit(<span class="hljs-string"><span class="hljs-string">"import re; re.findall('(a+)*n', 'a'*22)"</span></span>, number=<span class="hljs-number"><span class="hljs-number">1</span></span>) <span class="hljs-number"><span class="hljs-number">0.99283289909362793</span></span> &gt;&gt;&gt; timeit.timeit(<span class="hljs-string"><span class="hljs-string">"import re; re.findall('(a+)*n', 'a'*24)"</span></span>, number=<span class="hljs-number"><span class="hljs-number">1</span></span>) <span class="hljs-number"><span class="hljs-number">3.9849259853363037</span></span></code> </pre><br>  As you can see, the execution time grows exponentially.  For larger strings, Python 2.6 on FreeBSD promptly throws out RuntimeError, but on Windows, that same Python cheerfully looks through all the combinations.  Strings with more than 30 characters did not dare to test :) <br><br>  The post is inspired by today's question on <a href="http://stackoverflow.com/questions/8010005/python-re-infinite-execution">stackoverflow</a> and the long-read and successfully forgotten note <a href="http://www.regular-expressions.info/catastrophic.html">Runaway Regular Expressions: Catastrophic Backtracking</a> . <br><br>  PS It turns out that on Habré there is already an article about backtracking and atomic groups, there the described problem is considered deeper and more severe - <a href="http://habrahabr.ru/blogs/regex/56765/">Atomic grouping, or Not one step back!</a>  :) </div><p>Source: <a href="https://habr.com/ru/post/131915/">https://habr.com/ru/post/131915/</a></p>
+    <pre> <code class="python hljs"><span class="hljs-meta"><span class="hljs-meta">&gt;&gt;&gt; </span></span>re.findall(<span class="hljs-string"><span class="hljs-string">'(a+)*b'</span></span>, <span class="hljs-string"><span class="hljs-string">'aaaaaab'</span></span>) [<span class="hljs-string"><span class="hljs-string">'aaaaaa'</span></span>]</code> </pre><br>  Cool, working, let's go drink beer. <br><br>  But no ... <br><a name="habracut"></a><br>  If the string in which we are looking for does not contain the desired pattern, for example, just <i>'aaaaaa'</i> , the compiler will try to find it with the following algorithm: <br><br>  1. The whole drain satisfies <i>'a +'</i> , but we do not find the <i>'b'</i> , a step back. <br>  2. Now <i>'a +'</i> satisfies only <i>'aaaaa'</i> (everything except the last one), the latter satisfies the repetition <i>'*'</i> , <i>'b'</i> is still not found, a step back. <br>  3. The first <i>'a +'</i> satisfies only <i>'aaaa'</i> , the last two <i>'aa'</i> satisfy the repetition of <i>'*'</i> , <i>'b'</i> is still not found, a step backwards. <br>  4. The first <i>'a +'</i> satisfies <i>'aaaa'</i> , the last but one <i>'a'</i> satisfies one repeat of <i>'*'</i> , the next <i>'a'</i> still does not repeat another <i>'*'</i> , <i>'b'</i> ... <br><br>  Well, you understand - and so on.  Up to complete search of a line. <br><br>  Some statistics: <br><pre> <code class="python hljs"><span class="hljs-meta"><span class="hljs-meta">&gt;&gt;&gt; </span></span>timeit.timeit(<span class="hljs-string"><span class="hljs-string">"import re; re.findall('(a+)*n', 'a'*20)"</span></span>, number=<span class="hljs-number"><span class="hljs-number">1</span></span>) <span class="hljs-number"><span class="hljs-number">0.24741506576538086</span></span> &gt;&gt;&gt; timeit.timeit(<span class="hljs-string"><span class="hljs-string">"import re; re.findall('(a+)*n', 'a'*22)"</span></span>, number=<span class="hljs-number"><span class="hljs-number">1</span></span>) <span class="hljs-number"><span class="hljs-number">0.99283289909362793</span></span> &gt;&gt;&gt; timeit.timeit(<span class="hljs-string"><span class="hljs-string">"import re; re.findall('(a+)*n', 'a'*24)"</span></span>, number=<span class="hljs-number"><span class="hljs-number">1</span></span>) <span class="hljs-number"><span class="hljs-number">3.9849259853363037</span></span></code> </pre><br>  As you can see, the execution time grows exponentially.  For larger strings, Python 2.6 on FreeBSD promptly throws out RuntimeError, but on Windows, that same Python cheerfully looks through all the combinations.  Strings with more than 30 characters did not dare to test :) <br><br>  The post is inspired by today's question on <a href="http://stackoverflow.com/questions/8010005/python-re-infinite-execution">stackoverflow</a> and the long-read and successfully forgotten note <a href="http://www.regular-expressions.info/catastrophic.html">Runaway Regular Expressions: Catastrophic Backtracking</a> . <br><br>  PS It turns out that on Habré there is already an article about backtracking and atomic groups, there the described problem is considered deeper and more severe - <a href="http://habrahabr.ru/blogs/regex/56765/">Atomic grouping, or Not one step back!</a>  :) </div><p>Source: https://habr.com/ru/post/131915/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../131906/index.html">Which social network to post? Instruction</a></li>
 <li><a href="../131907/index.html">Microsoft has released a patch for Windows that prevents the Duqu worm from entering the system</a></li>
 <li><a href="../131908/index.html">External interrupts for 8-bit avr, using buttons</a></li>
 <li><a href="../131909/index.html">All-In-One Note: All Inclusive</a></li>
+<li><a href="../13191/index.html">Yahoo satisfies American users better than Google</a></li>
 <li><a href="../131910/index.html">Lazy computing</a></li>
 <li><a href="../131916/index.html">Redis, hiredis, libev and multithread. Part 1</a></li>
 <li><a href="../131917/index.html">Competition for the creation of HTML5 applications with a prize pool of $ 50,000</a></li>
 <li><a href="../131918/index.html">Difficult questions - simple answers or not an ordinary question and answer service</a></li>
 <li><a href="../131919/index.html">Macros in Scala, Eugene Burmaco. Screencast, slides and photo with scalaby # 6</a></li>
-<li><a href="../131920/index.html">PhpBB 3 spam protection without captcha</a></li>
+<li><a href="../13192/index.html">The Internet brought 9% of revenues to Svyazinvest’s daughters</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

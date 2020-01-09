@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Burn DVD with Django</h1><div class="post__text post__text-html js-mediator-article">  Recently installed a server with <a href="http://azureus.sourceforge.net/">Azureus</a> <a href="http://azureus.sourceforge.net/plugins/howto/webui.html">Web UI</a> to download movies.  But there was one problem - DVD recording for viewing on a home theater.  A little search and did not find a web application for recording discs, well, let's write it ourselves. <br><br><br><br>  The main idea of ​​the script is to allow the user to select a directory or file on the server and execute the write command from the dvd + rw-tools package: <br><blockquote>  growisofs -dvd-compat -Z &lt;device&gt; -R -J -pad "&lt;path to directory for writing&gt;" </blockquote>  to movies laid out without VIDEO_TS need to add it: <br><blockquote>  growisofs -dvd-compat -Z &lt;device&gt; -R -J -pad -graftpoints "/ VIDEO_TS = &lt;path to the directory for recording&gt;" </blockquote>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <a name="habracut"></a><br><br>  Django features used: <br><ul><li>  Human-readable urla </li><li>  Template Engine </li><li>  MVC </li></ul><br>  unused features do not interfere at all, thanks to the modular architecture of Django. <br><br><br><br>  Let's start with <a href="http://paste.org.ru/%3Fqyt01i">the wrapper library</a> over growisofs.  It is quite simple, the Burner object in the constructor accepting the name of the recording device, tries to determine the growisofs version and if it does not exist, causes an exception.  In the object, the burndvd method with the path parameter, using subprocess.Popen, tries to cut the disk.  Errors are determined by reading stderr and are reflected by calling a few exceptions. <br><br><br><br>  The most interesting part of the application is the user interface. <br><br>  The rule of forming url: <br><blockquote><pre> urlpatterns = patterns ('',
 	 (r '^ / dvdburn $', 'default.dvdburn.views.index', {'dirname': ''}),
 	 (r '^ / dvdburn / (? P &lt;dirname&gt; [^?] +) / $', 'default.dvdburn.views.index'),
  )
-</pre></blockquote><br>  all that starts with / dvdburn falls into the index method, the rest of the url is passed as the dirname parameter. <br><br><br><br>  <a href="http://paste.org.ru/%3Fdx7chs">The view index method</a> contains the main part of the script logic. <br>  In this method, the path to the movie storage root is added to the path received in the url, the path is divided into components for placing links to the parent directories, the contents of the current path are passed to <a href="http://paste.org.ru/%3F3yex5h">the navigation pattern</a> .  If a post call is detected, the recording starts, in the current version the process display is not implemented, so while the recording is in progress, the page will load, and the <a href="http://paste.org.ru/%3Fftunqf">result template</a> will be displayed at the end of the recording. <br><br>  What I would like to improve: <br><ul><li>  Burn DVD9 to 2 single layer DVDs as needed <br>  Displaying the writing process as a percentage, getting information can be parsing the growisofs output and output using ajax <br><br><br>  <a href="">script source code</a> </li></ul></div><p>Source: <a href="https://habr.com/ru/post/28983/">https://habr.com/ru/post/28983/</a></p>
+</pre></blockquote><br>  all that starts with / dvdburn falls into the index method, the rest of the url is passed as the dirname parameter. <br><br><br><br>  <a href="http://paste.org.ru/%3Fdx7chs">The view index method</a> contains the main part of the script logic. <br>  In this method, the path to the movie storage root is added to the path received in the url, the path is divided into components for placing links to the parent directories, the contents of the current path are passed to <a href="http://paste.org.ru/%3F3yex5h">the navigation pattern</a> .  If a post call is detected, the recording starts, in the current version the process display is not implemented, so while the recording is in progress, the page will load, and the <a href="http://paste.org.ru/%3Fftunqf">result template</a> will be displayed at the end of the recording. <br><br>  What I would like to improve: <br><ul><li>  Burn DVD9 to 2 single layer DVDs as needed <br>  Displaying the writing process as a percentage, getting information can be parsing the growisofs output and output using ajax <br><br><br>  <a href="">script source code</a> </li></ul></div><p>Source: https://habr.com/ru/post/28983/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

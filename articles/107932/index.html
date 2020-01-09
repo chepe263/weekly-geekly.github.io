@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>jQuery: step () arbitrary position selector</h1><div class="post__text post__text-html js-mediator-article">  One of the most exciting things about jQuery is the selector engine.  Accessing DOM elements using selectors in jQuery is a fairly straightforward task, also because most selectors use the same expressions as CSS selectors.  This is something that non-programmers web designers can easily grasp. <br>  This article is an exercise in creating an arbitrary collector, you can use it as a guide to creating your own selector. <br><a name="habracut"></a><br><h1>  What did I want to achieve? </h1>  At the beginning, I needed to get every third item in the collection.  (I was going to apply a separate style for every third element).  I tried to write a simple script to solve this problem, but then I thought why it is impossible to do this in the form of a selector. <br>  Creating "custom" selectors in jQuery is not that difficult.  There is a <a href="http://www.bennadel.com/blog/1457-How-To-Build-A-Custom-jQuery-Selector.htm">wonderful article</a> on this topic. <br>  So, my goal was to select elements with a certain step, or in some cases I also had to start sampling from the n-th element, and not from the first ... <br>  Here is the final code: <blockquote><code><font color="black">jQuery.expr[ <font color="#A31515">':'</font> ].step = <font color="#0000ff">function</font> (node,index,meta){ <br> <font color="#0000ff">var</font> $index = index; <br> <font color="#0000ff">var</font> $meta = meta[3].toString().split( <font color="#A31515">','</font> ); <br> <font color="#0000ff">var</font> $step = parseInt($meta[0]); <br> <font color="#0000ff">var</font> $start = ($meta.length &gt; 1) ? $meta[1] : 0; <br> <font color="#0000ff">if</font> ($start != 0) $start -= 1; <br> <font color="#0000ff">return</font> ( ( ($index-$start) / $step ) == Math.floor( ( ($index-$start) / $step ) ) &amp;&amp; ( ($index-$start) &gt;= 0 ) ); <br> };</font></code> </blockquote> <br><br><h1>  We will analyze step by step </h1>  To start using this sequel, we must, of course, connect jQuery and the jquery.step.js file, which can be found and <a href="">downloaded here</a> . <blockquote> <code><font color="black">&lt;script type= <font color="#A31515">"text/javascript"</font> src= <font color="#A31515">"jquery.js"</font> &gt;&lt;/script&gt; <br> &lt;script type= <font color="#A31515">"text/javascript"</font> src= <font color="#A31515">"jquery.step.js"</font> &gt;&lt;/script&gt;</font></code> </blockquote>  The step selector uses the usual jQuery method to select elements.  Here is an example for sampling every third item. <blockquote> <code><font color="black">$( <font color="#A31515">'ul#one li:step(3)'</font> ).css( <font color="#A31515">'clear'</font> , <font color="#A31515">'left'</font> );</font></code> </blockquote>  As mentioned this selector can be used to fetch from a specific item.  Suppose if you want to select every 3rd element from the 5th, it will look something like this: <blockquote> <code><font color="black">$( <font color="#A31515">'ul#two li:step(3,5)'</font> ).addClass( <font color="#A31515">'alt'</font> );</font></code> </blockquote> <br>  The first parameter 3 shows the step, and the second parameter 5 shows the starting point of the sample.  Parameters are separated by commas. <br><br><h1>  Practical use </h1>  If you have a gallery with thumbnails with float = left and you want to reset the wrap around every 4th thumbnail.  Or you use a special class for each 10th item in the list for visual grouping.  Or you can insert advertisements every 5 news items, but not before the first ... etc. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h1>  Important notes </h1>  There are some problems that I could not solve.  I could not get the selector to work properly when it contains classes.  Something about this selector, I had problems: <blockquote> <code><font color="black">$( <font color="#A31515">'ul.one li:step(3)'</font> ).css( <font color="#A31515">'clear'</font> , <font color="#A31515">'left'</font> );</font> <br></code> </blockquote>  If you have a solution - share it and we will all be grateful. <br>  <b>From the translator:</b> examples are checked - everything seems to be working as it should - what problems the author does not fully understand. <br><h2>  From comments to the original: </h2>  There is already a simple selector in jQuery itself: <br>  <a href="http://api.jquery.com/nth-child-selector/">api.jquery.com/nth-child-selector</a> <br>  If you need an indent, just insert in the equality + indent. <br><br>  <b>Answer:</b> This article is just an example of creating an arbitrary selector and nothing else.  Thank. </div><p>Source: <a href="https://habr.com/ru/post/107932/">https://habr.com/ru/post/107932/</a></p>
+    <h1>  Important notes </h1>  There are some problems that I could not solve.  I could not get the selector to work properly when it contains classes.  Something about this selector, I had problems: <blockquote> <code><font color="black">$( <font color="#A31515">'ul.one li:step(3)'</font> ).css( <font color="#A31515">'clear'</font> , <font color="#A31515">'left'</font> );</font> <br></code> </blockquote>  If you have a solution - share it and we will all be grateful. <br>  <b>From the translator:</b> examples are checked - everything seems to be working as it should - what problems the author does not fully understand. <br><h2>  From comments to the original: </h2>  There is already a simple selector in jQuery itself: <br>  <a href="http://api.jquery.com/nth-child-selector/">api.jquery.com/nth-child-selector</a> <br>  If you need an indent, just insert in the equality + indent. <br><br>  <b>Answer:</b> This article is just an example of creating an arbitrary selector and nothing else.  Thank. </div><p>Source: https://habr.com/ru/post/107932/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../107920/index.html">Google asks to think again of users who want to export contacts to Facebook</a></li>
 <li><a href="../107921/index.html">Caring for the safety of the phone</a></li>
 <li><a href="../107922/index.html">YouTube will change the search algorithm</a></li>
 <li><a href="../107923/index.html">Google will increase the salary of all employees by 10%</a></li>
+<li><a href="../10793/index.html">About bugs and heroes</a></li>
 <li><a href="../107930/index.html">Mac OS X 10.6.5 Update Available</a></li>
 <li><a href="../107933/index.html">8 million banner impressions without result</a></li>
 <li><a href="../107934/index.html">User authentication without registration - to the masses</a></li>

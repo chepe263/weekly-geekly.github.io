@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Why the buffer should grow exponentially</h1><div class="post__text post__text-html js-mediator-article"> Mozilla employee Nicholas Netherkot published a note with a very <a href="https://blog.mozilla.org/nnethercote/2014/11/04/please-grow-your-buffers-exponentially/">clear explanation of</a> why the program's memory buffer size should be increased exponentially rather than linearly. <br><br>  Suppose we have a data structure that requires more and more memory, for example, a string or a vector.  If new elements are not placed in the buffer, then a new buffer is created, all contents from the old one are copied, and then the old buffer is freed.  Normal <code>realloc()</code> does this. <br><br>  So here.  Imagine that our initial 1-byte buffer grows by 1 byte until it reaches the size of 1 MiB.  How much memory have we used cumulatively for it? 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre>  1 + 2 + 3 + ... + 1,048,575 + 1,048,576 = 549,756,338,176 bytes </pre><br>  Not weak, yes? <br><a name="habracut"></a><br>  Experienced programmers have known this nuance for a long time, so someone even considers a linear increase in the buffer as a <a href="https://news.ycombinator.com/item%3Fid%3D8555641">“typical beginner's mistake”</a> . <br><br>  The bottom line is that if a new array is always greater than the previous one by a constant value, then the total work will be O (n <sup>2</sup> ).  If the new array is increased by a constant factor of N, then the total work will be O (n).  By “work” we mean calls to the functions <code>malloc()</code> and <code>realloc()</code> , followed by redistribution and copying of values ​​in memory, that is, the total load on the system. <br><br>  Of course, there are situations, for example, with firmware for hardware that can be considered as exceptions to the rule.  But for desktop systems, this is practically the law.  The only question is <a href="https://stackoverflow.com/questions/1100311/what-is-the-ideal-growth-rate-for-a-dynamically-allocated-array">which factor to use: 2 or 1.5</a> . <br><br>  Nicholas Netherkot adds to his example that in practice the total memory consumption will, of course, be less, because the memory manager rounds off the buffer size.  For example, the manager of the same Firefox (an old, highly modified version of jemalloc) rounds requests for memory allocation between 4 KiB and 1 MiB to the nearest multiplier 4 KiB.  That is, in our example, for a buffer with a total volume of 1 MiB, we get only: <br><br><pre>  4,096 + 8,192 + 12,288 + ... + 1,044,480 + 1,048,576 = 134,742,016 bytes </pre><br>  For comparison, if we immediately used the factor 2: <br><br><pre>  4,096 + 8,192 + 16,384 + 32,768 + 65,536 + 131,072 + 262,144 + 524,288 + 1,048,576 = 2,093,056 bytes </pre><br>  They say that the “typical novice error” manifests itself in very many projects, when any I / O task does not scale the buffer size.  Netkotk immediately found the corresponding fragments of non-optimal code in the implementations of algorithms in <a href="https://bugzilla.mozilla.org/show_bug.cgi%3Fid%3D1084114">XDRBuffer</a> , <a href="https://bugzilla.mozilla.org/show_bug.cgi%3Fid%3D1048044">nsTArray</a> and <a href="https://bugzilla.mozilla.org/show_bug.cgi%3Fid%3D1088143">SQLite</a> . </div><p>Source: <a href="https://habr.com/ru/post/242279/">https://habr.com/ru/post/242279/</a></p>
+    <pre>  1 + 2 + 3 + ... + 1,048,575 + 1,048,576 = 549,756,338,176 bytes </pre><br>  Not weak, yes? <br><a name="habracut"></a><br>  Experienced programmers have known this nuance for a long time, so someone even considers a linear increase in the buffer as a <a href="https://news.ycombinator.com/item%3Fid%3D8555641">“typical beginner's mistake”</a> . <br><br>  The bottom line is that if a new array is always greater than the previous one by a constant value, then the total work will be O (n <sup>2</sup> ).  If the new array is increased by a constant factor of N, then the total work will be O (n).  By “work” we mean calls to the functions <code>malloc()</code> and <code>realloc()</code> , followed by redistribution and copying of values ​​in memory, that is, the total load on the system. <br><br>  Of course, there are situations, for example, with firmware for hardware that can be considered as exceptions to the rule.  But for desktop systems, this is practically the law.  The only question is <a href="https://stackoverflow.com/questions/1100311/what-is-the-ideal-growth-rate-for-a-dynamically-allocated-array">which factor to use: 2 or 1.5</a> . <br><br>  Nicholas Netherkot adds to his example that in practice the total memory consumption will, of course, be less, because the memory manager rounds off the buffer size.  For example, the manager of the same Firefox (an old, highly modified version of jemalloc) rounds requests for memory allocation between 4 KiB and 1 MiB to the nearest multiplier 4 KiB.  That is, in our example, for a buffer with a total volume of 1 MiB, we get only: <br><br><pre>  4,096 + 8,192 + 12,288 + ... + 1,044,480 + 1,048,576 = 134,742,016 bytes </pre><br>  For comparison, if we immediately used the factor 2: <br><br><pre>  4,096 + 8,192 + 16,384 + 32,768 + 65,536 + 131,072 + 262,144 + 524,288 + 1,048,576 = 2,093,056 bytes </pre><br>  They say that the “typical novice error” manifests itself in very many projects, when any I / O task does not scale the buffer size.  Netkotk immediately found the corresponding fragments of non-optimal code in the implementations of algorithms in <a href="https://bugzilla.mozilla.org/show_bug.cgi%3Fid%3D1084114">XDRBuffer</a> , <a href="https://bugzilla.mozilla.org/show_bug.cgi%3Fid%3D1048044">nsTArray</a> and <a href="https://bugzilla.mozilla.org/show_bug.cgi%3Fid%3D1088143">SQLite</a> . </div><p>Source: https://habr.com/ru/post/242279/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../242269/index.html">There will be no exceptions in Rust 1.0</a></li>
+<li><a href="../24227/index.html">RIF, RIT and KIB 2008. Participant's impressions</a></li>
 <li><a href="../242271/index.html">RemoteIE Announcement: We are testing the latest version of Internet Explorer on Windows, Mac OS X, iOS and Android</a></li>
 <li><a href="../242273/index.html">Welcome to Moscow Django Meetup and Moscow.pm November 6</a></li>
 <li><a href="../242275/index.html">GUI for xdebug trace files</a></li>

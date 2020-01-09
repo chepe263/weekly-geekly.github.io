@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Automating file systems with systemd</h1><div class="post__text post__text-html js-mediator-article">  Among the many functions that systemd provides, there is one that is unfairly forgotten.  This is an automount feature.  When setting up an automount, the specified directory will be mounted only after the first access to it (more precisely, right on time). <br><br><h1>  NFS over VPN </h1><br>  A specific example: I have a remote server that has a directory of interest to me.  I want to have this directory locally on my machine.  The access protocol is nfs.  Since  it does not have encryption, then the reasonable solution is to use a vpn channel to the server. <br><br>  At the same time, I want to mount it on the go and unmount it after a while, so as not to experience strange difficulties due to the blunt nfs while the network is down.  The mount timeout is a much more humane error than the nfs timeout on ls. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h1>  How it works </h1><br>  Systemd has a special form of automount-units, which allow you to automatically mount the specified directory. <br><a name="habracut"></a><br>  Important: automount units are not “mount units with automount”, they cannot have mount options in themselves.  Instead, they (when accessing the directory) just call the mount-unit for the specified directory. <br><br>  Accordingly, with the configuration: <br><br><ul><li>  Mount options, device (or server in case of NFS) are specified in mount-unit </li><li>  Dependencies and install section are specified in automount unit </li><li>  Svzyak automount-unit and mount-unit occurs by the parameter where </li></ul><br>  The same can be seen in the structure of the units themselves.  A mount unit has a [Mount] section in which there can be many parameters.  An automount unit should not have such a section, and instead there is a [Automount] section, which can have only a few parameters: Where, DirectoryMode, and TimeoutIdleSec. <br><br><h1>  Practical example </h1><br>  <code>/etc/systemd/system/media-nfs.mount</code> : <br><pre> [Unit]
@@ -79,7 +79,7 @@
  TimeoutIdleSec = 301
  [Install]
  WantedBy = graphical.target
-</pre><br>  Observation: despite the fact that for a mount unit the normal state is active (mounted), then for automount it is active (running), as for a service. <br><br>  If automount has not happened yet, then the status will be “active (waiting)”. <br><br>  After configuring automount, you need to do (sudo) systemctl daemon-reload, and do ls / media / nfs (for example above) - after some delay in mounting nfs, we will see the contents of the files on the remote server. </div><p>Source: <a href="https://habr.com/ru/post/331240/">https://habr.com/ru/post/331240/</a></p>
+</pre><br>  Observation: despite the fact that for a mount unit the normal state is active (mounted), then for automount it is active (running), as for a service. <br><br>  If automount has not happened yet, then the status will be “active (waiting)”. <br><br>  After configuring automount, you need to do (sudo) systemctl daemon-reload, and do ls / media / nfs (for example above) - after some delay in mounting nfs, we will see the contents of the files on the remote server. </div><p>Source: https://habr.com/ru/post/331240/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

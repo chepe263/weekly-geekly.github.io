@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Be careful with ChildWindow in the Silverlight SDK. MemoryLeak detected</h1><div class="post__text post__text-html js-mediator-article">  In the process of searching for my memory leaks in an application written in Silverlight (the last entry in my personal blog) I found an error in the <b>ChildWindow</b> class, leading to a memory leak. <br><a name="habracut"></a><br>  In WinDbg it looks like: <br><br>  <b>ModalWindow</b> below in my example - the heir from ChildWindow <br><br>  0: 000: x86&gt;! Dumpheap -mt <b>05e4f830</b> <br>  Address MT Size <br>  07068c28 05e4f830 236 <br>  070ba900 05e4f830 236 <br>  total 0 objects <br>  Statistics: <br>  MT Count TotalSize Class Name <br>  05e4f830 2 472 MLOY.MKNA.KarjaKompassi.ModalWindow <br>  Total 2 objects 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      0: 000: x86&gt;! Gcroot <b>07068c28</b> <br>  Note: Roots found on stacks may be false positives.  Run "! Help gcroot" for <br>  more info. <br>  Scan Thread 5 OSTHread 1880 <br>  Scan Thread 22 OSTHread 1034 <br>  Scan Thread 23 OSTHread 1878 <br>  Scan Thread 24 OSTHread 1f28 <br>  DOMAIN (062239E0): HANDLE (Pinned): 3cc12f8: Root: 07de4260 (System.Object []) -&gt; <br>  06ed1460 (MLOY.MKNA.KarjaKompassi.FeedingPlan. <b>Shell</b> ) -&gt; <br>  06ed14dc (MS.Internal.CoreTypeEventHelper) -&gt; <br>  06ef0c54 (System.Collections.Generic.Dictionary`2 [[System.Int32, mscorlib], [MS.Internal.CoreTypeEventHelper + EventAndDelegate, System.Windows]]) -&gt; <br>  070ee840 (System.Collections.Generic.Dictionary`2 + Entry [[System.Int32, mscorlib], [MS.Internal.CoreTypeEventHelper + EventAndDelegate, System.Windows]] []) -&gt; <br>  070a68a8 (MS.Internal.CoreTypeEventHelper + EventAndDelegate) -&gt; <br>  070a6870 (System.Windows. <b>RoutedEventHandler</b> ) -&gt; <br>  07068c28 (MLOY.MKNA.KarjaKompassi. <b>ModalWindow</b> ) <br><br>  In the code it looks like (Reflector looked in System.Windows.Controls.dll on the class ChildWindow): <br><br>  private void ChildWindow_LostFocus (object sender, RoutedEventArgs e) <br>  { <br>  ... <br>  <b>Application.Current.RootVisual.GotFocus + = new RoutedEventHandler (this.RootVisual_GotFocus);</b> <br>  ... <br>  } <br><br>  public void Close () <br>  { <br>  ... <br>  <b>Application.Current.RootVisual.GotFocus - = new RoutedEventHandler (this.RootVisual_GotFocus);</b> <br>  ... <br>  } <br><br>  private void SubscribeToEvents () <br>  { <br>  <b>base.LostFocus + = new RoutedEventHandler (this.ChildWindow_LostFocus);</b> <br>  } <br><br>  We can subscribe several times (every time the window loses focus), but unsubscribe only once when we call Close () <br><br>  Decision: <br><br>  In the <b>ChildWindow_LostFocus</b> method, <b>replace the</b> problem line with a pair: <br>  Application.Current.RootVisual.GotFocus - = new RoutedEventHandler (this.RootVisual_GotFocus); <br>  Application.Current.RootVisual.GotFocus + = new RoutedEventHandler (this.RootVisual_GotFocus); </div><p>Source: <a href="https://habr.com/ru/post/93612/">https://habr.com/ru/post/93612/</a></p>
+      0: 000: x86&gt;! Gcroot <b>07068c28</b> <br>  Note: Roots found on stacks may be false positives.  Run "! Help gcroot" for <br>  more info. <br>  Scan Thread 5 OSTHread 1880 <br>  Scan Thread 22 OSTHread 1034 <br>  Scan Thread 23 OSTHread 1878 <br>  Scan Thread 24 OSTHread 1f28 <br>  DOMAIN (062239E0): HANDLE (Pinned): 3cc12f8: Root: 07de4260 (System.Object []) -&gt; <br>  06ed1460 (MLOY.MKNA.KarjaKompassi.FeedingPlan. <b>Shell</b> ) -&gt; <br>  06ed14dc (MS.Internal.CoreTypeEventHelper) -&gt; <br>  06ef0c54 (System.Collections.Generic.Dictionary`2 [[System.Int32, mscorlib], [MS.Internal.CoreTypeEventHelper + EventAndDelegate, System.Windows]]) -&gt; <br>  070ee840 (System.Collections.Generic.Dictionary`2 + Entry [[System.Int32, mscorlib], [MS.Internal.CoreTypeEventHelper + EventAndDelegate, System.Windows]] []) -&gt; <br>  070a68a8 (MS.Internal.CoreTypeEventHelper + EventAndDelegate) -&gt; <br>  070a6870 (System.Windows. <b>RoutedEventHandler</b> ) -&gt; <br>  07068c28 (MLOY.MKNA.KarjaKompassi. <b>ModalWindow</b> ) <br><br>  In the code it looks like (Reflector looked in System.Windows.Controls.dll on the class ChildWindow): <br><br>  private void ChildWindow_LostFocus (object sender, RoutedEventArgs e) <br>  { <br>  ... <br>  <b>Application.Current.RootVisual.GotFocus + = new RoutedEventHandler (this.RootVisual_GotFocus);</b> <br>  ... <br>  } <br><br>  public void Close () <br>  { <br>  ... <br>  <b>Application.Current.RootVisual.GotFocus - = new RoutedEventHandler (this.RootVisual_GotFocus);</b> <br>  ... <br>  } <br><br>  private void SubscribeToEvents () <br>  { <br>  <b>base.LostFocus + = new RoutedEventHandler (this.ChildWindow_LostFocus);</b> <br>  } <br><br>  We can subscribe several times (every time the window loses focus), but unsubscribe only once when we call Close () <br><br>  Decision: <br><br>  In the <b>ChildWindow_LostFocus</b> method, <b>replace the</b> problem line with a pair: <br>  Application.Current.RootVisual.GotFocus - = new RoutedEventHandler (this.RootVisual_GotFocus); <br>  Application.Current.RootVisual.GotFocus + = new RoutedEventHandler (this.RootVisual_GotFocus); </div><p>Source: https://habr.com/ru/post/93612/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

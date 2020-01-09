@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Implementation of 802.1x for computers behind "stupid" phones</h1><div class="post__text post__text-html js-mediator-article">  There are many different languages ​​written on how to implement computer authentication on various RADIUS servers, including scenarios when the computer is connected to the network via the integrated switch in the phone, but these articles mention smart IP phones that support CDP or LLDP and can work with Voice Vlan. <br>  Unfortunately, I had to work with what is, namely the IP phone of the Panasonic KX-NT321, working under a proprietary protocol, neither LLDP, nor even CDP, or even TFTP configuration downloads.  But you can configure from the phone itself tagging on each of the switch port. <a name="habracut"></a><br>  So, what we have: RADIUS based on Microsoft NPS, Cisco 2960 switches, Panasonic IP phones and computers. <br>  I will not consider the basic configuration of RADIUS and switches, we will assume that our switches are already clients. <br>  Since  phones do not understand EAPoL packages, we will apply MAB (MAC Authentication Bypass) technology to them.  In short, the switch takes the mac address of the phone and sends it as a login / password on RADIUS for authentication, described in <a href="http://www.cisco.com/en/US/prod/collateral/iosswrel/ps6537/ps6586/ps6638/config_guide_c17-663759.html">more detail</a> on cisco.com <br>  And for computers we will use 802.1x, we will take for the fact that everything on our computer is configured properly. <br>  Accordingly, we should have 802.1x and MAB enabled on the switch port, for this we need only the MDA (Multidomain Authentication Mode) mode in more detail about the modes <a href="http://www.cisco.com/en/US/docs/switches/lan/catalyst6500/ios/12.2SX/configuration/guide/dot1x.html">here</a> and thus the port configuration will be as follows: <br><pre><code class="bash hljs">interface FastEthernet0/2 switchport access vlan 99 switchport mode access switchport voice vlan 2 authentication host-mode multi-domain authentication order mab dot1x authentication port-control auto authentication periodic mab dot1x pae authenticator dot1x timeout tx-period 3 spanning-tree portfast</code> </pre> <br>  The <b>mab</b> command is required because  without it, the switch sends packets using EAP-MD5 authentication, but MS NPS does not accept this mode, so you need to use PAP. <br>  We collect mac addresses of our phones and add them to ActiveDirectory in a separate OU and security group (let's call them Phone) as regular users with a login and password as the address of our phones. <br>  In NPS we create a rule for phones: <br><img src="https://habrastorage.org/getpro/habr/post_images/9b4/55b/927/9b455b927eb5c0e323f432bccaf37019.png" alt="image"><br><br>  The <b>device-traffic-class = voice</b> parameter tells the switch that this device will go to voice vlan. <br>  The <b>Tunnel-Pvt-Group-ID</b> parameter tells the switch which Vlan the device will fall into, but in our case it will not work, because  we set up the vlans with our hands on the phone. <br><br>  Create a similar rule for computers: <br><img src="https://habrastorage.org/getpro/habr/post_images/16e/4e5/53c/16e4e553c04ffc34cd301a4cfbc329a7.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      You also need to create a connection request policy with permission to use PAP. <br><br>  In the switch, you can manually set a password for MAB requests, i.e.  sending a request for authentication in the login line will be the mac address, and in the password line, what we manually specify on the switch: <br><pre> <code class="bash hljs">(config)<span class="hljs-comment"><span class="hljs-comment">#mab request format attribute 2 yourpassword</span></span></code> </pre>  Then in AD all phone accounts must have this password. <br><br>  Used materials: <br>  <a href="http://www.cisco.com/en/US/docs/switches/lan/catalyst6500/ios/12.2SX/configuration/guide/dot1x.html">IEEE 802.1X Port-Based Authentication</a> <br>  <a href="http://www.cisco.com/en/US/prod/collateral/iosswrel/ps6537/ps6586/ps6638/config_guide_c17-663759.html">MAC Authentication Bypass Deployment Guide</a> </div><p>Source: <a href="https://habr.com/ru/post/196930/">https://habr.com/ru/post/196930/</a></p>
+      You also need to create a connection request policy with permission to use PAP. <br><br>  In the switch, you can manually set a password for MAB requests, i.e.  sending a request for authentication in the login line will be the mac address, and in the password line, what we manually specify on the switch: <br><pre> <code class="bash hljs">(config)<span class="hljs-comment"><span class="hljs-comment">#mab request format attribute 2 yourpassword</span></span></code> </pre>  Then in AD all phone accounts must have this password. <br><br>  Used materials: <br>  <a href="http://www.cisco.com/en/US/docs/switches/lan/catalyst6500/ios/12.2SX/configuration/guide/dot1x.html">IEEE 802.1X Port-Based Authentication</a> <br>  <a href="http://www.cisco.com/en/US/prod/collateral/iosswrel/ps6537/ps6586/ps6638/config_guide_c17-663759.html">MAC Authentication Bypass Deployment Guide</a> </div><p>Source: https://habr.com/ru/post/196930/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../196916/index.html">Agile application in a fixed phase contract</a></li>
 <li><a href="../196920/index.html">God bless Dynamic SQL</a></li>
 <li><a href="../196922/index.html">How to cheap print a book in Linux</a></li>
 <li><a href="../196924/index.html">Overview of the new TI Launchpad (MSP-EXP430F5529LP or MSP430F5529 USB LaunchPad)</a></li>
 <li><a href="../196926/index.html">Booting Linux without bootloader</a></li>
+<li><a href="../19693/index.html">The official position of Google in relation to MS OOXML and ODF</a></li>
 <li><a href="../196932/index.html">11 years of playing Civilization II without restarting: continuing the story</a></li>
 <li><a href="../196936/index.html">Subtleties in the process of design for startups</a></li>
 <li><a href="../196938/index.html">LG G2: outside and inside the new Korean flagship</a></li>
+<li><a href="../19694/index.html">Ambiguity of "rating" comments</a></li>
 <li><a href="../196940/index.html">Police London City successfully fights with the largest torrent trackers</a></li>
-<li><a href="../196942/index.html">MSI Slidebook S20 Ultrabook Transformer Video Review</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

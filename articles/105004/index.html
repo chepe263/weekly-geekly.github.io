@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We overhear in AD</h1><div class="post__text post__text-html js-mediator-article"><img align="right" src="https://habrastorage.org/storage/2bc2ab30/b4bcf3a6/9ad83d76/12a3d670.jpg"><br>  <b>Introduction</b> <br>  I just recently encountered Windows Active Directory domains and learn a lot of new and surprising.  It so happens that a significant number of users in the organization's domain have the rights of local administrators (technical specialists, programmers and others) (after all, it is not uncommon that happens?).  But the consequences of this are colossal.  In this article we will look at how you can eavesdrop on sounds (conversations, conversations) on remote machines. <br><a name="habracut"></a><br>  <b>Must have</b> <br><ul><li>  User in AD with local admin rights (or just know the password from local admins) </li><li>  Hardware sound capture (microphone) on the target machine.  The most convenient case - the target machine is a laptop, there is a built-in microphone (and camera: D).  We were also lucky if we use a webcam or headphones with a microphone on a remote machine.  Otherwise, you can often stick the microphone yourself without the fawn. </li><li>  The program capture and transfer of multimedia over the network.  We will use the player <a href="http://www.videolan.org/vlc/">vlc</a> .  (no Trojans! :)) </li><li>  The program remote start processes.  Use psexec from the <a href="http://technet.microsoft.com/ru-ru/sysinternals/bb896649.aspx">PsTools</a> suite.  Great for AD, but to use it, you just need to have local admin rights on the target machine.  It is noteworthy that the running processes are executed on behalf of SYSTEM (!). </li></ul><br>  <b>Practice</b> <br><ol><li>  First we need to throw the vlc distribution on the remote machine, if it was not there.  This can be done by using system resources like C $, D $ ... that is, <i>\\ target \ C $ \</i> .  If the shared resources are not open (it means they are specially closed), then it will be possible to open the shared network resource using PsExec with a command like this: <br>  <i>net share C $ = C: \</i> <br>  The $ symbol at the end means that the network resource will not be displayed in the list of the computer’s open network resources.  And so, in a trivial way we throw the vlc distribution on the remote machine. </li><li>  Next, to run vlc, we need cmd from the remote machine.  We use PsExec by executing a command like: <br>  <i>psexec.exe \\ target \ cmd</i> <br>  Respectively we will receive cmd from the target machine.  The windows of running programs will not be displayed on it (will be, if you use the <i>-i</i> switch in PsExec).  By the way, PsExec is able to upload the launched file to the remote machine, if you specify the <i>-c</i> option.  Go to the folder with the vlc distribution. <br></li><li>  Now the most interesting: start vlc with necessary parameters.  To determine the command line parameters for running vlc, we will run it on our site, set the necessary settings and see what the command is.  Run vlc, press media -&gt; streaming.  Tab "Capture Device".  The video device will be set to "no" to avoid unnecessary errors in the absence of the camera and the detection of us, if the light on the camera lights up.  Put a tick in the bottom "additional parameters" and look at the parameters of the command line. <br><img src="https://habrastorage.org/storage/b2e90bd7/16048e9e/b7c90c68/14a480a2.jpg"><br>  We take from there " <i>dshow: //</i> " (that is, the source is capture devices) and " <i>: dshow-vdev = none: dshow-adev =: dshow-caching = 200</i> " (that is, the video device is not; audio device is by default; caching - 200 ms.).  Now we need to set up broadcasting of our multimedia, we are waiting for the “Stream”.  In the destination path add the desired path.  I chose http with port 8080, i.e. a web server is running on the target machine from which to listen.  It is preferable, of course, to choose a broadcast to our car (or not ours, from where to redirect using netcat).  Remove the checkbox "enable transcoding".  Go to the settings tab and copy the resulting settings. <br><img src="https://habrastorage.org/storage/b9b1ac35/03a7f8ce/c0f46cf6/6760eed9.jpg"><br>  I have this " <i>: <i>sout = # http {mux = ffmpeg {mux = flv}, dst =: 8080 /}: no-sout-rtp-sap: no-sout-standard-sap: sout-keep</i></i> " </li><li>  Thus, the command to start vlc on a remote machine takes the form: <br>  <i>vlc.exe dshow: //: dshow-vdev = none: dshow-adev =: dshow-caching = 200: sout = # transcode {vcodec = h264, vb = 0, scale = 0, acodec = mp4a, ab = 128, Channels = 2, samplerate = 44100}: http {mux = ffmpeg {mux = flv}, dst =: 8080 /}: no-sout-rtp-sap: no-sout-standard-sap: sout-keep</i> <br>  We can run.  If all is well, the target machine is already awaiting our connection on port 8080. </li><li>  We start our vlc on our machine, with which we will listen.  If you are connecting to a web server, then you can start with the following arguments: <br>  <i>vlc.exe http: // target: 8080</i> (no space after http: //) <br>  If there is a broadcast on our computer (for example, via udp on port 1234), then start vlc as follows: <br>  <i>vlc.exe udp: // @: 1234</i> </li><li>  If all the way, then listen </li></ol><br><br>  <b>Conclusions</b> <br>  It is very important to minimize the privileges of AD users. <br>  PsExec works through the public domain admin $, but its closure can negatively affect the work in AD.  How exactly, not googled, but you never know. <br>  With some modifications, the method will roll not only in AD. <br><br>  <b>Links</b> <br>  <a href="http://skinglex.class.ru/win2000/2004/06/177161/">Good PsExec Description</a> <br>  <a href="http://wiki.videolan.org/Main_Page">Wiki on VLC.</a> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,16 +60,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/105004/">https://habr.com/ru/post/105004/</a></p>
+    <p>Source: https://habr.com/ru/post/105004/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../104997/index.html">Hexagonal Tetris</a></li>
-<li><a href="../104998/index.html">Django on ValueHost servers</a></li>
-<li><a href="../104999/index.html">Dumping as a signal</a></li>
+<li><a href="../105/index.html">Does this thing work?</a></li>
+<li><a href="../1050/index.html">For 2007</a></li>
+<li><a href="../10500/index.html">Reduced download time for js and css files</a></li>
 <li><a href="../105002/index.html">The entire archive of the Computer Science Club at POMI RAS has been published</a></li>
 <li><a href="../105003/index.html">10 Lenovo netbooks as a gift in honor of the 10th anniversary of e-Style Telecom</a></li>
 <li><a href="../105005/index.html">Support LiveStreet at the Open Source Award 2010</a></li>

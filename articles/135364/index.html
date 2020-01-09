@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Unique key in a distributed database</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/331/111/d09/331111d097c744051934442b3669c35d.png" align="left">  In case you are sharing data across multiple physical databases, <br>  support for globally unique identifiers is not such a trivial task. <br>  I tried to put together possible options and consider their pros and cons. <br><a name="habracut"></a><br><br><h2>  What requirements (except for uniqueness) can be placed on keys? </h2><br><br>  <b>The key should monotonously increase</b> <br>  Why do you need it: <br><ul><li>  Automatic natural sorting (including chronological) </li><li>  Faster insertion than with random keys </li></ul><br>  The above is true only for indexes using trees. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,18 +61,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       <b>The key must be generated on the client side</b> <br>  Why do you need it: <br><ul><li>  An application can immediately access the desired shard (cluster node), since the unique key is known even before the object is saved </li><li>  An application can save several related objects at once (in a single transaction or batch job) </li></ul><br><br>  <b>Limit key size (for example, only 64 bits)</b> <br>  Why do you need it: <br><ul><li>  In some cases, 128 or 160 bit identifiers can be a problem.  For example, Sphinx search supports only integer identifiers of documents (64 bits in the 64-bit version). </li><li>  An index with 32-bit or 64-bit keys should theoretically work faster than with keys of arbitrary length. </li><li>  An index with 32-bit or 64-bit keys is more compact and, as a result, fits entirely into memory (important for large amounts of data). </li></ul><br><br><h2>  What are the ways to generate unique keys? </h2><br><br>  <b>ID generation on the application side (UUID, etc.)</b> <br><br>  With <a href="http://ru.wikipedia.org/wiki/UUID">UUID,</a> everything is relatively simple - we take the library and generate keys on the application side.  UUID is widely used in many systems.  The value is formed in such a way that collisions are impossible. <br><br>  <i>Minuses:</i> <br>  • The length of the standard UUID is 128 bits (which, in fact, you often want to store directly as a string of hexadecimal digits, which is already 32 bytes) <br>  • As a rule, the UUID does not provide a natural key sorting. <br><br>  <b>Separate service for key generation</b> <br><br>  This option is used, for example, <a href="http://code.flickr.com/blog/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/">Flick</a> and <a href="https://github.com/twitter/snowflake/">Twitter</a> . <br><br>  <i>Minuses:</i> <br>  • complication of the system due to the introduction of additional components <br>  • a potentially single point of failure, or additional efforts are required to ensure high availability of the key generator <br><br>  <b>Auto-increment on database side by value range</b> <br><br>  The whole range of values ​​is divided into subranges and each shard (cluster node) is responsible for its own range, for example: <br><pre>     1 - 0 .. 3FFFFFFF,
      2 - 40000000 .. 7FFFFFFF,
      3 - 80000000 .. BFFFFFFF,
      4 - C0000000 .. FFFFFFFF
-</pre><br>  <i>Minuses:</i> <br>  • DB must support auto-increment (not applicable to many NoSQL-storages) <br>  natural sorting is impossible <br>  • The client "does not know" the key before inserting the object.  To find out the key you need to make a separate request. <br>  • It is almost impossible to increase the number of cluster nodes. <br><br>  <b>Instagram autoincrement</b> <br><br>  This decision is <a href="http://instagram-engineering.tumblr.com/post/10853187575/sharding-ids-at-instagram">described</a> in the technical blog of the <a href="http://instagr.am/">Instgram</a> team (photo sharing application). <br><br>  They use a 64-bit key that is generated on the DB (PostgreSQL) side and consists of bit fields. <br><br><pre><code class="hljs ruby"><span class="hljs-number"><span class="hljs-number">63</span></span> <span class="hljs-number"><span class="hljs-number">31</span></span> <span class="hljs-number"><span class="hljs-number">0</span></span> <span class="hljs-params"><span class="hljs-params">|======|</span></span>======<span class="hljs-params"><span class="hljs-params">|======|</span></span>======<span class="hljs-params"><span class="hljs-params">|======|</span></span>======<span class="hljs-params"><span class="hljs-params">|======|</span></span>======<span class="hljs-params"><span class="hljs-params">| |</span></span> CUSTOM TIMESTAMP <span class="hljs-params"><span class="hljs-params">| SHARD ID |</span></span> AUTO <span class="hljs-params"><span class="hljs-params">|</span></span></code> </pre> <br>  Where <br>  - <code>CUSTOM TIMESTAMP</code> (41 bits) - time in milliseconds from 2011-01-01 00:00:00 <br>  - <code>SHARD ID</code> (13 bits) - logical partition identifier (the number of shards is greater than the number of physical nodes) <br>  - <code>AUTO</code> (10 bits) - sequence (sequence), unique within the logical partition (shard) <br><br>  <i>Pluses (compared to autoincrement by ranges):</i> <br>  • Automatic chronological sorting <br><br>  <b>And what options do you know and use?</b> </div><p>Source: <a href="https://habr.com/ru/post/135364/">https://habr.com/ru/post/135364/</a></p>
+</pre><br>  <i>Minuses:</i> <br>  • DB must support auto-increment (not applicable to many NoSQL-storages) <br>  natural sorting is impossible <br>  • The client "does not know" the key before inserting the object.  To find out the key you need to make a separate request. <br>  • It is almost impossible to increase the number of cluster nodes. <br><br>  <b>Instagram autoincrement</b> <br><br>  This decision is <a href="http://instagram-engineering.tumblr.com/post/10853187575/sharding-ids-at-instagram">described</a> in the technical blog of the <a href="http://instagr.am/">Instgram</a> team (photo sharing application). <br><br>  They use a 64-bit key that is generated on the DB (PostgreSQL) side and consists of bit fields. <br><br><pre><code class="hljs ruby"><span class="hljs-number"><span class="hljs-number">63</span></span> <span class="hljs-number"><span class="hljs-number">31</span></span> <span class="hljs-number"><span class="hljs-number">0</span></span> <span class="hljs-params"><span class="hljs-params">|======|</span></span>======<span class="hljs-params"><span class="hljs-params">|======|</span></span>======<span class="hljs-params"><span class="hljs-params">|======|</span></span>======<span class="hljs-params"><span class="hljs-params">|======|</span></span>======<span class="hljs-params"><span class="hljs-params">| |</span></span> CUSTOM TIMESTAMP <span class="hljs-params"><span class="hljs-params">| SHARD ID |</span></span> AUTO <span class="hljs-params"><span class="hljs-params">|</span></span></code> </pre> <br>  Where <br>  - <code>CUSTOM TIMESTAMP</code> (41 bits) - time in milliseconds from 2011-01-01 00:00:00 <br>  - <code>SHARD ID</code> (13 bits) - logical partition identifier (the number of shards is greater than the number of physical nodes) <br>  - <code>AUTO</code> (10 bits) - sequence (sequence), unique within the logical partition (shard) <br><br>  <i>Pluses (compared to autoincrement by ranges):</i> <br>  • Automatic chronological sorting <br><br>  <b>And what options do you know and use?</b> </div><p>Source: https://habr.com/ru/post/135364/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../135359/index.html">- Your turn to steer!</a></li>
+<li><a href="../13536/index.html">Look into someone else's pocket. Moscow couriers.</a></li>
 <li><a href="../135360/index.html">New version of MotivateClock. We did what you asked for!</a></li>
 <li><a href="../135361/index.html">Garland on google</a></li>
 <li><a href="../135362/index.html">The art of programming?</a></li>
@@ -81,7 +81,7 @@
 <li><a href="../135366/index.html">Site application: based on Webasyst framework, you can now create websites</a></li>
 <li><a href="../135368/index.html">Announced the best downloadable games in 2011 according to the People's Award Nevosoft</a></li>
 <li><a href="../135369/index.html">RDP protection in accordance with GOST with the help of Rutoken EDS. Two Level TLS</a></li>
-<li><a href="../135370/index.html">Repeated issues with accessibility to Google from Russia</a></li>
+<li><a href="../13537/index.html">X-Seed 4000 - the tallest skyscraper in history, created on paper</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

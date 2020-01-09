@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Nagios + SMS using a mobile phone</h1><div class="post__text post__text-html js-mediator-article">  A few posts before were already topics on the use of SMS notifications in Nagios.  Today I will talk about another method of notification.  The method described below is somewhat more reliable than those described earlier, but it also requires some monetary investment.  It is useful in the case when some of the notifications are critical (such as the failure of the air conditioner or an increase in humidity). <br><br>  The way is to use a mobile phone with a corporate rate (so that the money on the phone does not run out unexpectedly). <br><br>  Physically connects to the server via bluetooth, com or usb.  At the software level, we will use two scripts: one of them can send sms, the second checks the status of the mobile network.  If the mobile network is not available, then nagios sends a message to the email. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Both scripts are written in python and use the gammu library to connect to the phone. <br><a name="habracut"></a><br><br><h4>  The first script: <b>check_sendsms.py</b> - check network status </h4><br><br><pre><code class="hljs pgsql">#!/usr/bin/env python <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> gammu <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> sys # <span class="hljs-keyword"><span class="hljs-keyword">Create</span></span> state machine <span class="hljs-keyword"><span class="hljs-keyword">object</span></span> sm = gammu.StateMachine() # <span class="hljs-keyword"><span class="hljs-keyword">Read</span></span> /etc/gammurc sm.ReadConfig() # <span class="hljs-keyword"><span class="hljs-keyword">Connect</span></span> <span class="hljs-keyword"><span class="hljs-keyword">to</span></span> phone sm.Init() # Reads network information <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> phone netinfo = sm.GetNetworkInfo() # Print information print <span class="hljs-string"><span class="hljs-string">'State: %s'</span></span> % netinfo[<span class="hljs-string"><span class="hljs-string">'State'</span></span>] <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> netinfo[<span class="hljs-string"><span class="hljs-string">'State'</span></span>] != "HomeNetwork": sys.<span class="hljs-keyword"><span class="hljs-keyword">exit</span></span>(<span class="hljs-number"><span class="hljs-number">2</span></span>)</code> </pre> <br><br><h4>  The second script: <b>sendsms.py</b> - actually sending sms </h4><br><br><pre> <code class="hljs pgsql">#!/usr/bin/env python <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> gammu <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> sys <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> len(sys.argv) != <span class="hljs-number"><span class="hljs-number">3</span></span>: print <span class="hljs-string"><span class="hljs-string">'Usage: sendsms.py number1[,number2][...] "message"'</span></span> sys.<span class="hljs-keyword"><span class="hljs-keyword">exit</span></span>(<span class="hljs-number"><span class="hljs-number">1</span></span>) # we are going <span class="hljs-keyword"><span class="hljs-keyword">to</span></span> send first <span class="hljs-number"><span class="hljs-number">160</span></span> characters <span class="hljs-keyword"><span class="hljs-keyword">only</span></span> text_message=sys.argv[<span class="hljs-number"><span class="hljs-number">2</span></span>][:<span class="hljs-number"><span class="hljs-number">160</span></span>] # <span class="hljs-keyword"><span class="hljs-keyword">connect</span></span> <span class="hljs-keyword"><span class="hljs-keyword">to</span></span> phone sm = gammu.StateMachine() # <span class="hljs-keyword"><span class="hljs-keyword">Read</span></span> /etc/gammurc sm.ReadConfig() sm.Init() # send messages <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> phone_number <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> sys.argv[<span class="hljs-number"><span class="hljs-number">1</span></span>].split(<span class="hljs-string"><span class="hljs-string">','</span></span>): sms_message = {<span class="hljs-string"><span class="hljs-string">'Text'</span></span>: text_message, <span class="hljs-string"><span class="hljs-string">'SMSC'</span></span>: {<span class="hljs-string"><span class="hljs-string">'Location'</span></span>: <span class="hljs-number"><span class="hljs-number">1</span></span>}, <span class="hljs-string"><span class="hljs-string">'Number'</span></span>: phone_number} try: sm.SendSMS(sms_message) <span class="hljs-keyword"><span class="hljs-keyword">except</span></span>: print "Sorry, I can't send message to %s" % phone_number</code> </pre><br><br><h4>  Few comments </h4><br><ul><li>  The script sendsms.py as the first parameter accepts phone numbers in the form + 7xxxxxxxxxx separated by commas, and as the second text of the message.  In addition, the SMS message is truncated to 160 characters in order not to complicate the system using Multi Part SMS. <br><br></li><li>  Examples of commands to send nagios notifications via sms <br><pre> # 'notify-service-by-sms' command definition
@@ -81,15 +81,15 @@
  } </pre><br></li><li><pre>  / etc / gammurc for bluetooth will look like this
  [gammu]
  port = / dev / rfcomm0
- connection = at19200 </pre><br></li></ul></div><p>Source: <a href="https://habr.com/ru/post/96610/">https://habr.com/ru/post/96610/</a></p>
+ connection = at19200 </pre><br></li></ul></div><p>Source: https://habr.com/ru/post/96610/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../96601/index.html">ASP.NET - custom authorization forms. Crib</a></li>
 <li><a href="../96604/index.html">Phone Security Labels - First Law Enacted</a></li>
 <li><a href="../96607/index.html">What are they afraid of in cloud computing?</a></li>
 <li><a href="../96608/index.html">Commission 30% for Facebook Credits - is this normal?</a></li>
 <li><a href="../96609/index.html">Development and modification of firmware for Android phones on the example of HTC Hero GSM. Part 1</a></li>
+<li><a href="../9661/index.html">Post rating</a></li>
 <li><a href="../96611/index.html">MODx Evolution 1.0.4</a></li>
 <li><a href="../96613/index.html">On4: Shop with built-in payment acceptance</a></li>
 <li><a href="../96614/index.html">Nintendo 3DS revolution</a></li>

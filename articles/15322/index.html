@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Ubuntu Gutsy and MCP51 (snd-hda-intel) - what to do to make it sound</h1><div class="post__text post__text-html js-mediator-article">  It seems that not only me, but also the majority of newly installed Ubuntu Gutsy on mothers with integrated sound on the MCP51 chip (defined on most of them as snd-hda-intel) have problems with sound - the card is simply not defined. <a name="habracut"></a><br><br>  Firstly, there are several sources that I used, but there are two main ones, the first one is <a href="https://answers.launchpad.net/ubuntu/">Ubuntu Answers</a> and the second one is <a href="https://help.ubuntu.com/community/HdaIntelSoundHowto">Hda Intel Sound How to</a> . <br><br>  Secondly, everything described below looks like a huge change to the system as a whole, the kernel or the packages in particular, but believe me, this will only add new functionality, but it won't break even if you try sooo (without fanaticism, please! :). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Third, do not forget to turn on the sound in BIOS!  I stepped on it and killed a little time, but enough :) <br><br>  Now in order: <br>  1) Add the necessary for the assembly alsa'y packages in the system: <br><blockquote>  $ sudo apt-get install build-essential ncurses-dev gettext <br>  $ sudo apt-get install linux-headers-`uname -r` </blockquote><br><br>  3) Download the latest versions of the <a href="">drivers</a> , <a href="">libraries</a> and <a href="">utilities</a> from the alsa site: <br><blockquote>  $ sudo mkdir -p / usr / src / alsa <br>  $ cd / usr / src / alsa <br><br>  $ wget <a href="">ftp.alsa-project.org/pub/driver/alsa-driver-1.0.15rc3.tar.bz2</a> <br>  $ wget <a href="">ftp.alsa-project.org/pub/lib/alsa-lib-1.0.15rc3.tar.bz2</a> <br>  $ wget <a href="">ftp.alsa-project.org/pub/utils/alsa-utils-1.0.15rc1.tar.bz2</a> <br><br>  $ sudo tar xjf alsa-driver * .bz2 <br>  $ sudo tar xjf alsa-lib * .tar.bz2 <br>  $ sudo tar xjf alsa-utils * .tar.bz2 </blockquote><br><br>  4) Compile and install the driver (pay attention to the key!), Libraries and utilities: <br><blockquote>  $ cd ../alsa-driver-1.0.15rc3 <br>  $ sudo ./configure --with-cards = hda-intel <br>  $ sudo make <br>  $ sudo make install <br><br>  $ cd ../alsa-lib-1.0.15rc3 <br>  $ sudo ./configure <br>  $ sudo make <br>  $ sudo make install <br><br>  $ cd ../alsa-utils-1.0.15rc1 <br>  $ sudo ./configure <br>  $ sudo make <br>  $ sudo make install </blockquote><br><br>  5) Reboot. <br><br>  6) After a reboot, a card should appear in / proc, look at it: <br><blockquote>  $ sudo cat / proc / asound / card0 / codec # * |  grep codec <br>  Codec: Analog Devices AD1986A </blockquote><br><br>  7) Go to this <a href="http://www.mjmwired.net/kernel/Documentation/sound/alsa/ALSA-Configuration.txt">link</a> , look for the card and see which mode to set.  In my case, this is 3stack. <br><br>  8) Add one line to alsa config: <br><blockquote>  $ sudo vim /etc/modprobe.d/alsa-base <br><br>  i <br>  options snd-hda-intel position_fix = 1 model = 3stack <br>  : <br>  wq </blockquote><br><br>  9) Again we reboot. <br><br>  10) Configure alsa: <br><blockquote>  $ sudo alsaconf </blockquote><br>  there must be a “card”, for example, in my case it is hda-intel <br><br>  11) Check the setting: <br><blockquote>  $ sudo aplay --list-devices <br>  **** List of PLAYBACK Hardware Devices **** <br>  card 0: NVidia [HDA NVidia], device 0: AD198x Analog [AD198x Analog] <br>  Subdevices: 1/1 <br>  Subdevice # 0: subdevice # 0 <br>  card 0: NVidia [HDA NVidia], device 1: AD198x Digital [AD198x Digital] <br>  Subdevices: 1/1 <br>  Subdevice # 0: subdevice # 0 </blockquote><br><br>  12) And finally, how to play: <br><blockquote>  $ aplay -vv ./alsa-utils-1.0.15rc1/speaker-test/samples/Noise.wav </blockquote><br><br>  The method described above was successfully tested on three identical machines, but on different ubuntas: Feisty, Gutsy and Edgy. </div><p>Source: <a href="https://habr.com/ru/post/15322/">https://habr.com/ru/post/15322/</a></p>
+      Third, do not forget to turn on the sound in BIOS!  I stepped on it and killed a little time, but enough :) <br><br>  Now in order: <br>  1) Add the necessary for the assembly alsa'y packages in the system: <br><blockquote>  $ sudo apt-get install build-essential ncurses-dev gettext <br>  $ sudo apt-get install linux-headers-`uname -r` </blockquote><br><br>  3) Download the latest versions of the <a href="">drivers</a> , <a href="">libraries</a> and <a href="">utilities</a> from the alsa site: <br><blockquote>  $ sudo mkdir -p / usr / src / alsa <br>  $ cd / usr / src / alsa <br><br>  $ wget <a href="">ftp.alsa-project.org/pub/driver/alsa-driver-1.0.15rc3.tar.bz2</a> <br>  $ wget <a href="">ftp.alsa-project.org/pub/lib/alsa-lib-1.0.15rc3.tar.bz2</a> <br>  $ wget <a href="">ftp.alsa-project.org/pub/utils/alsa-utils-1.0.15rc1.tar.bz2</a> <br><br>  $ sudo tar xjf alsa-driver * .bz2 <br>  $ sudo tar xjf alsa-lib * .tar.bz2 <br>  $ sudo tar xjf alsa-utils * .tar.bz2 </blockquote><br><br>  4) Compile and install the driver (pay attention to the key!), Libraries and utilities: <br><blockquote>  $ cd ../alsa-driver-1.0.15rc3 <br>  $ sudo ./configure --with-cards = hda-intel <br>  $ sudo make <br>  $ sudo make install <br><br>  $ cd ../alsa-lib-1.0.15rc3 <br>  $ sudo ./configure <br>  $ sudo make <br>  $ sudo make install <br><br>  $ cd ../alsa-utils-1.0.15rc1 <br>  $ sudo ./configure <br>  $ sudo make <br>  $ sudo make install </blockquote><br><br>  5) Reboot. <br><br>  6) After a reboot, a card should appear in / proc, look at it: <br><blockquote>  $ sudo cat / proc / asound / card0 / codec # * |  grep codec <br>  Codec: Analog Devices AD1986A </blockquote><br><br>  7) Go to this <a href="http://www.mjmwired.net/kernel/Documentation/sound/alsa/ALSA-Configuration.txt">link</a> , look for the card and see which mode to set.  In my case, this is 3stack. <br><br>  8) Add one line to alsa config: <br><blockquote>  $ sudo vim /etc/modprobe.d/alsa-base <br><br>  i <br>  options snd-hda-intel position_fix = 1 model = 3stack <br>  : <br>  wq </blockquote><br><br>  9) Again we reboot. <br><br>  10) Configure alsa: <br><blockquote>  $ sudo alsaconf </blockquote><br>  there must be a “card”, for example, in my case it is hda-intel <br><br>  11) Check the setting: <br><blockquote>  $ sudo aplay --list-devices <br>  **** List of PLAYBACK Hardware Devices **** <br>  card 0: NVidia [HDA NVidia], device 0: AD198x Analog [AD198x Analog] <br>  Subdevices: 1/1 <br>  Subdevice # 0: subdevice # 0 <br>  card 0: NVidia [HDA NVidia], device 1: AD198x Digital [AD198x Digital] <br>  Subdevices: 1/1 <br>  Subdevice # 0: subdevice # 0 </blockquote><br><br>  12) And finally, how to play: <br><blockquote>  $ aplay -vv ./alsa-utils-1.0.15rc1/speaker-test/samples/Noise.wav </blockquote><br><br>  The method described above was successfully tested on three identical machines, but on different ubuntas: Feisty, Gutsy and Edgy. </div><p>Source: https://habr.com/ru/post/15322/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../153223/index.html">You won’t believe how wonderful the office is at Notch</a></li>
 <li><a href="../153225/index.html">How two programmers baked bread</a></li>
 <li><a href="../153227/index.html">Spectacular animation of destruction (Pixel Dust) on JavaScript</a></li>
-<li><a href="../15323/index.html">Netscape Navigator 9.0.0.1 Update</a></li>
+<li><a href="../153229/index.html">ASUS Padfone as it is</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

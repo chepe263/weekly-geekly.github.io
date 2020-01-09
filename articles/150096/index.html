@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to install and configure a ridiculous fish shell in Debian Squeeze</h1><div class="post__text post__text-html js-mediator-article">  Most recently, I discovered the <a href="http://ridiculousfish.com/shell/">Ridiculous fish</a> shell, which is fundamentally different from bash and zsh with which I worked before.  On my MacBook Pro under Mac OS X, the shell was installed without any problems and worked fine.  Having mastered the new shell, I decided that it was time to install and configure it in the same way on servers that have 64-bit Debian Squeeze installed.  It was then that I was faced with the fact that the 32-bit deb package that they have on the site is not installed on 64-bit Debian.  And I decided to build a favorite shell from source.  This process will be described in the article. <br><a name="habracut"></a><br>  Download the source from the site and unpack them. <br><pre><code class="bash hljs">wget http://ridiculousfish.com/shell/files/fishfish.tar.gz tar xzf fishfish.tar.gz</code> </pre> <br>  Some complexity caused the search for the necessary dependencies, I could not quickly find a place where they would be described.  Probably, the dependencies are not the right ones, but for me, with such dependencies, everything is going. <br><pre> <code class="bash hljs">sudo apt-get install autoconf g++ libncurses5-dev libncursesw5-dev gettext</code> </pre><br>  Once the dependencies are installed, proceed with the assembly of the shell itself. <br><pre> <code class="bash hljs">autoconf ./configure --without-xsel</code> </pre><br>  When configuring, I specify the option --without-xsel.  If you do not specify it, then the script will not find some of the X11 libraries when building it.  I had no desire to install X11 on sevrer.  If everything went well, you will see: <br><pre> <code class="bash hljs">fish is now configured. Use <span class="hljs-string"><span class="hljs-string">'make'</span></span> and <span class="hljs-string"><span class="hljs-string">'make install'</span></span> to build and install fish.</code> </pre><br>  Run the assembly. <br><pre> <code class="bash hljs">make</code> </pre><br>  If the build is successful, you will see: <br><pre> <code class="bash hljs">fish has now been built. Use <span class="hljs-string"><span class="hljs-string">'make install'</span></span> to install fish.</code> </pre><br>  After assembly, install the fish. <br><pre> <code class="bash hljs">sudo make install</code> </pre><br>  If everything is good, you will see: <br><pre> <code class="bash hljs">fish is now installed on your system. To run fish, <span class="hljs-built_in"><span class="hljs-built_in">type</span></span> <span class="hljs-string"><span class="hljs-string">'fish'</span></span> <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> your terminal. To use fish as your login shell: * add the line <span class="hljs-string"><span class="hljs-string">'/usr/local/bin/fish'</span></span> to the file <span class="hljs-string"><span class="hljs-string">'/etc/shells'</span></span>. * use the <span class="hljs-built_in"><span class="hljs-built_in">command</span></span> <span class="hljs-string"><span class="hljs-string">'chsh -s /usr/local/bin/fish'</span></span>. To <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> your colors, run <span class="hljs-string"><span class="hljs-string">'fish_config'</span></span> To scan your man pages <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> completions, run <span class="hljs-string"><span class="hljs-string">'fish_update_completions'</span></span> Have fun!</code> </pre><br>  Add the line / usr / local / bin / fish to / etc / shells, as recommended by the installer. <br><pre> <code class="bash hljs">sudoedit /etc/shells</code> </pre><br>  Choose fish as a shell. <br><pre> <code class="bash hljs">chsh -s /usr/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/bin/fish</code> </pre><br>  After the installation was complete, I still had some problems: annoying blinking of commands and prompts and idle generation of completions due to manpath.  The problem with blinking, I decided to remove the "extra" settings in the colors in which the command shell colors.  You can choose the one you like using the set fish_color_ * parameters. <br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">set</span></span> fish_color_autosuggestion yellow <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> fish_color_command green <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> fish_color_param cyan</code> </pre><br>  The problem with the broken generation of completions was also solved with the help of a terrible stunt.  Edit the file: <br><pre> <code class="bash hljs">sudoedit /usr/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/share/fish/tools/create_manpage_completions.py</code> </pre><br>  Go to line number 744 and as described <a href="http://www.digipedia.pl/usenet/thread/16437/3150/">here</a> edit this line so that instead of <br><pre> <code class="python hljs">proc = subprocess.Popen([<span class="hljs-string"><span class="hljs-string">'man'</span></span>, <span class="hljs-string"><span class="hljs-string">'--path'</span></span>], stdout=subprocess.PIPE)</code> </pre><br>  happened <br><pre> <code class="python hljs">proc = subprocess.Popen([<span class="hljs-string"><span class="hljs-string">'manpath'</span></span>], stdout=subprocess.PIPE)</code> </pre><br>  Then we start the generation of completions <br><pre> <code class="bash hljs">fish_update_completions</code> </pre><br>  If we get everything right, something like <br><pre> <code class="bash hljs">Parsing man pages and writing completions to /home/rp/.config/fish/completions/</code> </pre><br><br>  Voila!  Enjoy the beautiful shell. <br><br></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/150096/">https://habr.com/ru/post/150096/</a></p>
+    <p>Source: https://habr.com/ru/post/150096/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../150089/index.html">Linking your domain to Windows Azure (for example, RU-CENTER)</a></li>
+<li><a href="../15009/index.html">Revealing the "boob theme"</a></li>
 <li><a href="../150090/index.html">The forum of service provision Clouds NN 2012 has started</a></li>
 <li><a href="../150092/index.html">What is informational obesity and how to deal with it</a></li>
 <li><a href="../150093/index.html">Unified infrastructure "Cloud + physical equipment"</a></li>
@@ -74,8 +74,8 @@
 <li><a href="../150097/index.html">CTF for Stripe Application Developers</a></li>
 <li><a href="../150098/index.html">11.1% efficiency - a new record in the production of solar panels</a></li>
 <li><a href="../150099/index.html">Android + Intel Atom = MegaFon Mint</a></li>
+<li><a href="../1501/index.html">Arton Consulting investigated contextual advertising</a></li>
 <li><a href="../150100/index.html">I3 Window Manager</a></li>
-<li><a href="../150102/index.html">Forward, despite the obstacles</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

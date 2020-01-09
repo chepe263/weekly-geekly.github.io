@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We protect the system. Or how to configure and use port knocking</h1><div class="post__text post__text-html js-mediator-article">  Salam papalam all! <br><br>  Then I puzzled how you can make your server more secure.  Using iptables directly with IP blocking did not solve the problem, since  I can connect to the server not only from a working PC, but also from a pub, or from another city, or on a bus (when I stand in traffic jams). <br>  Decided to use <a href="http://en.wikipedia.org/wiki/Port_knocking">port knocking</a> . <br>  Who never used it, you are welcome under kat. <a name="habracut"></a><br><br>  For those who are not in the subject, I’ll briefly say: this is a daemon that “listens” to the network interface and if it “heard” that requests are being sent to 7000.8000.9000 ports, it adds an allow rule for your IP to a port defined in advance by you.  It simply executes the command to allow or deny access to iptables. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      So, I wanted to cover up from all ssh. <br>  First install the daemon itself (for tests I used my working PC on Ubuntu): <br><br><pre><code class="bash hljs">sudo apt-get install knockd</code> </pre> <br><br>  For CentOS, you can install it like this: <br><br><pre> <code class="bash hljs">sudo rpm -Uhv http://pkgs.repoforge.org/knock/knock-0.5-3.el6.rf.x86_64.rpm</code> </pre><br><br>  Next, we need to edit the configuration of this daemon (/etc/knockd.conf): <br><br><pre> <code class="bash hljs">[options] UseSyslog [openSSH] sequence = 7000:tcp,8000:tcp, 9000:udp seq_timeout = 5 <span class="hljs-built_in"><span class="hljs-built_in">command</span></span> = /sbin/iptables -I INPUT 1 -s %IP% -d _IP____ -p tcp --dport 22 -j ACCEPT tcpflags = syn [closeSSH] sequence = 9000:udp,8000:tcp,7000:tcp seq_timeout = 5 <span class="hljs-built_in"><span class="hljs-built_in">command</span></span> = /sbin/iptables -D INPUT -s %IP% -d _IP____ -p tcp --dport 22 -j ACCEPT tcpflags = syn</code> </pre><br><br>  Then restart the daemon: <br><br><pre> <code class="bash hljs">sudo /etc/init.d/knockd restart</code> </pre><br><br>  Next, add a prohibiting rule for all on port 22: <br><br><pre> <code class="bash hljs">sudo iptables -A INPUT -s 0/0 -d _IP____ -p tcp --dport 22 -j REJECT</code> </pre><br><br>  In the <b>[openSSH]</b> section, notice the lines <b>-I INPUT 1</b> .  If we just write <b>-A INPUT</b> instead, it will be added to the end of the chain of rules, and therefore only the uppermost rule will work.  Therefore, we write so that the prohibition rule is added to the end. <br>  <b>The sequence</b> indicates which port sequences we will open for ourselves.  Be sure to point your own. <br>  You can also specify the protocol, for example: 7000: udp, 8000: udp, 9000: tcp <br>  <b>tcpflags</b> - here we indicate which headers should be contained in the transmitted packets. <br><br>  In the <b>[closeSSH]</b> section, specify the reverse sequence for closing the 22nd port.  And there is also a command to remove your IP from the list of allowed. <br><br>  Now the question arises: how to send this magic sequence to the ports? <br>  <a href="http://www.zeroflux.org/projects/knock/">From the developer's site,</a> you can download the program for popular platforms.  There are also other examples of use. <br>  In Windows, I used it like this: downloaded, unpacked.  Opened the command prompt, <pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> ____ knock 192.168.0.1 7000:tcp 8000:tcp 9000:udp</code> </pre><br>  Everything, opened the port.  Now we can log in via SSH! <br><br>  If you want to use it for another protocol, write the <b>[openFTP]</b> , <b>[closeFTP] section</b> with the same rules in the same way, just change the ports to the required one and that's it. <br>  The downsides to this thing are that you need to use an additional prog before connecting.  But, it seems to me that for the sake of safety you can suffer. <br><br>  All security! </div><p>Source: <a href="https://habr.com/ru/post/194412/">https://habr.com/ru/post/194412/</a></p>
+      So, I wanted to cover up from all ssh. <br>  First install the daemon itself (for tests I used my working PC on Ubuntu): <br><br><pre><code class="bash hljs">sudo apt-get install knockd</code> </pre> <br><br>  For CentOS, you can install it like this: <br><br><pre> <code class="bash hljs">sudo rpm -Uhv http://pkgs.repoforge.org/knock/knock-0.5-3.el6.rf.x86_64.rpm</code> </pre><br><br>  Next, we need to edit the configuration of this daemon (/etc/knockd.conf): <br><br><pre> <code class="bash hljs">[options] UseSyslog [openSSH] sequence = 7000:tcp,8000:tcp, 9000:udp seq_timeout = 5 <span class="hljs-built_in"><span class="hljs-built_in">command</span></span> = /sbin/iptables -I INPUT 1 -s %IP% -d _IP____ -p tcp --dport 22 -j ACCEPT tcpflags = syn [closeSSH] sequence = 9000:udp,8000:tcp,7000:tcp seq_timeout = 5 <span class="hljs-built_in"><span class="hljs-built_in">command</span></span> = /sbin/iptables -D INPUT -s %IP% -d _IP____ -p tcp --dport 22 -j ACCEPT tcpflags = syn</code> </pre><br><br>  Then restart the daemon: <br><br><pre> <code class="bash hljs">sudo /etc/init.d/knockd restart</code> </pre><br><br>  Next, add a prohibiting rule for all on port 22: <br><br><pre> <code class="bash hljs">sudo iptables -A INPUT -s 0/0 -d _IP____ -p tcp --dport 22 -j REJECT</code> </pre><br><br>  In the <b>[openSSH]</b> section, notice the lines <b>-I INPUT 1</b> .  If we just write <b>-A INPUT</b> instead, it will be added to the end of the chain of rules, and therefore only the uppermost rule will work.  Therefore, we write so that the prohibition rule is added to the end. <br>  <b>The sequence</b> indicates which port sequences we will open for ourselves.  Be sure to point your own. <br>  You can also specify the protocol, for example: 7000: udp, 8000: udp, 9000: tcp <br>  <b>tcpflags</b> - here we indicate which headers should be contained in the transmitted packets. <br><br>  In the <b>[closeSSH]</b> section, specify the reverse sequence for closing the 22nd port.  And there is also a command to remove your IP from the list of allowed. <br><br>  Now the question arises: how to send this magic sequence to the ports? <br>  <a href="http://www.zeroflux.org/projects/knock/">From the developer's site,</a> you can download the program for popular platforms.  There are also other examples of use. <br>  In Windows, I used it like this: downloaded, unpacked.  Opened the command prompt, <pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> ____ knock 192.168.0.1 7000:tcp 8000:tcp 9000:udp</code> </pre><br>  Everything, opened the port.  Now we can log in via SSH! <br><br>  If you want to use it for another protocol, write the <b>[openFTP]</b> , <b>[closeFTP] section</b> with the same rules in the same way, just change the ports to the required one and that's it. <br>  The downsides to this thing are that you need to use an additional prog before connecting.  But, it seems to me that for the sake of safety you can suffer. <br><br>  All security! </div><p>Source: https://habr.com/ru/post/194412/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../194402/index.html">Home automation</a></li>
 <li><a href="../194404/index.html">Development of IM for the competition of Pavel Durov using Xamarin</a></li>
 <li><a href="../194406/index.html">Fractals in prime numbers</a></li>
 <li><a href="../194408/index.html">Budget UHF RFID reader and its development</a></li>
+<li><a href="../19441/index.html">edu.mail.ru</a></li>
 <li><a href="../194410/index.html">Algorithm X or what is common between the wooden puzzle and the dancing Link?</a></li>
 <li><a href="../194416/index.html">The Little Giant of Big Computing — an Overview of the IBM WorkPad z50 PDA</a></li>
+<li><a href="../19442/index.html">Redux: friend identification system</a></li>
 <li><a href="../194420/index.html">A podcast for a million. Success story and walkthrough</a></li>
 <li><a href="../194422/index.html">Facebook fulfilled the requirements of Roskomnadzor, avoiding blocking in Russia</a></li>
 <li><a href="../194424/index.html">This is how the editor in the new version of WordPress can look</a></li>
-<li><a href="../194426/index.html">Unity gets closer - report on what's happening</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

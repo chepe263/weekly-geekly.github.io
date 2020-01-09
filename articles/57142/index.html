@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Dklab_Cache: tags in memcached, namespaces, statistics</h1><div class="post__text post__text-html js-mediator-article">  The memcached community has made many attempts to write native patches for the memcached code, adding support for tags to it.  The most famous of these patches is the memcached-tag project.  Unfortunately, the memcached-tag is still very far from the stable version: it is easy to write a script that causes the patched memcached-server to hang.  It seems that at the time of this writing there is no reliable solution to the problem of tagging at the level of the memcached server itself. <br><br><h4>  Dklab_Cache library </h4><br>  Dklab_Cache is (mostly) a key tag support library for memcached using the Zend Framework interfaces.  The library itself is written in pure PHP.  Here is the complete list of library features: <br><ul><li>  Backend_TagEmuWrapper: tags for memcached and any other Zend Framework backend caching systems; </li><li>  Backend_NamespaceWrapper: namespace support for memcached, etc .; </li><li>  Backend_Profiler: calculation of statistics on the use of memcached and other backend-s; </li><li>  Frontend_Slot, Frontent_Tag: framework for high-level building of caching systems in complex projects. </li></ul>  Actually, there is a class TagEmuWrapper to support tags.  It is a decorator (“wrapper”) for Zend Framework caching backend classes.  In other words, you can use it to transparently add tag support to any Zend Framework caching subsystem.  We will consider the backend for working with memcached: Zend_Cache_Backend_Memcached, but if your project uses some other backend class, you can connect tagging to it without any special features. <br><br>  TagEmuWrapper implements the standard backend interface of Zend_Cache_Backend_Interface, so from the point of view of the calling system, it is itself a cache backend.  In general, Zend Framework is good because at the interface level it supports tags from the very beginning!  For example, in the save () method, there is already a parameter that allows you to provide the key with tags.  However, none of the backend-s in the Zend Framework does not support tags: an attempt to add a tag to some key causes an exception (in particular, for Zend_Cache_Backend_Memcached). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Technical details, documentation, and examples of use can be found here: <a href="http://dklab.ru/lib/Dklab_Cache/">dklab.ru/lib/Dklab_Cache</a> <br><br><h4>  What are tags? </h4><br>  Working with a typical caching system (including memcached) consists of performing three basic operations: <br><ul><li>  save ($ data, $ id, $ lifetime): save $ data in a cache cell with the $ id key.  You can specify the “lifetime” of the $ lifetime key;  after this time, the data in the cache will "rotten" and be deleted. </li><li>  load ($ id): load data from the cell with the $ id key.  If data is not available, it returns false. </li><li>  remove ($ id): clear the cache cell with the $ id key. </li></ul><a name="habracut"></a>  Suppose we want to save a long SQL query to quickly display part of the page.  In this case, we check if there is an entry in the cache cell corresponding to this request.  If the cell is empty, the data is loaded from the DBMS and stored in the cache for possible future retrievals. <br><br><pre> if (false === ($ data = $ cache-&gt; load ("key"))) {
@@ -101,13 +101,13 @@
  display ($ data);
 </pre><br>  You have to create as many tag classes as there are different kinds of dependencies in your system.  Classes tags are especially convenient when it comes time to clear some tags: <br><br><pre> $ tag = new Cache_Tag_Language ($ currentLanguage);
  $ tag-&gt; clean ();
-</pre><br>  As you can see, knowledge of tag dependencies is again stored in a single place.  Now you simply can’t accidentally “miss” and clear the wrong tag: the system will generate an error about either a non-existent class or an incorrect type of the constructor parameter. <br><br><h4>  Conclusion </h4><br>  This article talks about everything at once: about cache tagging, about cache dependencies in code, and about the abstraction method from the Slot and Tag cache storage implemented in the library. <br><br>  Download the library sources and examples here: <a href="http://dklab.ru/lib/Dklab_Cache/">dklab.ru/lib/Dklab_Cache</a> </div><p>Source: <a href="https://habr.com/ru/post/57142/">https://habr.com/ru/post/57142/</a></p>
+</pre><br>  As you can see, knowledge of tag dependencies is again stored in a single place.  Now you simply can’t accidentally “miss” and clear the wrong tag: the system will generate an error about either a non-existent class or an incorrect type of the constructor parameter. <br><br><h4>  Conclusion </h4><br>  This article talks about everything at once: about cache tagging, about cache dependencies in code, and about the abstraction method from the Slot and Tag cache storage implemented in the library. <br><br>  Download the library sources and examples here: <a href="http://dklab.ru/lib/Dklab_Cache/">dklab.ru/lib/Dklab_Cache</a> </div><p>Source: https://habr.com/ru/post/57142/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../57137/index.html">Do you type texts before publishing on your site?</a></li>
 <li><a href="../57138/index.html">Where to look for examples for WPF and WCF?</a></li>
 <li><a href="../57139/index.html">Mac Maniac. DropCopy for Windows</a></li>
+<li><a href="../5714/index.html">Nabaztag - The First Smart Bunny</a></li>
 <li><a href="../57140/index.html">User with underscore in name</a></li>
 <li><a href="../57141/index.html">Skype founders want the company back</a></li>
 <li><a href="../57143/index.html">Or maybe Spring is for women?</a></li>

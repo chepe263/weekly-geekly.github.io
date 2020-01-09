@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Squeak: Work on the bugs</h1><div class="post__text post__text-html js-mediator-article">  After my <a href="http://habrahabr.ru/blogs/programming/55797/">post-tutorial</a> on installing and running Squeak, I was informed about errors that occurred during the process.  The errors are as follows: <br><ul><li>  Hangup when installing FreeType Plus (support is built into Pharo, so there is no problem with it). </li><li>  SqueakMap does not open in squeak-dev and squeak-webdev image </li></ul><br>  Therefore, I decided to post a solution to these two problems. <br><a name="habracut"></a><br><h1>  Disclaimer </h1><br>  Immediately I will explain why these problems did not arise for me.  A bug with installing the FreeType plugin is observed on Windows XP, and I use Ubuntu 8.10 amd64.  I failed to notice the bug with the inability to open SqueakMap because, for squeak-dev and squeak-webdev images, the Universe is the recommended source for installing packages.  However, in SqueakMap you can find a lot of useful, especially for a beginner.  Therefore it is necessary to correct the problem.  For this, I installed Windows XP on a virtual machine. <br><br>  In the future, in my posts, I will not consider the image of squeak-basic, but only squeak-dev, squeak-webdev and Pharo.  Just the base image does not contain any installed developer tools. <br><br>  About the screencasts placed here.  Please do not kick your feet - the first time I do it on Linux.  I wanted to do better, especially the sound, but Audacity is godlessly buggy, the microphone is constantly cracking and recording fan noise.  Plus, out of sync audio and video.  After a minute, the voice significantly overtakes the video.  And my mouse is godlessly buggy - a double click is constantly working.  <b>PS</b> : Video is available in HD 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h1>  The problem with installing FreeType Plus </h1><br>  I was helped to find a solution to this problem on the squeak-dev mailing list, for which I thank the community.  This problem is described in the project’s bugtracker, and the patch is also located there.  Below is the code that must be executed to install this patch: <br><blockquote><code>Installer mantis ensureFix: '6980: Loading FFI kernel makes NetNameResolver unresponsive '.</code> </blockquote> <br>  Well, a visual guide. <br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/HTwzMr8I3cE%3Ffeature%3Doembed&amp;xid=17259,15700022,15700186,15700191,15700253,15700256,15700259&amp;usg=ALkJrhhxrqErpQHlFHMoKs3bDrk9-ueCnA" frameborder="0" allowfullscreen=""></iframe><br>  <a href="http://narod.ru/disk/7244967000/fix-ffi-new-1.ogv.html">Download Theora screencast</a> <br><br><br><h1>  Problem running SqueakMap in squeak-dev and squeak-webdev </h1><br>  The solution to this problem I did not know.  And I decided to find myself.  In the future, I will touch upon the debugging issue in Squeak in detail, but for now you can look at the process of finding a solution in the form of a screencast. <br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/DSlhnoOFTsw%3Ffeature%3Doembed&amp;xid=17259,15700022,15700186,15700191,15700253,15700256,15700259&amp;usg=ALkJrhii8jzbOwoFjcOWsE1tEPEDFiK6Og" frameborder="0" allowfullscreen=""></iframe><br>  <a href="http://narod.ru/disk/7245105000/fix-squeak-map.ogv.html">Download Theora screencast</a> <br><br><br>  <b>UPD:</b> casket opened easier.  I found the <code>SMSqueakMap&gt;&gt;purge</code> method, which clears the SqueakMap, and then, clicking on <code>senders</code> , and the <code>DEVImageCreator&gt;&gt;cleanMemory</code> occasion <code>DEVImageCreator&gt;&gt;cleanMemory</code> .  The recipe for happiness also lay next: <blockquote> <code>SMSqueakMap default loadFull</code> </blockquote>  . <br><h1>  Potential problem for users of 64-bit Linux </h1><br>  Squeak UUIDPlugin is linked to libuuid, so you need to install the appropriate library for 32 bit architecture </div><p>Source: <a href="https://habr.com/ru/post/56093/">https://habr.com/ru/post/56093/</a></p>
+    <h1>  The problem with installing FreeType Plus </h1><br>  I was helped to find a solution to this problem on the squeak-dev mailing list, for which I thank the community.  This problem is described in the project’s bugtracker, and the patch is also located there.  Below is the code that must be executed to install this patch: <br><blockquote><code>Installer mantis ensureFix: '6980: Loading FFI kernel makes NetNameResolver unresponsive '.</code> </blockquote> <br>  Well, a visual guide. <br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/HTwzMr8I3cE%3Ffeature%3Doembed&amp;xid=17259,15700022,15700186,15700191,15700253,15700256,15700259&amp;usg=ALkJrhhxrqErpQHlFHMoKs3bDrk9-ueCnA" frameborder="0" allowfullscreen=""></iframe><br>  <a href="http://narod.ru/disk/7244967000/fix-ffi-new-1.ogv.html">Download Theora screencast</a> <br><br><br><h1>  Problem running SqueakMap in squeak-dev and squeak-webdev </h1><br>  The solution to this problem I did not know.  And I decided to find myself.  In the future, I will touch upon the debugging issue in Squeak in detail, but for now you can look at the process of finding a solution in the form of a screencast. <br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/DSlhnoOFTsw%3Ffeature%3Doembed&amp;xid=17259,15700022,15700186,15700191,15700253,15700256,15700259&amp;usg=ALkJrhii8jzbOwoFjcOWsE1tEPEDFiK6Og" frameborder="0" allowfullscreen=""></iframe><br>  <a href="http://narod.ru/disk/7245105000/fix-squeak-map.ogv.html">Download Theora screencast</a> <br><br><br>  <b>UPD:</b> casket opened easier.  I found the <code>SMSqueakMap&gt;&gt;purge</code> method, which clears the SqueakMap, and then, clicking on <code>senders</code> , and the <code>DEVImageCreator&gt;&gt;cleanMemory</code> occasion <code>DEVImageCreator&gt;&gt;cleanMemory</code> .  The recipe for happiness also lay next: <blockquote> <code>SMSqueakMap default loadFull</code> </blockquote>  . <br><h1>  Potential problem for users of 64-bit Linux </h1><br>  Squeak UUIDPlugin is linked to libuuid, so you need to install the appropriate library for 32 bit architecture </div><p>Source: https://habr.com/ru/post/56093/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -76,9 +76,9 @@
 <li><a href="../56092/index.html">Happy holiday</a></li>
 <li><a href="../56096/index.html">Monthly distribution of invites to dcdnet.ru</a></li>
 <li><a href="../56098/index.html">Face to the future</a></li>
+<li><a href="../561/index.html">Details of Google Code Jam 2006</a></li>
 <li><a href="../56106/index.html">Abyz - select an item in the alphabetical index</a></li>
 <li><a href="../56107/index.html">ICQ will be paid ??</a></li>
-<li><a href="../56109/index.html">New service from the studio "Good Design"</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

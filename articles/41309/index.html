@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>JVM Optimization Example</h1><div class="post__text post__text-html js-mediator-article">  Came across an interesting example of optimization with dynamic compilation. <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> StupidMathTest { <br> <font color="#0000ff">public</font> <font color="#0000ff">interface</font> Operator { <br> <font color="#0000ff">public</font> <font color="#0000ff">double</font> operate( <font color="#0000ff">double</font> d); <br> } <br> <br> <font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">class</font> SimpleAdder implements Operator { <br> <font color="#0000ff">public</font> <font color="#0000ff">double</font> operate( <font color="#0000ff">double</font> d) { <br> <font color="#0000ff">return</font> d + 1.0; <br> } <br> } <br> <a name="habracut"></a> <br> <font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">class</font> DoubleAdder implements Operator { <br> <font color="#0000ff">public</font> <font color="#0000ff">double</font> operate( <font color="#0000ff">double</font> d) { <br> <font color="#0000ff">return</font> d + 0.5 + 0.5; <br> } <br> } <br> <br> <font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">class</font> RoundaboutAdder implements Operator { <br> <font color="#0000ff">public</font> <font color="#0000ff">double</font> operate( <font color="#0000ff">double</font> d) { <br> <font color="#0000ff">return</font> d + 2.0 - 1.0; <br> } <br> } <br> <br> <font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">void</font> runABunch(Operator op) { <br> <font color="#0000ff">long</font> start = System.currentTimeMillis(); <br> <font color="#0000ff">double</font> d = 0.0; <br> <font color="#0000ff">for</font> ( <font color="#0000ff">int</font> i = 0; i &lt; 5000000; i++) <br> d = op.operate(d); <br> <font color="#0000ff">long</font> end = System.currentTimeMillis(); <br> System. <font color="#0000ff">out</font> .println( <font color="#A31515">"Time: "</font> + (end-start) + <font color="#A31515">"  ignore:"</font> + d); <br> } <br> <br> <font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">void</font> main( <font color="#2B91AF">String</font> [] args) { <br> Operator ra = <font color="#0000ff">new</font> RoundaboutAdder(); <br> runABunch(ra); <br> Operator sa = <font color="#0000ff">new</font> SimpleAdder(); <br> Operator da = <font color="#0000ff">new</font> DoubleAdder(); <br> runABunch(sa); <br> runABunch(da); <br> } <br> } <br> <br> Method        Runtime <br> SimpleAdder     88ms <br> DoubleAdder     76ms <br> RoundaboutAdder 14ms <br> <br></font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  It seems that it is much faster to add 1 to double, adding 2 and taking away 1, than just adding 1 right away.  And add 0.5 twice as fast as adding 1. Is it possible?  (Answer: no.) <br><br>  What happened here?  After the training cycle, RoundaboutAdder and runABunch () are compiled, and the compiler performs a monomorphic call conversion (the conversion of a virtual method call to a direct method call is called a monomorphic call conversion) with Operator and RoundaboutAdder, so the first pass is quite fast.  In the second pass (SimpleAdder), the compiler must perform de-optimization and rollback to the dispatching of the virtual method, so the second pass is performed more slowly due to the inability to optimize (delete) the call to the virtual function, time is spent on recompilation.  The third pass (DoubleAdder) does less recompiling, so it runs faster. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      So, what can we conclude from this "performance test"?  Virtually none, except that testing the performance of dynamically compiled programming languages ​​is a much more insidious process than you might imagine. <br><br>  Original article <br>  <a href="http://www.ibm.com/developerworks/ru/library/j-jtp12214/index.html">www.ibm.com/developerworks/ru/library/j-jtp12214/index.html</a> </div><p>Source: <a href="https://habr.com/ru/post/41309/">https://habr.com/ru/post/41309/</a></p>
+      So, what can we conclude from this "performance test"?  Virtually none, except that testing the performance of dynamically compiled programming languages ​​is a much more insidious process than you might imagine. <br><br>  Original article <br>  <a href="http://www.ibm.com/developerworks/ru/library/j-jtp12214/index.html">www.ibm.com/developerworks/ru/library/j-jtp12214/index.html</a> </div><p>Source: https://habr.com/ru/post/41309/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,11 +74,11 @@
 <li><a href="../41304/index.html">Start life from scratch</a></li>
 <li><a href="../41307/index.html">Prototype 1.6.0.3</a></li>
 <li><a href="../41308/index.html">How Sun Sponsors Open Source, Part Two NetBeans Innovators grant</a></li>
+<li><a href="../4131/index.html">Shopping - like a war, or a flash mob in Chinese</a></li>
 <li><a href="../41311/index.html">Radeons Even cheaper</a></li>
 <li><a href="../41314/index.html">File management - use case</a></li>
 <li><a href="../41316/index.html">Nissan obstacle avoidance system</a></li>
 <li><a href="../41318/index.html">Convenient optimization of images on the site</a></li>
-<li><a href="../41320/index.html">Became known tariff plans for the iPhone in Moscow</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

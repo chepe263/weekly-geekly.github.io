@@ -28,12 +28,12 @@ NSMutableArray *environments = [NSMutableArray new]; for (NSString *key in [dict
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@ NSMutableArray *environments = [NSMutableArray new]; for (NSString *key in [dict
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Cyclic containers in Objective-C</h1><div class="post__text post__text-html js-mediator-article">  Some time ago I wrote this code: <br><br><pre><code class="objectivec hljs"><span class="hljs-built_in"><span class="hljs-built_in">NSMutableArray</span></span> *environments = [<span class="hljs-built_in"><span class="hljs-built_in">NSMutableArray</span></span> new]; <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> (<span class="hljs-built_in"><span class="hljs-built_in">NSString</span></span> *key <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> [dictionary allKeys]) { <span class="hljs-built_in"><span class="hljs-built_in">XCCEnvironment</span></span> *environment = [[<span class="hljs-built_in"><span class="hljs-built_in">XCCEnvironment</span></span> alloc] initWithName:key parameters:dictionary[key]]; [environments addObject:environments]; } <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> environments;</code> </pre> <br>  Notice the problem?  Me not. <br><a name="habracut"></a><br><h2>  Problem </h2><br>  After starting the program, I caught a crash: <br><br><pre> <code class="objectivec hljs">[__NSArrayM someSelector]: unrecognized selector sent to instance <span class="hljs-number"><span class="hljs-number">0x100211d80</span></span></code> </pre><br>  The 'environments' handler expected 'XCCEnvironment', and got 'NSMutableArray'. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,23 +63,23 @@ NSMutableArray *environments = [NSMutableArray new]; for (NSString *key in [dict
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      At first it was not clear why this happened, but when I looked at the code, I noticed that I just put the array in the same array: <br><br><pre> <code class="objectivec hljs"><span class="hljs-comment"><span class="hljs-comment">// ... NSMutableArray *environments = [NSMutableArray new]; // ... [environments addObject:environments]; // ...</span></span></code> </pre><br>  Documentation says nothing about the behavior of collections in such situations, the only useful material that I found on this subject is Mike Ash's article <a href="https://www.mikeash.com/pyblog/friday-qa-2014-01-10-lets-break-cocoa.html">Let's break Cocoa</a> . <br><br>  The article states that mutable arrays, dictionaries and sets go crazy if you create a so-called cyclic container.  In addition, when ARC is enabled, a memory leak appears - the collection keeps itself. <br><br><h2>  Decision </h2><br>  Usually, developers do not put the collection inside themselves.  This is as true as the statement that programmers do not dereference null pointers — this is still happening and probably this is not what the programmer expects. <br><br>  I was absolutely sure that clang can prevent this error, but did not find any parameters / settings that include this check. <br><br>  In the end I decided to add this check.  The implementation took a couple of nights, but now it is on the <a href="https://github.com/llvm-mirror/clang/commit/5dc6c6cd87f3a86fe9d5ba9d1b3892252c7de248">trunk</a> . <br><br>  The patch includes checking the following collections: <br><br><ul><li>  NSMutableArray </li><li>  NSMutableDictionary </li><li>  NSMutableSet </li><li>  NSMutableOrderedSet </li><li>  NSCountedSet </li></ul><br>  and shows a warning if you are trying to add the collection inside it. <br>  The warning can be enabled / disabled by means of the flags '-wobjc-circular-container' / '- wno-objc-circular-container', respectively, although it is enabled by default. <br><br><h2>  Conclusion </h2><br>  The clang version of the trunk contains this functionality, but it is not yet available in Xcode, I believe that it will appear there after the next major release, maybe in a year. <br><br>  Anyway, having an open source compiler is great: you can fix it, improve it and make your life and the lives of others a little easier. <br><br>  Happy hacking! </div><p>Source: <a href="https://habr.com/ru/post/258249/">https://habr.com/ru/post/258249/</a></p>
+      At first it was not clear why this happened, but when I looked at the code, I noticed that I just put the array in the same array: <br><br><pre> <code class="objectivec hljs"><span class="hljs-comment"><span class="hljs-comment">// ... NSMutableArray *environments = [NSMutableArray new]; // ... [environments addObject:environments]; // ...</span></span></code> </pre><br>  Documentation says nothing about the behavior of collections in such situations, the only useful material that I found on this subject is Mike Ash's article <a href="https://www.mikeash.com/pyblog/friday-qa-2014-01-10-lets-break-cocoa.html">Let's break Cocoa</a> . <br><br>  The article states that mutable arrays, dictionaries and sets go crazy if you create a so-called cyclic container.  In addition, when ARC is enabled, a memory leak appears - the collection keeps itself. <br><br><h2>  Decision </h2><br>  Usually, developers do not put the collection inside themselves.  This is as true as the statement that programmers do not dereference null pointers — this is still happening and probably this is not what the programmer expects. <br><br>  I was absolutely sure that clang can prevent this error, but did not find any parameters / settings that include this check. <br><br>  In the end I decided to add this check.  The implementation took a couple of nights, but now it is on the <a href="https://github.com/llvm-mirror/clang/commit/5dc6c6cd87f3a86fe9d5ba9d1b3892252c7de248">trunk</a> . <br><br>  The patch includes checking the following collections: <br><br><ul><li>  NSMutableArray </li><li>  NSMutableDictionary </li><li>  NSMutableSet </li><li>  NSMutableOrderedSet </li><li>  NSCountedSet </li></ul><br>  and shows a warning if you are trying to add the collection inside it. <br>  The warning can be enabled / disabled by means of the flags '-wobjc-circular-container' / '- wno-objc-circular-container', respectively, although it is enabled by default. <br><br><h2>  Conclusion </h2><br>  The clang version of the trunk contains this functionality, but it is not yet available in Xcode, I believe that it will appear there after the next major release, maybe in a year. <br><br>  Anyway, having an open source compiler is great: you can fix it, improve it and make your life and the lives of others a little easier. <br><br>  Happy hacking! </div><p>Source: https://habr.com/ru/post/258249/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../258237/index.html">Moore's Law for Google Compute Engine: more power for the same money</a></li>
 <li><a href="../258239/index.html">Night, street, LED, pharmacy</a></li>
+<li><a href="../25824/index.html">Perm, are you ripe?</a></li>
 <li><a href="../258241/index.html">The starting list of pages in the new assembly Vivaldi 1.0.178.2</a></li>
 <li><a href="../258245/index.html">Inside the post is money. Another JavaScript contest</a></li>
 <li><a href="../258247/index.html">What should we build Cache?</a></li>
+<li><a href="../25825/index.html">What do you see?</a></li>
 <li><a href="../258251/index.html">Interface revolution. USB 3.1 Type-C in detail. Electronic technician</a></li>
 <li><a href="../258253/index.html">Google transfers corporate applications to the cloud with access from outside</a></li>
 <li><a href="../258255/index.html">Development of the system architecture through the service-resource model</a></li>
 <li><a href="../258257/index.html">Microservices. Good, bad, evil</a></li>
-<li><a href="../258259/index.html">First steps to smart bath</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

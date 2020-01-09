@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>JavaPNS and JRE7</h1><div class="post__text post__text-html js-mediator-article">  By occupation, I was faced with the need to send push notifications to apple devices.  The <a href="https://code.google.com/p/javapns/">JavaPNS 2.2</a> library was found, a certificate was prepared for the Developer version, the service that sends push notifications was written, everything started to spin, push notifications are sent - in general, complete happiness.  But the release day has come, the Production certificate has already been prepared again and exported together with the private key in p12 everything is deposited on the server ... iiii ... as you probably already guessed nothing worked :).  Judging by the push logs is sent, but nothing comes to the device. <a name="habracut"></a><br>  First of all, we look at the <a href="https://code.google.com/p/javapns/wiki/GeneralRequirements">JavaPNS</a> documentation and see a not very encouraging entry: <br><blockquote>  * ABOUT JAVA 7 *: <br>  SSL connections while using Java 7 (in general, not just with JavaPNS). <br>  Until this issue is completely resolved, you should try to run JavaPNS with Java 5 or 6 if you experience <br>  SSL-related connection issues. </blockquote><br>  Googling gives roughly the same results and tips.  But 1 single mention of the problem was found: <br><blockquote>  Java 7 (JDK 1.7) doesn’t know about the Entrust Root CA.  Root certificate into a p12 file.  Point the code at work. </blockquote><br>  The essence is brief, for some reason, oracle has excluded the root certificate of entrust from the jre7 delivery. <br>  Therefore, we need to tell jre about this certificate authority.  Option 2, put it where it is supposed to be / usr / lib / jre7 / ... (not our way, as the evil admin does not give the right to root, but he does not want to install anything) and the second option is just to include it in the container with certificate and private key.  What we will do. <br><br>  <b>1. Download certificate</b> <br><pre><code class="bash hljs">curl https://www.entrust.net/downloads/binary/entrust_ssl_ca.cer &gt; entrust_ssl_ca.cer</code> </pre> <br>  <b>2. Import it into KeyChain and we get something like this.</b> <br><img src="https://habrastorage.org/getpro/habr/post_images/16e/7ea/4ef/16e7ea4eff89d50cb5efc9c84a0696c4.png" alt="image"><br>  <b>3. Select 3 entities: certificate, private key and Entrust root certificate</b> <br><img src="https://habrastorage.org/getpro/habr/post_images/ccb/95e/5d6/ccb95e5d6553ba42a815f0ee7a9467cc.png" alt="image"><br>  <b>4. Right-click on Export 3 items and save the p12 container (remember to enter the password)</b> <br>  <b>5. Next, with this p12, we connect to gateway.push.apple.com and forward to <s>spam to</s> notify users :)</b> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/186628/">https://habr.com/ru/post/186628/</a></p>
+    <p>Source: https://habr.com/ru/post/186628/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

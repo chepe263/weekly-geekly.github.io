@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Hibernate and bit operations</h1><div class="post__text post__text-html js-mediator-article">  As it turned out, Hibernate does not accept bit operations under the hql query conditions.  For example, “from Events where type &amp; mask &lt;&gt; 0” generates an exception of the parser, <a href="http://www.hibernate.org/hib_docs/v3/reference/en/html/queryhql-expressions.html">there are no bit operations in the documentation</a> either.  However, do not despair. <br><ul><li> First, the mask comparison can be replaced by going mathematically.  <code>field &amp; mask != 0</code> equivalent to <code>(field / mask) % 2 = 1</code> </li><li>  Second, implement your <a href="http://javabeans.asia/2008/05/06/bitwise_operation_in_hibernate_3.html">SQL function and register it in a dialect.</a> </li></ul><br><a name="habracut"></a><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> BitwiseAndFunction extends StandardSQLFunction <br> implements SQLFunction { <br> <br> <font color="#0000ff">public</font> BitwiseAndFunction( <font color="#2B91AF">String</font> name) { <br> super(name); <br> } <br> <br> <font color="#0000ff">public</font> BitwiseAndFunction( <font color="#2B91AF">String</font> name, Type type) { <br> super(name, type); <br> } <br> <br> <font color="#0000ff">public</font> <font color="#2B91AF">String</font> render( <font color="#2B91AF">List</font> args, SessionFactoryImplementor factory) <br> throws QueryException { <br> <br> <font color="#0000ff">if</font> (args.size() != 2) { <br> <font color="#0000ff">throw</font> <font color="#0000ff">new</font> IllegalArgumentException( <font color="#A31515">"the function must be passed 2 arguments"</font> ); <br> } <br> <br> StringBuffer buffer = <font color="#0000ff">new</font> StringBuffer(args. <font color="#0000ff">get</font> (0).toString()); <br> buffer.append( <font color="#A31515">" &amp; "</font> ).append(args. <font color="#0000ff">get</font> (1)); <br> <font color="#0000ff">return</font> buffer.toString(); <br> } <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  Dalle needs to create a dialect, inheriting from the current: <br><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> MySQLDialectFixed extends MySQL5Dialect { <br> <br> <font color="#0000ff">public</font> MySQLDialectFixed() { <br> super(); <br> registerFunction( <font color="#A31515">"bitwise_and"</font> , <font color="#0000ff">new</font> BitwiseAndFunction( <font color="#A31515">"bitwise_and"</font> , Hibernate.INTEGER)); <br> } <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Unfortunately, using <code>type &amp; mask &lt;&gt; 0</code> will not work anyway, only <code>bitwise_and(type, mask) &lt;&gt; 0</code> .  However, the SQL query will look right. </div><p>Source: <a href="https://habr.com/ru/post/50260/">https://habr.com/ru/post/50260/</a></p>
+      Unfortunately, using <code>type &amp; mask &lt;&gt; 0</code> will not work anyway, only <code>bitwise_and(type, mask) &lt;&gt; 0</code> .  However, the SQL query will look right. </div><p>Source: https://habr.com/ru/post/50260/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../50254/index.html">Search for the approach to the presentation of ideas</a></li>
 <li><a href="../50255/index.html">"Space tourists" will not be able to fly to the ISS after 2009</a></li>
 <li><a href="../50256/index.html">Video rip. Part 1-1. DVD preparation. vStrip</a></li>
 <li><a href="../50258/index.html">API Playground</a></li>
 <li><a href="../50259/index.html">java.io.Serializable and inheritance</a></li>
+<li><a href="../5026/index.html">Data centers are moving to water cooling</a></li>
 <li><a href="../50261/index.html">And what about the Russian keyboard for Macbook?</a></li>
 <li><a href="../50262/index.html">From the author's website on virtual travel to a large-scale video portal</a></li>
 <li><a href="../50264/index.html">Course Library</a></li>

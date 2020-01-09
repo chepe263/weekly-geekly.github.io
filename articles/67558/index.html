@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>UUID and / dev / disk / by-id rush to the rescue</h1><div class="post__text post__text-html js-mediator-article">  I recently picked up a new Xen server and ran into one very interesting problem: when booting, sda and sdb were randomly selected from two screws, despite the fact that everything was hard-coded in the BIOS.  Thus it turned out that the server was loaded through time.  And then I began to think about how I could solve this problem :) Everything was not difficult, if it were not for one thing, one of the disks was encrypted :) <br>  So, for a start, a brief description of the situation: <br>  Had a server with a raised Xen and two IDE HDDs: 160 Gb is a system and 400 Gb is an encrypted disk with Xen guest domains.  Everything worked fine, the system master disk, domain - slave.  But one day the slave decided that it was impossible to live this way anymore and died quietly :).  It was decided not to bother and a new 400 Gb SATA disk came to replace it.  The BIOS was hard-coded who is who, that is, which drive is the first, and which is the second, and it was decided to continue the download. <a name="habracut"></a><br>  The GRUB screen appeared, hung its three seconds and the download went.  The truth is not far, as they say, the music did not play for long, the fraer danced for a short time, because after downloading the initrd image the system told me its “fi” with the words that it could not find the root section.  Looking at each other (meaning I and Xen), I decided that it seemed to me and pressed three magic buttons, after which the system, apparently having understood the hint, went to reboot.  Rechecking the BIOS showed that I did not mess up and it was decided to try again.  " <s>Hello again, that is,</s> I would like to know where is my root partition?"  The system told me.  Having scrolled the output, I was surprised to find that my IDE disk was sdb, and SATA - sda.  Something in this fairy tale is wrong, <s>thought Kolobok eating a fox,</s> I thought and decided, well, if you decided so, no question, now we will do it for you as you wish.  Again there are three buttons and when booting the launch into the GRUB menu and there editing on sdb, then the button <b>b</b> and the boot process started.  I leaned back in my chair, but as it turned out in vain and not for long, as the system again asked me: “Where am I?”, To which I could only answer: “Who is there?”, As I looked through the process I noticed that This time, the disks have already been defined normally, and I have in vain indicated GRUB that the root partition is on sdb.  <s>Spitting on everything,</s> Pressing three buttons again, left everything as it is and <s>“Oh, miracle!” The</s> system booted as it should.  :) <br>  It seems that one could calm down by writing off everything to the improper location of the stars in the sky and cancer in the maiden's creation, but repeated reboots showed that I am in my right mind, but the system is based on some known algorithm (although I suspect that this is just / dev / rand), who decides who is the boss today, and who should wash the dishes :) <br>  I knew about using UUIDs for a long time, but there was one thing, in the form of a second screw with encrypted data and a couple of scripts that automated the connection and launch of guest domains, and they, when initialized via cryptsetup create, used hard pointers to devices ( something like / dev / sdb1).  We had to think something so that it was elegant and, if possible, quickly :) <br>  The boot issue was resolved quickly, praise the UUID.  Finding out which section and which belongs was corrected by menu.lst for GRUB and fstab. <br>  This is done like this: <br>  # tune2fs -l / dev / sda3 |  grep -i uuid <br><br>  Filesystem UUID: 269f023a-bf30-4a6e-a866-6c414dec0ef6 <br><br>  in menu.lst: <br>  title Xen 3.2-1-amd64 / Debian GNU / Linux, kernel 2.6.26-2-xen-amd64 <br>  root (hd0,0) <br>  kernel /xen-3.2-1-amd64.gz <br>  module /vmlinuz-2.6.26-2-xen-amd64 root = UUID = 269f023a-bf30-4a6e-a866-6c414dec0ef6 ro console = tty0 <br>  module /initrd.img-2.6.26-2-xen-amd64 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      and a piece of fstab: <br>  UUID = 269f023a-bf30-4a6e-a866-6c414dec0ef6 / ext3 errors = remount-ro 0 1 <br><br>  And here there was a question with swap section.  Many do not know how to assign a UUID partition to swap (by default, the installer creates it without it).  To do this, simply re-create it, first disabling: <br>  # swapoff <br>  # mkswap / dev / gde_swap <br>  # vol_id / dev / gde_swap |  grep UUID <br>  ID_FS_UUID = c52042d0-8527-48bd-812c-d51000059098 <br>  ID_FS_UUID_ENC = c52042d0-8527-48bd-812c-d51000059098 <br>  we take from here UUID and we register in fstab. <br><br>  But how to be with the screw?  There you will not see the UUID :( I had to go into the Debian irc channel (irc.debian.org) and ask around for advice there :) So they told me about / dev / disk / by-id / :) <br>  Looking there, I found what I, and as it turned out, cryptsetup too, turned out to be quite enough for a further comfortable existence, but the very name, the required link to the device: scsi-SATA_ST3400633AS_9NF0BZ3B-part1.  The editing of the scripts was quick and painless, and then the moment of truth came - a control <s>shot</s> reload :) <br><br>  Praise to all and just in case to St. Patrick too (hello to the little boats;)) everything went to cheers :) <br><br>  So, as they say, patience and hard work all :) And the main thing is not to be shy and ask around those who know :) <br><br>  PS: Thanks again to the friendly guys from irc.debian.org. <br><br>  <b>UPD:</b> everything is in order with the jumpers :) rechecked, since this was also the first thing that came to mind :) </div><p>Source: <a href="https://habr.com/ru/post/67558/">https://habr.com/ru/post/67558/</a></p>
+      and a piece of fstab: <br>  UUID = 269f023a-bf30-4a6e-a866-6c414dec0ef6 / ext3 errors = remount-ro 0 1 <br><br>  And here there was a question with swap section.  Many do not know how to assign a UUID partition to swap (by default, the installer creates it without it).  To do this, simply re-create it, first disabling: <br>  # swapoff <br>  # mkswap / dev / gde_swap <br>  # vol_id / dev / gde_swap |  grep UUID <br>  ID_FS_UUID = c52042d0-8527-48bd-812c-d51000059098 <br>  ID_FS_UUID_ENC = c52042d0-8527-48bd-812c-d51000059098 <br>  we take from here UUID and we register in fstab. <br><br>  But how to be with the screw?  There you will not see the UUID :( I had to go into the Debian irc channel (irc.debian.org) and ask around for advice there :) So they told me about / dev / disk / by-id / :) <br>  Looking there, I found what I, and as it turned out, cryptsetup too, turned out to be quite enough for a further comfortable existence, but the very name, the required link to the device: scsi-SATA_ST3400633AS_9NF0BZ3B-part1.  The editing of the scripts was quick and painless, and then the moment of truth came - a control <s>shot</s> reload :) <br><br>  Praise to all and just in case to St. Patrick too (hello to the little boats;)) everything went to cheers :) <br><br>  So, as they say, patience and hard work all :) And the main thing is not to be shy and ask around those who know :) <br><br>  PS: Thanks again to the friendly guys from irc.debian.org. <br><br>  <b>UPD:</b> everything is in order with the jumpers :) rechecked, since this was also the first thing that came to mind :) </div><p>Source: https://habr.com/ru/post/67558/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../67555/index.html">Canon G11: less megapixels</a></li>
 <li><a href="../67557/index.html">Installation for dummies: nginx + php-cgi + mysql + eaccelerator + memcache on Debian 5.0 "lenny"</a></li>
 <li><a href="../67559/index.html">Appendix "harmonious couple." Second wind!</a></li>
+<li><a href="../6756/index.html">Mobile PCs rule the world</a></li>
 <li><a href="../67560/index.html">Flickr galleries</a></li>
 <li><a href="../67563/index.html">Leechcraft 0.3.0</a></li>
 <li><a href="../67564/index.html">Watch James Bond</a></li>
-<li><a href="../67565/index.html">Chinese office # 2</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

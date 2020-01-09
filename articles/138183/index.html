@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Alert users about certificate expiration on PowerShell</h1><div class="post__text post__text-html js-mediator-article"> Recently there was a task to notify users about the expiration of the certificate on eToken, with the help of which they are authorized in the workplace. <a name="habracut"></a><br>  Certificates on eToken are generated through the Windows Certification Authority for a period of 1 year.  It was necessary to notify users for a week, so that they could come to the IT department in a timely manner to extend. <br>  The task was complicated by the fact that the owner’s mail address was not specified in the certificates.  And therefore it was necessary to take this address from AD. <br>  Aladdin offers its own Token Management System software for this purpose, but for this it is necessary to pay and to use it only for notification is somehow not correct. <br>  The main resource for writing this script was <a href="http://www.sysadmins.lv/PermaLink,guid,bb02a25a-f345-4f91-afb4-803025594d9f.aspx">saytik</a> (here, by the way, a lot and well written about working with a certificate authority through PowerShell). <br>  To find the mailing address of a user in AD, I used the ActiveRoles Management Shell module for Active Directory; you can download the module for working with AD here <a href="http://www.quest.com/powershell/activeroles-server.aspx">www.quest.com/powershell/activeroles-server.aspx</a> <br>  I had no problems on Win7, but to install on XP or 2003 I need to deliver components.  For more on this with links to download and description of the commands written <a href="http://www.quest.com/Quest_Site_Assets/Documents/ActiveRoles_MgmtShellForAD_15_AdminGuide_English_4.pdf">here</a> . <br><br> <code>#      <br> Add-PSSnapin Quest.ActiveRoles.ADManagement <br> <br> #       <br> $CaView = New-Object -ComObject CertificateAuthority.View <br> $CaView.OpenConnection("serv\NEWCERTSERV") <br> <br> #  ,    <br> $properties = "RequestID","RequesterName","NotAfter" <br> $CaView.SetResultColumnCount($properties.Count) <br> $properties | %{$CAView.SetResultColumn($CAView.GetColumnIndex($False, $_))} <br> <br> # ,      7  <br> $RColumn = $CAView.GetColumnIndex($False, "NotAfter") <br> $CaView.SetRestriction($RColumn,0x8,0,[datetime]::Now) <br> $CaView.SetRestriction($RColumn,0x4,0,(Get-Date).AddDays(+7)) <br> # ,      <br> $RColumn = $CAView.GetColumnIndex($False, "Disposition") <br> $CaView.SetRestriction($RColumn,1,0,20) <br> <br> #    <br> $Certs=@() <br> $Row = $CaView.OpenView() <br> while ($Row.Next() -ne -1) { <br> $Cert = New-Object psobject <br> $Column = $Row.EnumCertViewColumn() <br> while ($Column.Next() -ne -1) { <br> $current = $Column.GetName() <br> $Cert | Add-Member -MemberType NoteProperty -Name $($Column.GetName()) -Value $($Column.GetValue(1)) -Force <br> } <br> $Certs+=$Cert <br> $Column.Reset() <br> } <br> $Row.Reset() <br> <br> #        <br> $Body="" <br> #        <br> $Body_One="" <br> #     <br> $smtp = New-Object net.mail.smtpclient("mailserv") <br> #   <br> foreach ($i in $Certs){ <br> $Body_One+="№: " <br> $Body_One+=$i.RequestID <br> $Body_One+=", : " <br> $Body_One+=$i.{Request.RequesterName} <br> $Body_One+=", : " <br> $Body_One+=$i.NotAfter <br> $Body_One+="`n" <br> <br> #  ,     <br> $user_mail = Get-QADUser $i.{Request.RequesterName} -DontUseDefaultIncludedProperties -IncludedProperties 'mail' -SerializeValues <br> #   <br> $smtp.Send("notice@domain.ru", $user_mail.mail, "eToken,  .", $Body_One+"        eToken'       666.") <br> <br> $Body+=$Body_One <br> $Body_One="" <br> } <br> #   <br> If ($Body -ne ""){ <br> $smtp.Send("notice@domain.ru", "adm1@domain.ru", "eToken,  .", $Body) <br> $smtp.Send("notice@domain.ru", " adm1@domain.ru", "eToken,  .", $Body) <br> $smtp.Send("notice@domain.ru , " adm1@domain.ru", "eToken,  .", $Body) <br> }</code> <br> <br>  To run the script from a file in PowerShell, run the Set-ExecutionPolicy RemoteSigned command. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/138183/">https://habr.com/ru/post/138183/</a></p>
+    <p>Source: https://habr.com/ru/post/138183/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../138176/index.html">Not fiesta</a></li>
 <li><a href="../138177/index.html">Work Content Delivery Networks (CDN) and DNS</a></li>
 <li><a href="../138178/index.html">AppleInsider.ru application: development, statistics, errors</a></li>
 <li><a href="../138179/index.html">Extend the Imagick class</a></li>
+<li><a href="../13818/index.html">What pisses me off at Opera ...</a></li>
 <li><a href="../138181/index.html">Report on the 4th Kiev Habravstreche</a></li>
 <li><a href="../138184/index.html">JetBrains showed Kotlin source codes</a></li>
 <li><a href="../138185/index.html">Regular network based point clustering</a></li>

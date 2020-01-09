@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Progressive technologies, as a way to squeeze the maximum out of the server</h1><div class="post__text post__text-html js-mediator-article"><h1>  Introduction </h1><br><img src="https://habrastorage.org/getpro/habr/post_images/0dd/58e/2d0/0dd58e2d0dd20a3e0e8bf2deb1bada23.png" alt="Just beautiful rrdtool =)"><br>  It's funny, but when a programmer develops a product, he rarely thinks about the question of whether 2,000 people can simultaneously press one button at a time.  And in vain.  It turns out they can.  Oddly enough, most of the engines written by such programmers behave very badly under heavy loads.  Who would have thought, and just one extra INSERT, not marked by an index, or a curve, a recursive function can raise the load averages by almost an order of magnitude. <br><br>  In this article I will describe how we, the developers of the project, managed to squeeze out of a single server with a Pentium 4 HT / 512Mb RAM, maximum, holding simultaneously 700+ users on the forum and 120,000 on the tracker.  Yes, this project is a torrent tracker.  I propose to immediately leave aside the talk about copyrights and rights, I'm not interested in it, which is really interesting - this is HighLoad. <br><a name="habracut"></a><br>  To begin, I will describe the project as it was: <br><br>  The usual torrent tracker on the <a href="http://torrentpier.info/index.php">TorrentPier</a> engine (it is also in phpbb 2.x) <br><ul><li>  Server on FreeBSD 6.0 </li><li>  Pentium 4 HT / 512Mb RAM </li><li>  Apache web server </li><li>  MySQL database </li><li>  All PHP logic </li></ul><br>  That is almost <a href="http://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP</a> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       In short, I will immediately write down the steps we have taken: <br><ul><li>  Installing on the <a href="http://en.wikipedia.org/wiki/PHP_accelerator">opcode cache</a> server </li><li>  Replacing apache with nginx </li><li>  Cache some intermediate samples in <strong>NOT</strong> RDBMS </li><li>  Translation of the key part (read tracker) to C ++ </li><li>  Optimization of the FreeBSD network stack, as well as its update to the latest -STABLE </li><li>  MySQL optimization </li><li>  BB caching </li><li>  Correspondence code to use SphinxSearch </li><li>  Code profiling and installation of monitoring tools </li><li>  Disassembling queries from MySQL slow query log </li></ul><br>  Now about each item in more detail <br><br><h1>  Installing on the opcode cache server </h1><br>  He is always needed!  Installing <a href="http://en.wikipedia.org/wiki/PHP_accelerator">php-cache</a> gave 300% + performance, spending 15 minutes of time. <br>  Caches are different: <a href="http://eaccelerator.net/">eAccelerator</a> , <a href="httpd.net/">xCache</a> , <a href="http://pecl.php.net/package/APC">APC</a> , etc ... We stopped at the last, because of the good speed and the ability to store user data in it <br><br><h1>  Replacing apache with nginx </h1><br>  Apache is heavy and slow, first stood as the main web server, then <a href="http://sysoev.ru/nginx/">nginx</a> was put in front of it, giving static and compressing answers with gzip.  Further, apache was abandoned altogether in favor of the nginx + <a href="http://php-fpm.anight.org/">php-fpm bundle</a> (to be exact at that time, it was spawn_fcgi, but now this option is better).  A bunch in those days was not the most popular for production, but it worked great for us! <br><br><h1>  Cache some intermediate samples in <strong>NOT</strong> RDBMS </h1><br>  <a href="http://en.wikipedia.org/wiki/RDBMS">RDBMS</a> is evil.  It is convenient, but you have to pay for convenience.  In this case, speed.  And we just need it.  So, we backed up some of the results of the most popular and not critical to the relevance of muscle queries to APC.  Immediately anticipating a lot of questions why not <a href="http://www.danga.com/memcached/">memcached</a> ... How would you answer ... I'm already tired of even hearing the word memcached, memcached, memcached as if it were a panacea for everything.  It does not offer the last time except that only from diarrhea.  In our case, the choice fell on the APC because it does not use a TCP connection and because of this it works <b>many times</b> faster.  For the time being, everything is fine on one server and distributed storage is not so necessary for us. <br>  <a href="http://www.metabrew.com/article/anti-rdbms-a-list-of-distributed-key-value-stores/">You can choose any other key / value storage that does not necessarily store data in RAM</a> . <br>  But it is highly likely that in your case <a href="http://www.danga.com/memcached/">memcached</a> / <a href="http://memcachedb.org/">memcachedb</a> / <a href="http://memcachedb.org/memcacheq/">memcacheQ</a> would be the best option. <br><h6>  In general, there was an idea to make a multilevel cache layer in which php looked for the value in global variables, then in APC, then in memcached, and only then crawls into the database with a SELECT.  But since we are engaged in the project in free time from studies / work / family time, it has not yet reached this point. </h6><br><br><h1>  Translation of the key part (read tracker) to C ++ </h1><br>
@@ -117,20 +117,20 @@ PID USERNAME THR PRI NICE SIZE RES STATE C TIME WCPU COMMAND<br>
      ,    . ,      <a href="http://habrahabr.ru/blogs/server_side_optimization/"> !</a><br>
 <br>
 <b>UPD:</b>    <br>
-</div><p>Source: <a href="https://habr.com/ru/post/52475/">https://habr.com/ru/post/52475/</a></p>
+</div><p>Source: https://habr.com/ru/post/52475/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../52468/index.html">Portable Gajim [win]</a></li>
 <li><a href="../52469/index.html">Safe code in Drupal: Work with the database</a></li>
+<li><a href="../5247/index.html">Quest</a></li>
 <li><a href="../52472/index.html">Estimated time to complete the task</a></li>
 <li><a href="../52473/index.html">Our abroad - now also the forum ...</a></li>
 <li><a href="../52474/index.html">Why itertools rocks</a></li>
 <li><a href="../52476/index.html">Adium update 1.3.3</a></li>
+<li><a href="../5248/index.html">Optimus Maximus Art. Lebedev Studio</a></li>
 <li><a href="../52481/index.html">Unit testing in ASP.NET MVC Framework</a></li>
 <li><a href="../52485/index.html">Half-Life 2. Escape from City 17: Part One</a></li>
 <li><a href="../52487/index.html">Tracker free-torrents.org broke ...</a></li>
-<li><a href="../52488/index.html">game-torrent.info closed!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

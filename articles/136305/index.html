@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Misunderstanding of the CAP theorem</h1><div class="post__text post__text-html js-mediator-article">  Recently, I quite often come across <a href="http://ru.wikipedia.org/wiki/%25D0%25A2%25D0%25B5%25D0%25BE%25D1%2580%25D0%25B5%25D0%25BC%25D0%25B0_CAP">this theorem</a> .  It has been proven for quite some time and a lot has been written about it.  However, every time I stumble upon a distributed system that claims in the description of CA in terms of this theorem, i.e.  the system in which Partition Tolerance is sacrificed for the sake of Consistency and Avalability, I hang up, since at least kill I can not imagine such a beast.  After much deliberation, I nevertheless came to the conclusion that such a system is meaningless, which I want to discuss in this topic. <br><img height="171" src="https://habrastorage.org/getpro/habr/post_images/ecb/0e1/8e3/ecb0e18e3dcffa29207cc74b8428ecd2.png" width="200"><br><a name="habracut"></a><br>  At the very beginning, let me remind you what each letter means in the abbreviations of the theorem.  Although it is formulated for the general case of distributed systems, let's simplify the scope of consideration for distributed data storage systems to simplify.  I want to clarify that the definition I give is not general, but very narrow, but so that it is easier for everyone to imagine. <br><ul><li>  <b>Consistency.</b>  Once we have successfully written data to our distributed repository, any client will receive this latest data when requested. </li><li>  <b>Avalability.</b>  At any time, the client can get data from our repository, or get an answer about their absence, if no one has saved it yet. </li><li>  <b>Partition Tolerance.</b>  The loss of messages between components of the system (perhaps even the loss of all messages) does not affect the performance of the system.  Here a very important point is that if some components fail, then this also falls under this case, since it can be assumed that these components simply lose touch with the rest of the system. </li></ul><br>  The theorem says that if you build a distributed system, then you can satisfy only two of the above properties, i.e.  definitely need to sacrifice one of the properties.  The main issue that causes misunderstanding is what it means to donate Partition Tolerance.  In the end, I came to the conclusion that it means saying goodbye to the guarantee that the system can function when the system is divided into areas between which any connection has disappeared, or simply when a certain set of components fall.  Can you imagine a system that will be ready for it?  Me not.  In general, I'm not alone.  <a href="http://codahale.com/you-cant-sacrifice-partition-tolerance/">Here is a</a> very interesting article about this.  If I had not stumbled upon it, having come to the conclusion described above, I probably would not have written this topic, having decided that I simply did not understand something.  After reading this article, which, by the way <a href="https://twitter.com/">, the author of the theorem himself approved</a> , I nevertheless became convinced that there is something to talk about. <br><br>  Thus, since it is impossible to sacrifice Partition Tolerance, for myself I formulate the CAP theorem as follows.  When building a distributed system that could survive the failure of some of its components, it is necessary to sacrifice either availability (avalability) or consistency (consistency). <br><br>  However, the question still arises: why then was the concept of Partition Tolerance introduced in this theorem?  I think that in an ideal world where network, hardware and software failure cannot happen, it would be possible to build a CA system in which both availability and consistency would be at the same time.  But as soon as we get into the real world, and some kind of failure happens, we immediately have to comply with Partition Tolerance and have to give up either full consistency or full accessibility.  Well, or find some compromise, but to fully satisfy both properties will not succeed. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>Update:</b> <br>  As stormy comments have shown, the biggest misunderstanding in the CAP-theorem (at least on my part) is the definition of the concept of Partition Tolerance, or rather, what it means to donate to them.  As a result, I settled on counting under Partition Tolerance the property of a system to lose communication between components.  Those.  in the interpretation of the CAP-theorem, to abandon PT (which means to choose C and A) means that the system has an ideal connection and never loses communication between its parts.  In this case, the wording sounds pretty clear. <br><br>  <b>References:</b> <br><ol><li>  <a href="http://codahale.com/you-cant-sacrifice-partition-tolerance/">You can not donate Partition Tolerance</a> </li><li>  <a href="http://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed">CAP theorem 12 years later: how the rules have changed</a> </li><li>  <a href="http://voltdb.com/company/blog/clarifications-cap-theorem-and-data-related-errors">Clarification of the CAP-theorem in the presence of errors</a> </li><li>  <a href="http://www.julianbrowne.com/article/viewer/brewers-cap-theorem">One of the most popular links about the description of the CAP-theorem</a> </li><li>  <a href="http://habrahabr.ru/blogs/nosql/130577/">CAP-theorem simple, accessible language</a> </li></ol></div><p>Source: <a href="https://habr.com/ru/post/136305/">https://habr.com/ru/post/136305/</a></p>
+      <b>Update:</b> <br>  As stormy comments have shown, the biggest misunderstanding in the CAP-theorem (at least on my part) is the definition of the concept of Partition Tolerance, or rather, what it means to donate to them.  As a result, I settled on counting under Partition Tolerance the property of a system to lose communication between components.  Those.  in the interpretation of the CAP-theorem, to abandon PT (which means to choose C and A) means that the system has an ideal connection and never loses communication between its parts.  In this case, the wording sounds pretty clear. <br><br>  <b>References:</b> <br><ol><li>  <a href="http://codahale.com/you-cant-sacrifice-partition-tolerance/">You can not donate Partition Tolerance</a> </li><li>  <a href="http://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed">CAP theorem 12 years later: how the rules have changed</a> </li><li>  <a href="http://voltdb.com/company/blog/clarifications-cap-theorem-and-data-related-errors">Clarification of the CAP-theorem in the presence of errors</a> </li><li>  <a href="http://www.julianbrowne.com/article/viewer/brewers-cap-theorem">One of the most popular links about the description of the CAP-theorem</a> </li><li>  <a href="http://habrahabr.ru/blogs/nosql/130577/">CAP-theorem simple, accessible language</a> </li></ol></div><p>Source: https://habr.com/ru/post/136305/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../136304/index.html">Strange and unusual alarm clock from Archos</a></li>
 <li><a href="../136307/index.html">World map from old motherboards (another way to add garbage)</a></li>
 <li><a href="../136309/index.html">Call for applications for LVEE winter 2012 is open</a></li>
+<li><a href="../13631/index.html">Hello from Leopard</a></li>
 <li><a href="../136310/index.html">The introduction of ECM-solutions: what to talk with the client</a></li>
 <li><a href="../136312/index.html">Data leak 6pm.com and Zappos.com</a></li>
-<li><a href="../136313/index.html">bash: Backup without extra software</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

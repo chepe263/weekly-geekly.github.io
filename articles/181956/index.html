@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Fault tolerance of systems based on HP Storageworks P4xxx without a third data center</h1><div class="post__text post__text-html js-mediator-article"><h4>  Prehistory </h4>  About two years ago, the management decided to invest in the virtualization project of our data center.  The task was quite simple, about 50 servers, mostly Windows, a couple of Linux machines, nothing non-standard.  Datacenter, though small but very <s>proud, is</s> important, we are the European headquarters of a large organization - we host services for 30 countries (Europe + CIS).  Two data centers, the connection is reliable and duplicated, for certain reasons, they chose VMWare ESXi (4 then 5) and <a href="http://habrahabr.ru/company/hp/">HP</a> Lefthand P4000 (first tranche) and P4500 (second tranche).  The reasons are purely subjective, VMWare and HP are strategic partners, etc. <a name="habracut"></a><br><br><h5>  What happened? </h5>  By the accepted rules, we test redundancy &amp; failover twice a year; in the case of virtualized services, we decided to divide the process into two stages.  The first step was to simulate the failure of only the hypervisor hosts (we actually cut down the power supply - roughly, but this is how the testing process is described in the documentation).  As expected, VMWare HA and FT worked as they should, the committee ticked off the protocols and signed.  At the second stage, along with the hypervisors, the storage devices (LeftHand) were cut down and ... no miracle happened.  Error in HP Centralized Management Console, data is not available, although backup devices are turned on and available, ... but there is no quorum.  It was not possible to restore working capacity - we had to immediately turn everything back on; we could not achieve any filer. <br><br><h5>  Began to find out. </h5>  We knew that for an automatic file server, 3 data centers were needed - at pre-sales meetings, HP representatives warned us about this many times.  Admins were not invited to meetings, clarifying questions were not asked, for some reason the management decided that “automatic file server is possible only with 3 data centers” implies that “if manually, then two data centers are enough”.  But no, in response to the request, HP Support responded that neither manually nor automatically without the third data center, the file carrier is impossible.  The principle is similar to that described <a href="http://kb.vmware.com/selfservice/microsites/search.do%3Flanguage%3Den_US%26cmd%3DdisplayKC%26externalId%3D2020097">here</a> (in our case, the systems are somewhat different - but in general, the same case). <img src="https://habrastorage.org/getpro/habr/post_images/aea/560/0e6/aea5600e61a5606dc39a89e10e6f8e0f.jpg" alt="image">  In short, everything is tied to the Failover Manager (FOM) - it should be accessible from the backup data center network at the time of the failure of the main device - in order to avoid the situation of parallel operation - split brain.  The FOM itself does not contain any data, and is needed only in the event of a malfunction, as a witness.  For the operation of the FOM, which is a normal virtual machine with more than modest requirements (2Ghz, 1GB RAM, 13Gb HDD), you only need access to our iSCSI VLAN.  We immediately figured out and presented to management a version of the Windows server in the cloud with a VPN in our iSCSI VLAN and free VMWare Server to run the FOM ... but the project was rejected with comments: <ul><li>  a) Automatic faylover not needed; </li><li>  b) the use of cloud-hosted servers in the storage network is contrary to the IB policy. </li></ul>  The management set the task: to solve the problem without using the cloud and to ensure the possibility of manual switching between primary and backup storage devices. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h6>  And this is how we solved the problem: </h6><ul><li>  On one of the ESXi hosts in the backup data center, activate local storage (to provide access in case of a SAN failure) </li><li>  Create a full copy of the main FOM (we copy everything, and most importantly the MAC address of the virtual network card connected to the iSCSI network) on the host in the backup data center </li><li>  We leave the FOM in the backup data center in StandBy mode </li></ul>  And that's all, if the main system fails, we remove the FOM in the backup data center from StandBy mode, and it completely replaces the inaccessible main FOM.  When you return to normal mode, you just have to remember to return it back to StandBy mode. <br><img src="https://habrastorage.org/storage2/fe5/e62/f8b/fe5e62f8b676dc96c6b73ffa5787d442.gif"><br><hr>  ps sorry that the text on the pictures in English, copied from the report </div><p>Source: <a href="https://habr.com/ru/post/181956/">https://habr.com/ru/post/181956/</a></p>
+    <h6>  And this is how we solved the problem: </h6><ul><li>  On one of the ESXi hosts in the backup data center, activate local storage (to provide access in case of a SAN failure) </li><li>  Create a full copy of the main FOM (we copy everything, and most importantly the MAC address of the virtual network card connected to the iSCSI network) on the host in the backup data center </li><li>  We leave the FOM in the backup data center in StandBy mode </li></ul>  And that's all, if the main system fails, we remove the FOM in the backup data center from StandBy mode, and it completely replaces the inaccessible main FOM.  When you return to normal mode, you just have to remember to return it back to StandBy mode. <br><img src="https://habrastorage.org/storage2/fe5/e62/f8b/fe5e62f8b676dc96c6b73ffa5787d442.gif"><br><hr>  ps sorry that the text on the pictures in English, copied from the report </div><p>Source: https://habr.com/ru/post/181956/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../181948/index.html">Big Russian Google Glass Review</a></li>
 <li><a href="../181950/index.html">What skills do technical support staff need in 2013?</a></li>
 <li><a href="../181954/index.html">About one mistake</a></li>
+<li><a href="../18196/index.html">Automobile plants and Kaluga</a></li>
 <li><a href="../181960/index.html">Spintires - (Mud simulator on Kickstarter) - "the taiga, which needs your wings"</a></li>
 <li><a href="../181968/index.html">Video Recorder for IPTV version ++</a></li>
+<li><a href="../18197/index.html">64 kilobytes will be enough</a></li>
 <li><a href="../181970/index.html">Dell XPS 13 Developer Edition, or Ubuntu comes on ultrabooks</a></li>
-<li><a href="../181974/index.html">About popular games in the Apple AppStore and Google Play</a></li>
-<li><a href="../181978/index.html">Adjustable do-it-yourself monitor backlight</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

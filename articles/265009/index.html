@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>JQuery - separation of events onСlick and onDblСlick</h1><div class="post__text post__text-html js-mediator-article"><pre><code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.window.$.on( <span class="hljs-string"><span class="hljs-string">'click'</span></span>, <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params"> event </span></span></span><span class="hljs-function">)</span></span>{ context.toggleActive( ); } ) .on( <span class="hljs-string"><span class="hljs-string">'dblclick'</span></span>, <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params"> event </span></span></span><span class="hljs-function">)</span></span>{ context.toggleMaximized( ); } );</code> </pre> <br>  When developing <b>JS</b> applications, there is often an inconvenience <i>(it’s still difficult to call this a problem)</i> when it is necessary to separate a click event from a double click due to the nature of the processing of event data — browsers.  I think many of you have come across the fact that in all browsers the <b>onClick</b> event occurs first and then after - <b>onDblClick</b> .  I don’t know about you, but it really hinders me to calmly write the handling of events of this kind. <br><br>  But the problem is that there are no simple and convenient solutions to this problem.  So I had to get down to business and write my decision. <br><a name="habracut"></a><br><h5>  <b>Plugin</b> </h5><br>  The base of the plugin is interception of the event registration call <i>(on, off, click, dblclick)</i> , followed by replacement with its own events. <br><pre> <code class="javascript hljs">$.fn.on = <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params"> </span></span></span><span class="hljs-function">) // (</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params"> types, selector, data, fn, one </span></span></span><span class="hljs-function">) </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> argumentList = $.extend( <span class="hljs-literal"><span class="hljs-literal">true</span></span>, [], <span class="hljs-built_in"><span class="hljs-built_in">arguments</span></span> ); <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> eventType = argumentList[<span class="hljs-number"><span class="hljs-number">0</span></span>]; <span class="hljs-comment"><span class="hljs-comment">//.... case eventType === 'click' || eventType === 'dblclick': { //        onMethod.call( this, 'reg' + eventType, eventSelector, eventData, function( regEvent, event ) { //  ,          if( this === regEvent.target ) { //       regEvent.preventDefault( ); regEvent.stopPropagation( ); //     event.isDefaultPrevented = function returnFalse( ){ return false; }; event.isPropagationStopped = function returnFalse( ){ return false; }; //    eventFunc.call( regEvent.target, event ); //         -  if( !event.isPropagationStopped( ) ) { $( event.currentTarget.offsetParent ).trigger( 'click', [ event ] ); } } } ); //     var clickEvents = $._data( this[0], 'events' ) ? $._data( this[0], 'events' )[ 'click' ] : undefined; //        -  if( typeof clickEvents === 'undefined' ) { //   onMethod.call( this, 'click', eventSelector, eventData, singleDoubleClick ); //     onMethod.call( this, 'mousedown', eventSelector, eventData, startMoving ); onMethod.call( this, 'mouseup', eventSelector, eventData, endMoving ); } } //.... }</span></span></code> </pre><br><br>  After the interception of the event - from the moment of the first click, a timer is started which counts whether the mouse has been shifted for a certain period. <br>  And if there was a shift, or there was no second click, then the <b>onClick</b> event <b>occurs</b> , otherwise <b>onDblClick</b> . <br><pre> <code class="javascript hljs"> <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> timeOut = <span class="hljs-number"><span class="hljs-number">200</span></span>; <span class="hljs-comment"><span class="hljs-comment">//   var start = { x: 0, y: 0 }; //   var end = { x: 0, y: 0 }; //   var distance = 0; //       var maxDistance = 3; var onMethod = $.fn.on; //   on var offMethod = $.fn.off; //   off var singleDoubleClick = function( event ) { //     ,       ,        //       ,   ,      event.currentTarget.clicks = ( event.currentTarget.clicks || 0 ) + 1; //   -     event.preventDefault( ); event.stopPropagation( ); var timeoutCallback = function( event ) { return function( ) { //   clearTimeout( event.currentTarget.timer ); //  - ,      if( event.currentTarget.clicks === 1 &amp;&amp; distance &lt; maxDistance ) { $( event.currentTarget ).trigger( 'regclick', [ event ] ); } else if( event.currentTarget.clicks &gt; 1 &amp;&amp; distance &lt; maxDistance ) { event.type = 'dblclick'; $( event.currentTarget ).trigger( 'regdblclick', [ event ] ); } //    event.currentTarget.clicks = 0; }; }; //   event.currentTarget.timer = setTimeout( timeoutCallback( event ), timeOut ); }; //   var startMoving = function( event ) { start = $.getMousePosition( event ); }; //   var endMoving = function( event ) { end = $.getMousePosition( event ); var dx = end.x - start.x; var dy = end.y - start.y; distance = Math.sqrt( dx * dx + dy * dy ); };</span></span></code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Look at the plugin itself can be here: <a href=""><b>GitHub</b></a> <br>  I hope this decision will be useful to someone else. </div><p>Source: <a href="https://habr.com/ru/post/265009/">https://habr.com/ru/post/265009/</a></p>
+      Look at the plugin itself can be here: <a href=""><b>GitHub</b></a> <br>  I hope this decision will be useful to someone else. </div><p>Source: https://habr.com/ru/post/265009/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../264991/index.html">Total Mobilization with MobilizeToday</a></li>
-<li><a href="../264993/index.html">Tasks, microtasks, queues and plans</a></li>
-<li><a href="../264997/index.html">Bayes and the challenge about Morpheus</a></li>
+<li><a href="../265/index.html">New design site Masterhost</a></li>
+<li><a href="../2650/index.html">Google redo Video</a></li>
+<li><a href="../26500/index.html">Simple audio compression in Audacity</a></li>
 <li><a href="../265001/index.html">Build system for large modular projects</a></li>
 <li><a href="../265007/index.html">How to easily understand logistic regression</a></li>
+<li><a href="../26501/index.html">The free cartoon Big Buck Bunny is now available for download.</a></li>
 <li><a href="../265011/index.html">Gartner agency named IBM the Magic Quadrant leader in the category of mobile application development platforms.</a></li>
 <li><a href="../265013/index.html">Client side CORS emulation: cross-browser solution of some user tasks without extensions</a></li>
 <li><a href="../265015/index.html">Materials from the free on-site seminar "Kerio Control: Everything you wanted to know, but did not know who to ask"</a></li>
 <li><a href="../265017/index.html">Optimization of data center operation at no extra cost</a></li>
-<li><a href="../265019/index.html">Digest of the game industry: July</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

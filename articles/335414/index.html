@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Passive device, routing and Barcode-Print</h1><div class="post__text post__text-html js-mediator-article"><h3>  What is this nonsense? </h3><br>  Surely you wondered when reading the title.  I admit, I was visited by exactly the same thoughts when reading the documentation from Bar to Scar-Print S. <br><br>  And the case is as follows, the store complained that there was no unloading on some scales.  I will not say how much time I spent on solving this problem, I will simply describe the introductory data under the cut and what led to the solution of the problem. <br><a name="habracut"></a><br><h3>  Input data </h3><br>  What do we have from the source?  The scheme from the network point of view is absolutely banal. <br><br><ul><li>  Store subnet 192.168.1.0/24 with devices and router 192.168.1.254 and weights 192.168.1.200 </li><li>  Subnet terminal server 192.168.2.0/24 with a terminal server 192.168.2.10 and a gateway for it 192.168.2.254 </li><li>  Between routers that have local addresses 192.168.1.254 and 192.168.2.254, a tunnel is raised on public interfaces and mutual static routes to the subnets that interest us to these tunnels. </li><li>  From the terminal server 192.168.2.10 data is not unloaded on 192.168.1.200 </li></ul><br>  Well.  First of all I check the ping to the weights from the terminal.  Not pinged.  Checking the availability of scales from the segment 192.168.1.0/24.  Ping  Baaa, yes, everything is trite here - the gateway is not registered on the scales, nothing works. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h3>  Inexplicable but the fact </h3><br>  I enter the weights menu, and then the first point of surprise comprehends me - and there are no gateway settings.  Not at all.  Yes, this can not be, open the documentation: <br><br><img src="https://habrastorage.org/web/bcb/17f/7a8/bcb17f7a80f14d0aa5cc320cb564a259.png"><br><br>  ARP is, but the device is passive (what is a passive device with IP / UDP support in general?).  But it worked.  And it works in other stores with routing.  It turns out that these scales also ping from the 192.168.2.254 router.  And from the segment 192.168.0.0/24, also connected to the router 192.168.2.254.  Thus, the scales know the MAC of the router, the frames form the correct ones, but for some reason they are lost on the way to the terminal server 192.168.2.10. <br><br>  What was tested?  The involved intermediate switches (uncontrollable, without L3 naturally) of the segment 192.168.2.0/254 rebooted.  The router 192.168.2.254 rebooted.  Changed the IP address on the scales on a knowingly routed to the terminal server. <br><br>  And the problem is solved very simply by resetting the scales themselves. <br><br>  PS I wonder how the guys from Streak made support in sending the firmware to other subnets of the packets, do they just take that src MAC that came to them and set it up as dst?  And all support for ARP is in the sense that the scales are able to respond to ARP requests, but not generate them? </div><p>Source: <a href="https://habr.com/ru/post/335414/">https://habr.com/ru/post/335414/</a></p>
+    <h3>  Inexplicable but the fact </h3><br>  I enter the weights menu, and then the first point of surprise comprehends me - and there are no gateway settings.  Not at all.  Yes, this can not be, open the documentation: <br><br><img src="https://habrastorage.org/web/bcb/17f/7a8/bcb17f7a80f14d0aa5cc320cb564a259.png"><br><br>  ARP is, but the device is passive (what is a passive device with IP / UDP support in general?).  But it worked.  And it works in other stores with routing.  It turns out that these scales also ping from the 192.168.2.254 router.  And from the segment 192.168.0.0/24, also connected to the router 192.168.2.254.  Thus, the scales know the MAC of the router, the frames form the correct ones, but for some reason they are lost on the way to the terminal server 192.168.2.10. <br><br>  What was tested?  The involved intermediate switches (uncontrollable, without L3 naturally) of the segment 192.168.2.0/254 rebooted.  The router 192.168.2.254 rebooted.  Changed the IP address on the scales on a knowingly routed to the terminal server. <br><br>  And the problem is solved very simply by resetting the scales themselves. <br><br>  PS I wonder how the guys from Streak made support in sending the firmware to other subnets of the packets, do they just take that src MAC that came to them and set it up as dst?  And all support for ARP is in the sense that the scales are able to respond to ARP requests, but not generate them? </div><p>Source: https://habr.com/ru/post/335414/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

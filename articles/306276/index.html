@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Simple Dependency Injection in Node.js</h1><div class="post__text post__text-html js-mediator-article"><p>  After reading a few articles on DI, I wanted to use it in Node.js;  after a brief search, it turned out that there are not so many modules for this, the most interesting of them is <a href="https://github.com/angular/di.js/">di.js</a> from Angular, but it didn’t <a href="https://github.com/angular/di.js/">fit</a> me and I decided to write my own. </p><a name="habracut"></a><br><h4>  Why not di.js? </h4><br><ul><li>  It is written using ES6, i.e.  needs to be precompiled in ES5, and since it uses decorators, your code must also be compiled in ES5 </li><li>  long not supported </li><li>  uses old compiler (es6-shim) </li><li>  There is no possibility to create multiple instances of the same class. </li></ul><br><h4>  We write our implementation </h4><br><p>  The most interesting in writing the module was the problem of dynamic transmission to the constructor of arguments. <br>  The most obvious solution is to use <em>apply</em> , but this does not work, since it interacts with methods, not constructors. </p><br><p>  For our purpose, you can use the <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Spread_operator">spread operator</a> : </p><br><pre><code class="javascript hljs"><span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Test</span></span></span><span class="hljs-class"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">constructor</span></span>(a, b) { } } <span class="hljs-keyword"><span class="hljs-keyword">let</span></span> args = [<span class="hljs-number"><span class="hljs-number">1</span></span>, <span class="hljs-number"><span class="hljs-number">2</span></span>] <span class="hljs-keyword"><span class="hljs-keyword">let</span></span> test = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Test(...args)</code> </pre> <br><p>  The rest of the implementation is quite boring and does not contain anything interesting. </p><br><h4>  We use the module </h4><br><p>  I decided to abandon the di.js decorators in favor of the config file.  Suppose we describe the architecture of the computer, then in the config we need to describe our classes, the paths to them and their arguments: </p><br><pre> <code class="hljs pgsql">{ "Computer": { "class": "./Computer.js", //    "args": ["RAM", "HDD", "CPU", "GPU"] //  }, "RAM": { "class": "./RAM.js", "args": [] }, "HDD": { "class": "./HDD.js", "args": [] }, "CPU": { "class": "./CPU.js", "args": ["RAM"] }, "GPU": { "class": "./GPU.js", "args": [] } }</code> </pre> <br><p>  <em>Computer</em> class, like everyone else, is pretty simple: </p><br><pre> <code class="javascript hljs"><span class="hljs-meta"><span class="hljs-meta">'use strict'</span></span> <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Computer</span></span></span><span class="hljs-class"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">constructor</span></span>(ram, hdd, cpu, gpu) { <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>._cpu = cpu <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>._gpu = gpu <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>._hdd = hdd <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>._ram = ram } } <span class="hljs-built_in"><span class="hljs-built_in">module</span></span>.exports = Computer</code> </pre> <br><p>  Now at the entry point of our application we use the module: </p><br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">const</span></span> Injector = <span class="hljs-built_in"><span class="hljs-built_in">require</span></span>(<span class="hljs-string"><span class="hljs-string">'razr'</span></span>)(__dirname, <span class="hljs-string"><span class="hljs-string">'./path/to/your/config.json'</span></span>) <span class="hljs-comment"><span class="hljs-comment">//        const computer = Injector.get('Computer') //     Computer</span></span></code> </pre> <br><p>  It is worth noting that in the config file you need to specify the path to the class relative to the entry point of the application. </p><br><p>  That's all.  Thanks to everyone who read it.  But reference on GitHub - <a href="https://github.com/Naltox/razr">https://github.com/Naltox/razr</a> and NPM - <a href="http://npmjs.com/package/razr">http://npmjs.com/package/razr</a> </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/306276/">https://habr.com/ru/post/306276/</a></p>
+    <p>Source: https://habr.com/ru/post/306276/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../306256/index.html">Prospects for native advertising in Russia and the world</a></li>
-<li><a href="../306258/index.html">Using custom functions in OSSIM parsers</a></li>
+<li><a href="../30626/index.html">Testing Perl programs for beginners. Test :: Simple</a></li>
 <li><a href="../306260/index.html">On the role of DevOps in IT - expert opinions</a></li>
 <li><a href="../306266/index.html">RuHaxe 5 Online Conference</a></li>
+<li><a href="../30627/index.html">File GTD or how to work with files without stress</a></li>
 <li><a href="../306272/index.html">Monitoring projects using the messenger on the example of Nagios and Telegram, with the analysis of fakapov from the life of Highload 24x7</a></li>
 <li><a href="../306278/index.html">A library that facilitates the development of forms on sites (v3)</a></li>
+<li><a href="../30628/index.html">Stonehenge - a digital watch controlled by a robot</a></li>
 <li><a href="../306280/index.html">Oracle, bypassing mutable tables</a></li>
 <li><a href="../306282/index.html">View video "side"</a></li>
 <li><a href="../306286/index.html">Corporate culture: How are employees of western (and not only) IT companies living?</a></li>
-<li><a href="../306288/index.html">3CX Phone System v15 System Development Plans</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

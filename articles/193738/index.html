@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Classification of Russian text using the Library Natural on NodeJS</h1><div class="post__text post__text-html js-mediator-article"><h5>  Preamble </h5><br><br>  I will not surprise anyone if I say that a modern person, and, in particular, a programmer, gets a lot of information every day.  For example, my RSS-client gives me about 500 articles per week.  And, of course, this is not the only source of information. <br><br>  I thought about creating an RSS client for myself with a student filter of articles on NodeJS.  In principle, there are ready-made RSS readers under a node, there are ready-made neural networks with classifiers, so it seemed to me to write some kind of prototype not a particularly difficult task. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       I decided to start by testing the neural networks tucked under my arm.  I took a small amount of input.  I copied the positive data from articles on nodejs with habr.  I found the negative data on the "tape.ru".  The task of the classifier was to sort the articles on programming and nodejs from the usual, uninteresting for my development, news. <br><br>  I don’t want to show the results of the work with <a href="https://github.com/harthur/brain">Brain</a> and <a href="https://github.com/rlidwka/node-fann">Fann</a> - I don’t think that I have enough expertise to judge them.  I can only say that out of the box they did not suit me at all - on my input they did not give an adequate number of correct answers.  But the <a href="https://github.com/NaturalNode/natural/">Natural</a> Library impressed me a lot. <br><br>  Then I will show how I taught the classifier, checked his work and made him understand Russian. <br><br><a name="habracut"></a><br><br><h5>  Input data </h5><br><br>  The data on which I trained and tested the classifier can be viewed <a href="https://gist.github.com/shuvalov-anton/6559653">here</a> .  There are a lot of them for the article, that's why I brought them from here. <br><br><h5>  Code </h5><br><br><pre><code class="javascript hljs"><span class="hljs-meta"><span class="hljs-meta">'use strict'</span></span>; <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> data = <span class="hljs-built_in"><span class="hljs-built_in">require</span></span>(<span class="hljs-string"><span class="hljs-string">'./data'</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> natural = <span class="hljs-built_in"><span class="hljs-built_in">require</span></span>(<span class="hljs-string"><span class="hljs-string">'natural'</span></span>), porterStemmer = natural.PorterStemmerRu, classifier = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> natural.BayesClassifier(porterStemmer); <span class="hljs-comment"><span class="hljs-comment">//  classifier'     . for (var i = 0; i &lt; data.good.length; i++) { classifier.addDocument(data.good[i], 'good'); }; for (var i = 0; i &lt; data.bad.length; i++) { classifier.addDocument(data.bad[i], 'bads'); }; //     . classifier.train(); //     . console.log('START CLASSIFICATION'); console.log('Test on good'); for (var i = 0; i &lt; data.test_good.length; i++) { console.log("&gt; ",classifier.classify(data.test_good[i])); }; console.log('Test on bad'); for (var i = 0; i &lt; data.test_bad.length; i++) { console.log("&gt; ",classifier.classify(data.test_bad[i])); };</span></span></code> </pre> <br><br><h5>  Result </h5><br><br><pre>  START CLASSIFICATION
@@ -78,20 +78,20 @@
  &gt; good
  &gt; bads
  &gt; bads
- &gt; good </pre><br><br><h5>  Russian language support </h5><br><br>  For qualitative classification, Natural uses the “stemmer” component, which splits text into an array of words, removes useless words (so-called <a href="">stopwords</a> ), and cuts off the endings of words. <br><br>  By default, the classifier ignores Russian words, although there is support for the Russian language in the project.  In order to make the classifier understand the Russian language, it is necessary to initialize the classifier, passing into it a steamer for the Russian language, thus replacing the default English steamer.  This is very easy to do: <br><br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> classifier = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> natural.BayesClassifier(natural.PorterStemmerRu);</code> </pre><br><br>  Now the text inside the classifier will be processed correctly, taking into account the peculiarities of the Russian language. <br><br><h5>  Lovers of experiments </h5><br><br>  I specially created a repository with a working classifier.  Installation is trivial: <br><br><pre> <code class="bash hljs">git <span class="hljs-built_in"><span class="hljs-built_in">clone</span></span> git@github.com:shuvalov-anton/classifier.git <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> classifier npm i node app.js</code> </pre><br><br>  Then change the data in data.js to your own and see the result. <br><br><h5>  PS </h5><br><br>  To be honest, I have no experience in classifying information to evaluate the result, but the results of Natural made me very impressed as a simple user.  Unfortunately, I did not find any more or less serious project documentation other than the readme on github.  And in order to understand how to turn on the Russian language, I had to dig in the source code, but there was nothing supercomplex in this, and I believe that the result was worth it! </div><p>Source: <a href="https://habr.com/ru/post/193738/">https://habr.com/ru/post/193738/</a></p>
+ &gt; good </pre><br><br><h5>  Russian language support </h5><br><br>  For qualitative classification, Natural uses the “stemmer” component, which splits text into an array of words, removes useless words (so-called <a href="">stopwords</a> ), and cuts off the endings of words. <br><br>  By default, the classifier ignores Russian words, although there is support for the Russian language in the project.  In order to make the classifier understand the Russian language, it is necessary to initialize the classifier, passing into it a steamer for the Russian language, thus replacing the default English steamer.  This is very easy to do: <br><br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> classifier = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> natural.BayesClassifier(natural.PorterStemmerRu);</code> </pre><br><br>  Now the text inside the classifier will be processed correctly, taking into account the peculiarities of the Russian language. <br><br><h5>  Lovers of experiments </h5><br><br>  I specially created a repository with a working classifier.  Installation is trivial: <br><br><pre> <code class="bash hljs">git <span class="hljs-built_in"><span class="hljs-built_in">clone</span></span> git@github.com:shuvalov-anton/classifier.git <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> classifier npm i node app.js</code> </pre><br><br>  Then change the data in data.js to your own and see the result. <br><br><h5>  PS </h5><br><br>  To be honest, I have no experience in classifying information to evaluate the result, but the results of Natural made me very impressed as a simple user.  Unfortunately, I did not find any more or less serious project documentation other than the readme on github.  And in order to understand how to turn on the Russian language, I had to dig in the source code, but there was nothing supercomplex in this, and I believe that the result was worth it! </div><p>Source: https://habr.com/ru/post/193738/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../193714/index.html">Video games. Is it all bad?</a></li>
-<li><a href="../193718/index.html">Dell buys Dell for $ 24.9 billion</a></li>
+<li><a href="../19372/index.html">Apache and Skype without conflict</a></li>
 <li><a href="../193720/index.html">Nokia Contest Ideas</a></li>
 <li><a href="../193722/index.html">Haskell in Product: Project Manager Report</a></li>
 <li><a href="../193726/index.html">We collect the convenient documentation for CMake</a></li>
+<li><a href="../19373/index.html">Meet this - SAP BW, OLTP-system (Project RZD №1: WHAT)</a></li>
+<li><a href="../19374/index.html">Avatar in the form of Medvedev</a></li>
 <li><a href="../193742/index.html">Encrypted in Qt</a></li>
 <li><a href="../193744/index.html">Semantic UI is almost an alternative to Bootstrap</a></li>
 <li><a href="../193746/index.html">We do self-timer for almost any camera</a></li>
 <li><a href="../193752/index.html">NodeConf EU 2013 - Impressions</a></li>
-<li><a href="../193756/index.html">Guide to designing relational databases (10-13 part of 15) [translation]</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

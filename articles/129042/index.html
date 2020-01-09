@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <section class="page js-page"><h1>Pinba - monitor php in real time</h1><div class="post__text post__text-html js-mediator-article">  As stated on the <a href="http://pinba.org/wiki/Main_Page">official website</a> - <br><pre> Pinba for PHP using MySQL as a read-only interface.
 </pre><br>  And indeed it is.  It will allow you to receive real-time statistics on the running application, while not slowing down the application itself. <br>  What to do with statistics is your business, for example, we <a href="http://www.zabbix.com/">output</a> it to <a href="http://www.zabbix.com/">Zabbiks</a> and use it to monitor stability (there are no errors, few are long requests), and for analytics. <br>  Surprisingly, about this truly remarkable invention there has not been a single article on Habré yet. <br><img src="https://habrastorage.org/storage1/c3a4d97d/f6b49349/45c8439c/50bfc7ce.png"><br><a name="habracut"></a><br><br>  I wanted to do something good for this opensource project, and what could be better than mentioning in Habré;) <br><h2>  Installation </h2><br>  Pinba itself consists of two parts - this is php extention and engine (engine for mysql). <br>  Both are supplied in source code.  The installation itself is quite trivial and well described in the <a href="http://pinba.org/wiki/Manual:Installation">reference manual</a> . <br><br><h2>  The principle of operation and configuration </h2><br>  Client (module) <br>  On each server where php is running, you need to install the module and add the following lines to php.ini: <br> <code>; configuration for php pinba module <br> extension=pinba.so <br> pinba.enabled=1 <br> pinba.server=192.168.1.42:3300 ;      <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,7 +64,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       After that, each php script, including cli, will send a udp report to the specified address and port before shutting down. <br>  The installation is complete, the client is configured. <br><br>  Server (mysql engine). <br>  When I first read the documentation, I could not understand why pinbe needed mysql.  It turned out that everything is simple - mysql is the interface / entry point to the analytics system. <br>  This is very convenient, because under this DBMS there are already a lot of solutions and everyone knows how to work with it. <br><br>  The pinba server is configured as a mysql engine.  There are not many settings and their names are obvious: <br><pre> [mysqld]
@@ -99,13 +99,13 @@
  + ---------- + ------------- +
  8 rows in set (0.00 sec)<font></font>
 <font></font>
-</pre><br>  And a large set of different reports.  All reports will be updated promptly and contain the latest data. <br>  This is not an analysis of apache logs, it is profiling and monitoring right on the production! <br><br><h2>  Timers and tags </h2><br>  Now about the most delicious. <br>  You can <a href="http://pinba.org/wiki/Manual:PHP_extension">measure the</a> duration of an event in scripts and tag it.  This data will also be available for reports. <br><br>  For example, if you have a long sample of users from the database, you can do this: <br> <code>$t = pinba_timer_start(array("group"=&gt;"mysql", "server"=&gt;"dbs2", "operation"=&gt;"select")); <br> //   <br> pinba_timer_stop($t); <br></code> <br><br>  I added timers directly to the framework that we use, and now, to some extent, I measure all database requests, memcached, etc. <br><br>  Separately, I note that this data is easily accessible in the server interface. <br>  They can be selected either from the raw data - see the tables report, timer, timertag, or create tables in which the data will be already in the aggregated state. <br><br>  Example (from <a href="http://pinba.org/wiki/Manual:Usage_examples">wiki</a> ): <br> <code>CREATE TABLE `tag_info_group_server` ( <br> `group_value` varchar(32) DEFAULT NULL, <br> `server_value` varchar(32) DEFAULT NULL, <br> `req_count` int(11) DEFAULT NULL, <br> `req_per_sec` float DEFAULT NULL, <br> `hit_count` int(11) DEFAULT NULL, <br> `hit_per_sec` float DEFAULT NULL, <br> `timer_value` float DEFAULT NULL <br> ) ENGINE=PINBA DEFAULT CHARSET=latin1 COMMENT='tag2_info:group,server' <br></code> <br>  <b>NOTE</b> : Comment to the table is important. <br>  After creation, data on the group tag and server will be automatically (!) Aggregated into this table. <br><br><h2>  Stability </h2><br>  We use it in production.  She works ;) <br><br><hr><br>  I do not aim to make some complete description of pinba, especially since I do not want to copy the manual. <br>  If you use php in production, try pinba.  She is really good! <br><br>  Literature: <br>  * <a href="http://pinba.org/wiki/Main_Page">wiki</a> <br>  * <a href="http://groups.google.com/group/pinba-engine/post%3Fhl%3Den">google group</a> <br><br>  <b>upd:</b> Meet the author of the current implementation - <a href="https://habrahabr.ru/users/tony2001/" class="user_link">tony2001</a> ! </div><p>Source: <a href="https://habr.com/ru/post/129042/">https://habr.com/ru/post/129042/</a></p>
+</pre><br>  And a large set of different reports.  All reports will be updated promptly and contain the latest data. <br>  This is not an analysis of apache logs, it is profiling and monitoring right on the production! <br><br><h2>  Timers and tags </h2><br>  Now about the most delicious. <br>  You can <a href="http://pinba.org/wiki/Manual:PHP_extension">measure the</a> duration of an event in scripts and tag it.  This data will also be available for reports. <br><br>  For example, if you have a long sample of users from the database, you can do this: <br> <code>$t = pinba_timer_start(array("group"=&gt;"mysql", "server"=&gt;"dbs2", "operation"=&gt;"select")); <br> //   <br> pinba_timer_stop($t); <br></code> <br><br>  I added timers directly to the framework that we use, and now, to some extent, I measure all database requests, memcached, etc. <br><br>  Separately, I note that this data is easily accessible in the server interface. <br>  They can be selected either from the raw data - see the tables report, timer, timertag, or create tables in which the data will be already in the aggregated state. <br><br>  Example (from <a href="http://pinba.org/wiki/Manual:Usage_examples">wiki</a> ): <br> <code>CREATE TABLE `tag_info_group_server` ( <br> `group_value` varchar(32) DEFAULT NULL, <br> `server_value` varchar(32) DEFAULT NULL, <br> `req_count` int(11) DEFAULT NULL, <br> `req_per_sec` float DEFAULT NULL, <br> `hit_count` int(11) DEFAULT NULL, <br> `hit_per_sec` float DEFAULT NULL, <br> `timer_value` float DEFAULT NULL <br> ) ENGINE=PINBA DEFAULT CHARSET=latin1 COMMENT='tag2_info:group,server' <br></code> <br>  <b>NOTE</b> : Comment to the table is important. <br>  After creation, data on the group tag and server will be automatically (!) Aggregated into this table. <br><br><h2>  Stability </h2><br>  We use it in production.  She works ;) <br><br><hr><br>  I do not aim to make some complete description of pinba, especially since I do not want to copy the manual. <br>  If you use php in production, try pinba.  She is really good! <br><br>  Literature: <br>  * <a href="http://pinba.org/wiki/Main_Page">wiki</a> <br>  * <a href="http://groups.google.com/group/pinba-engine/post%3Fhl%3Den">google group</a> <br><br>  <b>upd:</b> Meet the author of the current implementation - <a href="https://habrahabr.ru/users/tony2001/" class="user_link">tony2001</a> ! </div><p>Source: https://habr.com/ru/post/129042/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../129035/index.html">WhatsApp server serves over a million TCP connections</a></li>
 <li><a href="../129036/index.html">How I didn’t get a job at AT & T or a bit about corruption in the Czech Republic</a></li>
 <li><a href="../129037/index.html">Data structures in pictures. LinkedHashMap</a></li>
+<li><a href="../12904/index.html">Venue, tickets and so on.</a></li>
 <li><a href="../129040/index.html">Lua what's new in BitTorrent DHT?</a></li>
 <li><a href="../129041/index.html">EBay.ru duty calculator</a></li>
 <li><a href="../129043/index.html">Innovations F # 3.0</a></li>

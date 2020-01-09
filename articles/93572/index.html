@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>MODx and Vbulletin 3.8.x - peace, friendship, chewing gum</h1><div class="post__text post__text-html js-mediator-article"><h4>  What should we build a house? </h4><br>  Nowadays, the vbulletin forum engine is familiar to many.  Someone uses it, someone quietly hates it, and someone asks the authorities for the purchase of a license. <br>  And because of his popularity, many CMS have support for this engine, but only here in MODx I did not find a normal plug-in / snippet, and the existing ones had enough cheeses to use them. <br>  Ladies and gentlemen, please love and favor: <a name="habracut"></a><br>  <i>The experiment was conducted on MODx version 1.0.2 and vbulletin version 3.8.1.</i> <br><br><h4>  The quieter you go, the further you'll get </h4><br>  First we need to prepare, and the first one will be the forum global.php file. <br>  I did this: copied it to <b>global_modx.php</b> (... / forum / global_modx.php), opened it for editing and deleted everything after <u>891 lines</u> (I remind you, forum version 3.8.1) - connection styles, etc., t .  The last line in my file is the call to the function verify_ip_ban (); <br><br>  <i>Note: there were problems with the global connection - it performed the exit (die (); or exit ();) in the middle of the script due to some internal checks, so I advise you to do everything on the test version for a start.</i> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Now, in the <b>index.php</b> file, the holy of holies of MODx's, insert the following magic lines of code: <br><br><blockquote><code>$VBDIR = "../forum/"; //   ,  ,    <br> $CURDIR = getcwd(); <br> chdir($VBDIR); <br> require_once($VBDIR."global_modx.php"); <br> chdir($CURDIR); <br></code> </blockquote><br>  TA-dah!  Already now MODx sees all forum data!  In any snippet, we can use (by declaring it globally) the standard $ vbulletin object (using the print_r command ($ vbulletin); you can see all the available fields, but there are a LOT of them, and you probably only need print_r ($ vbulletin-&gt; userinfo); ). <br><br><h4>  Continue our research, gentlemen </h4><br>  Now we need to introduce the issue of authorization to the site.  Create a <b>forum_login_form</b> chunk that will copy the standard login form from the "bun": <br><br><blockquote><pre> &lt;! - login form -&gt;
@@ -176,20 +176,20 @@
      $ sql = "REPLACE INTO". $ modx-&gt; getFullTableName ("active_users"). "(internalKey, username, lasthit, action, id, ip) values ​​(-". $ _ SESSION ['webInternalKey']. ", '" . $ _ SESSION ['webShortname']. "','". $ Lasthittime. "','". $ A. "',". $ Itemid. ",' $ Ip ')";
      $ rs = $ modx-&gt; db-&gt; query ($ sql);
  }
- ?&gt; </pre></blockquote><br>  The code is sufficiently commented, there should be no questions;  Requests made separately (and not through db-&gt; select, db-&gt; insert) out of habit and convenience for debugging. <br><br><h4>  Just a bit to complete euphoria </h4><br>  Having done everything written above, we have: <br><ul><li>  Single authorization with the forum - entry and exit </li><li>  Access to forum data on any page of the site </li><li>  After logging in on the website or on the forum, authorization will work everywhere (with a redirect to the page you are viewing back) </li><li>  Creating users MODH, i.e.  he also recognizes his users, which allows him to restrict access to documents, etc. </li><li>  The same user ID on the site / forum </li><li>  The destruction of the authorization session on the site, if there is no authorization on the forum </li></ul><br><br>  And in order to implement this bun, it remains to prescribe the [[login]] snippet call in the site templates, after which it remains only to enjoy the work done.  One minus of this approach: until a forum user logs onto the site, it will be impossible to restrict his access rights to the pages, unless of course he is created in the database of such users with pens. <br><br>  Unlike the <i>BanzaiTokyo</i> method, on the basis of which the development began and which left only the introduction of the global file on the forum in the index.php, there is no need to create a product and modules for it to control the output from the forum and registration — everything happens automatically on the site. <br><br>  <strong>July 28, 2010 UPD:</strong> <br>  Programmers who used this solution on their sites!  <i>ATTENTION!</i>  <i>There is a vulnerability allowed to run blind-SQL:</i> <br><blockquote>  $ itemid = isset ($ _ REQUEST ['id'])?  $ _REQUEST ['id']: 'NULL'; $ lasthittime = time (); $ a = 998; <br>  $ sql = "REPLACE INTO". $ modx-&gt; getFullTableName ("active_users"). "(internalKey, username, lasthit, action, id, ip) values ​​(-". $ _ SESSION ['webInternalKey']. ", '" . $ _ SESSION ['webShortname']. "','". $ Lasthittime. "','". $ A. "',". $ Itemid. ",' $ Ip ')"; <br>  $ rs = $ modx-&gt; db-&gt; query ($ sql); <br></blockquote><br>  If you substitute a specific subquery into id, you can perform a comparison operation and easily match any data.  Unfortunately, through this vulnerability, I was hacked ((I decided simply: <br><blockquote>  $ itemid = isset ($ _ REQUEST ['id'])?  <strong>(is_numeric ($ _ REQUEST ['id'])? $ _ REQUEST ['id']: 'NULL')</strong> : 'NULL'; $ lasthittime = time (); $ a = 998; <br>  $ sql = "REPLACE INTO". $ modx-&gt; getFullTableName ("active_users"). "(internalKey, username, lasthit, action, id, ip) values ​​(-". $ _ SESSION ['webInternalKey']. ", '" . $ _ SESSION ['webShortname']. "','". $ Lasthittime. "','". $ A. "',". $ Itemid. ",' $ Ip ')"; <br>  $ rs = $ modx-&gt; db-&gt; query ($ sql); <br></blockquote></div><p>Source: <a href="https://habr.com/ru/post/93572/">https://habr.com/ru/post/93572/</a></p>
+ ?&gt; </pre></blockquote><br>  The code is sufficiently commented, there should be no questions;  Requests made separately (and not through db-&gt; select, db-&gt; insert) out of habit and convenience for debugging. <br><br><h4>  Just a bit to complete euphoria </h4><br>  Having done everything written above, we have: <br><ul><li>  Single authorization with the forum - entry and exit </li><li>  Access to forum data on any page of the site </li><li>  After logging in on the website or on the forum, authorization will work everywhere (with a redirect to the page you are viewing back) </li><li>  Creating users MODH, i.e.  he also recognizes his users, which allows him to restrict access to documents, etc. </li><li>  The same user ID on the site / forum </li><li>  The destruction of the authorization session on the site, if there is no authorization on the forum </li></ul><br><br>  And in order to implement this bun, it remains to prescribe the [[login]] snippet call in the site templates, after which it remains only to enjoy the work done.  One minus of this approach: until a forum user logs onto the site, it will be impossible to restrict his access rights to the pages, unless of course he is created in the database of such users with pens. <br><br>  Unlike the <i>BanzaiTokyo</i> method, on the basis of which the development began and which left only the introduction of the global file on the forum in the index.php, there is no need to create a product and modules for it to control the output from the forum and registration — everything happens automatically on the site. <br><br>  <strong>July 28, 2010 UPD:</strong> <br>  Programmers who used this solution on their sites!  <i>ATTENTION!</i>  <i>There is a vulnerability allowed to run blind-SQL:</i> <br><blockquote>  $ itemid = isset ($ _ REQUEST ['id'])?  $ _REQUEST ['id']: 'NULL'; $ lasthittime = time (); $ a = 998; <br>  $ sql = "REPLACE INTO". $ modx-&gt; getFullTableName ("active_users"). "(internalKey, username, lasthit, action, id, ip) values ​​(-". $ _ SESSION ['webInternalKey']. ", '" . $ _ SESSION ['webShortname']. "','". $ Lasthittime. "','". $ A. "',". $ Itemid. ",' $ Ip ')"; <br>  $ rs = $ modx-&gt; db-&gt; query ($ sql); <br></blockquote><br>  If you substitute a specific subquery into id, you can perform a comparison operation and easily match any data.  Unfortunately, through this vulnerability, I was hacked ((I decided simply: <br><blockquote>  $ itemid = isset ($ _ REQUEST ['id'])?  <strong>(is_numeric ($ _ REQUEST ['id'])? $ _ REQUEST ['id']: 'NULL')</strong> : 'NULL'; $ lasthittime = time (); $ a = 998; <br>  $ sql = "REPLACE INTO". $ modx-&gt; getFullTableName ("active_users"). "(internalKey, username, lasthit, action, id, ip) values ​​(-". $ _ SESSION ['webInternalKey']. ", '" . $ _ SESSION ['webShortname']. "','". $ Lasthittime. "','". $ A. "',". $ Itemid. ",' $ Ip ')"; <br>  $ rs = $ modx-&gt; db-&gt; query ($ sql); <br></blockquote></div><p>Source: https://habr.com/ru/post/93572/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../93560/index.html">Tunerr - chromatic online guitar tuner</a></li>
 <li><a href="../93563/index.html">Ekaterinburg, St. Petersburg, Penza - Startup Point is coming to you!</a></li>
 <li><a href="../93565/index.html">Yota in Irkutsk</a></li>
 <li><a href="../93568/index.html">I want to do hosting, the essence is ...</a></li>
+<li><a href="../9357/index.html">Review: The Effect of Online Advertising</a></li>
 <li><a href="../93570/index.html">The difficulty of finding errors in scientific applications</a></li>
 <li><a href="../93573/index.html">A robot from a DNA molecule could walk about 50 steps.</a></li>
 <li><a href="../93577/index.html">Quiet Guitar</a></li>
+<li><a href="../9358/index.html">Winners of the D & AD Awards 2007</a></li>
 <li><a href="../93581/index.html">UMI CMS + RBK Money inside</a></li>
 <li><a href="../93583/index.html">Caught Neo (Universal IT soldier)</a></li>
-<li><a href="../93584/index.html">Canobuvosti, 39th edition</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

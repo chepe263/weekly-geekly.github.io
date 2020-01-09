@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The easiest way to implement price switching in 1C-Bitrix</h1><div class="post__text post__text-html js-mediator-article"> Quite often, several types of prices can be found at online wholesale stores - they are usually referred to as OPT1, OPT2, OPT3, etc.  Depending on how much the customer has collected good in the basket and (or) other conditions, this or that type of prices works for him. <br><br>  Unfortunately, not all site engines provide for the presence of several types of prices for a product at once, and even those engines in which it is possible to set more than one price for a product often do not have flexible switching mechanisms.  The latter is pretty popular "1C-Bitrix".  On the one hand, in this CMS already in the “boxed” version (in the “Business” edition and above) there is support for several types of prices, and on the other hand, it is completely incomprehensible how to set up dynamic switching of these prices depending on certain conditions.  The staff manual for this part also keeps deathly silence.  I hope that the comrades from Bitrix will correct this unfortunate misunderstanding, but I decided not to wait for this happy moment and clearly thought of a crutch solution, which I decided to share with the community. <br><br>  So let's go ... <a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       First of all, you should pay attention to the <b>OnGetOptimalPrice</b> handler.  Despite the fact that this function appeared in the kernel a long time ago, its description was added recently in the online documentation.  Meanwhile, this handler is triggered when there is an automatic selection of the optimal price for a particular product and allows you to redefine the price for it.  We will try to use it to recalculate all prices in the basket, depending on the total amount of the purchase. <br><br>  We connect the handler in the file / php_interface/init.php (by itself, if this file does not exist, then it must be created - the bitrix will connect it automatically) <br><br> <code>AddEventHandler("catalog", "OnGetOptimalPrice", "MyGetOptimalPrice");</code> <br> <br>  The declaration of the MyGetOptimalPrice function together with the input parameters will look like this: <br><br> <code>function MyGetOptimalPrice($productID, $quantity = 1, $arUserGroups = array(), $renewal = "N", $arPrices = array(), $siteID = false, $arDiscountCoupons = false)</code> <br> <br>  As can be seen from the above code, the function does not receive at the input the total amount of the value of the goods in the basket, but only the data of a particular product.  So, it is necessary to get the cart data by request to the database.  Because  the handler is called in a cycle depending on the number of items in the cart, it makes sense to define a global variable in which we will write the total amount of the cart content when you first call the OnGetOptimalPrice handler. <br><br>  The output should be something like this: <br><br><pre> global $ LocalPrice;
@@ -126,7 +126,7 @@
 		 ),
 	 );
  }
-</pre><br><br>  If you wish, you can optimize the code by adding caching to store the sample of prices, get rid of the hard-code task of conditions and bring the conditions into the config files or into the database.  In principle, the very sampling of data from the recycle bin can also be taken out of the handler function and store the amount where the thread is in a session, a cookie, or a global variable (as you like and thinks correct).  Of course, for the example of training did not begin to do all this.  Use on health! </div><p>Source: <a href="https://habr.com/ru/post/184898/">https://habr.com/ru/post/184898/</a></p>
+</pre><br><br>  If you wish, you can optimize the code by adding caching to store the sample of prices, get rid of the hard-code task of conditions and bring the conditions into the config files or into the database.  In principle, the very sampling of data from the recycle bin can also be taken out of the handler function and store the amount where the thread is in a session, a cookie, or a global variable (as you like and thinks correct).  Of course, for the example of training did not begin to do all this.  Use on health! </div><p>Source: https://habr.com/ru/post/184898/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

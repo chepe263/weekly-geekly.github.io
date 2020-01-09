@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>MySQL: Breaking the black box</h1><div class="post__text post__text-html js-mediator-article"> <b>What it will be about: an</b> amusing and extravagant way of “hacking” a website that doesn’t have quotation marks for one of the parameters.  At the same time, let's skip the reasoning about why everything is not screened on the side of the programming language or ORM itself. <br><br>  <b>Introductory:</b> a website that does not screen one of the parameters in a simple SELECT query.  In this case, all errors are intercepted, processed and displayed modest "No data" or "An error has occurred." <br><br>  <b>It would seem:</b> not great trouble.  Update or change the data in it to rub, the data outside does not open, it all comes down to "Sorry, no data" - a black box. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,16 +59,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>But what can actually be done in this situation?</b> <br><a name="habracut"></a><br>  Immediately salt: the technique is based on the function sleep (N) which we will use as a litmus.  We measure how much the page is “given” in ordinary life.  And how much time it “gives” if we enter <code>' OR sleep(10)</code> instead of all the parameters that are present in the form.  If the time to return the page has grown - the matter is in the hat and then only the matter of technology. <br><br>  For example, we select the name of the table based on the INFORMATION_SCHEMA meta-database, which is always present and accessible to everyone: <br><br> <code>' OR 1 = if((select count(*) from INFORMATION_SCHEMA.tables where TABLE_SCHEMA=database() and TABLE_NAME='users') = 1, sleep(10), null)</code> <br> <br>  If the “return” time of the page has significantly increased - we guessed; if not, try more options, usually up to 10. Next, we “guess” the field names: <br><br> <code>' OR 1 = if((select count(*) from INFORMATION_SCHEMA.columns where TABLE_SCHEMA=database() and TABLE_NAME='users' and COLUMN_NAME='login') = 1, sleep(5), null)</code> <br> <br>  Knowing the names of the table and fields, you can "pick up" the length of the username, password, as well as pull out the username and password by character. <br><br> <code>if((select count(*) from users where login='admin') = 1, sleep(5), null) <br> if((select length(password) from users where login='admin') = 1, sleep(5), null) <br> select if((select mid(password, 5,1) from users where login='admin') = 'a', sleep(5), null) <br></code> <br><br>  When searching for a binary password, the character will need only 8 requests for each character. <br><br>  Yes, not so hot what hacking, but a funny way to explore blindly the structure of the database, the names of the fields (you can also pick up symbolically) as well as the data itself. <br><br>  By the way, it is necessary to screen including page-by-page navigation - the method is the same, but using UNION SELECT ... <br><br>  The moral of this fable: even the only unshielded parameter due to which, well, the maximum will be “sorry, an error” can drain the entire base. <br><br>  The note was born as a result of analyzing requests to one of the sites and attempts to comprehend them. <br><br>  Please do not cholivariate regarding the inferiority of MySQL as a database, as well as the “only true” method of screening data. </div><p>Source: <a href="https://habr.com/ru/post/134372/">https://habr.com/ru/post/134372/</a></p>
+      <b>But what can actually be done in this situation?</b> <br><a name="habracut"></a><br>  Immediately salt: the technique is based on the function sleep (N) which we will use as a litmus.  We measure how much the page is “given” in ordinary life.  And how much time it “gives” if we enter <code>' OR sleep(10)</code> instead of all the parameters that are present in the form.  If the time to return the page has grown - the matter is in the hat and then only the matter of technology. <br><br>  For example, we select the name of the table based on the INFORMATION_SCHEMA meta-database, which is always present and accessible to everyone: <br><br> <code>' OR 1 = if((select count(*) from INFORMATION_SCHEMA.tables where TABLE_SCHEMA=database() and TABLE_NAME='users') = 1, sleep(10), null)</code> <br> <br>  If the “return” time of the page has significantly increased - we guessed; if not, try more options, usually up to 10. Next, we “guess” the field names: <br><br> <code>' OR 1 = if((select count(*) from INFORMATION_SCHEMA.columns where TABLE_SCHEMA=database() and TABLE_NAME='users' and COLUMN_NAME='login') = 1, sleep(5), null)</code> <br> <br>  Knowing the names of the table and fields, you can "pick up" the length of the username, password, as well as pull out the username and password by character. <br><br> <code>if((select count(*) from users where login='admin') = 1, sleep(5), null) <br> if((select length(password) from users where login='admin') = 1, sleep(5), null) <br> select if((select mid(password, 5,1) from users where login='admin') = 'a', sleep(5), null) <br></code> <br><br>  When searching for a binary password, the character will need only 8 requests for each character. <br><br>  Yes, not so hot what hacking, but a funny way to explore blindly the structure of the database, the names of the fields (you can also pick up symbolically) as well as the data itself. <br><br>  By the way, it is necessary to screen including page-by-page navigation - the method is the same, but using UNION SELECT ... <br><br>  The moral of this fable: even the only unshielded parameter due to which, well, the maximum will be “sorry, an error” can drain the entire base. <br><br>  The note was born as a result of analyzing requests to one of the sites and attempts to comprehend them. <br><br>  Please do not cholivariate regarding the inferiority of MySQL as a database, as well as the “only true” method of screening data. </div><p>Source: https://habr.com/ru/post/134372/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../134367/index.html">Star Wars through the prism of infographics</a></li>
 <li><a href="../134368/index.html">Scheduled message service</a></li>
 <li><a href="../134369/index.html">Protection against paid content of partners-fraudsters of operators of Mobile Communications</a></li>
+<li><a href="../13437/index.html">What is with Habr?</a></li>
 <li><a href="../134370/index.html">"The younger brother" IBM Watson engaged in the analysis of patents</a></li>
 <li><a href="../134371/index.html">Music performed by the scanner</a></li>
 <li><a href="../134373/index.html">Semiconductor electronics</a></li>

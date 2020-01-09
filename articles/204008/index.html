@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Mining and how it works: materiel</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/1a5/a85/041/1a5a85041d52c809c76ab2d8b7e562a4.png" align="right"><br>  Hi% username%! <br>  I will tell and show you how the basis of generating money in cryptocurrency works - mining.  How to create the first block, new blocks and how money appears from nowhere. <br>  To make it easier to understand, we will write our improvised miner for the improvised cryptocurrency HabraCoin. <br><a name="habracut"></a><br>  First, a simplified educational program, where without it. <br><br><h5>  Wallets </h5><br>  Each wallet is a randomly generated pair of keys.  Actually, the wallet address is a public key hash.  So it can be uniquely identified. <br><br><h5>  Transaction </h5><br>  This is a record of what wallet for which amount is transferred.  And also, the time and date of the operation.  This record (its hash) is signed with the private key of the sender and sent to everyone in the district, awaiting confirmation. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h5>  the confirmation </h5><br>  In order to find out about the transaction and write it down to yourself, you need to confirm it, which is obtained as a result of creating a new block. <br><br><h5>  Block </h5><br>  This is service data + transaction list + number of the minting wallet + <b>magic number</b> . <br><br><h5>  Chain of blocks </h5><br>  The sequence in which each next block includes the previous Id. <br><br><h4>  Start </h4><br>  So, there is a certain amount of people, one is possible.  Let's call him Habrosh.  He decides to launch his own HabraCoin cryptocurrency system. <br><br>  Since there are no dedicated servers for this currency, all its members are equal and must somehow agree on the validity of transactions.  That is, we need a mechanism that will provide: <br><br><ol><li>  The inevitability of transactions. </li><li>  An opportunity for anyone to check their validity. </li></ol><br><br>  To do this, it forms a block of existing at the moment unconfirmed transactions, the number of the previous block, the number of his wallet, etc.  For the very first transaction block, we don’t, we don’t have the previous block number, there’s really nothing.  Only the address of the Habroshi wallet and the date with time. <br><br>  Also, the following things are indicated in the HabraCoin algorithm. <br><br><ol><li>  It is desirable that new blocks are created every 10 minutes.  If after a while we look, and it turns out that there are more of them than they needed, then calculate the new <b>complexity of</b> generating them every 100 blocks. </li><li>  For the fact that someone creates a valid block, he is entitled to a reward of 50 HabraCoins + <b>commission</b> </li><li>  The block in which most transactions are “winning” </li></ol><br><br><h4>  Speed ​​Limit </h4><br>  As we see, the <b>very <font color="#FF0000">fact of the</font> creation of a block indicates that its creator receives a reward for this</b> .  And in order for it to make sense in general, the speed and complexity of creating blocks should be <b>limited</b> .  Otherwise, you know, tons of blocks out of nothing and no sense. <br><br>  Cryptocurrency uses a method of limiting the complexity, which is the <b>problem of calculating the hash of a given value</b> .  To be precise, <b>less than a certain value</b> . <br>  If someone doesn’t know, a hash, for example f7c9f52d1ebf8c6aef8986fb127ba1bdeec58521f7eb46f026b708df26a40912, is a number, but a number.  In the decimal system, it looks like 112078102004378042284884826242280406284022042488488848628408208468422468268028. That is, hashes can be compared, added, subtracted and all that. <br>  So here.  <b>For everyone to recognize a block as valid, its hash must be less than the maximum possible minus of a value defined by everyone, called <font color="#FF0000">complexity</font></b> . <br>  For example, we have a hash of 4 bytes, the maximum possible value of its FFFFFFFF <sub>16</sub> .  And the complexity of, say, 100 <sub>10</sub> .  Subtract one from the other, it turns out, our hash must be less than FFFFFF9B <sub>16</sub> <br><br>  How to achieve this? <br><br>  If you remember, all blocks consist of several fields.  We take these fields, concatenate, we get an <b>array of bytes</b> from them.  This is an array of bytes, we give the hash function, we get the result and see: less what happened with the current complexity, or not? <br>  If not, <b>change this byte array until we get the desired value</b> .  Namely: <br><br>  In each block there is a field called <b>nonce</b> .  This number is several bytes in size, which you need to increase by one, add to the block and again read from it the hash.  Since good hash functions produce more or less equiprobable values, we do not know in advance how many times the process will have to be repeated.  Maybe 1-2 times, maybe billions. <br><br>  The one who managed to get a hash that satisfies the conditions of complexity, sends to all the block with the transactions included in it.  In case several people did it at the same time, a condition is introduced that several chains of blocks cannot exist together, and the longest wins.  So, if we have two chains: <br><br>  Block1-&gt; Block2-&gt; Block3 <b>A</b> <br>  Block1-&gt; Block2-&gt; Block3 <b>B</b> <br><br>  then the one for which the 4th block will be found ahead of time will win.  And the smaller chain is discarded and its transactions are again queued for confirmation. <br><br><h4>  Commission </h4><br><br>  Everyone in their wallets saw the “commission” field when making a transaction.  This commission goes to the people involved in the generation of blocks.  That is, they will first of all choose from all transactions that are pending confirmation, those that contain a commission.  <b>After the formation of the block, it is considered that the entire commission contained in the transaction goes to its (block) creator.</b> <br>  That is, when the remuneration for generating a block ends (if it is spelled out in the currency algorithm), only the commission will be left to miners, and free transactions can never be processed. <br><br>  Let's simulate the situation and help Habrosh to craft some kind of block. <br><br>  Under the spoiler, a program (in the form of a Junit test), which for the sake of decency generates 2 random pairs of keys, forms some sort of transaction (even signs it, everything is fair!), And then looks for an addition to it so that the first 2 bytes of the hash are zero .  Type complexity such.  It works for a couple of minutes, and then it really gives out a hash, which you can quickly check by concatenating the transaction and counter bytes. <br><br><div class="spoiler">  <b class="spoiler_title">Program code</b> <div class="spoiler_text"><pre><code class="java">package com.paranoim.money;
@@ -179,20 +179,20 @@ EC1E5C85B61C43EB64B77A9F53B28785D7DE2335333003260A0839D53927976751A8D8967B2BB325
 <b>00000</b>8ACF935A8E3E453AC538706F560155943C6B0A77E5F5FCA7939D5FFE589676A6B3CD7AC78845786C50449D1A6F<br>
 91003EDCA7B5D8B12AC36CCA36A00844A<br>
 <br>
-       .   ,      .</div><p>Source: <a href="https://habr.com/ru/post/204008/">https://habr.com/ru/post/204008/</a></p>
+       .   ,      .</div><p>Source: https://habr.com/ru/post/204008/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../203996/index.html">How Cybersecurity Threw Cyberdrugs</a></li>
-<li><a href="../203998/index.html">Visit to ASICMINER farm</a></li>
+<li><a href="../204/index.html">Coursework 2.0</a></li>
+<li><a href="../2040/index.html">AllOfMP3.com patched a hole in DRM</a></li>
 <li><a href="../204000/index.html">How I struggled with sms-spam or grief from the mind</a></li>
 <li><a href="../204004/index.html">Graphics and typography of the new 2GIS</a></li>
 <li><a href="../204006/index.html">Runetology (213): Stanislav Ustenko, general director of media holding C-Media</a></li>
+<li><a href="../20401/index.html">Position Art</a></li>
 <li><a href="../204010/index.html">Subtotals of a stock exchange startup</a></li>
 <li><a href="../204012/index.html">What is important for creating AI 2: “Dependence. View from the neural network »</a></li>
 <li><a href="../204014/index.html">Meet GStreamer: Output Devices</a></li>
 <li><a href="../204016/index.html">What if successful startups were just lucky?</a></li>
-<li><a href="../204018/index.html">Barnes & Noble readers and tablets sale</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

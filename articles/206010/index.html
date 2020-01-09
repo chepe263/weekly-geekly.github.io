@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>When a column name in the result of a query in SQLite3 is not defined</h1><div class="post__text post__text-html js-mediator-article"> First, the result, and then debriefing.  Suppose you have created a query of type <code>select [document].[id], [document].[name] from [SomeDocuments][document]</code> , but instead of the expected <pre> <code class="hljs objectivec"> <span class="hljs-keyword"><span class="hljs-keyword">id</span></span> = <span class="hljs-number"><span class="hljs-number">1</span></span> name = d1</code> </pre>  are getting <pre> <code class="hljs javascript"> <span class="hljs-built_in"><span class="hljs-built_in">document</span></span> = <span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-built_in"><span class="hljs-built_in">document</span></span> = d1</code> </pre><br>  And now, if we are interested, we will understand. <br><a name="habracut"></a><br>  In general, everything is described in the documentation for the functions <a href="http://www.sqlite.org/c3ref/column_name.html">sqlite3_column_name and sqlite3_column_name16</a> <br><div class="spoiler">  <b class="spoiler_title">If you do not use “as”, then no one guarantees that you will receive the corresponding column name.</b> <div class="spoiler_text">  If you are a clause, it is a clause.  If there is no sign of it, it’s not. </div></div><br>  How to get the result in the command line (version <code>3.7.16.2</code> was on hand, in the product <code>3.8.1</code> ) <br><pre> <code class="sql hljs">.mode line <span class="hljs-keyword"><span class="hljs-keyword">create</span></span> <span class="hljs-keyword"><span class="hljs-keyword">table</span></span> [Documents]([<span class="hljs-keyword"><span class="hljs-keyword">id</span></span>] <span class="hljs-built_in"><span class="hljs-built_in">integer</span></span>, [<span class="hljs-keyword"><span class="hljs-keyword">name</span></span>] <span class="hljs-built_in"><span class="hljs-built_in">text</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">insert</span></span> <span class="hljs-keyword"><span class="hljs-keyword">into</span></span> [Documents]([<span class="hljs-keyword"><span class="hljs-keyword">id</span></span>], [<span class="hljs-keyword"><span class="hljs-keyword">name</span></span>]) <span class="hljs-keyword"><span class="hljs-keyword">values</span></span> (<span class="hljs-number"><span class="hljs-number">1</span></span>, <span class="hljs-string"><span class="hljs-string">"d1"</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">select</span></span> [d].[<span class="hljs-keyword"><span class="hljs-keyword">id</span></span>], [d].[<span class="hljs-keyword"><span class="hljs-keyword">name</span></span>] <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> [Documents][d];</code> </pre> <pre> <code class="hljs objectivec"> <span class="hljs-keyword"><span class="hljs-keyword">id</span></span> = <span class="hljs-number"><span class="hljs-number">1</span></span> name = d1</code> </pre>  Works as expected.  Continue <pre> <code class="sql hljs"><span class="hljs-keyword"><span class="hljs-keyword">create</span></span> <span class="hljs-keyword"><span class="hljs-keyword">view</span></span> [DocView1] <span class="hljs-keyword"><span class="hljs-keyword">as</span></span> <span class="hljs-keyword"><span class="hljs-keyword">select</span></span> * <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> [Documents]; <span class="hljs-keyword"><span class="hljs-keyword">select</span></span> [d].[<span class="hljs-keyword"><span class="hljs-keyword">id</span></span>], [d].[<span class="hljs-keyword"><span class="hljs-keyword">name</span></span>] <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> [DocView1][d];</code> </pre>  And now <pre> <code class="hljs nginx"> <span class="hljs-attribute"><span class="hljs-attribute">d</span></span> = <span class="hljs-number"><span class="hljs-number">1</span></span> d = d1</code> </pre>  The result given <a href="https://habrahabr.ru/users/psyx/" class="user_link">psyX</a> in the comments (on my versions repeated) <pre> <code class="sql hljs"><span class="hljs-keyword"><span class="hljs-keyword">select</span></span> d.id, d.name <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> DocView1 d; d.id = 1 d.name = d1</code> </pre>  It is natural to expect the same behavior in recent versions of the functions sqlite3_column_name. <br><br><div class="spoiler">  <b class="spoiler_title">Lyrical digression</b> <div class="spoiler_text">  In previous work, I wrote another ORM bike that works with sqlite3 and c mysql.  Of course, I ran into this problem, but did not give it attention, because aliases were used for all the columns there.  And now I decided that it was worth the article.  Aliases in that library were needed almost immediately, due to the lack of possibility in sqlite3 to understand from which table this result and, accordingly, to which object to save it, in the case of queries with joines.  In general, the uncertainty in linking result columns and real tables was a bit disturbing, but I didn’t dig deeper, it still worked. <br>  And here at the new work, where quite a lot of hardcodes in terms of working with the database, such a feature sqlite3 has surfaced.  Perhaps this is described in some books and a long and well-known fact, but for my colleagues and once again for me this was a rather unexpected discovery. </div></div><div class="spoiler">  <b class="spoiler_title">Supplement for Qt programmers</b> <div class="spoiler_text">  Since I am now programming with Qt, I want to share a bit of experience here.  Qt is so “kyut” that if there is a period in the column name of the query result, then Qt, without any warning or ability to configure it, removes everything up to and including the point.  Those.  if you have a <code>select [document].[id] as [document.id] ...</code> query of type <code>select [document].[id] as [document.id] ...</code> , then at the output in <code>QSqlRecord</code> you will have fields without “ <code>document.</code>  ", I.e.  just <code>id</code> . </div></div><br><br>  Thank you for your attention, have a nice day. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/206010/">https://habr.com/ru/post/206010/</a></p>
+    <p>Source: https://habr.com/ru/post/206010/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../205996/index.html">Social buttons in the project on Caché</a></li>
 <li><a href="../206000/index.html">Mobile Web Tour with Lendwings Deltina Hay</a></li>
 <li><a href="../206002/index.html">LG Smart TV App contest 2013-2014 + Bonus: an interview with the winner of last year's contest</a></li>
 <li><a href="../206004/index.html">Running Bullet Physics physics engine on Android x86</a></li>
+<li><a href="../206006/index.html">The Constitution of the Russian Federation in the form of a daily reminder service</a></li>
 <li><a href="../206008/index.html">Detailed monitoring of Apache requests using Python and Munin</a></li>
 <li><a href="../206012/index.html">Secrets of buttons in Android. Part 1: Layout Basics</a></li>
 <li><a href="../206014/index.html">JSON Template: you can just JSONT</a></li>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>AWS ELB: Forced disconnection of the instance from the balancer</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/de2/8d5/cd3/de28d5cd30892edd8b0d669b656dfede.png" alt="image" align="right">  Good day! <br><br>  There was a small but unpleasant moment, when, when scaling a host that is extinguished, just over 30-35 seconds still accepts requests.  Naturally, these requests can not work.  Therefore, the idea arose before you extinguish the web server, forcibly disconnect the instance from the load balancer. <br><br>  For this, we need the command line utilities for ELB: <a href="http://aws.amazon.com/developertools/2536">aws.amazon.com/developertools/2536</a> .  Extract them into the <b>/ opt / aws / elb folder</b> . <br><a name="habracut"></a><br>  Certificates pk - ** and cert - ** put in <b>/ opt / aws / keys</b> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The JAVA working folder is <b>/ usr / java / latest</b> . <br><br>  Well, actually the script: <br><div class="spoiler">  <b class="spoiler_title">/opt/aws/kick_from_lb.sh</b> <div class="spoiler_text"><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh export AWS_ELB_HOME="/opt/aws/elb" export PATH=$PATH:$AWS_ELB_HOME/bin export JAVA_HOME=/usr/java/latest export TOOLS_HOME=/opt/aws export EC2_PRIVATE_KEY=$TOOLS_HOME/keys/pk-********88ZVWC3FPEOFWRSFJ.pem export EC2_CERT=$TOOLS_HOME/keys/cert-**********88ZVWC3FPEOFWRSFJ.pem INSTANCE_ID=`wget -q -O - http://169.254.169.254/latest/meta-data/instance-id` elb-deregister-instances-from-lb $1 --instances $INSTANCE_ID</span></span></code> </pre> <br></div></div><br><br>  Now, in the init script of apache, tomcat, nginx, or something else, insert the following line at the beginning of the <b>stop</b> function: <br><br><pre> <code class="bash hljs">sh /opt/aws/kick_from_lb.sh <span class="hljs-variable"><span class="hljs-variable">$elb_name</span></span></code> </pre><br>  where $ elb_name is the name of your Elastic Load Balancer. <br><br>  Well that's all.  Now, before stopping the web server, the instance will be automatically thrown out from under the balancer and will not accept requests. <br><br>  Shl.  Remember to make all changes to AMI. </div><p>Source: <a href="https://habr.com/ru/post/147899/">https://habr.com/ru/post/147899/</a></p>
+      The JAVA working folder is <b>/ usr / java / latest</b> . <br><br>  Well, actually the script: <br><div class="spoiler">  <b class="spoiler_title">/opt/aws/kick_from_lb.sh</b> <div class="spoiler_text"><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh export AWS_ELB_HOME="/opt/aws/elb" export PATH=$PATH:$AWS_ELB_HOME/bin export JAVA_HOME=/usr/java/latest export TOOLS_HOME=/opt/aws export EC2_PRIVATE_KEY=$TOOLS_HOME/keys/pk-********88ZVWC3FPEOFWRSFJ.pem export EC2_CERT=$TOOLS_HOME/keys/cert-**********88ZVWC3FPEOFWRSFJ.pem INSTANCE_ID=`wget -q -O - http://169.254.169.254/latest/meta-data/instance-id` elb-deregister-instances-from-lb $1 --instances $INSTANCE_ID</span></span></code> </pre> <br></div></div><br><br>  Now, in the init script of apache, tomcat, nginx, or something else, insert the following line at the beginning of the <b>stop</b> function: <br><br><pre> <code class="bash hljs">sh /opt/aws/kick_from_lb.sh <span class="hljs-variable"><span class="hljs-variable">$elb_name</span></span></code> </pre><br>  where $ elb_name is the name of your Elastic Load Balancer. <br><br>  Well that's all.  Now, before stopping the web server, the instance will be automatically thrown out from under the balancer and will not accept requests. <br><br>  Shl.  Remember to make all changes to AMI. </div><p>Source: https://habr.com/ru/post/147899/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../147891/index.html">Ouya: $ 5 million with Kickstarter is just the beginning</a></li>
 <li><a href="../147892/index.html">How to put an investor on the shoulder or the three principles of Khoja Nasreddin</a></li>
 <li><a href="../147894/index.html">Ivideon launched cloud video storage</a></li>
 <li><a href="../147896/index.html">Why OOP doesn't suck</a></li>
 <li><a href="../147897/index.html">Facebook began implementing SPDY protocol</a></li>
+<li><a href="../147898/index.html">Openmoko closes VID / PID to open projects for free</a></li>
+<li><a href="../1479/index.html">Interior Minister urges to deprive terrorists of Internet access</a></li>
 <li><a href="../147900/index.html">800,000 signed a petition for the right to download videos from Youtube</a></li>
 <li><a href="../147901/index.html">A fresh look at impurities in javascript</a></li>
 <li><a href="../147902/index.html">Automated testing of ASP.NET applications via CUITe - features</a></li>
 <li><a href="../147904/index.html">MIT creates an electronic "co-pilot"; Google talks about drones</a></li>
-<li><a href="../147905/index.html">Panoramas on Yandex.Maps using KRPano</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

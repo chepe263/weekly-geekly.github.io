@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
  apt update
  apt-get install -y $ (apt-cache depends 3cxpbx | grep Depends | sed “s /. ends: \ //” | tr '\ n' ') </pre><br><ul><li>  Since the Google VM uses the internal and public IP addresses, you need to create the port publishing rules necessary to access the VM instance from the outside. </li></ul><br><p> <a href=""><img title="image" src="https://habrastorage.org/getpro/habr/post_images/554/f83/d3e/554f83d3e0d430632cc5b070c5c3cd4b.png" alt="image" width="180" height="203"></a> </p><br><ul><li>  Configure the rules for accessing instance services in accordance with <a href="https://www.3cx.com/docs/3cx-phone-system-v14-ports/">this table</a> . </li></ul><br><p> <a href=""><img title="image" src="https://habrastorage.org/getpro/habr/post_images/720/0ea/a22/7200eaa228428faddb81936a9352a278.png" alt="image" width="800" height="391"></a> </p><br><ul><li>  Shut down and delete the VM instance in the management console, saving the virtual disk.  <strong>Please note that during the removal there was no warning about deleting the virtual hard disk.</strong> </li></ul><br><p> <a href=""><img title="image" src="https://habrastorage.org/getpro/habr/post_images/c21/1a9/89a/c211a989adb087198cea9b567f3ee9ac.png" alt="image" width="511" height="155"></a> </p><br><h3>  Creating an instance of VM 3CX for a customer </h3><br><p>  Now you can create a virtual machine instance to install the 3CX server and transfer it to the customer. </p><br><ul><li>  Go to the <strong>Images</strong> section, at the top, click the <strong>Create image</strong> button and create a new image with the name, for example, <strong>image-3cx-template</strong> .  As the disk, select the previously created virtual disk <strong>instance-3cx-template-vm</strong> </li></ul><br><p> <a href=""><img title="image" src="https://habrastorage.org/getpro/habr/post_images/c5f/354/efc/c5f354efc40accc53619d802a76212ae.png" alt="image" width="489" height="549"></a> </p><br><ul><li>  Your created image should appear in the list of available images. </li><li>  Select the created image and click on <strong>Create instance</strong> at the top. </li></ul><br><p> <a href=""><img title="image" src="https://habrastorage.org/getpro/habr/post_images/8a5/f0f/7ad/8a5f0f7ad933d3854119159a8daa281f.png" alt="image" width="625" height="209"></a> </p><br><ul><li>  Specify instance parameters: <br><ul><li>  Name, for example <strong>instance-3cx-001</strong> </li><li>  The zone is the closest to the customer to minimize network delays. </li><li>  Machine type: for small installations, you can choose a <strong>micro machine 0.6 GB of memory</strong> </li><li>  Service account: <strong>Compute Engine default service account</strong> </li><li>  Access Scope: <strong>Full access to all Cloud API</strong> </li></ul><br></li><li>  In the section <strong>Configure Management, Disk, Network, and SSH Keys,</strong> and uncheck the <strong>Delete boot disk</strong> check box <strong>when deleting an instance</strong> .  This is recommended in order not to permanently lose data if an administrator or customer accidentally deletes a virtual machine instance. </li></ul><br><p> <a href=""><img title="image" src="https://habrastorage.org/getpro/habr/post_images/dc4/3f1/6a8/dc43f16a8250b5404600c37f4b24e56c.png" alt="image" width="468" height="839"></a> </p><br><ul><li>  Immediately in the <strong>Network</strong> section, specify (or add a new) external static IP address.  The ephemeral address will not be enough. </li></ul><br><p> <a href=""><img title="image" src="https://habrastorage.org/getpro/habr/post_images/083/6fe/6c7/0836fe6c7ad5d1eefba9171d7ce1e42e.png" alt="image" width="456" height="274"></a> </p><br><ul><li>  Click <strong>Create</strong> , and a custom VM instance will be created for the 3CX server. </li></ul><br><p> <a href=""><img title="image" src="https://habrastorage.org/getpro/habr/post_images/a05/77a/782/a0577a782740974e241c9bdc086c729d.png" alt="image" width="645" height="180"></a> </p><br><h3>  Installing 3CX software on a virtual machine </h3><br><ul><li>  Connect to the created entity by pressing the <strong>SSH</strong> button. </li><li>  Install 3CX with the command </li></ul><br><pre>  sudo apt-get install 3cxpbx </pre><br><p> <a href=""><img title="image" src="https://habrastorage.org/getpro/habr/post_images/2d2/812/9c4/2d28129c4effa04afa34006815790658.png" alt="image" width="500" height="394"></a> </p><br><ul><li>  You can select the option <strong>(1) Using a Web Browser</strong> and continue configuring 3CX in <a href="https://www.3cx.ru/docs/manual/configuration-tool/">this guide</a> .  At the same time, you need to connect to the public IP address of the created instance.  In this case, if the address is 104.199.62.254, the connection string will be </li></ul><br><pre>  http://104.199.62.254 ro01 </pre><br><p>  At this point, setting up an instance of VM 3CX is complete.  It can be transferred to the customer. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,16 +62,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/325508/">https://habr.com/ru/post/325508/</a></p>
+    <p>Source: https://habr.com/ru/post/325508/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../325492/index.html">Human face design patterns</a></li>
 <li><a href="../325494/index.html">Why in the standard library there are no tools to combat hanging links and how to fix it?</a></li>
 <li><a href="../325498/index.html">Facilitating the reversal of Golang binaries or why even write scripts in IDA</a></li>
+<li><a href="../3255/index.html">Social Network</a></li>
 <li><a href="../325502/index.html">Spectral analysis of signals from non-linear links of ACS in Python</a></li>
 <li><a href="../325504/index.html">We automate everything: the new version of OneBox Next (CRM + ERP) is available for free</a></li>
 <li><a href="../325510/index.html">Teach TensorFlow to draw Cyrillic</a></li>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Little admin's story: how to catch OOM</h1><div class="post__text post__text-html js-mediator-article">  Admin mystery: On the server, there were three oom kill'a, and monitoring said only about two.  Why? <br><br><h1>  Configuration </h1>  We have a ganglia-shinken-logstash-elasticsearch-kibana bundle configured to monitor everything.  The full description is quite <a href="http://habrahabr.ru/company/webzilla/blog/220707/">extensive</a> , so I will confine myself to the part that is relevant to the problem. <br><br>  Logs from all servers are sent to logstash.  He puts them in elasticsearch.  In the logstash config, there is a reaction to all strange messages that indicate problems.  If a message appears, event is sent to the monitoring (shinken), which by various methods begins to bother admins. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       In addition to syslog'ov, which send messages from most applications, we also configured to send <a href="http://habrahabr.ru/post/131220/">netconsole</a> from all cores.  The technology itself is simple to impossible - the kernel besides dmesg sends messages in the form of a UDP datagram to the specified IP and mac address.  The MAC address is needed because netconsole is very low-level and is not going to solve the problem of “how to make a MAC from IP” (that is, ARP).  Due to the low-level messages are even in situations of complete cataclysm.  For example, if the soft switch fails (and the network is unavailable), messages will still be sent.  Moreover, they will be sent, even if ijumps says -j drop_vsyo_nafig.  And, the most important and valuable, these messages will be successfully sent if the disk subsystem does not fully work.  That is, for the post-mortem research "what exactly happened to the hung server" is the most it. <br><br>  An obvious candidate for “bad” messages is a message from oom-killer. <br><br><pre> [517935.914380] ntpd invoked oom-killer: gfp_mask = 0x201da, order = 0, oom_score_adj = 0
@@ -77,20 +77,20 @@
            RX packets: 455816267 errors: 0 after: 130361 overruns: 0 frame: 0
            TX packets: 73379669 errors: 0 dropped: 0 overruns: 0 carrier: 0
            collisions: 0 txqueuelen: 0 
-</pre><br>  One hundred and thirty thousand packets instead of living, rejoicing, bringing happiness, sleeping on the network interface, and no one can wake them up. <br><br>  We fix the fact number 2: monitoring does not control the number of drop'ov on network interfaces.  Regardless of further proceedings, "can this be fixed?" - we have a valuable observation, which immediately turns into a task in the task tracker: "monitor the change in the number of dropes on the network interfaces."  The next run to Google suggests that, alas, it is impossible to reset the counters on the interface with humane methods, so that we fix the changes. <br><br>  Forensic system administration ends at this stage.  The reason for the failure of monitoring is clear to the very bottom: OOM causes sending a large number of messages in an ultrashort period of time, java does not keep up with it, redundant drop packets.  In this case, including, the package with the message that the application was killed was lost - the event was not sent to shinken. <br><br><h1>  We repair </h1><br>  The second part - how should we deal with this? <br>  A short run to Google showed that the buffer size for a socket when reading a UDP datagram is controlled by the application ( <a href="http://pubs.opengroup.org/onlinepubs/000095399/functions/setsockopt.html">man setsockopt</a> , SO_RCVBUF).  We continue the sprint with obstacles in Google - there is an option in the logstash configuration, called <b>buffer_size</b> .  By common thought, we raised it to 1MB.  The existence of <b>net.core.rmem_max</b> is also <b>magnified</b> - by default it is 200 + kb.  To our case (only 12kb) most likely does not apply, but it will not hurt to raise to 2Mb. <br><br><h1>  Result </h1><br>  0. The reason for the failure of monitoring is precisely clarified. <br>  1. Now shinken keeps track of the dropes on all network interfaces. <br>  2. logstash is ready to accept a larger burst of logging without packet loss. <br><br>  PS For those who talk about "tcp for syslog".  Netconsole is very low-level, and it does not know how to handle any tisipey, it even makes UDP using the “filled in fields and sent by ethernet-frame” method.  And, probably, the core would look very funny if it started to slow down due to the thoughtful recording of the TCP logs ... </div><p>Source: <a href="https://habr.com/ru/post/231623/">https://habr.com/ru/post/231623/</a></p>
+</pre><br>  One hundred and thirty thousand packets instead of living, rejoicing, bringing happiness, sleeping on the network interface, and no one can wake them up. <br><br>  We fix the fact number 2: monitoring does not control the number of drop'ov on network interfaces.  Regardless of further proceedings, "can this be fixed?" - we have a valuable observation, which immediately turns into a task in the task tracker: "monitor the change in the number of dropes on the network interfaces."  The next run to Google suggests that, alas, it is impossible to reset the counters on the interface with humane methods, so that we fix the changes. <br><br>  Forensic system administration ends at this stage.  The reason for the failure of monitoring is clear to the very bottom: OOM causes sending a large number of messages in an ultrashort period of time, java does not keep up with it, redundant drop packets.  In this case, including, the package with the message that the application was killed was lost - the event was not sent to shinken. <br><br><h1>  We repair </h1><br>  The second part - how should we deal with this? <br>  A short run to Google showed that the buffer size for a socket when reading a UDP datagram is controlled by the application ( <a href="http://pubs.opengroup.org/onlinepubs/000095399/functions/setsockopt.html">man setsockopt</a> , SO_RCVBUF).  We continue the sprint with obstacles in Google - there is an option in the logstash configuration, called <b>buffer_size</b> .  By common thought, we raised it to 1MB.  The existence of <b>net.core.rmem_max</b> is also <b>magnified</b> - by default it is 200 + kb.  To our case (only 12kb) most likely does not apply, but it will not hurt to raise to 2Mb. <br><br><h1>  Result </h1><br>  0. The reason for the failure of monitoring is precisely clarified. <br>  1. Now shinken keeps track of the dropes on all network interfaces. <br>  2. logstash is ready to accept a larger burst of logging without packet loss. <br><br>  PS For those who talk about "tcp for syslog".  Netconsole is very low-level, and it does not know how to handle any tisipey, it even makes UDP using the “filled in fields and sent by ethernet-frame” method.  And, probably, the core would look very funny if it started to slow down due to the thoughtful recording of the TCP logs ... </div><p>Source: https://habr.com/ru/post/231623/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../231607/index.html">Kovyratsionny analysis, balalaika, goddess - and how do you talk with colleagues?</a></li>
 <li><a href="../231613/index.html">SERPClick: Promotion of behavioral factors</a></li>
 <li><a href="../231615/index.html">Black lists of the RuNet in action. How to reduce the risk for your site</a></li>
 <li><a href="../231619/index.html">Disassemble the advertising benefits of cloud hosting: the answer to the cloud provider</a></li>
+<li><a href="../23162/index.html">Ozon.ru celebrates 10 years and grows, grows, grows</a></li>
 <li><a href="../231621/index.html">How to stop worrying and create a team</a></li>
 <li><a href="../231627/index.html">Overview of the onboard system in Tesla</a></li>
 <li><a href="../231629/index.html">Search for an optimal audio system with closed source speech recognition, but with open APIs for integration</a></li>
+<li><a href="../23163/index.html">“Harmful” Customers</a></li>
 <li><a href="../231631/index.html">SDCast. Software podcast and its surroundings</a></li>
 <li><a href="../231635/index.html">BladeRoom enters the US market</a></li>
-<li><a href="../231637/index.html">Convenient documentation for those who want to learn FRP</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

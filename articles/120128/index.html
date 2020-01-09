@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Minus to minus gives ...</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/getpro/habr/post_images/560/580/c13/560580c13cd4f6a39d79ca30799d0d94.jpg" alt="image">  From the school course of arithmetic, everyone knows that a minus to a minus gives a plus.  Your humble servant also all his life was confident in this seemingly unshakable axiom.  But the other day, an event occurred that turned the worldview around and made me look at the usual things with a new look. <br><br>  In the process of developing administrative tools for the trellis <a href="http://trellis-club.com/ru/">club,</a> a function was needed to anullate all the results of a particular game.  It would seem that it could be easier.  We change the status of the game, roll back the denormalization data with player statistics, disable the operational caches affecting this data, and the trick is done.  But PostgreSQL and psycopg2 have their own opinion on this subject, which does not coincide with the opinion of the editorial board. <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Simplified problem query looked like this: <br><br> <code>cursor.execute("update pref_player set games=games-1, rating=rating-%s where player_id=%s", (rating, player_id))</code> <br> <br>  That is, we need to decrement the total number of games and to annul the player rating accumulated in this game.  The request has been parameterized.  Screened by regular psycopg2 products.  It seems there is simply nowhere to be mistaken.  But in fact, if the rating is <em>negative,</em> this query will turn into: <br><br> <code>update pref_player set games=games-1, rating=rating</code> <br> <br>  That is, an explosion occurs, the base breaks into the intestine, and hereinafter.  In other words, the base happily took two consecutive minuses as a comment, and beat the data into the cabbage.  And the driver psycopg2 missed all this joy without a single exclamation.  Although, I could probably determine that there is a comment in the request and the number of parameters to be escaped is not true. <br><br>  It is treated quite simple.  It is enough to say, for example, rating = rating - (% s) instead of rating = rating-% s and everything will work as it should, But the fact of unconditional trust in the processing of parameterized queries by database drivers should be questioned. <br><br>  Take care of yourself, be careful, and may the force be with you. </div><p>Source: <a href="https://habr.com/ru/post/120128/">https://habr.com/ru/post/120128/</a></p>
+      Simplified problem query looked like this: <br><br> <code>cursor.execute("update pref_player set games=games-1, rating=rating-%s where player_id=%s", (rating, player_id))</code> <br> <br>  That is, we need to decrement the total number of games and to annul the player rating accumulated in this game.  The request has been parameterized.  Screened by regular psycopg2 products.  It seems there is simply nowhere to be mistaken.  But in fact, if the rating is <em>negative,</em> this query will turn into: <br><br> <code>update pref_player set games=games-1, rating=rating</code> <br> <br>  That is, an explosion occurs, the base breaks into the intestine, and hereinafter.  In other words, the base happily took two consecutive minuses as a comment, and beat the data into the cabbage.  And the driver psycopg2 missed all this joy without a single exclamation.  Although, I could probably determine that there is a comment in the request and the number of parameters to be escaped is not true. <br><br>  It is treated quite simple.  It is enough to say, for example, rating = rating - (% s) instead of rating = rating-% s and everything will work as it should, But the fact of unconditional trust in the processing of parameterized queries by database drivers should be questioned. <br><br>  Take care of yourself, be careful, and may the force be with you. </div><p>Source: https://habr.com/ru/post/120128/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

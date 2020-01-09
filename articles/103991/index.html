@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>OnPropertyChanged with strong names</h1><div class="post__text post__text-html js-mediator-article">  OnPropertyChanged infuriates me wildly.  It requires the transfer of the string with the name of the identifier to it ... Not only is such a code not verified by the compiler, so there is no Intellisence - the type is all from beginning to end ... And if you type it, it will swallow it at runtime.  In general, not a good thing.  But in MVVM without it anywhere, as in WPF without MVVM. <br><br>  The last problem was somehow solved by such a crutch, stripped <a href="http://msdn.microsoft.com/en-us/magazine/dd419663.aspx">from here</a> , which was called from OnPropertyChanged: <br><blockquote><code><font color="black">[Conditional( <font color="#A31515">"DEBUG"</font> )] <br> [DebuggerStepThrough] <br> <font color="#0000ff">public</font> <font color="#0000ff">void</font> VerifyPropertyName( <font color="#0000ff">string</font> propertyName) <br> { <br> <font color="#008000">// Verify that the property name matches a real,</font> <br> <font color="#008000">// public, instance property on this object.</font> <br> <font color="#0000ff">if</font> (TypeDescriptor.GetProperties( <font color="#0000ff">this</font> )[propertyName] == <font color="#0000ff">null</font> ) <br> { <br> <font color="#0000ff">string</font> msg = <font color="#A31515">"Invalid property name: "</font> + propertyName; <br> <br> <font color="#0000ff">if</font> ( <font color="#0000ff">this</font> .ThrowOnInvalidPropertyName) <br> <font color="#0000ff">throw</font> <font color="#0000ff">new</font> Exception(msg); <br> <font color="#0000ff">else</font> <br> Debug.Fail(msg); <br> } <br> }</font> <br></code> </blockquote><br>  And today I accidentally found a beautiful way to get rid of it. <br><a name="habracut"></a><br>  The solution turned out to be beautiful and at the same time simple to the banality: use Expression, like this: <br><blockquote> <code><font color="black"><font color="#0000ff">this</font> .OnPropertyChanged(() =&gt; <font color="#0000ff">this</font> .ShowOverrideButton);</font> <br></code> </blockquote><br>  To do this, you just need to create an overload in the base class: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">protected</font> <font color="#0000ff">void</font> OnPropertyChanged&lt;T&gt;(Expression&lt;Func&lt;T&gt;&gt; property) <br> { <br> PropertyChangedEventHandler handler = <font color="#0000ff">this</font> .PropertyChanged; <br> <font color="#0000ff">if</font> (handler != <font color="#0000ff">null</font> ) <br> { <br> <font color="#0000ff">var</font> expression = property.Body <font color="#0000ff">as</font> MemberExpression; <br> <font color="#0000ff">if</font> (expression == <font color="#0000ff">null</font> ) <br> { <br> <font color="#0000ff">throw</font> <font color="#0000ff">new</font> NotSupportedException( <font color="#A31515">"Invalid expression passed. Only property member should be selected."</font> ); <br> } <br> <br> handler( <font color="#0000ff">this</font> , <font color="#0000ff">new</font> PropertyChangedEventArgs(expression.Member.Name)); <br> } <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  Is done.  You can forget about the strings in OnPropertyChange.  There are still bad lines in XAML in Binding - but I have absolutely no idea how to get rid of them. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/103991/">https://habr.com/ru/post/103991/</a></p>
+    <p>Source: https://habr.com/ru/post/103991/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../103982/index.html">FSB adopts Russian drones</a></li>
 <li><a href="../103983/index.html">Php closures</a></li>
 <li><a href="../103985/index.html">Issue 2: Cisco ROI Finalists are welcome in our incubator</a></li>
 <li><a href="../103986/index.html">Adobe's response to Apple's new rules</a></li>
+<li><a href="../103987/index.html">Canobuvosti, 56th edition</a></li>
 <li><a href="../103990/index.html">Fast Rubik's Cube Assembly</a></li>
 <li><a href="../103992/index.html">majordomo lies</a></li>
 <li><a href="../103999/index.html">Report from the Moscow Book Fair 2010</a></li>
+<li><a href="../104/index.html">Official release of Microsoft Office 2007 postponed</a></li>
+<li><a href="../1040/index.html">Habratsitatnik</a></li>
 <li><a href="../104001/index.html">Industrial Revolution: 3D printing in the interior of the house</a></li>
-<li><a href="../104003/index.html">And so you code</a></li>
-<li><a href="../104005/index.html">Vkontakte will open Ukrainian office</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

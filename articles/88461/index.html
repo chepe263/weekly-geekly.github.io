@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We protect SSH from brute force on any port</h1><div class="post__text post__text-html js-mediator-article"> Today I was interested in the question of whether <a href="http://habrahabr.ru/blogs/sysadm/88398/">SSH</a> should be <a href="http://habrahabr.ru/blogs/sysadm/88398/">outweighed by a non-standard port</a> .  The survey itself is not as interesting as the author’s <a href="https://habrahabr.ru/users/zivot_je_cudo/" class="user_link">zivot_je_cudo method</a> to protect SSH from password <a href="https://habrahabr.ru/users/zivot_je_cudo/" class="user_link">guessing</a> : after an incorrect connection attempt, block new attempts for 20 seconds.  The delay was apparently chosen empirically, based on two opposing wishes: so as not to block oneself for a long time in case of a typo, and at the same time complicate the life of the picker.  I want to share my way of countering brute force, which I have been using for several years.  It has two advantages: <br>  - gives me more attempts to set the correct password <br>  - but at the same time it blocks forever brute forcing. <br><br>  How can these two opposite goals be achieved? <br><a name="habracut"></a><br><br>  I use the iptables module called hashlimit, which is able to count the number of packets in a certain period of time and reset the counter after a while. <br>  Everything is done by three rules: <br> <code>iptables -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -m hashlimit --hashlimit 1/hour --hashlimit-burst 2 --hashlimit-mode srcip --hashlimit-name SSH --hashlimit-htable-expire 60000 -j ACCEPT <br> <br> iptables -A INPUT -p tcp -m tcp --dport 22 --tcp-flags SYN,RST,ACK SYN -j DROP <br> <br> iptables -A RH-Firewall-1-INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT</code> <br> <br>  What makes the second and third rules clear.  The most interesting in the first: it allows 2 connection attempts within an hour.  As soon as you exceed 2 attempts in the specified time, the rule with -j ACCEPT stops working, the user instead enters the next rule with -j DROP (you can also put TARPIT in the same way).  After that, you will not be able to connect, and a countdown of 60,000 milliseconds begins, after which the information about your attempt to “faint” (parameter --hashlimit-htable-expire).  That is, you really should not wait for 1 hour, but only 1 minute.  The whole military trick is that if you do not wait for this time and try to reconnect, the packet will be killed, and the counter will be reset to its initial state - 1 minute!  Thus, if you are an impatient brute forcer and stupidly gouging the port after blocking, then with each attempt you will extend your ban!  That is, ban yourself forever! <br>  A respectable user has several attempts to connect without waiting between them before falling into the “bath”. <br>  The hashlimit module saves its state in / proc - initially it is empty there: <br>  # cat / proc / net / ipt_hashlimit / ssh 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      after the first connection attempt there gets infa: <br>  # cat / proc / net / ipt_hashlimit / ssh <br>  55XX.XX.XX.XX: 0-&gt; 0.0.0.0 call 11533000 230400000 115000000 <br><br>  The first number - the number of remaining seconds, you can watch how it evenly ticks: <br>  # cat / proc / net / ipt_hashlimit / ssh <br>  20XX.XX.XX.XX: 0-&gt; 0.0.0.0; Voice 117429000 230400000 115000000 <br><br>  After I did this, I really wanted to check.  And wow!  On the catcher the beast is running!  I immediately began to brute force some Chinese.  The first 4 attempts passed, and then within an hour (!) He stupidly dug into the closed door.  For all this hour he managed to check only 4 passwords!  Further, apparently tired. <br><br>  Thus two problems are solved: <br>  - if the user is suddenly sealed up, he does not need to wait long for new attempts <br>  - bruteforcers drive themselves into the “eternal” ban. <br><br>  What to do if you suddenly with several attempts could not enter a password?  Do not fuss - wait quietly for a minute and try a few more times. <br>  And if they failed again - it is better to go to sleep, in this state it is better not to climb into the console :)) <br><br>  Successes. <br><br>  PS And yes, I almost forgot - I have SSH on a non-standard port :) <br><br>  <b>UPD:</b> A little about setting <a href="http://www.protocols.ru/Papers/iptables-tbf.shtml">hashlimit</a> . <br>  <b>UPD2:</b> How to achieve the same with the more common recent module: <a href="http://habrahabr.ru/blogs/sysadm/88461/">one</a> , <a href="http://habrahabr.ru/blogs/sysadm/88461/">two</a> . <br>  <b>UPD3: It</b> goes without <b>saying that</b> the method is suitable not only to protect against password selection via SSH, but it can also be used for various other services, where connecting too often signals something amiss. <br>  <b>UPD4:</b> Limit connections using <a href="http://habrahabr.ru/blogs/sysadm/88461/">SSHD itself</a> . </div><p>Source: <a href="https://habr.com/ru/post/88461/">https://habr.com/ru/post/88461/</a></p>
+      after the first connection attempt there gets infa: <br>  # cat / proc / net / ipt_hashlimit / ssh <br>  55XX.XX.XX.XX: 0-&gt; 0.0.0.0 call 11533000 230400000 115000000 <br><br>  The first number - the number of remaining seconds, you can watch how it evenly ticks: <br>  # cat / proc / net / ipt_hashlimit / ssh <br>  20XX.XX.XX.XX: 0-&gt; 0.0.0.0; Voice 117429000 230400000 115000000 <br><br>  After I did this, I really wanted to check.  And wow!  On the catcher the beast is running!  I immediately began to brute force some Chinese.  The first 4 attempts passed, and then within an hour (!) He stupidly dug into the closed door.  For all this hour he managed to check only 4 passwords!  Further, apparently tired. <br><br>  Thus two problems are solved: <br>  - if the user is suddenly sealed up, he does not need to wait long for new attempts <br>  - bruteforcers drive themselves into the “eternal” ban. <br><br>  What to do if you suddenly with several attempts could not enter a password?  Do not fuss - wait quietly for a minute and try a few more times. <br>  And if they failed again - it is better to go to sleep, in this state it is better not to climb into the console :)) <br><br>  Successes. <br><br>  PS And yes, I almost forgot - I have SSH on a non-standard port :) <br><br>  <b>UPD:</b> A little about setting <a href="http://www.protocols.ru/Papers/iptables-tbf.shtml">hashlimit</a> . <br>  <b>UPD2:</b> How to achieve the same with the more common recent module: <a href="http://habrahabr.ru/blogs/sysadm/88461/">one</a> , <a href="http://habrahabr.ru/blogs/sysadm/88461/">two</a> . <br>  <b>UPD3: It</b> goes without <b>saying that</b> the method is suitable not only to protect against password selection via SSH, but it can also be used for various other services, where connecting too often signals something amiss. <br>  <b>UPD4:</b> Limit connections using <a href="http://habrahabr.ru/blogs/sysadm/88461/">SSHD itself</a> . </div><p>Source: https://habr.com/ru/post/88461/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../88446/index.html">Chasofon LG GD 910</a></li>
 <li><a href="../88451/index.html">XP and Ubuntu on Apple iMac (holivar machine)</a></li>
 <li><a href="../88452/index.html">Printer that prints buildings</a></li>
 <li><a href="../88454/index.html">Yandex.Mail for domain: bad experience</a></li>
+<li><a href="../8846/index.html">Independent facecontrol.ru</a></li>
 <li><a href="../88460/index.html">Steve Jobs does not want to support Picasa</a></li>
 <li><a href="../88467/index.html">Popodpiske.ru: the usual licensed software through micropayments</a></li>
+<li><a href="../8847/index.html">Google translate + Yandex =?</a></li>
 <li><a href="../88472/index.html">We repair headphones</a></li>
 <li><a href="../88474/index.html">Accessing paid content with Google</a></li>
-<li><a href="../88481/index.html">Infinite usb</a></li>
-<li><a href="../88483/index.html">The system of personal finance management stochastic type</a></li>
+<li><a href="../8848/index.html">Dell has started selling computers preinstalled with Ubuntu OS</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

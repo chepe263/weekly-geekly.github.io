@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>About alignment of memory on ARM processors on a simple example</h1><div class="post__text post__text-html js-mediator-article">  Suppose we have a function that takes a pointer.  We know that the pointer contains a zero-terminal string, followed by a 4-byte integer.  The task is to output a string and an integer to the console.  You can solve it like this: <br><br><pre><code class="cpp hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">foo</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(</span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">void</span></span></span></span><span class="hljs-function"><span class="hljs-params">* data_ptr)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-comment"><span class="hljs-comment">//       char* str = (char*)data_ptr; //            int* value = (int*)(str+strlen(str)+1); //    printf("%s %d", str, *value); }</span></span></code> </pre> <br>  Quite a trivial task, isn't it?  Check on the computer (x86), everything is OK.  We load on a board with ARM.  And, not having time to shoot himself in the foot, stepping on a rake.  Depending on the content of the string, the integer value is output either normal or crooked.  We check pointers, check the memory to which they point.  Everything is okay. <br><a name="habracut"></a><br>  Note that the integer is displayed exactly when the length of the string is 3, 7, 11, ..., 4 * n-1.  Yeah.  We take a closer look at the memory and on the output in “crooked” cases.  For example, if the memory looks like this: <br><br>  Address: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="hljs ruby"><span class="hljs-params"><span class="hljs-params">|0x00|</span></span><span class="hljs-number"><span class="hljs-number">0x01</span></span><span class="hljs-params"><span class="hljs-params">|0x02|</span></span><span class="hljs-number"><span class="hljs-number">0x03</span></span><span class="hljs-params"><span class="hljs-params">|0x04|</span></span><span class="hljs-number"><span class="hljs-number">0x05</span></span><span class="hljs-params"><span class="hljs-params">|0x06|</span></span><span class="hljs-number"><span class="hljs-number">0x07</span></span><span class="hljs-params"><span class="hljs-params">|0x08|</span></span></code> </pre> <br>  Data: <br><br><pre> <code class="hljs ruby"><span class="hljs-params"><span class="hljs-params">|0x31|</span></span><span class="hljs-number"><span class="hljs-number">0x31</span></span><span class="hljs-params"><span class="hljs-params">|0x31|</span></span><span class="hljs-number"><span class="hljs-number">0x31</span></span><span class="hljs-params"><span class="hljs-params">|0x00|</span></span><span class="hljs-number"><span class="hljs-number">0x01</span></span><span class="hljs-params"><span class="hljs-params">|0x00|</span></span><span class="hljs-number"><span class="hljs-number">0x00</span></span><span class="hljs-params"><span class="hljs-params">|0x00|</span></span></code> </pre> <br>  At the output we get the string "1111" and the integer 0x00000100 instead of 0x00000001. <br><br>  <b>Conclusion:</b> Despite the fact that the expression * value we refer to the pointer 0x05, the data is returned to us as if the conversion occurs on the pointer 0x04 (or another multiple of 4). <br><br>  So how to solve this problem correctly?  That's how: <br><br><pre> <code class="cpp hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">foo</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(</span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">void</span></span></span></span><span class="hljs-function"><span class="hljs-params">* data_ptr)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> value; <span class="hljs-comment"><span class="hljs-comment">//    char* str = (char*)data_ptr; memcpy(&amp;value, str+strlen(str)+1, sizeof(int)); //    printf("%s %d", str, value); //  }</span></span></code> </pre><br>  In this case, everything is always in place. <br>  Thanks for attention! <br><br>  UPD: Corrected an obvious error. </div><p>Source: <a href="https://habr.com/ru/post/309144/">https://habr.com/ru/post/309144/</a></p>
+    <pre> <code class="hljs ruby"><span class="hljs-params"><span class="hljs-params">|0x00|</span></span><span class="hljs-number"><span class="hljs-number">0x01</span></span><span class="hljs-params"><span class="hljs-params">|0x02|</span></span><span class="hljs-number"><span class="hljs-number">0x03</span></span><span class="hljs-params"><span class="hljs-params">|0x04|</span></span><span class="hljs-number"><span class="hljs-number">0x05</span></span><span class="hljs-params"><span class="hljs-params">|0x06|</span></span><span class="hljs-number"><span class="hljs-number">0x07</span></span><span class="hljs-params"><span class="hljs-params">|0x08|</span></span></code> </pre> <br>  Data: <br><br><pre> <code class="hljs ruby"><span class="hljs-params"><span class="hljs-params">|0x31|</span></span><span class="hljs-number"><span class="hljs-number">0x31</span></span><span class="hljs-params"><span class="hljs-params">|0x31|</span></span><span class="hljs-number"><span class="hljs-number">0x31</span></span><span class="hljs-params"><span class="hljs-params">|0x00|</span></span><span class="hljs-number"><span class="hljs-number">0x01</span></span><span class="hljs-params"><span class="hljs-params">|0x00|</span></span><span class="hljs-number"><span class="hljs-number">0x00</span></span><span class="hljs-params"><span class="hljs-params">|0x00|</span></span></code> </pre> <br>  At the output we get the string "1111" and the integer 0x00000100 instead of 0x00000001. <br><br>  <b>Conclusion:</b> Despite the fact that the expression * value we refer to the pointer 0x05, the data is returned to us as if the conversion occurs on the pointer 0x04 (or another multiple of 4). <br><br>  So how to solve this problem correctly?  That's how: <br><br><pre> <code class="cpp hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">foo</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(</span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">void</span></span></span></span><span class="hljs-function"><span class="hljs-params">* data_ptr)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> value; <span class="hljs-comment"><span class="hljs-comment">//    char* str = (char*)data_ptr; memcpy(&amp;value, str+strlen(str)+1, sizeof(int)); //    printf("%s %d", str, value); //  }</span></span></code> </pre><br>  In this case, everything is always in place. <br>  Thanks for attention! <br><br>  UPD: Corrected an obvious error. </div><p>Source: https://habr.com/ru/post/309144/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../309130/index.html">Communication Arrangements</a></li>
 <li><a href="../309132/index.html">Once again about the benefits of backups or the story of my failure</a></li>
 <li><a href="../309136/index.html">ADM interface - what is “Tetrad”</a></li>
 <li><a href="../309138/index.html">Learning OpenGL ES2 for Android Lesson №4. Textures</a></li>
+<li><a href="../30914/index.html">Marketing for algorithms, not just for people</a></li>
 <li><a href="../309142/index.html">Private unstructured types and type reuse</a></li>
+<li><a href="../30915/index.html">Success story of a startup MyBlogLog, or $ 10 million for three</a></li>
 <li><a href="../309150/index.html">Constants do not change: a small excursion into the depths of dotNet</a></li>
 <li><a href="../309152/index.html">Review of computer vision problems in medicine</a></li>
 <li><a href="../309154/index.html">Some examples of the practical use of RxJava</a></li>
 <li><a href="../309156/index.html">Testing IVR on Asterisk with ... Asterisk</a></li>
-<li><a href="../309158/index.html">Survey: Programmer and Salary</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

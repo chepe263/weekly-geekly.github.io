@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -60,7 +60,7 @@
  &lt;&amp; /Footer.inc &amp;&gt;
 </pre><br>  Familiar approach?  In principle, there is nothing bad in this example.  Is that annoying to drag in almost all components of almost identical inclusions to display the design, and verification of authorization requires that it copy-paste from page to page.  What can be done?  Just remove too much :) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -68,7 +68,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h1>  Theoretical foundations of inheritance </h1><h2>  Feature # 1: parent components </h2>  Each component mason can be inherited from any other component.  Such a component can be set (or reset) forcibly using the <code>&lt;%FLAGS&gt;</code> section and a flag named <code>inherit</code> , or it can be calculated automatically.  In the second case, in the folder where the component is located, a file with the name <code>autohandler</code> , and if it is not there, the search continues with the folder above, and so on - until the folder that mason considers to be the root.  If an ancestor is found, the mason tries to find a parent for it. <br><br>  Once the inheritance chain is built, the execution is transferred to the “most parent” component, which can perform some actions and transfer control to its descendant — using the magic call <code>$m-&gt;call_next</code> (the magic is exposed in the documentation).  After the child has completed the execution of the parent component continues. <br><br>  The above procedure for building the chain of inheritance works only when the page is accessed;  When other components are included, the mechanism does not turn on. <br><br><h2>  Feature # 2: Attributes and Methods </h2>  With attributes, everything is simple: in the <code>&lt;%ATTR&gt;</code> section of the component, you can <code>&lt;%ATTR&gt;</code> an arbitrary set of named parameters.  If the parent components have attributes that are not directly declared in the current component, they are inherited. <br><br>  With methods, the situation is almost as simple: each method is wrapped in a <code>&lt;%METHOD&gt;</code> section and is a “component in a component” that can be called in much the same way as connectors.  Like conventional components, methods can be used as a template (for data output), and as a function (for obtaining the result of calculations). <br><br><h1>  Practical Basis of Inheritance </h1>  So, we will try to refine pages with the help of these two features.  It is logical to drag off the cap and tail in <code>/autohandler</code> .  The only "but" - in the header displays the name of the page (in the <code>title</code> tag).  It can be safely put in the attributes of the page, if we can get to them from the <code>autohandler</code> (and looking ahead, I will say yes, we can).  Now we only have the duplicated <code>&lt;%INIT&gt;</code> section with the authorization check.  What if authorization is not needed on all pages?  An excellent and completely secure way to solve this problem is to entrust the page itself to control the verification.  Let's get the <code>authorize</code> attribute, let the authorization be checked on all pages where it is set to the true value (for definiteness, we assume that we have to check all pages except <code>/profile/login.html</code> ).  The results of our thinking: <br><br>  <b>/ autohandler:</b> <br><pre> &lt;% INIT&gt;
@@ -115,15 +115,15 @@
      ];
      &lt;/% INIT&gt;
  &lt;/% METHOD&gt;
-</pre><br><h1>  Instead of epilogue </h1>  The above techniques solve several simple, but very useful tasks.  The removal of common code fragments in <code>autohandler</code> 's significantly reduces the amount of non-informative code in the templates.  Attributes allow you to move from writing code to its configuration.  Methods are ideal for describing visual blocks on a page, and allow flexible linking of code with components. <br><br>  The article shows only ideas, and they can be easily developed.  For example, how would you solve the problem if you needed to make a component that can render a CSV file instead of showing the page?  Great, and if the page, depending on the wishes of the user, gives out either CSV or HTML in the standard site design?  And weakly make an application with skins and the ability to connect different skins in different pages?  By the way, not as simple as it seems at first glance.  Nevertheless, try :) </div><p>Source: <a href="https://habr.com/ru/post/54290/">https://habr.com/ru/post/54290/</a></p>
+</pre><br><h1>  Instead of epilogue </h1>  The above techniques solve several simple, but very useful tasks.  The removal of common code fragments in <code>autohandler</code> 's significantly reduces the amount of non-informative code in the templates.  Attributes allow you to move from writing code to its configuration.  Methods are ideal for describing visual blocks on a page, and allow flexible linking of code with components. <br><br>  The article shows only ideas, and they can be easily developed.  For example, how would you solve the problem if you needed to make a component that can render a CSV file instead of showing the page?  Great, and if the page, depending on the wishes of the user, gives out either CSV or HTML in the standard site design?  And weakly make an application with skins and the ability to connect different skins in different pages?  By the way, not as simple as it seems at first glance.  Nevertheless, try :) </div><p>Source: https://habr.com/ru/post/54290/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../54281/index.html">Apple: 17.03</a></li>
 <li><a href="../54283/index.html">CSS Sprites Autogeneration</a></li>
 <li><a href="../54284/index.html">About some interesting near future power supplies</a></li>
 <li><a href="../54285/index.html">Linux, Microsoft, and Sun gather at the Linux Foundation Collaboration Summit. Where is Apple?</a></li>
 <li><a href="../54286/index.html">MTS changes billing for GPRS traffic</a></li>
+<li><a href="../5429/index.html">Server confiscation with unlicensed Linux</a></li>
 <li><a href="../54292/index.html">Google voice</a></li>
 <li><a href="../54294/index.html">Parable about coffee</a></li>
 <li><a href="../54295/index.html">P2P right in the browser</a></li>

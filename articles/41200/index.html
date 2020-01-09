@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to safely deliver SIGINT to the main thread?</h1><div class="post__text post__text-html js-mediator-article"> Commentator AnotherMatt <a href="http://blogs.msdn.com/oldnewthing/pages/407234.aspx">wonders</a> why Win32 console applications deliver messages to another thread.  Why don't they send them to the main thread? <br><br>  Actually, I have a reverse question.  Why is a UNIX signal sent to the main thread?  This makes it <a href="https://www.securecoding.cert.org/confluence/display/seccode/SIG31-C.%2BDo%2Bnot%2Baccess%2Bor%2Bmodify%2Bshared%2Bobjects%2Bin%2Bsignal%2Bhandlers">almost impossible to do anything important inside a signal handler</a> .  The main stream may be inside the heap manager (hold the critical section) while receiving a signal.  If the signal handler tries to access the heap, it will interlock with itself if you are lucky.  In the worst case, a bunch will be damaged. <br><a name="habracut"></a><br>  For example, consider this handler: <br><br> <code>void catch_int(int sig_num) <br> { <br> /*      catch_int */ <br> signal(SIGINT, catch_int); <br> <br> /*    */ <br> printf("  "); <br> fflush(stdout); <br> } <br></code> <br>  What happens if the signal is sent when the program executes its fflush (), say, after half the buffer has already been written?  If two threads call fflush (), the second caller will wait for the end of the first.  But here everything happens in the same flow;  The second caller cannot wait for the first, since the first cannot work until the second returns a value! 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,18 +61,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      (Note also that this handler potentially modifies the errno variable, which can lead to "impossible" errors in the main program.) <br><br>  Win32 does not believe in the asynchronous interruption of a user mode code by another user code, because this makes it impossible to determine the status of a process.  Delivering a signal to the second stream means that if the second stream tries to access the heap while the first thread owns it, the second stream will meekly wait for the stable state of the heap and only after its release will it start working with it. <br><br><br>  <b>UPD</b> : Thank you all for your karma.  moved to a specialized blog. </div><p>Source: <a href="https://habr.com/ru/post/41200/">https://habr.com/ru/post/41200/</a></p>
+      (Note also that this handler potentially modifies the errno variable, which can lead to "impossible" errors in the main program.) <br><br>  Win32 does not believe in the asynchronous interruption of a user mode code by another user code, because this makes it impossible to determine the status of a process.  Delivering a signal to the second stream means that if the second stream tries to access the heap while the first thread owns it, the second stream will meekly wait for the stable state of the heap and only after its release will it start working with it. <br><br><br>  <b>UPD</b> : Thank you all for your karma.  moved to a specialized blog. </div><p>Source: https://habr.com/ru/post/41200/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../41193/index.html">Porsche P'9522 - 3G Phone with Fingerprint Scanner</a></li>
-<li><a href="../41194/index.html">Domains passport?</a></li>
 <li><a href="../41196/index.html">Internet radio has been deferred</a></li>
 <li><a href="../41198/index.html">jQuery sIFR Plugin - create flash text</a></li>
 <li><a href="../41199/index.html">Web Development Master Classes</a></li>
+<li><a href="../412/index.html">Ostap suffered</a></li>
+<li><a href="../4120/index.html">Dictate Wins Freedom on the Net</a></li>
 <li><a href="../41202/index.html">IPhone Night in Russia (Newsletter)</a></li>
 <li><a href="../41203/index.html">Tracking the burning of space debris</a></li>
 <li><a href="../41204/index.html">Some dangerous trojan horses detected in your system</a></li>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Hard disk 3TB - connect to Windows XP</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/911/01b/fb5/91101bfb5ec18c846eaaf2ae06153503.jpg">  In connection with the crisis of the hard disk market, it has increasingly begun to think that now is the time to buy a 3TB disk.  By chance, my choice fell on the model ST3000DM001.  The cost of this miracle turned out to be rather big, but I decided for myself in advance that I would chase the volume, closing my eyes to the price. <br><br>  At work, I stuck my purchase in Windows 7 and without sound, formatted it in a new-fashioned GPT, which, unlike the MBR, supports disks larger than 2TB.  But there are problems on the home Windows XP, the disk is visible, but there is no access to it - a problem with GPT.  Outdated OSes refuse to accept a newbie. <br><br>  Began to google, <a href="http://forum.ixbt.com/topic.cgi%3Fid%3D11:41887-12">found the discussion</a> , which boils down to what you need to put Paragon GPT Loader.  But this version is only suitable for Hitachi, for other models dancing with a tambourine, judging by the forum, exceeds all reasonable limits. <br><a name="habracut"></a><br>  As a result, on the advice of Dip, created the install.reg file: <br><pre><code class="hljs tex">Windows Registry Editor Version 5.00 [HKEY_LOCAL_MACHINE<span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">SYSTEM</span></span></span></span><span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">CurrentControlSet</span></span></span></span><span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">Services</span></span></span></span><span class="hljs-tag"><span class="hljs-tag">\</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">gpt</span></span></span></span>_loader] "VIDS"=hex:0E,DA</code> </pre> <br>  Next, using <a href="http://www.legroom.net/software/uniextract">Universal Extractor</a> , I extracted from the <a href="http://www.paragon-software.com/hitachi/">Paragon GPT Loader</a> distribution kit the gpt_loader files with note 2 located in the MSI directory: \ SourceDir \ program files \ Hitachi \ GPT Disk Manager \ gpt_loader: <br><pre> <code class="hljs css">21<span class="hljs-selector-class"><span class="hljs-selector-class">.12</span></span><span class="hljs-selector-class"><span class="hljs-selector-class">.2010</span></span> 19<span class="hljs-selector-pseudo"><span class="hljs-selector-pseudo">:18</span></span> 7 464 <span class="hljs-selector-tag"><span class="hljs-selector-tag">gpt_loader</span></span>,2<span class="hljs-selector-class"><span class="hljs-selector-class">.cat</span></span> 21<span class="hljs-selector-class"><span class="hljs-selector-class">.12</span></span><span class="hljs-selector-class"><span class="hljs-selector-class">.2010</span></span> 19<span class="hljs-selector-pseudo"><span class="hljs-selector-pseudo">:18</span></span> 2 590 <span class="hljs-selector-tag"><span class="hljs-selector-tag">gpt_loader</span></span>,2<span class="hljs-selector-class"><span class="hljs-selector-class">.inf</span></span> 21<span class="hljs-selector-class"><span class="hljs-selector-class">.12</span></span><span class="hljs-selector-class"><span class="hljs-selector-class">.2010</span></span> 19<span class="hljs-selector-pseudo"><span class="hljs-selector-pseudo">:18</span></span> 51 792 <span class="hljs-selector-tag"><span class="hljs-selector-tag">gpt_loader</span></span>,2<span class="hljs-selector-class"><span class="hljs-selector-class">.sys</span></span></code> </pre> <br>  And renamed them, removing the deuce from the name, it turned out like this (MD5 checksums): <br><pre> <code class="hljs css">7<span class="hljs-selector-tag"><span class="hljs-selector-tag">eb7121fe3bf4d30e319533a6e0116c5</span></span> *<span class="hljs-selector-tag"><span class="hljs-selector-tag">gpt_loader</span></span><span class="hljs-selector-class"><span class="hljs-selector-class">.cat</span></span> 44275<span class="hljs-selector-tag"><span class="hljs-selector-tag">f00bdd459a816e1633846542943</span></span> *<span class="hljs-selector-tag"><span class="hljs-selector-tag">gpt_loader</span></span><span class="hljs-selector-class"><span class="hljs-selector-class">.inf</span></span> 2234<span class="hljs-selector-tag"><span class="hljs-selector-tag">a9ba20e6a5d4d6404c499e8438a2</span></span> *<span class="hljs-selector-tag"><span class="hljs-selector-tag">gpt_loader</span></span><span class="hljs-selector-class"><span class="hljs-selector-class">.sys</span></span> 22<span class="hljs-selector-tag"><span class="hljs-selector-tag">aa73696c1d1e4fff650fc606a2192f</span></span> *<span class="hljs-selector-tag"><span class="hljs-selector-tag">install</span></span><span class="hljs-selector-class"><span class="hljs-selector-class">.reg</span></span></code> </pre> <br>  Further applied to the REG file: regedit install.reg <br>  And on the gpt_loader.inf file I right-clicked in the explorer and selected Install. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      After the reboot, the hard drive was determined and earned. </div><p>Source: <a href="https://habr.com/ru/post/137109/">https://habr.com/ru/post/137109/</a></p>
+      After the reboot, the hard drive was determined and earned. </div><p>Source: https://habr.com/ru/post/137109/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Auto Dial from Callback from Elastix</h1><div class="post__text post__text-html js-mediator-article">  Since not all sip-phones can dial out, and sometimes you want to have it, I tried to implement it with the means *.  By itself, the option suggests itself via call-files, but there is one trouble: when connected, both subscribers have the phone ringing at the same time, and when the addressee of the dialer picks up the phone and hears the waiting tone, he sometimes gets scared and hangs up ( quickly got used).  I tried 2 options, the second seemed to me more universal and logical.  They differ in the need to edit (remap) the default from-internal context. <br><a name="habracut"></a><br>  So, the general for all: <br>  in the file /etc/asterisk/extensions_custom.conf add: <br><pre><code class="bash hljs">[macro-autodial] ;    (  3),    exten =&gt; s,1,ExecIf($[<span class="hljs-string"><span class="hljs-string">"</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">${ARG1:0:1}</span></span></span><span class="hljs-string">"</span></span> = <span class="hljs-string"><span class="hljs-string">"*"</span></span> | <span class="hljs-variable"><span class="hljs-variable">${LEN(${ARG2}</span></span>)} != 3 ],Hangup) ; .call- exten =&gt; s,n,System(<span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"Channel: Local/</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">${ARG1}</span></span></span><span class="hljs-string">@from-internal"</span></span> &gt; /tmp/<span class="hljs-variable"><span class="hljs-variable">${ARG2}</span></span><span class="hljs-variable"><span class="hljs-variable">${UNIQUEID}</span></span>.call) exten =&gt; s,n,System(<span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"MaxRetries: 10"</span></span> &gt;&gt; /tmp/<span class="hljs-variable"><span class="hljs-variable">${ARG2}</span></span><span class="hljs-variable"><span class="hljs-variable">${UNIQUEID}</span></span>.call) exten =&gt; s,n,System(<span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"RetryTime: 20"</span></span> &gt;&gt; /tmp/<span class="hljs-variable"><span class="hljs-variable">${ARG2}</span></span><span class="hljs-variable"><span class="hljs-variable">${UNIQUEID}</span></span>.call) exten =&gt; s,n,System(<span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"WaitTime: 40"</span></span> &gt;&gt; /tmp/<span class="hljs-variable"><span class="hljs-variable">${ARG2}</span></span><span class="hljs-variable"><span class="hljs-variable">${UNIQUEID}</span></span>.call) exten =&gt; s,n,System(<span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> -e <span class="hljs-string"><span class="hljs-string">"Callerid: \\x22CallBack </span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">${ARG1}</span></span></span><span class="hljs-string">\\x22 \\x3C</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">${ARG2}</span></span></span><span class="hljs-string">\\x3E"</span></span> &gt;&gt; /tmp/<span class="hljs-variable"><span class="hljs-variable">${ARG2}</span></span><span class="hljs-variable"><span class="hljs-variable">${UNIQUEID}</span></span>.call) ;   ,   exten =&gt; s,n,System(<span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"Context: autodial-internal"</span></span> &gt;&gt; /tmp/<span class="hljs-variable"><span class="hljs-variable">${ARG2}</span></span><span class="hljs-variable"><span class="hljs-variable">${UNIQUEID}</span></span>.call) exten =&gt; s,n,System(<span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"Extension: </span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">${ARG2}</span></span></span><span class="hljs-string">"</span></span> &gt;&gt; /tmp/<span class="hljs-variable"><span class="hljs-variable">${ARG2}</span></span><span class="hljs-variable"><span class="hljs-variable">${UNIQUEID}</span></span>.call) exten =&gt; s,n,System(<span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"Priority: 1"</span></span> &gt;&gt; /tmp/<span class="hljs-variable"><span class="hljs-variable">${ARG2}</span></span><span class="hljs-variable"><span class="hljs-variable">${UNIQUEID}</span></span>.call) ;    exten =&gt; s,n,System(sleep 15 &amp;&amp; mv -f /tmp/<span class="hljs-variable"><span class="hljs-variable">${ARG2}</span></span><span class="hljs-variable"><span class="hljs-variable">${UNIQUEID}</span></span>.call /var/spool/asterisk/outgoing/ &amp;) ;  -  exten =&gt; s,n,Playback(ozhidajte-soedinenija) [autodial-internal] exten =&gt; _XXX,1,Dial(SIP/<span class="hljs-variable"><span class="hljs-variable">${EXTEN}</span></span>) exten =&gt; _XXX,2,Hangup()</code> </pre> <br><br>  But then the differences begin. <br>  In the first version, we continue in the /etc/asterisk/extensions_custom.conf file. <br>  At the end of the context [from-internal-custom] add: <br><pre> <code class="bash hljs">; *20&lt;&gt;   &lt;&gt; exten =&gt; _*20X.,1,Macro(autodial,<span class="hljs-variable"><span class="hljs-variable">${EXTEN:3}</span></span>,<span class="hljs-variable"><span class="hljs-variable">${CALLERID(number)}</span></span>) exten =&gt; _*20X.,2,Hangup()</code> </pre><br><br>  In the second variant, we switch to the /etc/asterisk/extensions_override_elastix.conf file, which allows you to reassign default contexts without losing the ability to change settings via the web interface. <br>  In him: <br><pre> <code class="bash hljs">[from-internal] ;     exten =&gt; _[0-9*<span class="hljs-comment"><span class="hljs-comment">#]X.,1,Set(DB(LASTCALLED/${CALLERID(number)})=${EXTEN}) ;    exten =&gt; _[0-9*#]X.,2,Goto(from-internal-my,${EXTEN},1) ; *20      exten =&gt; *20,1,Macro(autodial,${DB(LASTCALLED/${CALLERID(number)})},${CALLERID(number)}) exten =&gt; *20,2,Hangup() ; *20&lt;&gt;   &lt;&gt; exten =&gt; _*20X.,1,Macro(autodial,${EXTEN:3},${CALLERID(number)}) exten =&gt; _*20X.,2,Hangup() ;  [from-internal]   ,     ,    ,  ,        [from-internal-my] include =&gt; from-internal-xfer include =&gt; bad-number</span></span></code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      As a result, * 20number will put the number into automatic redial, and just * 20 will redial the last number dialed, and the last combination will be available only in the second implementation version. </div><p>Source: <a href="https://habr.com/ru/post/214093/">https://habr.com/ru/post/214093/</a></p>
+      As a result, * 20number will put the number into automatic redial, and just * 20 will redial the last number dialed, and the last combination will be available only in the second implementation version. </div><p>Source: https://habr.com/ru/post/214093/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../214095/index.html">Installing pagespeed for Nginx on Debian 6</a></li>
 <li><a href="../214097/index.html">Are high-frequency traders too slow?</a></li>
 <li><a href="../214099/index.html">Design Basics</a></li>
-<li><a href="../214101/index.html">Atlas of new professions-1. Biotechnology and medicine</a></li>
-<li><a href="../214103/index.html">Google Modular smartphone “Project Ara” will go on sale in 2015</a></li>
+<li><a href="../2141/index.html">Google and YouTube have reached $ 1,775 billion</a></li>
+<li><a href="../21410/index.html">To the question of choosing a webcam</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

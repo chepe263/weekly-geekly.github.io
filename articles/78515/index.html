@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Mercurial for parallel work with several similar projects, part 1</h1><div class="post__text post__text-html js-mediator-article"><h4>  Introduction </h4><br>  The article discusses several problems (and useful features) when working with mercurial and suggests solutions for them. <br><br><h5>  Several projects on one framework </h5><br>  Suppose we use some kind of framework in several projects at once.  To do this, we, as a rule, clone the base repository and begin to change files in it related only to our project, test, commit, push - everything as usual. <br>  Suddenly ... we find that there is a bug in the framework itself, or we simply don’t have the strength, we need to add some functionality, but at the same time test it with the current project. <br>  At the same time, we understand that these changes should sooner or later get into the framework repository. <br><br>  What to do? <br><a name="habracut"></a><br>  The most obvious solution is to use patches.  We wrote, checked, selected only the files related to the framework, made a patch, applied the patch to the project repository, committed and started where to, updated in other projects as needed. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  And if you need to do it all the time? </h5><br>  Now let's imagine a situation where we are simultaneously working on several similar projects based on the same framework, or we are writing our own framework.  We will create a separate repository for development, in which we will develop and test generalized parts for all projects.  For example: <br><br>  Local <b>development repository</b> : <br><ul><li>  core - framework files </li><li>  shared - shared files for projects </li><li>  custom - files required for testing </li></ul><br>  And you will also have a <b>repository-repository of</b> generalized parts (or framework): <br><ul><li>  core - framework files </li><li>  shared - shared files for projects </li></ul><br>  The custom folder in this repository is naturally absent, otherwise with any changes, they will fall into the repositories of individual projects, which is unacceptable. <br><br>  Changes are distributed according to the following scheme: <br><br>  <b>development repository</b> → <b>repository repository</b> → project repositories → (patches) <b>development repository</b> <br><br><h6>  How to organize this with a minimum of nerves? </h6><br>  Firstly, symlinks with mercurial will not work, and all options related to file sharing between working copies should be discarded.  (hardlinks would work if they could be done on directories) <br><br>  So we need to ignore the custom folder.  In the mercurial repository, there are two main methods of "ignoring": <br><ol><li>  Using the .hgignore file in the repository root </li><li>  Using .hg / hgrc ignore </li></ol><br>  The first method does not suit us, as .hgignore is placed in the repository and will ruin the life when developing individual projects. <br><br>  But the second way - what you need: <br><br>  1. Create a file similar to .hgignore, put it in a convenient place (for example, in the .hg folder or outside the repository). <br><br>  2. In the [ui] section of the .hg / hgrc file, create the option: <br>  ignore.whatever = &lt;absolute path to the file with rules for ignoring&gt; <br>  (By the way, there are plenty of such options with different “whatever”) <br><br><h4>  Conclusion </h4><br>  Of course, it was possible to significantly reduce the text of the article, and limit the mention of the “second method of ignoring”, but this article is only an introduction for a more serious discussion about the development of such projects. <br><br>  In principle, the described model is fully operational, but it also has significant drawbacks, which we will try to get rid of next time, and at the same time we will even learn how to write plugins for mercurial. </div><p>Source: <a href="https://habr.com/ru/post/78515/">https://habr.com/ru/post/78515/</a></p>
+    <h5>  And if you need to do it all the time? </h5><br>  Now let's imagine a situation where we are simultaneously working on several similar projects based on the same framework, or we are writing our own framework.  We will create a separate repository for development, in which we will develop and test generalized parts for all projects.  For example: <br><br>  Local <b>development repository</b> : <br><ul><li>  core - framework files </li><li>  shared - shared files for projects </li><li>  custom - files required for testing </li></ul><br>  And you will also have a <b>repository-repository of</b> generalized parts (or framework): <br><ul><li>  core - framework files </li><li>  shared - shared files for projects </li></ul><br>  The custom folder in this repository is naturally absent, otherwise with any changes, they will fall into the repositories of individual projects, which is unacceptable. <br><br>  Changes are distributed according to the following scheme: <br><br>  <b>development repository</b> → <b>repository repository</b> → project repositories → (patches) <b>development repository</b> <br><br><h6>  How to organize this with a minimum of nerves? </h6><br>  Firstly, symlinks with mercurial will not work, and all options related to file sharing between working copies should be discarded.  (hardlinks would work if they could be done on directories) <br><br>  So we need to ignore the custom folder.  In the mercurial repository, there are two main methods of "ignoring": <br><ol><li>  Using the .hgignore file in the repository root </li><li>  Using .hg / hgrc ignore </li></ol><br>  The first method does not suit us, as .hgignore is placed in the repository and will ruin the life when developing individual projects. <br><br>  But the second way - what you need: <br><br>  1. Create a file similar to .hgignore, put it in a convenient place (for example, in the .hg folder or outside the repository). <br><br>  2. In the [ui] section of the .hg / hgrc file, create the option: <br>  ignore.whatever = &lt;absolute path to the file with rules for ignoring&gt; <br>  (By the way, there are plenty of such options with different “whatever”) <br><br><h4>  Conclusion </h4><br>  Of course, it was possible to significantly reduce the text of the article, and limit the mention of the “second method of ignoring”, but this article is only an introduction for a more serious discussion about the development of such projects. <br><br>  In principle, the described model is fully operational, but it also has significant drawbacks, which we will try to get rid of next time, and at the same time we will even learn how to write plugins for mercurial. </div><p>Source: https://habr.com/ru/post/78515/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../78507/index.html">Google Earth update in Russia</a></li>
 <li><a href="../78509/index.html">How I want to see a tool for web analytics</a></li>
+<li><a href="../7851/index.html">Windows Mobile 6 recognizes speech: video from developers</a></li>
 <li><a href="../78512/index.html">the truth of life</a></li>
 <li><a href="../78513/index.html">Incorrect concreteness</a></li>
 <li><a href="../78514/index.html">How do users see your site</a></li>
 <li><a href="../78516/index.html">DreamHack 2009</a></li>
 <li><a href="../78517/index.html">How to reduce PPC (pay-per-click) by 30% in 20 minutes</a></li>
 <li><a href="../78519/index.html">Two days of events for developers in Yekaterinburg</a></li>
+<li><a href="../7852/index.html">Russian hackers are attacking Estonian sites</a></li>
 <li><a href="../78520/index.html">Correct viewing angles TN-matrices. Is free</a></li>
-<li><a href="../78522/index.html">Virtual DVDs launched!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

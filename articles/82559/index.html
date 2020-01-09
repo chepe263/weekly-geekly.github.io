@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>IPTables and remote access to the network</h1><div class="post__text post__text-html js-mediator-article"> So, the network is set up, the packets go, the Internet works, the rights are cut - in general the moment when you can take a breath and tackle the server for the convenience of not the user, but the administrator.  And what do you want the right system administrator?  Of course!  So that his work duties take away as little free time as possible.  And what serves this best of all is naturally remote access. <br><br>  Today, this is no surprise to anyone - almost everyone has unlimited Internet, so you can get access to your favorite server from anywhere. <br><br>  And what to do, if behind one IP-address a vast network with several servers is hidden, each of which may need access? <br><a name="habracut"></a>  Naturally, there is an option to install something like Radmin on each of them, and use one as a “transshipment base”.  However, Radmin can not always help - you need a full-fledged "native" terminal.  What to do in this case?  You just need to enter the difference to which port to call. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I will describe a bit the structure of the network, which will be discussed.  External IP is one.  The gateway server running Linux is connected to the ADSL modem, the second server interface is connected to the network.  The Internet is distributed on several subnets, each of which has a server that can be accessed via RDP. <br><br>  For 192.168.100.1, we assume the address of the external interface of the gateway server.  eth0 - "internal" interface, eth1 - "external".  192.168.1.1 - the address of the first server, 192.168.2.1 - the second one, etc. <br><br>  I think it is not necessary to describe in detail the process of editing rules IPTABLES.  Therefore, we will focus on how to give access from the outside to several servers. <br>  First you need to forward ports from an ADSL modem to the server.  We determine how much we need them.  For example, six - we configure ports from 3384 to 3389 for forwarding. <br><br>  Next, we just need to process the packet that the modem accepts and send it to the server we need: <br><br> <code>iptables -t nat -A PREROUTING -p tcp -d 192.168.100.1 --dport 3385 -j DNAT to-destination 192.168.2.1:3389 <br> iptables -t nat -A PREROUTING -p tcp -d 192.168.100.1 --dport 3386 -j DNAT to-destination 192.168.3.1:3389 <br> iptables -t nat -A PREROUTING -p tcp -d 192.168.100.1 --dport 3389 -j DNAT to-destination 192.168.1.1:3389</code> <br> <br> <code>iptables -A FORWARD -i eth1 -o eth0 -d 192.168.1.1 -p tcp --dport 3389 -j ACCEPT <br> iptables -A FORWARD -i eth1 -o eth0 -d 192.168.2.1 -p tcp --dport 3389 -j ACCEPT <br> iptables -A FORWARD -i eth1 -o eth0 -d 192.168.3.1 -p tcp --dport 3389 -j ACCEPT</code> <br> <br>  What do we get?  If we launch the RDP client to the external address of the modem, the gateway will forward it to the required server within the network, focusing on the ports.  If we specify the connection address without specifying the port, we will connect to the server 192.168.1.1. <br><br>  The method is not perfect, but quite working.  And the main thing is simple and does not require any effort to implement. <br>  Thank you for attention.  I would be glad if it is useful to someone. </div><p>Source: <a href="https://habr.com/ru/post/82559/">https://habr.com/ru/post/82559/</a></p>
+      I will describe a bit the structure of the network, which will be discussed.  External IP is one.  The gateway server running Linux is connected to the ADSL modem, the second server interface is connected to the network.  The Internet is distributed on several subnets, each of which has a server that can be accessed via RDP. <br><br>  For 192.168.100.1, we assume the address of the external interface of the gateway server.  eth0 - "internal" interface, eth1 - "external".  192.168.1.1 - the address of the first server, 192.168.2.1 - the second one, etc. <br><br>  I think it is not necessary to describe in detail the process of editing rules IPTABLES.  Therefore, we will focus on how to give access from the outside to several servers. <br>  First you need to forward ports from an ADSL modem to the server.  We determine how much we need them.  For example, six - we configure ports from 3384 to 3389 for forwarding. <br><br>  Next, we just need to process the packet that the modem accepts and send it to the server we need: <br><br> <code>iptables -t nat -A PREROUTING -p tcp -d 192.168.100.1 --dport 3385 -j DNAT to-destination 192.168.2.1:3389 <br> iptables -t nat -A PREROUTING -p tcp -d 192.168.100.1 --dport 3386 -j DNAT to-destination 192.168.3.1:3389 <br> iptables -t nat -A PREROUTING -p tcp -d 192.168.100.1 --dport 3389 -j DNAT to-destination 192.168.1.1:3389</code> <br> <br> <code>iptables -A FORWARD -i eth1 -o eth0 -d 192.168.1.1 -p tcp --dport 3389 -j ACCEPT <br> iptables -A FORWARD -i eth1 -o eth0 -d 192.168.2.1 -p tcp --dport 3389 -j ACCEPT <br> iptables -A FORWARD -i eth1 -o eth0 -d 192.168.3.1 -p tcp --dport 3389 -j ACCEPT</code> <br> <br>  What do we get?  If we launch the RDP client to the external address of the modem, the gateway will forward it to the required server within the network, focusing on the ports.  If we specify the connection address without specifying the port, we will connect to the server 192.168.1.1. <br><br>  The method is not perfect, but quite working.  And the main thing is simple and does not require any effort to implement. <br>  Thank you for attention.  I would be glad if it is useful to someone. </div><p>Source: https://habr.com/ru/post/82559/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../82556/index.html">Find a bug and get $ 1337</a></li>
 <li><a href="../82557/index.html">Firefox from Sukhoi</a></li>
 <li><a href="../82558/index.html">A simple way to protect against shell uploads and their scripts in the uploads folder</a></li>
+<li><a href="../8256/index.html">Japanese marketers hunt for gamers moms</a></li>
 <li><a href="../82560/index.html">Google refuses to support IE 6</a></li>
 <li><a href="../82561/index.html">Google said no to IE 6</a></li>
 <li><a href="../82564/index.html">HTC Hero: shopping experience</a></li>
 <li><a href="../82566/index.html">New service on Youtube: Youtube Disco</a></li>
-<li><a href="../82567/index.html">Conference started PyCamp Kiev</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

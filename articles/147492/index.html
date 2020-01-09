@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Space Snake in the Store or How We Put the “CheeseShop”</h1><div class="post__text post__text-html js-mediator-article">  Good time of day, dear readers! <br><br>  Below is a fascinating (?) Story about how our organization solved the so-called problem.  "Deployment as in humans."  Our main language is Python, with a mix of different interesting (and not so) packages (Django, Bottle, Flask, PIL, ZMQ, etc.). <br><br>  Let's start with a brief description of one of our applications: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <ul><li>  Django 1.4 </li><li>  Mysql </li><li>  Celery for cron-imitation and support of auxiliary functions in the background </li><li>  Daemon process based on Django management command </li></ul><br><br>  The whole thing works under a bunch of gUnicorn and nginx, on CentOS 5.8 OS. <br><br>  Details, as is customary, below. <br><br><a name="habracut"></a><br><br><h4>  The essence of the problem </h4><br>  In one of the final phases of the project, we got the idea that, in principle, “svn up &amp;&amp; python manage.py syncdb &amp;&amp; python manage.py migrate” is crooked;  began the search for a "more optimal" approach. <br><br><h4>  Option One - "Snake in Space" </h4><br>  So, as we use <a href="http://spacewalk.redhat.com/">Spacewalk</a> for server management, the idea was to pack our application into an RPM package;  the ability to install "one click" manila and option was adopted in the development. <br><br>  About 8 hours later, when the WTF / hr indicator was stuck in the red zone, we decided to look for something simpler.  Main reasons: <br><br><ul><li>  All dependencies must be packaged in RPM </li><li>  Not all packages / distributions like this. </li><li>  The packaging process leads to the fork of the package, since  Often you need to edit setup.py for proper conversion to a .spec file. </li><li>  The packaging environment itself requires relatively much experience. </li></ul><br><br><h4>  Option Two - "Snake in the Shop" </h4><br>  The second option arose after the words “how are we putting other people's packages?” And the search for a local copy of PyPi began.  Of the many abandoned and hopeless packages, the localshop was chosen, which pleased us with its simplicity of installation and did not even ask for the strange packages of <i>THIS</i> version. <br><br>  It took us a relatively short amount of time to fit our application - all we needed was to add setup.py and specify the “left” packages right there, although we still did a rake: <br><br>  It was necessary to explicitly specify <b>zip_safe = False</b> and <b>include_package_data = True</b> , since  Some files were not unpacked during installation. <br><br>  Apache (which will be replaced soon) had to specify <b>KeepAliveTimeout 300</b> , <b>SetEnv proxy-sendcl</b> and <b>ProxyTimeout 1800</b> to download large packages. <br><br>  In addition, the process of configuring the localshop went well, it was enough to run (under the “clean” account): <br><br> <code>cd &amp;&amp; virtualenv venv &amp;&amp; . venv/bin/activate &amp;&amp; pip install localshop <br> ~/venv/bin/localshop init &amp;&amp; ~/venv/bin/localshop upgrade <br></code> <br><br>  After that, we only need to fit ~ / .pipyrc under our "store": <br><br><pre> [distutils]
@@ -153,7 +153,7 @@
          socket-name /tmp/our_app.zdsock
  &lt;/ runner&gt;
 
-</pre><br><br><h4>  Final result </h4><br><br>  Running ~ / venv / bin / activate &amp;&amp; pip install -U our_app under the produser account installs the latest version of our application almost without any problems + all the “left” packages specified in setup.py. <br><br>  The syncdb and migrate process is still done by handles, but: <br><br><ul><li>  The "combat" version is always known. </li><li>  No need to install GCC, etc.  on the "combat" server </li><li>  Rollback is simple </li></ul><br><br>  I hope that this description of the process enlightened some of the readers. </div><p>Source: <a href="https://habr.com/ru/post/147492/">https://habr.com/ru/post/147492/</a></p>
+</pre><br><br><h4>  Final result </h4><br><br>  Running ~ / venv / bin / activate &amp;&amp; pip install -U our_app under the produser account installs the latest version of our application almost without any problems + all the “left” packages specified in setup.py. <br><br>  The syncdb and migrate process is still done by handles, but: <br><br><ul><li>  The "combat" version is always known. </li><li>  No need to install GCC, etc.  on the "combat" server </li><li>  Rollback is simple </li></ul><br><br>  I hope that this description of the process enlightened some of the readers. </div><p>Source: https://habr.com/ru/post/147492/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -166,7 +166,7 @@
 <li><a href="../147494/index.html">Radio project about SaaS-services (20 gears) + Megaplan mini-series</a></li>
 <li><a href="../147495/index.html">We send Nagios notifications to Skype chat</a></li>
 <li><a href="../147496/index.html">We invite to August 2 in Kiev for a free seminar on ITIL</a></li>
-<li><a href="../147500/index.html">Intel Pair & Share: the communicator is turning ...</a></li>
+<li><a href="../1475/index.html">Began testing the project "Rambler-Sites"</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

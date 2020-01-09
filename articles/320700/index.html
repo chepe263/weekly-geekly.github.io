@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>DNS provider substitution</h1><div class="post__text post__text-html js-mediator-article"><h5>  Prehistory </h5><br>  After the adoption of well-known laws in our country, I go online through a Western VPN server. <br><br>  Yesterday, due to some problems with the main provider, I temporarily switched to a provider called Dom.ru. <br><br>  Today, I climbed on Google and searched for some information on cactus care.  One of the links led me to the psy ***** s.org site.  There, as it turned out, they are selling "substances" with might and main.  And cacti also sell, but quite specific. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,18 +62,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      But, I learned about this later, but at first, I was shocked by showing me the page “access to this resource was blocked ...” with the Dom.RU logo. <br><br>  Since I bought a VPN, I have not seen such pages at all, for obvious reasons. <br><br><h5>  Investigation </h5><br>  To begin with, I decided to check if my VPN works? <a name="habracut"></a><br>  Checked the dumbest way - went to the site my-ip.ru.  I saw my own Dutch IP, therefore everything is fine with the VPN. <br><br>  Began to understand further.  The idea that Dom.RU could somehow pick up ssl, I dismissed immediately. <br><br>  Checked the route using traceroute.  The route to the site psy ***** s.org leads, as expected, through my VPN server, and then leads to the DOMRUShnuyu stub with the address 92.255.241.100. <br><br>  Remains CSN.  But, on my home server the bind caching DNS server is configured, and Google 8.8.8.8 and 8.8.4.4 are specified as forwarders.  There is only one “but”: access to these servers goes through an open channel. <br><br>  Checking: <br><br><pre><code class="bash hljs">ksh@master:~$ nslookup &gt; server 8.8.8.8 Default server: 8.8.8.8 Address: 8.8.8.8<span class="hljs-comment"><span class="hljs-comment">#53 &gt; psy*****s.org Server: 8.8.8.8 Address: 8.8.8.8#53 Non-authoritative answer: Name: psy*****s.org Address: 92.255.241.100</span></span></code> </pre> <br><br>  Now, we wrap the traffic to external DNS servers through VPN and check again: <br><br><pre> <code class="bash hljs">ksh@master:~$ nslookup &gt; server 8.8.8.8 Default server: 8.8.8.8 Address: 8.8.8.8<span class="hljs-comment"><span class="hljs-comment">#53 &gt; psy*****s.org Server: 8.8.8.8 Address: 8.8.8.8#53 Non-authoritative answer: Name: psy*****s.org Address: 37.252.124.170</span></span></code> </pre><br><br>  The situation is clear. <br><br>  I think there is no point in discussing the moral, ethical and legal side of the provider’s actions.  In fact, we are talking about the attack MITM. <br><br><h5>  What to do? </h5><br>  Using DNSSEC is not an option, although Google’s public servers support this protocol.  Yes, fake answers will not pass validation, and as a result, your DNS will simply fall off. <br><br>  Only one way out - to encrypt traffic to public DNS servers in any way. <br><br>  Interesting is also the position of Google on this issue. </div><p>Source: <a href="https://habr.com/ru/post/320700/">https://habr.com/ru/post/320700/</a></p>
+      But, I learned about this later, but at first, I was shocked by showing me the page “access to this resource was blocked ...” with the Dom.RU logo. <br><br>  Since I bought a VPN, I have not seen such pages at all, for obvious reasons. <br><br><h5>  Investigation </h5><br>  To begin with, I decided to check if my VPN works? <a name="habracut"></a><br>  Checked the dumbest way - went to the site my-ip.ru.  I saw my own Dutch IP, therefore everything is fine with the VPN. <br><br>  Began to understand further.  The idea that Dom.RU could somehow pick up ssl, I dismissed immediately. <br><br>  Checked the route using traceroute.  The route to the site psy ***** s.org leads, as expected, through my VPN server, and then leads to the DOMRUShnuyu stub with the address 92.255.241.100. <br><br>  Remains CSN.  But, on my home server the bind caching DNS server is configured, and Google 8.8.8.8 and 8.8.4.4 are specified as forwarders.  There is only one “but”: access to these servers goes through an open channel. <br><br>  Checking: <br><br><pre><code class="bash hljs">ksh@master:~$ nslookup &gt; server 8.8.8.8 Default server: 8.8.8.8 Address: 8.8.8.8<span class="hljs-comment"><span class="hljs-comment">#53 &gt; psy*****s.org Server: 8.8.8.8 Address: 8.8.8.8#53 Non-authoritative answer: Name: psy*****s.org Address: 92.255.241.100</span></span></code> </pre> <br><br>  Now, we wrap the traffic to external DNS servers through VPN and check again: <br><br><pre> <code class="bash hljs">ksh@master:~$ nslookup &gt; server 8.8.8.8 Default server: 8.8.8.8 Address: 8.8.8.8<span class="hljs-comment"><span class="hljs-comment">#53 &gt; psy*****s.org Server: 8.8.8.8 Address: 8.8.8.8#53 Non-authoritative answer: Name: psy*****s.org Address: 37.252.124.170</span></span></code> </pre><br><br>  The situation is clear. <br><br>  I think there is no point in discussing the moral, ethical and legal side of the provider’s actions.  In fact, we are talking about the attack MITM. <br><br><h5>  What to do? </h5><br>  Using DNSSEC is not an option, although Google’s public servers support this protocol.  Yes, fake answers will not pass validation, and as a result, your DNS will simply fall off. <br><br>  Only one way out - to encrypt traffic to public DNS servers in any way. <br><br>  Interesting is also the position of Google on this issue. </div><p>Source: https://habr.com/ru/post/320700/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../320690/index.html">Notify at any cost about the fall of the site. Practical advice</a></li>
 <li><a href="../320692/index.html">Three product lines and version control</a></li>
 <li><a href="../320694/index.html">Hack.me: Another platform for honing skills in the field of information security</a></li>
 <li><a href="../320696/index.html">Native Android and iOS code in Qt using the status bar example</a></li>
 <li><a href="../320698/index.html">Rspamd mail anti-spam integration with opensmtpd</a></li>
+<li><a href="../3207/index.html">MegaFon has turned to social advertising</a></li>
 <li><a href="../320702/index.html">Virtual cinematography for VR trailers</a></li>
 <li><a href="../320704/index.html">Subversion vs. Git: Debunking Myths About Debunking Myths</a></li>
 <li><a href="../320706/index.html">Another JNCIE-SP exam history</a></li>

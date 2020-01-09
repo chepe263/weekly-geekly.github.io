@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Python 2.7 performance improvements</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/3fb/01e/b53/3fb01eb53076423b9aa455f475e42920.png"><br>  <em>From the translator: in a nutshell, in December 2015, the release of Python 2.7.11 will be released, speeding up the work of the CPython interpreter to 20%.</em>  <em>Below is a translation of the article from <a href="https/lwn.net/">LWN.net</a> , which tells about the essence and process of the changes in the code.</em>  <em>The names, in the pronunciation of which I am not sure, are given in the original spelling.</em>  <em>About errors and inaccuracies of the translation, please, as usual, report in private messages.</em> <br><br>  Despite the fact that the development of Python 2 (specifically, the Python 2.7.x branches) is now in a state of "no new features", which normally puts an end to any major changes in advance, the development team decided to review and accept the backport patch from Python 3, bringing a noticeable performance improvement to the interpreter. <br><a name="habracut"></a><br>  Vamsi Parasa from the team of optimization of server scripting languages ​​Intel proposed a patch ( <a href="http://article.gmane.org/gmane.comp.python.devel/153401">description of the proposal with benchmarks</a> ) that translates the <code>switch</code> block responsible for processing Python-bytecode to use a <a href="https://gcc.gnu.org/onlinedocs/gcc/Labels-as-Values.html">computed goto</a> , as it was done in Python 3. As <a href="http://eli.thegreenplace.net/2012/07/12/computed-goto-for-efficient-dispatch-tables">explained by</a> Eli Bendersky, in such a huge <code>switch</code> block, as in the bytecode parsing unit in CPython (consisting of more than 2000 (!) lines), this gives an acceleration of about 15-20%.  This happens for two reasons: the <code>computed goto</code> , unlike the <code>switch-case</code> , does not perform the boundary checks necessary for the <code>switch</code> operator according to the C99 standard, and, perhaps more importantly, the CPU can better <a href="https://ru.wikipedia.org/wiki/%25D0%259F%25D1%2580%25D0%25B5%25D0%25B4%25D1%2581%25D0%25BA%25D0%25B0%25D0%25B7%25D0%25B0%25D1%2582%25D0%25B5%25D0%25BB%25D1%258C_%25D0%25BF%25D0%25B5%25D1%2580%25D0%25B5%25D1%2585%25D0%25BE%25D0%25B4%25D0%25BE%25D0%25B2">predict branching</a> in such situations, which leads to reducing the number of pipeline discharges, which are by their nature an “expensive” operation. <br><br>  Despite the fact that some of the CPython developers were against the introduction of this patch, because  " <a href="https://lwn.net/Articles/647041/">Performance improvement is not a bugfix</a> ", the decision was made in favor of Intel. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      One of the important reasons was the fact that Intel announced its readiness to further help with the support and improvement of CPython provided that the 2.7 branch is open for changes related to performance.  In particular, this means that while Intel developers are engaged in “boring” parts (mainly error correction and acceleration of the 2.7 branch), volunteer developers from the opensource community will be able to spend more time on more interesting tasks: <br><blockquote>  “Do cool stuff for free, find a way to get paid for doing boring-but-necessary tasks (or leave it to those who pay for it)” - a good approach to opensource development, while trying to do <em>everything for</em> free is an easy way to burnout. <br>  © <a href="https://lwn.net/Articles/647050/">Nick Coghlan</a> <br></blockquote><br>  Van Rossum’s “generous lifelong dictator” <a href="https://lwn.net/Articles/647052/">agrees</a> with this, in particular, because the company Dropbox, for which he works, will help save “a lot of money”.  According to him, in such large companies, the transition to Python 3 is rather slow, while updating to the latest actual version from the 2.7 branch is normal.  Guido <a href="https://lwn.net/Articles/647055/">disagrees</a> with the idea of ​​“ <a href="https://lwn.net/Articles/647053/">focusing on Python 3, thereby motivating the community to migrate to it</a> ”. <br><br>  A patch that speeds up the work of the Python 2.7 interpreter is accepted ( <a href="https://github.com/python/cpython/commit/57d001f0aa7a9a914d0936b7be17545409f61dae">commit</a> ) and is scheduled for release as part of release 2.7.11, in December 2015. Despite the fact that Python 3 introduces many new features, such as <a href="https://lwn.net/Articles/643786/">async / await</a> , <a href="https://lwn.net/Articles/640359/">type</a> <a href="https://lwn.net/Articles/643786/">naming</a> and more , Python 2.7 is still popular (and in accordance with current plans, supported at least <a href="https://hg.python.org/peps/rev/76d43e52d978">until 2020</a> ), so this news should please a large number of Python-developers around the world. </div><p>Source: <a href="https://habr.com/ru/post/261575/">https://habr.com/ru/post/261575/</a></p>
+      One of the important reasons was the fact that Intel announced its readiness to further help with the support and improvement of CPython provided that the 2.7 branch is open for changes related to performance.  In particular, this means that while Intel developers are engaged in “boring” parts (mainly error correction and acceleration of the 2.7 branch), volunteer developers from the opensource community will be able to spend more time on more interesting tasks: <br><blockquote>  “Do cool stuff for free, find a way to get paid for doing boring-but-necessary tasks (or leave it to those who pay for it)” - a good approach to opensource development, while trying to do <em>everything for</em> free is an easy way to burnout. <br>  © <a href="https://lwn.net/Articles/647050/">Nick Coghlan</a> <br></blockquote><br>  Van Rossum’s “generous lifelong dictator” <a href="https://lwn.net/Articles/647052/">agrees</a> with this, in particular, because the company Dropbox, for which he works, will help save “a lot of money”.  According to him, in such large companies, the transition to Python 3 is rather slow, while updating to the latest actual version from the 2.7 branch is normal.  Guido <a href="https://lwn.net/Articles/647055/">disagrees</a> with the idea of ​​“ <a href="https://lwn.net/Articles/647053/">focusing on Python 3, thereby motivating the community to migrate to it</a> ”. <br><br>  A patch that speeds up the work of the Python 2.7 interpreter is accepted ( <a href="https://github.com/python/cpython/commit/57d001f0aa7a9a914d0936b7be17545409f61dae">commit</a> ) and is scheduled for release as part of release 2.7.11, in December 2015. Despite the fact that Python 3 introduces many new features, such as <a href="https://lwn.net/Articles/643786/">async / await</a> , <a href="https://lwn.net/Articles/640359/">type</a> <a href="https://lwn.net/Articles/643786/">naming</a> and more , Python 2.7 is still popular (and in accordance with current plans, supported at least <a href="https://hg.python.org/peps/rev/76d43e52d978">until 2020</a> ), so this news should please a large number of Python-developers around the world. </div><p>Source: https://habr.com/ru/post/261575/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../261563/index.html">Brief introduction to tensors</a></li>
 <li><a href="../261567/index.html">Veeam Availability Suite v9: EMC Storage Integration</a></li>
 <li><a href="../261569/index.html">Services for testing penetration testing skills</a></li>
+<li><a href="../26157/index.html">10 reasons for holding an IPO</a></li>
 <li><a href="../261571/index.html">Creating the Droste effect in Wolfram Language (Mathematica)</a></li>
 <li><a href="../261573/index.html">How to really use Veeam% ProductName% Free to the fullest</a></li>
 <li><a href="../261577/index.html">Meet Backup Exec 15</a></li>
 <li><a href="../261579/index.html">Yandex.Money does not require the cardholder’s full name when paying</a></li>
+<li><a href="../26158/index.html">Logos of leading companies and mathematics</a></li>
 <li><a href="../261581/index.html">IBM Science and Technology Center announces additional recruitment for the internship program for 2015/2016</a></li>
 <li><a href="../261583/index.html">Question to the community: a shared private message box for HB, GT and MM, how are you?</a></li>
-<li><a href="../261589/index.html">Analysis of the tone of statements on Twitter: implementation with an example of R</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A small performance comparison of the UWP / WinRT API of language projections</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/9d1/29a/cbb/9d129acbb6a8403fb65dbc5f8748d109.png" alt="WinRT Language projections"><br><br>  In my opinion, an unusual situation has developed in the development of UWP / WinRT applications: the company promotes the use of the native SDK from a managed environment.  I wondered how effective this approach is.  And for the answer, I decided to write several applications that solve one and the same task, relying on the tools provided by the UWP / WinRT API. <br>  For the results of my little test, welcome under cat. <br><a name="habracut"></a><br><h4>  Formulation of the problem </h4><br>  The algorithm of each application included the following steps: <br><ol><li>  The executable environment calls the Main () function (don't be surprised, this function always exists in WinRT / UWP applications) </li><li>  The CoreApplication.Run (...) method is passed the IFrameworkViewSource implementation, which returns the IFrameworkView interface in the CreateView () method. </li><li>  After a few initialization steps, the IFrameworkView.Run () method is called, which activates the main application window, starts the event handling by the dispatcher and creates a thread / task to perform the calculations. </li></ol><br>  To more accurately measure the required time to perform calculations, applications were launched without a debugger.  The values ​​of the result and the elapsed time were entered into the fields of the local settings of the Result and Time applications, respectively. <br>  The sequence of measuring the time required to perform all the calculations was as follows: <br><ol><li>  Variable initialization </li><li>  Timer start / start time variable initialization </li><li>  Multiple conversion: input -&gt; SHA256 hash -&gt; Base64 string -&gt; input </li><li>  Stop timer / elapsed time calculation </li><li>  Write values ​​to local settings </li></ol>  To read the stored values, applications were launched in debug mode, and the data was output to the console. <br><br>  A total of five application test projects were created, three of which used the UWP / WinRT API in their work, while the other two relied on their own implementation of SHA256 and Base64. <br>  General list of applications: <br><ul><li>  CPP (C ++).  Sichnye implementations of algorithms were taken from <a href="https://github.com/B-Con/crypto-algorithms">github.com/B-Con/crypto-algorithms</a> . </li><li>  CPPCX (C ++ CX).  Uses the CryptographicBuffer API provided by UWP / WinRT. </li><li>  CPPWRL (C ++).  It also uses the CryptographicBuffer API, but calls are made in the COM style. </li><li>  CS (C #).  Taken implementation from <a href="">github.com/yuriks/SHA2-Csharp/blob/master/Sha256.cs</a> . </li><li>  CSWinRT (C #).  API CryptographicBuffer is used. </li></ul>  Projects written in C #, in addition to normal execution, were also tested in compile mode using .NET Native. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Test results </h4><br>  Testing was conducted in two modes of compilation and execution: ARM and x86. <br>  Below are the runtime diagrams (values ​​are in milliseconds). <br><br><img src="https://habrastorage.org/files/6f2/a6a/c19/6f2a6ac192ec4ed6a53743040efcd9fd.png" alt="ARM"><br><br><img src="https://habrastorage.org/files/db0/8f6/db8/db08f6db84f64d06b64ae2bbe2696ce3.png" alt="x86"><br><br>  Such a significant difference surprised me a little.  To figure it out, I decided to profile applications using the UWP / WinRT API. <br>  If you put all the screenshots in a table then you can get the following: <br><table><tbody><tr><td><img src="https://habrastorage.org/files/0c0/bc9/237/0c0bc92373514198a681597a464a93b0.png"></td><td><img src="https://habrastorage.org/files/eb0/247/918/eb02479181fe41dc9fbc829d05ed40ad.png"></td></tr><tr><td><img src="https://habrastorage.org/files/fd7/51f/8d9/fd751f8d9add4550846ffbe3cf49b707.png"></td><td><img src="https://habrastorage.org/files/a5a/da6/2f0/a5ada62f065a494398016a551d74683e.png"></td></tr></tbody></table><br>  It is easy to see the reason for such a big difference: in a project written in pure C ++ using WRL, the running time of the code from the CryptoWinRT.dll library reaches 90 percent, and in a C # project compiled using .NET Native, this value is only 15 percent .  So it turns out that most of the time, projects written in C # work in idle. <br><br><h4>  Conclusion </h4><br>  Of course, it is clear that the remote method of using the UWP / WinRT API is chosen.  Most likely in life such code will never occur at all.  But the fact remains that, under certain circumstances, your code can work very slowly only because of the overhead incurred as a result of using the language projection.  It may be the best solution in this case will be an alternative implementation that performs similar tasks, but without using the system API. <br><br>  Source code for all projects is available at <a href="https://github.com/altk/sha256comparison">https://github.com/altk/sha256comparison</a> </div><p>Source: <a href="https://habr.com/ru/post/280722/">https://habr.com/ru/post/280722/</a></p>
+    <h4>  Test results </h4><br>  Testing was conducted in two modes of compilation and execution: ARM and x86. <br>  Below are the runtime diagrams (values ​​are in milliseconds). <br><br><img src="https://habrastorage.org/files/6f2/a6a/c19/6f2a6ac192ec4ed6a53743040efcd9fd.png" alt="ARM"><br><br><img src="https://habrastorage.org/files/db0/8f6/db8/db08f6db84f64d06b64ae2bbe2696ce3.png" alt="x86"><br><br>  Such a significant difference surprised me a little.  To figure it out, I decided to profile applications using the UWP / WinRT API. <br>  If you put all the screenshots in a table then you can get the following: <br><table><tbody><tr><td><img src="https://habrastorage.org/files/0c0/bc9/237/0c0bc92373514198a681597a464a93b0.png"></td><td><img src="https://habrastorage.org/files/eb0/247/918/eb02479181fe41dc9fbc829d05ed40ad.png"></td></tr><tr><td><img src="https://habrastorage.org/files/fd7/51f/8d9/fd751f8d9add4550846ffbe3cf49b707.png"></td><td><img src="https://habrastorage.org/files/a5a/da6/2f0/a5ada62f065a494398016a551d74683e.png"></td></tr></tbody></table><br>  It is easy to see the reason for such a big difference: in a project written in pure C ++ using WRL, the running time of the code from the CryptoWinRT.dll library reaches 90 percent, and in a C # project compiled using .NET Native, this value is only 15 percent .  So it turns out that most of the time, projects written in C # work in idle. <br><br><h4>  Conclusion </h4><br>  Of course, it is clear that the remote method of using the UWP / WinRT API is chosen.  Most likely in life such code will never occur at all.  But the fact remains that, under certain circumstances, your code can work very slowly only because of the overhead incurred as a result of using the language projection.  It may be the best solution in this case will be an alternative implementation that performs similar tasks, but without using the system API. <br><br>  Source code for all projects is available at <a href="https://github.com/altk/sha256comparison">https://github.com/altk/sha256comparison</a> </div><p>Source: https://habr.com/ru/post/280722/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../280708/index.html">IBM's cognitive service recognizes a photo and tells what is shown in the pictures.</a></li>
 <li><a href="../280710/index.html">Automate Personnel Changes on PowerShell</a></li>
 <li><a href="../280712/index.html">Bank payment infrastructure protection</a></li>
 <li><a href="../280718/index.html">Branded DNS or white labeling on Amazon Route 53</a></li>
+<li><a href="../28072/index.html">Wanted title for Web 2.0 project. Reward $ 100.</a></li>
 <li><a href="../280720/index.html">Sync in online games</a></li>
 <li><a href="../280724/index.html">Databoom control panel. Database management</a></li>
 <li><a href="../280726/index.html">Half an hour before the final - Vivaldi 1.0.435.26</a></li>
+<li><a href="../28073/index.html">...</a></li>
 <li><a href="../280732/index.html">Hangfire - Task Scheduler for .NET</a></li>
 <li><a href="../280734/index.html">Opinion: Why you should learn and use Clojure</a></li>
-<li><a href="../280736/index.html">Atmel optimized parametric microcontroller search for mobile phones</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

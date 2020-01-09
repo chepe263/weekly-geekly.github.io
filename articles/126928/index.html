@@ -30,12 +30,12 @@ public class ...">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -57,7 +57,7 @@ public class ...">
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Recursively nested classes</h1><div class="post__text post__text-html js-mediator-article">  Just came across an interesting feature of nested classes in Java - they can be nested into each other recursively and infinitely! <br><br><a name="habracut"></a><br><br><pre><code class="java hljs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Main</span></span></span><span class="hljs-class"> </span></span>{ <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">private</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">Main</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span><span class="hljs-function"> </span></span>{} <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Test</span></span></span><span class="hljs-class"> </span><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">extends</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Main</span></span></span><span class="hljs-class"> </span></span>{ { System.out.printf(<span class="hljs-string"><span class="hljs-string">"This: %h\nEnclosed in: %h\n"</span></span>, <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>, Main.<span class="hljs-keyword"><span class="hljs-keyword">this</span></span>); System.out.printf(<span class="hljs-string"><span class="hljs-string">"Main.this is instance of %s\n\n"</span></span> , Main.<span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.getClass()); } } <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">strictfp</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">main</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(String... args)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Main().new Test().new Test().new Test(); } }</code> </pre> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -65,10 +65,10 @@ public class ...">
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      You can expect that both instances of the Test class will reference the Main class that includes them.  However, if you compile and run it turns out an interesting picture <br><br> <code>This: 6665e41 <br> Enclosed in: 2ab600af <br> Main.this is instance of class Main <br> <br> This: 796686c8 <br> Enclosed in: 6665e41 <br> Main.this is instance of class Main$Test <br> <br> This: 3a1af2bc <br> Enclosed in: 796686c8 <br> Main.this is instance of class Main$Test <br> <br></code> <br><br>  That is, Main.this in the last two instances has the type Main $ Test, and the instances themselves link to each other, lining up in a chain! <br><br>  This feature suggests thoughts of a more efficient implementation of LinkedList.  That's just wondering where the JVM stores the link to the enclosing class.  If the link is implicitly an additional field of the nested class, then the memory will be the same.  But if the memory for this link is reserved for all classes, then the game for the extra eight bytes per item is worth the candle :) <br><br>  UPD: it turns out everything is solved in the first embodiment - the compiler introduces synthetic fields.  So there will be no gain - the link used in LinkedList.Node will simply be synthetic. </div><p>Source: <a href="https://habr.com/ru/post/126928/">https://habr.com/ru/post/126928/</a></p>
+      You can expect that both instances of the Test class will reference the Main class that includes them.  However, if you compile and run it turns out an interesting picture <br><br> <code>This: 6665e41 <br> Enclosed in: 2ab600af <br> Main.this is instance of class Main <br> <br> This: 796686c8 <br> Enclosed in: 6665e41 <br> Main.this is instance of class Main$Test <br> <br> This: 3a1af2bc <br> Enclosed in: 796686c8 <br> Main.this is instance of class Main$Test <br> <br></code> <br><br>  That is, Main.this in the last two instances has the type Main $ Test, and the instances themselves link to each other, lining up in a chain! <br><br>  This feature suggests thoughts of a more efficient implementation of LinkedList.  That's just wondering where the JVM stores the link to the enclosing class.  If the link is implicitly an additional field of the nested class, then the memory will be the same.  But if the memory for this link is reserved for all classes, then the game for the extra eight bytes per item is worth the candle :) <br><br>  UPD: it turns out everything is solved in the first embodiment - the compiler introduces synthetic fields.  So there will be no gain - the link used in LinkedList.Node will simply be synthetic. </div><p>Source: https://habr.com/ru/post/126928/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

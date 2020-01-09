@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Prett Parsing - Vaughan Pratt method for parsing expressions</h1><div class="post__text post__text-html js-mediator-article">  In the topic of compilations and expression calculations. <br><br>  Back in 1973, Vaughan Pratt proposed a simple and effective method for parsing expressions that does not use automata or grammar as such. <br><br>  The idea is that each character (token) is endowed with properties: <br>  lbp = character binding priority to the left, <br>  nud = a function that determines the result of applying the operator at the beginning of an expression, <br>  led = a function that determines the result of applying in the middle of an expression. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The main analysis is carried out according to the scheme: <br><pre> parsing (priority of continuation):
@@ -70,7 +70,7 @@
      while the lbp priority of the next in the continuation priority symbol stream:
          push character out of input
          result = apply the led of this symbol to the current result
-</pre><br>  Constants and variables take precedence for binding 0, and the nud function returns their value (or reference).  Therefore, applying parsing to constants will immediately return their value. <br>  For binary operators, the led function recursively causes a continuation of parsing (on the right) down to a lower priority, and does something with the result already accumulated (on the left), and obtained recursively. <br>  The result of using the operator is aggregated for an external call. <br>  Multi-ary operators get arguments by an additional call to the parse function. <br>  Prefix operators are made using the definition of the nud function for them. <br>  For right-sided binding, the priority of continuing recursive parsing changes. <br><br>  The <a href="http://effbot.org/zone/tdop-index.htm">site effbot.org</a> provides detailed implementation on python. <br>  There are also links to javascript and schema. <br><a name="habracut"></a><br><pre> <code class="hljs markdown">operators = { #    led '+': [<span class="hljs-string"><span class="hljs-string">1, lambda left: "(%s + %s)" % (left, parse(1))</span></span>], '<span class="hljs-emphasis"><span class="hljs-emphasis">*': [2, lambda left: "(%s *</span></span> %s)" % (left, parse(2))], '^': [<span class="hljs-string"><span class="hljs-string">3, lambda left: "(%s ^ %s)" % (left, parse(3))</span></span>], '$': [<span class="hljs-string"><span class="hljs-string">0</span></span>] } def lbp(t): try: return operators[<span class="hljs-string"><span class="hljs-string">t</span></span>][<span class="hljs-symbol"><span class="hljs-symbol">0</span></span>] except KeyError: return 0 def nud(t): return t def led(t,left): return operators[<span class="hljs-string"><span class="hljs-string">t</span></span>][<span class="hljs-symbol"><span class="hljs-symbol">1</span></span>](left) #      ,      . def parse(rbp=0): global tokens tok = tokens.pop(0) result = nud(tok) while lbp(tokens[0]) &gt; rbp: tok = tokens.pop(0) result = led(tok,result) return result def evaluate(expr): global tokens tokens = expr.split(" ") + ['$'] parse()</code> </pre><br>  Examples of work: <br> <code>&gt;&gt;&gt; evaluate("a + b * c ^ d * e + f") <br> a|+,b,*,c,^,d,*,e,+,f,$ <br> <b>= a</b> <br> +|b,*,c,^,d,*,e,+,f,$ <br> b|*,c,^,d,*,e,+,f,$ <br> <b>= b</b> <br> *|c,^,d,*,e,+,f,$ <br> c|^,d,*,e,+,f,$ <br> <b>= c</b> <br> ^|d,*,e,+,f,$ <br> d|*,e,+,f,$ <br> <b>= d</b> <br> <b>= (c ^ d)</b> <br> <b>= (b * (c ^ d))</b> <br> *|e,+,f,$ <br> e|+,f,$ <br> <b>= e</b> <br> <b>= ((b * (c ^ d)) * e)</b> <br> <b>= (a + ((b * (c ^ d)) * e))</b> <br> +|f,$ <br> f|$ <br> <b>= f</b> <br> <b>= ((a + ((b * (c ^ d)) * e)) + f)</b> <br> &gt;&gt;&gt; <br> &gt;&gt;&gt; evaluate("a * b + c ^ d + e * f") <br> a|*,b,+,c,^,d,+,e,*,f,$ <br> <b>= a</b> <br> *|b,+,c,^,d,+,e,*,f,$ <br> b|+,c,^,d,+,e,*,f,$ <br> <b>= b</b> <br> <b>= (a * b)</b> <br> +|c,^,d,+,e,*,f,$ <br> c|^,d,+,e,*,f,$ <br> <b>= c</b> <br> ^|d,+,e,*,f,$ <br> d|+,e,*,f,$ <br> <b>= d</b> <br> <b>= (c ^ d)</b> <br> <b>= ((a * b) + (c ^ d))</b> <br> +|e,*,f,$ <br> e|*,f,$ <br> <b>= e</b> <br> *|f,$ <br> f|$ <br> <b>= f</b> <br> <b>= (e * f)</b> <br> <b>= (((a * b) + (c ^ d)) + (e * f))</b></code> </div><p>Source: <a href="https://habr.com/ru/post/50349/">https://habr.com/ru/post/50349/</a></p>
+</pre><br>  Constants and variables take precedence for binding 0, and the nud function returns their value (or reference).  Therefore, applying parsing to constants will immediately return their value. <br>  For binary operators, the led function recursively causes a continuation of parsing (on the right) down to a lower priority, and does something with the result already accumulated (on the left), and obtained recursively. <br>  The result of using the operator is aggregated for an external call. <br>  Multi-ary operators get arguments by an additional call to the parse function. <br>  Prefix operators are made using the definition of the nud function for them. <br>  For right-sided binding, the priority of continuing recursive parsing changes. <br><br>  The <a href="http://effbot.org/zone/tdop-index.htm">site effbot.org</a> provides detailed implementation on python. <br>  There are also links to javascript and schema. <br><a name="habracut"></a><br><pre> <code class="hljs markdown">operators = { #    led '+': [<span class="hljs-string"><span class="hljs-string">1, lambda left: "(%s + %s)" % (left, parse(1))</span></span>], '<span class="hljs-emphasis"><span class="hljs-emphasis">*': [2, lambda left: "(%s *</span></span> %s)" % (left, parse(2))], '^': [<span class="hljs-string"><span class="hljs-string">3, lambda left: "(%s ^ %s)" % (left, parse(3))</span></span>], '$': [<span class="hljs-string"><span class="hljs-string">0</span></span>] } def lbp(t): try: return operators[<span class="hljs-string"><span class="hljs-string">t</span></span>][<span class="hljs-symbol"><span class="hljs-symbol">0</span></span>] except KeyError: return 0 def nud(t): return t def led(t,left): return operators[<span class="hljs-string"><span class="hljs-string">t</span></span>][<span class="hljs-symbol"><span class="hljs-symbol">1</span></span>](left) #      ,      . def parse(rbp=0): global tokens tok = tokens.pop(0) result = nud(tok) while lbp(tokens[0]) &gt; rbp: tok = tokens.pop(0) result = led(tok,result) return result def evaluate(expr): global tokens tokens = expr.split(" ") + ['$'] parse()</code> </pre><br>  Examples of work: <br> <code>&gt;&gt;&gt; evaluate("a + b * c ^ d * e + f") <br> a|+,b,*,c,^,d,*,e,+,f,$ <br> <b>= a</b> <br> +|b,*,c,^,d,*,e,+,f,$ <br> b|*,c,^,d,*,e,+,f,$ <br> <b>= b</b> <br> *|c,^,d,*,e,+,f,$ <br> c|^,d,*,e,+,f,$ <br> <b>= c</b> <br> ^|d,*,e,+,f,$ <br> d|*,e,+,f,$ <br> <b>= d</b> <br> <b>= (c ^ d)</b> <br> <b>= (b * (c ^ d))</b> <br> *|e,+,f,$ <br> e|+,f,$ <br> <b>= e</b> <br> <b>= ((b * (c ^ d)) * e)</b> <br> <b>= (a + ((b * (c ^ d)) * e))</b> <br> +|f,$ <br> f|$ <br> <b>= f</b> <br> <b>= ((a + ((b * (c ^ d)) * e)) + f)</b> <br> &gt;&gt;&gt; <br> &gt;&gt;&gt; evaluate("a * b + c ^ d + e * f") <br> a|*,b,+,c,^,d,+,e,*,f,$ <br> <b>= a</b> <br> *|b,+,c,^,d,+,e,*,f,$ <br> b|+,c,^,d,+,e,*,f,$ <br> <b>= b</b> <br> <b>= (a * b)</b> <br> +|c,^,d,+,e,*,f,$ <br> c|^,d,+,e,*,f,$ <br> <b>= c</b> <br> ^|d,+,e,*,f,$ <br> d|+,e,*,f,$ <br> <b>= d</b> <br> <b>= (c ^ d)</b> <br> <b>= ((a * b) + (c ^ d))</b> <br> +|e,*,f,$ <br> e|*,f,$ <br> <b>= e</b> <br> *|f,$ <br> f|$ <br> <b>= f</b> <br> <b>= (e * f)</b> <br> <b>= (((a * b) + (c ^ d)) + (e * f))</b></code> </div><p>Source: https://habr.com/ru/post/50349/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -79,11 +79,11 @@
 <li><a href="../50346/index.html">About knowledge and skills of the programmer</a></li>
 <li><a href="../50347/index.html">Why I do not like translation</a></li>
 <li><a href="../50348/index.html">Home file hosting based on Sinatra and DataMapper. Part 3 - Very Advanced features</a></li>
+<li><a href="../5035/index.html">Unusual look at Yahoo RSS feeds</a></li>
 <li><a href="../50353/index.html">pitfalls animation png in IE</a></li>
 <li><a href="../50354/index.html">Recursion using the Y – combinator</a></li>
 <li><a href="../50355/index.html">Once again about captcha</a></li>
 <li><a href="../50357/index.html">Hotline: master's, postgraduate, dissertation preparation and defense</a></li>
-<li><a href="../50358/index.html">The release of Kogan Agora is postponed.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

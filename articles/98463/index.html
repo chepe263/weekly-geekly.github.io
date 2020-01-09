@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
 </pre><br>  Where / dev / sdb1 is the name of the section in the root of which is the <i>iscsi-target-etc</i> directory with the settings files.  And <i>ip = :::</i> - network settings. <br>  More information about the parameters of the kernel can be found in the documentation for <a href="http://wiki.archlinux.org/index.php/Mkinitcpio_%2528%25D0%25A0%25D1%2583%25D1%2581%25D1%2581%25D0%25BA%25D0%25B8%25D0%25B9%2529">Mkinitcpio</a> <br><br><h4>  Customization </h4><br>  All tunable settings are located in the <i>iscsi-target-etc</i> directory, which should be located in the root of the partition specified when the kernel loads.  When booting the system, the contents of this directory are simply copied to / etc and may contain any Linux environment settings files.  If the <i>rc.local</i> file is present in the copied files, then it starts up after copying, thus allowing you to further customize the environment for yourself without rebuilding the system image. <br>  Configuring the iSCSI Enterprise Target daemon is located in the <i>/ iscsi-target-etc / iet /</i> directory copied when loaded in <i>/ etc / iet /</i> and requires preliminary configuration.  For example, we can write these lines in the <i>ietd.conf</i> file: <br><pre>  Target iqn.2001-04.com.example: storage.disk1.sys1.xyz
  Lun 0 Path = / dev / sda, Type = blockio, ScsiId = xyz, ScsiSN = xyz </pre><br>  That allows you to share the disk / dev / sda as a block device. <br><br>  You can also control the daemon dynamically using the ietadm administration utility.  For example, create a Target with the command: <br>  ietadm --op new --tid = 1 --params Name = iqn.2001-04.com.example: storage.disk1.sys1.xyz <br>  and add LUN to it: <br>  ietadm --op new --tid = 1 --lun = 0 --params Path = / dev / sda, Type = blockio <br>  Read more about configuring iSCSI Enterprise Target in its documentation. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,14 +64,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Access to the console is possible either directly or via telnet.  The default password is root: 666666 <br>  To change the password, simply place the <i>shadow</i> file in the <i>iscsi-target-etc</i> directory with the newly generated password for root, and when the system boots it will overwrite the one that is sewn into the image. <br><br>  So, as you can see, deploying an iSCSI server for data backup or virtualization systems is easy and takes several minutes.  True, the project has just started to develop and therefore in production its use is not recommended yet. <br><br><h4>  Assembly </h4><br>  All scripts used for building <a href="http://code.google.com/p/iscsi-target-box/source/checkout">are available</a> in source code under the GPLv2 license.  Arch Linux with mkinitcpio and mkinitcpio-nfs-utils packages is required to build the image.  You also need to install iSCSI Enterprise Target, which can be taken from AUR - <a href="http://aur.archlinux.org/packages.php%3FID%3D24067">iscsitarget-kernel</a> and <a href="http://aur.archlinux.org/packages.php%3FID%3D24069">iscsitarget-usr</a> or download the latest version of the source code from the <a href="http://sourceforge.net/projects/iscsitarget/files/">official site</a> and compile it manually: <br><pre> tar xf iscsitarget-1.4.20.1.tar.gz
  cd iscsitarget-1.4.20.1
  make
  make install
-</pre><br>  Then we download the archive with source codes from <a href="http://code.google.com/p/iscsi-target-box/downloads/list">the</a> iSCSI Target Box project <a href="http://code.google.com/p/iscsi-target-box/downloads/list">site</a> , unpack it into the / lib / initcpio / directory and create a hardlink to the base system installation script: <br><pre>  ln base-iscsi ../install/base-iscsi </pre><br>  We generate the image: <br><pre>  mkinitcpio -c /lib/initcpio/iscsi-target-box/mkinitcpio.conf -g /boot/initrd-iscsi.img </pre><br>  Quickly check the performance of the assembly using QEMU: <br><pre>  qemu -snapshot -kernel / boot / vmlinuz26 -initrd /boot/initrd-iscsi.img </pre></div><p>Source: <a href="https://habr.com/ru/post/98463/">https://habr.com/ru/post/98463/</a></p>
+</pre><br>  Then we download the archive with source codes from <a href="http://code.google.com/p/iscsi-target-box/downloads/list">the</a> iSCSI Target Box project <a href="http://code.google.com/p/iscsi-target-box/downloads/list">site</a> , unpack it into the / lib / initcpio / directory and create a hardlink to the base system installation script: <br><pre>  ln base-iscsi ../install/base-iscsi </pre><br>  We generate the image: <br><pre>  mkinitcpio -c /lib/initcpio/iscsi-target-box/mkinitcpio.conf -g /boot/initrd-iscsi.img </pre><br>  Quickly check the performance of the assembly using QEMU: <br><pre>  qemu -snapshot -kernel / boot / vmlinuz26 -initrd /boot/initrd-iscsi.img </pre></div><p>Source: https://habr.com/ru/post/98463/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

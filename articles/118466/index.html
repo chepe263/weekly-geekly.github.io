@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -75,7 +75,7 @@
  } // try again
 </pre><br>  We calculate a new value, and then by calling <code>InterlockedCompareExchange</code> write it to a common variable <i>only if its value has not changed.</i>  If it has changed, then another stream has preceded us;  in this case, we will try to perform the operation in a new way, from the very beginning, in the hope that next time no one will “cut off” us. <br><a name="habracut"></a><br>  It is important to understand that the “make, write, try again” model does not guarantee that the stream that first started updating the variable value will win the “race” first.  The “unsuccessful” stream may, at each attempt, again and again yield to faster rivals;  it is theoretically possible that he <i>will</i> never complete the operation initiated (but each of the streams that overtake him will complete his own).  This feature is typical for lockless algorithms - unlike locks, which, as a rule, implement the waiting queue: the first one came - the first one passed. <br><br>  The translator dared to come up with his own analogy: the ticket office at McDonalds is a castle, behind which a line of waiting customers lined up.  If the customer standing at the cash register’s time rummaging through his pockets in search of small things, then the other customers and the cashier are wasting their time waiting;  the system as a whole is idle.  On the other hand, the waiter in the restaurant is a non-stop resource.  Every client calls him to pay for lunch;  but another customer can “meet” and intercept the waiter on the way.  It is not known how many times the waiter will be distracted until he finally reaches your table;  but on the other hand, if he doesn’t approach you, then now he is serving someone else.  In general, the system is not idle. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -83,7 +83,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <hr><br>  The <code>InterlockedMultiply</code> function from the previous post corresponds to the pattern given here almost verbatim: “another parameter” is a multiplier passed to the function parameter;  “New meaning” is a work.  If the entry of a new value failed, then someone else changed it, and we start the operation again. <br><br>  The initialization of static variables in the past post also corresponds to the model “make, write, (try again)”, just the stage “try again” is optimized: we know that its result would be the same values ​​that were already written to common variables by the stream overtaking;  therefore, this stage can not be performed.  In the case of variable initialization, <code>InterlockedCompareExchange</code> used in the Release version, because the new value is valid only with other data in memory (only with <code>a</code> ), and should be recorded only after them. <br><br>  Another “optimized” version of the model is “make, write, (drop it)”.  There is also no cycle in it: if the entry of a new value fails, the function considers the failure fatal, and refrains from further attempts.  This is how, for example, <code>TryEnterCriticalSection</code> .  It uses <code>InterlockedCompareExchangeAcquire</code> : changes made from within the critical section should not be written into memory before it is written that the section is busy. <br><br>  If the common variable is not a number, but a pointer, then you need to take care that the already mentioned “ABA problem” does not arise when the same pointer points to a new object.  Initialization of static objects does not require additional difficulties: the pointer can change only from NULL to <i>something</i> , and once it has become non-NULL, the pointer no longer changes.  If the pointer can change arbitrarily, then, as a rule, this pointer and the “version number” are combined in a common variable, which increases with each pointer change. <br><br>  In the following example of using the model “make, write, (try again)”, the version number will be stored in a common variable.  To begin with, two auxiliary functions: <br><br><pre> LONG InterlockedReadAcquire (__ in LONG * pl, __in LONG lUnlikely)
@@ -115,20 +115,20 @@
                         &amp; g_lColorChange, -1)! = lColorChangeStart);
   return iResult;
  }
-</pre><br>  We take the old value of the version number, and begin our calculations.  We take it with an Acquire operation, so the read version number is written into memory before the color values ​​that we use for calculations. <br>  When the calculations are completed, we compare the current version number with the saved one.  If they do not match, then the colors have changed in the course of our calculations, so they will have to be redone. <br>  The ABA problem is possible if the colors during the calculations have changed four billion times: because of the overflow of the counter, we will not notice.  It is clear that in reality this is unlikely to happen. </div><p>Source: <a href="https://habr.com/ru/post/118466/">https://habr.com/ru/post/118466/</a></p>
+</pre><br>  We take the old value of the version number, and begin our calculations.  We take it with an Acquire operation, so the read version number is written into memory before the color values ​​that we use for calculations. <br>  When the calculations are completed, we compare the current version number with the saved one.  If they do not match, then the colors have changed in the course of our calculations, so they will have to be redone. <br>  The ABA problem is possible if the colors during the calculations have changed four billion times: because of the overflow of the counter, we will not notice.  It is clear that in reality this is unlikely to happen. </div><p>Source: https://habr.com/ru/post/118466/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../118459/index.html">Create an application for Windows Phone 7 from start to finish. Part 13. Application recovery after decontamination</a></li>
+<li><a href="../11846/index.html">Moonshine. Methods and recipes</a></li>
 <li><a href="../118460/index.html">How to raise server for python scripts in 1 minute</a></li>
 <li><a href="../118461/index.html">Create an application for Windows Phone 7 from start to finish. Part 14. Validation of input data.</a></li>
 <li><a href="../118462/index.html">Create an application for Windows Phone 7 from start to finish. Part 15. Access to photos on Windows Phone</a></li>
 <li><a href="../118465/index.html">Presented by the official LiveJournal application for Android</a></li>
 <li><a href="../118468/index.html">User profiles: pros, cons, pitfalls</a></li>
+<li><a href="../11847/index.html">Happiness is, in spite of everything, as well as kindness and mutual assistance!</a></li>
 <li><a href="../118470/index.html">AlterRussia.ru or "If I were president"!</a></li>
 <li><a href="../118472/index.html">An interesting feature of Grub2: loading from ISO file</a></li>
 <li><a href="../118474/index.html">St. Petersburg radio market Juno</a></li>
-<li><a href="../118475/index.html">How to become a system administrator - a guide for beginners (Part 1)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

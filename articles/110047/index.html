@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Module ustats: statistics of requests to backends</h1><div class="post__text post__text-html js-mediator-article">  Greetings <br><br>  This article will discuss a new module for nginx, the purpose of which is to collect and provide the user with statistics on server backend server access.  Under the cut - details, examples of use, screenshots, links, as well as the history of creation. <br><br><a name="habracut"></a><br><h4>  Story </h4><br>  Not so long ago, in the server support department of our company, we came to the conclusion that it was time to change something.  More precisely, it was necessary to solve problems with the distribution of the increased load - our fronts began to cope with their task with difficulty. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       With the help of JMeter, we drove to the stand of nginx, HAProxy, Brocade Server Iron ADX 1000 and a number of other balancers.  The main selection criterion was the possibility of termination of about 50 thousand simultaneous ssl-sessions during peak periods.  After long testing, for various reasons, all options except nginx and its iron competitor Brocade Server have disappeared, and only the first of them has remained.  All other things being equal, probably decisive factors in favor of nginx were the flexibility of its configuration and lightness. <br><br><h4>  Problem </h4><br>  Earlier, HAProxy was used as a balancer on some fronts.  After switching to nginx, it became clear that we lack in it some informative statistics of work with backends.  The fact is that the same HAProxy had such statistics, and with its help we tracked the problems arising on the backends and promptly reacted to them.  With the new balancer, we were left without these statistics, like without hands.  stub_status and similar modules did not suit us, since  Their function is to show statistics not in the context of a separate Upstream, but of the server as a whole.  We also wanted for each upstream / backend to have data on such parameters as the <i>number of calls</i> to each backend and the number <i>of HTTP errors 499/500/503 and TCP</i> , and this list later expanded. <br><br><h4>  Decision </h4><br>  Since we did not find any ready-made solutions to our problem, an attempt was made to write a module that would provide the necessary information in a visual form.  The attempt, I think, was a success, and the result was the module <b>ustats</b> ( <i>upstream statistics</i> ). <br><br><h5>  What statistics? </h5><br>  With ustats, you can keep statistics on such backend indicators as <br><ul><li>  <i>Number of requests</i> . </li><li>  <i>The number of errors 499/500/503</i> . </li><li>  <i>The number of HTTP timeouts read and write</i> . </li><li>  <i>The number of TCP connection errors</i> . </li><li>  <i>Failure timer (fail_timeout)</i> .  In nginx, this parameter is configured by the directive of the same name and determines the period of time during which several unsuccessful backend calls should occur in succession (the exact number is indicated by the max_fails directive), after which the backend is placed on the black list, and there are no calls to it yet time fail_timeout.  Usually, the administrator and himself know what timeouts are registered in his server config, but still it seemed like a good idea to have them in front of them. </li><li>  <i>The number of failed attempts to work with the backend (fails count)</i> .  Inside nginx for each backend there is a counter of unsuccessful attempts to work.  This number shows how many times during the fail timeout time nginx tried to knock on the backend and failed (for what is considered a failure, see the description of the proxy_pass directive).  The principle of operation of the counter is quite simple.  When nginx is going to redirect the request, it first looks at which backend is next in line (if it’s about round robin balancing), checks its status (on the black list or not), and if the backend is “ignored”, the server looks at the time of its last failure .  If the fail_timeout time has already passed since then, the counter of failed attempts for the backend is reset and the request is sent.  If the backend was not on the black list, then the request is sent immediately, and the counter may be reset, depending on the time that has passed since the first unsuccessful call. </li><li>  <i>Maximum number of failed calls (max_fails)</i> .  Defines the threshold for the number of unsuccessful attempts to work with the backend, at which it is placed on the blacklist for the period of time fail_timeout.  This parameter is also written in the nginx config, and we added its mapping to the statistics for clarity. </li><li>  <i>Last unsuccessful call</i> to backend.  His appointment should be clear from the previous paragraphs :) </li></ul><br><h5>  Additional functions </h5><br>  Also ustats can show which backends are currently on the black list.  I will note that a backend is understood not as what is indicated in the nginx configuration by the server directive, but directly at the address where the name specified in the directive is located.  If there are several addresses behind one name in the DNS, then the module shows them as separate backends (not forgetting to indicate what name they came from). <br><br>  In addition to highlighting backends from the blacklist, ustats highlights off the server, i.e.  described in the nginx config as <br><pre> ...
@@ -84,20 +84,20 @@
  proxy_pass http://192.168.0.75:8080
  ...
  }
-</pre><br><br><h4>  Total </h4><br>  We <a href="http://ustats.googlecode.com/">posted the</a> source code module on the page Google Code.  The repository contains the patch file for nginx, the source file + the configuration file.  On the module page there are installation instructions, and additional configuration directives are also described there.  The current version of the module was tested with nginx version 0.8.53 in Chrome, Firefox and Opera browsers.  Finally, I must say that ustats is just an attempt to add the most basic mechanism for displaying data on working with backends to nginx.  In the future, I would like to see such useful modules in the main branch of the server as, for example, advanced health check backends. </div><p>Source: <a href="https://habr.com/ru/post/110047/">https://habr.com/ru/post/110047/</a></p>
+</pre><br><br><h4>  Total </h4><br>  We <a href="http://ustats.googlecode.com/">posted the</a> source code module on the page Google Code.  The repository contains the patch file for nginx, the source file + the configuration file.  On the module page there are installation instructions, and additional configuration directives are also described there.  The current version of the module was tested with nginx version 0.8.53 in Chrome, Firefox and Opera browsers.  Finally, I must say that ustats is just an attempt to add the most basic mechanism for displaying data on working with backends to nginx.  In the future, I would like to see such useful modules in the main branch of the server as, for example, advanced health check backends. </div><p>Source: https://habr.com/ru/post/110047/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../110037/index.html">Opera 11.00 Release Candidate 1</a></li>
 <li><a href="../110039/index.html">Yahoo reduced staff by 4%, laying off more than 500 employees</a></li>
+<li><a href="../11004/index.html">Tomorrow's Day. Botalution of humanity</a></li>
 <li><a href="../110040/index.html">PHPLego: Hotkeys - hotkey attribute</a></li>
 <li><a href="../110043/index.html">PR, fraud and bullshit in the service of science. Part I. PR</a></li>
 <li><a href="../110044/index.html">Not only phones</a></li>
 <li><a href="../110049/index.html">AnyChart Stock - flexible, fast and interactive datetime-based graphics</a></li>
+<li><a href="../11005/index.html">Underground Kiev</a></li>
 <li><a href="../110050/index.html">Data encryption in ORACLE DB according to GOST</a></li>
 <li><a href="../110051/index.html">MyTaskHelper - online database creation system (demo video)</a></li>
 <li><a href="../110052/index.html">Testing the monitoring system of virtual servers</a></li>
-<li><a href="../110055/index.html">Video from HighLoad ++ in Mail.Ru: James Golick - Scaling to the Hundreds of Millions of Requests: What Worked and What Didn't</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

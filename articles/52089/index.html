@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Xen Fedora 10 as a dom0</h1><div class="post__text post__text-html js-mediator-article"> The latest version of the Fedora tribe, regularly supporting the work <br>  in Dom0 mode, was number 8. Xen was version 3.1.2 there, and the kernel for Dom0 was 2.6.21. <br>  I want more new versions of all software, because  everything is pretty obsolete. <br>  The main thing is outdated XEN itself - the current stable version number 3.3.1 is dated January 5, 2009, and there are quite a lot of goodies. <br><br>  Fedora 9/10 does not support work in the Dom0 mode, that is, there is no corresponding kernel in them.  What to do?  I found a fairly simple way that covered my needs. <br><a name="habracut"></a><br>  So. <br><br>  We put Fedora 10 as we want. <br>  (Personally, I remove all the jackdaws, then I go to custom and there I also remove everything.) <br>  We put xen, since he is there 3.3.0.  And binutils is also needed - there is an ar archiver, which is useful to us. <br> <code>yum install xen binutils <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Dragging the kernel with Dom0 support from ... Debian Lenny. <br>  <a href="">core</a> <a href="">modules</a> <br><br>  We pick out what we need, we arrange in places: <br> <code>ar x linux-image-2.6.26-1-xen-686_2.6.26-13_i386.deb data.tar.gz <br> tar xzf data.tar.gz ./boot <br> ar x linux-modules-2.6.26-1-xen-686_2.6.26-13_i386.deb data.tar.gz <br> tar xzf data.tar.gz ./lib/modules ./boot <br> mv -t /boot ./boot/* <br> mv -t /lib/modules ./lib/modules/* <br></code> <br><br>  Little Fedora Magic. <br> <code>/sbin/new-kernel-pkg --mkinitrd --depmod 2.6.26-1-xen-686 <br></code> <br><br>  Go to grub.conf.  We are looking at how everything was written incorrectly by the stupid Fedorin script. <br>  It is necessary to fix everything.  Below are my options before and after. <br>  Before: <br> <code>title Fedora (2.6.26-1-xen-686) <br> root (hd0,2) <br> kernel /vmlinuz-2.6.26-1-xen-686 ro root=/dev/vgr5/f.root rhgb quiet <br> initrd /initrd-2.6.26-1-xen-686.img <br></code> <br>  After: <br> <code>title DebXendora (2.6.26-1-xen-686) <br> root (hd0,2) <br> kernel /xen-3.3.gz <br> module /vmlinuz-2.6.26-1-xen-686 ro root=/dev/vgr5/f.root rhgb quiet console=tty0 <br> module /initrd-2.6.26-1-xen-686.img <br></code> <br><br>  Rebuy.  We are happy. <br><br>  Shl.  The XEN upgrade to 3.3.1 is still ahead, but 3.3.0 is already a plus. </div><p>Source: <a href="https://habr.com/ru/post/52089/">https://habr.com/ru/post/52089/</a></p>
+      Dragging the kernel with Dom0 support from ... Debian Lenny. <br>  <a href="">core</a> <a href="">modules</a> <br><br>  We pick out what we need, we arrange in places: <br> <code>ar x linux-image-2.6.26-1-xen-686_2.6.26-13_i386.deb data.tar.gz <br> tar xzf data.tar.gz ./boot <br> ar x linux-modules-2.6.26-1-xen-686_2.6.26-13_i386.deb data.tar.gz <br> tar xzf data.tar.gz ./lib/modules ./boot <br> mv -t /boot ./boot/* <br> mv -t /lib/modules ./lib/modules/* <br></code> <br><br>  Little Fedora Magic. <br> <code>/sbin/new-kernel-pkg --mkinitrd --depmod 2.6.26-1-xen-686 <br></code> <br><br>  Go to grub.conf.  We are looking at how everything was written incorrectly by the stupid Fedorin script. <br>  It is necessary to fix everything.  Below are my options before and after. <br>  Before: <br> <code>title Fedora (2.6.26-1-xen-686) <br> root (hd0,2) <br> kernel /vmlinuz-2.6.26-1-xen-686 ro root=/dev/vgr5/f.root rhgb quiet <br> initrd /initrd-2.6.26-1-xen-686.img <br></code> <br>  After: <br> <code>title DebXendora (2.6.26-1-xen-686) <br> root (hd0,2) <br> kernel /xen-3.3.gz <br> module /vmlinuz-2.6.26-1-xen-686 ro root=/dev/vgr5/f.root rhgb quiet console=tty0 <br> module /initrd-2.6.26-1-xen-686.img <br></code> <br><br>  Rebuy.  We are happy. <br><br>  Shl.  The XEN upgrade to 3.3.1 is still ahead, but 3.3.0 is already a plus. </div><p>Source: https://habr.com/ru/post/52089/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,11 +72,11 @@
 <li><a href="../52086/index.html">Effective use of browser bookmarks - action orientation</a></li>
 <li><a href="../52087/index.html">Bibigosh - children's virtual world on Silverlight 2</a></li>
 <li><a href="../52088/index.html">The appearance of ESET NOD32 in different periods of life</a></li>
+<li><a href="../5209/index.html">Incredibly steep slide</a></li>
 <li><a href="../52090/index.html">Universal emulator for old games</a></li>
 <li><a href="../52091/index.html">$ 4,000 for a laptop with two touch screens</a></li>
 <li><a href="../52093/index.html">The Logic Of Failure by Dietrich Dorner, Rita Kimber, Robert Kimber</a></li>
 <li><a href="../52094/index.html">Golden site 2008</a></li>
-<li><a href="../52095/index.html">Solar Phone</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

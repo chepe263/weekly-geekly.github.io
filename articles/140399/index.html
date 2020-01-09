@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>About the computational complexity of HTML and CSS algorithms</h1><div class="post__text post__text-html js-mediator-article">  The HTML document uploaded to the browser has a DOM tree of elements and a set of CSS rules.  Each CSS rule is a pair — a selector and a list of properties. <br><br>  We do not think much about what, and what is actually worth drawing an HTML document from a computational point of view?  Knowledge about the fact that the thinker thinks, and neon shine brightly through opacity: 0.5, the elements are clearly not enough. <br><br>  Actually about this is the data of the article - about the computational complexity (computational complexity) of displaying HTML and CSS.  I want to note that I use my own experience in implementing HTML / CSS rendering engines (HTMLayout and Sciter), but the computational problems in this area are universal - determined by the very nature of HTML and CSS specifications. <br><a name="habracut"></a><br><h4>  Word about CSS selectors </h4> <br>  Imagine an HTML document that after the parser turned into a DOM tree consisting of <b>N</b> elements.  The style system of this document consists of <b>S</b> CSS rules.  Then the <a href="http://ru.wikipedia.org/wiki/%25D0%2592%25D1%258B%25D1%2587%25D0%25B8%25D1%2581%25D0%25BB%25D0%25B8%25D1%2582%25D0%25B5%25D0%25BB%25D1%258C%25D0%25BD%25D0%25B0%25D1%258F_%25D1%2581%25D0%25BB%25D0%25BE%25D0%25B6%25D0%25BD%25D0%25BE%25D1%2581%25D1%2582%25D1%258C">computational complexity of the</a> procedure for assigning styles to all elements of the DOM is expressed as: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code><i>O</i> ( N * S * D )</code> <br>  Where D is the “depth” metric of the tree and selectors used. <br><br>  As an example, consider this “remarkable” rule: <br><br> <code>body * { background:red; }</code> <br> <br>  '*' - to each element inside the &lt;body&gt; assign the red color of the substrate.  Of course, the practical benefits of such a rule are slightly but to illustrate what is needed: take the nth element of the DOM and iterate over all its parents (in depth) on the subject of the body tag.  And so for each item.  If there are only S of such rules, then we have the formula given above. <br><br>  In principle, N * S * D is not so terrible in the static case - it was calculated once and forgotten.  But in case of frequent dynamic changes problems are possible.  Say, if you change the class of a container element, then for its entire subtree, you need to recalculate styles.  And this is again the <code><i>O</i> ( N * S * D )</code> problem in the general case. <br><br>  Of course, CSS implementations try to optimize the style recalculation process, but this is not always possible.  The main method of dealing with O (N ...) problems is to use results caching.  Say, when defining the style of an element, you can check the previous element and if it is “similar” to the desired one, then take its style (if it is defined).  But this trick stumbles, for example, on rules like <code>li:nth-child(even)</code> .  The reason I think is obvious. <br><br>  WebKit, for example, does not support dynamic attribute selectors at all.  For example, if you want to turn on the document display mode by changing the value of a certain DOM attribute “mode” and a pair of rules like <code>body[mode=first] .widget {color:red}</code> and <code>body[mode=second] .widget {color:green}</code> you will fail (in WebKit).  Such is the optimization in this engine. <br><br>  Recommendations for optimal use of styles: <br><br><ol><li>  We follow the total number of rules.  If a rule is not used in this document (there are no elements satisfying its selector), it still loads the CPU.  Such rules need to be removed. </li><li>  In the compound selector, the rightmost selector should be as specific as possible (specific?). <br>  Example: the <code>ul.cls2 li</code> selector is worse than the <code>ul li.cls1</code> selector in the sense that in the first case, all li elements and their parents are viewed for ul.cls2, and in the second, li set for which depth search is performed - only for those li which have class = cls1. <br></li><li>  The selector <code>.cls2 .cls1</code> “worse” than the selector <code>.cls2 &gt; .cls1</code> .  In the second case, the compliance check will always be limited to the element itself and its parent.  In the first case, the viewing depth is potentially up to the root &lt;html&gt; inclusive. </li></ol><br><h4>  Word about layout algorithms </h4><br>  ... and this is the topic of the next article if this topic is interesting to someone. </div><p>Source: <a href="https://habr.com/ru/post/140399/">https://habr.com/ru/post/140399/</a></p>
+     <code><i>O</i> ( N * S * D )</code> <br>  Where D is the “depth” metric of the tree and selectors used. <br><br>  As an example, consider this “remarkable” rule: <br><br> <code>body * { background:red; }</code> <br> <br>  '*' - to each element inside the &lt;body&gt; assign the red color of the substrate.  Of course, the practical benefits of such a rule are slightly but to illustrate what is needed: take the nth element of the DOM and iterate over all its parents (in depth) on the subject of the body tag.  And so for each item.  If there are only S of such rules, then we have the formula given above. <br><br>  In principle, N * S * D is not so terrible in the static case - it was calculated once and forgotten.  But in case of frequent dynamic changes problems are possible.  Say, if you change the class of a container element, then for its entire subtree, you need to recalculate styles.  And this is again the <code><i>O</i> ( N * S * D )</code> problem in the general case. <br><br>  Of course, CSS implementations try to optimize the style recalculation process, but this is not always possible.  The main method of dealing with O (N ...) problems is to use results caching.  Say, when defining the style of an element, you can check the previous element and if it is “similar” to the desired one, then take its style (if it is defined).  But this trick stumbles, for example, on rules like <code>li:nth-child(even)</code> .  The reason I think is obvious. <br><br>  WebKit, for example, does not support dynamic attribute selectors at all.  For example, if you want to turn on the document display mode by changing the value of a certain DOM attribute “mode” and a pair of rules like <code>body[mode=first] .widget {color:red}</code> and <code>body[mode=second] .widget {color:green}</code> you will fail (in WebKit).  Such is the optimization in this engine. <br><br>  Recommendations for optimal use of styles: <br><br><ol><li>  We follow the total number of rules.  If a rule is not used in this document (there are no elements satisfying its selector), it still loads the CPU.  Such rules need to be removed. </li><li>  In the compound selector, the rightmost selector should be as specific as possible (specific?). <br>  Example: the <code>ul.cls2 li</code> selector is worse than the <code>ul li.cls1</code> selector in the sense that in the first case, all li elements and their parents are viewed for ul.cls2, and in the second, li set for which depth search is performed - only for those li which have class = cls1. <br></li><li>  The selector <code>.cls2 .cls1</code> “worse” than the selector <code>.cls2 &gt; .cls1</code> .  In the second case, the compliance check will always be limited to the element itself and its parent.  In the first case, the viewing depth is potentially up to the root &lt;html&gt; inclusive. </li></ol><br><h4>  Word about layout algorithms </h4><br>  ... and this is the topic of the next article if this topic is interesting to someone. </div><p>Source: https://habr.com/ru/post/140399/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../140395/index.html">Meeting with the developers of the CUBRID DBMS at the RIT ++ 2012 conference in Moscow</a></li>
 <li><a href="../140396/index.html">Atmel Studio 6 supports both AVR and ARM</a></li>
 <li><a href="../140397/index.html">Integration of the program on C # with the calculated core ANSYS 11</a></li>
+<li><a href="../1404/index.html">Nine tips for working with Web 2.0</a></li>
+<li><a href="../14040/index.html">Mobile portal Trashbox.ru</a></li>
 <li><a href="../140400/index.html">jQuery File Upload</a></li>
 <li><a href="../140401/index.html">Published the full program of the conference WebProfessionals in Samara</a></li>
 <li><a href="../140403/index.html">Runetology (139): special edition of Runet Salaries</a></li>
-<li><a href="../140404/index.html">Why does the Feistel network work? Explanation "on the fingers"</a></li>
-<li><a href="../140405/index.html">Bitcasa has started!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

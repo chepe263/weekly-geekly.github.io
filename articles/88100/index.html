@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The sum of the measurements in rrdtool</h1><div class="post__text post__text-html js-mediator-article"><h5>  What about </h5><br>  RRD and RRDTool are firmly established in our life as a means of storing statistical data and drawing graphs on them.  If with graphs, in principle, everything is clear, then a little more benefit can be gained from the field of legend.  In particular, it is possible to output the sum of all data source values ​​(datasource), for example, incoming traffic over a period of time, which can be used later for approximate estimations.  My example is for <a href="http://coolcold.habrahabr.ru/blog/79354/">pnp4nagios</a> , but true for all other rrdtool based systems. <br><br><a name="habracut"></a><br><h5>  How to make </h5><br>  rrdtool allows you to set custom data representations using <a href="http://oss.oetiker.ch/rrdtool/doc/rrdgraph_rpn.en.html">built-in functions</a> based on the original, in particular, there are functions MIN, MAX, addition, subtraction, and so on, in this case we can use the TOTAL function.  What does it make clear from the name - returns the level from each interval multiplied by the step size, which will give the total amount of the indicator. <br>  The original template looked like this: <br><br> <code>$opt[1] = " --vertical-label \"Traffic\" -b 1000 --title \"Interface Traffic for $hostname / $servicedesc\" "; <br> $def[1] = "DEF:var1=$rrdfile:$DS[1]:AVERAGE " ; <br> $def[1] .= "DEF:var2=$rrdfile:$DS[2]:AVERAGE " ; <br> $def[1] .= "LINE1:var1#003300:\"in \" " ; <br> $def[1] .= "GPRINT:var1:LAST:\"%7.2lf %Sb/s last\" " ; <br> $def[1] .= "GPRINT:var1:AVERAGE:\"%7.2lf %Sb/s avg\" " ; <br> $def[1] .= "GPRINT:var1:MAX:\"%7.2lf %Sb/s max\\n\" " ; <br> $def[1] .= "LINE1:var2#00ff00:\"out \" " ; <br> $def[1] .= "GPRINT:var2:LAST:\"%7.2lf %Sb/s last\" " ; <br> $def[1] .= "GPRINT:var2:AVERAGE:\"%7.2lf %Sb/s avg\" " ; <br> $def[1] .= "GPRINT:var2:MAX:\"%7.2lf %Sb/s max\\n\" "; <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Define two new data sources from var1 (input traffic) and var2 (output traffic) <br><br> <code>$def[1] .= "VDEF:totalin=var1,TOTAL "; <br> $def[1] .= "VDEF:totalout=var2,TOTAL "; <br></code> <br>  Now in the totalin &amp; totalout variables we have just the amounts, it remains to display them in legends, for this we add <br><br> <code>$def[1] .= "GPRINT:totalin:\"%3.2lf %s ttl\\n\" "; <br> $def[1] .= "GPRINT:totalout:\"%3.2lf %s ttl\\n\" "; <br></code> <br>  Along the way, we remove line breaks and as a result we get: <br> <code>$opt[1] = " --vertical-label \"Traffic\" -b 1000 --title \"Interface Traffic for $hostname / $servicedesc\" "; <br> $def[1] = "DEF:var1=$rrdfile:$DS[1]:AVERAGE " ; <br> $def[1] .= "DEF:var2=$rrdfile:$DS[2]:AVERAGE " ; <br> $def[1] .= "VDEF:totalin=var1,TOTAL "; <br> $def[1] .= "VDEF:totalout=var2,TOTAL "; <br> $def[1] .= "LINE1:var1#003300:\"in \" " ; <br> $def[1] .= "GPRINT:var1:LAST:\"%7.2lf %Sb/s last\" " ; <br> $def[1] .= "GPRINT:var1:AVERAGE:\"%7.2lf %Sb/s avg\" " ; <br> $def[1] .= "GPRINT:var1:MAX:\"%7.2lf %Sb/s max\" " ; <br> $def[1] .= "GPRINT:totalin:\"%3.2lf %s ttl\\n\" "; <br> $def[1] .= "LINE1:var2#00ff00:\"out \" " ; <br> $def[1] .= "GPRINT:var2:LAST:\"%7.2lf %sb/s last\" " ; <br> $def[1] .= "GPRINT:var2:AVERAGE:\"%7.2lf %Sb/s avg\" " ; <br> $def[1] .= "GPRINT:var2:MAX:\"%7.2lf %Sb/s max\" "; <br> $def[1] .= "GPRINT:totalout:\"%3.2lf %s ttl\\n\" "; <br> <br></code> <br>  Total was: <br><img src="https://habrastorage.org/getpro/geektimes/post_images/7b0/68b/8e0/7b068b8e0edf81332834f329f8ad9e5c.png" alt="It was"><br><br>  It became: <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/241/c6b/b43/241c6bb4316335e22d0e75ba302b76d9.png" alt="has become"><br><br>  Well, as without nginksa <strike>and counting millions of hits on our website download</strike> and its statistics! <br>  It was: <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/f07/b0a/c7b/f07b0ac7b8289f1b1502c8cca6910799.png" alt="It was"><br><br>  It became: <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/05f/404/96a/05f40496aacb81cc4cc826e5bcdd8c37.png" alt="image"></div><p>Source: <a href="https://habr.com/ru/post/88100/">https://habr.com/ru/post/88100/</a></p>
+      Define two new data sources from var1 (input traffic) and var2 (output traffic) <br><br> <code>$def[1] .= "VDEF:totalin=var1,TOTAL "; <br> $def[1] .= "VDEF:totalout=var2,TOTAL "; <br></code> <br>  Now in the totalin &amp; totalout variables we have just the amounts, it remains to display them in legends, for this we add <br><br> <code>$def[1] .= "GPRINT:totalin:\"%3.2lf %s ttl\\n\" "; <br> $def[1] .= "GPRINT:totalout:\"%3.2lf %s ttl\\n\" "; <br></code> <br>  Along the way, we remove line breaks and as a result we get: <br> <code>$opt[1] = " --vertical-label \"Traffic\" -b 1000 --title \"Interface Traffic for $hostname / $servicedesc\" "; <br> $def[1] = "DEF:var1=$rrdfile:$DS[1]:AVERAGE " ; <br> $def[1] .= "DEF:var2=$rrdfile:$DS[2]:AVERAGE " ; <br> $def[1] .= "VDEF:totalin=var1,TOTAL "; <br> $def[1] .= "VDEF:totalout=var2,TOTAL "; <br> $def[1] .= "LINE1:var1#003300:\"in \" " ; <br> $def[1] .= "GPRINT:var1:LAST:\"%7.2lf %Sb/s last\" " ; <br> $def[1] .= "GPRINT:var1:AVERAGE:\"%7.2lf %Sb/s avg\" " ; <br> $def[1] .= "GPRINT:var1:MAX:\"%7.2lf %Sb/s max\" " ; <br> $def[1] .= "GPRINT:totalin:\"%3.2lf %s ttl\\n\" "; <br> $def[1] .= "LINE1:var2#00ff00:\"out \" " ; <br> $def[1] .= "GPRINT:var2:LAST:\"%7.2lf %sb/s last\" " ; <br> $def[1] .= "GPRINT:var2:AVERAGE:\"%7.2lf %Sb/s avg\" " ; <br> $def[1] .= "GPRINT:var2:MAX:\"%7.2lf %Sb/s max\" "; <br> $def[1] .= "GPRINT:totalout:\"%3.2lf %s ttl\\n\" "; <br> <br></code> <br>  Total was: <br><img src="https://habrastorage.org/getpro/geektimes/post_images/7b0/68b/8e0/7b068b8e0edf81332834f329f8ad9e5c.png" alt="It was"><br><br>  It became: <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/241/c6b/b43/241c6bb4316335e22d0e75ba302b76d9.png" alt="has become"><br><br>  Well, as without nginksa <strike>and counting millions of hits on our website download</strike> and its statistics! <br>  It was: <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/f07/b0a/c7b/f07b0ac7b8289f1b1502c8cca6910799.png" alt="It was"><br><br>  It became: <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/05f/404/96a/05f40496aacb81cc4cc826e5bcdd8c37.png" alt="image"></div><p>Source: https://habr.com/ru/post/88100/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../88089/index.html">Kaspersky RescueDisk 10.0.10.1 (start of beta test)</a></li>
-<li><a href="../88090/index.html">Revolutionary wealth. Toffler</a></li>
 <li><a href="../88091/index.html">Convenient online messenger for online store</a></li>
 <li><a href="../88094/index.html">DevConf: 3 reports + MySQL masterclass: DRBD / HeartBeat / MySQL, MariaDB, MySQL performance monitoring</a></li>
 <li><a href="../88096/index.html">Prospects and problems of the Android platform</a></li>
+<li><a href="../881/index.html">habrahabr @ toodoo.ru</a></li>
+<li><a href="../8810/index.html">ILife workshops</a></li>
 <li><a href="../88101/index.html">Greetings from the libc free world! (Part 1)</a></li>
 <li><a href="../88106/index.html">Simkl launches Promo Manager - a tool for promotion of startups and online stores</a></li>
 <li><a href="../88109/index.html">Inside the clouds</a></li>
+<li><a href="../8811/index.html">Why do you need internet on a PDA?</a></li>
 <li><a href="../88110/index.html">Windows Phone 7 emulator unlocked to access all features</a></li>
-<li><a href="../88113/index.html">ProgressBar - Javascript Canvas2d</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

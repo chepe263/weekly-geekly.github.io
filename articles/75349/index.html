@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Source Code Highlighting</h1><div class="post__text post__text-html js-mediator-article">  It so happened that it was decided to highlight code in Habré using Source Code Highlighter.  The list of supported languages ​​is not impressive, and I did not find the opportunity to choose a color scheme.  There is a <a href="http://pygments.org/">pygments</a> library that understands most of the languages ​​used, can output html, pictures, latex and more.  But for Habra, as you know, you need a special approach, and htr does not skip the html output.  In this regard, I wrote a small class for the pygments, which corrects this annoying misunderstanding.  You can use the web version at <a href="http://paste.ly/">paste.ly</a> . <br><a name="habracut"></a><br><blockquote><code><font color="#408080"><em># -*- coding: utf-8 -*-</em></font> <br> <br> <font color="#008000"><strong>from</strong></font> <font color="#0000FF"><strong>pygments.formatter</strong></font> <font color="#008000"><strong>import</strong></font> Formatter <br> <br> <font color="#008000"><strong>class</strong></font> <font color="#0000FF"><strong>HabrFormatter</strong></font> (Formatter): <br> <br> _html_escape_table <font color="#666666">=</font> (( <font color="#BA2121">'&amp;'</font> , <font color="#BA2121">'&amp;amp;'</font> ), <br> ( <font color="#BA2121">'&lt;'</font> , <font color="#BA2121">'&amp;lt;'</font> ), <br> ( <font color="#BA2121">'&gt;'</font> , <font color="#BA2121">'&amp;gt;'</font> ), <br> ( <font color="#BA2121">'"'</font> , <font color="#BA2121">'&amp;quot;'</font> ), <br> ( <font color="#BA2121">"'"</font> , <font color="#BA2121">'&amp;#39;'</font> ), <br> ( <font color="#BA2121">' '</font> , <font color="#BA2121">'&amp;nbsp;'</font> ), <br> ( <font color="#BA2121">'</font> <font color="#BB6622"><strong>\t</strong></font> <font color="#BA2121">'</font> , <font color="#BA2121">'&amp;nbsp;'</font> <font color="#666666">*4</font> )) <br> <br> <font color="#008000"><strong>def</strong></font> <font color="#0000FF">escape_html</font> ( <font color="#008000">self</font> , value): <br> <font color="#008000"><strong>return</strong></font> <font color="#008000">reduce</font> ( <font color="#008000"><strong>lambda</strong></font> value, rep: value <font color="#666666">.</font> replace( <font color="#666666">*</font> rep), <br> <font color="#008000">self</font> <font color="#666666">.</font> _html_escape_table, value) <br> <br> <font color="#008000"><strong>def</strong></font> <font color="#0000FF">format_unencoded</font> ( <font color="#008000">self</font> , tokensource, outfile): <br> outfile <font color="#666666">.</font> write( <font color="#BA2121">'&lt;blockquote&gt;&lt;code&gt;'</font> ) <br> last_start <font color="#666666">=</font> last_end <font color="#666666">=</font> <font color="#BA2121">''</font> <br> <font color="#008000"><strong>for</strong></font> token_type, value <font color="#AA22FF"><strong>in</strong></font> tokensource: <br> value <font color="#666666">=</font> <font color="#008000">self</font> <font color="#666666">.</font> escape_html(value) <br> style <font color="#666666">=</font> <font color="#008000">self</font> <font color="#666666">.</font> style <font color="#666666">.</font> style_for_token(token_type) <br> start <font color="#666666">=</font> end <font color="#666666">=</font> <font color="#BA2121">''</font> <br> <font color="#008000"><strong>if</strong></font> style[ <font color="#BA2121">'color'</font> ]: <br> start <font color="#666666">+=</font> <font color="#BA2121">'&lt;font color="#</font> <font color="#BB6688"><strong>%s</strong></font> <font color="#BA2121">"&gt;'</font> <font color="#666666">%</font> style[ <font color="#BA2121">'color'</font> ] <br> end <font color="#666666">=</font> <font color="#BA2121">'&lt;/font&gt;'</font> <font color="#666666">+</font> end <br> <font color="#008000"><strong>if</strong></font> style[ <font color="#BA2121">'bold'</font> ]: <br> start <font color="#666666">+=</font> <font color="#BA2121">'&lt;strong&gt;'</font> <br> end <font color="#666666">=</font> <font color="#BA2121">'&lt;/strong&gt;'</font> <font color="#666666">+</font> end <br> <font color="#008000"><strong>if</strong></font> style[ <font color="#BA2121">'italic'</font> ]: <br> start <font color="#666666">+=</font> <font color="#BA2121">'&lt;em&gt;'</font> <br> end <font color="#666666">=</font> <font color="#BA2121">'&lt;/em&gt;'</font> <font color="#666666">+</font> end <br> <font color="#008000"><strong>if</strong></font> style[ <font color="#BA2121">'underline'</font> ]: <br> start <font color="#666666">+=</font> <font color="#BA2121">'&lt;u&gt;'</font> <br> end <font color="#666666">=</font> <font color="#BA2121">'&lt;/u&gt;'</font> <font color="#666666">+</font> end <br> <font color="#008000"><strong>if</strong></font> last_start <font color="#666666">!=</font> start: <br> outfile <font color="#666666">.</font> write(last_end) <br> outfile <font color="#666666">.</font> write(start) <br> outfile <font color="#666666">.</font> write(value) <br> last_start, last_end <font color="#666666">=</font> start, end <br> outfile <font color="#666666">.</font> write( <font color="#BA2121">'&lt;/code&gt;&lt;/blockquote&gt;'</font> ) <br></code> </blockquote><br>  The only trouble is that it is impossible to change the background color on the habr, which makes not all pygments color styles suitable for use. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/75349/">https://habr.com/ru/post/75349/</a></p>
+    <p>Source: https://habr.com/ru/post/75349/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../75345/index.html">Thousands of logins and passwords from the accounts of the network "VKontakte" have come back to open access.</a></li>
 <li><a href="../75346/index.html">We master ASP.NET MVC together. Introduction</a></li>
 <li><a href="../75347/index.html">Evolution of the programmer</a></li>
+<li><a href="../7535/index.html">Do not write all at once</a></li>
 <li><a href="../75351/index.html">"Do not recommend" in the RSS for Habralenta</a></li>
 <li><a href="../75352/index.html">ExtJs - component updates</a></li>
 <li><a href="../75353/index.html">How to make friends ASP.NET Controls and DI-container</a></li>
 <li><a href="../75354/index.html">CMS overview for organizing microblogging service</a></li>
-<li><a href="../75355/index.html">English for losers: tested for yourself</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

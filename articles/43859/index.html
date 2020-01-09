@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>As I rediscovered encapsulation in java.</h1><div class="post__text post__text-html js-mediator-article"> I have always believed that Java is a laconic and beautiful (in terms of concept) language with a clear structure that allows you to extend this structure to all sorts of frameworks, it also helps to bring order to the code of the final programmer.  And, above all, I believed that java is 100% OO language!  But recently I came across a code, after which I walked in the evening indignant.  The code is quite simple to understand even people who are not knowledgeable in java. <a name="habracut"></a><br>  Suppose we have class A in some package: <br><br><pre> <code class="hljs cs">package test; <span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">class</span></span> <span class="hljs-title"><span class="hljs-title">A</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">private</span></span> <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> x = <span class="hljs-number"><span class="hljs-number">33</span></span>; <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">test</span></span></span><span class="hljs-function">(</span><span class="hljs-params"></span><span class="hljs-function"><span class="hljs-params"></span>)</span></span>{ System.<span class="hljs-keyword"><span class="hljs-keyword">out</span></span>.println(x); } }</code> </pre><br>  As you can see, the x field is protected and, according to the <a href="http://java.sun.com/docs/books/tutorial/java/javaOO/accesscontrol.html">dock from sun</a> , this field is not visible either in subclasses A, or in the test package, or even in other packages.  Therefore, we have every reason to believe that the test () method always returns the number 33. Moreover, we could use this assumption in our code, tying any logic on this. <br>  Next, we have a class in any other package (but within the same JVM): <br><br><pre> <code class="hljs pgsql">package <span class="hljs-keyword"><span class="hljs-keyword">access</span></span>; <span class="hljs-built_in"><span class="hljs-built_in">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">class</span></span> X { <span class="hljs-built_in"><span class="hljs-built_in">public</span></span> <span class="hljs-type"><span class="hljs-type">void</span></span> getAccess() throws <span class="hljs-keyword"><span class="hljs-keyword">Exception</span></span>{ A a = <span class="hljs-built_in"><span class="hljs-built_in">new</span></span> A(); Field x = a.getClass().getDeclaredField("x"); x.setAccessible(<span class="hljs-keyword"><span class="hljs-keyword">true</span></span>); x.setInt(a, x.getInt(a)+<span class="hljs-number"><span class="hljs-number">1</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">System</span></span>.<span class="hljs-keyword"><span class="hljs-keyword">out</span></span>.print("protected field: "); a.test(); } }</code> </pre><br>  That's all.  All our assumptions about the encapsulation and immutability of the A.x field are dispelled.  The A.test () method now returns the number 34 (and if we started some logic on this, then our code is unlikely to work correctly now).  And it may even seem that one of the three precepts of the PLO is broken - encapsulation.  The <s>programmer of</s> the <a href="http://java.sun.com/docs/books/tutorial/reflect/index.html">java.lang.reflect</a> package is guilty of everything.  This package provides features for working with objects at the program execution stage.  Because  Since almost all classes of this object work with dynamic structures, it works rather slowly and should be used only in exceptional cases.  However, the possibility of its use remains a violation of encapsulation there. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Afterwards, having run with this package, I found that a special SecurityManager class is responsible for maintaining security and access, and if I run it, everything will fall into place.  If our class A add a static initializer: <br><br><pre> <code class="hljs cs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">class</span></span> <span class="hljs-title"><span class="hljs-title">A</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">static</span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(System.getSecurityManager()==<span class="hljs-literal"><span class="hljs-literal">null</span></span>) System.setSecurityManager(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> SecurityManager()); }</code> </pre><br>  That trick to the ears, which turned out in the previous example, will not pass.  T.ch.  everything is in order, Java is still an OO language :) The only thing for which I wrote this post is to <b><i>warn</i></b> (this is not a signal for action, you just need to keep this in mind too) of all Yapistians: <br><br>  <i>DEVELOPER, BDI!</i> <i><br></i>  <i>If there is no SecurityManager at runtime, anyone can climb into your classroom and change anything!</i> </div><p>Source: <a href="https://habr.com/ru/post/43859/">https://habr.com/ru/post/43859/</a></p>
+      Afterwards, having run with this package, I found that a special SecurityManager class is responsible for maintaining security and access, and if I run it, everything will fall into place.  If our class A add a static initializer: <br><br><pre> <code class="hljs cs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">class</span></span> <span class="hljs-title"><span class="hljs-title">A</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">static</span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(System.getSecurityManager()==<span class="hljs-literal"><span class="hljs-literal">null</span></span>) System.setSecurityManager(<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> SecurityManager()); }</code> </pre><br>  That trick to the ears, which turned out in the previous example, will not pass.  T.ch.  everything is in order, Java is still an OO language :) The only thing for which I wrote this post is to <b><i>warn</i></b> (this is not a signal for action, you just need to keep this in mind too) of all Yapistians: <br><br>  <i>DEVELOPER, BDI!</i> <i><br></i>  <i>If there is no SecurityManager at runtime, anyone can climb into your classroom and change anything!</i> </div><p>Source: https://habr.com/ru/post/43859/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../43847/index.html">Just add water: headup.com</a></li>
+<li><a href="../4385/index.html">"Runner" made his behavioral advertising</a></li>
 <li><a href="../43855/index.html">How to determine natural numbers</a></li>
 <li><a href="../43856/index.html">Open iron + open soft =?</a></li>
 <li><a href="../43857/index.html">Holographic display Dreamoc 3D</a></li>
 <li><a href="../43858/index.html">“Plump Mouse” - Glide Keyboard Concept</a></li>
+<li><a href="../4386/index.html">What is the "Rambler" search from Fast?</a></li>
 <li><a href="../43860/index.html">Site about quiet computers</a></li>
 <li><a href="../43861/index.html">How are you?</a></li>
 <li><a href="../43862/index.html">Windows 7 pre-beta appeared in torrents</a></li>
 <li><a href="../43864/index.html">Google has connected the OCR-engine for indexing PDF</a></li>
-<li><a href="../43868/index.html">Developer Tools - online CSS changes on the server</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

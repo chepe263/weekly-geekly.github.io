@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Monitor control by DDC</h1><div class="post__text post__text-html js-mediator-article">  What monitors can do <a href="http://en.wikipedia.org/wiki/Display_Data_Channel">DDC</a> , I think everyone knows.  Traditionally, it is used by the X server to define image parameters, and by admins using ddcprobe to study "what the X server did wrong" (ddcprobe shows the monitor supported modes according to the monitor itself). <br><br>  However, ddc is a two-way protocol.  He not only tells the computer what the monitor can do, but also the monitor, what the computer wants from him. <br><br>  Windows users of Samsung monitors know their magic tune, which allows you to set the brightness / contrast of the (inconvenient) program.  However, there is a more interesting method of working with the monitor: this is the ddccontrol utility. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       C using this utility, you can: <br><ul><li>  Change the brightness, contrast, gamma of the image.  Moreover, the brightness change by changing the brightness of the backlight!  (of course, if the monitor is physically able to do it) </li><li>  Programmatically switch presets (movie / text / user / game);  it is much more convenient than poking the corresponding button on the monitor itself </li><li>  Play with the undocumented features of monitors, for example, call blocked languages ​​and settings items from the menu.  On my monitor, for example, I managed to move the picture when working on DVI (usually this menu item is available only for VGA) </li><li>  Lock the monitor buttons (I think this is not for all models, but for Samsung it is definitely possible).  All buttons are locked except for on / off, turning off / on the monitor this lock resets. </li><li>  Turn the monitor on and off (completely, without the lamp blinking in standby) </li></ul><br><br>  So, here are some examples of using the utility: <br><a name="habracut"></a><br><br>  First, <code>modprobe i2c-dev</code> required module: <code>modprobe i2c-dev</code> <br><br>  Next, we are looking for monitors.  (There may be more than one thing, right?): <code>ddccontrol -p</code> <br><pre> Found monitors:
@@ -72,15 +72,15 @@
     DDC / CI supported: Yes
     Monitor Name: VESA standard monitor
     Input Type: Digital
-</pre><br><br>  You can ignore VESA standart monitor, this is a full-fledged monitor, which is simply not available in the ddccontrol database (this means only that you have to independently search for the necessary attributes in the registers).  I will show all the examples on this, “unknown” monitor. <br><br>  The basic principle of operation for DDC is that the monitor has registers (from 0 to 255) with known valid values.  The meaning of these registers for each monitor is different, but a certain common set usually coincides. <br><br>  <code>ddccprobe -d dev:/dev/i2c-2</code> - displays all monitor registers with a hint if the monitor is known to ddccprobe. <br>  (note dev prefix :). <br><br>  <code>ddccontrol -r 0xdc -w 2 dev:/dev/i2c-2</code> — set the Internet mode.  -r 0xdc is the register where to write, -w is the command to write and the value to write.  0 - user mode, 5 - movie, etc. <br><br>  <code>ddccontrol -r 0xf5 -w 1 dev:/dev/i2c-2</code> - locks the menu (-w 0 - unlocks). <br><br>  And now a little undocumented features: <br><br>  <code>ddccontrol -r 0xEE -w 55 dev:/dev/i2c-2</code> - Image Shift <br>  <code>ddccontrol -r 0xCC -w 0 dev:/dev/i2c-2</code> - enable language in the menu.  0 - Chinese 1 - Japanese, 2 - English ... 9 - Russian.  Curiously, it’s impossible to set Chinese or Japanese through the menu itself ... <br><br>  As suggested in the comments, turning the monitor off and on: <br><br>  <code>ddccontrol dev:/dev/i2c-2 -r 0xe1 -w 0</code> - turn off <br>  <code>ddccontrol dev:/dev/i2c-2 -r 0xe1 -w 1</code> — enable <br><br>  I have been thinking about embedding this functionality in a video player for a long time (I pressed fullscreen - the movie turned on), but my hands do not reach ... <br><br>  PS This utility has a gooey snout - gddccontrol </div><p>Source: <a href="https://habr.com/ru/post/94990/">https://habr.com/ru/post/94990/</a></p>
+</pre><br><br>  You can ignore VESA standart monitor, this is a full-fledged monitor, which is simply not available in the ddccontrol database (this means only that you have to independently search for the necessary attributes in the registers).  I will show all the examples on this, “unknown” monitor. <br><br>  The basic principle of operation for DDC is that the monitor has registers (from 0 to 255) with known valid values.  The meaning of these registers for each monitor is different, but a certain common set usually coincides. <br><br>  <code>ddccprobe -d dev:/dev/i2c-2</code> - displays all monitor registers with a hint if the monitor is known to ddccprobe. <br>  (note dev prefix :). <br><br>  <code>ddccontrol -r 0xdc -w 2 dev:/dev/i2c-2</code> — set the Internet mode.  -r 0xdc is the register where to write, -w is the command to write and the value to write.  0 - user mode, 5 - movie, etc. <br><br>  <code>ddccontrol -r 0xf5 -w 1 dev:/dev/i2c-2</code> - locks the menu (-w 0 - unlocks). <br><br>  And now a little undocumented features: <br><br>  <code>ddccontrol -r 0xEE -w 55 dev:/dev/i2c-2</code> - Image Shift <br>  <code>ddccontrol -r 0xCC -w 0 dev:/dev/i2c-2</code> - enable language in the menu.  0 - Chinese 1 - Japanese, 2 - English ... 9 - Russian.  Curiously, it’s impossible to set Chinese or Japanese through the menu itself ... <br><br>  As suggested in the comments, turning the monitor off and on: <br><br>  <code>ddccontrol dev:/dev/i2c-2 -r 0xe1 -w 0</code> - turn off <br>  <code>ddccontrol dev:/dev/i2c-2 -r 0xe1 -w 1</code> — enable <br><br>  I have been thinking about embedding this functionality in a video player for a long time (I pressed fullscreen - the movie turned on), but my hands do not reach ... <br><br>  PS This utility has a gooey snout - gddccontrol </div><p>Source: https://habr.com/ru/post/94990/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../94980/index.html">Review of mini games and add-ons for Chrome</a></li>
 <li><a href="../94983/index.html">Time Machine Encryption</a></li>
 <li><a href="../94985/index.html">Applications shops "Vkontakte". Frankly and without cuts. our story</a></li>
 <li><a href="../94986/index.html">Nokia N900: overcoming the next difficulties with the firmware (PR 1.2)</a></li>
 <li><a href="../94988/index.html">XUL Gear's visual editor has become an extension of Firefox</a></li>
+<li><a href="../9499/index.html">The portal of the food industry of Ukraine started its work.</a></li>
 <li><a href="../94991/index.html">Open Atrium - collaborating in drupalo</a></li>
 <li><a href="../94992/index.html">WD VelociRaptor WD6000HLHX: the fastest and most expensive SATA hard drive has increased its volume to 600 gigabytes</a></li>
 <li><a href="../94993/index.html">Programmer's lunch</a></li>

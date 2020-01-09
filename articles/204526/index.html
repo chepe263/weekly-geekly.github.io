@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Sending python packages to ppa without “life pain”</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/9d7/1d9/bbf/9d71d9bbfc17842e7aa998c44178625a.jpg" align="right">  After the post about the <a href="http://habrahabr.ru/post/204134/">TV series watcher, I’ve</a> got a wish to add <a href="https://github.com/Diaoul/subliminal">subliminal</a> for loading subtitles.  After seeing its <a href="https://github.com/Diaoul/subliminal/blob/master/requirements.txt">dependencies</a> , of which only two packages are present in the repository, and then not the appropriate versions.  I realized that life is a pain and I have to create five debian / control, make five changelog'ov and create 20 tasks in jenkins. <br><br>  But why spend the whole two hours on all this, if you can spend <i>only a few days</i> automating this process.  As a result, <a href="https://github.com/nvbn/pytoppa">pytoppa</a> appeared, it: <br><ul><li>  creates a changelog from the history between the version changes in setup.py; </li><li>  automatically adds required dependencies; </li><li>  has a simple config in yaml. </li></ul><br><a name="habracut"></a><br><h3>  Installation </h3><br><h4>  Ubuntu </h4><br>  In ubuntu, the package can be delivered from ppa: <br><pre><code class="bash hljs">sudo add-apt-repository ppa:nvbn-rm/ppa sudo apt-get update sudo apt-get install pytoppa</code> </pre> <br><h4>  Other distributions </h4><br>  You need to manually install <code>dh-make</code> and <code>cdbs</code> , and then put pytoppa via pip: <br><pre> <code class="bash hljs">pip install pytoppa</code> </pre><br><h3>  Using </h3><br>  At the root of the repository with the project you need to create .pytoppa.yml, its format is: <br><pre> <code class="hljs 1c">section:  <span class="hljs-meta"><span class="hljs-meta"># </span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword"></span></span></span><span class="hljs-meta">  python,  </span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword"></span></span></span><span class="hljs-meta">  dependencies: - -1 - -2 releases: - -1 - -2</span></span></code> </pre><br>  For example, for the series_list application: <br><pre> <code class="hljs mel">section: net dependencies: - <span class="hljs-keyword"><span class="hljs-keyword">python</span></span>-requests - <span class="hljs-keyword"><span class="hljs-keyword">python</span></span>-beautifulsoup - <span class="hljs-keyword"><span class="hljs-keyword">python</span></span>-gevent - <span class="hljs-keyword"><span class="hljs-keyword">python</span></span>-decorator - <span class="hljs-keyword"><span class="hljs-keyword">python</span></span>-libtorrent - <span class="hljs-keyword"><span class="hljs-keyword">python</span></span>-pyside - subliminal releases: - saucy - precise - quantal - raring</code> </pre><br><img src="https://habrastorage.org/getpro/habr/post_images/034/aac/918/034aac918b5763fd8df5c28ed54f0b98.png" align="right"><br>  And run: <br><pre> <code class="bash hljs">pytoppa ---launchpad ppa</code> </pre><br>  For example, I run: <br><pre> <code class="bash hljs">pytoppa <span class="hljs-string"><span class="hljs-string">'Vladimir Iakovlev &lt;nvbn.rm@gmail.com&gt;'</span></span> <span class="hljs-string"><span class="hljs-string">'ppa:nvbn-rm/ppa'</span></span></code> </pre><br><h3>  How does it work </h3><br>  Reading the parameters from setup.py turned out to be a bit nontrivial.  The easiest way was to replace <code>setuptools.setup</code> and <code>distutils.core.setup</code> with your method, which simply saves the parameters. <br><br>  And <a href="https://github.com/nvbn/pytoppa/blob/develop/pytoppa/parsers/git_parser.py">forming a changelog</a> , for him it was necessary: <br><ol><li>  get all commits in which setup.py is present; </li><li>  for each commit, copy the repository to a temporary folder and switch to the commit.  Initially, the application ran only on commits, where setup.py changed, but often the version is imported from another file; </li><li>  read the version from setup.py; </li><li>  take changes from the commit log between different versions. </li></ol><br>  At the remaining stages, simply copying or launching commands. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h3>  Links </h3><br>  <a href="https://github.com/nvbn/pytoppa">github project</a> ; <br>  <a href="https://launchpad.net/~nvbn-rm/%2Barchive/ppa">ppa with project</a> . </div><p>Source: <a href="https://habr.com/ru/post/204526/">https://habr.com/ru/post/204526/</a></p>
+    <h3>  Links </h3><br>  <a href="https://github.com/nvbn/pytoppa">github project</a> ; <br>  <a href="https://launchpad.net/~nvbn-rm/%2Barchive/ppa">ppa with project</a> . </div><p>Source: https://habr.com/ru/post/204526/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../204514/index.html">We program under Pebble. Lesson two: Pebble giving answers, dice and sex cubes</a></li>
 <li><a href="../204518/index.html">Win NPE hell in Java without using IntelliJ IDEA</a></li>
+<li><a href="../20452/index.html">google reader - preview functionality</a></li>
 <li><a href="../204520/index.html">Acquaintance and date: ratings and reviews of users and users. (Comic ideas continue to be embodied on smartphones.)</a></li>
 <li><a href="../204522/index.html">Percona service for creating optimal configuration of MySQL servers and analyzing SQL queries</a></li>
 <li><a href="../204524/index.html">Enhance development convenience and efficiency with Alfred (OSX)</a></li>
+<li><a href="../20453/index.html">Wonderful resurrection SCO</a></li>
 <li><a href="../204530/index.html">Inplace Upgrade Windows Server 2012 to Windows Server 2012 R2 with Exchange 2013 CU3 installed</a></li>
 <li><a href="../204532/index.html">Backdoor in HP MSA P2000 G3</a></li>
 <li><a href="../204538/index.html">Sublime + COLT. Add intelligence to your IDE</a></li>
-<li><a href="../204540/index.html">Music by cards</a></li>
-<li><a href="../204542/index.html">Two months in a row electric cars topped the ranking of sales in Norway</a></li>
+<li><a href="../20454/index.html">Both together</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

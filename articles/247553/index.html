@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>network-enabled single-mode on FreeBSD</h1><div class="post__text post__text-html js-mediator-article">  This is a very small note that as there is nothing more permanent than temporary, the most trivial (at first glance) task takes the most time. <br>  On Friday morning, an acquaintance asked with the question "How to rebuild the world in single-mode on a remote server without KVM?" <br>  “To write a script in / etc / rc that executes / etc / netstart &amp;&amp; service sshd start in the part executed in single-mode, and then everything is as usual,” I replied in no vain. <br>  But after two hours the question was repeated and it turned out that everything was not so trivial. <br>  I don’t know if it was just my delusion or, after all, in early versions of FreeBSD / etc / rc it was partially executed in single-mode (for the sake of fairness, I never had to check it), but in 10-ke it really doesn’t work. <br>  <u><b>So, the task:</b></u> <br>  # uname -opr <br>  FreeBSD 10.1-STABLE amd64 <br>  It is necessary to switch from multi-mode to single-mode and get access via ssh. <br><a name="habracut"></a><br>  <u><b>Go:</b></u> <br>  Once in single-user mode, no scripts are executed, we fix this mistake.  Edit the init sources. <br>  Add the path to our script to /usr/src/sbin/init/pathnames.h <br><pre><code class="hljs cpp"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">define</span></span></span><span class="hljs-meta"> _PATH_MYSINGLE </span><span class="hljs-meta-string"><span class="hljs-meta"><span class="hljs-meta-string">"/etc/rc.my_single"</span></span></span></span></code> </pre> <br>  In / usr/src/sbin/init/init.c in the function <b>single_user</b> add the call <br><pre> <code class="hljs lisp">run_script(<span class="hljs-name"><span class="hljs-name">_PATH_MYSINGLE</span></span>)<span class="hljs-comment"><span class="hljs-comment">;</span></span></code> </pre>  It must be placed somewhere before calling open_console (). <br><br>  The script itself is called: <br>  /etc/rc.my_single <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh /bin/echo "NET START" /bin/sh /etc/netstart /bin/echo "SSH START" /usr/sbin/service sshd start</span></span></code> </pre><br>  We collect, set, reboot (maybe there is a way to restart init without rebooting, but I didn’t try my luck on the remote machine): <br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /usr/src/sbin/init &amp;&amp; make &amp;&amp; make install &amp;&amp; shutdown -r now</code> </pre><br>  After downloading to multi-mode to go to single " <i>shutdown now</i> " or " <i>init 1</i> " on an amateur. <br>  Well, then everything is as usual. <br><br>  ps: Maybe I'm complicating everything and is there an easier way? </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/247553/">https://habr.com/ru/post/247553/</a></p>
+    <p>Source: https://habr.com/ru/post/247553/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

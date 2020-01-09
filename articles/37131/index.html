@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -79,7 +79,7 @@
  }
 </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -87,10 +87,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      So we get the following: <br>  - The user noted, for example, the first, second and fourth items <br>  - We received the array $ variable = array (1,2,4); <br>  - Next, we fed this array to the binary_array_pack function ($ variable) <br>  - The function returned an integer, which in binary representation looks like this - 1011, and in decimal it is 11 <br><br>  Actually, we have that the i-1 st binary digit indicates the presence of the i-th "tick".  In this case, we have zero, first and third digits, which means the presence of the first, second and fourth tick. <br><br>  Now this number can be written in <b>one</b> base field. <br><br>  <b>The question is - how now to do a sample of these fields?</b> <br>  The answer is very simple.  Bitwise operations that are supported (as far as I know) by all DBMS will help us. <br><br>  For example: <br>  - The user has selected the second tick for the search <br>  - We packed it into our “bit array”, got the number 2. <br>  - Made a query <code>SELECT * FROM t WHERE field &amp; 2 != 0</code> <br>  - That is, we did a bitwise multiplication and, for example, the number 11, which is written in binary representation as 1011 will give us the number 0010 when multiplied by 0010. If the second tick was not recorded in the field, then this operation will give 0. The same the most will be if there is not a single match from the multiple choice. <br><br>  For other types of search, you can use other bitwise operations. <br><br>  This is how you can reduce the number of fields in the database without sacrificing functionality. <br><br>  As for the performance of such a sample, there is no exact data [for now] (tests will follow), although IMHO, bitwise operations are native for the processor and must fly. <br><br>  These functions only reflect the essence of the approach and, of course, do not claim to be the final implementation.  All notes and comments are welcome. <br><br>  The main limitation of this approach is a maximum of 64 “ticks” (BIGINT), and with this implementation, a maximum of 32 “ticks” (maximum for the php bindec function). <br><br>  <b>UPD</b> <br>  Thanks to all commented.  Comments all on the case (fortunately). <br>  Total: This approach can be used to fix multiple choices (for example, it is not known in advance how many checkboxes a user can put, so it’s not clear how many fields to drive), but using it will result in fullscan, which is, of course, much worse than normal sampling across the fields.  However, this is deduced from the theory, no experiments were put =) </div><p>Source: <a href="https://habr.com/ru/post/37131/">https://habr.com/ru/post/37131/</a></p>
+      So we get the following: <br>  - The user noted, for example, the first, second and fourth items <br>  - We received the array $ variable = array (1,2,4); <br>  - Next, we fed this array to the binary_array_pack function ($ variable) <br>  - The function returned an integer, which in binary representation looks like this - 1011, and in decimal it is 11 <br><br>  Actually, we have that the i-1 st binary digit indicates the presence of the i-th "tick".  In this case, we have zero, first and third digits, which means the presence of the first, second and fourth tick. <br><br>  Now this number can be written in <b>one</b> base field. <br><br>  <b>The question is - how now to do a sample of these fields?</b> <br>  The answer is very simple.  Bitwise operations that are supported (as far as I know) by all DBMS will help us. <br><br>  For example: <br>  - The user has selected the second tick for the search <br>  - We packed it into our “bit array”, got the number 2. <br>  - Made a query <code>SELECT * FROM t WHERE field &amp; 2 != 0</code> <br>  - That is, we did a bitwise multiplication and, for example, the number 11, which is written in binary representation as 1011 will give us the number 0010 when multiplied by 0010. If the second tick was not recorded in the field, then this operation will give 0. The same the most will be if there is not a single match from the multiple choice. <br><br>  For other types of search, you can use other bitwise operations. <br><br>  This is how you can reduce the number of fields in the database without sacrificing functionality. <br><br>  As for the performance of such a sample, there is no exact data [for now] (tests will follow), although IMHO, bitwise operations are native for the processor and must fly. <br><br>  These functions only reflect the essence of the approach and, of course, do not claim to be the final implementation.  All notes and comments are welcome. <br><br>  The main limitation of this approach is a maximum of 64 “ticks” (BIGINT), and with this implementation, a maximum of 32 “ticks” (maximum for the php bindec function). <br><br>  <b>UPD</b> <br>  Thanks to all commented.  Comments all on the case (fortunately). <br>  Total: This approach can be used to fix multiple choices (for example, it is not known in advance how many checkboxes a user can put, so it’s not clear how many fields to drive), but using it will result in fullscan, which is, of course, much worse than normal sampling across the fields.  However, this is deduced from the theory, no experiments were put =) </div><p>Source: https://habr.com/ru/post/37131/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

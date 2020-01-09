@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to mount an image fsa</h1><div class="post__text post__text-html js-mediator-article">  I did not know where to write it, I think the place will be on the habr.  Everywhere they write that <b>fsarchiver</b> is a great utility that can create archives with a file system, compresses them well, etc.  And indeed it is!  And the most important thing is that these archives can be done on working systems. <br><br>  But today is the day off, the servers are in another city and one of them lay down, on the system unit a light bulb with an exclamation mark is lit in red, which means a hard trouble with glands.  We can’t raise it.  With the server, of course, we'll figure it out and fix it, but we should rather raise the service on the backup machine.  Images of all servers were of course carefully made by me with the help of the wonderful utility fsarhiver. <br>  And now the task was how to get the configuration files from the fsa-image. <a name="habracut"></a>  Of course, if there is an empty hard drive connected to the machine with backups, this is not a problem, and if it is not there? <br>  Search query type: "how to mount an image of fsa" did not give positive answers.  And even in turn, he did not mislead much.  On the site, the developers said: <a href="http://www.fsarchiver.org/forums/viewtopic.php%3Ff%3D14%26t%3D954">“It’s the current file format.”</a> (Unfortunately, this is not possible with this file format). <br>  It became sad.  But something inside me said that it was possible!  After all, it is Linux! <br>  Still not a lot of searching on the Internet and I found the <a href="http://ubuntuforums.org/showthread.php%3Ft%3D1381103">information you</a> need.  Of course, everything is elementary!  I have already used this team - losetup, but for some reason it completely flew out of my head. <br><br>  Now just give an example. <br>  First of all, we need to know what size we need to make a file that will emulate a block device. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>#fsarchiver archinfo backup.fsa</b> <br><br>  We get that type: <br><br><blockquote>  ===================== Filesystem Information ==================== <br>  Filesystem id in archive: 0 <br>  Filesystem format: ext4 <br>  Filesystem label: lboot <br>  Filesystem uuid: f8eebcb0-ba54-47e4-8a86-769880291a3e <br>  Original device: / dev / md0 <br>  Original filesystem size: 921.43 MB (966189056 bytes) <br>  Space used in filesystem: 59.61 MB (62504960 bytes) </blockquote><br><br>  Here we are interested in the parameter <b>Space Used in filesystem: 59.61 MB (62504960 bytes)</b> <br>  that is, how much minimum space is needed for image deployment.  The image file should be slightly larger. <br>  Create an empty vd.img file with a size of 100 megabytes (59.61 MB required). <br>  The parameters speak for themselves count-number of blocks, bs-their size. <br><br>  <b>#dd if = / dev / zero of = vd.img count = 100 bs = 1M</b> <br><br>  Then let's see which loopback interfaces we don't use. <br><br>  <b>#losetup -f</b> <br><br>  If there are none, then you can add. <br><br>  <b>#modprobe loop max_loop = 128</b> <br><br>  And associate the image file with this interface. <br><br>  <b>#losetup / dev / loop0 vd.img</b> <br><br>  Then we restore our archive to it. <br><br>  <b>#fsarchiver restfs backup.fsa id = 0, dest = / dev / loop0</b> <br><br>  And we mount <br><br>  <b>#mount -o loop = / dev / loop0 / mnt / vd</b> <br><br>  After we have removed the necessary files from the image, we need to unmount it, untie and delete it - if we do not plan to use it again.  The following commands do this. <br><br>  <b>#umount / mnt / vd</b> <b><br></b>  <b>#losetup -d / dev / loop0</b> <b><br></b>  <b>#rm -f vd.img</b> <br><br>  Good luck to everyone, do not forget to make backups. </div><p>Source: <a href="https://habr.com/ru/post/261831/">https://habr.com/ru/post/261831/</a></p>
+      <b>#fsarchiver archinfo backup.fsa</b> <br><br>  We get that type: <br><br><blockquote>  ===================== Filesystem Information ==================== <br>  Filesystem id in archive: 0 <br>  Filesystem format: ext4 <br>  Filesystem label: lboot <br>  Filesystem uuid: f8eebcb0-ba54-47e4-8a86-769880291a3e <br>  Original device: / dev / md0 <br>  Original filesystem size: 921.43 MB (966189056 bytes) <br>  Space used in filesystem: 59.61 MB (62504960 bytes) </blockquote><br><br>  Here we are interested in the parameter <b>Space Used in filesystem: 59.61 MB (62504960 bytes)</b> <br>  that is, how much minimum space is needed for image deployment.  The image file should be slightly larger. <br>  Create an empty vd.img file with a size of 100 megabytes (59.61 MB required). <br>  The parameters speak for themselves count-number of blocks, bs-their size. <br><br>  <b>#dd if = / dev / zero of = vd.img count = 100 bs = 1M</b> <br><br>  Then let's see which loopback interfaces we don't use. <br><br>  <b>#losetup -f</b> <br><br>  If there are none, then you can add. <br><br>  <b>#modprobe loop max_loop = 128</b> <br><br>  And associate the image file with this interface. <br><br>  <b>#losetup / dev / loop0 vd.img</b> <br><br>  Then we restore our archive to it. <br><br>  <b>#fsarchiver restfs backup.fsa id = 0, dest = / dev / loop0</b> <br><br>  And we mount <br><br>  <b>#mount -o loop = / dev / loop0 / mnt / vd</b> <br><br>  After we have removed the necessary files from the image, we need to unmount it, untie and delete it - if we do not plan to use it again.  The following commands do this. <br><br>  <b>#umount / mnt / vd</b> <b><br></b>  <b>#losetup -d / dev / loop0</b> <b><br></b>  <b>#rm -f vd.img</b> <br><br>  Good luck to everyone, do not forget to make backups. </div><p>Source: https://habr.com/ru/post/261831/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../261817/index.html">Creating a Worker from another domain</a></li>
-<li><a href="../261819/index.html">Unpleasant aspects of working with Images.xcassets: size and memory</a></li>
+<li><a href="../26182/index.html">Corporate gift to customers</a></li>
 <li><a href="../261823/index.html">STM32, C ++ and FreeRTOS. Development from scratch. Part 2</a></li>
 <li><a href="../261827/index.html">DIY Robot Vacuum Cleaner</a></li>
 <li><a href="../261829/index.html">Cackle Reviews full text search feedback system</a></li>
+<li><a href="../26183/index.html">Habrayaschik: Saturday-Sunday-Monday, May 24-26</a></li>
 <li><a href="../261833/index.html">The digest of interesting materials for the mobile # 110 developer (June 29-July 5)</a></li>
 <li><a href="../261835/index.html">Polymorphic bonds for the smallest</a></li>
 <li><a href="../261837/index.html">STM32, C ++ and FreeRTOS. Development from scratch. Part 3 (LCD and Screens)</a></li>
+<li><a href="../26184/index.html">Kazakhstan Internet has accelerated.</a></li>
 <li><a href="../261847/index.html">Adaptive carousel on AngularJS</a></li>
-<li><a href="../261849/index.html">Elm or functional programming for the web, understandable to the teapot</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

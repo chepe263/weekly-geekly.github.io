@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Tracing the path to the GPU, part 1</h1><div class="post__text post__text-html js-mediator-article">  <b>Iron and rendering</b> <br>  The most popular, to date, processor architecture - x86-64.  They belong to the CISC.  They have a huge set of commands, which led to a large area of ​​the core on the crystal.  This, in turn, entailed the difficulty in implementing several cores on a chip.  X86 processors are not ideal for multi-threaded computations that require multiple execution of a small instruction set (RISC). <br>  In turn, the rendering is an algorithm that is perfectly parallelized on almost an unlimited number of cores. <br><br>  <b>Unbiased renders</b> <br>  In view of the fact that the productivity of iron is steadily increasing - technical issues (for example, sampling of reflections of materials in V-Ray, the number of bias during anti-aliasing, motion blur, depth of field, soft shadows) are increasingly shifting to iron.  So, a few years ago the first commercial render “without assumptions” (unbiased render) - Maxwell Render appeared. <br>  Its main advantage was the quality of the final image, a minimum of settings, all kinds of "bias".  Over time, the quality of the image approaches the “ideal”.  And the disadvantage was and is - the rendering time.  It took a very long time to wait for the noise to come down, and many people immediately refused it after several tests.  Things were even worse with animation (for obvious reasons). <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/b9e/713/ccc/b9e713ccc0b237a8a272844a4c8d3cf6.png" alt="image"><br><a name="habracut"></a><br>  <b>Algorithm</b> <br>  1. A beam (the starting point corresponding to a specific pixel on the screen) is released from the camera. <br>  2. Check whether the ray has crossed one of the geometry elements.  If not, go to step 1. <br>  3. Determine the point of intersection of the beam and the geometry nearest to the camera. <br>  4. Release a new ray from the intersection point towards the light source. <br>  5. If there is an obstacle in the beam between the intersection point and the light source, then go to step 7 <br>  6. Fill a pixel with color (simply, with the color of the surface at a given point multiplied by the intensity of the light source at the point of contact with the beam) <br>  7. Release a new beam from the intersection point in an arbitrary direction, go to step 2, until the maximum number of reflections is reached (in most cases 4-8, if there are many reflections or refractions in the scene, then this number should be increased). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,17 +60,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img src="https://habrastorage.org/getpro/geektimes/post_images/178/8c8/071/1788c80716b59d81bff4d9789397994f.png" alt="image"><br>  An example of "noisy" pictures. <br><br>  The number of samples per pixel to achieve good quality can be measured in thousands.  For example, 10 thousand (depending on the scene) <br>  The number of rays per image FullHD 2mpix * 10 thousand - 20 billion <br>  There are several ways to optimize the path tracing: Bi-Directional Path Tracing, Metropolis Light Transport, Energy Redistribution Path Tracing, designed to give off rays where necessary.  Most CPU renders use the MLT algorithm for this purpose (Maxwell, Fry, Lux) <br><br>  <b>GPU role</b> <br>  The algorithm repeatedly uses floating point operations, and multithreading is vital for this algorithm.  Therefore, this task is gradually accepted by the GPU. <br>  Existing technologies: CUDA, FireStream, OpenCL, DirectCompute, and also there is the possibility of writing programs directly on shaders. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/75a/ec7/010/75aec70109539aac0d659613e0b41a20.png" alt="image"><br><br>  The situation is as follows: <br>  CUDA - write to all who feel like it (iRay, Octane Render, Arion Render, Cycles, etc). <br>  FireStream - nothing is visible at all. <br>  OpenCL - SmallLuxGPU, Cycles, Indigo Render.  It seems that no one takes seriously. <br>  DirectCompute - can not see anything. <br>  Shaders are just one example.  WebGL implementation of <a href="http://madebyevan.com/webgl-path-tracing/">tracing paths on shaders</a> . <br><br>  Comparison of renders will be in part 2. </div><p>Source: <a href="https://habr.com/ru/post/132862/">https://habr.com/ru/post/132862/</a></p>
+    <img src="https://habrastorage.org/getpro/geektimes/post_images/178/8c8/071/1788c80716b59d81bff4d9789397994f.png" alt="image"><br>  An example of "noisy" pictures. <br><br>  The number of samples per pixel to achieve good quality can be measured in thousands.  For example, 10 thousand (depending on the scene) <br>  The number of rays per image FullHD 2mpix * 10 thousand - 20 billion <br>  There are several ways to optimize the path tracing: Bi-Directional Path Tracing, Metropolis Light Transport, Energy Redistribution Path Tracing, designed to give off rays where necessary.  Most CPU renders use the MLT algorithm for this purpose (Maxwell, Fry, Lux) <br><br>  <b>GPU role</b> <br>  The algorithm repeatedly uses floating point operations, and multithreading is vital for this algorithm.  Therefore, this task is gradually accepted by the GPU. <br>  Existing technologies: CUDA, FireStream, OpenCL, DirectCompute, and also there is the possibility of writing programs directly on shaders. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/75a/ec7/010/75aec70109539aac0d659613e0b41a20.png" alt="image"><br><br>  The situation is as follows: <br>  CUDA - write to all who feel like it (iRay, Octane Render, Arion Render, Cycles, etc). <br>  FireStream - nothing is visible at all. <br>  OpenCL - SmallLuxGPU, Cycles, Indigo Render.  It seems that no one takes seriously. <br>  DirectCompute - can not see anything. <br>  Shaders are just one example.  WebGL implementation of <a href="http://madebyevan.com/webgl-path-tracing/">tracing paths on shaders</a> . <br><br>  Comparison of renders will be in part 2. </div><p>Source: https://habr.com/ru/post/132862/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../132856/index.html">Flash vs HTML5. Our version</a></li>
 <li><a href="../132857/index.html">College IT infrastructure. What is, what I would like and how to</a></li>
 <li><a href="../132858/index.html">Tomorrow the Internet will start to die.</a></li>
 <li><a href="../132859/index.html">ITJump 2011 competition ended - $ 40,000 prize pool</a></li>
+<li><a href="../13286/index.html">Cyberpunk for children</a></li>
 <li><a href="../132861/index.html">New Skype 5.4 Beta</a></li>
 <li><a href="../132863/index.html">Perfect marker board</a></li>
 <li><a href="../132864/index.html">Digium's Switchvox is recognized!</a></li>

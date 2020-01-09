@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Working with VKontakte Open API in the local development environment</h1><div class="post__text post__text-html js-mediator-article"> As many know, the authors of the social network VKontakte about two months ago published the Open API, through which third-party sites were able to authenticate users with their VKontakte accounts.  The developer documentation describes how to configure the Open API for your production site on a production server.  But in real life, development is carried out on local machines with storage of code in the version control system, and updates to production are set periodically. <br><br>  At the same time, there is a problem: how to test the Open API on local developers' machines, if access to it is configured only for production?  In this article, I want to talk about how to set up a local environment to work with the Open API in a standard development cycle.  I’ll make a reservation that I’ll consider Windows development using Microsoft technologies, but the idea can be easily transferred to other platforms. <br><a name="habracut"></a><br>  So, the essence of the problem.  As stated in the documentation, to configure, you need to create a VKontakte application.  It is important to specify the address of your site and the base domain: <br><img src="https://habrastorage.org/storage/habraeffect/2f/90/2f90adaf2ff86caac65a7b7e75172626.jpg" alt="app settings"><br><br>  When initializing the Open API on your VKontakte site, it will match the application identifier specified in the apiId parameter and the URL of the site on which this initialization is performed.  If the URL does not match the parameters entered in the settings of your application (see above), then we will receive an error message: “Open API security breach”.  This is a problem because, for example, when developing using Visual Studio, sites are often tested locally using the embedded web server at <a href="">http: // localhost: port</a> (where port is a number, port number).  But at the same time, the Open API stops working for the reasons stated above - on local machines of Vkontakte, it’s not the resolved site address ( <a href="http://example.com/">http://example.com</a> ), but the local site <a href="">http: // localhost: port</a> .  How to solve this problem? 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The essence of the solution is quite simple: you need to configure the local environment so that requests to the site address specified in the VKontakte application settings ( <a href="http://example.com/">http://example.com</a> ) are not forwarded to the Internet-accessible production server via DNS, but to the local site on the machine developer.  In this case, the developer will be able to test the Open API, because  now his local site will have the address <a href="http://example.com/">http://example.com</a> allowed from the point of view of VK. <br><br>  Setup consists of several steps.  First of all, you need to edit the windows \ system32 \ drivers \ etc \ hosts file.  You need to insert the following entry: <br><br> <code>127.0.0.1 example.com</code> <br> <br>  So  all requests to example.com will be redirected to the local machine.  Now you need to configure a local web server (in our case, IIS 7) to redirect requests to example.com to a local copy of the developer's site.  To do this, create a new web site in IIS Manager, configure the physical path to the folder with the site files and specify the following bindings: <br><img src="https://habrastorage.org/storage/habraeffect/5a/0c/5a0ce99a52ddd6f3ea2d642d20f0cf51.jpg" alt="bindings"><br><br>  And finally, the last step in the event that a proxy is used on the local machine.  In the browser settings (in IE, it is Tools&gt; Internet Options&gt; Connections&gt; LAN Settings&gt; Advanced) you need to add example.com to the list of exceptions (Do not use proxy server for meetings beginning). <br><br>  Several limitations of the described approach: first, developers will not be able to go to the production site from their machines and to the local site at the same time.  In order to install on production they will need to change their hosts file (remove the above entry).  And secondly, they will be forced to use IIS as a web server during development, abandoning Visual Studio’s embedded web server.  But as practice shows, the last limitation is rather a plus, since  developer's environment will be closer to the real environment on the production server. </div><p>Source: <a href="https://habr.com/ru/post/94834/">https://habr.com/ru/post/94834/</a></p>
+      The essence of the solution is quite simple: you need to configure the local environment so that requests to the site address specified in the VKontakte application settings ( <a href="http://example.com/">http://example.com</a> ) are not forwarded to the Internet-accessible production server via DNS, but to the local site on the machine developer.  In this case, the developer will be able to test the Open API, because  now his local site will have the address <a href="http://example.com/">http://example.com</a> allowed from the point of view of VK. <br><br>  Setup consists of several steps.  First of all, you need to edit the windows \ system32 \ drivers \ etc \ hosts file.  You need to insert the following entry: <br><br> <code>127.0.0.1 example.com</code> <br> <br>  So  all requests to example.com will be redirected to the local machine.  Now you need to configure a local web server (in our case, IIS 7) to redirect requests to example.com to a local copy of the developer's site.  To do this, create a new web site in IIS Manager, configure the physical path to the folder with the site files and specify the following bindings: <br><img src="https://habrastorage.org/storage/habraeffect/5a/0c/5a0ce99a52ddd6f3ea2d642d20f0cf51.jpg" alt="bindings"><br><br>  And finally, the last step in the event that a proxy is used on the local machine.  In the browser settings (in IE, it is Tools&gt; Internet Options&gt; Connections&gt; LAN Settings&gt; Advanced) you need to add example.com to the list of exceptions (Do not use proxy server for meetings beginning). <br><br>  Several limitations of the described approach: first, developers will not be able to go to the production site from their machines and to the local site at the same time.  In order to install on production they will need to change their hosts file (remove the above entry).  And secondly, they will be forced to use IIS as a web server during development, abandoning Visual Studio’s embedded web server.  But as practice shows, the last limitation is rather a plus, since  developer's environment will be closer to the real environment on the production server. </div><p>Source: https://habr.com/ru/post/94834/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../94821/index.html">New ULV processors</a></li>
 <li><a href="../94825/index.html">Opera mobile report: CIS statistics</a></li>
 <li><a href="../94827/index.html">(Without) Competent newsletter</a></li>
+<li><a href="../9483/index.html">Yahoo opens Panama for partners</a></li>
 <li><a href="../94831/index.html">Apple programmers are also no stranger to humor</a></li>
 <li><a href="../94833/index.html">8-bit stop-motion</a></li>
 <li><a href="../94835/index.html">Review of the billing system BGBilling</a></li>
 <li><a href="../94837/index.html">How to know that backup was successful</a></li>
 <li><a href="../94838/index.html">How I did an online naval battle with Silverlight 4</a></li>
 <li><a href="../94839/index.html">Chrome OS designers about the future of the system</a></li>
-<li><a href="../94841/index.html">iPad in United Kingdom May 28</a></li>
+<li><a href="../9484/index.html">HTML tags in RSS, and about RSS in general</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

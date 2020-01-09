@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How Yandex made the most detailed Russian-language map of the world</h1><div class="post__text post__text-html js-mediator-article">  Today, Yandex announced a major update of the Maps.  A detailed world map is now available on the service, with details down to the houses and routing.  All the main names on it are presented in two languages ​​at once: local and Russian. <br>  In addition, the maps of Russia, Ukraine, Kazakhstan and Belarus are now fully owned by Yandex. <br><br>  The service now works on a single platform that allows you to maintain and independently update any amount of data.  Maps of Russia, Ukraine, Belarus, and Kazakhstan update Yandex cartographers every month.  All other countries whose schemes are drawn by a Yandex partner, Navteq, change every three months. <br><br> <a href="http://habrahabr.ru/company/yandex/blog/201732/"><img src="https://habrastorage.org/getpro/habr/post_images/d40/829/dc7/d40829dc7da44522f165175a4fd6ff98.jpg" alt="image"></a> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The most detailed parts of Navteq are Europe and North America: with all the main streets and houses in the cities and a detailed network of roads along which the service knows how to build car routes. <br><br>  Most of the toponyms on the Navteq maps were written in Latin characters, although for some languages ​​(for example, Thai and Arabic), original alphabets were used.  To make it easier for users to navigate, Yandex automatically translated the foreign names of cities and popular tourist places into Russian.  We were faced with the task of translating more than 7 million place names from 237 countries from 37 languages. <br><br>  In this post we will describe in detail how we chose translation methods and used them in practice. <br><a name="habracut"></a><br>  Today's news is the result of one and a half years of work.  We have long understood that it is wrong to rely only on data providers and we need our own maps.  The first was Moscow, drawn by our cartographers in 2011.  Now we have our own detailed maps of Russia, Ukraine, Belarus and Kazakhstan.  They are combined with detailed maps of the rest of the countries from our partner, so that users can conveniently “cross” the borders.  We had to not only combine the schemes of the countries, but also organize the storage and fast processing of all the world map data, so we completely rewrote the core of the service.  In addition, we have created our own software to quickly make changes to the cards, because it is very important to update electronic cards frequently, and existing programs on the market are not able to overpower our volumes.  Yandex is now a cartographic company of a completely new level. <br><br>  First, in order to translate toponyms on the World Map, we thought to use Wikipedia, because there are a lot of articles about localities with exact coordinates.  It was necessary to simply take the title of the equivalent article in Russian, and get the desired translation.  There were really a lot of articles, but for our needs - absolutely not enough.  Going this way, we were able to cover no more than 5-7 percent of toponyms.  It became clear that the problem can only be solved independently, i.e.  create transcription rules for each of the languages ​​used.  Of course, linguists have long solved this problem, any textbook of a foreign language begins reading rules.  However, these rules are designed for a person, respectively, we had to prepare them in such a way that the machine could use the rules.  And this is not so easy.  In addition, almost every rule has exceptions, which also had to be taken into account and tracked manually.  Do not forget about the well-established translation options for many toponyms.  For example, if we translate the French word Paris into Russian according to the rules of transcription, we will have the "Pari".  But this city in Russian already has another, historically established name - Paris. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/776/7d9/bba/7767d9bba801b92d98315da1f273ac4f.png" alt="image"><br><br>  The same can be said about the Hudson River.  In English this name is spelled Hudson.  Just like the last name of the famous Mrs. Hudson, the landlady of Sherlock Holmes.  The writing of “Hudson” is an example of phonetic transfer (transcription), and the historical “Hudson”, rather, was obtained by transliteration - letter-by-letter transfer.  And there are quite a few such examples, since phonetic transfer was not always used in the translation of toponyms.  In addition, in some cases, toponyms do not obey the rules of reading the most common language in this area, since the names were given to them by other peoples living in the same territory. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/a4a/756/508/a4a7565082c8afa9afde5de99b85ab40.png" alt="image"><br><br><h5>  How did we translate </h5><br>  So, in order to cover the entire World Map, we needed to transfer the transcription rules for 37 languages ​​(plus various options and dialects) to a computer-friendly form.  The rules had to take into account the context: after all, the rules for reading a particular letter or syllable very often depend on what is around, up to inter-word relations. <br><br>  When the rules are formulated, a Perl script is created that, taking into account all the rules and contexts, transcribes all the lines passed to it.  First, he breaks the source word into segments (groups of adjacent letters): separate sequences of vowels and consonants.  Then for each segment, the most likely transcription option is selected.  Naturally, this takes into account the context: which segments are located to the right and left of the decoded portion. <br><br>  The following symbols are used for marking: <br><br><pre><code class="bash hljs"> -  
@@ -117,20 +117,20 @@ x($) =&gt; *(0.59) (0.38) (0.02) (0.01) //    1,
          ,         .          ,           .<br>
 <br>
 <h5> ?</h5><br>
-              -  ,    -.     ,     ,         . ,          .  ,    , , ,   ..        .       .</div><p>Source: <a href="https://habr.com/ru/post/201732/">https://habr.com/ru/post/201732/</a></p>
+              -  ,    -.     ,     ,         . ,          .  ,    , , ,   ..        .       .</div><p>Source: https://habr.com/ru/post/201732/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../201716/index.html">Compaq LTE Lite. Part 2</a></li>
-<li><a href="../201718/index.html">Welcome to the World Usability Day 2013</a></li>
+<li><a href="../20172/index.html">For the first time in Russia, a spammer is held accountable for spamming.</a></li>
 <li><a href="../201724/index.html">Competition "Autumn Mobilization"</a></li>
 <li><a href="../201726/index.html">Let me introduce myself: Payler</a></li>
+<li><a href="../20173/index.html">Android, AOL, and Nokia are top news generators from Barcelona</a></li>
 <li><a href="../201730/index.html">INCOS - contactless computer control system from Belarus</a></li>
 <li><a href="../201734/index.html">Top 10 Intranets 2013</a></li>
 <li><a href="../201736/index.html">After Reset - a game in which it is difficult to believe even after seeing (Kickstarter Campaign)</a></li>
 <li><a href="../201738/index.html">COLT. What language to add Livecoding?</a></li>
+<li><a href="../20174/index.html">10 mistakes in icon design</a></li>
 <li><a href="../201740/index.html">TOP-100 Adjayl books of all time (at the end of 2013)</a></li>
-<li><a href="../201742/index.html">Thematic content generation on the Internet. A look into the future</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

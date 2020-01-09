@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>DHCP server on multiple VLANs</h1><div class="post__text post__text-html js-mediator-article">  Formulation of the problem. <br><br>  The term “client” means the area of ​​responsibility for a set of network devices. <br><br>  It is required to provide access for several hundred clients to certain shared resources in such a mode so that: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,7 +63,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <ol><li><a name="1"></a>  Each client did not see the traffic of other clients. </li><li><a name="2"></a>  Malfunctions of one client (broadcast-storm, IP address conflicts, unauthorized client DHCP servers, etc.) should not affect the operation of other clients as well as the system as a whole. </li><li><a name="3"></a>  Each client should not directly access the resources of other clients (although, as a special case, it is possible to provide for the permission of this traffic, but with its centralized control and / or control). </li><li><a name="4"></a>  Clients should be able to gain access to shared external resources (which can be both individual servers and the Internet as a whole). </li><li><a name="5"></a>  Shared resources should also be able to access client resources (of course, provided that the shared resource knows the IP address of the client resource). </li><li><a name="6"></a>  The address space for clients is allocated centrally and its administration should not be overly complex. </li></ol><br>  As examples of practical application, one can name isolation of local area networks in large organizations, organization of VoIP communications or Internet access for several independent consumers, etc. <br><a name="habracut"></a><br><img src="https://habrastorage.org/files/8f2/2a1/b5c/8f22a1b5c5a34faeac9946293c412a24.png" alt="Description"><br>  Conditions <a href="https://habr.com/ru/post/268331/">1</a> and <a href="https://habr.com/ru/post/268331/">2 are</a> achieved by allocating each client its own VLAN.  Conditions <a href="https://habr.com/ru/post/268331/">3-5</a> can be accomplished by combining client VLANs with the prohibition of direct traffic between them.  In some sources, this technology is called “private VLAN”, in some “port isolation”, and its meaning is this: from each client VLAN you can easily get into some common VLAN (and, accordingly, back), but traffic between the client VLAN is prohibited .  Well, to fulfill condition <a href="https://habr.com/ru/post/268331/">6,</a> we will allocate for all clients a common address space of the form 10.12.8.0/23, and we will issue specific IP addresses upon request using DHCP. <br><br>  Thus, when a client gets a new device, the address for it will be issued automatically (and we will have no problems due to the fact that one client can use units of IP addresses for his needs, and another will need tens or hundreds of them), and when adding a new client, we will simply create another VLAN and add it to our common group.  Even if, due to the large number of client devices, the address space we initially allocated is exhausted, we can always expand it by changing the settings in just two places (on the DHCP server and on the interface that unites all client VLANs). <br><br>  Technically, the above solution can be implemented only by hardware on L3 switches or by firmware on L2 switches (as long as they understand 802.1q) and on any computer with a linux-like operating system.  Since I already had a server (which, besides, was a target for clients), it would be logical to stop at the hardware-software version. <br><br>  So, we program the switch so that on each client VLAN there is one physical port of the switch in the “access mode”, and one common port in 802.1q mode (our server will be connected to this port).  In detail, the technology settings do not sign, because  it is rather trivial and depends on the specific model of switch used. <br><br>  Next, proceed to creating a configuration for the server.  Let the physical interface that connects to the 802.1q port of the switch be named eth0.  For my specific task, it took 200 client VLANs with a VLAN ID from 600 to 799, inclusive, so we will create them: <br><br>  General configuration of types of names of VLAN-interfaces.  I want the VLAN interface names to be “vlanXXX”, where XXX is the VLAN ID: <br><br><pre> vconfig set_name_type VLAN_PLUS_VID_NO_PAD
@@ -158,20 +158,20 @@
 </pre><br>  And finally, we start the DHCP server: <br><br><pre> / usr / sbin / udhcpd /etc/udhcpd.conf
 </pre><br><br>  The file /etc/udhcpd.conf is the only line that relates to this schema: <br><br><pre> # The name of the interface on which we have a DHCP server
  interface br1
-</pre><br>  All, now the broadcast requests in the user VLAN are caught by the DHCP Relay Agent via the corresponding br interface, after which the unicast request is transmitted to the server via the dhcpd interface.  The server sends a unicast response via the relay interface, which the agent receives from the dhcpd interface and transmits the broadcast to the source VLAN. <br><br>  Clients began to receive addresses through DHCP, broadcast-storm disappeared.  And the client can send DHCPRELEASE directly to the server to the address 10.12.8.1 <br><br>  © Copiright 2015 by <a href="https://habrahabr.ru/users/vedga/" class="user_link">Vedga</a> .  Copying text to other resources without the consent of the author is prohibited. <br><hr><br>  What to look at this article: <br><br><ol><li>  <a href="https://ru.wikipedia.org/wiki/DHCP">DHCP - Dynamic Host Configuration Protocol</a> </li><li>  <a href="https://en.wikipedia.org/wiki/Private_VLAN">Private VLAN (WikipediA)</a> </li><li>  <a href="http://habrahabr.ru/post/114646/">A bit about private vlan</a> (@amario) </li><li>  <a href="http://www.opennet.ru/tips/info/2683.shtml">Using multiple network stacks in Linux</a> </li></ol></div><p>Source: <a href="https://habr.com/ru/post/268331/">https://habr.com/ru/post/268331/</a></p>
+</pre><br>  All, now the broadcast requests in the user VLAN are caught by the DHCP Relay Agent via the corresponding br interface, after which the unicast request is transmitted to the server via the dhcpd interface.  The server sends a unicast response via the relay interface, which the agent receives from the dhcpd interface and transmits the broadcast to the source VLAN. <br><br>  Clients began to receive addresses through DHCP, broadcast-storm disappeared.  And the client can send DHCPRELEASE directly to the server to the address 10.12.8.1 <br><br>  © Copiright 2015 by <a href="https://habrahabr.ru/users/vedga/" class="user_link">Vedga</a> .  Copying text to other resources without the consent of the author is prohibited. <br><hr><br>  What to look at this article: <br><br><ol><li>  <a href="https://ru.wikipedia.org/wiki/DHCP">DHCP - Dynamic Host Configuration Protocol</a> </li><li>  <a href="https://en.wikipedia.org/wiki/Private_VLAN">Private VLAN (WikipediA)</a> </li><li>  <a href="http://habrahabr.ru/post/114646/">A bit about private vlan</a> (@amario) </li><li>  <a href="http://www.opennet.ru/tips/info/2683.shtml">Using multiple network stacks in Linux</a> </li></ol></div><p>Source: https://habr.com/ru/post/268331/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../268317/index.html">We invite you to RAD Studio 10 Seattle webinars and slides for performances in Moscow and Almaty</a></li>
 <li><a href="../268319/index.html">Two tasks HeadHunter on Data Science Week: try to solve it yourself</a></li>
 <li><a href="../268325/index.html">What can be not ready, becoming a team lead</a></li>
 <li><a href="../268327/index.html">AI, BigData & HPC Digest # 2</a></li>
 <li><a href="../268329/index.html">Intel sold Microsoft's Havok</a></li>
+<li><a href="../26833/index.html">Future literature</a></li>
 <li><a href="../268333/index.html">Office as Platform Issue 5 - Introducing the OneNote REST API</a></li>
 <li><a href="../268335/index.html">(Archive) Matreshka.js ECMAScript.next boilerplate</a></li>
 <li><a href="../268337/index.html">Welcome to OWASP EEE October 11</a></li>
 <li><a href="../268339/index.html">Adding a new processor family to IDA pro</a></li>
-<li><a href="../268341/index.html">We are looking for stability in retail, XYZ analysis of the range</a></li>
+<li><a href="../26834/index.html">Once again about education, theory and practice ...</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

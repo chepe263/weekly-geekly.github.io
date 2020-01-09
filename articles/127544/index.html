@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Nightingale-Strassen Algorithm</h1><div class="post__text post__text-html js-mediator-article"><h4>  Nightingale – Strassen Test </h4><br>  <b>Robert Nightingale</b> and <b>Volker Strassen have</b> developed a probability simplicity testing algorithm that uses the Jacobi symbol.  Defines numbers as composite or probably simple.  Recognizes Carmichael numbers as composite. <a name="habracut"></a><br>  So, first you need to enter the necessary concepts. <br>  <i>Quadratic deduction</i> .  If the number p is simple and 0 &lt;a &lt;p, then the number a is a quadratic residue modulo p if there are values ​​of x such that <br>  x2 = a (mod p). <br>  In order for the number a to be a quadratic residue modulo n, it must be a quadratic residue modulo all prime dividers n.  For example, if n = 7, then quadratic residues are 1, 2, and 4. <br>  12 = 1 = 1 mod 7, <br>  22 = 4 = 4 mod 7, <br>  32 = 9 = 2 mod 7, <br>  42 = 16 = 2 mod 7, <br>  52 = 25 = 1 mod 7, <br>  62 = 36 = 1 mod 7. <br>  Conversely, in the following equations there are no x values ​​that satisfy them. <br>  x2 = 3 mod 7, <br>  x2 = 5 mod 7, <br>  x2 = 6 mod 7. <br>  Thus, the numbers 3, 5, and 6 are <i>quadratic non-residues</i> modulo 7. <br>  If the number p is odd, then there are exactly (p - 1) / 2 quadratic residues modulo p and the same number of quadratic non residues modulo p.  If n is the product of two primes p and q, then there are exactly (p - 1) (q - 1) / 4 quadratic residues modulo n. <br>  The relationship between primes and quadratic residues is established using the symbols Legendre and Jacobi. <br>  <i>The Legendre symbol</i> , which is denoted as L (a, p), is a function defined if a is any integer and p is a prime number greater than 2. Legendre symbol can take the values ​​0, 1, and –1. <br>  L (a, p) = 0 if a is divisible by p. <br>  L (a, p) = 1, if a is a quadratic residue modulo p, <br>  L (a, p) = –1 if a is a quadratic non-cardin modulo p. <br>  Compressed, these facts are written as follows: <br>  L (a, p) = a ^ ((p - 1) / 2) mod p. <br><br><h5>  Algorithm for calculating the Legendre symbol. </h5><br>  1. If a = 1, then L (a, p) = 1. <br>  2. If the number a is even, then L (a, p) = L (a / 2, p) * ((- 1) ^ ((p ^ 2-1) / 8)). <br>  3. If the number a is odd and a! = 1, then L (a, p) = L (p mod a, a) * ((- 1) ^ ((a – 1) * (p – 1) / 4 )). <br>  <i>The Jacobi symbol</i> , which is denoted as J (a, n), is a generalization of the Legendre symbol into composite modules.  This is a function defined for all integers a and odd integers n.  The Jacobi symbol can take the values ​​0, 1 and –1. <br>  The Jacobi symbol can be set as follows. <br>  1. The Jacobi symbol is defined only for odd numbers n. <br>  2. J (0, n) = 0. <br>  3. If n is a prime number, then J (0, n) = 0 if a is divisible by n. <br>  4. If n is a prime number, then J (0, n) = 1, if a is a quadratic residue modulo n. <br>  5. If n is a prime number, then J (0, n) = –1, if a is a quadratic non-derived modulo n. <br>  6. If n is a composite number, then J (a, n) = J (a, p1) * ... * J (a, pm), where p1, ..., pm is the decomposition of n into prime factors. <br><br><h5>  Algorithm for computing the Jacobi symbol. </h5><br>  1. J (1, n) = 1. <br>  2. J (a * b, n) = J (a, n) * J (b, n). <br>  3. J (2, n) = 1 if (n ^ 2 - 1) / 8 is even, and –1 otherwise. <br>  4. J (a, n) = J ((a mod m), n). <br>  5. J (a, b1 * b2) = J (a, b1) J (a, b2). <br>  6. If gcd (a, b) = 1 and, moreover, the numbers a and b are odd, then <br>  6.1.  J (a, b) = J (b, a) if (a - 1) * (b - 1) / 4 is an even number. <br>  6.2.  J (a, b) = –J (b, a) if (a - 1) * (b - 1) / 4 is an odd number. <br>  If n is a prime number, then the Jacobi symbol is equivalent to the Legendre symbol. <br>  The Jacobi symbol cannot be used to check whether a number is a quadratic residue modulo n (except when the number n is prime).  If J (a, n) = 1 and n is a composite number, then the number a is not always a quadratic residue: <br>  J (7, 143) = J (7, 11) * J (7, 13) = (–1) * (- 1) = 1, <br>  although there are no integers x such that x2  7 (mod 143). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Solovay – Strassen algorithm </h4><br>  1. Choose a random number a less than p. <br>  2. If gcd (a, p)! = 1, then the number p is composite and the test can be not continued. <br>  3. Calculate j = a ^ ((p – 1) / 2) mod p. <br>  4. Calculate the Jacobi symbol J (a, p). <br>  5. If j! = J (a, p), then the number p is definitely not prime. <br>  6. If j = J (a, p), then the probability that the number p is not simple, does not exceed 50%. <br>  The number a, which does not explicitly indicate that the number p is not prime, is called a witness.  If the number p is composite, then the probability that the random number is a witness is at least 50%.  The probability that a composite number will pass t tests is 1 / (2 ^ t). </div><p>Source: <a href="https://habr.com/ru/post/127544/">https://habr.com/ru/post/127544/</a></p>
+    <h4>  Solovay – Strassen algorithm </h4><br>  1. Choose a random number a less than p. <br>  2. If gcd (a, p)! = 1, then the number p is composite and the test can be not continued. <br>  3. Calculate j = a ^ ((p – 1) / 2) mod p. <br>  4. Calculate the Jacobi symbol J (a, p). <br>  5. If j! = J (a, p), then the number p is definitely not prime. <br>  6. If j = J (a, p), then the probability that the number p is not simple, does not exceed 50%. <br>  The number a, which does not explicitly indicate that the number p is not prime, is called a witness.  If the number p is composite, then the probability that the random number is a witness is at least 50%.  The probability that a composite number will pass t tests is 1 / (2 ^ t). </div><p>Source: https://habr.com/ru/post/127544/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../127536/index.html">Background Intelligent Transfer Service</a></li>
 <li><a href="../127537/index.html">Atypical Keyboards</a></li>
+<li><a href="../12754/index.html">Important Topics</a></li>
 <li><a href="../127540/index.html">A simple bot for the game "Bejeweled Blitz" in C ++ and Qt</a></li>
 <li><a href="../127542/index.html">Frequently forgotten design elements</a></li>
 <li><a href="../127543/index.html">A couple of stories about the differences Release from Debug</a></li>
 <li><a href="../127545/index.html">"+1" and "Like" on the Chrome panel</a></li>
 <li><a href="../127547/index.html">Worn out patent system: how did we get to this, and how to fix it</a></li>
 <li><a href="../127548/index.html">A very, very, very, very secret project</a></li>
+<li><a href="../12755/index.html">AMD / ATI graphics cards will support DisplayPort</a></li>
 <li><a href="../127552/index.html">Build custom firmware OpenWRT</a></li>
-<li><a href="../127553/index.html">Qt SDK v1.1.3 release</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

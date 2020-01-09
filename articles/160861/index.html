@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Query optimization in SQLite. Use rowid</h1><div class="post__text post__text-html js-mediator-article">  During the recent optimization of database queries, I came across a description of how SQLite works with rowid.  In short: each table has an int64 rowid column, the value of which is unique for each record in the table.  You can see the value by the name “rowid” and it is not shown in the query *. <br><br>  Records are stored as B-tree by rowid.  And it makes a very fast search and selection by rowid.  Two times faster than the primary key or indexed field.  As I understand it, a search on an indexed column is a search on a B-tree, as a result of which we find a rowid.  And already having rowid - we look for the necessary record. <br><br>  This begs the obvious question: how to make the rowid and our PRIMARY KEY match? <a name="habracut"></a>  It's very simple, maybe they already coincide with you, but you do not know about it.  :) It is enough to declare your PRIMARY KEY field in one of the following ways: <br><pre><code class="sql hljs"><span class="hljs-keyword"><span class="hljs-keyword">CREATE</span></span> <span class="hljs-keyword"><span class="hljs-keyword">TABLE</span></span> t(x <span class="hljs-built_in"><span class="hljs-built_in">INTEGER</span></span> PRIMARY <span class="hljs-keyword"><span class="hljs-keyword">KEY</span></span> <span class="hljs-keyword"><span class="hljs-keyword">ASC</span></span>, y, z); <span class="hljs-keyword"><span class="hljs-keyword">CREATE</span></span> <span class="hljs-keyword"><span class="hljs-keyword">TABLE</span></span> t(x <span class="hljs-built_in"><span class="hljs-built_in">INTEGER</span></span>, y, z, PRIMARY <span class="hljs-keyword"><span class="hljs-keyword">KEY</span></span>(x <span class="hljs-keyword"><span class="hljs-keyword">ASC</span></span>)); <span class="hljs-keyword"><span class="hljs-keyword">CREATE</span></span> <span class="hljs-keyword"><span class="hljs-keyword">TABLE</span></span> t(x <span class="hljs-built_in"><span class="hljs-built_in">INTEGER</span></span>, y, z, PRIMARY <span class="hljs-keyword"><span class="hljs-keyword">KEY</span></span>(x <span class="hljs-keyword"><span class="hljs-keyword">DESC</span></span>));</code> </pre> <br>  There are cases when logic dictates that PRIMARY KEY and rowid should match, and this is not the case.  For example: <br><pre> <code class="sql hljs"><span class="hljs-keyword"><span class="hljs-keyword">CREATE</span></span> <span class="hljs-keyword"><span class="hljs-keyword">TABLE</span></span> t(x <span class="hljs-built_in"><span class="hljs-built_in">INTEGER</span></span> PRIMARY <span class="hljs-keyword"><span class="hljs-keyword">KEY</span></span> <span class="hljs-keyword"><span class="hljs-keyword">DESC</span></span>, y, z); <span class="hljs-keyword"><span class="hljs-keyword">CREATE</span></span> <span class="hljs-keyword"><span class="hljs-keyword">TABLE</span></span> t(x <span class="hljs-built_in"><span class="hljs-built_in">INT</span></span> PRIMARY <span class="hljs-keyword"><span class="hljs-keyword">KEY</span></span>, y, z);</code> </pre><br>  The second case is especially interesting, since  INT is considered an alias for INTEGER and the behavior must be the same, but it was not there.  I'm on this error and got caught.  :) If you started to doubt if you have the same PRIMARY KEY and rowid values, you can just check this: <br><pre> <code class="sql hljs"><span class="hljs-keyword"><span class="hljs-keyword">SELECT</span></span> <span class="hljs-keyword"><span class="hljs-keyword">rowid</span></span>, x <span class="hljs-keyword"><span class="hljs-keyword">FROM</span></span> t;</code> </pre><br>  SQLite in column names will write x, x (2), i.e.  instead of rowid, the name of the column with which rowid is associated will be specified.  Values, if any, in the table will be the same for these columns.  Another thing to mention is that if there is already a column in the table with the name “rowid” - this does not guarantee associations, you simply lose the ability to query the value of the system column rowid. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Nice optimization. </div><p>Source: <a href="https://habr.com/ru/post/160861/">https://habr.com/ru/post/160861/</a></p>
+      Nice optimization. </div><p>Source: https://habr.com/ru/post/160861/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

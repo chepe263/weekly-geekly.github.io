@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The easiest way to call a list of numbers with Asterisk</h1><div class="post__text post__text-html js-mediator-article">  Not so long ago, my customer had a need to ring up all his employees with playing a small voice message.  I had no desire to install complex systems of mass calls.  In the end, I found a very simple way to solve this problem. <br><a name="habracut"></a><br><br>  The dialer consists of a shell script: <br><br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh # Asterisk call from list script for FreePBX # Based on example at http://asterisk-support.ru/forum/topics/267/ pause=40 spooldir=/astdb/spool # No trailing slash! diallist=/etc/asterisk/scripts/dialer/diallist.txt echo `date`": Dialing with $pause second pause" while read number; do echo "Channel: Local/8$number@prozvon-dialer MaxRetries: 0 RetryTime: 5 WaitTime: 30 Context: prozvon-informer Extension: 2222 Callerid: 2222 Account: autodialer Priority: 1" &gt; $spooldir/tmp/$number chmod 777 $spooldir/tmp/$number chown asterisk:asterisk $spooldir/tmp/$number mv $spooldir/tmp/$number $spooldir/outgoing echo "$number" sleep $pause done &lt; $diallist echo "Done" exit 0</span></span></code> </pre> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      and two contexts - a picker: <br><br><pre> <code class="hljs ruby">[prozvon-dialer] exten =&gt; _8XXXXXXXXXX,<span class="hljs-number"><span class="hljs-number">1</span></span>,Dial(SIP/GorodOut/${EXTEN},<span class="hljs-number"><span class="hljs-number">60</span></span>) ;  exten =&gt; _8XXXXXXXXXX,n,Set(CDR(userfield)=${HASH(SIP_CAUSE,${CDR(dstchannel)})}) ;   exten =&gt; _8XXXXXXXXXX,n,Hangup ; </code> </pre><br><br>  GorodOut is an account of our SIP-provider. <br><br>  and dictator <br><br><pre> <code class="hljs php">[prozvon-informer] exten =&gt; <span class="hljs-number"><span class="hljs-number">2222</span></span>,<span class="hljs-number"><span class="hljs-number">1</span></span>,Answer ;  exten =&gt; <span class="hljs-number"><span class="hljs-number">2222</span></span>,n,Wait(<span class="hljs-number"><span class="hljs-number">3</span></span>) ; <span class="hljs-number"><span class="hljs-number">3</span></span>  exten =&gt; <span class="hljs-number"><span class="hljs-number">2222</span></span>,n,Background(announcement) ;  announcement exten =&gt; <span class="hljs-number"><span class="hljs-number">2222</span></span>,n,Hangup ; </code> </pre><br><br>  The script, being launched, will pick up the specified text file, in which the numbers on the list simply follow, one number per line.  Based on this data, he will create a special call-file and put it in the appropriate directory, from where this file is picked up by asterisk.  Learn more about call-files <a href="http://subnets.ru/blog/%3Fp%3D1444">here</a> . <br><br>  How do we know the results?  Very simple: <br><br><pre> <code class="sql hljs"><span class="hljs-keyword"><span class="hljs-keyword">SELECT</span></span> * <span class="hljs-keyword"><span class="hljs-keyword">FROM</span></span> cdr <span class="hljs-keyword"><span class="hljs-keyword">WHERE</span></span> accountcode = <span class="hljs-string"><span class="hljs-string">'autodialer'</span></span>;</code> </pre><br><br>  Also, in case the dialing fails, the reason for this will be indicated in more detail in the userfield field of the CDR. <br><br>  And finally: <br><br>  <i>Article 18. Advertising distributed by telecommunication networks (as amended by Federal Law of 27.10.2008 N 179-)</i> <i><br></i>  <i>2. It is not allowed to use telecommunication networks for the dissemination of advertising using the means of selection and (or) dialing a subscriber number without human participation (automatic dialing, automatic distribution).</i> </div><p>Source: <a href="https://habr.com/ru/post/159503/">https://habr.com/ru/post/159503/</a></p>
+      and two contexts - a picker: <br><br><pre> <code class="hljs ruby">[prozvon-dialer] exten =&gt; _8XXXXXXXXXX,<span class="hljs-number"><span class="hljs-number">1</span></span>,Dial(SIP/GorodOut/${EXTEN},<span class="hljs-number"><span class="hljs-number">60</span></span>) ;  exten =&gt; _8XXXXXXXXXX,n,Set(CDR(userfield)=${HASH(SIP_CAUSE,${CDR(dstchannel)})}) ;   exten =&gt; _8XXXXXXXXXX,n,Hangup ; </code> </pre><br><br>  GorodOut is an account of our SIP-provider. <br><br>  and dictator <br><br><pre> <code class="hljs php">[prozvon-informer] exten =&gt; <span class="hljs-number"><span class="hljs-number">2222</span></span>,<span class="hljs-number"><span class="hljs-number">1</span></span>,Answer ;  exten =&gt; <span class="hljs-number"><span class="hljs-number">2222</span></span>,n,Wait(<span class="hljs-number"><span class="hljs-number">3</span></span>) ; <span class="hljs-number"><span class="hljs-number">3</span></span>  exten =&gt; <span class="hljs-number"><span class="hljs-number">2222</span></span>,n,Background(announcement) ;  announcement exten =&gt; <span class="hljs-number"><span class="hljs-number">2222</span></span>,n,Hangup ; </code> </pre><br><br>  The script, being launched, will pick up the specified text file, in which the numbers on the list simply follow, one number per line.  Based on this data, he will create a special call-file and put it in the appropriate directory, from where this file is picked up by asterisk.  Learn more about call-files <a href="http://subnets.ru/blog/%3Fp%3D1444">here</a> . <br><br>  How do we know the results?  Very simple: <br><br><pre> <code class="sql hljs"><span class="hljs-keyword"><span class="hljs-keyword">SELECT</span></span> * <span class="hljs-keyword"><span class="hljs-keyword">FROM</span></span> cdr <span class="hljs-keyword"><span class="hljs-keyword">WHERE</span></span> accountcode = <span class="hljs-string"><span class="hljs-string">'autodialer'</span></span>;</code> </pre><br><br>  Also, in case the dialing fails, the reason for this will be indicated in more detail in the userfield field of the CDR. <br><br>  And finally: <br><br>  <i>Article 18. Advertising distributed by telecommunication networks (as amended by Federal Law of 27.10.2008 N 179-)</i> <i><br></i>  <i>2. It is not allowed to use telecommunication networks for the dissemination of advertising using the means of selection and (or) dialing a subscriber number without human participation (automatic dialing, automatic distribution).</i> </div><p>Source: https://habr.com/ru/post/159503/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../159483/index.html">Regular Expression Advance and Retrospective Checks</a></li>
-<li><a href="../159487/index.html">AppSurfer in action - android programs in the browser</a></li>
-<li><a href="../159489/index.html">Human rights activists urge to adopt the First Law of Robotics</a></li>
+<li><a href="../15949/index.html">Do not miss! Umputun recommends a little debauchery!</a></li>
 <li><a href="../159497/index.html">Lomogram - photo editor for Windows Phone</a></li>
+<li><a href="../1595/index.html">MoiKrug posted user vacancies</a></li>
+<li><a href="../15950/index.html">Do not miss! Umputun recommends a little debauchery!</a></li>
 <li><a href="../159501/index.html">Dune 2: The Building of a Dynasty</a></li>
+<li><a href="../159505/index.html">ASUS PadFone 2 - already in Russia</a></li>
 <li><a href="../159507/index.html">Bitrix Integration. Implementing a directory with two item group structures</a></li>
 <li><a href="../159509/index.html">The robot draws portraits almost like a man</a></li>
 <li><a href="../159513/index.html">Convenient work with pictures in Django</a></li>
 <li><a href="../159515/index.html">Release Firefox 17 and Firefox 17 ESR</a></li>
-<li><a href="../159517/index.html">Collection and analysis of statistics in free-to-play games</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

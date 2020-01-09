@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Call from terminal</h1><div class="post__text post__text-html js-mediator-article"> I decided to publish a short note how to use the basic knowledge of programming to realize the possibility of calls from the terminal server. <br>  Who needs it: first of all it will be interesting to those people (or organizations) who have a terminal server (EG windows 2003) there is some <a href="http://ru.wikipedia.org/wiki/%25D0%25A1%25D0%25B8%25D1%2581%25D1%2582%25D0%25B5%25D0%25BC%25D0%25B0_%25D1%2583%25D0%25BF%25D1%2580%25D0%25B0%25D0%25B2%25D0%25BB%25D0%25B5%25D0%25BD%25D0%25B8%25D1%258F_%25D0%25B2%25D0%25B7%25D0%25B0%25D0%25B8%25D0%25BC%25D0%25BE%25D0%25B4%25D0%25B5%25D0%25B9%25D1%2581%25D1%2582%25D0%25B2%25D0%25B8%25D0%25B5%25D0%25BC_%25D1%2581_%25D0%25BA%25D0%25BB%25D0%25B8%25D0%25B5%25D0%25BD%25D1%2582%25D0%25B0%25D0%25BC%25D0%25B8">CRM program</a> in it that stores contact information for customers.  And employees use software IP phones. <br><br>  <b>What we have is the</b> local network, the terminal server itself [we have Windows 2003 Standart], the IP telephony server [Asterisk], the client machines [Windows XP] with the installed IP software [X-lite]. <br><a name="habracut"></a>  <b>The general idea:</b> on the terminal server [hereinafter TS] there should be a certain program [client part.  Further [KCh], which determines from which IP-address Vasily Pupkin came in [I ask all VP not to be offended :)].  A certain server program hangs on Vasily's computer and listens to the port [further midrange].  The question arises - why is the server on the server CC, and on the client machine MF?  The thing is that on the server the program will not listen to the ports, but will “connect” to the client machine and send the number to which you need to call. <br><br>  To solve this problem, I used <a href="http://www.autoitscript.com/autoit3/">AutoIt3</a> and a small <a href="http://www.ctrl-alt-del.com.au/CAD_TSUtils.htm">GETTSCIP</a> program, by running it through the console we get our IP in the terminal [just what we need] 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>1. We write midrange [will stand on the client machine].</b>  As we said earlier, the program is listening to the port [in this example, 65532].  If data arrives, it searches for a window with a specific header [X-lite.  For other IP phones, you can use Autoit Window Info, which comes standard with AutoIt], activates the IP phone, sends the received digits to the IP phone, and presses Enter.  Sample script: <br><br> <code>Local $szServerPC = @ComputerName <br> Local $szIPADDRESS = TCPNameToIP($szServerPC) <br> $socket = UDPBind($szIPADDRESS, 65532) <br> If @error &lt;&gt; 0 Then Exit <br> While 1 <br> $data = UDPRecv($socket, 50) <br> If $data &lt;&gt; "" Then <br> WinActivate("XLite") <br> Send($data &amp; "{enter}") <br> EndIf <br> sleep(100) <br> WEnd <br> Func OnAutoItExit() <br> UDPCloseSocket($socket) <br> UDPShutdown() <br> EndFunc</code> <br> <br>  <b>2. We write KCH [will stand on a terminal server].</b>  So, the QC as a parameter, we specify the phone number.  This will allow us to insert, for example, a button for a call to 1C [for example, in our CRM].  Further, the CC determines the IP address from which the client entered the terminal.  And by UDP sends him a phone number.  Accordingly, the employee at this moment triggered MF and a call occurs.  Sample script [pre-copy the GETTSCIP program named getmyip.exe into the system directory]: <br><br> <code>if($CmdLine[0]==1) then <br> Local $foo = Run(@ComSpec &amp; " /c getmyip", @SystemDir, @SW_HIDE, $STDERR_CHILD + $STDOUT_CHILD) <br> Local $line <br> Local $ip <br> While 1 <br> $line = StdoutRead($foo) <br> If @error Then ExitLoop <br> if $line&lt;&gt;'' then <br> $ip=$line <br> EndIf <br> Wend <br> $ip=StringReplace($ip,"WTSClientAddress: ",""); <br> $socket = UDPOpen($ip, 65532) <br> If @error &lt;&gt; 0 Then Exit <br> $status = UDPSend($socket, $CmdLine[1]) <br> If $status = 0 then <br> MsgBox(0, "ERROR", "Error while sending UDP message: " &amp; @error) <br> Exit <br> EndIf <br> EndIf <br> Func OnAutoItExit() <br> UDPCloseSocket($socket) <br> UDPShutdown() <br> EndFunc</code> <br> <br>  That's all.  Now you can put a button on the vehicle in 1C or another program with the execution of the 2nd part of the program, the phone number is specified as a parameter. <br>  Client, server for Xlite and getmyip can be downloaded in the archive <a href="http://files.mail.ru/ZD7FZ8">here</a> . </div><p>Source: <a href="https://habr.com/ru/post/76355/">https://habr.com/ru/post/76355/</a></p>
+      <b>1. We write midrange [will stand on the client machine].</b>  As we said earlier, the program is listening to the port [in this example, 65532].  If data arrives, it searches for a window with a specific header [X-lite.  For other IP phones, you can use Autoit Window Info, which comes standard with AutoIt], activates the IP phone, sends the received digits to the IP phone, and presses Enter.  Sample script: <br><br> <code>Local $szServerPC = @ComputerName <br> Local $szIPADDRESS = TCPNameToIP($szServerPC) <br> $socket = UDPBind($szIPADDRESS, 65532) <br> If @error &lt;&gt; 0 Then Exit <br> While 1 <br> $data = UDPRecv($socket, 50) <br> If $data &lt;&gt; "" Then <br> WinActivate("XLite") <br> Send($data &amp; "{enter}") <br> EndIf <br> sleep(100) <br> WEnd <br> Func OnAutoItExit() <br> UDPCloseSocket($socket) <br> UDPShutdown() <br> EndFunc</code> <br> <br>  <b>2. We write KCH [will stand on a terminal server].</b>  So, the QC as a parameter, we specify the phone number.  This will allow us to insert, for example, a button for a call to 1C [for example, in our CRM].  Further, the CC determines the IP address from which the client entered the terminal.  And by UDP sends him a phone number.  Accordingly, the employee at this moment triggered MF and a call occurs.  Sample script [pre-copy the GETTSCIP program named getmyip.exe into the system directory]: <br><br> <code>if($CmdLine[0]==1) then <br> Local $foo = Run(@ComSpec &amp; " /c getmyip", @SystemDir, @SW_HIDE, $STDERR_CHILD + $STDOUT_CHILD) <br> Local $line <br> Local $ip <br> While 1 <br> $line = StdoutRead($foo) <br> If @error Then ExitLoop <br> if $line&lt;&gt;'' then <br> $ip=$line <br> EndIf <br> Wend <br> $ip=StringReplace($ip,"WTSClientAddress: ",""); <br> $socket = UDPOpen($ip, 65532) <br> If @error &lt;&gt; 0 Then Exit <br> $status = UDPSend($socket, $CmdLine[1]) <br> If $status = 0 then <br> MsgBox(0, "ERROR", "Error while sending UDP message: " &amp; @error) <br> Exit <br> EndIf <br> EndIf <br> Func OnAutoItExit() <br> UDPCloseSocket($socket) <br> UDPShutdown() <br> EndFunc</code> <br> <br>  That's all.  Now you can put a button on the vehicle in 1C or another program with the execution of the 2nd part of the program, the phone number is specified as a parameter. <br>  Client, server for Xlite and getmyip can be downloaded in the archive <a href="http://files.mail.ru/ZD7FZ8">here</a> . </div><p>Source: https://habr.com/ru/post/76355/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../76346/index.html">The action "Interface = understanding": first results</a></li>
 <li><a href="../76347/index.html">Parallels Virtuozzo VS Microsoft Hyper-V. Whose virtualization is more honest?</a></li>
 <li><a href="../76349/index.html">Send Java / Python SDKs 1.2.8 prerelease</a></li>
+<li><a href="../7635/index.html">Guglism or God named Google?</a></li>
 <li><a href="../76350/index.html">Video report "Advanced multisiting"</a></li>
 <li><a href="../76351/index.html">No robot: Encrypt text on a webpage.</a></li>
 <li><a href="../76356/index.html">Large tables and ENUM</a></li>
 <li><a href="../76357/index.html">In a series of Open Source CMS arrived</a></li>
 <li><a href="../76358/index.html">Improving usability of Krusader</a></li>
 <li><a href="../76359/index.html">What to do if hacking site?</a></li>
-<li><a href="../76361/index.html">Inkscape 0.47 released</a></li>
+<li><a href="../7636/index.html">Hybrid Apps - End of the Desktop-to-Web War</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

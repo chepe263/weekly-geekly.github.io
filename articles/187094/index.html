@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Karma - we test javascript in the console</h1><div class="post__text post__text-html js-mediator-article"> Hello.  I admit honestly, I rarely write tests.  Ie would like more often, but somehow it does not work.  It seems that the leadership, in principle, is not even against it, but still there are more urgent and more important tasks.  Nevertheless, looking at redmine the other day, I found out that there were practically no tasks (or rather, they were, but they had to wait for the backend first). <br>  Well, it's time to recall the tests (of course you had to think about them before, but better late than never). <br>  In general, I have already tried to write tests, including on the backend, and specifically <code>django</code> .  I even then thought that it would be great to run tests from the console and not in the browser window.  Well, since recently I have been actively following the development of <code>angular</code> , why not see how it is done with them.  Moreover, somehow I caught the moment out of the corner of my eye that the tests are running there in the console.  Plus, I didn’t want to understand the intricacies of testing from scratch, and I decided to take some ready-made project with tests, see how it was done, and drive the actual tests on it.  I chose <a href="http://angular-ui.github.io/">angular-ui</a> , or rather one of its <a href="https://github.com/angular-ui/ui-utils">ui-utils</a> modules. <br><br>  Download, go to the root to see the test folder and in it the file karma.conf.js <br>  Yes, and in the readme it is written that the tests are started as <code>karma start —browsers ….</code> <br>  Let's google karmajs and find what we need <a href="http://karma-runner.github.io/0.8/index.html">karma-runner.github.io/0.8/index.html</a> <br>  Utility for testing.  So what can she do? <br><ul><li>  Run tests from the console </li><li>  Automatically run all tests with each save !!! </li><li>  Ability to write tests on a variety of frameworks, such as jasmine, qunit, etc. </li><li>  Run tests on multiple browsers at once.  (including virtual, for example fantomjs). </li></ul><br><br>  In general, I already had enough of these opportunities to take on it.  But there are others that I haven’t yet explored, for example, integration with <code>jenkins</code> <br><a name="habracut"></a><br>  As I said, I decided to first try on the finished project.  In general, my actions: <br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> ui-utils sudo apt-get install nodejs <span class="hljs-comment"><span class="hljs-comment">#         sudo npm install karma -g #  ,      sudo npm install bower #         ui-utils npm install bower install</span></span></code> </pre><br>  That's all. <br>  Now we start in the terminal. <br><pre> <code class="bash hljs">karma start --brower=Chrome <span class="hljs-built_in"><span class="hljs-built_in">test</span></span>/karma.conf.js --auto-watch</code> </pre><br>  After that, we will launch the Chrome browser, which will have the inscription: "Karma - connected" <br>  We go back to the terminal, and we see that some tests have started, and they all passed. <br>  Now we go to any of the test files, they are located at modules / modulename / test / testnameSpec.js <br>  In any of the sections <code>it('...', function() {…..</code> <br>  and append <br><pre> <code class="javascript hljs">expect(<span class="hljs-number"><span class="hljs-number">2</span></span>).toBe(<span class="hljs-number"><span class="hljs-number">3</span></span>); #     jasmin,      </code> </pre><br>  save, look at the console and see something like this. <br><pre> <code class="bash hljs">............................................................. Chrome 28.0 (Linux) uiMask initialization should not not happen <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> the mask is undefined or invalid FAILED Expected 2 to be 3. Error: Expected 2 to be 3. at null.&lt;anonymous&gt; (/home/mn/Documents/www/temp/ui-utils/modules/mask/<span class="hljs-built_in"><span class="hljs-built_in">test</span></span>/maskSpec.js:25:17) .......................................................................... Chrome 28.0 (Linux): Executed 136 of 136 (1 FAILED) (1.016 secs / 0.642 secs)</code> </pre><br>  Our test collapsed. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      As you can see, when saving tests are run automatically. <br>  It is especially convenient to work with two monitors.  In one, you write code, the terminal hangs on the second and immediately shows the current state.  In some cases, you can not look at the browser at all. <br>  Since the tests are run at every save, they flicker and sometimes it interferes.  For this case, you can use the command <pre> <code class="bash hljs">karma run</code> </pre><br>  Ie first you need to run <br><pre> <code class="bash hljs">karma start <span class="hljs-built_in"><span class="hljs-built_in">test</span></span>/karma.konf.js —no-auto-wath</code> </pre><br>  and then, in another terminal, run <pre> <code class="bash hljs">karma run</code> </pre><br>  Thus, tests will be run manually. <br>  Of course, I have described far from all the possibilities of karma.  Rather, this post I wanted to draw your attention to this interesting utility.  So just visit the <a href="http://karma-runner.github.io/0.8/index.html">site</a> and see everything yourself. <br><br>  PS <code>karma</code> course can be used not only for testing <code>angular</code> , but in general, and for any other client code on js.  We do not use angular on the current project, but it is very convenient to write tests for karma. <br><br>  PS earlier this utility was called <code>testacular <br></code> <code>testacular <br></code> </div><p>Source: <a href="https://habr.com/ru/post/187094/">https://habr.com/ru/post/187094/</a></p>
+      As you can see, when saving tests are run automatically. <br>  It is especially convenient to work with two monitors.  In one, you write code, the terminal hangs on the second and immediately shows the current state.  In some cases, you can not look at the browser at all. <br>  Since the tests are run at every save, they flicker and sometimes it interferes.  For this case, you can use the command <pre> <code class="bash hljs">karma run</code> </pre><br>  Ie first you need to run <br><pre> <code class="bash hljs">karma start <span class="hljs-built_in"><span class="hljs-built_in">test</span></span>/karma.konf.js —no-auto-wath</code> </pre><br>  and then, in another terminal, run <pre> <code class="bash hljs">karma run</code> </pre><br>  Thus, tests will be run manually. <br>  Of course, I have described far from all the possibilities of karma.  Rather, this post I wanted to draw your attention to this interesting utility.  So just visit the <a href="http://karma-runner.github.io/0.8/index.html">site</a> and see everything yourself. <br><br>  PS <code>karma</code> course can be used not only for testing <code>angular</code> , but in general, and for any other client code on js.  We do not use angular on the current project, but it is very convenient to write tests for karma. <br><br>  PS earlier this utility was called <code>testacular <br></code> <code>testacular <br></code> </div><p>Source: https://habr.com/ru/post/187094/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../187078/index.html">Continuing to Spam Protection with Cisco IronPort c170</a></li>
-<li><a href="../187080/index.html">Corporate Utopia Communication Environment</a></li>
+<li><a href="../187084/index.html">The water is burning! And also EGE and killer waves</a></li>
 <li><a href="../187086/index.html">Nokia Asha 210 Stylish Budget Book Review</a></li>
 <li><a href="../187088/index.html">Google: Alternatives to the Search Giant</a></li>
+<li><a href="../18709/index.html">Usability Warfare | First fight</a></li>
 <li><a href="../187092/index.html">CLI combine for Plesk</a></li>
 <li><a href="../187096/index.html">Space exploration and the nuclear shield of the motherland</a></li>
 <li><a href="../187098/index.html">More than GoogleReader: let's do it together!</a></li>
+<li><a href="../1871/index.html">Online advertising surpasses television</a></li>
+<li><a href="../18710/index.html">Yandex has learned to count money</a></li>
 <li><a href="../187100/index.html">Floobits: convenient remote programming pair</a></li>
-<li><a href="../187104/index.html">VKontakte disabled broadcast articles after 19-00 (start meeting in support of Navalny)</a></li>
-<li><a href="../187106/index.html">Development of IntelliJ IDEA plugin. Part 1</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

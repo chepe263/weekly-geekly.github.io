@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Extend Sizzle (pseudo selectors)</h1><div class="post__text post__text-html js-mediator-article"><h4>  Introduction </h4><br>  As you know, John Rezig (John Resig) created a completely new selector engine called <a href="http://wiki.github.com/jeresig/sizzle">Sizzle</a> (selector [, context]). <br><br>  It can be used separately from <a href="http://jquery.com/">jQuery</a> (only <b>4Kb</b> in min / gzip format), and with it. <br><br>  Along with high performance, it also has good extensibility, which I want to tell you now. <br><a name="habracut"></a><br><h4>  Pseudo-selectors </h4>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The simplest case: write a pseudo-selector that selects elements with the visibility = hidden property. <br><br>  The example is written under the assumption that jQuery Sizzle is connected. <br><br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">&lt;</font> <font color="#800000">script</font> <font color="#ff0000">type</font> <font color="#0000ff">="text/javascript"</font> <font color="#ff0000">src</font> <font color="#0000ff">="/jslib/jquery.js"</font> <font color="#0000ff">&gt;&lt;/</font> <font color="#800000">script</font> <font color="#0000ff">&gt;</font> <br> &lt;div style= <font color="#A31515">"visibility:hidden;"</font> &gt;test&lt;/div&gt; <br> <font color="#0000ff">&lt;</font> <font color="#800000">script</font> type= <font color="#A31515">"text/javascript"</font> &gt; <br> ( <font color="#0000ff">function</font> (Sizzle) <br> { <br> Sizzle.selectors.filters[ <font color="#A31515">'vis-hidden'</font> ] = <font color="#0000ff">function</font> (elem) <br> { <br> <font color="#0000ff">return</font> elem.style.visibility == <font color="#A31515">'hidden'</font> ; <br> }; <br> <font color="#333333">//  .</font> <br> <font color="#0000ff">var</font> elts = Sizzle( <font color="#A31515">':vis-hidden'</font> ); <br> <font color="#0000ff">for</font> ( <font color="#0000ff">var</font> i = 0; i &lt; elts.length; i++) <br> { <br> <font color="#0000ff">var</font> elt = elts[i]; <br> elt.innerHTML = <font color="#A31515">'Caught'</font> ; <br> elt.style.visibility = <font color="#A31515">''</font> ; <br> } <br> })(jQuery.find); <br></font> <font color="#0000ff">&lt;/</font> <font color="#800000">script</font> <font color="#0000ff">&gt;</font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br><h4>  We use in jQuery </h4><br><br>  Sizzle selectors naturally work great in jQuery: <br><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">&lt;</font> <font color="#800000">script</font> <font color="#ff0000">src</font> <font color="#0000ff">="/jslib/jquery.js"</font> <font color="#0000ff">&gt;&lt;/</font> <font color="#800000">script</font> <font color="#0000ff">&gt;</font> <br> &lt;div style= <font color="#A31515">"visibility:hidden;"</font> &gt;test&lt;/div&gt; <br> &lt;script&gt; <br> ( <font color="#0000ff">function</font> ($) <br> { <br> <font color="#0000ff">var</font> Sizzle = $.find; <br> <br> Sizzle.selectors.filters[ <font color="#A31515">'vis-hidden'</font> ] = <font color="#0000ff">function</font> (elem) <br> { <br> <font color="#0000ff">return</font> elem.style.visibility == <font color="#A31515">'hidden'</font> ; <br> }; <br> <br> $( <font color="#A31515">':vis-hidden'</font> ).html( <font color="#A31515">'Caught'</font> ).css( <font color="#A31515">'visibility'</font> , <font color="#A31515">''</font> ); <br> })(jQuery); <br> <font color="#0000ff">&lt;/</font> <font color="#800000">script</font> <font color="#0000ff">&gt;</font></font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br><h4>  Selectors and filters </h4><br><br>  Creating other options for selectors and filters is a <a href="http://wiki.github.com/jeresig/sizzle">bit more complicated</a> . </div><p>Source: <a href="https://habr.com/ru/post/53808/">https://habr.com/ru/post/53808/</a></p>
+      The simplest case: write a pseudo-selector that selects elements with the visibility = hidden property. <br><br>  The example is written under the assumption that jQuery Sizzle is connected. <br><br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">&lt;</font> <font color="#800000">script</font> <font color="#ff0000">type</font> <font color="#0000ff">="text/javascript"</font> <font color="#ff0000">src</font> <font color="#0000ff">="/jslib/jquery.js"</font> <font color="#0000ff">&gt;&lt;/</font> <font color="#800000">script</font> <font color="#0000ff">&gt;</font> <br> &lt;div style= <font color="#A31515">"visibility:hidden;"</font> &gt;test&lt;/div&gt; <br> <font color="#0000ff">&lt;</font> <font color="#800000">script</font> type= <font color="#A31515">"text/javascript"</font> &gt; <br> ( <font color="#0000ff">function</font> (Sizzle) <br> { <br> Sizzle.selectors.filters[ <font color="#A31515">'vis-hidden'</font> ] = <font color="#0000ff">function</font> (elem) <br> { <br> <font color="#0000ff">return</font> elem.style.visibility == <font color="#A31515">'hidden'</font> ; <br> }; <br> <font color="#333333">//  .</font> <br> <font color="#0000ff">var</font> elts = Sizzle( <font color="#A31515">':vis-hidden'</font> ); <br> <font color="#0000ff">for</font> ( <font color="#0000ff">var</font> i = 0; i &lt; elts.length; i++) <br> { <br> <font color="#0000ff">var</font> elt = elts[i]; <br> elt.innerHTML = <font color="#A31515">'Caught'</font> ; <br> elt.style.visibility = <font color="#A31515">''</font> ; <br> } <br> })(jQuery.find); <br></font> <font color="#0000ff">&lt;/</font> <font color="#800000">script</font> <font color="#0000ff">&gt;</font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br><h4>  We use in jQuery </h4><br><br>  Sizzle selectors naturally work great in jQuery: <br><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">&lt;</font> <font color="#800000">script</font> <font color="#ff0000">src</font> <font color="#0000ff">="/jslib/jquery.js"</font> <font color="#0000ff">&gt;&lt;/</font> <font color="#800000">script</font> <font color="#0000ff">&gt;</font> <br> &lt;div style= <font color="#A31515">"visibility:hidden;"</font> &gt;test&lt;/div&gt; <br> &lt;script&gt; <br> ( <font color="#0000ff">function</font> ($) <br> { <br> <font color="#0000ff">var</font> Sizzle = $.find; <br> <br> Sizzle.selectors.filters[ <font color="#A31515">'vis-hidden'</font> ] = <font color="#0000ff">function</font> (elem) <br> { <br> <font color="#0000ff">return</font> elem.style.visibility == <font color="#A31515">'hidden'</font> ; <br> }; <br> <br> $( <font color="#A31515">':vis-hidden'</font> ).html( <font color="#A31515">'Caught'</font> ).css( <font color="#A31515">'visibility'</font> , <font color="#A31515">''</font> ); <br> })(jQuery); <br> <font color="#0000ff">&lt;/</font> <font color="#800000">script</font> <font color="#0000ff">&gt;</font></font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br><h4>  Selectors and filters </h4><br><br>  Creating other options for selectors and filters is a <a href="http://wiki.github.com/jeresig/sizzle">bit more complicated</a> . </div><p>Source: https://habr.com/ru/post/53808/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,11 +74,11 @@
 <li><a href="../53803/index.html">HDtracker.ru - open registration</a></li>
 <li><a href="../53804/index.html">Startup Crash Test 3.0 Beta. Kiev</a></li>
 <li><a href="../53805/index.html">Automated acceptance of webmoney payments on your site.</a></li>
+<li><a href="../5381/index.html">Krasnogorsky forum could not stand the glory</a></li>
 <li><a href="../53810/index.html">Lenovo ThinkPad T60: Mistress of a Note</a></li>
 <li><a href="../53816/index.html">invites brokenstones.me</a></li>
 <li><a href="../53817/index.html">Why is elderly email still ideal for working communication?</a></li>
-<li><a href="../53820/index.html">We cling healthy ammeters to a PC via Arduino</a></li>
-<li><a href="../53821/index.html">In the animal world</a></li>
+<li><a href="../5382/index.html">Spaniards confirm the creation of Google Phone</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

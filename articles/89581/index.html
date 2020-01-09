@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PHPUnit. Part 04 Test Environments (Fixtures)</h1><div class="post__text post__text-html js-mediator-article"> <i>Translator's Preface</i> <i><br></i>  <i>This article continues the series of translations of the official PHPUnit documentation into Russian.</i> <i><br></i>  <i><a href="http://habrahabr.ru/blogs/php/87922">Part 1</a> , <a href="http://www.smartyit.ru/php/84">Part 2</a> , <a href="http://habrahabr.ru/blogs/php/89175">Part 3</a> ,</i> <i><br></i> <br><br><a name="habracut"></a><br>  Setting the parameters of the test environment or, in other words, creating a test world is one of the most time-consuming tasks.  But after completion of the test, all variables must return the original values ​​- this task is also not an easy one.  The test world or the parameters of the test environment are called the <em>test environment (fixture)</em> . <br><br>  In <a href="http://www.smartyit.ru/php/85">Example 4.1, the</a> test environment was a simple array that was saved to the <code>$stack</code> variable. <br>  However, most often the test environment is much more complicated, and the amount of code for working with it grows accordingly.  The test content may be lost in the noise of the code responsible for working with the test environment.  Everything will get really bad the moment you write some tests using similar test environments.  We obviously need the help of the test framework (framework) if we go to get rid of the numerous duplication of code. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       PHPUnit supports the sharing of test environment setup code. <br>  Before the test method starts to run, the template <code>setUp()</code> method will be called. <br>  As soon as the testing method completes its work, another templated method will be called - <code>tearDown()</code> . <br>  Moreover, his call does not depend on whether the test was successful or not. <br><br>  In <a href="http://www.smartyit.ru/php/85">Example 4.2,</a> we use a source-receiver approach to share a test environment.  But this is not always acceptable, and often impossible at all. <br>  Example 6.1 demonstrates how to write a <code>StackTest</code> test <code>StackTest</code> such a way as to reuse not the test environment, but the code that creates it. <br>  First of all, we declare a <code>$stack</code> class variable, which we will use instead of a local method variable. <br>  After that we will move the creation of the test environment to the <code>setUp()</code> method. <br>  Finally, we remove the code that has already become unnecessary from the test methods and start using the new variable of the <code>$this-&gt;stack</code> class instead of the local variable of the <code>$stack</code> method. <br><br>  <b>Example 6.1: Using setUp () to create a test stack test environment</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php&lt;br&gt; <br> <font color="#0000ff">class</font> StackTest extends PHPUnit_Framework_TestCase&lt;br&gt; <br> {&lt;br&gt; <br> <font color="#0000ff">protected</font> $stack;&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">protected</font> function setUp()&lt;br&gt; <br> {&lt;br&gt; <br> $ <font color="#0000ff">this</font> -&gt;stack = array();&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">public</font> function testEmpty()&lt;br&gt; <br> {&lt;br&gt; <br> $ <font color="#0000ff">this</font> -&gt;assertTrue(empty($ <font color="#0000ff">this</font> -&gt;stack));&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">public</font> function testPush()&lt;br&gt; <br> {&lt;br&gt; <br> array_push($ <font color="#0000ff">this</font> -&gt;stack, <font color="#A31515">'foo'</font> );&lt;br&gt; <br> $ <font color="#0000ff">this</font> -&gt;assertEquals( <font color="#A31515">'foo'</font> , $ <font color="#0000ff">this</font> -&gt;stack[count($ <font color="#0000ff">this</font> -&gt;stack)-1]);&lt;br&gt; <br> $ <font color="#0000ff">this</font> -&gt;assertFalse(empty($ <font color="#0000ff">this</font> -&gt;stack));&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">public</font> function testPop()&lt;br&gt; <br> {&lt;br&gt; <br> array_push($ <font color="#0000ff">this</font> -&gt;stack, <font color="#A31515">'foo'</font> );&lt;br&gt; <br> $ <font color="#0000ff">this</font> -&gt;assertEquals( <font color="#A31515">'foo'</font> , array_pop($ <font color="#0000ff">this</font> -&gt;stack));&lt;br&gt; <br> $ <font color="#0000ff">this</font> -&gt;assertTrue(empty($ <font color="#0000ff">this</font> -&gt;stack));&lt;br&gt; <br> }&lt;br&gt; <br> }&lt;br&gt; <br> ?&gt;</font> &lt;br&gt; <br> &lt;br&gt; <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> <br> </blockquote><br>  The template methods <code>setUp()</code> and <code>tearDown()</code> are called once for each test method (and for a new instance) of the test class. <br><br>  The template methods <code>setUpBeforeClass()</code> and <code>tearDownAfterClass()</code> are called before the first method of the test class is executed and after the last method is completed. <br><br>  The following example demonstrates all possible template methods that are available in the test class. <br><br>  <b>Example 6.2: The example demonstrates the use of all possible generic methods.</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php&lt;br&gt; <br> require_once <font color="#A31515">'PHPUnit/Framework.php'</font> ;&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">class</font> TemplateMethodsTest extends PHPUnit_Framework_TestCase&lt;br&gt; <br> {&lt;br&gt; <br> <font color="#0000ff">public</font> <font color="#0000ff">static</font> function setUpBeforeClass()&lt;br&gt; <br> {&lt;br&gt; <br> print __METHOD__ . <font color="#A31515">"\n"</font> ;&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">protected</font> function setUp()&lt;br&gt; <br> {&lt;br&gt; <br> print __METHOD__ . <font color="#A31515">"\n"</font> ;&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">protected</font> function assertPreConditions()&lt;br&gt; <br> {&lt;br&gt; <br> print __METHOD__ . <font color="#A31515">"\n"</font> ;&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">public</font> function testOne()&lt;br&gt; <br> {&lt;br&gt; <br> print __METHOD__ . <font color="#A31515">"\n"</font> ;&lt;br&gt; <br> $ <font color="#0000ff">this</font> -&gt;assertTrue(TRUE);&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">public</font> function testTwo()&lt;br&gt; <br> {&lt;br&gt; <br> print __METHOD__ . <font color="#A31515">"\n"</font> ;&lt;br&gt; <br> $ <font color="#0000ff">this</font> -&gt;assertTrue(FALSE);&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">protected</font> function assertPostConditions()&lt;br&gt; <br> {&lt;br&gt; <br> print __METHOD__ . <font color="#A31515">"\n"</font> ;&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">protected</font> function tearDown()&lt;br&gt; <br> {&lt;br&gt; <br> print __METHOD__ . <font color="#A31515">"\n"</font> ;&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">public</font> <font color="#0000ff">static</font> function tearDownAfterClass()&lt;br&gt; <br> {&lt;br&gt; <br> print __METHOD__ . <font color="#A31515">"\n"</font> ;&lt;br&gt; <br> }&lt;br&gt; <br> &lt;br&gt; <br> <font color="#0000ff">protected</font> function onNotSuccessfulTest(Exception $e)&lt;br&gt; <br> {&lt;br&gt; <br> print __METHOD__ . <font color="#A31515">"\n"</font> ;&lt;br&gt; <br> <font color="#0000ff">throw</font> $e;&lt;br&gt; <br> }&lt;br&gt; <br> }&lt;br&gt; <br> ?&gt;</font> &lt;br&gt; <br> &lt;br&gt; <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> <br> </blockquote><br><pre>  phpunit TemplateMethodsTest
@@ -102,20 +102,20 @@
      );
 
      // ...
- } </pre><br><h3>  Note </h3><br>  Please note that setting the <code>$backupStaticAttributesBlacklist</code> attribute inside a method, for example, <code>setUp()</code> will have no effect. <br></div><p>Source: <a href="https://habr.com/ru/post/89581/">https://habr.com/ru/post/89581/</a></p>
+ } </pre><br><h3>  Note </h3><br>  Please note that setting the <code>$backupStaticAttributesBlacklist</code> attribute inside a method, for example, <code>setUp()</code> will have no effect. <br></div><p>Source: https://habr.com/ru/post/89581/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../89572/index.html">The power of paper notebooks</a></li>
 <li><a href="../89577/index.html">Yahoo 1995</a></li>
 <li><a href="../89578/index.html">New video mode on youtube</a></li>
 <li><a href="../89579/index.html">GLONASS provides uninterrupted satellite navigation throughout Russia</a></li>
+<li><a href="../8958/index.html">What should be your site?</a></li>
 <li><a href="../89580/index.html">Java for Professionals: Specification Tasks</a></li>
 <li><a href="../89582/index.html">Ford The bitter smell of defeat. Contextual Advertising Experience</a></li>
 <li><a href="../89585/index.html">Comparison Arduino boards - Mars Rover</a></li>
 <li><a href="../89586/index.html">New knop in Youtube</a></li>
 <li><a href="../89588/index.html">Security issues of modern OS</a></li>
-<li><a href="../89590/index.html">Yandex makes fun of the pictures on April 1</a></li>
+<li><a href="../8959/index.html">Erogadzhety: iGasm</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

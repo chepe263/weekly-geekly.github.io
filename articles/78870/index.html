@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>reboot with web-interface or trigger: simple and cheap synchronization of processes through a locked read ()</h1><div class="post__text post__text-html js-mediator-article">  Often, admin and web-based programming tasks require synchronization between different components of the system, for example, a webmord accepts a command to perform some action, it is desirable to perform this action as early as possible, but the web interface itself cannot firewall or routing table simply because root authority is required).  I usually solved it in an ugly and inefficient way - the web interface wrote a command to some special file, and another shell script (working as root) looped through the file once every few seconds, and if there are commands, I processed them. <br><br>  In this post I will describe a simple way that: <br><ul><li>  no programming required - only unix-way system building from small bricks </li><li>  it doesn’t wipe a lot of resources (you don’t need to waste a file, and the program itself weighs much less shell) </li><li>  triggered instantly </li></ul><br><br><a name="habracut"></a><br>  The solution is peeped in qmail's source.  The standard read () operation is blocked if there is no read data (except for the case when you specifically set non-blocking options for the socket).  read () + fifo files solve the problem.  The handler must read the data from the fifo file.  While it is empty - it will simply go to sleep and will not create a load.  And as soon as the data appears, read () is completed, and processing code can be executed. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      To do this, "on the knee" was written a simple program from the <a href="">trigger</a> .  When launched, it listens to the file specified by it, and when data appears in it, it immediately calls the command specified in the parameters (from the user from whom the trigger is running, and not from the user who “pulled the trigger”) <br><br> <code>xenon@dot:~/trigger-1.0$ ./trigger /tmp/myfifo ./prog.sh <br> fifo: /tmp/myfifo, program: ./prog.sh <br> file /tmp/myfifo doesn't exists, create it <br> created fifo /tmp/myfifo <br> xenon@dot:~/trigger-1.0$ chmod a+w /tmp/myfifo <br> xenon@dot:~/trigger-1.0$ pidof trigger <br> 8552 <br></code> <br>  The program started (by the daemon), created the FIFO file myfifo and when the data appears in it, it will launch the program prog.sh.  With the second command, we allowed everyone to write in the FIFO, but, of course, you can configure it more carefully (for example, allow recording for group members and assign the group www-data). <br><br>  The prog.sh script itself is very simple in our case - it simply writes the start time to the log: <br> <code>xenon@dot:~/trigger-1.0$ cat prog.sh <br> #!/bin/sh <br> <br> echo `date` started, ui: `whoami` &gt;&gt; program.log <br></code> <br><br>  Naturally, in your case, you need to replace it with your script that will do the work. <br><br>  Now check: <br> <code>www-data@dot:/tmp$ id <br> uid=33(www-data) gid=33(www-data) =33(www-data) <br> www-data@dot:/tmp$ echo &gt; /tmp/myfifo <br> www-data@dot:/tmp$ echo &gt; /tmp/myfifo <br> www-data@dot:/tmp$ echo &gt; /tmp/myfifo <br> www-data@dot:/tmp$ exit <br></code> <br><br>  Look what happened: <br> <code>xenon@dot:~/trigger-1.0$ cat program.log <br> . . 1 20:47:47 NOVST 2011 started, ui: xenon <br> . . 1 20:47:48 NOVST 2011 started, ui: xenon <br> . . 1 20:47:49 NOVST 2011 started, ui: xenon <br></code> <br><br>  As you can see, the script started at the same second as the command was sent.  Voila! <br><br>  The trigger itself weighs only 12Kb, and the blocked read () doesn’t particularly load the system and works instantly. <br><br>  Now you can easily stick the web interface to system operations (reboot the machine, restart the service, add rules to iptables, etc.).  Naturally, we believe that the untrusted code from the web server group does not work, and access to the web interface will be password protected via https and only from the local network.  You have a trigger, so now it's easier to shoot your foot.  :-) </div><p>Source: <a href="https://habr.com/ru/post/78870/">https://habr.com/ru/post/78870/</a></p>
+      To do this, "on the knee" was written a simple program from the <a href="">trigger</a> .  When launched, it listens to the file specified by it, and when data appears in it, it immediately calls the command specified in the parameters (from the user from whom the trigger is running, and not from the user who “pulled the trigger”) <br><br> <code>xenon@dot:~/trigger-1.0$ ./trigger /tmp/myfifo ./prog.sh <br> fifo: /tmp/myfifo, program: ./prog.sh <br> file /tmp/myfifo doesn't exists, create it <br> created fifo /tmp/myfifo <br> xenon@dot:~/trigger-1.0$ chmod a+w /tmp/myfifo <br> xenon@dot:~/trigger-1.0$ pidof trigger <br> 8552 <br></code> <br>  The program started (by the daemon), created the FIFO file myfifo and when the data appears in it, it will launch the program prog.sh.  With the second command, we allowed everyone to write in the FIFO, but, of course, you can configure it more carefully (for example, allow recording for group members and assign the group www-data). <br><br>  The prog.sh script itself is very simple in our case - it simply writes the start time to the log: <br> <code>xenon@dot:~/trigger-1.0$ cat prog.sh <br> #!/bin/sh <br> <br> echo `date` started, ui: `whoami` &gt;&gt; program.log <br></code> <br><br>  Naturally, in your case, you need to replace it with your script that will do the work. <br><br>  Now check: <br> <code>www-data@dot:/tmp$ id <br> uid=33(www-data) gid=33(www-data) =33(www-data) <br> www-data@dot:/tmp$ echo &gt; /tmp/myfifo <br> www-data@dot:/tmp$ echo &gt; /tmp/myfifo <br> www-data@dot:/tmp$ echo &gt; /tmp/myfifo <br> www-data@dot:/tmp$ exit <br></code> <br><br>  Look what happened: <br> <code>xenon@dot:~/trigger-1.0$ cat program.log <br> . . 1 20:47:47 NOVST 2011 started, ui: xenon <br> . . 1 20:47:48 NOVST 2011 started, ui: xenon <br> . . 1 20:47:49 NOVST 2011 started, ui: xenon <br></code> <br><br>  As you can see, the script started at the same second as the command was sent.  Voila! <br><br>  The trigger itself weighs only 12Kb, and the blocked read () doesn’t particularly load the system and works instantly. <br><br>  Now you can easily stick the web interface to system operations (reboot the machine, restart the service, add rules to iptables, etc.).  Naturally, we believe that the untrusted code from the web server group does not work, and access to the web interface will be password protected via https and only from the local network.  You have a trigger, so now it's easier to shoot your foot.  :-) </div><p>Source: https://habr.com/ru/post/78870/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../78872/index.html">Shake indemnity insurance company</a></li>
 <li><a href="../78875/index.html">Racing simulator for $ 200,000</a></li>
 <li><a href="../78876/index.html">Start in Garage in St. Petersburg</a></li>
-<li><a href="../78880/index.html">Video from OpenSQL Camp o MySQL and not only</a></li>
+<li><a href="../7888/index.html">Yahoo introduces CSS nocontent syntax</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

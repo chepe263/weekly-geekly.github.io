@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Static analysis of the source code on the example of WinMerge</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/getpro/habr/post_images/972/2c8/6ce/9722c86ce007b6a57d340f1757321873.png">  Today I want to dedicate a post to the topic, why source code analysis tools are useful regardless of the level of knowledge and experience of the programmer.  And the benefit of such an analysis will be demonstrated by the example of a tool that is known to all programmers - WinMerge. <br><br><a name="habracut"></a><br>  The earlier the error in the application code is detected, the cheaper it is to fix it.  Hence the conclusion that the cheapest and simplest error can be eliminated in the process of writing code.  And even better, if the error is not written at all.  I just wanted to make a mistake, so immediately clap your hands and the code is already written correctly.  But somehow it does not work.  The “need to write without errors” approach still does not work. <br><br>  Even a highly skilled programmer who is not in a hurry, makes mistakes, starting from the simplest typos and ending with logical errors in algorithms.  This is where the law of large numbers works.  It seems that it is impossible to make a mistake in each specific “if” statement.  And wrote 200 comparisons, and once, yes was wrong.  Andrei Urazov is interested in this in his report “Quality-Oriented Programming” at the CodeFest 2010 conference ( <a href="http://www.viva64.com/go.php%3Furl%3D414">see the recording of the speech</a> ).  Briefly, I want to give his next thought.  No matter how experienced developers are, errors still appear in the code.  These errors cannot be stopped doing.  But many of them can be successfully fought at a much earlier stage than is usually done. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Usually, the very first level of error defense is the creation of unit tests on newly written code.  Sometimes tests are written before the code that they will check.  However, unit tests have a number of drawbacks, which I will not discuss in detail, since they are already known to programmers.  It is not always easy to create a unit test for a function that requires a lot of preliminary data preparation.  Unit tests become a burden if project requirements change quickly.  Tests take a lot of time to write and maintain.  Tests are not always easy to cover all the branches.  And you can also receive as a gift a monolithic project in which unit tests simply do not exist and were not planned.  Without denying the enormous usefulness of unit tests, I believe that although this is a good defensive line, it can and should be significantly strengthened. <br><br>  Often, programmers neglect an even earlier level of defense — static code analysis.  Many use the ability to analyze the code, without going beyond the diagnostic warnings issued by compilers.  Meanwhile, there is a whole class of tools that make it possible to identify at the coding stage a significant percentage of logical errors and simple typos.  These tools perform higher-level code checking, relying on the knowledge of some coding patterns, use heuristic algorithms, and have a flexible configuration system. <br><br>  Static analysis, of course, also has flaws.  He simply cannot detect many kinds of errors.  Analyzers give false positives and force you to make such adjustments in the code so that they like this code and then be rated as safe. <br><br>  But there are huge benefits.  The analysis covers all branches of the program, regardless of the frequency of their use.  The analysis does not depend on the stage of execution.  You can check even unfinished code.  You can check a large amount of code inherited by you.  Static analysis is fast and scales well in contrast to dynamic validation tools. <br><br>  Sounded a lot of words about static source code analysis.  Now it's time to pay attention to practice.  I'll take one application written in C ++ and try to find errors in it. <br><br>  I wanted to choose something small and well-known.  Since I do not use so many tools, then scrolling through the list of programs in the Start menu, my choice was WinMerge.  WinMerge is available in <a href="http://winmerge.org/downloads/">source code</a> , small (about 186,000 lines).  The program is of sufficient quality.  I speak on the basis of the fact that I use it without any complaints, and that 25% of the source code is occupied by comments (a good sign).  In general, the optimal choice. <br><br>  The latest available version 2.13.20 (dated 10/20/2010) was downloaded.  For the analysis, I used the prototype of a general-purpose analyzer that we are developing.  I will dwell on this in a bit more detail. <br><br>  Now, the PVS-Studio static analyzer includes two sets of rules.  One is designed to detect <a href="http://www.viva64.com/ru/viva64-tool/">64-bit defects</a> , and the other is to <a href="http://www.viva64.com/ru/vivamp-tool/">check OpenMP programs</a> .  We are currently developing a general rule set.  Even the beta version is not yet available, but something is already working and I really want a little bit of a real war with errors.  We plan to make a new set of rules for free, so please do not write about self-promotion.  To the public, we will present a new tool in 1-2 months within PVS-Studio 4.00. <br><br>  So, here are some interesting points that I found in the WinMerge-2.13.20 source code within half an hour (15 minutes test, 15 minutes review of the results).  There are other suspicious places, but it takes effort to figure out if there really is a mistake or not.  Now I have no task to find as many defects as possible in one project.  I would like to gracefully show the usefulness of static analysis and how even a quick study can quickly reveal a number of errors. <br><br>  Example one.  The analyzer pointed me to several errors “V530 - The return value of the function 'Foo' is required to be utilized”.  Typically, these warnings occur due to improper use of functions.  Consider the code snippet: <br><pre>  / **
@@ -140,7 +140,7 @@
          break;
      }
    ...
- } </pre><br>  This code is predisposed to Access Violation.  The loop must continue until a '&gt;' character is found or a string of 'srclen' characters in length ends.  That's just by chance for comparison used the variable 'i', and not 'k'.  If the '&gt;' character is not found, then everything is likely to end sadly. <br><br><h2>  Conclusion </h2><br>  Do not forget about static analysis.  He can often find interesting things even in good code.  And come back to our <a href="http://www.viva64.com/ru/pvs-studio">website</a> later to try a free general-purpose analyzer when it’s ready. </div><p>Source: <a href="https://habr.com/ru/post/107235/">https://habr.com/ru/post/107235/</a></p>
+ } </pre><br>  This code is predisposed to Access Violation.  The loop must continue until a '&gt;' character is found or a string of 'srclen' characters in length ends.  That's just by chance for comparison used the variable 'i', and not 'k'.  If the '&gt;' character is not found, then everything is likely to end sadly. <br><br><h2>  Conclusion </h2><br>  Do not forget about static analysis.  He can often find interesting things even in good code.  And come back to our <a href="http://www.viva64.com/ru/pvs-studio">website</a> later to try a free general-purpose analyzer when it’s ready. </div><p>Source: https://habr.com/ru/post/107235/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -152,8 +152,8 @@
 <li><a href="../107236/index.html">Electronic versions of prints in a convenient form</a></li>
 <li><a href="../107237/index.html">Stackless Python and Concurrence</a></li>
 <li><a href="../107238/index.html">Google has spent $ 1.6 billion on company purchases in the past 9 months</a></li>
+<li><a href="../10724/index.html">Mio, happy birthday!</a></li>
 <li><a href="../107241/index.html">Facebook bought Drop.io</a></li>
-<li><a href="../107242/index.html">New technologies in cheat? Fraud?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

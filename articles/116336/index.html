@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Automatic removal of old kernels</h1><div class="post__text post__text-html js-mediator-article"> After the next update of Ubunt, I realized that I was completely tormented by the growing list of downloads in grub (this is especially true if the alternative OS remains somewhere at the bottom of the list).  Manually deleting is somehow wrong, so I decided to bother about the automatic method. <br><br>  I didn’t succeed in finding the right topic on Habré, because after rummaging through the Internet, I found a <a href="http://zstudent.ru/%3Fp%3D307">recipe</a> , the only drawback of which was the use of temporary files, which I didn’t like very much.  Having made a couple of transformations, I got a slightly more simplified version (run through sudo). <br><a name="habracut"></a><br>  <b>Attention (UPD)</b> : it is recommended not to use this code, but the code at the end of the post, since  in some situations, it can delete the current kernel, it is left only to keep the topic in its original form. <br><br> <code>#!/bin/bash <br> <br> kernels=`dpkg-query -l linux-image-* | grep ^ii | grep -v eg | head -n -1 | gawk -F" " '{ print $2 }'` <br> <br> for i in $kernels <br> do <br> echo "Removing kernel: "$i <br> # sudo apt-get -y remove $i <br> done</code> <br> <br>  Since my knowledge of writing scripts under the shell can be considered null, I spontaneously commented out the line with deletion, in case I made a critical error somewhere :) Please ask the audience to express your opinion about the reliability of the code - and then I will remove the comment.  In addition, it seems to me it is possible to request this code to one command (which, unfortunately, I did not succeed). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I hope someone will come in handy. <br><br>  <b>We kindly request</b> : before the first launch of the command, run it without the tail "| xargs apt-get -y purge" and make sure that you get the correct list of cores for deletion. <br><br>  <b>UPD</b> : Messie and <a href="https://habrahabr.ru/users/valdikss/" class="user_link">ValdikSS Habrayuzer</a> prompted a more correct and one-line version: <br><br> <code>dpkg -l linux-image-* | grep ii | grep -v [az]-generic | grep -v `uname -r` | awk '{ print $2 }' | xargs apt-get -y purge</code> <br> <br>  <b>UPD2</b> : Option from the ubucleaner script from <a href="https://habrahabr.ru/users/steve_32/" class="user_link">Steve_32</a> : <br><br> <code>dpkg -l | grep ii | awk '{print $2}' | grep -E 'linux-(image|headers|ubuntu-modules|restricted-modules)' | grep -vE 'linux-(image|headers|restricted-modules)-(generic|i386|server|common|rt|xen)' | grep -v $(uname -r|sed 's/-*[az]//g'|sed 's/-386//g') | xargs apt-get -y purge</code> </div><p>Source: <a href="https://habr.com/ru/post/116336/">https://habr.com/ru/post/116336/</a></p>
+      I hope someone will come in handy. <br><br>  <b>We kindly request</b> : before the first launch of the command, run it without the tail "| xargs apt-get -y purge" and make sure that you get the correct list of cores for deletion. <br><br>  <b>UPD</b> : Messie and <a href="https://habrahabr.ru/users/valdikss/" class="user_link">ValdikSS Habrayuzer</a> prompted a more correct and one-line version: <br><br> <code>dpkg -l linux-image-* | grep ii | grep -v [az]-generic | grep -v `uname -r` | awk '{ print $2 }' | xargs apt-get -y purge</code> <br> <br>  <b>UPD2</b> : Option from the ubucleaner script from <a href="https://habrahabr.ru/users/steve_32/" class="user_link">Steve_32</a> : <br><br> <code>dpkg -l | grep ii | awk '{print $2}' | grep -E 'linux-(image|headers|ubuntu-modules|restricted-modules)' | grep -vE 'linux-(image|headers|restricted-modules)-(generic|i386|server|common|rt|xen)' | grep -v $(uname -r|sed 's/-*[az]//g'|sed 's/-386//g') | xargs apt-get -y purge</code> </div><p>Source: https://habr.com/ru/post/116336/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

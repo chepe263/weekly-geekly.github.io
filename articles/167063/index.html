@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Selectel Cloud - About Super Habraeffect, Small Optimization, and Costs for 2 Years</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/9b7/266/1cf/9b72661cf76342f7fa7e80481cf3b122.gif" align="right">  Almost 2 years ago <a href="http://habrahabr.ru/post/118235/">I wrote a review</a> about the then new “cloud” virtual machines of Selectel (the difference from all the others was and remains that memory consumption, disk operations, traffic - all this is considered and paid for separately and in great detail). <br><br>  Now I want to draw a line under the results of almost 2 years of use, share a small hack on saving 600 rubles per year, and tell how I experienced the Über effect on it (repost on a dozen popular bourgeois sites). <a name="habracut"></a><br><br><h1>  Optimization </h1>  Under the virtual machine at selectk memory can be allocated on-demand.  The best position will be when a virtual machine sticks out a bit in a swap.  In the settings of memory-on-demand, I indicated “to keep free memory in the range of 24-32MB.”  Such a value, however, is suitable only if your average memory consumption is relatively constant (apache2-mpm-prefork, nowhere processes under load are started). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      To discard unused data and cache from memory, we write to crontab (this is for Ubuntu Server): <br><pre><code class="bash hljs">9 3 * * * <span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> 3 &gt; /proc/sys/vm/drop_caches</code> </pre>  In this case, the data from the memory is discarded once a day.  This gives a saving of 50 rubles per month from memory.  If you throw it out once an hour, the gain is reduced by increasing the load on the disks. <br>  <b>Update: We</b> found out that this only works when using a swap, when the standard Selectlel algorithm supports the amount of free memory larger than requested by the size of the used swap. <br><br>  On the graph it looks like this (April): <br><img src="https://habrastorage.org/getpro/habr/post_images/7da/643/1c0/7da6431c0c56b52173796816bfbd297d.png"><br><br><h1>  SuperHub Effect </h1>  Average daily traffic is 5-6 GB.  But on November 22, when I got on a massive repost on the bourgeois sites of links to my article about the opening of microcircuits, 242 GB of traffic arrived in one day (500 GB in a week), and this did not cause any problems. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/6bb/793/426/6bb793426262afc26c05e955459d9ab4.png"><br>  Immediately striking atypically large consumption of disk operations.  And the reason is simple - I'm a lazy person, and nginx didn’t set up a distribution of statics directly to nginx without Apache.  nginx didn’t have enough memory to immediately cache Apache’s responses in memory for several giant photos up to 20Mb each (they accounted for most of the traffic), and he wrote temporary files to disk. <br><br><h1>  Total expenses for 2 years </h1><img src="https://habrastorage.org/getpro/habr/post_images/1fa/b97/ecc/1fab97ecc395839ef401e0461501e8c5.png"><br>  We see that expenditure items besides traffic and memory are not too significant for a regular site. <br>  It must be remembered that now this figure would be higher by 72 * 23 = 1656 rubles due to the lease of an IP address. <br><br>  I had to contact the support only once - when the system time on the virtual machine differed from the correct one by 0.5 seconds: I couldn’t put ntpd myself on the virtual machine (= useless).  Corrected. <br><br><h1>  Summary </h1><ul><li>  Selectel cloud will cope with any reasonable traffic peak for your money (in my case - 205 rubles per day).  Sudden shutdown "for excess traffic" is fundamentally impossible here. </li><li>  It is extremely important to distribute large static files directly to nginx - otherwise there will be an extra load on the disk to save Apache’s responses if there is not enough free memory. </li><li>  Hosting in Russia does not always mean lower pings - at the moment Beeline traffic to Selectel routs through Europe (pings 64ms from Moscow to St. Petersburg). </li></ul></div><p>Source: <a href="https://habr.com/ru/post/167063/">https://habr.com/ru/post/167063/</a></p>
+      To discard unused data and cache from memory, we write to crontab (this is for Ubuntu Server): <br><pre><code class="bash hljs">9 3 * * * <span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> 3 &gt; /proc/sys/vm/drop_caches</code> </pre>  In this case, the data from the memory is discarded once a day.  This gives a saving of 50 rubles per month from memory.  If you throw it out once an hour, the gain is reduced by increasing the load on the disks. <br>  <b>Update: We</b> found out that this only works when using a swap, when the standard Selectlel algorithm supports the amount of free memory larger than requested by the size of the used swap. <br><br>  On the graph it looks like this (April): <br><img src="https://habrastorage.org/getpro/habr/post_images/7da/643/1c0/7da6431c0c56b52173796816bfbd297d.png"><br><br><h1>  SuperHub Effect </h1>  Average daily traffic is 5-6 GB.  But on November 22, when I got on a massive repost on the bourgeois sites of links to my article about the opening of microcircuits, 242 GB of traffic arrived in one day (500 GB in a week), and this did not cause any problems. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/6bb/793/426/6bb793426262afc26c05e955459d9ab4.png"><br>  Immediately striking atypically large consumption of disk operations.  And the reason is simple - I'm a lazy person, and nginx didn’t set up a distribution of statics directly to nginx without Apache.  nginx didn’t have enough memory to immediately cache Apache’s responses in memory for several giant photos up to 20Mb each (they accounted for most of the traffic), and he wrote temporary files to disk. <br><br><h1>  Total expenses for 2 years </h1><img src="https://habrastorage.org/getpro/habr/post_images/1fa/b97/ecc/1fab97ecc395839ef401e0461501e8c5.png"><br>  We see that expenditure items besides traffic and memory are not too significant for a regular site. <br>  It must be remembered that now this figure would be higher by 72 * 23 = 1656 rubles due to the lease of an IP address. <br><br>  I had to contact the support only once - when the system time on the virtual machine differed from the correct one by 0.5 seconds: I couldn’t put ntpd myself on the virtual machine (= useless).  Corrected. <br><br><h1>  Summary </h1><ul><li>  Selectel cloud will cope with any reasonable traffic peak for your money (in my case - 205 rubles per day).  Sudden shutdown "for excess traffic" is fundamentally impossible here. </li><li>  It is extremely important to distribute large static files directly to nginx - otherwise there will be an extra load on the disk to save Apache’s responses if there is not enough free memory. </li><li>  Hosting in Russia does not always mean lower pings - at the moment Beeline traffic to Selectel routs through Europe (pings 64ms from Moscow to St. Petersburg). </li></ul></div><p>Source: https://habr.com/ru/post/167063/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../167053/index.html">Snippet menuCaching for MODX Revolution</a></li>
 <li><a href="../167055/index.html">Antigua and Barbuda: a country that does not pay license fees in the US</a></li>
 <li><a href="../167057/index.html">WindowsAndroid allows you to run Android 4.0 ICS as a Windows application</a></li>
 <li><a href="../167059/index.html">Scrum - real experience in methodology</a></li>
+<li><a href="../16706/index.html">Making a LG Logo</a></li>
 <li><a href="../167061/index.html">Remember the real world</a></li>
 <li><a href="../167065/index.html">Publish to Azure Blob Storage with Shared Access Signature</a></li>
 <li><a href="../167067/index.html">Database Connection Dialog</a></li>
+<li><a href="../16707/index.html">Rumor: Rupert Murdoch wants to buy LinkedIn</a></li>
 <li><a href="../167071/index.html">Headphones Monster DNA: a comparative review on the background of Beats Solo HD</a></li>
 <li><a href="../167073/index.html">THL A1 - budget smartphone with IPS screen</a></li>
-<li><a href="../167075/index.html">The use of procedural generators in creating content for real-time 3D applications: Part 1. Oil Rush</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

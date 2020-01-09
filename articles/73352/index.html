@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>DataBinder and speed</h1><div class="post__text post__text-html js-mediator-article"> In many projects there is a need to access the properties of objects using the <code>System.Web.UI.DataBinder.Eval</code> mechanism and the question arose: how fast does it work and is it possible to perform such an operation even faster? <br><a name="habracut"></a><br>  So, a small test was made.  To begin with, we made 2 classes (for testing virtual and redefined properties), whose properties will be addressed to: <br><blockquote> <code><font color="black"><font color="#0000ff">public</font> <font color="#0000ff">class</font> c1 <br> { <br> <font color="#0000ff">string</font> _str; <br> <font color="#0000ff">public</font> c1( <font color="#0000ff">string</font> str) <br> { <br> _str        = str; <br> } <br> <font color="#0000ff">public</font> <font color="#0000ff">string</font> Str1     { <font color="#0000ff">get</font> { <font color="#0000ff">return</font> <font color="#A31515">"1: "</font> +_str; } } <br> <font color="#0000ff">public</font> <font color="#0000ff">virtual</font> <font color="#0000ff">string</font> Str2 { <font color="#0000ff">get</font> { <font color="#0000ff">return</font> <font color="#A31515">"2: "</font> +_str; } } <br> } <br> <br> <font color="#0000ff">public</font> <font color="#0000ff">class</font> c2 : c1 <br> { <br> <font color="#0000ff">public</font> c2( <font color="#0000ff">string</font> str) <br> : <font color="#0000ff">base</font> (str) <br> { <br> } <br> <font color="#0000ff">public</font> <font color="#0000ff">override</font> <font color="#0000ff">string</font> Str2 { <font color="#0000ff">get</font> { <font color="#0000ff">return</font> <font color="#A31515">"C"</font> + <font color="#0000ff">base</font> .Str2; } } <br> }</font></code> </blockquote> <br>  Now the actual test: <br><blockquote> <code><font color="black">c2 c        = <font color="#0000ff">new</font> c2( <font color="#A31515">"str"</font> ); <br> <br> <font color="#008000">//    </font> <br> <font color="#0000ff">for</font> ( <font color="#0000ff">int</font> i=0; i&lt;ITERATIONS; i++) <br> { <br> <font color="#2B91AF">String</font> .Format( <font color="#A31515">"Str1: {0}, Str2: {1}"</font> , c.Str1, c.Str2); <br> } <br> <font color="#008000">//   DataBinder</font> <br> <font color="#0000ff">for</font> ( <font color="#0000ff">int</font> i=0; i&lt;ITERATIONS; i++) <br> { <br> <font color="#2B91AF">String</font> .Format( <font color="#A31515">"Str1: {0}, Str2: {1}"</font> , DataBinder.Eval(c, <font color="#A31515">"Str1"</font> ), DataBinder.Eval(c, <font color="#A31515">"Str2"</font> )); <br> } <br></font></code> </blockquote><br>  Result: <br><ul><li>  Direct call: 00: 00: 00.065 (100%) </li><li>  DataBinder.Eval: 00: 00: 01.135 ( <b>1746%</b> ) </li></ul><br>  Wow, 17 times slower!  Although something similar was supposed. <br>  To increase the speed, it was first suggested to cache the calls to Reflection (where without it in such a task), but this did not give a serious acceleration.  Then the approach was tested with the generation of the circulation code on the fly, that is: <br><ol><li>  At the first appeal, we study the class and property through Reflection. </li><li>  We go to the class where the property was defined or redefined. </li><li>  We build a class that consists of one method: get the value of the desired property of an object of a certain type </li><li>  Call the constructed method </li></ol><br>  I will not give the generation code in the topic, who are interested in downloading the <a href="">Project (29Kb)</a> . <br><blockquote> <code><font color="black">c2 c        = <font color="#0000ff">new</font> c2( <font color="#A31515">"str"</font> ); <br> PropertyAccessor p1  = PEval.GetPropertyAccessor(c.GetType(), <font color="#A31515">"Str1"</font> ); <br> PropertyAccessor p2  = PEval.GetPropertyAccessor(c.GetType(), <font color="#A31515">"Str2"</font> ); <br> <font color="#0000ff">for</font> ( <font color="#0000ff">int</font> i=0; i&lt;ITERATIONS; i++) <br> { <br> <font color="#2B91AF">String</font> .Format( <font color="#A31515">"Str1: {0}, Str2: {1}"</font> , p1.GetValue( c ), p2.GetValue( c )); <br> } <br></font></code> </blockquote><br>  Result of performance: <br><ul><li>  Cached Call: 00: 00: 00.065 (100%) </li></ul><br>  Excellent result!  The speed is comparable to a direct call, with several launches this time was sometimes less than 100%.  I called the call cached because the class with the method was memorized and there was a constant call without checking for the existence of such a class. <br>  To complete the experiment, a static class was written that cached the constructed classes and created them as needed. <br><blockquote> <code><font color="black">c2 c        = <font color="#0000ff">new</font> c2( <font color="#A31515">"str"</font> ); <br> <font color="#0000ff">for</font> ( <font color="#0000ff">int</font> i=0; i&lt;ITERATIONS; i++) <br> { <br> <font color="#2B91AF">String</font> .Format( <font color="#A31515">"Str1: {0}, Str2: {1}"</font> , PEval.GetValue(c, <font color="#A31515">"Str1"</font> ), PEval.GetValue(c, <font color="#A31515">"Str2"</font> )); <br> }</font></code> </blockquote> <br>  Result of performance: <br><ul><li>  PEval.GetValue: 00: 00: 00.090 (138%) </li></ul><br>  Only 38% slower than a direct call.  Several launches gave an average result of 150%, but still this is not 1746%. <br>  Full test output: <br> <code>Create PropertyAccessor for TestDataBinding.c1.Str1 <br> Create PropertyAccessor for TestDataBinding.c2.Str2 <br> ========================= <br> ITERATIONS: 100000 <br>  : 00:00:00.065 (100%) <br> PEval.GetValue: 00:00:00.090 (138%) <br>  : 00:00:00.065 (100%) <br> DataBinder.Eval: 00:00:01.135 (1746%) <br> ========================= <br> TestDataBinding.c2 (TestDataBinding.PropEvaluator.PropertyAccessor) [200003] <br> TestDataBinding.c1_Str1_Accessor =&gt; Str1 (G) [100002] <br> TestDataBinding.c2_Str2_Accessor =&gt; Str2 (G) [100001] <br> TestDataBinding.c1 (TestDataBinding.PropEvaluator.PropertyAccessor) [2] <br> TestDataBinding.c1_Str1_Accessor =&gt; Str1 (G) [100002] <br> =========================</code> <br> <br>  2 million calls: <br> <code>========================= <br> ITERATIONS: 1000000 <br>  : 00:00:00.930 (100%) <br> PEval.GetValue: 00:00:01.085 (116%) <br>  : 00:00:00.738 (79%) <br> DataBinder.Eval: 00:00:10.976 (1180%) <br> =========================</code> <br> <br>  And another 10 times more: <br> <code>========================= <br> ITERATIONS: 10000000 <br>  : 00:00:06.802 (100%) <br> PEval.GetValue: 00:00:10.917 (160%) <br>  : 00:00:07.017 (103%) <br> DataBinder.Eval: 00:01:45.476 (1550%) <br> =========================</code> <br> <br>  What else can you add: <br><ol><li>  Make methods to change the value of a property </li><li>  Extend the property access class with additional functions: the display name of the property, formatting the value into a string / parsing the value from the string, validating the value </li><li>  Make a call not to one property, but to the <code>PEval.GetValue(o, "Prop1.Prop2.Prop4")</code> chain <code>PEval.GetValue(o, "Prop1.Prop2.Prop4")</code> </li></ol><br><br>  <b>Addition 1.</b> <br>  More advanced version class diagram: <br><img src="https://habrastorage.org/getpro/habr/post_images/115/689/79f/11568979f47a1813d7d769ff22274c8e.png" alt="Class diagram for access to properties"><br><br>  Code Generator Class Diagram: <br><img src="https://habrastorage.org/getpro/habr/post_images/951/e94/e9b/951e94e9b3807b4e5e6d2ac681014ec5.png" alt="image"><br><img src="https://habrastorage.org/getpro/habr/post_images/068/9bd/2b6/0689bd2b6190603f89aa8bf9df945a47.gif"></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/73352/">https://habr.com/ru/post/73352/</a></p>
+    <p>Source: https://habr.com/ru/post/73352/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../73345/index.html">How far does Google go after us?</a></li>
 <li><a href="../73346/index.html">Anish Kapoor in RAA, London</a></li>
 <li><a href="../73347/index.html">Configuration Management (Part 2, Tool Review)</a></li>
 <li><a href="../73348/index.html">Green Plastic</a></li>
+<li><a href="../7335/index.html">Web 2.0 on the streets</a></li>
 <li><a href="../73351/index.html">Work with program version numbers</a></li>
 <li><a href="../73357/index.html">Cyber ​​Cleanser Gel (Cyber ​​Clean®)</a></li>
 <li><a href="../73358/index.html">PHP: arrays returned by a function</a></li>
 <li><a href="../73359/index.html">.NET 4.0: What's new in base classes (BCL)? Detailed review</a></li>
+<li><a href="../7336/index.html">Analysis of attendance sites Runet</a></li>
 <li><a href="../73361/index.html">Does the Higgs boson sabotage the Large Hadron Collider?</a></li>
-<li><a href="../73362/index.html">Baby dictionary</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

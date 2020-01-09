@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A brief course of computer graphics: we write a simplified OpenGL do it yourself, article 1 of 6</h1><div class="post__text post__text-html js-mediator-article"><h1>  Course content </h1><br><ul><li>  <b>Article 1: Bresenham algorithm</b> </li><li>  <a href="http://habrahabr.ru/post/248159/">Article 2: rasterization of the triangle + clipping of the rear faces</a> </li><li>  <a href="http://habrahabr.ru/post/248179/">Article 3: Removing invisible surfaces: z-buffer</a> </li><li>  Article 4: Required Geometry: Matrix Festival <br><ul><li>  <a href="http://habrahabr.ru/post/248611/">4a: Construction of perspective distortion</a> </li><li>  <a href="http://habrahabr.ru/post/248723/">4b: we move the camera and what follows from this</a> </li><li>  <a href="http://habrahabr.ru/post/249467/">4c: a new rasterizer and perspective distortion correction</a> </li></ul></li><li>  <a href="http://habrahabr.ru/post/248963/">Article 5: We write shaders for our library</a> </li><li>  <a href="http://habrahabr.ru/post/249139/">Article 6: A little more than just a shader: shadow rendering</a> </li></ul><br><h3>  Code enhancement </h3><br><ul><li>  <a href="http://habrahabr.ru/post/248909/">Article 3.1: It’s time to refactor</a> </li><li>  <a href="http://habrahabr.ru/post/249101/">Article 3.14: Beautiful Matrix Class</a> </li></ul><br><br><br><hr><h3>  The official translation (with a bit of polishing) is available <a href="https://github.com/ssloy/tinyrenderer/wiki">here.</a> </h3><hr><br><br><h1>  Formulation of the problem </h1><br>  The purpose of this series of articles is to show how OpenGL works by writing it (very simplistic!) Clone yourself.  Surprisingly, I often encounter people who cannot overcome the initial OpenGL / DirectX learning barrier.  Thus, I prepared a short cycle of six lectures, after which my students give good renders. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,7 +64,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       So, the task is set as follows: without using any third-party libraries (especially graphic ones) to get something like this: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/d1b/019/154/d1b019154c65deedcc6e6f66f33951de.png"><br><br>  <i>Attention, this is a teaching material that will generally follow the structure of the OpenGL library</i>  <i>This will be a software render, I do not set out to show how to write <b>applications for</b> OpenGL.</i>  <i>I aim to show <b>how OpenGL itself works</b> .</i>  <i>In my deep conviction, without an understanding of this writing effective applications using 3D libraries is impossible.</i> <br><a name="habracut"></a><br>  I will try not to cross over 500 lines in the final code.  My students need from 10 to 20 hours of programming to start issuing such renders.  At the entrance we get a text file with a polygonal grid + images with textures, and a rendered model at the output.  No graphical user interface, the program that is launched simply generates a file with a picture. <br><br>  Since the goal is to minimize external dependencies, I give my students only one class that allows working with <a href="http://en.wikipedia.org/wiki/Truevision_TGA">TGA</a> files.  This is one of the simplest formats that supports RGB / RGBA / black and white pictures.  That is, as a starting point, we get a simple way to work with pictures.  Notice that the only functionality available at the very beginning (besides loading and saving an image) is the ability to set the color of one pixel. <br><br>  No functions to draw segments of triangles, all this will have to be written manually. <br><br>  I give my source code, which I write in parallel with the students, but I do not recommend using it, there is simply no point in this. <br><br>  All code is available on github, <a href="https://github.com/ssloy/tinyrenderer/tree/909fe20934ba5334144d2c748805690a1fa4c89f">here</a> is the starting code that I give my students. <br><br><pre> #include "tgaimage.h"<font></font>
@@ -180,7 +180,7 @@
              line (x0, y0, x1, y1, image, white);
          }
      }
-</pre><br><br><img src="https://habrastorage.org/getpro/habr/post_images/839/68c/222/83968c2224211dbaf6259948dedaadd8.png"><br><br>  Next time we will draw 2D triangles and correct our render. </div><p>Source: <a href="https://habr.com/ru/post/248153/">https://habr.com/ru/post/248153/</a></p>
+</pre><br><br><img src="https://habrastorage.org/getpro/habr/post_images/839/68c/222/83968c2224211dbaf6259948dedaadd8.png"><br><br>  Next time we will draw 2D triangles and correct our render. </div><p>Source: https://habr.com/ru/post/248153/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

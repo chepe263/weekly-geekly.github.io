@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>DoS attack on MS Windows XP using a USB device</h1><div class="post__text post__text-html js-mediator-article">  Working closely for many years with the USB bus and realizing devices of all kinds of classes, I scored a rather large list of various jokes in the bus behavior.  In the process of debugging, everything that was possible fell, and most importantly the standard drivers from the standard MS Windows delivery.  I was taken to the blue screen by standard class devices, the USBHUB.SYS, USBHID.SYS, USBCCID.SYS drivers (the last one is full of holes to the hell) fell.  However, in most cases, the manifestation was difficult and required action from the user on the PC itself. <br><br>  But one case nevertheless attracted me very much and I saved the “important” device firmware for analyzing and isolating the problem.  So, I present to your attention a USB device that literally performs a DOS attack on a system running Windows XP 32-bit (also tested under Windows 2003 Server 32-bit).  Windows Vista this problem seems to be not affected. <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       So, after connecting the device to the USB port, regardless of the startup settings and regardless of whether the user session is blocked or not, the System process begins to eat off a decent amount of processor time.  On a uniprocessor system, this is all 100% (i.e., the system is practically hung up), on 2 or more processors, the system apparently remains fully functional and responsive, but still in the Task Manager, it is clear that not all is “thank God.  Moreover, after removing the device, the effect is preserved!  It remains only to reboot the system, and not everything is smooth with the reboot, the work seems to end, but the reboot / shutdown does not occur directly, the system remains to hang on a blank screen with a cursor. <br><br>  In continuation of this, all new USB connectable devices are also not detected in the system.  Apparently, hangs the service responsible for the process of determining the device. <br><br>  Here is what you can see in Windows 2003 Server 32-bit after connecting in Task Manager: <br><br> <a href=""><img src="https://habrastorage.org/storage/habraeffect/72/67/72671c9b4f8e47777bba8aa6ea0066c7.jpg" alt="image"></a> <br><br>  I bring the finished firmware for the NXP LPC214x microcontroller.  Made on the basis of the LPCUSB stack.  Firmware tested on Keil MCB2140 standard debug board.  You can take the firmware <a href="http://webfile.ru/4475138">here</a> , there is a HEX file in the archive, ready for uploading to LPC214x and a firmware project that can be built in Keil RealView MDK version 4.00 and higher (you can use the environment in demo mode). <br><br>  Now about the essence of the problem and the conditions of occurrence: the whole thing is in an incorrectly formed USB descriptor. <br><br>  <b>Note:</b> USB descriptors are a set of structures that describe a USB device.  During the device initialization process, the host requests the given descriptor, processes it and, in accordance with the received information, initializes the device (finds the necessary driver, obtains device settings, sets string constants, etc.). <br><br>  To be more precise: in the configuration descriptor there is a field that describes the total size of the descriptors responsible for the device configuration (this includes the configuration descriptor itself, the interface descriptor, the class descriptor and the endpoint descriptors).  So, this value in the process of editing descriptors was accidentally set wrong: seriously overestimated, in this example, 0x29 is set to 0x200. <br><br><hr><pre>  0x09, // bSize
@@ -70,13 +70,13 @@
 	 0x01, // bConfigurationValue
 	 0x00, // iConfiguration
 	 0x80, // bmAttributes
-	 0x32, // bMaxPower </pre><hr><br><br>  This field is incorrectly processed for some reason.  I didn’t do any more in-depth research, it may not be enough to just overstate the value and it is affected by some specific features of the stack operation in this emergency situation, which is why he cited the above link to the full firmware. <br><br>  I leave the conclusions on the presented problem on your conscience.  From myself I only note that the main weak point: requires "physical contact" with the attacked machine.  For this reason, the danger of this error in the USB stack of the operating system is in most cases not great.  Servers should be in a room with limited access, and for the average user such a “joke” will most likely be just unpleasant. <br><br>  It would be nice to understand what other versions of MS Windows react so painfully to this incorrect descriptor.  I checked on 3 machines under Windows XP and one under Windows 2003 Server (with a full set of all updates), unfortunately there are no 64-bit operating systems at hand.  On the existing machine under Windows Vista, no hangup occurred, she qualified the device as fully functional (apparently, she does not use the value of this field at all). </div><p>Source: <a href="https://habr.com/ru/post/92963/">https://habr.com/ru/post/92963/</a></p>
+	 0x32, // bMaxPower </pre><hr><br><br>  This field is incorrectly processed for some reason.  I didn’t do any more in-depth research, it may not be enough to just overstate the value and it is affected by some specific features of the stack operation in this emergency situation, which is why he cited the above link to the full firmware. <br><br>  I leave the conclusions on the presented problem on your conscience.  From myself I only note that the main weak point: requires "physical contact" with the attacked machine.  For this reason, the danger of this error in the USB stack of the operating system is in most cases not great.  Servers should be in a room with limited access, and for the average user such a “joke” will most likely be just unpleasant. <br><br>  It would be nice to understand what other versions of MS Windows react so painfully to this incorrect descriptor.  I checked on 3 machines under Windows XP and one under Windows 2003 Server (with a full set of all updates), unfortunately there are no 64-bit operating systems at hand.  On the existing machine under Windows Vista, no hangup occurred, she qualified the device as fully functional (apparently, she does not use the value of this field at all). </div><p>Source: https://habr.com/ru/post/92963/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../92956/index.html">The smallest nettop in the world</a></li>
 <li><a href="../92957/index.html">Would you be a thief% username%?</a></li>
 <li><a href="../92958/index.html">Remove hyperlinks from Excel</a></li>
+<li><a href="../9296/index.html">Metro 2033 / Architecture</a></li>
 <li><a href="../92960/index.html">Incompetence of bank staff</a></li>
 <li><a href="../92962/index.html">STIHL Autumn Calendar 2010</a></li>
 <li><a href="../92965/index.html">Collection of signatures against the reform of the public sector</a></li>

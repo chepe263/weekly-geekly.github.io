@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Automatic binding of URL to view</h1><div class="post__text post__text-html js-mediator-article"> I recently hooked on Django and I really like this framework.  However, there is a detail that is worrying.  This is simultaneously editing the file with my views and the <code>urls.py</code> file when creating a new view.  I understand that this is due to the fact that the <code>URL</code> and views of things are quite different and for greater modularity it is better to keep them separate, however for small projects it would be very convenient to be able to edit the view and its settings in one place. <br><br>  Here I propose such a solution, of course, tied to the decorators. <br><br><a name="habracut"></a>  So what ultimately do we want to get?  Suppose we need to draw a new view.  I would like to add the decorator <code>with_url</code> to this function: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>@with_url(r'^my/cool/url/') <br> def my_cool_view(request): <br> ... <br></code> <br><br>  so that he himself tied up everything, but we did not have to <code>urls.py</code> hands in <code>urls.py</code> <br><br>  For this purpose, there is a small <code>easyurls</code> module from the package, let's call it, <code>djangoutils</code> : <br><br> <code>urlpatterns = [] <br> <br> def with_url(url, context={}): <br> def decorator(fun): <br> global urlpatterns <br> urlpatterns.append((url, fun, context)) <br> <br> return fun <br> <br> return decorator <br> <br> def load_patterns(module_name): <br> from django.conf.urls.defaults import patterns <br> __import__(module_name) <br> <br> return patterns(module_name, *urlpatterns) <br></code> <br><br>  What is he doing?  The <code>with_url</code> decorator adds a <code>URL</code> binding to our view in the global variable <code>urlpatterns</code> .  And the <code>load_patterns</code> function simply imports the views module so that all the decorators work, and then returns the completed <code>urlpatterns</code> . <br><br>  It is used as follows.  In the <code>urls.py</code> file we write <br><br> <code>from djangoutils.easyurls import load_patterns <br> <br> urlpatterns = load_patterns('app.views') + patterns(...) <br></code> <br><br>  where <code>app.views</code> is the views module of our application.  We don’t look into this file anymore. <br><br>  In the <code>app.views</code> module <code>app.views</code> import the decorator: <br><br> <code>from djangoutils.easyurls import with_url <br></code> <br><br>  and now you can write new views like this: <br><br> <code>#   <br> @with_url(r'^json/list/items/') <br> @json_http <br> @in_list <br> def json_list_items(request, list): <br> ... <br> <br> #   :-) <br> @with_url(r'^$') <br> @with_url(r'^start/', {'is_root': False}) <br> def start(request, is_root=True): <br> ... <br></code> <br><br>  Retreat: in general, I actively use decorators to facilitate writing the same type of code.  For example, here the <code>json_http</code> decorator converts the result of a function into a JSON string and throws it in response. <br><br>  The disadvantage of the proposed solution, which I see immediately, is the use of only one <code>load_patterns</code> in the URL.  You can solve it by moving the <code>urlpatterns</code> from <code>easyurls</code> to the views module.  I think this is easy to do, as an additional advantage will <code>load_patterns</code> need to use <code>load_patterns</code> and the standard <code>include</code> will be enough.  As a drawback, you have to write out <code>urlpatterns = []</code> in each views module, which we knit in this way.  It may not be necessary if python from one module can create a global variable in another and check if it is already there. <br><br>  This is not a bike, by the way? <br><br>  Thanks to those who read to this point :-) </div><p>Source: <a href="https://habr.com/ru/post/24989/">https://habr.com/ru/post/24989/</a></p>
+     <code>@with_url(r'^my/cool/url/') <br> def my_cool_view(request): <br> ... <br></code> <br><br>  so that he himself tied up everything, but we did not have to <code>urls.py</code> hands in <code>urls.py</code> <br><br>  For this purpose, there is a small <code>easyurls</code> module from the package, let's call it, <code>djangoutils</code> : <br><br> <code>urlpatterns = [] <br> <br> def with_url(url, context={}): <br> def decorator(fun): <br> global urlpatterns <br> urlpatterns.append((url, fun, context)) <br> <br> return fun <br> <br> return decorator <br> <br> def load_patterns(module_name): <br> from django.conf.urls.defaults import patterns <br> __import__(module_name) <br> <br> return patterns(module_name, *urlpatterns) <br></code> <br><br>  What is he doing?  The <code>with_url</code> decorator adds a <code>URL</code> binding to our view in the global variable <code>urlpatterns</code> .  And the <code>load_patterns</code> function simply imports the views module so that all the decorators work, and then returns the completed <code>urlpatterns</code> . <br><br>  It is used as follows.  In the <code>urls.py</code> file we write <br><br> <code>from djangoutils.easyurls import load_patterns <br> <br> urlpatterns = load_patterns('app.views') + patterns(...) <br></code> <br><br>  where <code>app.views</code> is the views module of our application.  We don’t look into this file anymore. <br><br>  In the <code>app.views</code> module <code>app.views</code> import the decorator: <br><br> <code>from djangoutils.easyurls import with_url <br></code> <br><br>  and now you can write new views like this: <br><br> <code>#   <br> @with_url(r'^json/list/items/') <br> @json_http <br> @in_list <br> def json_list_items(request, list): <br> ... <br> <br> #   :-) <br> @with_url(r'^$') <br> @with_url(r'^start/', {'is_root': False}) <br> def start(request, is_root=True): <br> ... <br></code> <br><br>  Retreat: in general, I actively use decorators to facilitate writing the same type of code.  For example, here the <code>json_http</code> decorator converts the result of a function into a JSON string and throws it in response. <br><br>  The disadvantage of the proposed solution, which I see immediately, is the use of only one <code>load_patterns</code> in the URL.  You can solve it by moving the <code>urlpatterns</code> from <code>easyurls</code> to the views module.  I think this is easy to do, as an additional advantage will <code>load_patterns</code> need to use <code>load_patterns</code> and the standard <code>include</code> will be enough.  As a drawback, you have to write out <code>urlpatterns = []</code> in each views module, which we knit in this way.  It may not be necessary if python from one module can create a global variable in another and check if it is already there. <br><br>  This is not a bike, by the way? <br><br>  Thanks to those who read to this point :-) </div><p>Source: https://habr.com/ru/post/24989/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../249891/index.html">XSS vulnerability in Mobli</a></li>
 <li><a href="../249893/index.html">Adobe fixed another dangerous vulnerability Flash Player</a></li>
 <li><a href="../249899/index.html">Crossword Formation Algorithm</a></li>
+<li><a href="../2499/index.html">Nigerian "prince" earned on trustful Minsk women</a></li>
 <li><a href="../249901/index.html">APRS</a></li>
-<li><a href="../249905/index.html">Hub Migration and Friday Bonus</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

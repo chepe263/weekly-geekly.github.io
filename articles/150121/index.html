@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Option to migrate FreeBSD from a physical server to a VMware ESXi virtual environment using NFS</h1><div class="post__text post__text-html js-mediator-article">  <b>Task.</b> <br>  Transfer existing hardware server with FreeBSD 8.2 i386 architecture and ufs file system to VMware ESXEi 5.0.0 virtual environment <br><br><a name="habracut"></a><br>  <b>1.</b> In a virtual machine, we create disks of the required size no less than those available using the FreeBSD installation <a href="">iso</a> image, then from the same iso we boot in Live mode.  We register all necessary settings for network interfaces <br><pre><code class="bash hljs">ifconfig em1 10.0.0.100/24 route add 0 10.0.0.254</code> </pre>  after that we check the availability on the real server network, if all Ok we run nfs <br><pre> <code class="bash hljs"> /etc/rc.d/rpcbind onestart /etc/rc.d/nfsclient onestart</code> </pre><br>  <b>2.</b> Prepare the hardware server for the transfer for this run the service <a href="http://www.freebsd.org/doc/ru_RU.KOI8-R/books/handbook/network-nfs.html">nfs</a> . <br>  I recommend to start it in this sequence. <br><pre> <code class="bash hljs"> /etc/rc.d/rpcbind onestart /etc/rc.d/nfsd onestart /etc/rc.d/mountd onestart</code> </pre>  When you run nfsd, it will ask for the / etc / exports file in this variant (the file system historically contained only 2 / and / var sections): <br><pre> <code class="bash hljs"> / -maproot=root -network 10.0.0.0 -mask 255.255.0.0 /var -maproot=root -network 10.0.0.0 -mask 255.255.0.0</code> </pre>  If everything is done correctly, the mount command will show the “NFS exported” parameter for the section: <br><pre> <code class="bash hljs"> <span class="hljs-comment"><span class="hljs-comment"># mount /dev/da0s1a on / (ufs, asynchronous, NFS exported, local) devfs on /dev (devfs, local, multilabel) /dev/da0s1d on /var (ufs, asynchronous, NFS exported, local)</span></span></code> </pre><br>  <b>3</b>  Go back to our virtual machine and create folders for mounting local drives: <br>  / var / mount / root, / var / mount / var <br>  and mount the drives: <br><pre> <code class="bash hljs"> mount /dev/da0s1a /var/mount/root mount /dev/da0s1d /var/mount/var</code> </pre>  After that, let's deal with the disks of the physical server and create folders: <br>  / var / nfs / root, / var / nfs / var <br>  To which we mount the shared partitions of the physical server: <pre> <code class="bash hljs"> mount_nfs 10.0.0.50:/ /var/nfs/root mount_nfs 10.0.0.50:/var /var/nfs/var</code> </pre>  Now the servers are ready for transfer. <br><br>  <b>4.</b> Before transferring data to the physical server, all services must be stopped so that the transferred data is relevant.  For transfer, we use the following set of commands that we will run in the virtual machine. <br><pre> <code class="bash hljs"> <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /var/nfs/root &amp;&amp; pax -p eme -X -rw . /var/mount/root <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /var/nfs/var &amp;&amp; pax -p eme -X -rw . /var/mount/var</code> </pre> <br>  That's all the server moved to a virtual machine.  It is clear that the migration time depends on the size of the used space (in this case, both servers were connected with Gigabit interfaces and the migration of 450 Gigabytes took several hours). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,17 +63,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>5.</b> The final and important step is to always unmount the local disks and only after that overload the virtual machine. <br><br>  Now enjoy the work on the new "hardware". <br><br>  Ps.  I think the same option is suitable for XEN. </div><p>Source: <a href="https://habr.com/ru/post/150121/">https://habr.com/ru/post/150121/</a></p>
+      <b>5.</b> The final and important step is to always unmount the local disks and only after that overload the virtual machine. <br><br>  Now enjoy the work on the new "hardware". <br><br>  Ps.  I think the same option is suitable for XEN. </div><p>Source: https://habr.com/ru/post/150121/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../150115/index.html">How the London Olympics were broadcast through the cloud</a></li>
 <li><a href="../150116/index.html">Black Isle Studios revived</a></li>
 <li><a href="../150118/index.html">Hard prioritization, or the first 5 steps to an excellent application for Windows 8. Functionality</a></li>
 <li><a href="../150119/index.html">Tesla's laboratory will be turned into a museum - with the help of crowdfunding almost a million dollars was collected</a></li>
+<li><a href="../15012/index.html">What happened to News2.ru?</a></li>
 <li><a href="../150120/index.html">How to conduct business in the dark light of a crisis of confidence?</a></li>
 <li><a href="../150122/index.html">Active Directory Audit Powershell Change Alert. Part 2</a></li>
 <li><a href="../150123/index.html">Is Google App Engine so good?</a></li>

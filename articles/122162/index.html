@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The concept of simple Load-balancer'a / Failover'a IP services</h1><div class="post__text post__text-html js-mediator-article">  In the process of solving one technical problem, the idea was born of a universal way of distributing the load on many machines with theoretically any services that can be accessed via IP. <br><br>  Perhaps another bike, but did not come across before.  If the idea turns out to be viable, whoever implements it, then it will not be wasted, unfortunately, there is no time for myself, although I really want to try.  If this has already been implemented somewhere, I ask you not to judge strictly: I haven’t found it myself, but now I don’t have time for long searches. <br><br>  So, in brief: <a name="habracut"></a><br>  1. In nsswitch.conf for hosts, we prescribe our library to files and dns.  So that in / etc / hosts and in DNS the system only looked if our library returned NSS_STATUS_UNAVAIL. <br>  2. We make our library with just one function int gethostbyname_r (...) (see how to implement details here: <a href="http://www.gnu.org/s/hello/manual/libc/Name-Service-Switch.html">www.gnu.org/s/hello/manual/libc/Name-Service-Switch.html#Name-Service-Switch</a> ).  The function looks for whether the requested name is in shared memory, if there is - returns the same IP address from there and increments the shared memory counter to use this name by 1. If there is no such name in shared memory, it returns NSS_STATUS_UNAVAIL. <br>  3. If the library returned NSS_STATUS_UNAVAIL - the system continues to resolve the name in the IP further in a regular manner (/ etc / hosts, DNS). <br>  4. In any language capable of opening a multicast socket and working with shared memory and named socket, a small service is written that: <br>  4.1 reads its config (initial configuration) with information about services, sends it to a multicast group with the mark “initial” and puts it in shared memory. <br>  4.2 All that comes from other members of a multicast group is loading into shared memory (or deletes, there is a deletion).  If it is marked “initial”, send in response known changes regarding the initial configuration. <br>  4.3 Listens to certain commands through a named socket, as a result, adding / deleting / rearranging something from shared memory and duplicating it into a multicast group. <br>  4.4 Optional: when the counters in shared memory reach certain values, the host is deleted from there, it duplicates the command into the multicast group. <br>  5. Everyone who needs to use a certain service connects to it by name - the library will give it away from shared memory instantly. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Since we essentially intercept the standard function of the system gethostbyname (), and in theory it uses everything that works on the IP protocol and agrees to use the host name (and not just IP directly) - without any additional changes with this scheme Most client applications will work.  Some problems may arise with clients who cache proresolvleny IP (for example, web-browser-s), however, sometimes it is even a plus - the session will not break. <br><br>  Thus, we get a certain skeleton that can be adjusted to anything and easily manage the load and availability of services (and / or scatter the load between them) by simply throwing commands at the named socket.  This can be done with smart scripts / monitoring system / web-interface, stupid 'cat' there is no one file with commands in named socket by cron, and so on. <br><br>  In addition, since the nss-library itself will be very primitive, small and stupid - it will work very quickly and reliably (it is quite difficult to make serious mistakes in such a primitive piece of code).  True, nothing prevents you from messing with the managing service or with what is being addressed to it ... <br><br>  What do you think? </div><p>Source: <a href="https://habr.com/ru/post/122162/">https://habr.com/ru/post/122162/</a></p>
+      Since we essentially intercept the standard function of the system gethostbyname (), and in theory it uses everything that works on the IP protocol and agrees to use the host name (and not just IP directly) - without any additional changes with this scheme Most client applications will work.  Some problems may arise with clients who cache proresolvleny IP (for example, web-browser-s), however, sometimes it is even a plus - the session will not break. <br><br>  Thus, we get a certain skeleton that can be adjusted to anything and easily manage the load and availability of services (and / or scatter the load between them) by simply throwing commands at the named socket.  This can be done with smart scripts / monitoring system / web-interface, stupid 'cat' there is no one file with commands in named socket by cron, and so on. <br><br>  In addition, since the nss-library itself will be very primitive, small and stupid - it will work very quickly and reliably (it is quite difficult to make serious mistakes in such a primitive piece of code).  True, nothing prevents you from messing with the managing service or with what is being addressed to it ... <br><br>  What do you think? </div><p>Source: https://habr.com/ru/post/122162/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../122153/index.html">Analysis of real user passwords and improved brute force</a></li>
 <li><a href="../122154/index.html">Acer Iconia TAB W500 review (part one, iron)</a></li>
 <li><a href="../122156/index.html">Testing Django Projects</a></li>
 <li><a href="../122157/index.html">Caucasian cuisine: problems and solutions</a></li>
+<li><a href="../12216/index.html">Usability survey creation form</a></li>
 <li><a href="../122161/index.html">Certificate of authenticity of your Ubuntu, or Linux in Ukrainian</a></li>
 <li><a href="../122163/index.html">Cambridge University Effect</a></li>
+<li><a href="../122166/index.html">Why you should take money at the maximum of a normal level.</a></li>
 <li><a href="../122167/index.html">Proprietary provider modems 3/3 (upd)</a></li>
 <li><a href="../122168/index.html">Using Amazon Web Services with the wikipaintings.org example</a></li>
-<li><a href="../122170/index.html">About taxi in Moscow</a></li>
-<li><a href="../122171/index.html">Memory and tasks</a></li>
+<li><a href="../12217/index.html">Connecting the blog and Livejournal via XML-RPC</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

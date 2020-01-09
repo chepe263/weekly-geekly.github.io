@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>nginx - build your letitbit</h1><div class="post__text post__text-html js-mediator-article">  There was a desire to make a service similar to letitbit.net in a single country on the outskirts of Europe. <br>  Required: <br><ul><li>  allow upload / download of large files; </li><li>  Do not allow republish direct links to files; </li><li>  limit the number of simultaneously downloaded files. </li></ul><br>  For implementation, we chose NGINX in conjunction with PHP via fastcgi. <br>  In NGINX added: <br><ol><li>  a great <a href="http://www.grid.net.ru/nginx/upload.en.html">Nginx upload module</a> , which allows you to avoid multiple copying of the downloaded file on the NGINX-PHP path.  In addition, with a slight refinement, you can download directly to the right folder, which allows you to use simple renaming instead of copying in PHP </li><li>  the necessary <a href="http://www.masterzen.fr/2009/07/18/nginx-secure-link-module-with-ttl">patch</a> to the secure_link module that allows you to make secure links valid for a limited time </li></ol><br>  PHP took the most common and launched through <a href="httpd.net/projects/spawn-fcgi/news">spawn-fcgi</a> . <br>  Put a servachok, stuffed there 12 pieces of terabyte disks. <br>  The programmer wrote PHP code, and Maris Ruskulis came up with the following trick with rewrite for NGINX, which allows you to avoid accessing PHP when downloading a file. <br>  As a result, the NGINX configuration looked like this: <br> <code>http { <br> limit_zone regular $zonekey 10m; <br> limit_zone premium $zonekey 10m; <br> server { <br> root /www/oursiteishere; <br> location / { try_files $uri @files; } <br> location ~ \.php$ { try_files $uri @files; fastcgi_stuff_here; } <br> location @files { rewrite ^(.*)$ /index.php?$1 last; } <br> location /storage/ { root /storages/; internal; } <br> # Location for regular users <br> location ~ /download/.+/(.+)/0/.+/.*/(.+)$ { <br> set $fname $2; <br> set $username $1; <br> set $zonekey "$binary_remote_addr $username"; <br> limit_conn regular 1; <br> limit_rate '100k'; <br> secure_link_secret megasecret; <br> secure_link_ttl on; <br> if ($secure_link = "") { return 403; } <br> add_header Content-Disposition "attachment; filename*=UTF-8''$fname"; <br> rewrite ^/download/([a-f0-9]+)/([\.~0-9a-zA-Z_]+)/([01])/([0-9]+)/(.+)/.+$ /storage/$4/$5 break; <br> } <br> # Location for premium users <br> # Location for upload using upload module <br> } <br> } <br></code> <br>  A remarkable thing in this config is the fact that when downloading a file from a generated temporary protected link (the check is performed by secure_link), PHP is not called followed by <i>X-Accel-Redirect</i> . <br>  Perhaps this solution imposes a restriction on the presence of logic in front of the file's immediate return, but nevertheless, in my opinion, is a rather original trick that allows saving a little on fastcgi. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,18 +63,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/76100/">https://habr.com/ru/post/76100/</a></p>
+    <p>Source: https://habr.com/ru/post/76100/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../76093/index.html">Habrainterview with Ann Wyler (Microsoft Office)</a></li>
 <li><a href="../76094/index.html">In Ukraine, withdraw servers</a></li>
 <li><a href="../76096/index.html">The first all-Russian student IT-championship. We train! We reward!</a></li>
 <li><a href="../76097/index.html">Semiotics antivirus souvenirs</a></li>
 <li><a href="../76098/index.html">Kitty = Putty</a></li>
+<li><a href="../761/index.html">More than 5,000 people want to help digg users quit their jobs.</a></li>
 <li><a href="../76101/index.html">Project management on one page (table from the book of the same name by KA Campbell)</a></li>
 <li><a href="../76102/index.html">Conference on Flexible Methodologies in Moscow: AgileDays'09</a></li>
 <li><a href="../76103/index.html">Science fiction does not keep up with progress</a></li>

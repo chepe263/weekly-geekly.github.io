@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Pavel 2.0: Reptiloid consultant on JS, node.js with sockets and telephony</h1><div class="post__text post__text-html js-mediator-article">  So our INTERCOM'18 has died down, with preference and business cases.  As usual, the entrance to the conference was paid: anyone could buy tickets for the TimePad at full price, or ... get a discount from a reptilian consultant <a href="https://intercomconf.com/">directly on the site</a> .  Last year it worked like a usual callback: you leave the phone in a special form, Pavel calls you in a minute and asks questions;  the more correct answers, the higher the discount.  This time we decided to change the mechanics, making it more difficult both technically and in terms of issues.  Under the cut - Pavlik 2.0 guts, with the current node and web sockets, do not forget to wear workwear before opening. <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/9s/ar/48/9sar48meb2azvgldnfztbcmdw1e.jpeg"></div><a name="habracut"></a><br><h3>  Competition mechanics </h3><br>  You enter <a href="https://intercomconf.com/">intercomconf.com</a> from a desktop browser, in the lower right corner Pavlik “wakes up” in the form of a chat and offers to play the game.  Enter the number, click "Here is my number" - after that Pavel raises the session between your browser and our backend. <br><br><img src="https://habrastorage.org/webt/lp/gd/bm/lpgdbmqdl91pn2pt9qvnu4brqf8.png" width="600">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       If everything has successfully risen and your number has not yet participated in the drawing, then Pavel will offer to call 8-800.  Here the Voximplant cloud is already entering and the quiz starts: <br><br><img src="https://habrastorage.org/webt/td/2n/vx/td2nvx8ax2rkugrmsofg2kgrrqy.jpeg" width="600"><br>  <i>Answer: deadline / deadline.</i>  <i>Based on the meme <a href="https://knowyourmeme.com/memes/this-is-fine">This is fine</a> .</i> <br><br>  Yes, the puzzles were like this.  Three attempts were made for each question: first there was a “complex” picture, then simpler and at the end the simplest one.  The first attempts gave the most points;  after 5 puzzles, Pavel counted up his points and either gave a free ticket or a 10% -30% discount. <br><br>  At the same time, our reptiloid is smart enough: it showed error messages (if you entered the phone number incorrectly, for example), determined that the number was already participating in the drawing (“I see the familiar number on the screen of my non-existing mobile phone. One attempt in one hand - these are the rules. ") And, most importantly, correlated the browser and the cloud.  How did this bold IVR work? <br><br><h3>  In the mouth <del>  madness </del>  reptiloid </h3><br><img src="https://habrastorage.org/webt/lm/jn/oy/lmjnoyfsqwhbzy31_u-3_zcx6-a.jpeg" width="600"><br>  <i>Answer: call center.</i>  <i>Nuff said.</i> <br><br>  Speaking dryly, Paul 2.0 is an IVR running in our cloud.  Therefore, all reptiloid logic should be spelled out in a JS script, right?  Yes, but no. <br><br>  The second version of Pavel is synchronized with the client’s browser: Pavel shows the rebuses on the website, and he hears your answers on the phone, depending on which pictures are replaced and the result is displayed.  At first glance, this interaction could be implemented using our <a href="httpapi">HTTP API</a> : <br><br><ul><li>  first, the browser would launch the script using the <a href="httpapi/managing_scenarios">StartScenarios</a> method.  In the response, the method gives the parameters <b>media_session_access_url</b> and <b>media_session_access_secure_url</b> which <b>contain the</b> URLs for HTTP and HTTPS, respectively; </li><li>  the running script could be communicated using the obtained URLs; </li><li>  the script would tell the browser which pictures to use and update the score using the <a href="&amp;xid=17259,15700021,15700186,15700190,15700248,15700253&amp;usg=ALkJrhiBpSVGi2h8qAc405kBBtE-iZT2Aw#">httpRequestAsync</a> method. </li></ul><br>  But how to "catch" a custom browser?  After all, in the <a href="&amp;xid=17259,15700021,15700186,15700190,15700248,15700253&amp;usg=ALkJrhiBpSVGi2h8qAc405kBBtE-iZT2Aw#">httpRequestAsync,</a> you must pass a unique URL.  And yes, pictures - they also need to be stored somewhere. <br><br>  Therefore, in addition to the cloud-based JS script, we used our backend on <a href="https://expressjs.com/">express.js</a> paired with <a href="https://socket.io/">socket.io</a> : when the visitor entered the number, the browser gave this number to the backend via http, after which the http session turned into a session on web sockets.  As a result, the script constantly communicated with the backend via http, and already the backend used web sockets to quickly transfer images and points to the browser. <br><br><div class="spoiler">  <b class="spoiler_title">In part of the web sockets, the backend looked like this:</b> <div class="spoiler_text"><div class="oembed"><script type="text/javascript" src="https://gist.github.com/b999c84579e25069c7ad853dea5a8c8b.js"></script><link rel="stylesheet" href="https://github.githubassets.com/assets/gist-embed-b3b573358bfc66d89e1e95dbf8319c09.css"><div id="gist92463804" class="gist">
@@ -647,20 +647,20 @@
       </div>
     </div>
 </div>
-</div></div></div><br>  Also, the function increments variables with attempts and a question number to switch to the next question or end the game; </li><li>  The final <b>gameFinished</b> function gives backend a sum of points, if a person has won a promotional code - this can be seen in the browser and heard on the phone, since  Pavlik voiced winnings;  after that <a href="https://voximplant.com/docs/references/voxengine/call">hangup</a> is done. </li></ul><br>  The overall listing of the script approaches 300 lines, the most voluminous piece is the processing of the recognition result, <b>onRecognitionResult</b> . <br><br><h3>  Speaking fossil </h3><br><img src="https://habrastorage.org/webt/cu/fr/uu/cufruuroskavmlgsn0d91flyju8.jpeg" width="600"><br>  <i>Answer: Firefox.</i>  <i>We have everything.</i> <br><br>  Although Paul and the dinosaur, but still keeps up with the times: it develops from year to year and still loves to joke.  We hope you appreciate the second version of our reptiloid and "live", and from the point of view of implementation.  Share your views in the comments, be healthy and remember - Paul loves you! </div><p>Source: <a href="https://habr.com/ru/post/426417/">https://habr.com/ru/post/426417/</a></p>
+</div></div></div><br>  Also, the function increments variables with attempts and a question number to switch to the next question or end the game; </li><li>  The final <b>gameFinished</b> function gives backend a sum of points, if a person has won a promotional code - this can be seen in the browser and heard on the phone, since  Pavlik voiced winnings;  after that <a href="https://voximplant.com/docs/references/voxengine/call">hangup</a> is done. </li></ul><br>  The overall listing of the script approaches 300 lines, the most voluminous piece is the processing of the recognition result, <b>onRecognitionResult</b> . <br><br><h3>  Speaking fossil </h3><br><img src="https://habrastorage.org/webt/cu/fr/uu/cufruuroskavmlgsn0d91flyju8.jpeg" width="600"><br>  <i>Answer: Firefox.</i>  <i>We have everything.</i> <br><br>  Although Paul and the dinosaur, but still keeps up with the times: it develops from year to year and still loves to joke.  We hope you appreciate the second version of our reptiloid and "live", and from the point of view of implementation.  Share your views in the comments, be healthy and remember - Paul loves you! </div><p>Source: https://habr.com/ru/post/426417/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../426407/index.html">How to make a trip to the conference as useless as possible</a></li>
 <li><a href="../426409/index.html">Hacker Alexey, who protects MikroTik routers without the permission of the owners, became famous</a></li>
+<li><a href="../42641/index.html">Google legends</a></li>
 <li><a href="../426411/index.html">Developing C ++ / CLI Descriptor Classes</a></li>
 <li><a href="../426413/index.html">SOLID principles every developer should be aware of</a></li>
 <li><a href="../426415/index.html">Fintech-digest: control by digitalization by the Central Bank, salary in cryptocurrency, “World” map in the form of bracelets and keyrings</a></li>
 <li><a href="../426419/index.html">Overloading that is prohibited or bridge methods in Java</a></li>
+<li><a href="../42642/index.html">US Navy launches kites (to save fuel)</a></li>
 <li><a href="../426421/index.html">EHCI in Russian</a></li>
 <li><a href="../426423/index.html">mmWave in smartphones: how Qualcomm made the impossible possible</a></li>
 <li><a href="../426425/index.html">The whole truth about the RTOS. Article # 14. Memory sections: introduction and basic services</a></li>
-<li><a href="../426427/index.html">Useful things to "things": a small selection with low prices</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

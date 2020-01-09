@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using S3cmd in Windows</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/e01/e3f/dd0/e01e3fdd04d7b17a9d9d9393211d41d4.jpg" align="left"><br>  I have long been familiar with the s3cmd utility, but I always used it only under Linux systems.  The fact that it can be used under Windows, I did not even think. <br>  Why not?  It is implemented in python, which means it is completely cross-platform.  You just need to install Python on your Windows machine. <br><a name="habracut"></a><br>  So: <br><ul><li>  <b>Step one - Install Python</b> . <br><ol><li>  Download the installation package version 2.x (3.x is not supported) <a href="http://www.python.org/ftp/python/">from here</a> </li><li>  Run the installation.  By default, the installation will be in the folder c: \ Python2.x </li><li>  Add a Python entry to System Variables -&gt; Path: <br><img src="https://habrastorage.org/storage2/94d/98e/bbe/94d98ebbeab82087d2633dfa3b69ad92.jpg"><br></li><li>  Checking that Python is available from cmd <br><pre><code class="hljs pgsql">C:\Users\Oleksandr_Molchanov&gt;python Python <span class="hljs-number"><span class="hljs-number">2.6</span></span> (r26:<span class="hljs-number"><span class="hljs-number">66721</span></span>, Oct <span class="hljs-number"><span class="hljs-number">2</span></span> <span class="hljs-number"><span class="hljs-number">2008</span></span>, <span class="hljs-number"><span class="hljs-number">11</span></span>:<span class="hljs-number"><span class="hljs-number">06</span></span>:<span class="hljs-number"><span class="hljs-number">43</span></span>) [MSC v<span class="hljs-number"><span class="hljs-number">.1500</span></span> <span class="hljs-number"><span class="hljs-number">64</span></span> <span class="hljs-type"><span class="hljs-type">bit</span></span> (AMD64)] <span class="hljs-keyword"><span class="hljs-keyword">on</span></span> win32 <span class="hljs-keyword"><span class="hljs-keyword">Type</span></span> "help", "copyright", "credits" <span class="hljs-keyword"><span class="hljs-keyword">or</span></span> "license" <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> more information.</code> </pre> <br></li></ol><br></li><li>  <b>Step Two - Install and configure S3cmd</b> . <br><ol><li>  Download the utility <a href="http://sourceforge.net/projects/s3tools/">from here</a> and unpack it, for example, in C: \ s3cmd </li><li>  We will configure authorization. <br><pre> <code class="hljs delphi">c:\s3cmd&gt;python s3cmd --configure Enter new values <span class="hljs-keyword"><span class="hljs-keyword">or</span></span> accept defaults <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> brackets <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> Enter. Refer <span class="hljs-keyword"><span class="hljs-keyword">to</span></span> user manual <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> detailed description <span class="hljs-keyword"><span class="hljs-keyword">of</span></span> all options. Access key <span class="hljs-keyword"><span class="hljs-keyword">and</span></span> Secret key are your identifiers <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> Amazon S3 Access Key : ###################### Secret Key : ###################### Encryption password <span class="hljs-keyword"><span class="hljs-keyword">is</span></span> used <span class="hljs-keyword"><span class="hljs-keyword">to</span></span> protect your files from reading by unauthorized persons <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> transfer <span class="hljs-keyword"><span class="hljs-keyword">to</span></span> S3 Encryption password: Path <span class="hljs-keyword"><span class="hljs-keyword">to</span></span> GPG <span class="hljs-keyword"><span class="hljs-keyword">program</span></span> [None]: When using secure HTTPS protocol all communication <span class="hljs-keyword"><span class="hljs-keyword">with</span></span> Amazon S3 servers <span class="hljs-keyword"><span class="hljs-keyword">is</span></span> <span class="hljs-keyword"><span class="hljs-keyword">protected</span></span> from <span class="hljs-number"><span class="hljs-number">3</span></span>rd party eavesdropping. This method <span class="hljs-keyword"><span class="hljs-keyword">is</span></span> slower than plain HTTP <span class="hljs-keyword"><span class="hljs-keyword">and</span></span> can<span class="hljs-string"><span class="hljs-string">'t be used if you'</span></span>re behind a proxy Use HTTPS protocol [No]: <span class="hljs-keyword"><span class="hljs-keyword">On</span></span> some networks all internet access must go through a HTTP proxy. <span class="hljs-keyword"><span class="hljs-keyword">Try</span></span> setting it here <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> you can<span class="hljs-string"><span class="hljs-string">'t conect to S3 directly HTTP Proxy server name: New settings: Access Key: ####################### Secret Key: ###################### Encryption password: Path to GPG program: None Use HTTPS protocol: False HTTP Proxy server name: HTTP Proxy server port: 0 Test access with supplied credentials? [Y/n] Y Please wait, attempting to list all buckets... Success. Your access key and secret key worked fine :-) Now verifying that encryption works... Not configured. Never mind. Save settings? [y/N] y Configuration saved to '</span></span>C:\Users\Oleksandr_Molchanov\Application Data\s3cmd.ini<span class="hljs-string"><span class="hljs-string">'</span></span></code> </pre><br></li><li>  We check the work <br><pre> <code class="hljs swift"><span class="hljs-built_in"><span class="hljs-built_in">c</span></span>:\s3cmd&gt;python s3cmd mb s3:<span class="hljs-comment"><span class="hljs-comment">//molchanov Bucket 's3://molchanov/' created c:\s3cmd&gt;python s3cmd ls 2013-05-27 12:39 s3://molchanov</span></span></code> </pre><br></li></ol></li></ul><br>  Setup was pretty simple and quick. <br>  Now you can wrap this acquired functionality in a bat-script, which will, for example, archive the necessary data and neatly add to S3. <br><div class="spoiler">  <b class="spoiler_title">An example of a simple script:</b> <div class="spoiler_text">  "C: \ Program Files \ 7-Zip \ 7z.exe" a -t7z d: \% date% .7zip d: \ data1 <br>  python C: \ s3cmd \ s3cmd put D: \% date% .7zip s3: // molchanov / <br></div></div><br><br>  Calling this or a similar script can be added to the task scheduler and thus backing up the data. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/181111/">https://habr.com/ru/post/181111/</a></p>
+    <p>Source: https://habr.com/ru/post/181111/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../181099/index.html">DevCon 2013: the second day of the conference, watch the live broadcast of the main program!</a></li>
 <li><a href="../181101/index.html">(Kiev) Free course on design solutions based on Cisco UCS and Nexus</a></li>
 <li><a href="../181103/index.html">The option of managing a computer on Windows from under the Linux console</a></li>
 <li><a href="../181105/index.html">HTC One - many new things in one phone</a></li>
 <li><a href="../181107/index.html">Features of the use of interfaces in Delphi</a></li>
+<li><a href="../18111/index.html">Panasonic will show 150-inch plasma display at CES 2008</a></li>
 <li><a href="../181113/index.html">New in Caché 2013.1 DBMS: Integrated WebSockets Support</a></li>
+<li><a href="../181115/index.html">US rightholders ask for legality of using malware against pirates</a></li>
 <li><a href="../181117/index.html">Smartphones on Atom. Achievements and prospects</a></li>
 <li><a href="../181119/index.html">Micron - the heart of Russian microelectronics</a></li>
-<li><a href="../181121/index.html">Kerberos constraint delegation for SharePoint 2010 SP1 and SQL Server 2012 Reporting Services (Named Instance)</a></li>
-<li><a href="../181123/index.html">BIDI (unicode bidirectional algorithm)</a></li>
+<li><a href="../18112/index.html">Apple Patent: Automatically Adjusting iPod Sound</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Io Language: Metaprogramming</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/5a8/c10/1fd/5a8c101fd1be348cf57acace5e922ff2.jpg"><br><h1>  Metaprogramming in io </h1><br><br>  In the continuation of a series of articles about the wonderful language io, I was going to write about metaprogramming. <br>  <a href="http://habrahabr.ru/blogs/crazydev/29375/">habrahabr.ru/blogs/crazydev/29375</a> <br>  <a href="http://habrahabr.ru/blogs/crazydev/28254/">habrahabr.ru/blogs/crazydev/28254</a> <br>  <a href="http://habrahabr.ru/blogs/crazydev/28167/">habrahabr.ru/blogs/crazydev/28167</a> <br>  <a href="http://habrahabr.ru/blogs/crazydev/28041/">habrahabr.ru/blogs/crazydev/28041</a> <br><br><blockquote>  Metaprogramming is the creation of programs that create other programs as a result of their work (or - a special case - changing or complementing themselves during execution). <br>  <a href="http://ru.wikipedia.org/wiki/%25D0%259C%25D0%25B5%25D1%2582%25D0%25B0%25D0%25BF%25D1%2580%25D0%25BE%25D0%25B3%25D1%2580%25D0%25B0%25D0%25BC%25D0%25BC%25D0%25B8%25D1%2580%25D0%25BE%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25B8%25D0%25B5">©</a> Orthodox Wikipedia <br></blockquote><br>  The canonical meaning of the term “metaprogramming” is not interesting at all; any turing-complete language that has an IO library can generate source texts of programs in an arbitrary language.  Much more interesting is the possibility of self-knowledge of the program - introspection, as well as the generation and modification of itself in the process of execution. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,7 +62,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       If you look at the godfathers of io, you can see Lisp, Smalltalk, Self, and other dynamic languages.  But they all solve the problem of metaprogramming in their own way, for example Lisp generates code in the compilation process from macros, very powerful pieces.  Smalltalk contains a developed system of "reflections" (reflection) allowing you to walk along the tree of objects in any direction.  Io followed the path of smalltalk and builds its dynamic mechanisms on the basis of the object model, and not the universality of the syntax (like Lisp). <br><br><a name="habracut"></a><br><h2>  Introspection </h2><br>  For the study of objects io provides a number of methods that allow you to do all sorts of funny things, for example the slotNames method.  If you send a message to a slotNames object, you can get a list of its slots.  Well, for example: <br><pre>     Io&gt; Lobby slotNames
@@ -118,12 +118,12 @@
   </pre><br>  Actually using these straightforward methods you can <s>tinker with business</s> anywhere in runtime. <br><br><br><h2>  Modification </h2><br>  Any method in io can be overloaded in a simple way, let's return to the singleton on io: <br><br><pre>     Singleton: = Object clone
      Singleton clone: ​​= Singleton
   </pre><br>  The standard clone method of any object creates a copy of it (if it is rough), but in this case the clone method, being overloaded, returns an existing instance of the object, which is exactly what one would expect from a singleton. <br>  Any object in io can be unlimitedly expanded, modified and introspected. <br>  (Actually, half a year ago, when I started writing an article about metaprogramming, we used <a href="https://habrahabr.ru/users/lrrr/" class="user_link">lrrr</a> ' <a href="https://habrahabr.ru/users/lrrr/" class="user_link">olegana</a> and <a href="https://habrahabr.ru/users/oleganza/" class="user_link">oleganza to</a> create a sql generator that converted normal method calls from the syntax of io to a string with an sql query. It looked like this: <br><br><pre>     SQLGen select (*) from t_some_table t where t.id = 42
-  </pre><br>  The result was a sql string.  But I sowed the source code, and these two ghouls said that there was no special value in it (: <br>  So no one was upset. <br><br><br>  Well, that's all, I guess.  You can write a lot more, but it's better to dig into the manuals on the official website: <a href="http://www.iolanguage.com/docs/">www.iolanguage.com/docs</a> . <br>  ps Crumpled up, headache, Monday after the release.  Laziness, hell and death.  Sorry.  But better than nothing ((: </div><p>Source: <a href="https://habr.com/ru/post/50873/">https://habr.com/ru/post/50873/</a></p>
+  </pre><br>  The result was a sql string.  But I sowed the source code, and these two ghouls said that there was no special value in it (: <br>  So no one was upset. <br><br><br>  Well, that's all, I guess.  You can write a lot more, but it's better to dig into the manuals on the official website: <a href="http://www.iolanguage.com/docs/">www.iolanguage.com/docs</a> . <br>  ps Crumpled up, headache, Monday after the release.  Laziness, hell and death.  Sorry.  But better than nothing ((: </div><p>Source: https://habr.com/ru/post/50873/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../50867/index.html">The first laptop on the Intel Core i7</a></li>
 <li><a href="../50868/index.html">Top Startup Augusta. Six months later.</a></li>
+<li><a href="../5087/index.html">The best high-tech museums in the world in photos</a></li>
 <li><a href="../50870/index.html">Network Mount & Blade</a></li>
 <li><a href="../50871/index.html">Intel is preparing to release Android netbooks?</a></li>
 <li><a href="../50872/index.html">The modern myth of stability. A crisis.</a></li>

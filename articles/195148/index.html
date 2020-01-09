@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>GCC and Variable-Length Arrays</h1><div class="post__text post__text-html js-mediator-article">  The group mate sent a C ++ code with some kind of error and a compiler output about this.  But what surprised me most was not his problem, but the fact that the code created an array on the stack with an unknown length at the compilation stage.  I remember that at the beginning of learning a language I ran into this and realized that it was impossible to do this.  Strange, but the compiler did not give out any other errors ... <br><br>  I read somewhere that the next C ++ 14 Standard may allow you to perform such a trick.  But the real one says that the size of the array should be a constant expression.  This again reduces compatibility with C99, where VLAs have long been available. <br><a name="habracut"></a><br>  I use GCC 4.8.1, so I decided to check it: <br><pre><code class="cpp hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">foo</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">( </span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> n)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> <span class="hljs-built_in"><span class="hljs-built_in">array</span></span>[n]; }</code> </pre> <br>  The compiler with the -pedantic option honestly issued: <br><blockquote>  warning: ISO C ++ forbids variable length array 'array'. </blockquote><br>  In fact, VLAs for C ++ in gcc are <a href="http://gcc.gnu.org/onlinedocs/gcc/Variable-Length.html">extensions</a> . <br><br>  The most important thing is that the sizeof operator considers the size of arrays of variable length in runtime, and not in compaytime.  Therefore, for example, we will not be able to instantiate a template with a non-type parameter using the following sizeof (vla): <br><pre> <code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">template</span></span> &lt;<span class="hljs-keyword"><span class="hljs-keyword">int</span></span> p&gt; <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">A</span></span></span><span class="hljs-class"> {</span></span> }; <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">foo</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(</span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> length)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> const_lenght_array[<span class="hljs-number"><span class="hljs-number">7</span></span>]; <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> variable_length_array[length]; A&lt;<span class="hljs-keyword"><span class="hljs-keyword">sizeof</span></span>(const_lenght_array)&gt; a1; <span class="hljs-comment"><span class="hljs-comment">//OK A&lt;sizeof(variable_length_array)&gt; a2; //ERROR }</span></span></code> </pre><br>  The compiler error message nicely answers how the size of the array is calculated in runtime: <br><blockquote>  error: '(unsigned int) ((((sizetype) (((ssizetype) length) + -1)) + 1u) * 4u)' is not a constant expression </blockquote><br>  You can also use pointers to variable-length arrays and typedefs: <br><pre> <code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">int</span></span> (*p)[length] = &amp;variable_length_array; <span class="hljs-keyword"><span class="hljs-keyword">typedef</span></span> <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> <span class="hljs-keyword"><span class="hljs-keyword">variable_int_array_t</span></span> [length];</code> </pre><br>  Most of all, the GNU extension allows you to create variable-length arrays of variable-length arrays, which is not allowed even for new, where only the top level can have a variable length: <br><pre> <code class="cpp hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">bar</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(</span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> a, </span></span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> b)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> auto_array[a][b]; <span class="hljs-comment"><span class="hljs-comment">//OK int (*dynamic_array)[b] = new int[a][b]; //ERROR }</span></span></code> </pre><br>  The good news is that VLAs will be introduced in C ++ 14, only largely incompatible with the VLAs of this extension and C99.  At least sizeof and typedef / using (c ++ 11) will be ill-formed for them.  This will allow not to step on a rake, expect only size-behavior from sizeof.  Here is the <a href="http://gcc.gnu.org/ml/gcc-patches/2013-05/msg00445.html">link</a> to the patch for gcc. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I know that many people think that VLAs in C ++ become useless: there is a vector for such purposes, and nobody cares where in reality memory is allocated for elements.  However, the purpose of the article was to show the possibility of gcc, so as not to be surprised. <br>  Finally, the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3639.html">proposal</a> for VLAs in open-std. </div><p>Source: <a href="https://habr.com/ru/post/195148/">https://habr.com/ru/post/195148/</a></p>
+      I know that many people think that VLAs in C ++ become useless: there is a vector for such purposes, and nobody cares where in reality memory is allocated for elements.  However, the purpose of the article was to show the possibility of gcc, so as not to be surprised. <br>  Finally, the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3639.html">proposal</a> for VLAs in open-std. </div><p>Source: https://habr.com/ru/post/195148/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../195136/index.html">Integration of web services into popular cms</a></li>
 <li><a href="../195138/index.html">C ++ test case, sorting functor</a></li>
+<li><a href="../19514/index.html">The limit of "multitasking" of a person is four</a></li>
 <li><a href="../195140/index.html">Adding Admob to Unity3d and withdrawing money from PayPal to a bank account in Russia</a></li>
 <li><a href="../195142/index.html">Random Cat Generator in 8 Steps</a></li>
 <li><a href="../195146/index.html">Evaluation of linear regression results</a></li>
@@ -75,7 +75,7 @@
 <li><a href="../195152/index.html">Linux pipes tips & tricks</a></li>
 <li><a href="../195154/index.html">Primitive game design. Turn-based card game development</a></li>
 <li><a href="../195158/index.html">Pirates vs. copyright holders: insider view</a></li>
-<li><a href="../195160/index.html">Document generation based on ODT templates. ODT to PDF</a></li>
+<li><a href="../19516/index.html">Clone ASUS eeePC?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

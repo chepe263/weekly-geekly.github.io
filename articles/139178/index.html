@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Redirection for Asterisk</h1><div class="post__text post__text-html js-mediator-article"> Call forwarding is an interesting thing and there are a lot of call forwarding scenarios. <br>  In the case described by me, the redirection is performed unconditionally and is activated at the request of the subscriber (in general, this example is very easy to convert to conditional redirection and if I get my hands on it I will try to solve this topic), but everything is complicated by the fact that the server that Asterisk registers with access to the city does not know process SIP message 302-Moved Temporarily (SIP channel is used, but dialplan can be applied to other technologies).  The disadvantage of the method that I will describe here is that it takes 2 Trunk'a or 1, but multichannel (&lt;2 channels).  The method uses Asterisk <a href="http://astbook.asteriskdocs.org/en/2nd_Edition/asterisk-book-html-chunk/asterisk-CHP-6-SECT-6.html">astDB's</a> own database, so I advise you to read about it, since I will not dwell on this point in detail. <br><br><a name="habracut"></a>  And so proceed: here is the whole piece of dialplan, which is responsible for call forwarding: <br><br> <b><code>exten =&gt; #21,1,Set(DB(REDIRECT/${CALLERID(num)})=${EXTEN}) <br> <br> exten =&gt; #21#,1,Set(NOREDIRNUM=${DB_DELETE(REDIRECT/${CALLERID(num)})}) <br> <br> exten =&gt; s,1,Set(REDIRECTNUM=${DB(REDIRECT/${EXTEN})}) <br> exten =&gt; s,n,GotoIf($[${ISNULL(${REDIRECTNUM})}]?internal:redirect) <br> exten =&gt; s,n(internal),Dial(SIP/${EXTEN}) <br> exten =&gt; s,n(redirect),Dial(SIP/TRUNK/${REDIRECTNUM})</code></b> <br> <br>  Now let's analyze in parts what is what and what is responsible for. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      As I said, redirection is performed at the request of the client.  That is, in order to use redirection you need to enable it: <br><br> <b><code>exten =&gt; #21,1,Set(DB(REDIRECT/${CALLERID(num)})=${EXTEN})</code></b> <br> <br>  This command remembers the dialed number and the number from which it was dialed, and saves it in the Asterisk database. <br><br>  Here, after dialing the combination # 21, you need to dial the number for forwarding.  I put in the REDIRECT family the dialed number $ {EXTEN}, which will be available by key $ {CALLERID (num)}.  That is, in simple terms, the entered number will be stored in the REDIRECT table in the $ {CALLERID (num)} row or available at REDIRECT / $ {CALLERID (num)} in the Asterisk database (DB command).  The variable $ {CALLERID (num)} stores the number from which the call originates. <br><br>  Disable redirection occurs in a similar way: <br><br> <b><code>exten =&gt; #21#,1,Set(NOREDIRNUM=${DB_DELETE(REDIRECT/${CALLERID(num)})})</code></b> <br> <br>  The subscriber, dialing the combination # 21 # using the DB_DELETE utility, clears the cell REDIRECT / $ {CALLERID (num)} <br><br>  Here I used the NOREDIRNUM variable to simply perform any actions with via Set () because it cursed the lack of the "=" sign.  But in general, you can try this: <br><br> <b><code>exten =&gt; #21#,1,Set(DB_DELETE(REDIRECT/${CALLERID(num)}))</code></b> <br> <br>  The next few lines are engaged in just the most basic - the implementation of the call.  Let's look at them in more detail: <br><br> <b><code>exten =&gt; s,1,Set(REDIRECTNUM=${DB(REDIRECT/${EXTEN})})</code></b> <br> <br>  This line extracts the contents of the cell REDIRECT / $ {EXTEN} (redirect number) and assigns its value to the variable REDIRECTNUM, in order to check whether the redirection number is specified for this subscriber.  That is, if, say, we call the subscriber at number 100, then this command assigns the value of the REDIRECT / 100 cell to the variable REDIRECTNUM. <br><br> <b><code>exten =&gt; s,n,GotoIf($[${ISNULL(${REDIRECTNUM})}]?internal:redirect)</code></b> <br> <br>  Next, we check the existence of the redirect number: If the REDIRECTNUM variable is ISNULL (empty / undefined), then we go to the line labeled internal and call the subscriber by its main number: <br><br> <b><code>exten =&gt; s,n(internal),Dial(SIP/${EXTEN})</code></b> <br> <br>  If the variable REDIRECTNUM is not empty, then call the number specified in it. <br><br> <b><code>exten =&gt; s,n(redirect),Dial(SIP/TRUNK/${REDIRECTNUM})</code></b> <br> <br>  I hope someone will help in the exploration of Asterisk. </div><p>Source: <a href="https://habr.com/ru/post/139178/">https://habr.com/ru/post/139178/</a></p>
+      As I said, redirection is performed at the request of the client.  That is, in order to use redirection you need to enable it: <br><br> <b><code>exten =&gt; #21,1,Set(DB(REDIRECT/${CALLERID(num)})=${EXTEN})</code></b> <br> <br>  This command remembers the dialed number and the number from which it was dialed, and saves it in the Asterisk database. <br><br>  Here, after dialing the combination # 21, you need to dial the number for forwarding.  I put in the REDIRECT family the dialed number $ {EXTEN}, which will be available by key $ {CALLERID (num)}.  That is, in simple terms, the entered number will be stored in the REDIRECT table in the $ {CALLERID (num)} row or available at REDIRECT / $ {CALLERID (num)} in the Asterisk database (DB command).  The variable $ {CALLERID (num)} stores the number from which the call originates. <br><br>  Disable redirection occurs in a similar way: <br><br> <b><code>exten =&gt; #21#,1,Set(NOREDIRNUM=${DB_DELETE(REDIRECT/${CALLERID(num)})})</code></b> <br> <br>  The subscriber, dialing the combination # 21 # using the DB_DELETE utility, clears the cell REDIRECT / $ {CALLERID (num)} <br><br>  Here I used the NOREDIRNUM variable to simply perform any actions with via Set () because it cursed the lack of the "=" sign.  But in general, you can try this: <br><br> <b><code>exten =&gt; #21#,1,Set(DB_DELETE(REDIRECT/${CALLERID(num)}))</code></b> <br> <br>  The next few lines are engaged in just the most basic - the implementation of the call.  Let's look at them in more detail: <br><br> <b><code>exten =&gt; s,1,Set(REDIRECTNUM=${DB(REDIRECT/${EXTEN})})</code></b> <br> <br>  This line extracts the contents of the cell REDIRECT / $ {EXTEN} (redirect number) and assigns its value to the variable REDIRECTNUM, in order to check whether the redirection number is specified for this subscriber.  That is, if, say, we call the subscriber at number 100, then this command assigns the value of the REDIRECT / 100 cell to the variable REDIRECTNUM. <br><br> <b><code>exten =&gt; s,n,GotoIf($[${ISNULL(${REDIRECTNUM})}]?internal:redirect)</code></b> <br> <br>  Next, we check the existence of the redirect number: If the REDIRECTNUM variable is ISNULL (empty / undefined), then we go to the line labeled internal and call the subscriber by its main number: <br><br> <b><code>exten =&gt; s,n(internal),Dial(SIP/${EXTEN})</code></b> <br> <br>  If the variable REDIRECTNUM is not empty, then call the number specified in it. <br><br> <b><code>exten =&gt; s,n(redirect),Dial(SIP/TRUNK/${REDIRECTNUM})</code></b> <br> <br>  I hope someone will help in the exploration of Asterisk. </div><p>Source: https://habr.com/ru/post/139178/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,11 +72,11 @@
 <li><a href="../139175/index.html">Production of MTS 945 GLONASS is suspended</a></li>
 <li><a href="../139176/index.html">Interception sessions in wireless networks</a></li>
 <li><a href="../139177/index.html">Radical caching in Joomla 1.5</a></li>
+<li><a href="../13918/index.html">The most important thing</a></li>
 <li><a href="../139180/index.html">Programming Siemens PLC on Simatic Step7</a></li>
 <li><a href="../139181/index.html">Demonstration of Boot to Gecko</a></li>
 <li><a href="../139183/index.html">Rutoken EDS and Open Source</a></li>
 <li><a href="../139184/index.html">Datacenter in Yaroslavl: engineering solutions for smooth operation</a></li>
-<li><a href="../139185/index.html">How we got rid of GC pauses using our own java off-heap storage solution</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

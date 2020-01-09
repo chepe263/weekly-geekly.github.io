@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Do not use kill -9</h1><div class="post__text post__text-html js-mediator-article"> Argument -9 (or <code>KILL</code> ) for the <code>kill</code> command should be used on POSIX-compatible systems only when absolutely necessary.  Why?  The <code>KILL</code> signal cannot be processed by the process.  This means that after the process is completed using <code>kill -9</code> , the child processes will remain in memory and become orphaned, the file system will be clogged with temporary files, the shared memory segments will be active, the sockets will hang, and the <a href="http://www.freebsd.org/cgi/man.cgi%3Fquery%3Datexit%26sektion%3D3">atexit</a> function <a href="http://www.freebsd.org/cgi/man.cgi%3Fquery%3Datexit%26sektion%3D3">(3 )</a> will not be executed at all.  As a result, there is a risk of encountering unexpected and difficult debugging problems. <br><a name="habracut"></a><br>  Instead, use the default <code>TERM</code> signal, and <code>KILL</code> only if less problematic signals prove ineffective: <br><br> <code>$ kill 6738 <br> $ kill -INT 6738 <br> $ kill -HUP 6738 <br> $ kill -KILL 6738 <br></code> <br>  Even if the <code>KILL</code> signal fails to complete the process, this means that the process is likely to freeze when an I / O operation or is in some other uncompleted state.  It may be necessary to reboot or force the unmount of a network drive bug. <br><br>  Using <code>kill -KILL</code> by default is permissible when working with a problematic application, for example, older versions of Netscape often ended only with the <code>KILL</code> signal.  However, this is a rare exception to the rule: use <code>KILL</code> for these previously known applications and only for them. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Issues at the completion of processes </h4><br>  Sequential sending of different signals can cause the following problems: first, the process may take seconds, or even tens of seconds, for correct completion.  One product that I had to use required more than 30 seconds to complete properly after receiving the <code>TERM</code> signal.  Fortunately, this feature was discovered during testing, so a suitable script was written for this case.  Secondly, sometimes there are situations when the old process is completed, while the new process has taken its ID in the gap between the <code>TERM</code> and <code>KILL</code> signals.  Systems with increased “routine” processes and systems where the kernel assigns PIDs in random order, for example, OpenBSD, are particularly at risk.  Checking the process name or its PPID does not always help, since the new process can be a fork of the same parent and have the same name, therefore, especially paranoid scripts can also check the process creation time or other metadata before sending the signal.  Perhaps these situations are rare, but they should be considered if you have to deal with a critical process. <br><br><h4>  Process completion signals </h4><br>  Process completion signals can be indicated by name or sequence number: <code>kill -1</code> and <code>kill -HUP</code> equivalent.  However, using a signal name is safer, since specifying the -1 argument makes it easy to seal up, sending a signal to another process or even a group of processes.  Also, always try to use the name in the scripts, as this will help you better understand what type of signal is sent to the person who will read your code. <br><br>  The <code>HUP</code> signal “hangs up” the shell, so this is a good way to clear the shell that hung while waiting for input, or to close an SSH session. <br><br>  More detailed information about process termination signals is provided in the <a href="http://www.freebsd.org/cgi/man.cgi%3Fquery%3Dkill%26sektion%3D1">kill (1) man pages</a> , and the <code>kill -l</code> displays a list of signals supported by the operating system.  <a href="http://www.freebsd.org/cgi/man.cgi%3Fquery%3Dkill%26sektion%3D2">kill (2)</a> describes system calls in detail.  For more information, refer to <a href="http://www.amazon.com/o/ASIN/0201549794">The Design and Implementation of the 4.4 BSD Operating System</a> or <a href="http://www.amazon.com/o/ASIN/0131019082">UNIX Internals: The New Frontiers</a> . </div><p>Source: <a href="https://habr.com/ru/post/95102/">https://habr.com/ru/post/95102/</a></p>
+    <h4>  Issues at the completion of processes </h4><br>  Sequential sending of different signals can cause the following problems: first, the process may take seconds, or even tens of seconds, for correct completion.  One product that I had to use required more than 30 seconds to complete properly after receiving the <code>TERM</code> signal.  Fortunately, this feature was discovered during testing, so a suitable script was written for this case.  Secondly, sometimes there are situations when the old process is completed, while the new process has taken its ID in the gap between the <code>TERM</code> and <code>KILL</code> signals.  Systems with increased “routine” processes and systems where the kernel assigns PIDs in random order, for example, OpenBSD, are particularly at risk.  Checking the process name or its PPID does not always help, since the new process can be a fork of the same parent and have the same name, therefore, especially paranoid scripts can also check the process creation time or other metadata before sending the signal.  Perhaps these situations are rare, but they should be considered if you have to deal with a critical process. <br><br><h4>  Process completion signals </h4><br>  Process completion signals can be indicated by name or sequence number: <code>kill -1</code> and <code>kill -HUP</code> equivalent.  However, using a signal name is safer, since specifying the -1 argument makes it easy to seal up, sending a signal to another process or even a group of processes.  Also, always try to use the name in the scripts, as this will help you better understand what type of signal is sent to the person who will read your code. <br><br>  The <code>HUP</code> signal “hangs up” the shell, so this is a good way to clear the shell that hung while waiting for input, or to close an SSH session. <br><br>  More detailed information about process termination signals is provided in the <a href="http://www.freebsd.org/cgi/man.cgi%3Fquery%3Dkill%26sektion%3D1">kill (1) man pages</a> , and the <code>kill -l</code> displays a list of signals supported by the operating system.  <a href="http://www.freebsd.org/cgi/man.cgi%3Fquery%3Dkill%26sektion%3D2">kill (2)</a> describes system calls in detail.  For more information, refer to <a href="http://www.amazon.com/o/ASIN/0201549794">The Design and Implementation of the 4.4 BSD Operating System</a> or <a href="http://www.amazon.com/o/ASIN/0131019082">UNIX Internals: The New Frontiers</a> . </div><p>Source: https://habr.com/ru/post/95102/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../95090/index.html">The truth about the RNG poker rooms</a></li>
 <li><a href="../95092/index.html">Greeting</a></li>
 <li><a href="../95093/index.html">Why do we love the original consumables. Forgot? HP will clarify</a></li>
 <li><a href="../95094/index.html">The N8 will be able to connect flash drives and connect with other smartphones.</a></li>
+<li><a href="../9510/index.html">“To become a successful copywriter, you need to be a marketer and psychologist”</a></li>
 <li><a href="../95101/index.html">Recommendations for the implementation of test tasks</a></li>
 <li><a href="../95104/index.html">Belarus will introduce criminal liability for violation of the decree governing the Internet</a></li>
 <li><a href="../95107/index.html">Overview of a fundamentally new OS Bolgenos</a></li>
+<li><a href="../9511/index.html">Matt Cutts on social search: "Google is not against manual intervention"</a></li>
 <li><a href="../95112/index.html">Dreams 1990</a></li>
 <li><a href="../95114/index.html">Fumigator</a></li>
-<li><a href="../95115/index.html">Forismatic a year later. Share experience</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

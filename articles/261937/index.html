@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Network media server for PS3</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/getpro/habr/post_images/9b5/e94/d96/9b5e94d96a58982780d7271c53747e35.jpg" alt="PS3">  For a long time, this article was lying in the drafts, still could not get it together to issue and publish.  But as they say it can not last forever, so let's get down to the story.  Actually what is the problem, you ask?  Who has a PS3 with CFW installed, he knows that it is impossible to write a file larger than 4 GB to an external disk, since this is a limitation of the FAT32 file system (now file managers for PS3, such as Multiman, support the ability to read NTFS volumes, but this functionality appeared quite recently ).  Two methods could be used to solve this problem: <a name="habracut"></a><br><ul><li>  burn game to internal disk </li><li>  use special programs that split large files into parts that the PS3 file manager understood (in the end, he still glued these files together and copied to the internal disk of the console) </li></ul><br>  But there was another method, it is to raise the media server for streaming content on the PS3.  Actually we will deal with this :) <br>  I have CFW with <b>Cobra</b> installed on my PS3, which allows using ISO images, and does not require expanding the image into a separate directory as required.  Additionally, I still have a <b>webMAN</b> installed that allows me to mount images of games without launching the file manager and even manage the images and the console itself from a web browser (even from a mobile).  But this is not the subject of this message.  Who is interested, can refer to the documentation on this software or write a personal message to me. <br>  Actually, there is nothing difficult in assembling this (it was difficult to find it all in different forums and put it together), download the <a href="https://drive.google.com/file/d/0B4rlEl3jZHocZ1dFMEg4MXZ0dXM/view%3Fusp%3Dsharing">prepared archive with the source files</a> .  This archive is intended for the Linux x86_64 platform, although I compiled it for FreeBSD and even for the <b>ASUS RT-N56U</b> router.  I do not remember all the nuances of the assembly for this platform, if you are interested in this issue, you can write to me in a personal or read <b>Issue <a href="https://code.google.com/p/rt-n56u/issues/detail%3Fid%3D1106">1106</a> : compiling ps3netsrv</b> .  The archive already includes modified files “main.cpp” and “netiso.h”.  Expand the archive and collect. <br><pre><code class="bash hljs">$ tar -xzvf ps3netsrv.tar.gz $ make</code> </pre> <br>  <i><u>Note.</u></i> <br>  <i>The archive has a skeleton of rc-script to automatically start / stop the service, but I went the other way and did not finish it.</i> <br>  We start all this very simply: <br><pre> <code class="bash hljs">$ ./ps3netsrv /mnt/media/ps3netsrv</code> </pre><br>  - where <b>/ mnt / media / ps3netsrv is the</b> root directory where content for PS3 will be located.  Inside the root directory create folders - <b>GAMES, PS3ISO</b> .  In the first one we add the usual unpacked images, and in the second one the images in ISO format. <br>  As I said earlier, we will not use rc-scripts to manage the service, but create a separate container for this service using the capabilities of Docker. <br>  Create a separate folder to place the container creation configuration file and copy the compiled file into it.  For example: <br><pre> <code class="bash hljs">$ <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> ~/docker/ps3netsrv $ cp ~/<span class="hljs-built_in"><span class="hljs-built_in">source</span></span>/ps3netsrv/ps3netsrv ./</code> </pre><br>  Create a configuration file: <br><pre> <code class="bash hljs">$ vim Dockerfile</code> </pre><br><pre> <code class="bash hljs">FROM sovicua:jessie MAINTAINER Viktor M. Sytnyk &lt;sovicua@sovic.org.ua&gt; ENV DEBIAN_FRONTEND=noninteractive RUN apt-get update &amp;&amp; apt-get upgrade -y RUN groupadd -g 1000 ps3netsrv RUN useradd -u 1000 -g 1000 -m -c <span class="hljs-string"><span class="hljs-string">"PS3 Media Server"</span></span> ps3netsrv VOLUME /home/ps3netsrv/media RUN chown ps3netsrv:ps3netsrv /home/ps3netsrv/media COPY ps3netsrv /home/ps3netsrv/ RUN chown ps3netsrv:ps3netsrv /home/ps3netsrv/ps3netsrv WORKDIR /home/ps3netsrv CMD ./ps3netsrv ./media</code> </pre><br>  Create an image for this service: <br><pre> <code class="bash hljs">$ docker build -t sovicua:ps3netsrv .</code> </pre><br>  And run the container: <br><pre> <code class="bash hljs">$ docker run --net=host --name=ps3netsrv --user=ps3netsrv -v /mnt/media/ps3netsrv:/home/ps3netsrv/media -i -t -d sovicua:ps3netsrv</code> </pre><br>  - where <b>/ mnt / media / ps3netsrv</b> is the root directory on the host operating system, which is mounted on <b>/ home / ps3netsrv / media</b> in a container.  Everything can check the operation of our media server on the PS3.  I think that you can no longer make it difficult for you to make out what and how. <br>  In the future, I plan to unload this container in the general Docker Hub pool, so that everyone can use this ready-made container to create a media server. <br>  I would like to hear your opinion on this issue. <br><br>  <i>PS Initially, I forgot to set the correct time zone for the base image, the default for the container was UTC.</i>  <i>The procedure for changing the time zone for the base image is described in a small article <a href="http://unixua.blogspot.com/2015/07/timezone-docker.html">Installing the timezone in the Docker base image</a> .</i> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/261937/">https://habr.com/ru/post/261937/</a></p>
+    <p>Source: https://habr.com/ru/post/261937/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../261931/index.html">Lines and probability theory</a></li>
 <li><a href="../261935/index.html">Qihoo 360 and Go</a></li>
 <li><a href="../261939/index.html">New PhpStorm 9: constant advance. Postfix code completion for PHP, Inline Debugger, and more.</a></li>
+<li><a href="../26194/index.html">EEE desktop will appear in June</a></li>
 <li><a href="../261941/index.html">Beginner site optimization guide. Part 2</a></li>
 <li><a href="../261943/index.html">We pononet a bit: it became clearer what will happen to personal data after September 1, 2015</a></li>
 <li><a href="../261945/index.html">Comparative test of popular antivirus software from the developer of cyber weapons Hacking Team</a></li>
-<li><a href="../261951/index.html">We are pumping JavaScript using TurboFan</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>"Problem 2000" in WebMoney WMClasses</h1><div class="post__text post__text-html js-mediator-article">  In .Net for working with WebMoney interfaces there is a wonderful OpenSource library <a href="http://habrahabr.ru/post/14617/">WMClasses</a> .  For which many thanks <a href="http://habrahabr.ru/users/kazkad/" class="user_link">kazkad</a> . <br><br>  Suddenly :) Friday night, an unpleasant bug in this library resembling the “2000 problem” was discovered.  In response to a request to transfer money to WM, the WebMoney service started issuing the code - 102 - the condition of a constant increase in the value of the w3s.request / reqn parameter was not met.  Below is a description of why this is happening and how to fix it. <br><br><a name="habracut"></a><br>  The fact is that when requesting Webmoney interfaces, it is necessary to use the request number <a href="http://wiki.webmoney.ru/projects/webmoney/wiki/%25D0%2598%25D0%25BD%25D1%2582%25D0%25B5%25D1%2580%25D1%2584%25D0%25B5%25D0%25B9%25D1%2581_X2">reqn</a> , which should be constantly increasing.  (unsigned integer, max. number of digits - 15; always must be greater than the number of the previous request for transfer of funds !!! The monotony of the number is taken into account in connection with the WMID that signs the request.) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      We look into the code WmXmlCmd.cs <br><pre><code class="cs hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">long</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">GenerateReqNo</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> maxlen</span></span></span><span class="hljs-function">)</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">long</span></span> reqn = DateTime.Now.ToFileTimeUtc(); <span class="hljs-keyword"><span class="hljs-keyword">string</span></span> data = reqn.ToString(); <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (data.Length &gt; maxlen) { data = data.Remove(<span class="hljs-number"><span class="hljs-number">0</span></span>, data.Length - maxlen); <span class="hljs-comment"><span class="hljs-comment">// &lt;-   3    } reqn = long.Parse(data); return reqn; }</span></span></code> </pre> <br><br>  As a result, on 12/14/2012, at 23.06, the value of reqn reached 999999999999999 and started from 0. The demand for increasing was violated and the service stopped working.  We managed to solve it only by contacting WebMoney support service with a request to reset the value of reqn. <br><br>  In this story we are pleased that the next time this problem will arise on 02/15/2016 8:53:20.  So, there are still 4 years to change the way reqn is generated. <br><br>  Be careful. </div><p>Source: <a href="https://habr.com/ru/post/162947/">https://habr.com/ru/post/162947/</a></p>
+      We look into the code WmXmlCmd.cs <br><pre><code class="cs hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">long</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">GenerateReqNo</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> maxlen</span></span></span><span class="hljs-function">)</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">long</span></span> reqn = DateTime.Now.ToFileTimeUtc(); <span class="hljs-keyword"><span class="hljs-keyword">string</span></span> data = reqn.ToString(); <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (data.Length &gt; maxlen) { data = data.Remove(<span class="hljs-number"><span class="hljs-number">0</span></span>, data.Length - maxlen); <span class="hljs-comment"><span class="hljs-comment">// &lt;-   3    } reqn = long.Parse(data); return reqn; }</span></span></code> </pre> <br><br>  As a result, on 12/14/2012, at 23.06, the value of reqn reached 999999999999999 and started from 0. The demand for increasing was violated and the service stopped working.  We managed to solve it only by contacting WebMoney support service with a request to reset the value of reqn. <br><br>  In this story we are pleased that the next time this problem will arise on 02/15/2016 8:53:20.  So, there are still 4 years to change the way reqn is generated. <br><br>  Be careful. </div><p>Source: https://habr.com/ru/post/162947/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,10 +74,10 @@
 <li><a href="../162943/index.html">Dji - Death fails. The prequel to the cartoon Roma (Making off)</a></li>
 <li><a href="../162945/index.html">NASA bombs the moon online</a></li>
 <li><a href="../162949/index.html">Autonomous work frontend (stub, proxy_store, use_stale)</a></li>
+<li><a href="../16295/index.html">SU domains will be cheaper</a></li>
 <li><a href="../162951/index.html">If you are a rubist, then from what language did you switch to Ruby?</a></li>
 <li><a href="../162953/index.html">DARPA begins development of long-haul 100 Gbps systems</a></li>
 <li><a href="../162955/index.html">Positioning without GPS: how Yandex.Lokator works</a></li>
-<li><a href="../162957/index.html">Payments to DealExtreme (www.dx.com) are now available via WebMoney</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

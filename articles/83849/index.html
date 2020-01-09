@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>"Improve your ... Google?"</h1><div class="post__text post__text-html js-mediator-article">  Being engaged in the development of the PVS-Studio code analyzer for finding problems in 64-bit and parallel programs, we needed to collect fresh information on the Internet on some topics.  For example, it is always useful to answer in the forums and blogs questions of programmers who may be interested in our tool.  In the process of collecting, it turned out that there was a lot of information on the network and it was very long and tedious to manually perform a search, from which came the task of automating the search for fresh data.  In this post we will tell you how we do it. <br><br><a name="habracut"></a><br>  True, for sure you will immediately say: “Haha!  The guys come up with a bike and do not know about Google Alerts. ”  We know about Google Alerts.  It's almost what you need, just not that :-).  For more than six months of using Google Alerts, we haven’t managed to get what we need from it.  And you need this: <br><br><ul><li>  search on specific listed sites; </li><li>  search only for the last day; </li><li>  the ability to add stop words; </li><li>  Google Alerts somehow additionally filters the results.  That is, the usual Google search gives more than Google Alerts. </li></ul><br>  Therefore, it was decided to try to make a bike. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       As part of this task, it is required to search for new materials on specified sites in the amount of up to 30 pieces and created no longer than 24 hours before the start of the automated search.  That is, roughly speaking, who wrote something on the Internet for the last day.  Input data will be as follows: <br><br><ul><li>  The list of addresses of sites - the url of sites on which to search </li><li>  The list of search phrases - phrases in Russian and / or English that should be searched. </li><li>  List of unwanted words - words that should be missing in the search results. </li></ul><br><h1>  Idea </h1><br>  In the network there are many services offering search services, it is logical to use their capabilities to implement the task.  The search engine google.com was chosen as, in our opinion, the most suitable. <br><br><h1>  Google search </h1><br>  The principle of operation is the same as that of any other search engine: a request is sent to Google, and it gives an answer.  At the same time, the search engine has flexible settings for forming a request, thus you can form the necessary request. <br><br><h1>  Google search options </h1><br>  Consider the most interesting (within the scope of the task) search parameters: <br><br><table><tbody><tr><td>  <a href="http://www.google.com/search">www.google.com/search</a> ? </td><td>  Actually address </td></tr><tr><td>  as_q </td><td>  Search phrase (just a phrase, not a set of words) </td></tr><tr><td>  Num </td><td>  The number of results that will be shown on the page </td></tr><tr><td>  as_eq </td><td>  Words that should be missing in the search results </td></tr><tr><td>  as_sitesearch </td><td>  site url that is being searched </td></tr></tbody></table><br>  The search engine has other options, but within the framework of the task they are not interesting.  Sample Google query with search options: <br><br><pre> http://www.google.com/search?as_q=64-bit+portability+&amp;hl=en&amp;newwindow=1&amp;num=30&amp;btnG=%D0%9F%D0%BE%D0%B8%D1%B % B2 + Google &amp; as_epq = &amp; as_oq = &amp; as_eq =% D0% BA% D1% 83% D0% BF% D0% B8% D1% 82% D1% 8C +% D1% 81% D0% BA% D0% B0% D1% 87% D0% B0% D1% 82% D1% 8C + &amp; lr = lang_ru &amp; cr = &amp; as_ft = i &amp; as_filetype = &amp; as_qdr = d &amp; as_occt = any &amp; as_dt = i &amp; as_sitesearch = http: //www.codeguru.com/&amp;as_rights=&amp;safe=images
@@ -89,20 +89,20 @@
  // find all link
  foreach ($ html-&gt; find ('a') as $ e)
      echo $ e-&gt; href.  '&lt;br&gt;';
-</pre><br>  However, there is a small memory issue with the Simple HTML DOM Parser.  It consists in the following: the function file_get_html at each call creates a new object of the class simple_html_dom and if this function is called in a loop, then the memory ends.  For some reason, it is impossible to release forcibly.  The solution is simply not to use this function in a loop, but to call it once and work with only one object of the class simple_html_dom. <br><br><h1>  Script creation </h1><br>  Actually nothing interesting, a regular php script written using the MVC pattern.  The source code is also uncomplicated. <br><br>  The user interface is very austere - when accessing the page, one button appears “Send request” (in the browser window) and after pressing it, the result is displayed after a while. <br><br><h1>  Total </h1><br>  After the introduction of this script, now we always find out what happened in the world in our data domain (64-bit and parallel programming) in the last 24 hours. <br></div><p>Source: <a href="https://habr.com/ru/post/83849/">https://habr.com/ru/post/83849/</a></p>
+</pre><br>  However, there is a small memory issue with the Simple HTML DOM Parser.  It consists in the following: the function file_get_html at each call creates a new object of the class simple_html_dom and if this function is called in a loop, then the memory ends.  For some reason, it is impossible to release forcibly.  The solution is simply not to use this function in a loop, but to call it once and work with only one object of the class simple_html_dom. <br><br><h1>  Script creation </h1><br>  Actually nothing interesting, a regular php script written using the MVC pattern.  The source code is also uncomplicated. <br><br>  The user interface is very austere - when accessing the page, one button appears “Send request” (in the browser window) and after pressing it, the result is displayed after a while. <br><br><h1>  Total </h1><br>  After the introduction of this script, now we always find out what happened in the world in our data domain (64-bit and parallel programming) in the last 24 hours. <br></div><p>Source: https://habr.com/ru/post/83849/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../83839/index.html">Google Ads / PayPal via PrivatBank Ukraine</a></li>
+<li><a href="../8384/index.html">504 :)</a></li>
 <li><a href="../83844/index.html">App Engine SDK 1.3.1 release</a></li>
 <li><a href="../83845/index.html">Do you have business cards?</a></li>
 <li><a href="../83847/index.html">Opera has released a beta version of the new browser Opera 10.50 for Windows</a></li>
 <li><a href="../83848/index.html">Do not rush to bury Flash - a brief overview of the applications of Flash technology</a></li>
+<li><a href="../8385/index.html">Web 2.0 - Online Website Editing Tool</a></li>
 <li><a href="../83850/index.html">Timelance.ru - exchange of services and goods: the launch of the beta version</a></li>
 <li><a href="../83853/index.html">Gamers are transplanted to the "seven"</a></li>
+<li><a href="../83855/index.html">Virtual journey on the Great Trans-Siberian Railway</a></li>
 <li><a href="../83860/index.html">Making a simple web application on the Spring Framework MVC</a></li>
-<li><a href="../83864/index.html">Base stations disconnect</a></li>
-<li><a href="../83865/index.html">nodeJS and nonblocking I / O</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

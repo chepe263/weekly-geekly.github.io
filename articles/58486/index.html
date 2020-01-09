@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Crossdevice layout</h1><div class="post__text post__text-html js-mediator-article">  The CSS2.1 specification defines the types of devices (carriers) for which the styles are applied: <br><ul><li>  <em>all</em> - for all devices; </li><li>  <em>braille</em> - for devices that display information in Braille; </li><li>  <em>embossed</em> - for printing devices in Braille; </li><li>  <em>handheld</em> - for mobile devices; </li><li>  <em>print</em> - for print and display devices in print preview mode in browsers; </li><li>  <em>projection</em> - for presentations (projectors); </li><li>  <em>screen</em> - for computer screens; </li><li>  <em>speech</em> - for speech synthesizers (in CSS 2 - aural); </li><li>  <em>tty</em> - for terminals; </li><li>  <em>tv</em> - for tv. </li></ul>  In the articles <a title="We print sites" href="http://habrahabr.ru/blogs/css/38307/">Print sites</a> and Print <a title="We print sites 2" href="http://habrahabr.ru/blogs/css/43487/">sites 2</a> @ mihallica wrote about styles for printing.  I want to dwell on the features of the use of styles for mobile devices. <a name="habracut"></a><br><br><h3>  1. Theory </h3>  The main reasons for which you need to separately describe the styles for mobile devices are the following: <br><ol><li>  Restrictions screen resolution. </li><li>  Limitations of network bandwidth (low speed and high cost of traffic). </li></ol>  It would seem that everything is simple - you remove all unnecessary (heavy background pictures, various auxiliary information blocks), place all the remaining information in one column and determine the type of <em>handheld</em> device for this style. <br><br>  But the problem is that modern mobile browsers: <strong>Opera Mobile 9.5+</strong> , <strong>Opera Mini 4+</strong> , <strong>Safari</strong> in iPhone, by default, use <em>screen</em> styles.  Here is how Opera developers explain it: <blockquote>  The main problem with handheld styles is that you do not give users the opportunity to select content that is delivered to their phone.  Nowadays, phones are much more powerful than before, and it is a bit annoying when a website sees that you are accessing from a mobile device and provides you with a simplified version, despite the fact that the device easily supports a full version of the site. </blockquote>  In general, this is the logic, the latest versions of mobile browsers in their display capabilities are not inferior to their desktop counterparts. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,7 +63,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       But what to do if creating a mobile version of styles you do not want users to limit something in a functional way, but only trying to change the display?  This will help us to <strong>Media Queries</strong> . <br><br>  The bottom line is that by connecting any style we can, in addition to the device type, add additional conditions for its use (width, height, screen orientation, aspect ratio, color support).  A complete list of parameters and their application can be found here: <a title="Media queries" href="http://www.w3.org/TR/css3-mediaqueries/">Media Queries</a> . <br><br>  Fresh versions of mobile and desktop browsers already support Media Queries, despite the fact that the document is still in the status of Candidate Recommendation <br><br><h3>  2. Practice </h3>  Here is the definition of styles for the desktop, mobile and print versions of the site. <pre> &lt;! —- connect styles for Opera, Safari, Firefox, Chrome desktop browsers -&gt; 
@@ -87,20 +87,20 @@
     &lt;link rel = "stylesheet" type = "text / css" href = "css / style.css" media = "screen" /&gt;
  &lt;! [endif] -&gt;
 </pre>  We connect styles for all versions of Internet Explorer (support for Media Queries is not yet known). <br><br><pre> &lt;link rel = "stylesheet" type = "text / css" href = "css / handheld.css" media = "handheld, only screen and (max-width: 600px)" /&gt;
-</pre>  We connect styles for all mobile browsers, as well as desktop browsers with a display width of no more than 600 pixels.  This width is chosen so that not only mobile phones and PDAs, but also netbooks fall into it. <br><br>  We get the following result: <br><br>  <em>Desktop version</em> <br> <a href=""><img src="http://img8.imageshack.us/img8/929/alestafirefox.jpg"></a> <br><br>  <em>Print version</em> <br><img src="http://img8.imageshack.us/img8/8493/alestaprint.gif"><br><br>  <em>Opera Mini</em> <br><img src="http://img9.imageshack.us/img9/9422/alestaoperamini.gif"><br><br>  <em>iPhone Safari</em> <br><img src="http://img23.imageshack.us/img23/512/alestaiphone.gif"><br><br><h3>  3. Testing </h3>  The display in <em>Opera Mini</em> browser can be checked here: <br>  <a href="http://www.opera.com/mini/demo/">http://www.opera.com/mini/demo/</a> <br><br>  Mapping in <em>Opera Mobile</em> and <em>iPhone Safari</em> can be seen in the desktop versions of these browsers simply by reducing the width of the window (with a width of less than 601 pt. They will switch to mobile styles).  In addition, in Opera you can force the use of mobile version styles by ticking off in the menu View -&gt; Small Screen. </div><p>Source: <a href="https://habr.com/ru/post/58486/">https://habr.com/ru/post/58486/</a></p>
+</pre>  We connect styles for all mobile browsers, as well as desktop browsers with a display width of no more than 600 pixels.  This width is chosen so that not only mobile phones and PDAs, but also netbooks fall into it. <br><br>  We get the following result: <br><br>  <em>Desktop version</em> <br> <a href=""><img src="http://img8.imageshack.us/img8/929/alestafirefox.jpg"></a> <br><br>  <em>Print version</em> <br><img src="http://img8.imageshack.us/img8/8493/alestaprint.gif"><br><br>  <em>Opera Mini</em> <br><img src="http://img9.imageshack.us/img9/9422/alestaoperamini.gif"><br><br>  <em>iPhone Safari</em> <br><img src="http://img23.imageshack.us/img23/512/alestaiphone.gif"><br><br><h3>  3. Testing </h3>  The display in <em>Opera Mini</em> browser can be checked here: <br>  <a href="http://www.opera.com/mini/demo/">http://www.opera.com/mini/demo/</a> <br><br>  Mapping in <em>Opera Mobile</em> and <em>iPhone Safari</em> can be seen in the desktop versions of these browsers simply by reducing the width of the window (with a width of less than 601 pt. They will switch to mobile styles).  In addition, in Opera you can force the use of mobile version styles by ticking off in the menu View -&gt; Small Screen. </div><p>Source: https://habr.com/ru/post/58486/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../58477/index.html">Interesting Apple Patents</a></li>
 <li><a href="../58478/index.html">Software button click with Applescript</a></li>
+<li><a href="../5848/index.html">Execute can not be pardoned</a></li>
 <li><a href="../58480/index.html">programmers conspiracy</a></li>
 <li><a href="../58482/index.html">Streamers</a></li>
 <li><a href="../58484/index.html">Boom cushion</a></li>
 <li><a href="../58487/index.html">Fast ranking in iTunes</a></li>
+<li><a href="../5849/index.html">iPhone in Russia through Beeline?</a></li>
 <li><a href="../58491/index.html">How was it or the report of the first ExtJS conference</a></li>
 <li><a href="../58495/index.html">Self-study of web technologies from scratch</a></li>
 <li><a href="../58497/index.html">Django Dash 2009 competition</a></li>
-<li><a href="../58498/index.html">Radmilo Lukich "8 drops of optimism"</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

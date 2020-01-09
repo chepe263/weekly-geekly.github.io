@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Unexpected Cisco ASA Feint</h1><div class="post__text post__text-html js-mediator-article">  This morning I unexpectedly discovered something new, but not very pleasant. <br>  For some, this may be obvious, but for some reason I have not come across before.  So, perhaps, this short post will warn someone against similar problems in the future. <br><br>  There is such a topology (well, of course, it is not at all like this, but it reflects the essence): <br><br><img src="https://habrastorage.org/storage3/740/7ec/bb7/7407ecbb79ff00d7f11897795af6356a.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,15 +60,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a><br>  There is an ASA, in particular, an ASA 5520 with software 8.4 (4), which has many interfaces and subinterfaces. <br>  In the DMZ, there is a certain web server that listens to requests on port 8443 and is accessible, thanks to the NAT rule (see the figure) from all other ASA interfaces through port 443. <br><br>  Once, <s>last night</s> , it turned out that the interface inside2 (in fact, this is a 802.1q subinterface), we no longer need it and can remove it. <br>  This was successfully done (no interface inside2).  It would seem - well, one of the interfaces was deleted, and so what? <br><br>  This morning, it was suddenly discovered that the web server has become unavailable to the outside world. <br>  After a short troubleshooting and inspection of logs, it turned out that the translation rule for the web server in the DMZ was somehow self-destructive. <br><br>  As a result of the attempts to realize, by comprehending how the removal of the interface is connected with the evaporation of the NAT rule, I came to the conclusion that <br>  the any keyword in the translation rule itself. <br><br>  Those.  ASA saw that someone was going to deprive her of one of the interfaces.  Realizing this, she began to look for what NAT rules use this interface.  She did not find any such rule, but found a rule in which any was specified as the destination interface.  Well, since any includes all interfaces, it simply deleted the entire rule. <br><br>  The conclusion is: if you have translation rules in your config (in my case it was Auto Nat, but something seems to me that Manual Nat will give the same result), indicating as one of the interfaces participating in the broadcast, the key the word any, then after removing any of the interfaces, all such rules will disappear successfully. <br><br>  Again, probably somewhere written about it (I have not met), but for me it was a surprise. </div><p>Source: <a href="https://habr.com/ru/post/192616/">https://habr.com/ru/post/192616/</a></p>
+    <a name="habracut"></a><br>  There is an ASA, in particular, an ASA 5520 with software 8.4 (4), which has many interfaces and subinterfaces. <br>  In the DMZ, there is a certain web server that listens to requests on port 8443 and is accessible, thanks to the NAT rule (see the figure) from all other ASA interfaces through port 443. <br><br>  Once, <s>last night</s> , it turned out that the interface inside2 (in fact, this is a 802.1q subinterface), we no longer need it and can remove it. <br>  This was successfully done (no interface inside2).  It would seem - well, one of the interfaces was deleted, and so what? <br><br>  This morning, it was suddenly discovered that the web server has become unavailable to the outside world. <br>  After a short troubleshooting and inspection of logs, it turned out that the translation rule for the web server in the DMZ was somehow self-destructive. <br><br>  As a result of the attempts to realize, by comprehending how the removal of the interface is connected with the evaporation of the NAT rule, I came to the conclusion that <br>  the any keyword in the translation rule itself. <br><br>  Those.  ASA saw that someone was going to deprive her of one of the interfaces.  Realizing this, she began to look for what NAT rules use this interface.  She did not find any such rule, but found a rule in which any was specified as the destination interface.  Well, since any includes all interfaces, it simply deleted the entire rule. <br><br>  The conclusion is: if you have translation rules in your config (in my case it was Auto Nat, but something seems to me that Manual Nat will give the same result), indicating as one of the interfaces participating in the broadcast, the key the word any, then after removing any of the interfaces, all such rules will disappear successfully. <br><br>  Again, probably somewhere written about it (I have not met), but for me it was a surprise. </div><p>Source: https://habr.com/ru/post/192616/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../192604/index.html">Jeff Dean from Google - Chuck Norris of our time</a></li>
 <li><a href="../192608/index.html">An example of blog development on Zend Framework 2. Part 2. MyBlog module</a></li>
+<li><a href="../19261/index.html">A world without general-purpose computers</a></li>
 <li><a href="../192610/index.html">Jedi - autocompletion library for Python</a></li>
 <li><a href="../192612/index.html">The course "DevOps for Internet Projects" will be held September 21-22</a></li>
 <li><a href="../192614/index.html">Development cycle through Github</a></li>
@@ -76,7 +76,7 @@
 <li><a href="../192622/index.html">Photo from the heart of the Chinese Internet giant Alibaba Group</a></li>
 <li><a href="../192624/index.html">Big Calculator is out of control</a></li>
 <li><a href="../192628/index.html">The official release of 3CX Phone System 12</a></li>
-<li><a href="../192636/index.html">Pot, cook</a></li>
+<li><a href="../19263/index.html">Cache :: Memcached :: Fast 0.08</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

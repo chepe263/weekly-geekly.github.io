@@ -33,12 +33,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -60,7 +60,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Meteor + CSS-Modules + SugarSS</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/175/67f/850/17567f850c494040988b2943ca1c29a6.png"><br><p>  Kotans! </p><br><p>  Do you know about <a href="https://www.meteor.com/">Meteor</a> ?  Well, yes - a strange question. </p><br><p>  Do you know about <a href="https://habrahabr.ru/post/270103/">CSS Modules</a> ?  Goodbye BEM. </p><br><p>  Do you know about <a href="https://github.com/postcss/sugarss">SugarSS</a> ?  Goodbye SASS. </p><br><p>  Peppers from Texas today took my <a href="https://github.com/nathantreid/meteor-css-modules/pull/38">pull-request</a> .  And all this happiness can now be used.  CoffeeScript, Jade, SugarSS - complete kit for kosher code. <a name="habracut"></a></p><br><p>  And I stuck after the lecture of Andrei Sitnik (thanks): </p><br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/qhouBGNncGQ%3Ffeature%3Doembed&amp;xid=17259,15700023,15700186,15700191,15700248,15700253&amp;usg=ALkJrhiT3pn9Xj5OCBkbOBand7AJdKiM1A" frameborder="0" allowfullscreen=""></iframe><br><p>  But that is not all.  Screwed postcss-initial and postcss-autoreset - I got complete isolation, which I never dreamed of in BEM. </p><br><p>  METEOR@1.3.2.4 - package.json </p><br><pre><code class="hljs json">{ <span class="hljs-attr"><span class="hljs-attr">"dependencies"</span></span>: { <span class="hljs-attr"><span class="hljs-attr">"meteor-node-stubs"</span></span>: <span class="hljs-string"><span class="hljs-string">"~0.2.0"</span></span> }, <span class="hljs-attr"><span class="hljs-attr">"devDependencies"</span></span>: { <span class="hljs-attr"><span class="hljs-attr">"sugarss"</span></span>: <span class="hljs-string"><span class="hljs-string">"0.1.3"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"postcss-initial"</span></span>: <span class="hljs-string"><span class="hljs-string">"1.5.1"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"postcss-autoreset"</span></span>: <span class="hljs-string"><span class="hljs-string">"1.1.5"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"autoprefixer"</span></span>: <span class="hljs-string"><span class="hljs-string">"^6.3.6"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"postcss-modules-extract-imports"</span></span>: <span class="hljs-string"><span class="hljs-string">"1.0.0"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"postcss-modules-local-by-default"</span></span>: <span class="hljs-string"><span class="hljs-string">"1.0.0"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"postcss-modules-scope"</span></span>: <span class="hljs-string"><span class="hljs-string">"1.0.0"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"postcss-modules-values"</span></span>: <span class="hljs-string"><span class="hljs-string">"1.1.1"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"postcss-nested"</span></span>: <span class="hljs-string"><span class="hljs-string">"1.0.0"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"postcss-simple-vars"</span></span>: <span class="hljs-string"><span class="hljs-string">"1.1.0"</span></span> }, <span class="hljs-attr"><span class="hljs-attr">"cssModules"</span></span>: { <span class="hljs-attr"><span class="hljs-attr">"enableSassCompilation"</span></span>: <span class="hljs-literal"><span class="hljs-literal">false</span></span>, <span class="hljs-attr"><span class="hljs-attr">"enableStylusCompilation"</span></span>: <span class="hljs-literal"><span class="hljs-literal">false</span></span>, <span class="hljs-attr"><span class="hljs-attr">"extensions"</span></span>: [ <span class="hljs-string"><span class="hljs-string">"sss"</span></span> ], <span class="hljs-attr"><span class="hljs-attr">"parser"</span></span>: <span class="hljs-string"><span class="hljs-string">"sugarss"</span></span>, <span class="hljs-attr"><span class="hljs-attr">"postcssPlugins"</span></span>: { <span class="hljs-attr"><span class="hljs-attr">"postcss-simple-vars"</span></span>: { <span class="hljs-attr"><span class="hljs-attr">"inlineOptions"</span></span>: { <span class="hljs-attr"><span class="hljs-attr">"variables"</span></span>: { <span class="hljs-attr"><span class="hljs-attr">"orange"</span></span>: <span class="hljs-string"><span class="hljs-string">"orange"</span></span> } }, <span class="hljs-attr"><span class="hljs-attr">"fileOptions"</span></span>: [ <span class="hljs-string"><span class="hljs-string">"client/colors.txt"</span></span>, <span class="hljs-string"><span class="hljs-string">"client/fonts.json"</span></span> ] }, <span class="hljs-attr"><span class="hljs-attr">"postcss-initial"</span></span>: {<span class="hljs-attr"><span class="hljs-attr">"reset"</span></span>: <span class="hljs-string"><span class="hljs-string">"inherited"</span></span>}, <span class="hljs-attr"><span class="hljs-attr">"postcss-autoreset"</span></span>: {<span class="hljs-attr"><span class="hljs-attr">"reset"</span></span>: <span class="hljs-string"><span class="hljs-string">"initial"</span></span>}, <span class="hljs-attr"><span class="hljs-attr">"postcss-modules-values"</span></span>: {}, <span class="hljs-attr"><span class="hljs-attr">"postcss-nested"</span></span>: {}, <span class="hljs-attr"><span class="hljs-attr">"postcss-modules-local-by-default"</span></span>: {}, <span class="hljs-attr"><span class="hljs-attr">"postcss-modules-extract-imports"</span></span>: {}, <span class="hljs-attr"><span class="hljs-attr">"postcss-modules-scope"</span></span>: {}, <span class="hljs-attr"><span class="hljs-attr">"autoprefixer"</span></span>: {<span class="hljs-attr"><span class="hljs-attr">"browsers"</span></span>: [<span class="hljs-string"><span class="hljs-string">"last 2 versions"</span></span>]} } } }</code> </pre> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -68,23 +68,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/302224/">https://habr.com/ru/post/302224/</a></p>
+    <p>Source: https://habr.com/ru/post/302224/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../302208/index.html">Robots and Robotics: ITMO University Digest</a></li>
 <li><a href="../302212/index.html">How and what to choose the mobile Internet? GSM decoding</a></li>
 <li><a href="../302216/index.html">Old Holivar in a New Way: Will Programming Olympiads Change Over Time</a></li>
+<li><a href="../30222/index.html">Cognition</a></li>
 <li><a href="../302220/index.html">Do you need an outdated, non-specific legal language, username?</a></li>
 <li><a href="../302222/index.html">IBM launches first highly secure cloud blockchain services</a></li>
 <li><a href="../302226/index.html">Reflection of the dynamics in the access control model</a></li>
+<li><a href="../30223/index.html">Opera Education Program-2008: First Round</a></li>
 <li><a href="../302232/index.html">Russian microelectronics and Ukrainian IoT at SVOD and IoT DevCon conferences in Silicon Valley</a></li>
 <li><a href="../302234/index.html">Eight ways to demotivate your employees</a></li>
 <li><a href="../302236/index.html">Cloud Digest # 6: Data and Security</a></li>
-<li><a href="../302238/index.html">How we once again passed the Cisco Gold Certification: features, a couple of tales and pitfalls</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

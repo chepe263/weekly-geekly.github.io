@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to download belongs_to to work twice as fast (database_validations gem)</h1><div class="post__text post__text-html js-mediator-article"><p> In this article, I will show why you need to use <code>db_belongs_to</code> from <code>db_belongs_to</code> <a href="https://github.com/toptal/database_validations">database_validations</a> instead of the usual <code>belongs_to</code> us. </p><a name="habracut"></a><br><p>  I'm sure most of you are familiar with the <code>belongs_to</code> of the ORM <strong>ActiveRecord</strong> .  But did you know that initializing a connection using a <code>belongs_to</code> in your model also adds validation to the existence of a connection.  This is because the <code>belongs_to</code> option is <code>optional: false</code> by default. </p><br><p>  Thus, each time you save a new object or update an existing one, you perform an additional SQL SELECT query on each of your links. </p><br><p>  <strong>Example</strong> </p><br><pre> <code class="ruby hljs"><span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">User</span></span></span><span class="hljs-class"> &lt; ActiveRecord::Base </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">belongs_to</span></span></span><span class="hljs-class"> :</span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">company</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">belongs_to</span></span></span><span class="hljs-class"> :</span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">country</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">end</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">user</span></span></span><span class="hljs-class"> = </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">User</span></span></span><span class="hljs-class">.</span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">first</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">user</span></span></span><span class="hljs-class">.</span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">update</span></span></span><span class="hljs-class">(</span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">some_field</span></span></span><span class="hljs-class">: '</span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">something</span></span></span><span class="hljs-class">') </span><span class="hljs-comment"><span class="hljs-class"><span class="hljs-comment">#        SELECT,  ,   `company`  `country` </span></span></span></span></code> </pre> <br><p>  You should also be aware that this approach does not guarantee the integrity of the database, since  connections can be further removed (in subsequent or parallel requests) without any problems. </p><br><pre> <code class="ruby hljs">user.update(...) user.company.destroy! =&gt;     ,  ,          ,       (     )</code> </pre> <br><p>  To solve this problem, you can add an appropriate foreign key constraint (foreign key constraint) to your database.  With this limitation, you will always be sure that this relationship exists. </p><br><p>  What about performance?  Why do we need to make SELECT queries to the database if we are already sure that the integrity of the data will be maintained (using the foreign key constraint)? </p><br><p>  The answer is simple - no need.  But in order to make this possible, we need to solve the problem of handling the <code>ActiveRecord::InvalidForeignKey</code> exception, which we get when we try to keep the connection that is missing in the database.  It is necessary to have the same behavior as with <code>belongs_to</code> so that <code>errors</code> include the same errors. </p><br><p>  In order not to write all the processing yourself, the <a href="https://github.com/toptal/database_validations">database_validations gem is</a> useful to you.  This gem already included <code>validates_db_uniqueness_of</code> , which people liked ( <a href="https://habr.com/post/431298/">post on Habré</a> ) and now has <code>db_belongs_to</code> , which is very easy to implement in your project.  <code>db_belongs_to</code> improves performance and ensures data integrity. </p><br><p>  The method does several things for you: </p><br><ul><li>  Checks for the existence of a valid foreign key constraint in the database when the application is started; </li><li>  Parsing database exceptions and provides appropriate errors for the <code>errors</code> your object; </li><li>  Eliminates the need to execute unnecessary SQL database queries; </li></ul><br><p>  I recommend that you use <a href="https://github.com/toptal/database_validations">database_validations</a> in your projects.  This gem has already been tested in a production environment and has shown itself to be very good.  Despite its ease of implementation, it can greatly improve the performance of your project, since  <em>the more you use it, the more you save</em> , read the <a href="https://github.com/toptal/database_validations">group benchmarks</a> for details. </p><br><p>  <em>Any feedback is welcome!</em>  <em>We are grateful for any contribution to the project!</em> </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/431734/">https://habr.com/ru/post/431734/</a></p>
+    <p>Source: https://habr.com/ru/post/431734/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../431722/index.html">Retrospective: what started the era of transistors and how the startup culture developed in the 1940s and 1950s</a></li>
 <li><a href="../431724/index.html">Tableau Software presents a natural language interface for creating visualizations.</a></li>
 <li><a href="../431726/index.html">Implementation of a Simple Ternary System</a></li>
+<li><a href="../43173/index.html">Habralyudi love literacy. Besides Habr, on other resources you resist illiteracy?</a></li>
 <li><a href="../431730/index.html">Windows Server 2019</a></li>
 <li><a href="../431732/index.html">Tester's view on software maintainability</a></li>
 <li><a href="../431736/index.html">The gate closes. Exactly one month left until the threshold of duty-free purchases is reduced</a></li>
+<li><a href="../43174/index.html">Windows + Linux + SWAP + Data</a></li>
 <li><a href="../431740/index.html">Live Broadcast Conference Microsoft Connect (); 2018</a></li>
 <li><a href="../431742/index.html">Azure Day Conference in Moscow</a></li>
 <li><a href="../431744/index.html">Analysis of the final of the quiz competition at the hh.ru stand at # HolyJS18</a></li>
-<li><a href="../431748/index.html">How to reduce the risk of stock investment: 3 useful tools</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

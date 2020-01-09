@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Parsing Formats: Packed Hashed Resources</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/403/f51/764/403f51764b7849249b0b64175fba1595.jpg"><br><br>  In the last <a href="http://habrahabr.ru/post/257793/">two</a> <a href="http://habrahabr.ru/post/258397/">articles</a> I talked about the features of the data formats of the sound subsystem of modern games.  In order not to bore readers, I will move on to a slightly different topic.  Whichever engine the game uses, it needs to store resources somewhere and extract them from there at the right moment.  Sometimes the resources in the archive have both an identifier and a readable file name.  But there are quite a lot of engines, where there are no names for files, but only a hash.  How, then, can something be parsed in the resources? <br><br>  Consider this on the example of the rather rare bits bits engine.  It is simple and compact, but, nevertheless, has all the features necessary for modern games.  Last year, bitsquid along with its developer was bought by Autodesk, and now they are going to cross it with Maya and make their own game engine, which they promise will be something incredible. <br><a name="habracut"></a><br>  So that anyone could look at the process himself, <a href="http://store.steampowered.com/app/204080/">let's</a> use the demo version of <a href="http://store.steampowered.com/app/204080/">The showdown Effect</a> , which is also very small (about 250MB).  Going into the content folder, in which, obviously, all the resources are located, we find there a couple of dozen files with such wonderful names: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <pre>  038bbacc4ce89296
@@ -102,11 +102,11 @@
    0x0290c1fa 65534 -&gt; 65536 / 0x0291c1f8 _ 4 8: 7: 28: 0: 1: 934a442c
    0x0292c200 65496 -&gt; 65536 / 0x0293c1d8 _ 65544 8: 7: 28: 0: 1: c21356fb
    0x0293c1dc 65521 -&gt; 65536 / 0x0294c1cd _ 4 8: 7: 28: 0: 1: 5bf3ea59
-   0x0294c1d1 65514 -&gt; 65536 / 0x0295c1bb _ 4 8: 7: 28: 0: 1: d7c697a0 </pre><br>  Yes, indeed, some kind of problem.  It is in this file there are segments that are not unpacked.  By the way, what kind of resource is this?  Let's look at the contents of the file at offset 0x028cac59, or slightly earlier. <br><br><img src="https://habrastorage.org/files/440/21a/15e/44021a15eb6f4c3e926408326225c857.png"><br><br>  And this is just "timpani_bank".  Well, of course!  After all, the ogg-stream can contain such a chaotic stream of bits that zlib simply cannot squeeze it, as a result of the 92-MB file several 64-kbyte segments after compression turned out even more than 64k.  Apparently the developers reasonably decided that in this case there was no point in compressing them, and they placed them in the archive just as they were.  Therefore, offzip could not find the cherished bytes of 78 9C there, and as a result, just missed them when unpacking. <br><br>  There is no flag / sign to distinguish between compressed and uncompressed segments in the file structure, then the game comes simply: if a segment is smaller than b4k, it means it is packed, but if it is exactly 64k, then no.  However, this is not so simple.  There were cases (in another game, on a different engine), when after packing a segment its length remained exactly equal to 64k.  And here there is no way to determine whether it is compressed or not.  Although the probability of such a coincidence is very small, this will also have to be taken into account. <br><br>  So, gradually, comparing and analyzing files, most often you can parse the data format, even without resorting to debugging code.  I will not go into details on how to determine what it was for the seven, and that it was for zeros, which are not always zeros, because all the features of the format in one example still do not solve.  And if there are other games that use them - then we will understand. </div><p>Source: <a href="https://habr.com/ru/post/261561/">https://habr.com/ru/post/261561/</a></p>
+   0x0294c1d1 65514 -&gt; 65536 / 0x0295c1bb _ 4 8: 7: 28: 0: 1: d7c697a0 </pre><br>  Yes, indeed, some kind of problem.  It is in this file there are segments that are not unpacked.  By the way, what kind of resource is this?  Let's look at the contents of the file at offset 0x028cac59, or slightly earlier. <br><br><img src="https://habrastorage.org/files/440/21a/15e/44021a15eb6f4c3e926408326225c857.png"><br><br>  And this is just "timpani_bank".  Well, of course!  After all, the ogg-stream can contain such a chaotic stream of bits that zlib simply cannot squeeze it, as a result of the 92-MB file several 64-kbyte segments after compression turned out even more than 64k.  Apparently the developers reasonably decided that in this case there was no point in compressing them, and they placed them in the archive just as they were.  Therefore, offzip could not find the cherished bytes of 78 9C there, and as a result, just missed them when unpacking. <br><br>  There is no flag / sign to distinguish between compressed and uncompressed segments in the file structure, then the game comes simply: if a segment is smaller than b4k, it means it is packed, but if it is exactly 64k, then no.  However, this is not so simple.  There were cases (in another game, on a different engine), when after packing a segment its length remained exactly equal to 64k.  And here there is no way to determine whether it is compressed or not.  Although the probability of such a coincidence is very small, this will also have to be taken into account. <br><br>  So, gradually, comparing and analyzing files, most often you can parse the data format, even without resorting to debugging code.  I will not go into details on how to determine what it was for the seven, and that it was for zeros, which are not always zeros, because all the features of the format in one example still do not solve.  And if there are other games that use them - then we will understand. </div><p>Source: https://habr.com/ru/post/261561/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../261549/index.html">Distributed cryptoprocessing</a></li>
+<li><a href="../26155/index.html">We overclock favicon.ico - this is how?</a></li>
 <li><a href="../261551/index.html">Another smart home, in three parts. Part Three, User Interface</a></li>
 <li><a href="../261553/index.html">Version 15.1 of DevExpress components for VCL released</a></li>
 <li><a href="../261555/index.html">How was the usability conference UXPeople 2015</a></li>
@@ -114,8 +114,8 @@
 <li><a href="../261563/index.html">Brief introduction to tensors</a></li>
 <li><a href="../261567/index.html">Veeam Availability Suite v9: EMC Storage Integration</a></li>
 <li><a href="../261569/index.html">Services for testing penetration testing skills</a></li>
+<li><a href="../26157/index.html">10 reasons for holding an IPO</a></li>
 <li><a href="../261571/index.html">Creating the Droste effect in Wolfram Language (Mathematica)</a></li>
-<li><a href="../261573/index.html">How to really use Veeam% ProductName% Free to the fullest</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

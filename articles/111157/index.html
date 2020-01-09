@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>CssUserAgent library</h1><div class="post__text post__text-html js-mediator-article"> In the open spaces of the English-language Internet, I came across a javascript library with a speaker called <a href="http://cssuseragent.org/">CssUserAgent</a> .  In short, when the page is loaded onto the <i>html</i> tag, the following classes are hung: <br> <code>ua- <i>browsername</i> <br> ua- <i>browsername-major</i> <br> ua- <i>browsername-major-minor</i> <br> ua- <i>browsername-major-minor-build</i> <br> ua- <i>browsername-major-minor-build-revision</i> <br></code> <br>  Under the cut description of profit. <br><a name="habracut"></a><br>  As I said, when loading a page with this script, a number of classes are hung on the <i>html</i> tag, an example can be viewed by <a href="http://cssuseragent.org/test/demo.html">reference</a> .  For me personally, the result was: <br><pre> <code class="html hljs xml"><span class="hljs-comment"><span class="hljs-comment">&lt;!-- the CSS classes currently applied to this page tag are: --&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">html</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">class</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"ua-webkit ua-webkit-534 ua-webkit-534-15 ua-chrome ua-chrome-10 ua-chrome-10-0 ua-chrome-10-0-612 ua-chrome-10-0-612-3"</span></span></span><span class="hljs-tag">&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">head</span></span></span><span class="hljs-tag">&gt;</span></span>…<span class="hljs-tag"><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">head</span></span></span><span class="hljs-tag">&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">body</span></span></span><span class="hljs-tag">&gt;</span></span>…<span class="hljs-tag"><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">body</span></span></span><span class="hljs-tag">&gt;</span></span> <span class="hljs-tag"><span class="hljs-tag">&lt;/</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">html</span></span></span><span class="hljs-tag">&gt;</span></span></code> </pre><br>  For mobile browsers, an additional pair of classes will be added: <br><pre> <code class="html hljs xml"><span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">html</span></span></span><span class="hljs-tag"> </span><span class="hljs-attr"><span class="hljs-tag"><span class="hljs-attr">class</span></span></span><span class="hljs-tag">=</span><span class="hljs-string"><span class="hljs-tag"><span class="hljs-string">"… ua-mobile ua-mobile-iphone …"</span></span></span><span class="hljs-tag">&gt;</span></span>…<span class="hljs-tag"><span class="hljs-tag">&lt;</span><span class="hljs-name"><span class="hljs-tag"><span class="hljs-name">html</span></span></span><span class="hljs-tag">&gt;</span></span></code> </pre><br>  What else besides the extra code will we get? <br><br>  First, the <i>cssua.userAgent</i> object is available to us, which in my case had the following form: <br><pre> <code class="javascript hljs">cssua.userAgent = { <span class="hljs-attr"><span class="hljs-attr">webkit</span></span>: <span class="hljs-string"><span class="hljs-string">"534.15"</span></span>, <span class="hljs-attr"><span class="hljs-attr">chrome</span></span>: <span class="hljs-string"><span class="hljs-string">"10.0.612.3"</span></span> };</code> </pre><br>  So now you can easily and simply define as a version of IE: <br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (cssua.userAgent.ie &lt; <span class="hljs-number"><span class="hljs-number">8</span></span>) { <span class="hljs-comment"><span class="hljs-comment">/*   */</span></span> }</code> </pre><br>  and mobile browsers <br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (cssua.userAgent.mobile) { <span class="hljs-comment"><span class="hljs-comment">/*    */</span></span> }</code> </pre><br><br>  And secondly, it becomes a little easier to work with css-code, which can depend on the browser: <br><pre> <code class="css hljs"><span class="hljs-selector-class"><span class="hljs-selector-class">.logo-area</span></span> { <span class="hljs-attribute"><span class="hljs-attribute">background-image</span></span>: <span class="hljs-built_in"><span class="hljs-built_in">url</span></span>(logo.png); <span class="hljs-attribute"><span class="hljs-attribute">background-repeat</span></span>: no-repeat; <span class="hljs-attribute"><span class="hljs-attribute">background-position</span></span>: left top; } <span class="hljs-comment"><span class="hljs-comment">/*  IE 5.0, 5.5, 6.0 */</span></span> <span class="hljs-selector-class"><span class="hljs-selector-class">.ua-ie-5</span></span> <span class="hljs-selector-class"><span class="hljs-selector-class">.logo-area</span></span>, <span class="hljs-selector-class"><span class="hljs-selector-class">.ua-ie-6</span></span> <span class="hljs-selector-class"><span class="hljs-selector-class">.logo-area</span></span> { <span class="hljs-comment"><span class="hljs-comment">/*  IE &lt; 7.0    24- PNG */</span></span> <span class="hljs-attribute"><span class="hljs-attribute">background-image</span></span>: <span class="hljs-built_in"><span class="hljs-built_in">url</span></span>(logo.gif); }</code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I hope this library will be useful for you! </div><p>Source: <a href="https://habr.com/ru/post/111157/">https://habr.com/ru/post/111157/</a></p>
+      I hope this library will be useful for you! </div><p>Source: https://habr.com/ru/post/111157/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../111149/index.html">Recover saved password pppoe session from router</a></li>
+<li><a href="../11115/index.html">Iq</a></li>
 <li><a href="../111151/index.html">Stacking JavaScript programming language in 34 lines</a></li>
 <li><a href="../111153/index.html">Android naming tips</a></li>
 <li><a href="../111155/index.html">MODx - own ajax calendar of events / news without Ditto</a></li>
 <li><a href="../111156/index.html">Fighting cheating in games where standard tools do not help</a></li>
 <li><a href="../111158/index.html">Time Series Prediction</a></li>
+<li><a href="../11116/index.html">DDR for the head, or how our memory works.</a></li>
 <li><a href="../111160/index.html">Domain (LDAP) Codeigniter Authentication</a></li>
 <li><a href="../111162/index.html">Why OOP</a></li>
 <li><a href="../111165/index.html">Half-life 2 at extremely low settings</a></li>
-<li><a href="../111168/index.html">Emulators of game consoles on the Android platform</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

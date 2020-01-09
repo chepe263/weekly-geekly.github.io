@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>To fill up 30 servers in a second from a laptop?</h1><div class="post__text post__text-html js-mediator-article">  Having released a new version of <a href="httptest/downloads/list">slowhttptest</a> with support for slow reading ( <a href="https://community.qualys.com/blogs/securitylabs/2012/01/05/slow-read">Slow Read DoS attack</a> ), I helped several users test their services.  During one of the tests there was an instructive story that I want to tell. <br><br>  I received a letter with a request to look at the results of running slowhttptest.  According to the report, the program bent over the service in a matter of seconds, which seemed rather incredible.  The service, according to the architecture, is capable of serving thousands of clients from all over the world, and the slowhttptest is limited to thousands of connections. <br><a name="habracut"></a><br>  To give an idea of ​​the service, I will say that the organization has about 60000 registered users with the client application installed, which occasionally connects to the central server, receives instructions and sends results (Don't botnet it!). <br>  About 2000 client applications are running at a time, and several hundred of them are connected to the server at the same time. <br>  At first, I was skeptical about the fact that it can be poured from one computer, but it’s not funny, I asked about the architecture. <br>  The system turned out to be built according to the well-known drawing, the components of the system were monitored, the patches were installed on time, nothing strange that could allow to overwhelm it. <br><br>  The system architecture is as follows: <br>  - round-robin DNS, working as load-balancer, and responding to requests with the IP address of one or the other Squid, working as a reverse proxy <br>  - two sealed Squid servers on the powerful machines allocated for them <br>  - web server cluster <br>  - application server cluster 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img src="https://habrastorage.org/getpro/habr/post_images/3e8/1f9/056/3e81f9056b6ecfa212c63c80970542fd.jpg" alt="image"><br><br>  I started dig - a utility that helps in requesting DNS, received a list of IP addresses corresponding to the domain name, and registered one of the addresses in / etc / hosts to concentrate on one Squide. <br><br>  Aggressively tuned slowhttptest, giving him a URL with a photo of one of the bosses, <a href="http://habrahabr.ru/blogs/infosecurity/135817/">start</a> !  1000 connections request a picture 10 times a connection, and immediately read the server's responses. <br>  And the truth lies!  Rechecked from the browser through a proxy to make sure that not my IP is banned, here and this guy pulled himself up, demanding to cut down the attack. <br><br>  In short, it turned out that this is a simple configuration error, and the limit of the operating system (Enterprise RedHat, by the way) for the number of open file descriptors by one process is 1024, so Squid just stuck with this restriction. <br><br>  The moral of the story, besides the fact that good triumphed over evil, is that the level of security of a system is determined by the level of security of the weakest link, and podlyanki need to wait anywhere, not relying on the "correctness" of architecture.  And also in the fact that it is not enough to install patches in time, and it would be necessary to conduct an assessment of security from the outside.  In particular, if the system maintains 10,000 connections within a minute, this does not mean that it will withstand 1,000 connections for 6 seconds, if the life of connections is 6 seconds, for example. <br>  What to do if 20,000 clients have connected with you at the same time is a topic for another discussion. </div><p>Source: <a href="https://habr.com/ru/post/136127/">https://habr.com/ru/post/136127/</a></p>
+    <img src="https://habrastorage.org/getpro/habr/post_images/3e8/1f9/056/3e81f9056b6ecfa212c63c80970542fd.jpg" alt="image"><br><br>  I started dig - a utility that helps in requesting DNS, received a list of IP addresses corresponding to the domain name, and registered one of the addresses in / etc / hosts to concentrate on one Squide. <br><br>  Aggressively tuned slowhttptest, giving him a URL with a photo of one of the bosses, <a href="http://habrahabr.ru/blogs/infosecurity/135817/">start</a> !  1000 connections request a picture 10 times a connection, and immediately read the server's responses. <br>  And the truth lies!  Rechecked from the browser through a proxy to make sure that not my IP is banned, here and this guy pulled himself up, demanding to cut down the attack. <br><br>  In short, it turned out that this is a simple configuration error, and the limit of the operating system (Enterprise RedHat, by the way) for the number of open file descriptors by one process is 1024, so Squid just stuck with this restriction. <br><br>  The moral of the story, besides the fact that good triumphed over evil, is that the level of security of a system is determined by the level of security of the weakest link, and podlyanki need to wait anywhere, not relying on the "correctness" of architecture.  And also in the fact that it is not enough to install patches in time, and it would be necessary to conduct an assessment of security from the outside.  In particular, if the system maintains 10,000 connections within a minute, this does not mean that it will withstand 1,000 connections for 6 seconds, if the life of connections is 6 seconds, for example. <br>  What to do if 20,000 clients have connected with you at the same time is a topic for another discussion. </div><p>Source: https://habr.com/ru/post/136127/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../136119/index.html">We are ready to give the least money</a></li>
+<li><a href="../13612/index.html">Drupal vs WordPress</a></li>
 <li><a href="../136120/index.html">EMI sues Ireland for reluctance to fight piracy</a></li>
 <li><a href="../136121/index.html">Linux OSS emulation</a></li>
 <li><a href="../136122/index.html">Google Maps as a game board</a></li>
 <li><a href="../136125/index.html">A look at the prototype smartphone on the platform of Intel Medfield</a></li>
 <li><a href="../136128/index.html">GUI recommendations for Android</a></li>
+<li><a href="../13613/index.html">Today Digg.com has changed its design</a></li>
 <li><a href="../136130/index.html">Qiwi Blocks Bitcoin Users Wallets</a></li>
 <li><a href="../136131/index.html">Tantrum with a freebie or AINOL Novo 8 for $ 55 from DinoDirect</a></li>
 <li><a href="../136132/index.html">On the Kind - a resource that helps to interact with the world</a></li>
-<li><a href="../136133/index.html">PowerShell 3 - Finally on the DLR!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

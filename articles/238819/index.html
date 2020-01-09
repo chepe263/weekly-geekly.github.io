@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Asterisk Callback, or how to make cheap calls</h1><div class="post__text post__text-html js-mediator-article"> There is a situation when employees on business trips call from cellular over long distance to the head office, although there is a PBX in the office which will be provided by an excellent cheap telecom operator with tasty prices, or simply call an internal number of the subscriber, through an external number, and you can think of a total number of situations the problem of which is a call back.  It is for these purposes that I implemented another scenario in which an employee just needs to call the number, and then the PBX will call him back and the already called subscriber will be able to do through the PBX what he needs not at the expense of his balance on the cellular, city operator or any another operator providing telecommunications services, and, for example, due to cheaper services connected to the PBX. <br><a name="habracut"></a><br>  A special case of this situation is implemented in today's example dialplan: <br><br>  Calling to an external number -&gt; PBX calls back -&gt; dial the internal number of the subscriber -&gt; communicate over the outgoing from the trunk to the PBX. <br><br>  what we need: <br>  A pair of dialplan lines that will handle the incoming connection and outgoing connection <br>  Script generating .call file. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      So.  The first step we need ... to finish the call: <br><br> <code>[callback-context] <br> exten =&gt; _7XXXXX.,1,Hangup <br></code> <br><br>  Further, all processing (what word is loud processing ... So ... Processing) will take place in the “h” event of the same context, since we already put the phone down. <br>  Run the script to create a .call file. <br><br> <code>exten =&gt; h,1,System(/usr/local/scripts/callback.sh ${CALLERID(num)}) <br></code> <br><br>  The script itself looks like this: <br><br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash callee=$1 Channel="SIP/"$callee MaxRetries=10 RetryTime=10 WaitTime=20 Context="call-to" Extension="callback" Priority=1 DATA=`date` echo "Channel: $Channel CallerId: EXTERNAL_PBX_NUM &lt;EXTERNAL_PBX_NUM&gt; MaxRetries: $MaxRetries RetryTime: $RetryTime WaitTime: $WaitTime Context: $Context Extension: $Extension Priority: $Priority" &gt; /var/spool/asterisk/outgoing/$callee.call</span></span></code> </pre><br><br>  The script will call back the one who called the PBX and after he picks up the phone switches the channel to the context <b>call-to</b> on the extension <b>callback</b> for processing: <br>  In this context, we will play the greeting file and invitation to enter the number (for those who will deal with kapipasta - the custom file name. By default, Asterisk does not have this file. Write your own or use the standard one), we will wait for entering the number to which you need to call, which should consist of - Maximum 4, we will wait 5 seconds and give only 1 attempt to enter. <br><br>  After entering the number, call it and connect 2 channels to the bridge using the Dial function. <br><br><blockquote>  [call-to] <br>  exten =&gt; callback, 1, Read (NUM, input-number, 4, n, 1.5) <br>  exten =&gt; callback, n, DIAL (PJSIP / $ {NUM}) <br></blockquote><br><br>  Thus, we call the internal number not at our own expense, but at the expense of the PBX. <br><br>  PS <br>  1. For perfectionists: Yes, I did not set the pincode input.  do it yourself if you need to (I will tell you - It is necessary to use the Read function once more). <br>  1. Yes, the PBX will not reach the subscriber if he called from the trunk to which the number is not assigned (which is given a dynamic number). </div><p>Source: <a href="https://habr.com/ru/post/238819/">https://habr.com/ru/post/238819/</a></p>
+      So.  The first step we need ... to finish the call: <br><br> <code>[callback-context] <br> exten =&gt; _7XXXXX.,1,Hangup <br></code> <br><br>  Further, all processing (what word is loud processing ... So ... Processing) will take place in the “h” event of the same context, since we already put the phone down. <br>  Run the script to create a .call file. <br><br> <code>exten =&gt; h,1,System(/usr/local/scripts/callback.sh ${CALLERID(num)}) <br></code> <br><br>  The script itself looks like this: <br><br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash callee=$1 Channel="SIP/"$callee MaxRetries=10 RetryTime=10 WaitTime=20 Context="call-to" Extension="callback" Priority=1 DATA=`date` echo "Channel: $Channel CallerId: EXTERNAL_PBX_NUM &lt;EXTERNAL_PBX_NUM&gt; MaxRetries: $MaxRetries RetryTime: $RetryTime WaitTime: $WaitTime Context: $Context Extension: $Extension Priority: $Priority" &gt; /var/spool/asterisk/outgoing/$callee.call</span></span></code> </pre><br><br>  The script will call back the one who called the PBX and after he picks up the phone switches the channel to the context <b>call-to</b> on the extension <b>callback</b> for processing: <br>  In this context, we will play the greeting file and invitation to enter the number (for those who will deal with kapipasta - the custom file name. By default, Asterisk does not have this file. Write your own or use the standard one), we will wait for entering the number to which you need to call, which should consist of - Maximum 4, we will wait 5 seconds and give only 1 attempt to enter. <br><br>  After entering the number, call it and connect 2 channels to the bridge using the Dial function. <br><br><blockquote>  [call-to] <br>  exten =&gt; callback, 1, Read (NUM, input-number, 4, n, 1.5) <br>  exten =&gt; callback, n, DIAL (PJSIP / $ {NUM}) <br></blockquote><br><br>  Thus, we call the internal number not at our own expense, but at the expense of the PBX. <br><br>  PS <br>  1. For perfectionists: Yes, I did not set the pincode input.  do it yourself if you need to (I will tell you - It is necessary to use the Read function once more). <br>  1. Yes, the PBX will not reach the subscriber if he called from the trunk to which the number is not assigned (which is given a dynamic number). </div><p>Source: https://habr.com/ru/post/238819/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../238807/index.html">What will happen to the law on the prohibition of the storage of personal data of Russians abroad</a></li>
 <li><a href="../238809/index.html">20 ways to scam when buying an iPhone</a></li>
+<li><a href="../23881/index.html">Yandex finished XSS</a></li>
 <li><a href="../238813/index.html">LOTSMAN: We write our WorkFlow configurator. Start</a></li>
 <li><a href="../238815/index.html">Windows 10 from Microsoft, new Google requirements for device manufacturers, new mobile advertising opportunities - and other news of the week for mobile developers</a></li>
 <li><a href="../238817/index.html">Lenovo Yoga 13 + Comodo Firewall ≠ <3</a></li>
@@ -75,7 +75,7 @@
 <li><a href="../238823/index.html">How to withdraw Yandex-money to a free card of Sberbank</a></li>
 <li><a href="../238825/index.html">How can a programmer draw a logo without knowing how to draw?</a></li>
 <li><a href="../238829/index.html">Modular smartphone “Project Ara”: new details from Google</a></li>
-<li><a href="../238831/index.html">Transferring files to an isolated DOS-based virtual machine using the ... keyboard</a></li>
+<li><a href="../23883/index.html">About the correct treatments</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

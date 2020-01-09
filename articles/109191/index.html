@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Slows down the web server. Setting by example www.ochevidets.ru</h1><div class="post__text post__text-html js-mediator-article">  I provide services for setting up web- and DB-servers.  The other day I was approached by Ivan Usachev, the owner of the portal <a href="http://www.ochevidets.ru/">ochevidets.ru,</a> with a request to save the site from braking. <br><br>  Pages at peak times began to load for a long time, up to 5 minutes per page. <br><br><blockquote>  <b>UPDATE: The</b> article was written in 2010.  Something has changed: new versions of programs have been released, some directives have changed in nginx and new ones have appeared.  Consider this. </blockquote><br><a name="habracut"></a><br>  The first thing to start with in this case is to check if this is a problem of the provider through which the client enters the site.  The Internet is a large aggregate of networks, in which the package path from the data center to the client can be inhibited for reasons beyond the control of the site.  Therefore, we check the download speed of the site through other providers. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       For this purpose there are convenient services: <br>  <a href="http://site-perf.com/">http://site-perf.com/</a> (access point is better to choose European) <br>  <a href="http://tools.pingdom.com/">http://tools.pingdom.com/</a> <br><br>  The problem was not in the providers.  We reason further. <br><br>  Rather heavy video content is distributed.  PHP scripts are quite simple, do not consume a lot of CPU time.  I learned this by looking at the output of the top linux command. <br><br>  The server has a “mirror” raid with a read speed of each disk of about 60 MB / s (the server has been around for several years).  The server is connected to the Internet via a 100 Mb / s channel, which is roughly equivalent to 10 megabytes per second, considering that approximately 20% of the data is official. <br><br>  Obviously, the linear read speed is much higher than the throughput of the ethernet interface.  At first glance, there should be no problems. <br><br>  What if software raid moved to the degraded-state?  In this case, its performance may fall many times.  I look at the output of cat / proc / mdstat - all the disks [UU], everything is OK. <br><br>  Reason further.  The problem arose for the first time.  Attendance increased.  Many requests to the disk subsystem.  Since many users work with the site in parallel, the hard drive constantly repositions its heads and the reading speed can drop phenomenally due to such an unpleasant thing as seek-time. <br><br>  In addition, as I learned from the output of the free command from 8 GB of swap, 300 MB was used, which is in itself a very bad sign.  Writing and loading pages from a swap can specifically kill performance. <br><br>  From the output of the same top command, I learned that 70-80% of the time processes are in the io state — which means waiting for input / output.  In principle, the network card also falls under the input, but according to the munin reports, the peak traffic was 70 Mbit, i.e.  peak performance has not been achieved. <br><br>  Here, of course, you need to take into account that the provider channel may not give the declared 100 Mbps and it is he who can limit the traffic. <br><br>  But taking into account the fact that during normal browsing of directories from mc, there was a slowdown in the problem was clearly in the disk subsystem. <br><br>  In general, there is a wonderful iotop utility, but to work with it, the kernel must include: CONFIG_TASK_IO_ACCOUNTING, CONFIG_TASK_DELAY_ACCT, CONFIG_TASKSTATS. <br><br>  The kernel was old, these options were not in it.  Therefore, during the day I could not use this diagnostic tool, because  server was undesirable to stop. <br><br>  I suggested that if you put the most frequently used files into the cache, then the number of repositioning will decrease by several times and this will save the server. <br><br>  The most beautiful way I know to cache a huge amount of data is a raid card with support for Max IQ technology.  SSD Drive for 64 GB or more is connected to the hardware raid controller.  And voila!  We have 64 GB cache!  Beautiful - but expensive to get started you need a controller with support for Max IQ ($ 500) and a special SSD Drive (from $ 1000). <br><br>  There was a place for the controller in the server, but not for the additional hard drive.  The server has a very compact 1U package.  So I decided to start using the system file system cache.  To increase this cache, simply increase the system memory. <br><br>  There were 4 more connectors left in the server and I found the necessary memory, focusing on the marking on the already standing memory modules. <br><br>  It was installed 2Gb of memory, I suggested adding another 8 GB.  I ordered it from an online store and while waiting for delivery, I decided to adjust the remaining moments. <br><br>  The server as frontend uses nginx and I decided to see what can be done with it. <br><br>  At first I installed <br><br><pre><code class="nginx">worker_processes 6;
@@ -269,20 +269,20 @@ Expires: Sat, 11 Dec 2010 19:53:24 GMT
 <li>       nginx  <a href="http://habrahabr.ru/users/alexxxst/" class="user_link">alexxxst</a></li>
 <li>    ab <a href="http://habrahabr.ru/users/woz/" class="user_link">WoZ</a>   siege</li>
 <li><a href="http://habrahabr.ru/users/alfa/" class="user_link">alfa</a>      curl -I</li>
-</ol></div><p>Source: <a href="https://habr.com/ru/post/109191/">https://habr.com/ru/post/109191/</a></p>
+</ol></div><p>Source: https://habr.com/ru/post/109191/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../109181/index.html">Lessons from 10 years of technical reviews</a></li>
 <li><a href="../109183/index.html">Turn one computer into two</a></li>
 <li><a href="../109186/index.html">The long-awaited RC Drupal 7</a></li>
 <li><a href="../109187/index.html">Synapse is a good alternative for Alt + F2</a></li>
 <li><a href="../109189/index.html">"Software beyond morality." The Tear-Tale, Chapter One, Part One</a></li>
+<li><a href="../10919/index.html">Joost is negotiating with TV manufacturers</a></li>
+<li><a href="../109192/index.html">Gmail Security</a></li>
 <li><a href="../109193/index.html">Work with sound in practice</a></li>
 <li><a href="../109195/index.html">Seven principles of a successful social product that you need to know</a></li>
 <li><a href="../109196/index.html">Released Google Reader app for Android</a></li>
-<li><a href="../109200/index.html">To treat your customers badly is bad for business.</a></li>
-<li><a href="../109201/index.html">Android 2.2 is finally ahead of 2.1</a></li>
+<li><a href="../1092/index.html">Mineshaft - online show</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

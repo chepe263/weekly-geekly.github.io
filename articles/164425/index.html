@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Munchhausen Style, or one abnormal way to run Java programs on Android</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/bc7/2c7/616/bc72c76168955ed9dbf350c06d6fac7d.jpg" alt="image"><br><br>  One day I was overcome by a strange desire - to use all the power of my android smartphone in the console.  A very convenient way for all sorts of utilitarian tasks.  The console is the key to my story. <br>  As such, the development for Android (if we are talking about the standard Android SDK, and not the NDK) does not imply console programming.  Activations, services, intents - in general, not one dozen articles were written on this topic, but mine was about something else. <br><a name="habracut"></a><br>  As you probably know (or maybe not), Android programs, although written in Java, must be converted to a completely different Java bytecode before execution.  Because the Dalvik virtual machine, the heart of Android, is different than the Java SE VM.  For this is a special utility in the Android SDK called dx (Dalvik eXecutable). <br>  It works devilishly simple: <br><pre><code class="bash hljs">java -jar dx.jar --dex --output=dexed.jar java.jar</code> </pre> <br>  where java.jar is a java package with java-classes, and dexed.jar is a suitable java-package for uploading and launching on Android. <br><br>  What to do if you really want to run a console jarik right "in the field"?  The conclusion suggests itself - convert dx.jar using yourself, pour it onto the device, and use it right there.  The idea, of course, is risky, but we will try. <br><pre> <code class="bash hljs">java -jar dx.jar --dex --output=dx.apk dx.jar adb push dx.apk /sdcard/dx.apk adb push helloworld.jar /sdcard/helloworld.jar</code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      here I will take a short pause to give some clarification. <br>  Although the Android SDK does not imply the development of console programs, Dalvik runs and executes them quietly.  Naturally, you should do this in some terminal program.  Dalvik has one more trouble - he does not support the -jar option.  Well, that is, the option itself is there, but it ignores it.  At least for my Milestone 2 with Android 2.3.4, this is true.  Therefore, the package with the program must be specified with the -cp key, and the main launch class with the main method must be specified manually. <br><pre> <code class="bash hljs">adb shell <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /sdcard dalvikvm -cp dx.apk com.android.dx.command.Main --dex --output=helloworld.apk helloworld.jar dalvikvm -cp helloworld.apk helloworld.Main hello Hello, hello!</code> </pre><br><br>  So, you can, having “dexed” dx, run java-programs directly on the device. <br>  I hope this information was useful for you, habrauzer. <br><br>  Happy New Year! </div><p>Source: <a href="https://habr.com/ru/post/164425/">https://habr.com/ru/post/164425/</a></p>
+      here I will take a short pause to give some clarification. <br>  Although the Android SDK does not imply the development of console programs, Dalvik runs and executes them quietly.  Naturally, you should do this in some terminal program.  Dalvik has one more trouble - he does not support the -jar option.  Well, that is, the option itself is there, but it ignores it.  At least for my Milestone 2 with Android 2.3.4, this is true.  Therefore, the package with the program must be specified with the -cp key, and the main launch class with the main method must be specified manually. <br><pre> <code class="bash hljs">adb shell <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /sdcard dalvikvm -cp dx.apk com.android.dx.command.Main --dex --output=helloworld.apk helloworld.jar dalvikvm -cp helloworld.apk helloworld.Main hello Hello, hello!</code> </pre><br><br>  So, you can, having “dexed” dx, run java-programs directly on the device. <br>  I hope this information was useful for you, habrauzer. <br><br>  Happy New Year! </div><p>Source: https://habr.com/ru/post/164425/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

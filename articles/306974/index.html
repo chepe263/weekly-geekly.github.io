@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Unexpected certificate validation feature in Windows</h1><div class="post__text post__text-html js-mediator-article">  Slightly delayed with the publication, but better late than never.  At the beginning of the working week, there were delays when connecting via RDP to all computers, it hung for a few seconds in the “Securing remote connection ...” stage, which is responsible for setting up an encrypted channel for the secure transmission of details. <br><br><div class="spoiler">  <b class="spoiler_title">TL; DR</b> <div class="spoiler_text">  If the CTL expires and ctldl.windowsupdate.com becomes unavailable, there may be delays when establishing SSL connections, try to avoid it. </div></div><br>  Since RDS uses certificates from the internal <abbr title="Certification Authority / Certification Authority">CA</abbr> and having once forgotten to update the CRL of the root offline CA decided to check its health in <b>pkiview.msc</b> . <br><br>  The snap-in showed that everything is OK, but opposite both CAs, the Verifying status was held for a few seconds, which is strange, since all verification data is available within the domain via LDAP and HTTP.  Check through <b>certutil -verify</b> also hung for 10-15 seconds in the CERT_CHAIN_POLICY_BASE stage, and with any certificates not only from internal, but also from external CA (StartCom, Comodo, etc.). <br><a name="habracut"></a><br>  The problem did not go away even after re-registering certificates from CRL to <a href="https://www.sysadmins.lv/blog-ru/planirovanie-rasshirenij-cdp-i-aia.aspx">CDP and AIA</a> .  Desperate, I captured a network dump during <i>certutil -verify</i> and saw the following: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,16 +59,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img src="https://habrastorage.org/files/353/324/24b/35332424b8364f1a92510b8f14bc1df2.png"><br><br>  Trace to ctldl.windowsupdate.com showed zapret.comcor.ru on the way, and its IP address (CDN Akamai) was added on August 1, 2016 to the RKN lock <a href="https://antizapret.info/index.php%3Fsearch%3D2.20.255.64">registry</a> . <br><br>  It turns out that in Windows 8.1 (and later ported to Vista, 7 and 8), a mechanism for dynamically loading lists of trusted and untrusted certification authorities ( <abbr title="Certification Trust Lists">CTLs</abbr> ) appeared in case new ones appeared or they were compromised.  When it expires, the client tries to update the CTL and if that fails, the attempt repeats each time an SSL connection is established. <br><br>  You can view the contents and check the status of the CTL with the <b>certutil -f -verifyCTL AuthRoot</b> and <b>certutil -f -verifyCTL Disallowed commands</b> .  Also, these commands can restore the contents of the certificate store. <br><br>  The lists are downloaded from ctldl.windowsupdate.com, but the provider broke the stub page and the connections to the forbidden resources were blocked by the IP address, which caused a timeout of 15 seconds when each connection was established. <br><br>  A detailed description of the new mechanism is available <a href="https://technet.microsoft.com/en-us/library/dn265983.aspx">on TechNet</a> ; for a workaround, the timeout can be set via group policies in the Public Key Policies&gt; Certificate Path Validation Settings&gt; Network Retreival section: <br><br><img src="https://habrastorage.org/files/f9f/61e/24d/f9f61e24dc7145e084e339a0e1885ab3.png"><br><br>  While Google was describing the mechanism, I came across a <a href="http://hexatomium.github.io/2015/09/22/expires-25h/">researcher's blog</a> , where he describes an algorithm for working with the example of his utility <a href="https://www.trustprobe.com/fs1/apps.html">CTLInfo</a> , which is able to display the contents and the validity period of the CTL. </div><p>Source: <a href="https://habr.com/ru/post/306974/">https://habr.com/ru/post/306974/</a></p>
+    <img src="https://habrastorage.org/files/353/324/24b/35332424b8364f1a92510b8f14bc1df2.png"><br><br>  Trace to ctldl.windowsupdate.com showed zapret.comcor.ru on the way, and its IP address (CDN Akamai) was added on August 1, 2016 to the RKN lock <a href="https://antizapret.info/index.php%3Fsearch%3D2.20.255.64">registry</a> . <br><br>  It turns out that in Windows 8.1 (and later ported to Vista, 7 and 8), a mechanism for dynamically loading lists of trusted and untrusted certification authorities ( <abbr title="Certification Trust Lists">CTLs</abbr> ) appeared in case new ones appeared or they were compromised.  When it expires, the client tries to update the CTL and if that fails, the attempt repeats each time an SSL connection is established. <br><br>  You can view the contents and check the status of the CTL with the <b>certutil -f -verifyCTL AuthRoot</b> and <b>certutil -f -verifyCTL Disallowed commands</b> .  Also, these commands can restore the contents of the certificate store. <br><br>  The lists are downloaded from ctldl.windowsupdate.com, but the provider broke the stub page and the connections to the forbidden resources were blocked by the IP address, which caused a timeout of 15 seconds when each connection was established. <br><br>  A detailed description of the new mechanism is available <a href="https://technet.microsoft.com/en-us/library/dn265983.aspx">on TechNet</a> ; for a workaround, the timeout can be set via group policies in the Public Key Policies&gt; Certificate Path Validation Settings&gt; Network Retreival section: <br><br><img src="https://habrastorage.org/files/f9f/61e/24d/f9f61e24dc7145e084e339a0e1885ab3.png"><br><br>  While Google was describing the mechanism, I came across a <a href="http://hexatomium.github.io/2015/09/22/expires-25h/">researcher's blog</a> , where he describes an algorithm for working with the example of his utility <a href="https://www.trustprobe.com/fs1/apps.html">CTLInfo</a> , which is able to display the contents and the validity period of the CTL. </div><p>Source: https://habr.com/ru/post/306974/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../306960/index.html">Throwing large volumes of documentation</a></li>
 <li><a href="../306962/index.html">TDD implementation rules in the old project</a></li>
 <li><a href="../306964/index.html">Windows 10 Anniversary Update became available</a></li>
+<li><a href="../30697/index.html">Not a single snippet ...</a></li>
 <li><a href="../306970/index.html">Welcome to the NeuroHack hackathon on August 5</a></li>
 <li><a href="../306972/index.html">Digital advertising kills optimists</a></li>
 <li><a href="../306976/index.html">Twenty-one free tools every system administrator should know about</a></li>

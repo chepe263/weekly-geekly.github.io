@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>0day vulnerabilities in lshell</h1><div class="post__text post__text-html js-mediator-article">  lshell is a shell that restricts the commands and file system paths available to the user.  It is tipped as an alternative to a complex chroot setting: <br><ul><li>  <a href="https://habrahabr.ru/company/centosadmin/blog/212833/">Habr, centos-admin company blog</a> </li><li>  <a href="http://aboutubuntu.ru/content/chroot-vs-lshell-and-mysecureshell.html">aboutubuntu.ru</a> </li><li>  <a href="http://tecadmin.net/how-to-limit-user-access-with-lshell-limited-shell/">techadmin.net</a> </li></ul><br>  and so on, there are many sources offering it for use. <br><br>  The application is available in the repositories of Ubuntu, Debian and EPEL. <br><a name="habracut"></a><br><h5>  Problems in the code </h5><br>  A quick look at the notes on lshell in the configuration files can be noticed that some of the restrictions imposed by lshell serve to simplify the parsing of commands, and not to increase security.  For example, prohibiting the use of semicolons and sabshells.  It makes sense to look at how this parsing is implemented. <br><br>  When examining the source code, it becomes clear that the <a href="https://hg.python.org/cpython/file/2.7/Lib/cmd.py">selection of the command to be launched and its arguments is made by the library</a> , which is designed for parsing commands from simple CLI and does not parse the correctly complex shell command syntax.  At the same time, regardless of the <a href="https://docs.python.org/2/library/subprocess.html">warning in the documentation</a> , after simple validation, the <a href="https://github.com/ghantoos/lshell/blob/af8a24b8c009813b738248c8a7f7a2c85f7ffab1/lshell/utils.py">command is passed to the shell / bin / sh</a> .  Validation deserves special attention and is based on the assumptions that: <br><ul><li>  team is always single line </li><li>  <a href="https://github.com/ghantoos/lshell/blob/af8a24b8c009813b738248c8a7f7a2c85f7ffab1/lshell/sec.py">inside the quotes do not need to check</a> </li></ul><br>  There is no real syntax parsing anywhere, so these are not all the assumptions made in the verification. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h5>  Consequences </h5><br>  The following scenarios are available for escaping from such a limited shell. <br><div class="spoiler">  <b class="spoiler_title">Scenario 1: exploitation problems with quotes and command chains</b> <div class="spoiler_text"><pre> vladislav @ dt1: ~ $ getent passwd testuser
@@ -122,20 +122,20 @@
 
  testuser @ dt1: ~ $ which bash
  / bin / bash
-</pre><br>  <a href="https://github.com/ghantoos/lshell/issues/149">GH Issue</a> <br></div></div><br><h5>  The best decision </h5><br>  This software solution is too far from the state in which it can be safely used.  Therefore, the best way out is to stop its operation. </div><p>Source: <a href="https://habr.com/ru/post/308028/">https://habr.com/ru/post/308028/</a></p>
+</pre><br>  <a href="https://github.com/ghantoos/lshell/issues/149">GH Issue</a> <br></div></div><br><h5>  The best decision </h5><br>  This software solution is too far from the state in which it can be safely used.  Therefore, the best way out is to stop its operation. </div><p>Source: https://habr.com/ru/post/308028/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../308010/index.html">How to determine the level of IT maturity of your company - and what they are</a></li>
 <li><a href="../308014/index.html">How protected from cyber attacks banks and stock exchanges: Statistics and expert opinions</a></li>
+<li><a href="../30802/index.html">Video from the third international conference SQA Days 2008 - testing web applications</a></li>
 <li><a href="../308020/index.html">Introducing the new UWP Community Toolkit</a></li>
 <li><a href="../308024/index.html">The effectiveness of the implementation of information systems. Practice experience</a></li>
 <li><a href="../308026/index.html">Introducing RAIL: Site Performance Assessment Model</a></li>
+<li><a href="../30803/index.html">Video from PHPConf 2008 - ~ 20 hours of video</a></li>
 <li><a href="../308030/index.html">A critical vulnerability has been discovered in the encryption library Libgcrypt for 18 years.</a></li>
 <li><a href="../308032/index.html">We use Secure Boot in Linux to the fullest</a></li>
 <li><a href="../308034/index.html">Three-position checkbox (aka tristate) without scripts and SMS</a></li>
 <li><a href="../308036/index.html">Multiprotocol bot via Microsoft Bot Connector REST API v3.0</a></li>
-<li><a href="../308038/index.html">Flash revolution</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

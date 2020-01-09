@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Automating work with static routes on the network of FreeBSD servers</h1><div class="post__text post__text-html js-mediator-article"><h4>  How it all started </h4><br>  In the provider where I work, it has historically been established that client networks are fixed on FreeBSD servers with static routing in the switching fields connecting these servers.  Accordingly, when adding a new network, the routes for it must be registered on all servers separately.  Adding the human factor to this, it may turn out that some servers will be forgotten and skipped when adding or changing a route.  In this regard, it becomes logical to somehow automate this process. <br><br><h4>  Implementation </h4><br>  We presume that we have a certain number of servers running FreeBSD, and when adding a new route (for example, on one of these servers, a new client network was fixed) it should be registered on all of these servers. <br>  To begin with, we will create a text file, each line of which is the address of one server, and for each of these servers we will configure authorization by key (how to do this is described, for example, <a href="http://habrahabr.ru/blogs/linux/39116/">here</a> ). <br>  Example of server list file: <br> <code>192.168.0.1 <br> 192.168.1.1 <br> mainserver.yourdomain.ru</code> <br> <br>  Further work will be done by a bunch of two shell scripts: <br><a name="habracut"></a>  1) <i>checkroute.sh [-c] destination gateway</i> , where <br>  <i>-c</i> - check-only option (only check the match without making changes), <br>  <i>destination</i> - IP address or destination network, <br>  <i>gateway</i> is the destination gateway. <br>  This script checks the validity of the entered parameters of the script and, connecting in turn to each of the servers from the list by ssh, copies the second script to it and runs it. <br>  2) <i>checker.sh destination gateway ifcheck</i> <br>  In turn, it checks the current routing table and configuration files, reports the results of the check and, if the first script was run without the -c option, adjusts the corresponding entries to the destination / gateway pair. <br><br><h6>  checkroute.sh </h6><br>  First check the options with which the script was run.  At the moment, only the -c option is processed, but this functionality is easily extended by analogy. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <pre>  ifcheck = "no"
@@ -146,7 +146,7 @@
 			 else echo "Correct route was found in $ filename: OK"
 			 fi
 		 fi
- fi </pre><br>  I want to clarify a couple of points from the last piece of code.  The redefinition of the IFS system variable is necessary in order to create a multi-line variable $ regex, which, in turn, is dictated by the syntax sed.  This way of adding a line to a file was chosen because routes to $ filename can be added inside one of the functions, as it happens in my case.  If this is not critical for you, you can do with the construction of the form <br><br><pre>  commit "sudo echo '/ sbin / route -nq add $ 1 $ 2' &gt;&gt; $ filename" </pre><br><h4>  Conclusion </h4><br>  The scripts described above can be adapted to other * nix systems, the difference is in the sed keys (for Debian, for example, -ri instead of -Ei "") and the syntax of the route command (see man route).  The functionality of scripts, as already mentioned above, is easily extended by analogy. <br>  There are quite a few checks in the scripts (“protection against a fool”), but the responsibility for the correctness of the destination / gateway pair lies with the administrator running the script.  Be carefull! <br>  The full texts of both scripts are attached: <a href="http://rghost.ru/5083197">checkroute.sh</a> , <a href="http://rghost.ru/5083224">checker.sh</a> </div><p>Source: <a href="https://habr.com/ru/post/116956/">https://habr.com/ru/post/116956/</a></p>
+ fi </pre><br>  I want to clarify a couple of points from the last piece of code.  The redefinition of the IFS system variable is necessary in order to create a multi-line variable $ regex, which, in turn, is dictated by the syntax sed.  This way of adding a line to a file was chosen because routes to $ filename can be added inside one of the functions, as it happens in my case.  If this is not critical for you, you can do with the construction of the form <br><br><pre>  commit "sudo echo '/ sbin / route -nq add $ 1 $ 2' &gt;&gt; $ filename" </pre><br><h4>  Conclusion </h4><br>  The scripts described above can be adapted to other * nix systems, the difference is in the sed keys (for Debian, for example, -ri instead of -Ei "") and the syntax of the route command (see man route).  The functionality of scripts, as already mentioned above, is easily extended by analogy. <br>  There are quite a few checks in the scripts (“protection against a fool”), but the responsibility for the correctness of the destination / gateway pair lies with the administrator running the script.  Be carefull! <br>  The full texts of both scripts are attached: <a href="http://rghost.ru/5083197">checkroute.sh</a> , <a href="http://rghost.ru/5083224">checker.sh</a> </div><p>Source: https://habr.com/ru/post/116956/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -158,8 +158,8 @@
 <li><a href="../116957/index.html">Ubuntu Server Map</a></li>
 <li><a href="../116958/index.html">Tricks and hacks INSTEAD</a></li>
 <li><a href="../116959/index.html">April Fools' draws: how we made a contest</a></li>
-<li><a href="../116961/index.html">Small anniversary - MultiCards half a year</a></li>
-<li><a href="../116963/index.html">Customer Development in a startup</a></li>
+<li><a href="../11696/index.html">About Face 3 - Preface</a></li>
+<li><a href="../116960/index.html">Organization of Wikimedia Commons analogue for own Wiki</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

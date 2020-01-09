@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Enlarge your disk now</h1><div class="post__text post__text-html js-mediator-article">  One of the problems that haunts us is that we spend too much time on the abstract (internal) aspects of work.  The past months we have been working intensively - but clients almost did not see the results of work, because  internal components of the cloud were copied and adapted to high loads (in thousands of operations per second). <br><br><img src="https://habrastorage.org/getpro/habr/post_images/8ec/709/d3c/8ec709d3c544f9a9ad32b0f2c42c73d5.png" alt="Resize Disk in Selectel Cloud" align="right">  Finally, the hands reached even simple things - we implemented in the interface the ability to increase the size of the disks (including the system one). <br><br>  The real work - two hours in the socket, a few more hours to check that everything works as expected.  But - not enough time and hands.  Finally, time was found done. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h1>  How to do it? </h1><a name="habracut"></a>  The disk should not be locked, that is, either disconnected from the virtual machine, or the virtual machine itself should be turned off.  (If you don’t have the button “increase” in the cloud control panel - refresh the page - cached JS). <br><br>  The option to resize disks is in the “Disks” section for connected disks, and in the “non-connected disks” section for non-connected ones.  Disk size is specified in megabytes.  The limit for disk size is 1.7TB, the total number of disks that can be connected to the machine is 15 pcs. <br><br>  Important: the disk grows as a block device - we do not get access to the clients' file systems and do not resize the partitions. <br><br>  After increasing the disk size you need: <br><br>  In the case of a partition table: <br><ul><li>  Resize the partition table.  For example, with help.  cfdisk  If you change the size of the system partition, you will have to reboot.  In addition, you may need to delete the swap partition and recreate it. </li><li>  Make resize2fs a device name (for example, resize2fs / dev / sda1) </li></ul><br>  In the case of lvm: <br><ul><li>  pvresize to PV (if you are using LVM over a partition table, then resize the partition table) </li><li>  lvresize </li><li>  resize2fs </li></ul><br><h1>  And reduce? </h1>  Unfortunately no.  There are several reasons, the main one: it is dangerous.  It is very dangerous.  If you cut the disc - then from the end.  And without looking at the file system.  With a chance to tightly lose data (because due to the peculiarities of blktap, data on a cut piece is lost forever). <br><br>  The second - resizing the file system down is not a task for the faint of heart (especially the root file system), plus it is a huge load on the disk (which will cost so much that making 2-3 full copies of the disk will be cheaper). <br><br><h1>  Fragmentation? </h1>  It occurs, but, due to the PE size of the LVM we used, is very insignificant - the minimum piece will be 4 MB in length.  Plus, from the point of view of our storage, we still have competitive requests to different storage locations, so there should be no difference in performance. <br><br><h1>  Money? </h1>  The operation of changing the size of the device is very simple and we do not take money for it.  The new disk begins to account with the new size.  Since we take into account the place in TB * hour (with real resolution in seconds), then, in fact, the consumption of disk space simply “increases”, that is, from the point of view of accounting, practically nothing changes. </div><p>Source: <a href="https://habr.com/ru/post/117969/">https://habr.com/ru/post/117969/</a></p>
+    <h1>  How to do it? </h1><a name="habracut"></a>  The disk should not be locked, that is, either disconnected from the virtual machine, or the virtual machine itself should be turned off.  (If you don’t have the button “increase” in the cloud control panel - refresh the page - cached JS). <br><br>  The option to resize disks is in the “Disks” section for connected disks, and in the “non-connected disks” section for non-connected ones.  Disk size is specified in megabytes.  The limit for disk size is 1.7TB, the total number of disks that can be connected to the machine is 15 pcs. <br><br>  Important: the disk grows as a block device - we do not get access to the clients' file systems and do not resize the partitions. <br><br>  After increasing the disk size you need: <br><br>  In the case of a partition table: <br><ul><li>  Resize the partition table.  For example, with help.  cfdisk  If you change the size of the system partition, you will have to reboot.  In addition, you may need to delete the swap partition and recreate it. </li><li>  Make resize2fs a device name (for example, resize2fs / dev / sda1) </li></ul><br>  In the case of lvm: <br><ul><li>  pvresize to PV (if you are using LVM over a partition table, then resize the partition table) </li><li>  lvresize </li><li>  resize2fs </li></ul><br><h1>  And reduce? </h1>  Unfortunately no.  There are several reasons, the main one: it is dangerous.  It is very dangerous.  If you cut the disc - then from the end.  And without looking at the file system.  With a chance to tightly lose data (because due to the peculiarities of blktap, data on a cut piece is lost forever). <br><br>  The second - resizing the file system down is not a task for the faint of heart (especially the root file system), plus it is a huge load on the disk (which will cost so much that making 2-3 full copies of the disk will be cheaper). <br><br><h1>  Fragmentation? </h1>  It occurs, but, due to the PE size of the LVM we used, is very insignificant - the minimum piece will be 4 MB in length.  Plus, from the point of view of our storage, we still have competitive requests to different storage locations, so there should be no difference in performance. <br><br><h1>  Money? </h1>  The operation of changing the size of the device is very simple and we do not take money for it.  The new disk begins to account with the new size.  Since we take into account the place in TB * hour (with real resolution in seconds), then, in fact, the consumption of disk space simply “increases”, that is, from the point of view of accounting, practically nothing changes. </div><p>Source: https://habr.com/ru/post/117969/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../117965/index.html">Innovation Project Competition</a></li>
 <li><a href="../117967/index.html">Effectively destroy information on the hard disk</a></li>
 <li><a href="../117968/index.html">What to read on the weekend? Recommended, issue number 8</a></li>
+<li><a href="../11797/index.html">Bird-talker from Sega Toys</a></li>
 <li><a href="../117970/index.html">Why do discount card systems die?</a></li>
 <li><a href="../117971/index.html">About Google and Microsoft Understanding</a></li>
 <li><a href="../117972/index.html">Beeline, reset the DNS cache!</a></li>
 <li><a href="../117973/index.html">Introduction to the Pantheios Logging Library</a></li>
-<li><a href="../117974/index.html">Jooq - “LINQ” for Java, a type-safe SQL query builder in Java code</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

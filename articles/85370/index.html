@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>SQL Server Stored Procedure Optimization</h1><div class="post__text post__text-html js-mediator-article"> Good day, habrachelovek.  Today I would like to discuss with you the topic of stored procedures in SQL Server 2000-2005.  Recently, their writing took the lion’s share of my time at work and what’s there to hide - at the end of the work with this case there is enough information that I’ll be happy to share with you% user%. <br>  The knowledge that I am going to share, unfortunately, (or fortunately) is not empirically gained by me, but is, to a greater extent, a free translation of some articles from the bourgeois Internet. <br>  So, as you can see from the title, it’s about optimization.  At once I will make a reservation that all the actions that I will describe now really give a significant (some bigger, some smaller) performance gain. <br>  This article does not pretend to fully disclose the topic of optimization; rather, it is a collection of practices that I use in my work and can vouch for their effectiveness.  Go! <br><a name="habracut"></a><br><br>  <b>1. Include a line in your procedures - SET NOCOUNT ON:</b> With each DML expression, the SQL server carefully returns to us a message containing the number of processed records.  This information may be useful to us during the debugging of the code, but after it will be completely useless.  By setting the SET NOCOUNT ON, we disable this feature.  For stored procedures containing several expressions or \ and cycles, this action can give a significant performance boost, because the amount of traffic will be significantly reduced. <br><br> <code>CREATE PROC dbo.ProcName <br> AS <br> SET NOCOUNT ON; <br> --   <br> SELECT column1 FROM dbo.TblTable1 <br> -- SET NOCOUNT    <br> SET NOCOUNT OFF; <br> GO <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>2. Use the name of the schema with the name of the object:</b> Well, then I think it is clear.  This operation tells the server where to search for objects, and instead of randomly rummaging through its bins, it will immediately know where it needs to go and what to take.  With a large number of databases, tables and stored procedures can significantly save our time and nerves. <br><br> <code>SELECT * FROM dbo.MyTable --    <br> --  <br> SELECT * FROM MyTable --    <br> --  <br> EXEC dbo.MyProc --   <br> -- <br> EXEC MyProc --! <br></code> <br>  <b>3. Do not use the “sp_” prefix in the name of your stored procedures:</b> If the name of our procedure starts with “sp_”, SQL Server will first look for it in its main database.  The fact is that this prefix is ​​used for personal internal stored procedures of the server.  Therefore, its use can lead to additional costs and even wrong results if the procedure with the same name as you will be found in its database. <br><br>  <b>4. Use IF EXISTS (SELECT 1) instead of IF EXISTS (SELECT *):</b> To check for an entry in another table, we use the expression IF EXISTS.  This expression returns true if at least one source is returned from the inner expression, it doesn’t matter "1", all columns or table.  Returned data is not used in principle.  Thus, it is more logical to use “1” to compress traffic during data transfer, as shown below: <br><br> <code>IF EXISTS (SELECT 1 FROM sysobjects <br> WHERE name = 'MyTable' AND type = 'U') <br></code> <br><br>  <b>5. Use TRY-Catch to catch errors:</b> Before the 2005 server, after each request, a huge number of error checks were written in the procedure.  More code always consumes more resources and more time.  Since 2005, SQL Server has had a more correct and convenient way to solve this problem: <br><br> <code>BEGIN TRY <br> -- <br> END TRY <br> BEGIN CATCH <br> --   <br> END CATCH <br></code> <br><br>  <b>Conclusion</b> <br>  In principle, today I have everything.  Once again, here are only those techniques that I personally used in my practice, and I can vouch for their effectiveness. <br><br>  <b>PS</b> <br>  My first post, do not judge strictly. </div><p>Source: <a href="https://habr.com/ru/post/85370/">https://habr.com/ru/post/85370/</a></p>
+      <b>2. Use the name of the schema with the name of the object:</b> Well, then I think it is clear.  This operation tells the server where to search for objects, and instead of randomly rummaging through its bins, it will immediately know where it needs to go and what to take.  With a large number of databases, tables and stored procedures can significantly save our time and nerves. <br><br> <code>SELECT * FROM dbo.MyTable --    <br> --  <br> SELECT * FROM MyTable --    <br> --  <br> EXEC dbo.MyProc --   <br> -- <br> EXEC MyProc --! <br></code> <br>  <b>3. Do not use the “sp_” prefix in the name of your stored procedures:</b> If the name of our procedure starts with “sp_”, SQL Server will first look for it in its main database.  The fact is that this prefix is ​​used for personal internal stored procedures of the server.  Therefore, its use can lead to additional costs and even wrong results if the procedure with the same name as you will be found in its database. <br><br>  <b>4. Use IF EXISTS (SELECT 1) instead of IF EXISTS (SELECT *):</b> To check for an entry in another table, we use the expression IF EXISTS.  This expression returns true if at least one source is returned from the inner expression, it doesn’t matter "1", all columns or table.  Returned data is not used in principle.  Thus, it is more logical to use “1” to compress traffic during data transfer, as shown below: <br><br> <code>IF EXISTS (SELECT 1 FROM sysobjects <br> WHERE name = 'MyTable' AND type = 'U') <br></code> <br><br>  <b>5. Use TRY-Catch to catch errors:</b> Before the 2005 server, after each request, a huge number of error checks were written in the procedure.  More code always consumes more resources and more time.  Since 2005, SQL Server has had a more correct and convenient way to solve this problem: <br><br> <code>BEGIN TRY <br> -- <br> END TRY <br> BEGIN CATCH <br> --   <br> END CATCH <br></code> <br><br>  <b>Conclusion</b> <br>  In principle, today I have everything.  Once again, here are only those techniques that I personally used in my practice, and I can vouch for their effectiveness. <br><br>  <b>PS</b> <br>  My first post, do not judge strictly. </div><p>Source: https://habr.com/ru/post/85370/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../85373/index.html">Trading Part 2</a></li>
 <li><a href="../85374/index.html">DIY SSH / SUDO Monitoring script</a></li>
 <li><a href="../85377/index.html">Freshtel provides WiMAX in Tula, as well as in the cities of two regions (Tula and Moscow)</a></li>
+<li><a href="../8538/index.html">Logging out</a></li>
 <li><a href="../85381/index.html">Curious displays - a screen that interacts with the environment</a></li>
-<li><a href="../85382/index.html">Harvest @ GreenfieldProject Special Prizes</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

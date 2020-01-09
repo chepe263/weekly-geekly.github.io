@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Bit Mask Resurrection</h1><div class="post__text post__text-html js-mediator-article"> Based on the topics: <br>  <a href="http://coylone.habrahabr.ru/blog/37131/">Packaging of Boolean variables for storage and search in the database</a> <br>  <a href="http://habrahabr.ru/blogs/webdev/38015/">Storage of a set of checkboxes in one DB field.</a>  <a href="http://habrahabr.ru/blogs/webdev/38015/">Bit mask</a> <br>  A great idea was buried in these topics.  Well, let's try to revive her again ... <br><br><a name="habracut"></a><br>  I'll start with an example.  The user must have access to certain functions of the site.  All of these functions, for example, 1000. There are groups to which a specific set of functions is attached.  A user can belong to several groups at once.  For one request to the site, several functions can be performed at once.  Pretty real challenge isn't it? <br><br>  Groups will be stored in the groups table.  To store a set of functions to a group, the most obvious solution is to create a link table: <br> <code>CREATE TABLE `functions_to_group` ( <br> `group_id` int(4) unsigned NOT NULL, <br> `function_id` int(4) NOT NULL <br> UNIQUE KEY `f_to_g` (`group_id`,`function_id`) <br> )</code> <br> <br>  Now, when requesting a function, you need to make a request to the database: <br> <code>"SELECT <br> `function_id` <br> FROM <br> `functions_to_group` <br> WHERE <br> `group_id` in (" .implode(",", $user_groups). ") and <br> `function_id` = " .$current_function_id;</code> <br> <br>  But we do not know how many more functions will be called, and each time we have to fulfill this request. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      It is possible in one fell swoop, i.e.  request, get all the available functions and for an array of several hundred elements: <br> <code>"SELECT <br> `group_id`, <br> `function_id` <br> FROM <br> `functions_to_group` <br> WHERE <br> `group_id` in (" .implode(",", $user_groups). ")"</code> <br> <br>  Somehow ugly ... All we need is to check if there is a specific value in the data set.  Here the bit mask is most welcome.  But storing a mask as a whole is no longer an option.  We have 1000 functions. <br>  Nafik number, we need binary data, well, so there is such a function pack (), we just come down. <br>  We write a simple class: <br> <code>class BitMask <br> { <br> function __construct(){} <br> <br> function GetMask($num) <br> { <br> //  0,     <br> if (!$num) <br> { <br> return "\0"; <br> } <br> <br> //          <br> $num--; <br> // -  ,    <br> $null_bytes = floor($num / 8); <br> //     ... <br> $number = pow(2, $num % 8); <br> <br> //     <br> return pack('@' .$null_bytes. 'C', $number); <br> } <br> <br> function InMask($needle, $findIn) <br> { <br> //,      , <br> //..       <br> return (bool)strlen(trim($needle &amp; $findIn, "\0")); <br> } <br> <br> }</code> <br> <br>  Now we pack the whole set of functions for the group in one line, for example, like this: <br> <code>$x = new BitMask(); <br> <br> $group_access = $x-&gt;GetMask(0); <br> <br> while (list($k, $v) = each($_POST['functions_to_group'])) <br> { <br> $group_access |= $x-&gt;GetMask($v); <br> }</code> <br> <br>  Everything.  At the output we get one binary string, which can be stored in the groups table.  When authorizing on the site, we make one request to the groups table: <br> <code>"SELECT <br> `functions_bitmask` <br> FROM <br> `groups` <br> WHERE <br> `group_id` in (" .implode(",", $user_groups). ")"</code> <br> <br>  and add the sets of all user groups bit by bit: <br> <code>$user_private_access = $x-&gt;GetMask(0); <br> <br> while (list($k, $v) = each($user_groups_access)) <br> { <br> $user_private_access |= $v; <br> }</code> <br> <br>  To check if there is access to a function, do this: <br> <code>if ($x-&gt;InMask($x-&gt;GetMask($function_id), $user_private_access)) <br> { <br> //   <br> } <br> else <br> { <br> //   <br> }</code> <br> <br>  maximum size of the binary string = ceil (max_function_id / 8) bytes, <br>  in our case for 1000 items, the maximum size will be 125 bytes. <br><br>  The string is 255 characters long, max_function_id = 2040. <br><br></div><p>Source: <a href="https://habr.com/ru/post/41458/">https://habr.com/ru/post/41458/</a></p>
+      It is possible in one fell swoop, i.e.  request, get all the available functions and for an array of several hundred elements: <br> <code>"SELECT <br> `group_id`, <br> `function_id` <br> FROM <br> `functions_to_group` <br> WHERE <br> `group_id` in (" .implode(",", $user_groups). ")"</code> <br> <br>  Somehow ugly ... All we need is to check if there is a specific value in the data set.  Here the bit mask is most welcome.  But storing a mask as a whole is no longer an option.  We have 1000 functions. <br>  Nafik number, we need binary data, well, so there is such a function pack (), we just come down. <br>  We write a simple class: <br> <code>class BitMask <br> { <br> function __construct(){} <br> <br> function GetMask($num) <br> { <br> //  0,     <br> if (!$num) <br> { <br> return "\0"; <br> } <br> <br> //          <br> $num--; <br> // -  ,    <br> $null_bytes = floor($num / 8); <br> //     ... <br> $number = pow(2, $num % 8); <br> <br> //     <br> return pack('@' .$null_bytes. 'C', $number); <br> } <br> <br> function InMask($needle, $findIn) <br> { <br> //,      , <br> //..       <br> return (bool)strlen(trim($needle &amp; $findIn, "\0")); <br> } <br> <br> }</code> <br> <br>  Now we pack the whole set of functions for the group in one line, for example, like this: <br> <code>$x = new BitMask(); <br> <br> $group_access = $x-&gt;GetMask(0); <br> <br> while (list($k, $v) = each($_POST['functions_to_group'])) <br> { <br> $group_access |= $x-&gt;GetMask($v); <br> }</code> <br> <br>  Everything.  At the output we get one binary string, which can be stored in the groups table.  When authorizing on the site, we make one request to the groups table: <br> <code>"SELECT <br> `functions_bitmask` <br> FROM <br> `groups` <br> WHERE <br> `group_id` in (" .implode(",", $user_groups). ")"</code> <br> <br>  and add the sets of all user groups bit by bit: <br> <code>$user_private_access = $x-&gt;GetMask(0); <br> <br> while (list($k, $v) = each($user_groups_access)) <br> { <br> $user_private_access |= $v; <br> }</code> <br> <br>  To check if there is access to a function, do this: <br> <code>if ($x-&gt;InMask($x-&gt;GetMask($function_id), $user_private_access)) <br> { <br> //   <br> } <br> else <br> { <br> //   <br> }</code> <br> <br>  maximum size of the binary string = ceil (max_function_id / 8) bytes, <br>  in our case for 1000 items, the maximum size will be 125 bytes. <br><br>  The string is 255 characters long, max_function_id = 2040. <br><br></div><p>Source: https://habr.com/ru/post/41458/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../41449/index.html">Trial year</a></li>
+<li><a href="../4145/index.html">Deputies went to the record for the sale</a></li>
 <li><a href="../41451/index.html">Pass-through authorization from Windows to Linux</a></li>
 <li><a href="../41454/index.html">While Sape is resting ...</a></li>
 <li><a href="../41455/index.html">What prevents work?</a></li>
 <li><a href="../41457/index.html">The beginning of a new era. bigmir) net came to Belarus.</a></li>
+<li><a href="../4146/index.html">Windows Live Messenger is promoted through word of mouth</a></li>
 <li><a href="../41460/index.html">Steampunk Mobile</a></li>
 <li><a href="../41461/index.html">Rambler launches the most expensive advertising campaign in the history of Runet</a></li>
 <li><a href="../41462/index.html">XSPF is the perfect format for playlists.</a></li>
 <li><a href="../41464/index.html">MemcacheDB and MemcacheQ are key components of a high-performance infrastructure</a></li>
-<li><a href="../41467/index.html">World of Warcraft bots developer to pay a fine</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

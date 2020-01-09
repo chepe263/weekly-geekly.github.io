@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Ubuntu 9.10. Encrypted root FS, opening via SSH</h1><div class="post__text post__text-html js-mediator-article">  The last couple of years I have been encrypting all the data on my computers.  OS which I use - <a href="http://www.ubuntu.com/">Ubuntu</a> .  For several years, from 2000 to 2005, I installed <a href="http://www.debian.org/">Debian</a> , but I was somewhat tired of waiting for releases that were released every few years.  Moved to Ubuntu. <br><br>  The most convenient was such a setup.  The disk is divided into 2 main (primary) partitions - the first, 1GB in size for / boot;  the second is all the remaining disk space for the physical volume (PV) encrypted by LUKS.  The root file system is on a logical volume (LV), in the group (VG) of which the encrypted volume belongs. <br><br><a name="habracut"></a>  How to put Ubuntu on encrypted LVM I will write a little later, in the next post.  There is an article on the <a href="http://forums.linuxmint.com/">LinuxMint forum</a> - <a href="http://forums.linuxmint.com/viewtopic.php%3Ff%3D42%26amp%3Bt%3D40961%26amp%3Bp%3D235468">installing Mint on LVM</a> .  In principle, this article is sufficient.  Ubuntu Server is installed in a similar way. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Written here, is applicable only for Ubuntu 9.10 Karmic Koala and its derivatives - <a href="http://linuxmint.com/">LinuxMint</a> eighth version, for example.  As for the other OS - I do not know.  In previous versions of Ubuntu, I used <a href="http://debian.mandel.name/template/etc/initramfs-tools/hooks/dropbear">the dropbear script</a> , which I used to link to <a href="http://slava.pp.ru/blog/26">here</a> .  In Karmika this script will not work. <br><br>  To download, you need to open the root file system - you have to enter a password.  Hands  If the computer is difficult to reach - it is in the data center, or it does not have a monitor, then you can configure the launch of SSH in the environment of initramfs - before the root is mounted.  SSH server - <a href="http://matt.ucc.asn.au/dropbear/dropbear.html">Dropbear</a> , it is easier to include in the initramfs.  Easier than OpenSSH.  After opening the encrypted volume, dropbear is killed.  Further, during the boot process, OpenSSH is launched. <br><br>  From this point, we will assume that the system is already installed, working, the encrypted file system is opened from the console, the OpenSSH server is installed. <br>  The host name is host22, the IP is 10.11.0.22/24, the gateway is 10.11.0.1. <br>  The contents of / etc / crypttab looks like this: <br><br><pre>  host22_pv / dev / disk / by-uuid / 94d85942-2089-4287-9b64-f436b50637cd none luks </pre><br>  Install Dropbear: <code>apt-get install dropbear</code> .  The package includes scripts for initramfs, in the installation process - at the stage of package setup, <code>update-initramfs</code> .  After the reboot, dropbear will start at the initramfs stage.  Everything is good, but ... It is better to take a file, and a little tweak the settings. <br><br>  When installing, Dropbear generates new server keys.  Plus, when you first run update-initramfs, it generates new keys for initramfs.  If OpenSSH is used as the SSH server, then it is logical to use its keys, converting them to the Dropbear format: <br><br><pre>  / usr / lib / dropbear / dropbearconvert openssh dropbear / etc / ssh / ssh_host_rsa_key / etc / dropbear_rsa_host_key
@@ -97,11 +97,11 @@
  / sbin / pkill / sbin / dropbear
  EOF
 
- chmod 0700 $ {DESTDIR} / sbin / unlockpv </pre><br>  After saving <code>unlockpv</code> will <code>unlockpv</code> to update the initramfs: <br><br><pre>  update-initramfs -c -k`uname -r` </pre><br>  Now, to open a volume, it will be sufficient to execute the <code>/sbin/unlockpv</code> . <br><br>  Update  02/24/2010 23:50.  The text of the script <code>/etc/initramfs-tools/hooks/unlockpv</code> was not fully cited - perhaps due to the fact that I did not specify the parenthesis in the expression <code>cat &gt;${DESTDIR}/sbin/unlockpv &lt;&lt;EOF</code> .  All that goes further - the contents of <code>/sbin/unlockpv</code> have been cut off.  Corrected.  I apologize for the inaccuracy. </div><p>Source: <a href="https://habr.com/ru/post/85359/">https://habr.com/ru/post/85359/</a></p>
+ chmod 0700 $ {DESTDIR} / sbin / unlockpv </pre><br>  After saving <code>unlockpv</code> will <code>unlockpv</code> to update the initramfs: <br><br><pre>  update-initramfs -c -k`uname -r` </pre><br>  Now, to open a volume, it will be sufficient to execute the <code>/sbin/unlockpv</code> . <br><br>  Update  02/24/2010 23:50.  The text of the script <code>/etc/initramfs-tools/hooks/unlockpv</code> was not fully cited - perhaps due to the fact that I did not specify the parenthesis in the expression <code>cat &gt;${DESTDIR}/sbin/unlockpv &lt;&lt;EOF</code> .  All that goes further - the contents of <code>/sbin/unlockpv</code> have been cut off.  Corrected.  I apologize for the inaccuracy. </div><p>Source: https://habr.com/ru/post/85359/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../85343/index.html">Forced modding DSL modem D-Link 2600U</a></li>
+<li><a href="../8535/index.html">DrugMe.ru: Medical Web 2.0</a></li>
 <li><a href="../85351/index.html">Results of the contest Cyber.video</a></li>
 <li><a href="../85352/index.html">Where to make a cover for a DVD?</a></li>
 <li><a href="../85354/index.html">How to buy goods on ebay</a></li>

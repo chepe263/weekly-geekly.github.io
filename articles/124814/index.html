@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Brakes iPhone 3G and consolidated.db</h1><div class="post__text post__text-html js-mediator-article"> About six months ago, I finally decided to put iOS 4.2.1 on my iPhone 3G (where I was 3.1.3 for a long time), and at first the rumors about unprecedented brakes seemed either an exaggeration or a <i>flaw in</i> 4.0. <br>  However, after a couple of months, everything began to slow down too indecently. <br>  Googled, disabled Spotlight, did not help. <br>  It was obvious that the main problems were related to the Location services, it was enough to turn it on, sometimes it was not possible to answer the call even a few minutes after the card was closed. <br>  Applications did not start, although Springboard was alive. <br>  By top or free it was not clear what the plug was. <br>  Google offers to make Reset Location Warnings - it helped, but not for long, the very next day everything returned to its former state.  We had to keep the Location Services turned off, and when navigation was very necessary - prepare for a long time to wait. <br>  And then I remembered the story with consolidated.db.  Once the information about all movements (as it was written in the news) is saved in sqlite, for sure the base quickly becomes large and starts to slow down. <br><a name="habracut"></a><br>  I found two whole consolidated.db: <br> <code>iPhone:~ root# find / -iname consolidated* | xargs ls -l <br> -rw-r--r-- 1 root wheel 19036160 Oct 22 2010 /System/Library/Frameworks/CoreLocation.framework/Support/consolidated.db <br> -rw-r--r-- 1 root wheel 12611584 Jul 23 22:21 /private/var/root/Library/Caches/locationd/consolidated.db <br></code> <br>  The first one, though more, has not been updated for a long time, and the second is similar to what we are looking for. <br>  I open it on the computer in the SQLite Database Browser - in the WifiLocation and CellLocation tables in the amount of about 100 thousand records, the coordinates are similar to my location.  I struggle with the desire to glue them into a track and put them on a map - now this is not the point :) <br>  I do <br> <code>delete from wifilocation; <br> delete from celllocation; <br> update wifilocationcounts set count=0; <br> update celllocationcounts set count=0; <br></code> <br>  (for this, I had to take console sqlite3, which I later installed on the iPhone itself. It cannot do Truncate table.) <br>  I do just in case vacuum.  The file was reduced to 4 MB, still a lot, but should already be noticeable. <br>  I poured the file back, I turned on locationd - it seemed to zashevilis.  It ends at 10-20 seconds instead of a few minutes (this is visible in the top, as well as the icon with the arrow in the Status Bar, in the upper right corner next to the battery). <br>  I try to erase it completely - maybe this fuss with sqlite is not needed in practice.  And locationd re-creates it (not immediately on startup, but after a while), and again everything works. <br><br>  Thus, if the location is hampered in the iPhone, and you have a jailbreak, you can try to cure it with <br>  iPhone: ~ root # rm /private/var/root/Library/Caches/locationd/consolidated.db <br><br>  As for the second consolidated.db from / System / Library, it contains various coordinates of GSM and WiFi base stations, mainly in the western hemisphere.  Also, all entries have timestamp = 0.  Perhaps this base should speed up navigation at demonstrations in Cupertino :) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>PS</b> If you set sshd - do not forget immediately, <b>immediately</b> change the passwords of the root and mobile <s>and throw in your public key</s> <br><br>  <b>PPS</b> <s>You can set 000 rights to it and forget until the next flashing.</s> <s><br></s>  <s>chmod 0 /private/var/root/Library/Caches/locationd/consolidated.db</s> <br>  Not tested, but <a href="http://habrahabr.ru/blogs/apple/124814/">they say</a> that this is not enough, and it is best to replace it with a folder <br> <code>rm /private/var/root/Library/Caches/locationd/consolidated.db <br> mkdir /private/var/root/Library/Caches/locationd/consolidated.db</code> </div><p>Source: <a href="https://habr.com/ru/post/124814/">https://habr.com/ru/post/124814/</a></p>
+      <b>PS</b> If you set sshd - do not forget immediately, <b>immediately</b> change the passwords of the root and mobile <s>and throw in your public key</s> <br><br>  <b>PPS</b> <s>You can set 000 rights to it and forget until the next flashing.</s> <s><br></s>  <s>chmod 0 /private/var/root/Library/Caches/locationd/consolidated.db</s> <br>  Not tested, but <a href="http://habrahabr.ru/blogs/apple/124814/">they say</a> that this is not enough, and it is best to replace it with a folder <br> <code>rm /private/var/root/Library/Caches/locationd/consolidated.db <br> mkdir /private/var/root/Library/Caches/locationd/consolidated.db</code> </div><p>Source: https://habr.com/ru/post/124814/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../124808/index.html">Neither tail, nor scales, or as a hobby can be a successful project.</a></li>
 <li><a href="../124809/index.html">Simplify life: C # auto-unpacking service</a></li>
+<li><a href="../12481/index.html">Gmail download acceleration</a></li>
 <li><a href="../124810/index.html">AnonPlus social network from Anonymous hacked</a></li>
 <li><a href="../124811/index.html">Google is going to open an office in Indonesia</a></li>
 <li><a href="../124812/index.html">Mixcloud - mixes in the cloud</a></li>
@@ -75,7 +75,7 @@
 <li><a href="../124820/index.html">Prolog - examples of use (Part 2)</a></li>
 <li><a href="../124822/index.html">Mind is waiting</a></li>
 <li><a href="../124826/index.html">How much does the lobby</a></li>
-<li><a href="../124833/index.html">Microsoft Introduces Windows Azure Accelerator for Web Roles</a></li>
+<li><a href="../12483/index.html">Do it yourself: print it out and collect a pig for yourself ... that moves</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

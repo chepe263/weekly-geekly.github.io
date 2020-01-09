@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Dock the components in JavaScript</h1><div class="post__text post__text-html js-mediator-article"> After the note “ <a href="http://webo.in/articles/habrahabr/77-coupling-async-scripts/">We are joining asynchronous scripts</a> and the proposed solution from Steve Souders, I thought about modular loading of some complex JavaScript application.  And I realized that the proposed approach in this case would be rather cumbersome: we will need to insert the loader of the following modules at the end of each module.  And if we need different sets of modules and different logic of their loading on different pages?  Dead end? <br><br>  But no.  No wonder Steve mentions at the very beginning of his note on the <code>onload</code> / <code>onreadystatechange</code> for scripts.  Using them, we can uniquely bind some code to the end of loading of a specific module.  Things are simple: we need to define this very code in some way. <br><br><h3>  Solution one: boot tree </h3>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       As the easiest way to determine the order of loading modules on a specific page, you can offer a global array containing a dependency tree.  For example, such: <br><a name="habracut"></a><br><blockquote><pre>  var modules = [
@@ -125,20 +125,20 @@
  &lt;/ div&gt; </pre></blockquote><br><br>  Let's see what kind of boot logic it provides: <br><br><ol><li>  During initialization, YASS bypasses the DOM tree of the document and selects all nodes with the <code>yass-module-*</code> class. </li><li>  After that, 2 module load streams are generated: for <code>utils-base-dom</code> and for <code>dom</code> .  And in the latter case of loading, in fact, it will not be: the loader waits until the state of the <code>dom</code> component is set to <code>loaded</code> , and only then runs (via <code>eval</code> ) the code recorded in the <code>title</code> this element (in this case, it is a <code>span</code> ). </li><li>  The first download stream will asynchronously call 3 files from the server: <code>yass.dom.js</code> , <code>yass.base.js</code> and <code>yass.utils.js</code> .  By loading <strong>all of</strong> these modules (because they are called in the dependency chain, in this case the <code>dom</code> depends on the <code>base</code> , which depends on the <code>utils</code> ) the corresponding initialization functions will be called (if defined).  Thus, two types of handlers are possible: directly on the component load (to be called for all components in the chain) and after loading the entire specified chain of components (in our case, it is <code>utils-base-dom</code> ). </li><li>  If we want to somehow expand our chain, then at the end of each of the specified files, we can prescribe the loading of some other chain (for example, <code>base-callbacks</code> ), which will “freeze” the loading of the <code>base</code> module before receiving <code>callbacks</code> .  This can be done (bearing in mind that we expand the dependencies of the <code>base</code> module) as follows: <br><blockquote><pre>  _.load ('callbacks-base'); </pre></blockquote></li><li>  The previous step can also be performed using the DOM-Tree itself: we will need to prescribe the <code>yass-module-callbacks-base</code> class for an arbitrary element.  This will add the desired chain to the dependency tree. </li></ol><br><br>  For greater clarity, the final tree of loadable modules described above can be represented as follows: <br><br><blockquote><pre>  dom
    -&gt; base
 	   -&gt; utils
-	   -&gt; callbacks </pre></blockquote><br><br>  Moreover, the next page presents the <a href="http://webo.in/tests/yass-tree-load/">process of loading a more complex version of the tree</a> .  Caution: there are no delays, so it can work very quickly :) <br><br>  Naturally, all the specified functionality has already been added to the latest version of <a href="http://yass.webo.in/">YASS</a> .  You can start using and writing reviews. <br><br>  PS JSX site is still (scared habraeffekt?), You can try to get information from the <a href="http://www.google.com/search%3Fhl%3Den%26client%3Dfirefox-a%26rls%3Dorg.mozilla%253Aru%253Aofficial%26hs%3DWPB%26q%3Dsite%253Ajsx.ru%26btnG%3DSearch">Google cache</a> </div><p>Source: <a href="https://habr.com/ru/post/49245/">https://habr.com/ru/post/49245/</a></p>
+	   -&gt; callbacks </pre></blockquote><br><br>  Moreover, the next page presents the <a href="http://webo.in/tests/yass-tree-load/">process of loading a more complex version of the tree</a> .  Caution: there are no delays, so it can work very quickly :) <br><br>  Naturally, all the specified functionality has already been added to the latest version of <a href="http://yass.webo.in/">YASS</a> .  You can start using and writing reviews. <br><br>  PS JSX site is still (scared habraeffekt?), You can try to get information from the <a href="http://www.google.com/search%3Fhl%3Den%26client%3Dfirefox-a%26rls%3Dorg.mozilla%253Aru%253Aofficial%26hs%3DWPB%26q%3Dsite%253Ajsx.ru%26btnG%3DSearch">Google cache</a> </div><p>Source: https://habr.com/ru/post/49245/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../49237/index.html">The Internet is growing by Moore's law</a></li>
 <li><a href="../49238/index.html">First design steps</a></li>
 <li><a href="../49239/index.html">[Steve Jobs] Information Wars</a></li>
+<li><a href="../4924/index.html">Autonet Mobile: First Car Internet Provider</a></li>
 <li><a href="../49242/index.html">What is our life ... Game</a></li>
 <li><a href="../49244/index.html">[Steve Jobs] Macworld-2009</a></li>
 <li><a href="../49246/index.html">The new Android phone HTC will be better than the iPhone and Palm Pre</a></li>
 <li><a href="../49247/index.html">Favicon for any site in PNG</a></li>
 <li><a href="../49249/index.html">Macbuntu :)</a></li>
+<li><a href="../4925/index.html">"Adult" sites want to move to the domain. XXX</a></li>
 <li><a href="../49250/index.html">Which is better: 32 or 64 bits?</a></li>
-<li><a href="../49251/index.html">SPAM on GMail? For the first time I see.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

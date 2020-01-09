@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Taming the triceps dragon or how authentication in Bacula works</h1><div class="post__text post__text-html js-mediator-article">  Greetings, Habravchane. <br><br>  <a href="http://www.bacula.org/">Bacula</a> is a cross-platform client-server software that allows you to manage backup, recovery, and data verification over the network for computers and operating systems of various types.  ( <a href="http://ru.wikipedia.org/wiki/Bacula">Wikipedia</a> ) <br><br>  In general, I contacted the baculy quite by accident.  I have always preferred self-written scripts for backups and monitoring their execution by nagios, since  all the specialized tools (Bacula, Amanda, etc.) seemed to me architecturally too complex, which themselves, because of their complexity, require that they be backed up.  But once, by politics from above, they put us on ARCserve.  Having played a little with this monster, I returned to Bacula and realized that Bacula is the height of grace and simplicity. <br><a name="habracut"></a><br>  The only problem for me with Bacula was the magic of setting up authentication.  It was just like magic, here I have prescribed something - it works, here I have changed something - it does not work.  The point was that: <br>  1) it is not clear who is connected to whom; <br>  2) which fields from the configuration file does this someone use for authentication. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      No schemes and documentation found on the Internet did not give an exhaustive answer, and I decided to figure it out myself, changing the service settings many times and checking it works / does not work.  In common people - "scientific tyk." <br><br> <a href=""><img src="https://habrastorage.org/storage2/51e/88e/33f/51e88e33f662365cc0c3396cdd2bfc22.png"></a> <br><br><h4>  Objects in the diagram </h4><br>  Backup Server - backup management server <br>  Storage Server - server managing storage (storage can be either a tape drive or a disk array) <br>  Admin PC - admin computer with utilities for server management <br>  Backup Monitor - a computer with a program that monitors servers and clients <br>  Client PC - the computer that needs to be backed up <br><br><h4>  Who is connected to whom </h4><br>  From what has so far been found out: <br>  - Director connects to Client and Storage <br>  - Client connects to Storage (during the backup process) <br>  - Bacula Tray Monitor connects directly to Director, Client and Storage <br>  - Bacula Console connects only to Director <br>  - Storage independently, like, does not connect to anyone <br><br><h4>  Authentication </h4><br>  See the diagram above and note: <br>  - that <font color="red">red</font> arrows indicate <font color="red">server authentication at storage and client</font> , <font color="blue">blue</font> arrow - <font color="blue">connection of the management console to the server</font> , and <font color="green">green</font> (optional part) - <font color="green">connection of the monitoring utility to all services</font> (server, storage and client). <br>  - on where and how IP addresses are registered <br>  - that in the settings of services it is necessary to comment out DirAddress, SDAddress and FDAddress = 127.0.0.1 (for services to listen for connections to 0.0.0.0, that is, on all interfaces) <br><br><h4>  What other parameters of some services should match the parameters of other </h4><br>  As it has now become clear, in addition to the parameters involved in authentication (see diagram) and IP addresses, only “Device = Filestorage” and “Media Type = File” in the Director settings must match the settings of the Storage.  All other parameters do not affect anything and are used only within the corresponding configuration files (some of them are designated in the diagram as anyname1, anyname2, etc.). <br><br>  Works were carried out with: <br>  - Ubuntu Server 04/12/1 <br>  - Bacula 5.2.5 <br><br>  I hope this post will save someone a little time.  Do not forget to persist. </div><p>Source: <a href="https://habr.com/ru/post/157605/">https://habr.com/ru/post/157605/</a></p>
+      No schemes and documentation found on the Internet did not give an exhaustive answer, and I decided to figure it out myself, changing the service settings many times and checking it works / does not work.  In common people - "scientific tyk." <br><br> <a href=""><img src="https://habrastorage.org/storage2/51e/88e/33f/51e88e33f662365cc0c3396cdd2bfc22.png"></a> <br><br><h4>  Objects in the diagram </h4><br>  Backup Server - backup management server <br>  Storage Server - server managing storage (storage can be either a tape drive or a disk array) <br>  Admin PC - admin computer with utilities for server management <br>  Backup Monitor - a computer with a program that monitors servers and clients <br>  Client PC - the computer that needs to be backed up <br><br><h4>  Who is connected to whom </h4><br>  From what has so far been found out: <br>  - Director connects to Client and Storage <br>  - Client connects to Storage (during the backup process) <br>  - Bacula Tray Monitor connects directly to Director, Client and Storage <br>  - Bacula Console connects only to Director <br>  - Storage independently, like, does not connect to anyone <br><br><h4>  Authentication </h4><br>  See the diagram above and note: <br>  - that <font color="red">red</font> arrows indicate <font color="red">server authentication at storage and client</font> , <font color="blue">blue</font> arrow - <font color="blue">connection of the management console to the server</font> , and <font color="green">green</font> (optional part) - <font color="green">connection of the monitoring utility to all services</font> (server, storage and client). <br>  - on where and how IP addresses are registered <br>  - that in the settings of services it is necessary to comment out DirAddress, SDAddress and FDAddress = 127.0.0.1 (for services to listen for connections to 0.0.0.0, that is, on all interfaces) <br><br><h4>  What other parameters of some services should match the parameters of other </h4><br>  As it has now become clear, in addition to the parameters involved in authentication (see diagram) and IP addresses, only “Device = Filestorage” and “Media Type = File” in the Director settings must match the settings of the Storage.  All other parameters do not affect anything and are used only within the corresponding configuration files (some of them are designated in the diagram as anyname1, anyname2, etc.). <br><br>  Works were carried out with: <br>  - Ubuntu Server 04/12/1 <br>  - Bacula 5.2.5 <br><br>  I hope this post will save someone a little time.  Do not forget to persist. </div><p>Source: https://habr.com/ru/post/157605/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../157593/index.html">Versatility vs. usability</a></li>
 <li><a href="../157595/index.html">Overview of the program for auditing Microsoft SQL Server-NetWrix SQL Server Change Reporter 2.5</a></li>
 <li><a href="../157597/index.html">We're friends of System.Web.Optimization Bundle with Windows Azure Storage</a></li>
 <li><a href="../157599/index.html">Creating a Cocos2D-x project in the Marmalade SDK</a></li>
+<li><a href="../1576/index.html">Allbanks.Ru has a new owner</a></li>
 <li><a href="../157603/index.html">How to become a millionaire in the AppStore or a few formulas about promotion and sales. Part 1</a></li>
 <li><a href="../157607/index.html">Control of mobile expenses within the organization</a></li>
 <li><a href="../157609/index.html">EPAM IT Share # 2: Can you Kanban? Fault tolerance</a></li>
+<li><a href="../15761/index.html">Sybase PowerDesigner - one of the best UML design tools</a></li>
 <li><a href="../157611/index.html">NVIDIA turned to Linux</a></li>
 <li><a href="../157613/index.html">So how to delete millions of files from one folder?</a></li>
-<li><a href="../157615/index.html">Implementing a Singleton design pattern for PHP 5.4</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Mikrotik and GNS3</h1><div class="post__text post__text-html js-mediator-article">  Good day, Habr! <br><br>  All have already seen, and successfully use such an emulator as GNS3, which represents great opportunities for beginners who want to deal with this or that equipment, but do not have physical access to it.  Or try to implement some kind of combat scheme, debug, check, and then send it to production. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/e5c/7fc/a6b/e5c7fca6ba09fd3fa48fcea268bf46e3.jpg">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Recently, on Habré appear interesting articles on working with equipment Mikrotik.  Not everything can be tried on real hardware, so I had a question - is it possible to emulate it too?  As it turned out, Mikrotik itself is not lagging behind in this matter, and invites us to try ... <br><a name="habracut"></a><br><div class="spoiler">  <b class="spoiler_title">I want too</b> <div class="spoiler_text"><img src="https://habrastorage.org/getpro/habr/post_images/92f/90c/e3c/92f90ce3c1a4b4725d6aec7e7c741b72.jpg"><br></div></div><br>  For network emulation we are offered - <a href="http://www.gns3.net/">GNS3</a> <br>  For hardware simulation - <a href="http://qemu.org/">Qemu</a> <br>  And the image of RouterOS for x86 systems - <a href="http://www.mikrotik.com/download/">RouterOS</a> <br><br>  1. First, we need to prepare an image of a virtual hard disk, which later we will install RouterOS.  To do this, you must use the <b>qemu-img utility.</b> <br><br> <code>qemu-img create [-f format] filename [size]</code> <br> <br>  It will be enough for us to create a simple image in qcow2 format in the size of 1G <br>  Qcow2 is a QEMU disk image format.  The name is an abbreviation of the name of the Copy-On-Write format (copy on write). <br><br>  To do this, run the command <br><br> <code>qemu-img.exe create -f qcow2 mikrotik.img 1G</code> <br> <br>  <i>* The image is created in the current folder.</i>  <i>For convenience, after installing the OS, it should be moved to the folder with the GNS3 project, or to any other place convenient for you</i> <br><br>  2. Next, you need to install RouterOS on our virtual hard disk image. <br>  For this we use the <b>qemu</b> utility. <br><br> <code>qemu [option][disk_image]</code> <br> <br>  There are many options for the utility, we need: <br>  <b>-boot [a | c | d | n]</b> <br>  <i>Boot on floppy (a), hard disk (c), CD-ROM (d), or Etherboot (n).</i>  <i>Hard disk boot is the default.</i> <br>  <b>-cdrom file</b> <br>  <i>Use file as CD-ROM image (you can't use -hdc and -cdrom at the same time).</i>  <i>You can use the host CD-ROM by using / dev / cdrom as filename.</i> <br><br> <code>qemu.exe mikrotik.img -boot d -cdrom &lt;__&gt;/mikrotik.iso</code> <br> <br>  The qemu interface will start, and if everything is completed successfully, we will see an invitation to select the necessary components.  Click <b>“i”</b> to install. <br><br>  3. Now we need to add our new device to GNS3 itself. <br>  Go to <b>Edit → Symbol Manager</b> <br>  Add the icon of the router, add the name Mikrotik (Name) to it, and select the type Quemu guest.  Do not forget to click Apply to save the changes. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/03b/840/7b6/03b8407b6830ef2a6621d54925d08b62.jpg"><br><br>  4. We also need to connect our hard disk image. <br>  Go to Edit → Preferences → Qemu <br>  Select the name, path to the image, the amount of memory, the number and type of network interface. <br>  Click Save. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/58d/a64/1ec/58da641ec4d6db2a38af29f934f8f6f9.jpg"><br><br>  That's all.  Our "stand" is ready for battle. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/85a/471/aab/85a471aab5ee799885a60baf49918b85.jpg"><br><br>  Have a good learning! </div><p>Source: <a href="https://habr.com/ru/post/225639/">https://habr.com/ru/post/225639/</a></p>
+      Recently, on Habré appear interesting articles on working with equipment Mikrotik.  Not everything can be tried on real hardware, so I had a question - is it possible to emulate it too?  As it turned out, Mikrotik itself is not lagging behind in this matter, and invites us to try ... <br><a name="habracut"></a><br><div class="spoiler">  <b class="spoiler_title">I want too</b> <div class="spoiler_text"><img src="https://habrastorage.org/getpro/habr/post_images/92f/90c/e3c/92f90ce3c1a4b4725d6aec7e7c741b72.jpg"><br></div></div><br>  For network emulation we are offered - <a href="http://www.gns3.net/">GNS3</a> <br>  For hardware simulation - <a href="http://qemu.org/">Qemu</a> <br>  And the image of RouterOS for x86 systems - <a href="http://www.mikrotik.com/download/">RouterOS</a> <br><br>  1. First, we need to prepare an image of a virtual hard disk, which later we will install RouterOS.  To do this, you must use the <b>qemu-img utility.</b> <br><br> <code>qemu-img create [-f format] filename [size]</code> <br> <br>  It will be enough for us to create a simple image in qcow2 format in the size of 1G <br>  Qcow2 is a QEMU disk image format.  The name is an abbreviation of the name of the Copy-On-Write format (copy on write). <br><br>  To do this, run the command <br><br> <code>qemu-img.exe create -f qcow2 mikrotik.img 1G</code> <br> <br>  <i>* The image is created in the current folder.</i>  <i>For convenience, after installing the OS, it should be moved to the folder with the GNS3 project, or to any other place convenient for you</i> <br><br>  2. Next, you need to install RouterOS on our virtual hard disk image. <br>  For this we use the <b>qemu</b> utility. <br><br> <code>qemu [option][disk_image]</code> <br> <br>  There are many options for the utility, we need: <br>  <b>-boot [a | c | d | n]</b> <br>  <i>Boot on floppy (a), hard disk (c), CD-ROM (d), or Etherboot (n).</i>  <i>Hard disk boot is the default.</i> <br>  <b>-cdrom file</b> <br>  <i>Use file as CD-ROM image (you can't use -hdc and -cdrom at the same time).</i>  <i>You can use the host CD-ROM by using / dev / cdrom as filename.</i> <br><br> <code>qemu.exe mikrotik.img -boot d -cdrom &lt;__&gt;/mikrotik.iso</code> <br> <br>  The qemu interface will start, and if everything is completed successfully, we will see an invitation to select the necessary components.  Click <b>“i”</b> to install. <br><br>  3. Now we need to add our new device to GNS3 itself. <br>  Go to <b>Edit → Symbol Manager</b> <br>  Add the icon of the router, add the name Mikrotik (Name) to it, and select the type Quemu guest.  Do not forget to click Apply to save the changes. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/03b/840/7b6/03b8407b6830ef2a6621d54925d08b62.jpg"><br><br>  4. We also need to connect our hard disk image. <br>  Go to Edit → Preferences → Qemu <br>  Select the name, path to the image, the amount of memory, the number and type of network interface. <br>  Click Save. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/58d/a64/1ec/58da641ec4d6db2a38af29f934f8f6f9.jpg"><br><br>  That's all.  Our "stand" is ready for battle. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/85a/471/aab/85a471aab5ee799885a60baf49918b85.jpg"><br><br>  Have a good learning! </div><p>Source: https://habr.com/ru/post/225639/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,11 +73,11 @@
 <li><a href="../225633/index.html">DevConf 2014 - will be held this Saturday. New Storage section - will reveal all the secrets of data storage</a></li>
 <li><a href="../225635/index.html">C ++ drivers for STM8L051F3</a></li>
 <li><a href="../225637/index.html">Ideas underlying responsive emails</a></li>
+<li><a href="../22564/index.html">I'm scared</a></li>
 <li><a href="../225641/index.html">New Optional class in Java 8, not a panacea for NullPointerException</a></li>
 <li><a href="../225643/index.html">Antenna for Wi-Fi on your knee in 10 minutes</a></li>
 <li><a href="../225645/index.html">Development of Iframe applications on VK API. From the first cones to the two millionth audience</a></li>
 <li><a href="../225647/index.html">IText: we take out the text from PDF</a></li>
-<li><a href="../225649/index.html">Creating a custom component based on a ListView</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Properly set up a DLNA server for Samsung TVs</h1><div class="post__text post__text-html js-mediator-article">  Hello, dear habravchane!  I am the proud owner of a Samsung TV with AllShare function.  For the convenience of watching videos over the network from my home server, I picked up a minidlna.  However, for several months, I was never able to achieve stable operation of the Samsung + minidlna bundle: playback over the network was suddenly interrupted at different intervals and the server itself was not always and not immediately detected by the TV.  Breaking a bunch of forums and having tried many different options and options (including the mediatomb server), I did find a working solution. <br><a name="habracut"></a><br><br><h4>  1. Problem with server unavailability </h4><br>  In this <a href="http://habrahabr.ru/post/152763/">post</a> , a solution to the indicated problem has already been cited: the author proposes to reduce notify_interval, because the TV does not want to poll the network for the presence of DLNA servers.  However, in my case, tcpdump honestly outputted a bunch of ssdp packets when you turned on the TV, but the server did not show up on the TV.  Googling, I found that on the network interface on which the minidlna hangs, you need to enable multicast and set the broadcast address, which I did: <br><pre><code class="hljs sql">ip link <span class="hljs-keyword"><span class="hljs-keyword">set</span></span> br0 multicast <span class="hljs-keyword"><span class="hljs-keyword">on</span></span> ip <span class="hljs-keyword"><span class="hljs-keyword">link</span></span> <span class="hljs-keyword"><span class="hljs-keyword">set</span></span> br0 broadcast <span class="hljs-number"><span class="hljs-number">192.168</span></span><span class="hljs-number"><span class="hljs-number">.1</span></span><span class="hljs-number"><span class="hljs-number">.255</span></span></code> </pre> <br>  Voila!  After restarting the network, the TV quietly discovered the minidlna! <br><br><h4>  2. Problem with video interruption over the network </h4><br>  This is where notify_interval comes in handy.  Only it must not be reduced, but increased.  The thing is that, as far as I understand, the SSDP protocol involves sending the server alive packets, in the header of which the max-age parameter is transmitted.  And if after the time specified in max-age, a new alive-package does not come, the TV breaks the connection. <br>  A snippet of code from miniddna’s minissdp.c file, from which it can be seen that the max-age parameter is taken as notify_interval + 10: <br><div class="spoiler">  <b class="spoiler_title">Hidden text</b> <div class="spoiler_text"><pre> <code class="hljs lisp">l = snprintf(<span class="hljs-name"><span class="hljs-name">buf</span></span>, sizeof(<span class="hljs-name"><span class="hljs-name">buf</span></span>), <span class="hljs-string"><span class="hljs-string">"HTTP/1.1 200 OK\r\n"</span></span> <span class="hljs-string"><span class="hljs-string">"CACHE-CONTROL: max-age=%u\r\n"</span></span> <span class="hljs-string"><span class="hljs-string">"DATE: %s\r\n"</span></span> <span class="hljs-string"><span class="hljs-string">"ST: %s%s\r\n"</span></span> <span class="hljs-string"><span class="hljs-string">"USN: %s%s%s%s\r\n"</span></span> <span class="hljs-string"><span class="hljs-string">"EXT:\r\n"</span></span> <span class="hljs-string"><span class="hljs-string">"SERVER: "</span></span> MINIDLNA_SERVER_STRING <span class="hljs-string"><span class="hljs-string">"\r\n"</span></span> <span class="hljs-string"><span class="hljs-string">"LOCATION: http://%s:%u"</span></span> ROOTDESC_PATH <span class="hljs-string"><span class="hljs-string">"\r\n"</span></span> <span class="hljs-string"><span class="hljs-string">"Content-Length: 0\r\n"</span></span> <span class="hljs-string"><span class="hljs-string">"\r\n"</span></span>, (<span class="hljs-name"><span class="hljs-name">runtime_vars</span></span>.notify_interval&lt;&lt;1)<span class="hljs-number"><span class="hljs-number">+10</span></span>, szTime, known_service_types[st_no], (<span class="hljs-name"><span class="hljs-name">st_no&gt;1</span></span>?<span class="hljs-string"><span class="hljs-string">"1"</span></span>:<span class="hljs-string"><span class="hljs-string">""</span></span>), uuidvalue, (<span class="hljs-name"><span class="hljs-name">st_no&gt;0</span></span>?<span class="hljs-string"><span class="hljs-string">"::"</span></span>:<span class="hljs-string"><span class="hljs-string">""</span></span>), (<span class="hljs-name"><span class="hljs-name">st_no&gt;0</span></span>?known_service_types[st_no]:<span class="hljs-string"><span class="hljs-string">""</span></span>), (<span class="hljs-name"><span class="hljs-name">st_no&gt;1</span></span>?<span class="hljs-string"><span class="hljs-string">"1"</span></span>:<span class="hljs-string"><span class="hljs-string">""</span></span>), host, (<span class="hljs-name"><span class="hljs-name">unsigned</span></span> int)port)<span class="hljs-comment"><span class="hljs-comment">;</span></span></code> </pre> </div></div><br>  Thus, if for some reason the new alive package did not reach the TV in the time specified in max-age, the broadcast will be interrupted.  We use simple workaround - we increase the notify_interval up to several hours: <br><pre> <code class="hljs">notify_interval=10000</code> </pre> <br>  After that, I personally had no more breaks.  I hope that this information is useful to someone else. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      PS For mediatomb, you need to correct the parameter alive in config.xml. <br><br>  <b>UPD:</b> I found a great <a href="http://www.linux.org.ru/forum/admin/6966685">tip</a> on the net: it is advised to disable multicast_snooping to solve problems with multicast: <br><pre> <code class="hljs ruby">echo <span class="hljs-number"><span class="hljs-number">0</span></span> &gt; <span class="hljs-regexp"><span class="hljs-regexp">/sys/devices</span></span><span class="hljs-regexp"><span class="hljs-regexp">/virtual/net</span></span><span class="hljs-regexp"><span class="hljs-regexp">/$BRIDGE/bridge</span></span><span class="hljs-regexp"><span class="hljs-regexp">/multicast_snooping</span></span></code> </pre> <br>  Perhaps this will solve all the problems, and asking a huge notify_interval will be superfluous.  I test - accomplish your goal. </div><p>Source: <a href="https://habr.com/ru/post/167723/">https://habr.com/ru/post/167723/</a></p>
+      PS For mediatomb, you need to correct the parameter alive in config.xml. <br><br>  <b>UPD:</b> I found a great <a href="http://www.linux.org.ru/forum/admin/6966685">tip</a> on the net: it is advised to disable multicast_snooping to solve problems with multicast: <br><pre> <code class="hljs ruby">echo <span class="hljs-number"><span class="hljs-number">0</span></span> &gt; <span class="hljs-regexp"><span class="hljs-regexp">/sys/devices</span></span><span class="hljs-regexp"><span class="hljs-regexp">/virtual/net</span></span><span class="hljs-regexp"><span class="hljs-regexp">/$BRIDGE/bridge</span></span><span class="hljs-regexp"><span class="hljs-regexp">/multicast_snooping</span></span></code> </pre> <br>  Perhaps this will solve all the problems, and asking a huge notify_interval will be superfluous.  I test - accomplish your goal. </div><p>Source: https://habr.com/ru/post/167723/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../167703/index.html">ShopDataMining - as the last word in increasing site conversion</a></li>
-<li><a href="../167705/index.html">Interview with Alexey Badaev, ex-head of the Russian representation of Apple</a></li>
 <li><a href="../167707/index.html">MeCam - $ 49 flying camera</a></li>
 <li><a href="../167709/index.html">Update for Lumia to Windows Phone 7.8 released</a></li>
 <li><a href="../167717/index.html">Watch HD video without wires</a></li>
+<li><a href="../16772/index.html">Social personality</a></li>
+<li><a href="../167721/index.html">Video digest of the latest gaming industry news | Geek Week # 9</a></li>
 <li><a href="../167725/index.html">Double-edged stick. Do you suffer perfectionism?</a></li>
 <li><a href="../167727/index.html">China is organizing a man-in-the-middle attack against github users</a></li>
+<li><a href="../16773/index.html">Google Maps have added functionality</a></li>
 <li><a href="../167731/index.html">The first victims of critical vulnerabilities Rails: RubyGems.org suffered a hacker attack</a></li>
 <li><a href="../167733/index.html">Once again about multithreading and Python</a></li>
-<li><a href="../167735/index.html">Write reviews without departing from the ticket office!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

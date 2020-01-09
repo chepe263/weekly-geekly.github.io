@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PHP's</h1><div class="post__text post__text-html js-mediator-article">  I want to tell you about some techniques that I use during the development of sites.  Perhaps they will be useful to you. <a name="habracut"></a><br><br><h1>  Placeholders in SQL queries </h1><br>  Surprisingly, in the PHP mysql extension, no placeholders are implemented, which in the SQL query template are in place of the raw data.  The values ​​passed to the placeholders are automatically processed by mysql_real_escape_string (), which saves us from the dangers of SQL injection. <br>  An example of using this mechanism: <br><br> <code>$name = "O'Reilly"; <br> mysql_exec("SELECT * FROM people WHERE name = ?", $name);</code> <br> <br>  Without it, we would have such code: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,15 +61,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>$name = "O'Reilly"; <br> $name = mysql_real_escape_string($name); <br> mysql_query("SELECT * FROM people WHERE name = '$name'");</code> <br> <br>  The advantage of the first method on the face. <br>  And now the code itself: <br><br> <code>function mysql_exec($sql) { <br> <br> $args = func_get_args(); <br> $args = array_map("mysql_real_escape_string", $args); //  mysql_real_escape_string    <br> $sql = str_replace("?", "'%s'", $sql); //       sprintf <br> $args[0] = $sql; <br> $sql = call_user_func_array("sprintf", $args); <br> return mysql_query($sql); <br> <br> }</code> <br> <br><h2>  unregister_globals </h2><br>  It happens that register_globals is enabled, and it is impossible to change, in this case, you can resort to tricks: <br><br> <code>function unregister_globals() { <br> <br> //   ,  register_globals = off <br> if (!ini_get("register_globals")) { <br> return; <br> } <br> <br> //    <br> $allowed = array("GLOBALS", "_COOKIE", "_ENV", "_FILES", "_GET", "_POST", "_SERVER"); <br> //   ... <br> foreach ($GLOBALS as $name =&gt; $value) { <br> if (!in_array($name, $allowed)) { <br> unset($GLOBALS[$name]); <br> } <br> } <br> <br> }</code> <br> <br>  Call this function at the beginning of the script. <br><br><h1>  Fighting magic_quotes </h1><br>  The same applies to magic_quotes_gpc, if it is enabled then you can do the following: <br><br> <code>function magic_quotes_gpc_off() { <br> <br> if (!get_magic_quotes_gpc()) { <br> return; <br> } <br> function array_stripslashes($array) { <br> return is_array($array) ? array_map("array_stripslashes", $array) : stripslashes($array); <br> } <br> $_GET = array_stripslashes($_GET); <br> $_POST = array_stripslashes($_POST); <br> $_COOKIE = array_stripslashes($_COOKIE); <br> <br> }</code> <br> <br>  I hope this information has been useful to anyone. </div><p>Source: <a href="https://habr.com/ru/post/21971/">https://habr.com/ru/post/21971/</a></p>
+     <code>$name = "O'Reilly"; <br> $name = mysql_real_escape_string($name); <br> mysql_query("SELECT * FROM people WHERE name = '$name'");</code> <br> <br>  The advantage of the first method on the face. <br>  And now the code itself: <br><br> <code>function mysql_exec($sql) { <br> <br> $args = func_get_args(); <br> $args = array_map("mysql_real_escape_string", $args); //  mysql_real_escape_string    <br> $sql = str_replace("?", "'%s'", $sql); //       sprintf <br> $args[0] = $sql; <br> $sql = call_user_func_array("sprintf", $args); <br> return mysql_query($sql); <br> <br> }</code> <br> <br><h2>  unregister_globals </h2><br>  It happens that register_globals is enabled, and it is impossible to change, in this case, you can resort to tricks: <br><br> <code>function unregister_globals() { <br> <br> //   ,  register_globals = off <br> if (!ini_get("register_globals")) { <br> return; <br> } <br> <br> //    <br> $allowed = array("GLOBALS", "_COOKIE", "_ENV", "_FILES", "_GET", "_POST", "_SERVER"); <br> //   ... <br> foreach ($GLOBALS as $name =&gt; $value) { <br> if (!in_array($name, $allowed)) { <br> unset($GLOBALS[$name]); <br> } <br> } <br> <br> }</code> <br> <br>  Call this function at the beginning of the script. <br><br><h1>  Fighting magic_quotes </h1><br>  The same applies to magic_quotes_gpc, if it is enabled then you can do the following: <br><br> <code>function magic_quotes_gpc_off() { <br> <br> if (!get_magic_quotes_gpc()) { <br> return; <br> } <br> function array_stripslashes($array) { <br> return is_array($array) ? array_map("array_stripslashes", $array) : stripslashes($array); <br> } <br> $_GET = array_stripslashes($_GET); <br> $_POST = array_stripslashes($_POST); <br> $_COOKIE = array_stripslashes($_COOKIE); <br> <br> }</code> <br> <br>  I hope this information has been useful to anyone. </div><p>Source: https://habr.com/ru/post/21971/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../219697/index.html">DBMS InterSystems Caché 2014.1. Release notes</a></li>
 <li><a href="../219699/index.html">Corridor testing: we get fast feedback on layouts</a></li>
+<li><a href="../2197/index.html">Linux does not violate Microsoft intellectual property rights.</a></li>
 <li><a href="../219705/index.html">The first book about 3D printing in Russian, “Affordable 3D printing for science, education and sustainable development” (Low-cost 3D Printing for Science, Education and Sustainable Development) is ready!</a></li>
 <li><a href="../219707/index.html">More than three are not going to: Blogging will need to register</a></li>
 <li><a href="../219709/index.html">What is a venture and how it works</a></li>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Synchronize profiles between linux systems</h1><div class="post__text post__text-html js-mediator-article"> When the number of machines I constantly logged on ssh reached 3x, I realized that it was not enough for me to <a href="http://habrahabr.ru/blogs/linux/39116/">quickly authorize</a> , and it was time to drag bash aliases, configs to the editor and other elements of the environment to remote systems.  On the other hand, I needed a way not to be confused in numerous tabs with terminals.  As a result, I came to a bunch of scp, screen and color differentiation of hosts :) <br>  Screenshots of the results: <br>  Home system: <br><img src="https://habrastorage.org/storage/640197c9/0e5d3c2f/6c7e7736/784bf417.png"><br>  One of the remote machines: <br><img src="https://habrastorage.org/storage/b33252e6/465f67b8/671d160b/77e04717.png"><br>  Command to sync profile: <br> <code>$ profsync</code> <br>  Details under the cut. <br><a name="habracut"></a><br><br>  The first thing I did was to divide the profile into general and local (see screenshots), and in the general profile, save the local: <br><br> <code>$ cat .bashrc <br> # Check for an interactive session <br> [ -z "$PS1" ] &amp;&amp; return <br> source ~/.bashrc_local <br> alias ls='ls --color=auto' <br> PS1='[\u@\[\e[0;'$PS1_hostcolor'm\]\h\[\e[0m\] \w]\$ ' <br> complete -cf sudo <br> source ~/.bash_functions</code> <br> <br>  And in the local I wrote down the necessary variables: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>$ cat .bashrc_local <br> PS1_hostcolor=32 <br> export SCREEN_hostcolor=g</code> <br> <br>  After these simple manipulations, the PS1 turned green, indicating my host system. <br>  And after these: <br><br> <code>$ cat .screenrc <br> eval "hardstatus string '%{= .w}%-w%{= .$SCREEN_hostcolor}%50&gt;%n %t%{= .w}%+w%&lt;'" <br> hardstatus alwayslastline</code> <br> <br>  turned green and screen.  It remains the case for small things - copy to all other machines and change there. * _ Local files to the ones you need.  I like to read <a href="http://commandlinefu.com/">commandlinefu</a> , and my .bash_functions is updated from time to time, so the scripter was kicking me, kicking scp for me :) <br><br> <code>$ cat `which profsync` <br> #!/bin/bash <br> <br> source ~/.config/profsyncrc <br> <br> cd $basepath <br> <br> for host in ${hosts_scp[@]} ; do <br> echo "Syncronizing ${host}..." <br> for target in ${targets[@]} ; do <br> scp -r $target $host:$target <br> done; <br> done;</code> <br> <br>  The script is controlled by a simple config: <br><br> <code>$ cat ~/.config/profsyncrc <br> hosts_scp=(campus amignode) #   <br> basepath="$HOME" #     ( ,    ) <br> targets=('.bashrc' '.bash_functions' '.screenrc' '.nanorc') #   </code> <br> <br>  scp understands directories too, so you can sync though .config :) <br>  Once tuned, this bundle has come in handy for me more than once, and I hope it will be useful for you too. <br>  Have a nice day! </div><p>Source: <a href="https://habr.com/ru/post/116329/">https://habr.com/ru/post/116329/</a></p>
+     <code>$ cat .bashrc_local <br> PS1_hostcolor=32 <br> export SCREEN_hostcolor=g</code> <br> <br>  After these simple manipulations, the PS1 turned green, indicating my host system. <br>  And after these: <br><br> <code>$ cat .screenrc <br> eval "hardstatus string '%{= .w}%-w%{= .$SCREEN_hostcolor}%50&gt;%n %t%{= .w}%+w%&lt;'" <br> hardstatus alwayslastline</code> <br> <br>  turned green and screen.  It remains the case for small things - copy to all other machines and change there. * _ Local files to the ones you need.  I like to read <a href="http://commandlinefu.com/">commandlinefu</a> , and my .bash_functions is updated from time to time, so the scripter was kicking me, kicking scp for me :) <br><br> <code>$ cat `which profsync` <br> #!/bin/bash <br> <br> source ~/.config/profsyncrc <br> <br> cd $basepath <br> <br> for host in ${hosts_scp[@]} ; do <br> echo "Syncronizing ${host}..." <br> for target in ${targets[@]} ; do <br> scp -r $target $host:$target <br> done; <br> done;</code> <br> <br>  The script is controlled by a simple config: <br><br> <code>$ cat ~/.config/profsyncrc <br> hosts_scp=(campus amignode) #   <br> basepath="$HOME" #     ( ,    ) <br> targets=('.bashrc' '.bash_functions' '.screenrc' '.nanorc') #   </code> <br> <br>  scp understands directories too, so you can sync though .config :) <br>  Once tuned, this bundle has come in handy for me more than once, and I hope it will be useful for you too. <br>  Have a nice day! </div><p>Source: https://habr.com/ru/post/116329/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../116323/index.html">New issue of UserAndLINUX 11.04</a></li>
 <li><a href="../116325/index.html">Google with MasterCard and Citigroup is working on a system of NFC payments</a></li>
 <li><a href="../116328/index.html">ASP.NET MVC 3 for beginners: uploading files to the server</a></li>
+<li><a href="../11633/index.html">GNU GPLv3 and GNU LGPLv3</a></li>
 <li><a href="../116330/index.html">ABBYY Recognition Server in the service of Her Majesty's nerds</a></li>
 <li><a href="../116331/index.html">Microsoft password strength estimation algorithm (Part 1)</a></li>
 <li><a href="../116332/index.html">How to make a caller as quiet as his mouse</a></li>
 <li><a href="../116333/index.html">MySQL.com site compromised through SQL injection</a></li>
-<li><a href="../116335/index.html">Digest of the best vacancies of Runet startups from April 1</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

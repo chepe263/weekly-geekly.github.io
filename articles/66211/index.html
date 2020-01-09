@@ -31,12 +31,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -58,7 +58,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Ratings Service / Online service + REST API for searching movie ratings</h1><div class="post__text post__text-html js-mediator-article">  <a href="http://ratings-service.appspot.com/">Ratings Service</a> is an online service that allows you to find out the rating of a movie by its name. <br><br><img src="http://ratings-service.appspot.com/images/ratings-service.png" alt="image"><br><br>  Distinctive features: <br><ol><li>  Search in several Internet bases at the same time (at the moment it is KinoPoisk.ru and KinoKopilka.ru) </li><li>  easy interface;  can be used from a mobile phone, for example, through Opera Mini </li><li>  ability to receive sample results in XML format in REST style </li><li>  Google App Engine / Java Hosting </li><li>  Open source </li></ol><br>  I would like to talk about some of the features of the implementation and share my impressions of working with Google App Engine / Java.  Below you will also find the address of the project on Google Code, with the source codes laid out. <a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -66,7 +66,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       It took me three days to write the service and it was really fun.  It is fun, mainly because a lot doesn't work in GAE / Java, and some things had to be implemented from scratch, for example, to write a simple engine for XPath queries :) <br><br>  But first things first. <br><br><h3>  Development tools </h3><br>  According to the <a href="http://code.google.com/appengine/docs/java/gettingstarted/">Getting Started Guide</a> from the IDE, only Eclipse is currently officially supported, for this there is the Google Eclipse Plugin.  And three days ago only the version for Ganymede / 3.4 (I used it) was available, today the version for Galileo / 3.5 is already available. <br><br>  Creating a GAE Web Application project is as simple as creating a regular Java project in Eclipse.  Running and debugging the application works fine on the local machine.  In addition to this, deploying one button makes development just enjoyable. <br><br>  I also liked the nice little thing that the log4j.properties file was already in the project and configured as it should :) All I had to do was add the jar log4j to the classpath and enable debugging for my code: <br><br><pre> log4j.category.dmitrygusev.ratings = DEBUG, A1
@@ -103,20 +103,20 @@
  }
 </pre><br><h3>  How things work </h3><br>  The scheme of the service is very simple. <br><br>  The query string entered by the user, the service, in turn, sends the KinoKopilka and KinoPoisk search engines (this is another GAE / Java restriction - multithreading cannot be used).  That is what explains that the request execution time takes 5-10 seconds.  In addition, data on ratings and some other details that are displayed in the search results are on other pages and are not displayed on the search pages of movie services, which also slows down the running time. <br><br>  For parsing HTML pages, GAE / Java provides <a href="http://code.google.com/appengine/docs/java/urlfetch/">URLFetchService</a> — a fairly convenient API (I advise you to look at the Low-Level API section), built on top of the <a href="httpcomponents-client/">Apache HTTP Client</a> .  Apache HTTP Client itself refused to work on GAE / Java. <br><br>  Initially, I wanted to parse the results with my XML parser, but due to the fact that KinoKopilka and especially KinoPoisk produce non well formed xml, most parsing happens using regular expressions.  Why is the majority - because the xml KinoKopilka is almost correct, there is one extra closing tag (I hope to correct it :), now I put the missing opening tag in handles and use NanoXML Lite + SimpleXPathService.  (I didn’t just give a reference to xhtml / css validators at the end, I hope popular resources will use them sooner or later. It’s time for beginners to think about it now.) <br><br>  The result is the Movie and Rating object model (there are only two entity classes in the subject area) containing the results of the parsing. <br><br>  Further, depending on the required output format, this model is rendered either in xhtml format using a template system or using an xml render based on NanoXML Lite. <br><br>  Examples of the execution of search queries are presented in the figures below: <br><br><img src="http://ratings-service.appspot.com/images/ratings-service-search.png" alt="image"><br><br><img src="http://ratings-service.appspot.com/images/ratings-service-search-xml.png" alt="image"><br><br><h3>  Using </h3><br>  The service is available for public use, including the REST API, which you can freely use in your projects, as we do on <a href="http://planet33.ru/">planet33</a> , to receive additional information about the films. <br><br>  I also had plans to write a mobile client for this API, but I found another solution that suits me perfectly, namely the use of xhtml + <a href="http://dev.opera.com/articles/view/mobile-style-css-mobile-profile-2-0/">handheld CSS media type</a> minimal block layout, which allows using the service in Opera Mini on my Sony Ericsson. <br><br>  I also posted the <a href="http://code.google.com/p/ratings-service/source/checkout">source code of the project</a> for review on Google Code under the GPL license, I hope they will be useful for you and you will learn something new for yourself. <br><br>  The project structure is shown in the figure: <br><br><img src="http://ratings-service.appspot.com/images/ratings-service-eclipse.png" alt="image"><br><br>  There are several warnings in the project (Warnings) - this is the work of the Google Eclipse Plugin, it says that I deleted unused jars from the <code>WEB-INF/lib</code> daddy ... <br><br>  In order for you to have a search for “Kinopoisk”, you need to add the <code>Config.properties</code> file to <code>src/dmitrygusev/ratings/utils/</code> with the following content: <br><br><pre> kinopoisk-username = your-kinopoisk-username
  kinopoisk-password = your-kinopoisk-password
-</pre><br><br><h3>  Resources used </h3><br><ol><li>  Ratings Service on Google Code - <a href="http://code.google.com/p/ratings-service/">code.google.com/p/ratings-service</a> </li><li>  Google App Engine / Gettings Started: Java - <a href="http://code.google.com/appengine/docs/java/gettingstarted/">code.google.com/appengine/docs/java/gettingstarted</a> </li><li>  NanoXML Lite Sources - <a href="">prdownloads.sourceforge.net/nanoxml/NanoXML-2.2.1.tar.gz</a> </li><li>  Online CSS / XHTML validation from w3c, respectively, <a href="http://jigsaw.w3.org/css-validator/">jigsaw.w3.org/css-validator</a> and <a href="http://validator.w3.org/">validator.w3.org</a> </li><li>  CSS block layout - <a href="http://webmolot.com/css/">webmolot.com/css</a> </li><li>  Mobile style - CSS Mobile Profile 2.0 - <a href="http://dev.opera.com/articles/view/mobile-style-css-mobile-profile-2-0/">dev.opera.com/articles/view/mobile-style-css-mobile-profile-2-0</a> </li><li>  Feedback service Reformal.ru - reformal.ru </li><li>  FAMFAMFAM Silk Icons (set of icons in PNG format, see asterisk <img src="http://ratings-service.appspot.com/favicon.png" alt="image">  in favicon service) - <a href="http://www.famfamfam.com/lab/icons/silk/">www.famfamfam.com/lab/icons/silk</a> </li></ol></div><p>Source: <a href="https://habr.com/ru/post/66211/">https://habr.com/ru/post/66211/</a></p>
+</pre><br><br><h3>  Resources used </h3><br><ol><li>  Ratings Service on Google Code - <a href="http://code.google.com/p/ratings-service/">code.google.com/p/ratings-service</a> </li><li>  Google App Engine / Gettings Started: Java - <a href="http://code.google.com/appengine/docs/java/gettingstarted/">code.google.com/appengine/docs/java/gettingstarted</a> </li><li>  NanoXML Lite Sources - <a href="">prdownloads.sourceforge.net/nanoxml/NanoXML-2.2.1.tar.gz</a> </li><li>  Online CSS / XHTML validation from w3c, respectively, <a href="http://jigsaw.w3.org/css-validator/">jigsaw.w3.org/css-validator</a> and <a href="http://validator.w3.org/">validator.w3.org</a> </li><li>  CSS block layout - <a href="http://webmolot.com/css/">webmolot.com/css</a> </li><li>  Mobile style - CSS Mobile Profile 2.0 - <a href="http://dev.opera.com/articles/view/mobile-style-css-mobile-profile-2-0/">dev.opera.com/articles/view/mobile-style-css-mobile-profile-2-0</a> </li><li>  Feedback service Reformal.ru - reformal.ru </li><li>  FAMFAMFAM Silk Icons (set of icons in PNG format, see asterisk <img src="http://ratings-service.appspot.com/favicon.png" alt="image">  in favicon service) - <a href="http://www.famfamfam.com/lab/icons/silk/">www.famfamfam.com/lab/icons/silk</a> </li></ol></div><p>Source: https://habr.com/ru/post/66211/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../66199/index.html">PayPal collapsed at noon</a></li>
 <li><a href="../66204/index.html">Ruby - storing a piece of code in a database</a></li>
 <li><a href="../66206/index.html">Performance Comparison of Windows 7, Windows Vista SP2 and Windows XP SP3</a></li>
 <li><a href="../66209/index.html">QIP: dots over "i"</a></li>
+<li><a href="../6621/index.html">make free calls using a regular phone (for example, from Europe to Russia)</a></li>
 <li><a href="../66210/index.html">And how did you choose your nickname,%% username?</a></li>
 <li><a href="../66216/index.html">Nikon Coolpix S1000PJ: the first camera with a projector</a></li>
 <li><a href="../66219/index.html">Braid will be released on the PlayStation 3</a></li>
+<li><a href="../6622/index.html">Habrahabr Share</a></li>
 <li><a href="../66220/index.html">KDE 4.3.0 released today!</a></li>
 <li><a href="../66221/index.html">Clearing web pages of information noise</a></li>
-<li><a href="../66225/index.html">MOESK: Star Wars rest or Chubais is gone - the ice has moved !!!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

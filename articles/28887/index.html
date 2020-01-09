@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Glitches in Python libraries or not?</h1><div class="post__text post__text-html js-mediator-article"> I wrote here the other day a web-spider on Python, the task is, in general, simple, but it has serious loads, so you have to actually launch five spiders (in five streams), in addition, there are several initial conditions that complicate the case ... In general, the solution was interesting, I had the opportunity to carefully climb in the guts of standard plug <code>socket</code> , <code>httplib</code> and <code>urllib2</code> (if you <code>urllib2</code> interested, I can describe this experience). <br><br><a name="habracut"></a><br><br>  What I want to tell you now, this is about what the addiction can lead to not follow the created objects, grafted with languages ​​with garbage collection.  Monitor my spider, I noticed that there are a lot of sockets in the <code>CLOSE_WAIT</code> state hanging on the system.  The reason for this is that the sockets are already closed from the server, but still in memory.  Ie, roughly speaking, the <code>close</code> method was not called on the socket, and the object itself is still somewhere in memory. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,11 +59,11 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Having rummaged in <code>urllib2</code> , <code>httplib</code> and <code>socket</code> , I received the following information about the mechanism of their work: <br><br><ol><li>  To load the page, call <code>urllib2.OpenDirector.open</code> . </li><li>  It calls the <code>urllib2.HTTPHandler.open</code> method, which in turn calls <code>urllib2.AbstractHTTPHandler.do_open</code> </li><li>  In <code>do_open</code> , an <code>h</code> object is created of type <code>httplib.HTTPConnection</code> to directly perform the communication task.  An important point - this object disappears when exiting <code>do_open</code> ! </li><li>  <code>h</code> spawns and opens a socket, storing it in its <code>self.sock</code> attribute. </li><li>  <code>h</code> sends the request to the server. </li><li>  <code>do_open</code> requests the server's response from <code>h</code> and gets an object of type <code>r</code> <code>httplib.HTTPResponse</code> . </li><li>  This object, when created on the basis of the socket <code>h.sock</code> creates the file object <code>self.fp</code> using the method <code>h.sock.makefile</code> , which will be used by the application for reading data.  Again, an important point is that the socket object passed to the constructor is not saved anywhere. </li><li>  <code>do_open</code> wraps the resulting <code>HTTPResponse</code> into a service object and returns it to the application. </li><li>  The application reads the data and closes <code>HTTPResponse</code> . </li></ol><br><br>  Thus, the socket object itself (a wrapper over a real socket) may no longer exist.  At least, there is no link to it anywhere.  But the socket itself still lives!  Nobody called him close!  In short, while on a hot hand only one option came to my mind - after completing the reading, manually close the socket through the heels of the service links with the “understandable” code of the following type: <br><pre> tf.fp._sock.fp._sock.close ()
-</pre><br>  Where <code>tf</code> is the link obtained from urllib2.open.  Such are the cakes :) This is the way back in 2.5;  in 2.4 there are still a couple of bugs worse.  I will be glad to any tips on how to correctly defeat this behavior. </div><p>Source: <a href="https://habr.com/ru/post/28887/">https://habr.com/ru/post/28887/</a></p>
+</pre><br>  Where <code>tf</code> is the link obtained from urllib2.open.  Such are the cakes :) This is the way back in 2.5;  in 2.4 there are still a couple of bugs worse.  I will be glad to any tips on how to correctly defeat this behavior. </div><p>Source: https://habr.com/ru/post/28887/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Telegram. Unlimited network drive. Free</h1><div class="post__text post__text-html js-mediator-article">  Hi, Habr. <br><br>  Surely many people thought about it, maybe someone has this idea in TODO.  She lay with me for about a year, but still managed to implement it in the form of a working prototype. <br><br><h3>  TgCloud: </h3><br><ul><li>  Virtual file system with open source g **** code. </li><li>  On the local disk - only metadata: names, size, folder structure, etc. </li><li>  Data is stored in Telegram and downloaded only when working with a file. </li><li>  The size and type of files is not limited, can be used with any OS. </li></ul><br>  Implementation details and link to the repository under the cut. <br><a name="habracut"></a><br><img src="https://habrastorage.org/webt/nr/0-/mp/nr0-mpe-hiysnb52h67gxnlsbe0.gif">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h3>  Idea </h3><br>  The idea to create a VFS based on Telegram appeared while working on <a href="http://t.me/AudioTubeBot">AudioTubeBot</a> and <a href="http://t.me/VideoTubeBot">VideoTubeBot</a> - after <a href="http://t.me/VideoTubeBot">finding</a> a way <a href="https://habr.com/ru/post/348234/">to get around the 50Mb limit on downloading files for bots</a> - I studied the <a href="https://github.com/telegramdesktop/tdesktop/tree/dev/Telegram/SourceFiles">source code of Telegram</a> - I discovered a lot of interesting things.  For example, the download speed is limited mostly by the client itself, and not by the server. <br><br>  As a result, I increased the download speed to Telegram cloud up to ~ 240 Mb / s per session (it has been working steadily for over a year), which is 15 times faster than the official client. <br><br>  The logical step was to use unlimited file storage with a high download speed as a network drive — surely many people do, but the problem is that telegram clients are inconvenient to use for searching and organizing files.  In addition - there is a limit of 1.5 GB per file size. <br><br><h3>  FUSE </h3><br>  To solve these problems, I first decided to make a patch of the Linux kernel and make my virtual file system that would allow us to conveniently group the files uploaded to Telegram, while using only metadata. <br><br>  In the process of studying the issue, it turned out that the patch kernel is not necessarily because  Linux has a special <a href="https://ru.wikipedia.org/wiki/FUSE_(%25D0%25BC%25D0%25BE%25D0%25B4%25D1%2583%25D0%25BB%25D1%258C_%25D1%258F%25D0%25B4%25D1%2580%25D0%25B0)">FUSE kernel module</a> that allows developers to create new types of file systems that can be mounted by users without privileges.  For the module, there are wrappers for almost all popular languages. <br><br><img src="https://habrastorage.org/webt/ug/tx/8v/ugtx8vbaf65so_lja5cqvwguh7k.png"><br><br><h3>  Telethon </h3><br>  To access Telegram, I use the <a href="https://github.com/LonamiWebs/Telethon">Telethon</a> library version 0.19.1 with a modified multi-threaded file download (TelegramClientX). <br><br><h3>  Vfs </h3><br>  Not to write a file system from scratch - <a href="https://github.com/xolox/dedupfs">dedupfs</a> in python is taken as a basis, using fuse and sqlite to store metadata that splits files into blocks, considers sha1 hash and reuses identical blocks - you just need to replace the methods for loading data into the storage with your own. <br><br><h3>  Tgcloud </h3><br>  By combining all this, a working prototype of <a href="https://github.com/SlavikMIPT/tgcloud">tgcloud</a> has turned out, so far without cosmic velocities, but still a worker, I hope to involve the community in the development.  The downloaded files are divided into blocks of 10MB, sha1 is calculated and loaded into SavedMessages, the hash is saved in the local database and the file is found when the block is read.  The blocks are glued together in the correct order and a stream of bytes is issued — as if you are reading them from the disk. <br><br><h3>  To run the code </h3><br><ul><li>  You need to get api_hash and api_id on <a href="https://my.telegram.org/">my.telegram.org</a> and insert this data along with the phone number of your account in tg_access.py </li><li>  Create a session by running from the project folder <br><br><pre><code class="bash">python3.6 download_service.py</code></pre> <br>
@@ -100,7 +100,7 @@
     Xeon Silver 4214 — <a href="https://dedic.sh/%3Futm_source%3Dhabrahabr%26utm_medium%3Dwidget%26utm_content%3D455602"><b> 15210 /</b></a><br>
        <b> </b> — <b><a href=""> </a></b>!<br>
 <br>
-       — <b><a href="https://vds.sh/ru/%3Futm_source%3Dhabrahabr%26utm_medium%3Dwidget%26utm_content%3D456290">VDS  150 /</a></b> — ,   !</div><p>Source: <a href="https://habr.com/ru/post/456290/">https://habr.com/ru/post/456290/</a></p>
+       — <b><a href="https://vds.sh/ru/%3Futm_source%3Dhabrahabr%26utm_medium%3Dwidget%26utm_content%3D456290">VDS  150 /</a></b> — ,   !</div><p>Source: https://habr.com/ru/post/456290/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

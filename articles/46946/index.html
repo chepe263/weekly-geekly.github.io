@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>smotrelka: another client for the Smotri.com API</h1><div class="post__text post__text-html js-mediator-article">  Due to some circumstances, it was decided to write a client to work with Smotri.com through the <a href="http://api.smotri.com/">API</a> provided by them.  I must say, a similar topic has already skipped over to the habr ( <a href="http://shedar.habrahabr.ru/blog/45652/">here</a> ), but it described an application of a slightly different nature. <br><br>  So, the mandatory requirements for the project - cross-platform and the presence of a relatively user-friendly GUI - imposed some restrictions on languages ​​and platforms.  A rather standard bundle was chosen - C ++ and Qt, as familiar and convenient. <br><br>  The API itself is a collection of XML-RPC or JSON-RPC calls, its description is <a href="http://api.smotri.com/">here</a> .  It consists, in fact, of a set of basic entities (a la video, user, comment, etc.) and a set of commands for working with content.  In general, the API is quite convenient, although the publicly available version has some flaws, but this is another story :) Its echoes can be found in the tracker's tickets, the address is slightly higher. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  Description of the technical part </h4>  To work with the API, we chose the option c JSON.  Having a little torment, problems with JSON &lt;-&gt; Qt were solved through QScriptValue and writing a small bicycle.  The first stage is completed, you can rest :) <br>  Next came the question of writing a very stupid monotonous code for all entities and commands.  Of course, an idea was immediately born in my head about a generator tearing up a description from a wiki and issuing a plus code.  And of course, she was immediately rejected by the Stimian as not obvious in terms of effort, and the code could have been written by hand, after all.  In general, all this is true, but after looking at a bunch of entities and a much larger pile of commands in the evening I felt very sad and it was decided, reluctantly, to write a damn generator.  The advantages of the solution are obvious - after writing the basic part, it will be easy to construct the necessary output after writing the wiki format.  In general, for a couple of evenings, this utility was written in python, and for about the same amount it began to generate something that almost completely satisfies us and the compiler.  In parallel, I learned that my Stimian had written by hand during this time almost everything that my tulza generates: D <br><br>  In general, after a week and a half, we generated everything to work with the teams and got almost a fully working and quite convenient Qt-style API for working with smotri.com.  A little later, unit-tests were written, and we made sure that they all passed. <br><br>  This part is currently stable and framed as a separate library with approximately the same interface in the main class <i>SmotriApi</i> (not all commands are shown): <br><a name="habracut"></a><br><pre> public:
@@ -78,11 +78,11 @@
  void videosRubricListDone (const smotrelka :: SmotriVideosRubricListReply &amp; reply, uint id);
  void authAuthUserDone (const smotrelka :: SmotriAuthAuthUserReply &amp; reply, uint id);
  void testPrevedDone (const smotrelka :: SmotriTestPrevedReply &amp; reply, uint id);
-</pre><br><br><br>  Next was written a fitting version of the GUI, which gradually acquired the features to the desired state.  Currently it supports the following features: <br><ul><li>  getting list of video logs </li><li>  getting a list of new videos </li><li>  get a list of popular videos </li><li>  user authorization </li><li>  adding video </li><li>  watching video through a browser </li><li>  video removal </li></ul><br>  The main goal - the implementation of video upload - was successfully completed.  Video uploading is done via a POST request with a content type multipart / form-data with a single field - the file itself (any format allowed by smotri.com is supported).  It should be noted that at the moment the commands for viewing their videos that are in the process of conversion, as well as deleting their videos are not implemented in the publicly available version of the API.  As soon as smotri.com hosting updates its version of the API to a fixed one, the specified functionality will work in this application (for now, an error message is displayed). <br><br>  It should also be noted that the upload does not quite scale well to large files due to the fact that before sending via POST, the contents of the file are completely read into memory (for sequential reading, you must define your QIODevice, which will return HTTP headers when reading it file).  Therefore, loading a 200-meter video (the maximum size supported by smotri.com) will require the same amount of memory for the client.  This deficiency is planned to be corrected. <br><br>  The rest of the functionality is implemented in a fairly rough form.  For example, a video for viewing is opened via a browser (with the release of Qt 4.5, where QtWebkit supports Flash, this will also be fixed). <br><br><h4>  About development </h4><br>  This open-source project (GPL).  The code is available through the <a href="http://tweedle-dee.org/svn/smotrelka">SVN repository</a> , there is also a wiki and a bug tracker at <a href="http://tweedle-dee.org/tr/smotrelka">this</a> address, where you can read the documentation, download the latest version of tarballs or ready-made assemblies. <br><br>  If someone wants to join the development, create a ticket in the tracker indicating <b>twee</b> in the <i>Cc:</i> field and indicating your contact information, agree. </div><p>Source: <a href="https://habr.com/ru/post/46946/">https://habr.com/ru/post/46946/</a></p>
+</pre><br><br><br>  Next was written a fitting version of the GUI, which gradually acquired the features to the desired state.  Currently it supports the following features: <br><ul><li>  getting list of video logs </li><li>  getting a list of new videos </li><li>  get a list of popular videos </li><li>  user authorization </li><li>  adding video </li><li>  watching video through a browser </li><li>  video removal </li></ul><br>  The main goal - the implementation of video upload - was successfully completed.  Video uploading is done via a POST request with a content type multipart / form-data with a single field - the file itself (any format allowed by smotri.com is supported).  It should be noted that at the moment the commands for viewing their videos that are in the process of conversion, as well as deleting their videos are not implemented in the publicly available version of the API.  As soon as smotri.com hosting updates its version of the API to a fixed one, the specified functionality will work in this application (for now, an error message is displayed). <br><br>  It should also be noted that the upload does not quite scale well to large files due to the fact that before sending via POST, the contents of the file are completely read into memory (for sequential reading, you must define your QIODevice, which will return HTTP headers when reading it file).  Therefore, loading a 200-meter video (the maximum size supported by smotri.com) will require the same amount of memory for the client.  This deficiency is planned to be corrected. <br><br>  The rest of the functionality is implemented in a fairly rough form.  For example, a video for viewing is opened via a browser (with the release of Qt 4.5, where QtWebkit supports Flash, this will also be fixed). <br><br><h4>  About development </h4><br>  This open-source project (GPL).  The code is available through the <a href="http://tweedle-dee.org/svn/smotrelka">SVN repository</a> , there is also a wiki and a bug tracker at <a href="http://tweedle-dee.org/tr/smotrelka">this</a> address, where you can read the documentation, download the latest version of tarballs or ready-made assemblies. <br><br>  If someone wants to join the development, create a ticket in the tracker indicating <b>twee</b> in the <i>Cc:</i> field and indicating your contact information, agree. </div><p>Source: https://habr.com/ru/post/46946/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../46938/index.html">Official Russian version of GTA IV</a></li>
+<li><a href="../4694/index.html">Allsoft.ru has entered into a cooperation agreement with the distributor of computer games GamePitStop.ru</a></li>
 <li><a href="../46942/index.html">Lecture by Maria Chernitskaya “Contextual advertising is not so simple”</a></li>
 <li><a href="../46943/index.html">The latest developments from nVidia</a></li>
 <li><a href="../46944/index.html">New tariffs of Ukrtelecom</a></li>
@@ -90,8 +90,8 @@
 <li><a href="../46947/index.html">TDateTime to QDateTime</a></li>
 <li><a href="../46948/index.html">Kogan Agora, photoshop lessons</a></li>
 <li><a href="../46949/index.html">QIP. Kill can not be pardoned.</a></li>
+<li><a href="../4695/index.html">Destructive resilient networks will soon be operational</a></li>
 <li><a href="../46952/index.html">OWL 2 Web Ontology Language: A Primer (Translation)</a></li>
-<li><a href="../46953/index.html">5 reasons why the iPhone should become open-source</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

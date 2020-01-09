@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Deploying Nodejs DotCloud Applications</h1><div class="post__text post__text-html js-mediator-article"><h1>  Intro </h1>  <a href="https://www.dotcloud.com/" rel="nofollow">Dotcloud</a> is a cloud-based application deployment platform.  The stack on DotCloud includes more than 10 different services among which there is <strong>Node.JS.</strong> <br><br>  My first impressions of <strong>DotCloud</strong> were very positive.  You can almost forget about how to deploy the application and focus entirely on the code.  Deployment work comes down to installing the <strong>DotCloud CLI</strong> and configuring the <strong>dotcloud.yml</strong> environment <strong>file</strong> .  Installing a client under Linux / MacOS is trivial: <br><blockquote><code><font color="black">sudo easy_install pip &amp;&amp; sudo pip install dotcloud</font></code> </blockquote> <a name="habracut"></a><br><h1>  Preparing for deployment </h1>  To deploy an application to Dotcloud, you need a <strong>dotcloud.yml</strong> file that describes the services to which the application will have access.  The full list of applications can be viewed at the <a href="http://docs.dotcloud.com/services/roadmap/" rel="nofollow">link</a> .  To access the Node.JS + Redis stack, the dotcloud.yml file can be as follows: <br><blockquote> <code><font color="black">www: <br> type: nodejs <br> <br> data: <br> type: redis</font></code> </blockquote> <br>  If the application on Node.JS uses additional packages, you can use the <strong>package.json</strong> file, in which you specify dependencies on other packages.  Packages will be automatically installed during deployment.  Sample <strong>package.json</strong> file: <br><blockquote> <code><font color="black">{ <br> <font color="#A31515">"engines"</font> : { <br> <font color="#A31515">"node"</font> : <font color="#A31515">"&gt;=v0.4.5"</font> <br> }, <br> <font color="#A31515">"dependencies"</font> : { <br> <font color="#A31515">"redis"</font> : <font color="#A31515">"&gt;=0.6.6"</font> , <br> <font color="#A31515">"express"</font> : <font color="#A31515">"&gt;=2.4.2"</font> <br> } <br> }</font></code> </blockquote> <br>  To automatically launch applications on Node.JS, you need to create a third file called <strong>supervisord.conf</strong> and specify the launch path in it <br><blockquote> <code><font color="black">[program:node] <br> command = node index.js <br> directory = /home/dotcloud/current</font> <br></code> </blockquote><br><h1>  Using environment.json </h1>  To access the stack of services that were specified in the <em>dotcloud.yml</em> file <em>is</em> very simple.  After the application is deployed to the home directory, an <strong>environment.json</strong> file is created containing information for accessing services.  Using this file, you can configure the application to automatically use the settings for the databases without worrying about manual configuration.  Since I specified Redis as a database in the <em>dotcloud.yml</em> file and named it <strong>data</strong> , to obtain the settings for Redis from the application on Node.JS, it is enough to write: <br><blockquote> <code><font color="black"><font color="#0000ff">var</font> envfilepath = <font color="#A31515">'/home/dotcloud/environment.json'</font> , <br> environment = JSON.parse(require( <font color="#A31515">'fs'</font> ).readFileSync(envfilepath)); <br> <br> <font color="#0000ff">var</font> host = environment[ <font color="#A31515">'DOTCLOUD_DATA_REDIS_HOST'</font> ], <br> port = environment[ <font color="#A31515">'DOTCLOUD_DATA_REDIS_PORT'</font> ], <br> pass = environment[ <font color="#A31515">'DOTCLOUD_DATA_REDIS_PASSWORD'</font> ];</font></code> </blockquote> <br><h1>  Deployment </h1>  To create an application on Dotcloud, you need to write in the console: <br><blockquote> <code><font color="black">dotcloud create appname</font></code> </blockquote>  ( <em>appname</em> - in this case, the name of the application, which can be any) <br>  Well, directly push applications on Dotcloud <br><blockquote> <code><font color="black">dotcloud push appname ~/path-to-node-app/</font></code> </blockquote>  If successful, they will issue a www address to access the application. <br><blockquote> <code><a href="http://d07c100d.dotcloud.com/"></a> <font color="black">Deployment finished successfully. Your application is available at the following URLs <br> www: d07c100d.dotcloud.com <br></font></code> </blockquote><br><h1>  What else can you do </h1>  Use your own domain name. <br>  To do this, you need to register the <em>DNS</em> record of the <strong>CNAME gateway.dotcloud.com.</strong>  for the corresponding domain.  And add alias to your Dotcloud application: <br><blockquote> <code><a href="http://www.example.com/"></a> <font color="black">dotcloud alias add appname.www www.example.com</font></code> </blockquote>  You can also connect via SSH <br><blockquote> <code><font color="black">dotcloud ssh appname.www</font></code> </blockquote> <br>  A complete list of commands can be obtained in the detailed documentation on the <a href="http://docs.dotcloud.com/" rel="nofollow">official website.</a> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/125375/">https://habr.com/ru/post/125375/</a></p>
+    <p>Source: https://habr.com/ru/post/125375/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../125366/index.html">A brief report from the development team of the webonmap.ru project</a></li>
 <li><a href="../125367/index.html">Mirror ESET Update Server on Linux</a></li>
 <li><a href="../125368/index.html">Cisco Modular Command Line QoS</a></li>
 <li><a href="../125369/index.html">Processes in the Linux operating system (basic concepts)</a></li>
+<li><a href="../12537/index.html">how to copy music from ipod to a computer running windows absolutely not being able to use this computer :)</a></li>
 <li><a href="../125371/index.html">Accelerating with Windows Azure Accelerator</a></li>
 <li><a href="../125376/index.html">Droider Show. Release # 2, Innovative</a></li>
+<li><a href="../12538/index.html">Minority Report</a></li>
 <li><a href="../125380/index.html">The Android 2.3 update on HTC Desire (for developers) can already be downloaded, but ...</a></li>
 <li><a href="../125381/index.html">Datacenter Video Tour: Cooling Technology</a></li>
 <li><a href="../125382/index.html">Android Player Review for Blackberry Playbook</a></li>
-<li><a href="../125383/index.html">Biglion and apartment with 90% discount</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

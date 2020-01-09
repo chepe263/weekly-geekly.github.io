@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Drupal 6.x and OpenID</h1><div class="post__text post__text-html js-mediator-article">  <a href="http://drupal.org/">CMS Drupal</a> from version 6 has got integrated support for <a href="http://ru.wikipedia.org/wiki/Openid">OpenID</a> .  But many scold this decision for two reasons: <ul><li>  It does not allow to log in to the site without creating an account.  That is, using OpenID as a digital signature, for example for comments, becomes impossible. </li><li>  When trying to log in using OpenID, the system often gives the error "invalid characters found in the login", or requires you to enter an email. </li></ul>  The first problem is still unsolvable - it only comes to my mind to write a special module for this case. <br>  But the solution to the second problem turned out to be quite simple, although it was not described anywhere else. <br><br><a name="habracut"></a>  What is the reason for this strange behavior of Drupal?  The fact is that when you try to log in using OpenID, the engine creates a full-fledged user account, taking as information provided by the OpenID provider.  But many sites firstly don’t give the login in its pure form, but the full address of the user’s page (for example, <a href="http://xn--c1akhkc.livejournal.com/">login.livejournal.com</a> , instead of just login), in which, of course, there are characters invalid for the Drupal username;  and secondly, they do not provide information about the user's e-mail, which is necessary for creating an account in Drupal. <br><br>  The first part of the problem is solved by a <a href="http://drupal.org/files/issues/openid-sanitize-username-216101-30.patch">patch</a> from the official site of the project (versions appear on <a href="http://drupal.org/node/216101">the discussion page</a> ).  Not only that now invalid characters are automatically deleted, so the address is also analyzed to determine what the user login is.  Thanks to the people from the community. <br>  The second part is also solved easily: you just need to generate a fake address for the user and then Drupal will consider that everything is in order.  This is not the best solution because it conflicts with email confirmations, etc.  (the address is fake), but it makes life easier for users - no extra steps when trying to login. <br>  To do this, change the part of the line from openid.module: <br>  <em>$ form_state ['values'] ['mail'] = (! empty ($ response ['openid.sreg.email']))?</em>  <em>$ response ['openid.sreg.email']: '';</em>  (version after patch application) <br>  or <em>$ form_state ['values'] ['mail'] = (empty ($ response ['openid.sreg.email']))?</em>  <em>'': $ response ['openid.sreg.email'];</em>  (version before applying the patch) <br>  change to <br>  <em>$ form_state ['values'] ['mail'] = (! empty ($ response ['openid.sreg.email']))?</em>  <em>$ response ['openid.sreg.email']: $ form_state ['values'] ['name']. '@ nomail';</em> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Now, if the server has not sent the user's e-mail, then the field will be filled with the address of the “user_name @ nomail” type. <br><br>  I understand and respect the idea of ​​developers that an OpenID login should create a valid Drupal account, but the situations are different - for some, their solution may not be suitable. <br>  Upd: I found a place where I once read the <a href="http://www.solargate.ru/avtorizaciya-po-openid-v-drupal-5-x">algorithm for treating the second problem</a> (I relied on it) for Drupal 5.x - there is even a ready-made patch.  I highly recommend the blog <a href="http://www.solargate.ru/">“SolarWind Gate.</a>  <a href="http://www.solargate.ru/">Notes geek "</a> </div><p>Source: <a href="https://habr.com/ru/post/23992/">https://habr.com/ru/post/23992/</a></p>
+      Now, if the server has not sent the user's e-mail, then the field will be filled with the address of the “user_name @ nomail” type. <br><br>  I understand and respect the idea of ​​developers that an OpenID login should create a valid Drupal account, but the situations are different - for some, their solution may not be suitable. <br>  Upd: I found a place where I once read the <a href="http://www.solargate.ru/avtorizaciya-po-openid-v-drupal-5-x">algorithm for treating the second problem</a> (I relied on it) for Drupal 5.x - there is even a ready-made patch.  I highly recommend the blog <a href="http://www.solargate.ru/">“SolarWind Gate.</a>  <a href="http://www.solargate.ru/">Notes geek "</a> </div><p>Source: https://habr.com/ru/post/23992/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

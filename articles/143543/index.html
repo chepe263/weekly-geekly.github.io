@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Designing a rotator algorithm by rating</h1><div class="post__text post__text-html js-mediator-article"> Recently, I was confronted with the task of writing a “rotator” of some objects, the priority of which I must display myself.  The point is simple: more priority - more object hits. <a name="habracut"></a><br>  However, at the design stage of the algorithm, several unpleasant features were found. <br>  Well, first of all, I wanted to get by with minimal changes in the database.  I really did not want to make a separate table in mysql to count the number of impressions.  But resigned to this fact, he continued to design.  The first algorithm that I built was all dull but on paper a couple of rotations went through and worked quite well. <br>  Its essence was that in the rotation table we write not only the number of real impressions, but also a certain number using the formula (hereinafter, the lowering formula) <br><br> <code>20 - 2i</code> <br> <br>  where i is the rotation priority.  The meaning of this formula is that when I show an object, I will choose from the base an instance with the minimum reduction formula and add one more unit to the current sum of the previous reduction formulas.  Thus, it turns out that an object with a large rotation coefficient (the one that I want to show more) will be encountered more often, because a smaller number will be added to the lowering formula than for objects with a lower coefficient. <br>  The next problem I sorted out is problem “20”.  That is, on this algorithm it would be possible to set the rotation coefficient only from 0 to 9 (if we take only numbers from the series of natural numbers).  The reducing formula has been transformed now depending on the number of objects: <br><br> <code>2n - i</code> <br> <br>  where n is the number of objects in the database suitable for rotation.  But now some restrictions have been imposed: the rotation rate cannot exceed the total number of rotation objects.  That is, when 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>2n - i <br> 0 &lt;= i &lt;= n <br></code> <br><br>  Looking ahead, I will say that this actually kills one and a half hare.  And it is killed by the fact that one of the problems is solved when adding a new object.  Now, when adding an object, it remains only to make small manipulations: <br>  1 - decide whether to increase all current object coefficients by 1; <br>  2- write an initiative lowering formula into the rotation record, or take the sum from any record already.  After a few iterations, the shows will go as they should. <br>  In general, what this form is good for is that by using the coefficients in a decreasing formula, you can rank the power of the effect that gives the rotation coefficient (that is, how much more factor 2 will affect the results than 1 or 0) <br><br>  But as I said, I was not satisfied with the way where I would have to create a separate table in the database or add garbage fields.  The final, working solution came to me when I thought about the following: “The coefficient should show how much larger the object should be shown in the sample.  If there are coefficients 2 3 1 1, the objects from 7 times should be shown approximately 2 3 1 1 times, respectively. ”And here another thought came to me, bydloderderskaya, but satisfying my main requirement.  All I needed was to add a rotation coefficient to the object.  Then it’s all a matter of sampling: when sampling, I select all the rotation objects and fill the array with duplicates according to the rotation coefficient.  That is, having objects and coefficients: <br><br> <code>1 2 3 4 <br> 2 3 1 1 <br></code> <br><br>  The rotation array will be: <br><br> <code>o1 o1 o2 o2 o2 o3 o4 <br></code> <br><br>  Now it remains only to mix it, and select a random element.  According to probability theory, everything is correct: the greater the rotation coefficient, the greater the chances of choosing this object.  At first glance, it seems that ranking the power of the influence of the coefficient on the rotation does not work, but no one bothers to make a factor for the coefficient, or to build it in a square or cube (if there are a lot of objects).  Note that the new object will stand in such a rotational scheme without any crutches. </div><p>Source: <a href="https://habr.com/ru/post/143543/">https://habr.com/ru/post/143543/</a></p>
+     <code>2n - i <br> 0 &lt;= i &lt;= n <br></code> <br><br>  Looking ahead, I will say that this actually kills one and a half hare.  And it is killed by the fact that one of the problems is solved when adding a new object.  Now, when adding an object, it remains only to make small manipulations: <br>  1 - decide whether to increase all current object coefficients by 1; <br>  2- write an initiative lowering formula into the rotation record, or take the sum from any record already.  After a few iterations, the shows will go as they should. <br>  In general, what this form is good for is that by using the coefficients in a decreasing formula, you can rank the power of the effect that gives the rotation coefficient (that is, how much more factor 2 will affect the results than 1 or 0) <br><br>  But as I said, I was not satisfied with the way where I would have to create a separate table in the database or add garbage fields.  The final, working solution came to me when I thought about the following: “The coefficient should show how much larger the object should be shown in the sample.  If there are coefficients 2 3 1 1, the objects from 7 times should be shown approximately 2 3 1 1 times, respectively. ”And here another thought came to me, bydloderderskaya, but satisfying my main requirement.  All I needed was to add a rotation coefficient to the object.  Then it’s all a matter of sampling: when sampling, I select all the rotation objects and fill the array with duplicates according to the rotation coefficient.  That is, having objects and coefficients: <br><br> <code>1 2 3 4 <br> 2 3 1 1 <br></code> <br><br>  The rotation array will be: <br><br> <code>o1 o1 o2 o2 o2 o3 o4 <br></code> <br><br>  Now it remains only to mix it, and select a random element.  According to probability theory, everything is correct: the greater the rotation coefficient, the greater the chances of choosing this object.  At first glance, it seems that ranking the power of the influence of the coefficient on the rotation does not work, but no one bothers to make a factor for the coefficient, or to build it in a square or cube (if there are a lot of objects).  Note that the new object will stand in such a rotational scheme without any crutches. </div><p>Source: https://habr.com/ru/post/143543/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../143537/index.html">Physics of innovation</a></li>
 <li><a href="../143538/index.html">MR template for writing services on Node.js</a></li>
 <li><a href="../143539/index.html">Handling complex events with chains</a></li>
+<li><a href="../14354/index.html">Google sets - new folksonomy word</a></li>
 <li><a href="../143540/index.html">How to scatter windows on desktops after loading</a></li>
 <li><a href="../143542/index.html">Runetology (146): Head of Molotok.ru, Igor Tarasenko</a></li>
 <li><a href="../143544/index.html">Word of Dokach</a></li>
 <li><a href="../143545/index.html">Mozilla is worried - Windows RT will not be able to choose a browser</a></li>
 <li><a href="../143546/index.html">Installing FreeBSD 9.0 on a Hetzner server</a></li>
 <li><a href="../143547/index.html">Gentoo high-quality font smoothing</a></li>
-<li><a href="../143550/index.html">The ideal personal information manager - what is it?</a></li>
+<li><a href="../14355/index.html">II Conference of Software Quality Specialists</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

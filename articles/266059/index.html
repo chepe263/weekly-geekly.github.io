@@ -32,12 +32,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -59,7 +59,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>First look at Scaleway</h1><div class="post__text post__text-html js-mediator-article">  Accidentally came <a href="https://www.scaleway.com/">across the</a> mention of hosting <a href="https://www.scaleway.com/">Scaleway</a> . <br><br>  Pros: <br><ul><li>  4 cores </li><li>  2 gigabytes of RAM </li><li>  50 gigabyte SSD drive </li><li>  bare metal!  (that is, there is no, even purely theoretical, overhead of virtualization) </li><li>  for all this only 3 euros per month!  Very cheap! </li></ul><br>  But there is a feature: it is an ARM processor.  Yes Yes!  This is a 4-core ARM processor. <br><br><img src="https://habrastorage.org/files/712/ca8/52b/712ca852b2de4c9cacf146c1c51c9b60.png"><br><a name="habracut"></a><br><h1>  The first steps </h1><br>  Zaregalsya, fed them a card number.  Everything is OK, I'm not worried. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -67,7 +67,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Chose the OS.  There are three versions of Ubuntu, two versions of Debian, and several other distributions.  I chose Ubuntu 14.04 - what I know well. <br>  <b>Update:</b> List of available operating systems: Gentoo, ubuntu 12.04, ubuntu 14.04, ubuntu 15.04, archlinux, fedora 22, openSUSE 13.2, Alpine Linux 3.2, Debian Jessie (8.1), Debian Wheezy (7.8). <br>  <b>Update2:</b> Thanks to the user <a href="http://habrahabr.ru/users/mrfrizzy/" class="user_link">MrFrizzy</a> saw that they can have an instance from the docker image.  You can use images from ImageHub or upload your own. <br><br>  Started a new instance.  Unlike, for example, Digital Ocean, you cannot make SSH by password, only by key.  Immediately causes respect.  This is ideologically closer to AWS, but I generate the key here myself (AWS can generate on its side).  When I went there I found a pw file with its password in the system in the root’s home folder.  OK, God be with him. <br><br>  But in the settings of the <b>SSH</b> daemon <b>login password</b> (parameter PasswordAuthentication) has been <b>enabled</b> !  What I think is pretty significant is the hole.  Somehow it looks raw. <br><br>  Ssh access to this instance is allowed for the root user, which I consider a minus, but not great.  The same is done on Digital Ocean, but on AWS, the user is ubuntu, which is added to sudoers to perform all administrative functions without a password.  This scheme seems to me more familiar.  But, in fact, this is a matter of taste. <br><br>  By the way, the data center is located in France.  Ping from me about 52ms.  For me, fine. <br><br><h1>  Iron </h1><br>  What is the processor? <br><br><div class="spoiler">  <b class="spoiler_title">#cat / proc / cpuinfo</b> <div class="spoiler_text"><pre> Processor: Marvell PJ4Bv7 Processor rev 2 (v7l)
@@ -167,7 +167,7 @@
  Download speed from Softlayer, San Jose, CA: 2.32MB / s
  Download speed from Softlayer, Washington, DC: 3.69MB / s
  I / O speed: 102 MB / s
-</pre><br></div></div><br><br><h1>  Soft </h1><br>  And how to deploy your projects on it? <br><br>  And let's try the <b>docker ...</b> Here I was disappointed.  He says he only works on 64 bit systems.  Although I have doubts that he can work at ARM at all.  But, at least, he threw out a mistake to me, about 64 bits.  In general, it disappears. <br>  <b>Update3:</b> Thanks to everyone who wrote in the comments ( <a href="http://habrahabr.ru/users/mrfrizzy/" class="user_link">MrFrizzy</a> , <a href="http://habrahabr.ru/users/alexac/" class="user_link">alexac</a> , <a href="http://habrahabr.ru/users/wgh/" class="user_link">WGH</a> ).  In fact, you cannot install a docker in the way recommended by the docker: docs.docker.com/linux/step_one.  From the Ubuntu repositories it is set nomralno, but version 1.4 is there, which is not applicable.  But you can use the docker images at the start of the instance. <br><br>  Another option that I previously used several times for my pet projects is <a href="https://bitnami.com/">bitnami</a> .  He, of course, also does not support ARM.  Also disappears. <br><br>  I'll have to put everything myself ... <br><br>  I put from the repository nginx, php5-fpm, mysql-server.  Everything was found immediately, everything worked. <br><br>  Oracle java8 for the ARM processor from the repository <a href="http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html">webupd8team / java is</a> also set and earned.  In fact, for current java projects, I do not need.  But for the future to check, at least its presence was necessary. <br><br><h1>  findings </h1><br>  Cloud hosting on ARM processors exists!  And from the first of September it is very cheap.  Of course, I also want to drive a real site, under some well-known CMS under load ... But this is not now.  More tests of the same system can be found <a href="http://habrahabr.ru/company/globatel_ltd/blog/213819/">in this article</a> .  True, they also promised some real test, but they did not. </div><p>Source: <a href="https://habr.com/ru/post/266059/">https://habr.com/ru/post/266059/</a></p>
+</pre><br></div></div><br><br><h1>  Soft </h1><br>  And how to deploy your projects on it? <br><br>  And let's try the <b>docker ...</b> Here I was disappointed.  He says he only works on 64 bit systems.  Although I have doubts that he can work at ARM at all.  But, at least, he threw out a mistake to me, about 64 bits.  In general, it disappears. <br>  <b>Update3:</b> Thanks to everyone who wrote in the comments ( <a href="http://habrahabr.ru/users/mrfrizzy/" class="user_link">MrFrizzy</a> , <a href="http://habrahabr.ru/users/alexac/" class="user_link">alexac</a> , <a href="http://habrahabr.ru/users/wgh/" class="user_link">WGH</a> ).  In fact, you cannot install a docker in the way recommended by the docker: docs.docker.com/linux/step_one.  From the Ubuntu repositories it is set nomralno, but version 1.4 is there, which is not applicable.  But you can use the docker images at the start of the instance. <br><br>  Another option that I previously used several times for my pet projects is <a href="https://bitnami.com/">bitnami</a> .  He, of course, also does not support ARM.  Also disappears. <br><br>  I'll have to put everything myself ... <br><br>  I put from the repository nginx, php5-fpm, mysql-server.  Everything was found immediately, everything worked. <br><br>  Oracle java8 for the ARM processor from the repository <a href="http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html">webupd8team / java is</a> also set and earned.  In fact, for current java projects, I do not need.  But for the future to check, at least its presence was necessary. <br><br><h1>  findings </h1><br>  Cloud hosting on ARM processors exists!  And from the first of September it is very cheap.  Of course, I also want to drive a real site, under some well-known CMS under load ... But this is not now.  More tests of the same system can be found <a href="http://habrahabr.ru/company/globatel_ltd/blog/213819/">in this article</a> .  True, they also promised some real test, but they did not. </div><p>Source: https://habr.com/ru/post/266059/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -180,7 +180,7 @@
 <li><a href="../266065/index.html">Tehnokniga, Part 2: Literature on DBMS, Frontend Development, Interface Design and In-depth Java Programming</a></li>
 <li><a href="../266067/index.html">The action "Good deed" - eliminating digital inequality</a></li>
 <li><a href="../266069/index.html">Why CIOs must “work in the field”</a></li>
-<li><a href="../266073/index.html">Emacs: we train the cursor (continuation)</a></li>
+<li><a href="../26607/index.html">Mac users are the most greedy</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

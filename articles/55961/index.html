@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Apt-build. Non-working optimization.</h1><div class="post__text post__text-html js-mediator-article"> <a href="http://note-s.blogspot.com/2009/03/apt-build-gentoo.html">Crossposting</a> from the blog <br><br>  Again, do not kick, it's just a thought. <br><br>  So there is such a wonderful apt-build project.  It is remarkable that it was created with a good purpose, namely: rebuilding binary packages under the machine |  architecture |  processor |  with the necessary optimizations.  Basically cool! <br>  What is the divorce? 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,18 +63,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>UPD:</b> With the help of the community safely understood the work of apt-build.  Optimization occurs.  But not entirely explicit way.  Under the cut details. <br><br><a name="habracut"></a><br><br>  And that no optimization happens.  At all.  In fact, apt-build rebuilds the package to the level of the package in the repository, that is, it works to heat the room.  Why does this happen?  And because the configuration file apt-build.conf is put with the device.  And all the optimizations that you have written there are not used.  You can easily see this if you take a closer look at the output of the script at the beginning of the work, at the moment of assigning values ​​to the variables “CFLAGS”, “CXXFLAGS” <br><br> <code>--- <br> <br> dpkg-buildpackage:  CFLAGS    : -g -O2 <br> dpkg-buildpackage:  CPPFLAGS    : <br> dpkg-buildpackage:  LDFLAGS    : -Wl,-Bsymbolic-functions <br> dpkg-buildpackage:  FFLAGS    : -g -O2 <br> dpkg-buildpackage:  CXXFLAGS    : -g -O2 <br> <br> ---</code> <br> <br>  Aha  not at all what we say in the config <br><br> <code>#cat /etc/apt/apt-build.conf <br> <br> build-dir = /var/cache/apt-build/build <br> repository-dir = /var/cache/apt-build/repository <br> Olevel = -O3 <br> mtune = -mtune=core2 <br> options = "-pipe -fomit-frame-pointer " <br> make_options = " -j2"</code> <br> <br>  Google is crammed (at least in RuNet) with a link to the same article about "how to optimize debian", by the way, it <a href="http://habrahabr.ru/blogs/linux/52368/">also exists</a> on the Habré, in the apt-build part it’s absolutely crazy, where the author left the default O2 optimization, and I did not bother to check whether it works at all.  A couple of posts on the case on the forums as a result does not lead to anything, people do not know how to solve it (it may not be for nothing that the man says “BUGS: Many”;) <br><br>  In general, the only solution, and I don’t know how efficient (testing) it is to apt-build source code, unpack it.  Then use your hands in debian / rules to change the flags to taste, and then continue the build. <br><br>  like <br><br> <code>#apt-build --noupdate --source build-source firefox</code> <br> <br>  rule debian / rules <br><br> <code>#apt-build --reinstall --yes --noupdate --source install firefox</code> <br> <br>  --reinstall - This is because my firefox is already worth it. <br><br>  <b>UPD</b> : In vain the water was mutil.  In fact, just read the documentation. <br><br>  Q: gcc and g ++ options! <br><br>  A: *** They are called with them!  *** <br>  What is your command? <br>  the wrapper wraps (yeah, it does) calls to gcc / g ++ and adds options you <br>  specified in the apt-build configuration file. <br>  You will not see this on your screen. <br>  Try `ps ax |  grep gcc 'instead of a proof, while building. <br><br>  I apologize ... On the other hand, we understood ... I do not think that everyone knew about the specifics of apt-build. </div><p>Source: <a href="https://habr.com/ru/post/55961/">https://habr.com/ru/post/55961/</a></p>
+      <b>UPD:</b> With the help of the community safely understood the work of apt-build.  Optimization occurs.  But not entirely explicit way.  Under the cut details. <br><br><a name="habracut"></a><br><br>  And that no optimization happens.  At all.  In fact, apt-build rebuilds the package to the level of the package in the repository, that is, it works to heat the room.  Why does this happen?  And because the configuration file apt-build.conf is put with the device.  And all the optimizations that you have written there are not used.  You can easily see this if you take a closer look at the output of the script at the beginning of the work, at the moment of assigning values ​​to the variables “CFLAGS”, “CXXFLAGS” <br><br> <code>--- <br> <br> dpkg-buildpackage:  CFLAGS    : -g -O2 <br> dpkg-buildpackage:  CPPFLAGS    : <br> dpkg-buildpackage:  LDFLAGS    : -Wl,-Bsymbolic-functions <br> dpkg-buildpackage:  FFLAGS    : -g -O2 <br> dpkg-buildpackage:  CXXFLAGS    : -g -O2 <br> <br> ---</code> <br> <br>  Aha  not at all what we say in the config <br><br> <code>#cat /etc/apt/apt-build.conf <br> <br> build-dir = /var/cache/apt-build/build <br> repository-dir = /var/cache/apt-build/repository <br> Olevel = -O3 <br> mtune = -mtune=core2 <br> options = "-pipe -fomit-frame-pointer " <br> make_options = " -j2"</code> <br> <br>  Google is crammed (at least in RuNet) with a link to the same article about "how to optimize debian", by the way, it <a href="http://habrahabr.ru/blogs/linux/52368/">also exists</a> on the Habré, in the apt-build part it’s absolutely crazy, where the author left the default O2 optimization, and I did not bother to check whether it works at all.  A couple of posts on the case on the forums as a result does not lead to anything, people do not know how to solve it (it may not be for nothing that the man says “BUGS: Many”;) <br><br>  In general, the only solution, and I don’t know how efficient (testing) it is to apt-build source code, unpack it.  Then use your hands in debian / rules to change the flags to taste, and then continue the build. <br><br>  like <br><br> <code>#apt-build --noupdate --source build-source firefox</code> <br> <br>  rule debian / rules <br><br> <code>#apt-build --reinstall --yes --noupdate --source install firefox</code> <br> <br>  --reinstall - This is because my firefox is already worth it. <br><br>  <b>UPD</b> : In vain the water was mutil.  In fact, just read the documentation. <br><br>  Q: gcc and g ++ options! <br><br>  A: *** They are called with them!  *** <br>  What is your command? <br>  the wrapper wraps (yeah, it does) calls to gcc / g ++ and adds options you <br>  specified in the apt-build configuration file. <br>  You will not see this on your screen. <br>  Try `ps ax |  grep gcc 'instead of a proof, while building. <br><br>  I apologize ... On the other hand, we understood ... I do not think that everyone knew about the specifics of apt-build. </div><p>Source: https://habr.com/ru/post/55961/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../55949/index.html">Ukrainian gloss went to the Internet</a></li>
 <li><a href="../55950/index.html">Synergy to parents and teachers!</a></li>
 <li><a href="../55951/index.html">Opentodo 0.91 released</a></li>
 <li><a href="../55954/index.html">Photo: MacBook truck</a></li>
 <li><a href="../55956/index.html">Encyclopedia of television Vokrug.tv</a></li>
+<li><a href="../5596/index.html">Adobe asks to hurry with the upgrade</a></li>
 <li><a href="../55963/index.html">qJerry: write less, do more. Now in PHP.</a></li>
 <li><a href="../55970/index.html">Gmail - Labs in Russian interface!</a></li>
 <li><a href="../55971/index.html">Altitude in Google Maps (need help)</a></li>

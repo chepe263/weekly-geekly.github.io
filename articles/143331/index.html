@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PHP vulnerability in CGI mode</h1><div class="post__text post__text-html js-mediator-article">  There is a vulnerability on some CGI-based settings (Apache + mod_php and Nginx + PHP-FPM is not affected), which remained unnoticed for at least 8 years.  <a href="http://tools.ietf.org/html/draft-robinson-www-interface-00">Section 7 of the CGI specification states</a> : <br><blockquote>  Some systems support a method for passing [sic] an array of strings to a CGI script.  Used only in the case of "index" queries.  GET or HEAD is defined as an HTTP request with a URL search string that does not contain uncoded "=" characters. </blockquote><br><a name="habracut"></a>  So requests that do not contain the <b><i>"="</i></b> sign are processed differently for some CGI implementations.  For PHP, this means that the query that contains <b><i>? -S</i></b> can merge the PHP source of the page, but with the query <b><i>? -S &amp; = 1,</i></b> everything is fine. <br><br>  A large number of sites run PHP either as an Apache module via mod_php, or using PHP-FPM under Nginx.  None of these methods are vulnerable to this.  Direct work with CGI is also not affected by this vulnerability. <br><br>  If you use Apache mod_cgi to run PHP, then you may be vulnerable.  To make sure you need to add to the end of any URL <b><i>? -S</i></b> .  If you see the source code, then you are vulnerable.  If your site opens, then everything is likely in order. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      To fix this, upgrade to PHP 5.3.12 or PHP 5.4.2. <br><br>  We recognize that using CGI is a rather outdated way to run PHP, and it may not be possible to update sites to the latest version of PHP.  Alternatively, you can configure the web server to prevent requests of this kind that begin with <b><i>"-"</i></b> and do not contain <b><i>"="</i></b> .  Adding this rule should not affect the operation of the site.  For Apache that use mod_rewrite, it will look like this: <br><br> <code>RewriteCond %{QUERY_STRING} ^(%2d|-)[^=]+$ [NC] <br> RewriteRule ^(.*) $1? [L]</code> <br> <br>  If you write your rules, do not forget to take into account the urlencoded <b><i>?% 2ds</i></b> version. <br><br>  A bad week has gotten worse.  We had a bug in our bugtracker, which switched the private flag of the error report to public in the comment to the error message, which made this problem public before we tested the solutions to the level we needed.  Please report all problems via <a href="https://bugs.php.net/">bugs.php.net</a> . <br><br>  To download PHP 5.3.12 or PHP 5.4.2, visit <a href="http://www.php.net/downloads.php">the download page</a> .  Windows binaries are available at <a href="http://windows.php.net/download/">windows.php.net/download/</a> .  There is a <a href="http://www.php.net/ChangeLog-5.php">change log</a> . </div><p>Source: <a href="https://habr.com/ru/post/143331/">https://habr.com/ru/post/143331/</a></p>
+      To fix this, upgrade to PHP 5.3.12 or PHP 5.4.2. <br><br>  We recognize that using CGI is a rather outdated way to run PHP, and it may not be possible to update sites to the latest version of PHP.  Alternatively, you can configure the web server to prevent requests of this kind that begin with <b><i>"-"</i></b> and do not contain <b><i>"="</i></b> .  Adding this rule should not affect the operation of the site.  For Apache that use mod_rewrite, it will look like this: <br><br> <code>RewriteCond %{QUERY_STRING} ^(%2d|-)[^=]+$ [NC] <br> RewriteRule ^(.*) $1? [L]</code> <br> <br>  If you write your rules, do not forget to take into account the urlencoded <b><i>?% 2ds</i></b> version. <br><br>  A bad week has gotten worse.  We had a bug in our bugtracker, which switched the private flag of the error report to public in the comment to the error message, which made this problem public before we tested the solutions to the level we needed.  Please report all problems via <a href="https://bugs.php.net/">bugs.php.net</a> . <br><br>  To download PHP 5.3.12 or PHP 5.4.2, visit <a href="http://www.php.net/downloads.php">the download page</a> .  Windows binaries are available at <a href="http://windows.php.net/download/">windows.php.net/download/</a> .  There is a <a href="http://www.php.net/ChangeLog-5.php">change log</a> . </div><p>Source: https://habr.com/ru/post/143331/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../143323/index.html">Using the Microsoft Bing Translator API in Your Application</a></li>
-<li><a href="../143324/index.html">Installing iOS 4.2 simulator in Xcode 4.3</a></li>
 <li><a href="../143325/index.html">What does the Titanium SDK update to version 2.0 carry?</a></li>
+<li><a href="../143326/index.html">The digest of interesting news and materials from the world of ayti for the last week №4 (April 28 - May 4, 2012)</a></li>
 <li><a href="../143327/index.html">A little paranoia for online storage</a></li>
+<li><a href="../14333/index.html">Digg has become more social</a></li>
 <li><a href="../143330/index.html">I am looking for a team of like-minded people</a></li>
 <li><a href="../143332/index.html">RubyMotion: native iOS Ruby applications (translation)</a></li>
 <li><a href="../143335/index.html">Baby talk or C ++ also begins with something</a></li>

@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PHPMailer and SwiftMailer execution of arbitrary code vulnerabilities</h1><div class="post__text post__text-html js-mediator-article"><p>  In recent days, three vulnerabilities have been reported for <a href="https://github.com/PHPMailer/PHPMailer">PHPMailer</a> and <a href="http://swiftmailer.org/">SwiftMailer</a> : </p><br><ul><li>  12/25/2016, CVE-2016-10033 The <a href="https://legalhackers.com/advisories/PHPMailer-Exploit-Remote-Code-Exec-CVE-2016-10033-Vuln.html">vulnerability of remote code execution through PHPMailer</a> </li><li>  12/27/2016, CVE-2016-10045. <a href="https://legalhackers.com/advisories/PHPMailer-Exploit-Remote-Code-Exec-CVE-2016-10045-Vuln-Patch-Bypass.html">Vulnerability of remote code execution through PHPMailer</a> </li><li>  12/28/2016, CVE-2016-10074. <a href="https://legalhackers.com/advisories/SwiftMailer-Exploit-Remote-Code-Exec-CVE-2016-10074-Vuln.html">Vulnerability of remote code execution through SwiftMailer</a> </li></ul><br><p>  All three vulnerability reports mention the Yii framework along with other PHP frameworks as vulnerable, because the purpose of this article is to clarify exactly who is affected by this vulnerability and what needs to be done in order to protect itself. </p><a name="habracut"></a><br><p>  As for PHPMailer, Yii never officially provided any components related to PHPMailer.  In addition, Yii never included PHPMailer in any code that was officially issued by the Yii team. </p><br><p>  The mention of Yii in the reports is most likely a copy-paste from README PHPMailer'a, where it is said that it can be used together with the Yii framework.  A <a href="">patch</a> has already been released for PHPMailer, you need to upgrade to at least version 5.2.20. </p><br><p>  The situation regarding SwiftMailer is different.  For it, we provide the extension <a href="https://github.com/yiisoft/yii2-swiftmailer">yii2-swiftmailer</a> .  SwiftMailer also released a <a href="">patch</a> , you need to upgrade to at least 5.4.5. </p><br><h2 id="sut-uyazvimosti">  The essence of the vulnerability </h2><br><p> Since the PHP <a href="http://php.net/manual/en/function.mail.php">mail ()</a> function does not provide a separate parameter for specifying the sender's address, the only way to do this is to pass the string as the fifth argument ( <code>$additional_parameters</code> ).  The string must contain the <code>-f</code> flag, followed by the sender's email (for example, <code>-fadmin@example.com</code> ). </p><br><p>  This results in a call to <code>/usr/bin/sendmail</code> with a list of parameters formed from the PHP call to the <code>mail()</code> function.  For example: </p><br><pre> <code class="hljs scala">/usr/sbin/sendmail -t -i -fadmin<span class="hljs-meta"><span class="hljs-meta">@example</span></span>.com</code> </pre> <br><p>  When a developer independently sends the 5th argument to the <code>mail()</code> function, it is assumed that he is reading the documentation and knows that email needs to be checked and escaped so that it is safe for use on the command line.  In case this is not done, it is obvious that all responsibility lies with the developer, who allowed the injection of command line parameters. </p><br><p>  However, the PHPMailer and SwiftMailer libraries provide a convenient API that hides the fact that an email was sent to the command line in a dangerous way.  The developer hopes that the libraries perform sufficient shielding to ensure the security of the <code>sendmail</code> program call. </p><br><p>  The discovered vulnerabilities indicate that the PHPMailer and SwiftMailer libraries did not perform sufficient shielding.  This means that if the sender's address is formed in a special way, it will be transferred to the fifth parameter of the PHP <code>mail()</code> function and executed as additional parameters when the <code>sendmail</code> program is called. </p><br><p>  For example, passing the following line as email addresses allows you to embed in the <code>-oQ</code> and <code>-X</code> parameters that will be processed by the <code>sendmail</code> program: </p><br><pre> <code class="hljs ruby">-f<span class="hljs-string"><span class="hljs-string">"attacker\" -oQ/tmp/ -X/var/www/cache/phpcode.php some"</span></span>@email.com /<span class="hljs-regexp"><span class="hljs-regexp">/    /usr</span></span><span class="hljs-regexp"><span class="hljs-regexp">/sbin/sendmail</span></span> -t -i -f<span class="hljs-string"><span class="hljs-string">"attacker"</span></span> -oQ/tmp/ -X/var/www/cache/phpcode.php some@email.com</code> </pre> <br><p>  More information on the reproduction of the vulnerability can be found at the links at the beginning of the article. </p><br><h2 id="kto-podverzhen-opasnosti">  Who is at risk? </h2><br><p>  First of all, users who use the <code>Swift_MailTransport</code> or <code>PHPMailer</code> classes to send messages.  These classes, in turn, use the PHP <code>mail()</code> function. </p><br><h2 id="chto-nuzhno-sdelat-chtoby-obezopasit-prilozhenie">  What needs to be done to secure the application? </h2><br><p>  Given that the vulnerabilities only concern the "From" field, you need to remember where in your applications the user can specify his own value for the sender's address.  Most often this is used in contact forms and guest book scripts. </p><br><p>  If you correctly validate email at the stage of receiving it from the user, then this vulnerability will most likely not affect you. </p><br><p>  It is good practice to validate the data immediately upon receipt from the user, which helps to avoid processing invalid data in other parts of the application, including transferring to third-party libraries that may be vulnerable. </p><br><p>  For Yii, there is <a href="http://www.yiiframework.com/doc-2.0/yii-validators-emailvalidator.html">EmailValidator</a> , which does not skip addresses following the example of those used in this vulnerability. </p><br><p>  In addition, in PHP there is a native function <code>filter_var()</code> , which can check email.  For example: </p><br><pre> <code class="php hljs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">validateEmail</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (filter_var(<span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;email, FILTER_VALIDATE_EMAIL) === <span class="hljs-keyword"><span class="hljs-keyword">false</span></span>) { <span class="hljs-keyword"><span class="hljs-keyword">throw</span></span> <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> InvalidParamException(<span class="hljs-string"><span class="hljs-string">'The email contains characters that are not allowed'</span></span>); } }</code> </pre> <br><p>  <strong>UPD1:</strong> SwiftMailer has released a <a href="">patch</a> , you need to upgrade to version at least 5.4.5. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/318698/">https://habr.com/ru/post/318698/</a></p>
+    <p>Source: https://habr.com/ru/post/318698/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,11 +74,11 @@
 <li><a href="../318688/index.html">December digest of grocery design: Book Atomic Design, Adobe XD for Windows and UX-trends of 2017</a></li>
 <li><a href="../318692/index.html">2FA in Oracle ApEx</a></li>
 <li><a href="../318694/index.html">VPN in 60 seconds</a></li>
+<li><a href="../3187/index.html">The first screen of the main page of the site usability experts</a></li>
 <li><a href="../318700/index.html">Snake. The development of the genre</a></li>
 <li><a href="../318702/index.html">Turn your smartphone into an IoT sensor using Bluemix. Application Development Example</a></li>
 <li><a href="../318704/index.html">Laravel Dusk is close</a></li>
 <li><a href="../318706/index.html">Everything you wanted to know about financial bots</a></li>
-<li><a href="../318710/index.html">Virtual office for real work</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

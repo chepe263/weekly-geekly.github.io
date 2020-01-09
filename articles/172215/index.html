@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Programming Arduino from Linux, gentoo-way, quick start</h1><div class="post__text post__text-html js-mediator-article">  Unfortunately, the information needed to connect the Arduino to a computer turned out to be scattered across sources in different languages.  As you know, gentoo is a linux distribution with continuous development, in fact there’s no such thing as a “distribution”.  Because of this, the solution to the problem found on the Internet may not work because the target system has a different set of packages and settings. <br><br>  In addition, the authors, as a rule, give commands and solutions specific to a particular system at a specific point in time.  Some time passes, product versions change, some paths and files change.  This is an attempt not only to consolidate information, but also to present it in such a way that the information becomes obsolete as little as possible, and it was easy to modify the commands for your system.  Perhaps this will be useful in other distributions. <br><br><a name="habracut"></a><br><div class="spoiler">  <b class="spoiler_title">For reference, the target system</b> <div class="spoiler_text">  Architecture amd64, kernel x86_64 3.7.10-gentoo <br>  Installed stable packages of the latest versions. <br>  At the ebay auction, the Arduino Pro Mini 328p 16MHz 5V board was purchased and a USB converter to it on an FTDI chip. <br></div></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  Install USB converter support into the kernel. </h4><br>  After connecting the converter to the USB port, we see the following: <br><br><pre> # tail / var / log / messages
@@ -114,13 +114,13 @@
  collect2: error: ld execution completed with return code 1
 </pre><br>  For your board, the file name may be different, but the solution is the same; you must create the corresponding symbolic link.  We are looking for a file: <br><pre> # find / usr / -name crtm328p.o
  /usr/avr/lib/avr5/crtm328p.o
-</pre><br>  create link: <br><pre>  # ln -s /usr/avr/lib/avr5/crtm328p.o / usr / avr / lib / </pre><br><br>  <b>UPDATE: 03/28/2013</b> <br><br><h5>  There is a problem with the binutils version above 2.19 </h5><br>  The problem is that all the above works, everything is compiled, assembled and loaded into the board without the slightest error.  But the firmware does not work.  In my case, the board just blinks with an LED, the second is on, it goes off for a second, that is, the classic Blink. <br><br>  The solution is described <a href="http://en.gentoo-wiki.com/wiki/Crossdev">here</a> , the bug is registered on <a href="https://bugs.gentoo.org/show_bug.cgi%3Fid%3D378387">Gentoo's Bugzilla</a> . <br><br>  To solve the problem, reinstall the toolchain as follows: <br><blockquote>  crossdev -C avr <br>  USE = "multilib -cxx" crossdev - b 2.19.1-r1 -S -s1 --target avr <br>  USE = "multilib cxx" crossdev - b 2.19.1-r1 -S -s4 --target avr <br></blockquote><br>  Everything written above regarding incorrect paths remains valid. <br><br>  <b>UPDATE: 04/13/2013</b> <br><h5>  For systems with a hardened kernel: </h5><br><blockquote>  USE = "multilib -cxx nopie nossp -hardened -pic -openmp" crossdev - b 2.19.1-r1 -S -s1 --target avr <br>  USE = "multilib cxx nopie nossp -hardened -pic -openmp" crossdev - b 2.19.1-r1 -S -s4 --target avr <br></blockquote><br><br><h4>  Instead of conclusion </h4><br>  The board itself and the ways to use it interested me in the context of building the Smart Home system.  Now I have a major overhaul of the apartment in full swing, and I can lay any cables, place any switching boxes, etc. <br><br><h4>  Content </h4><br><ol><li>  <strong>Programming Arduino from Linux, gentoo-way, quick start</strong> </li><li>  <a href="http://habrahabr.ru/post/173157/">Programming Arduino from the console, gentoo-way, nothing more</a> </li></ol><br><br><h4>  Used sources </h4><br><ol><li>  <a href="http://playground.arduino.cc/linux/gentoo">playground.arduino.cc/linux/gentoo</a> </li><li>  <a href="http://forums.gentoo.org/viewtopic-t-907860.html">forums.gentoo.org/viewtopic-t-907860.html</a> </li><li>  <a href="http://arduino.cc/en/Tutorial/blink">arduino.cc/en/Tutorial/blink</a> </li><li>  <a href="http://forums.gentoo.org/viewtopic-t-834097.html">forums.gentoo.org/viewtopic-t-834097.html</a> </li><li>  <a href="https://bugs.gentoo.org/show_bug.cgi%3Fid%3D147155">bugs.gentoo.org/show_bug.cgi?id=147155</a> </li><li>  <a href="http://lpig.wordpress.com/2011/09/28/arduino-and-gentoo/">lpig.wordpress.com/2011/09/28/arduino-and-gentoo</a> </li><li>  <a href="http://en.gentoo-wiki.com/wiki/Crossdev">en.gentoo-wiki.com/wiki/Crossdev</a> </li><li>  <a href="https://bugs.gentoo.org/show_bug.cgi%3Fid%3D378387">bugs.gentoo.org/show_bug.cgi?id=378387</a> </li></ol></div><p>Source: <a href="https://habr.com/ru/post/172215/">https://habr.com/ru/post/172215/</a></p>
+</pre><br>  create link: <br><pre>  # ln -s /usr/avr/lib/avr5/crtm328p.o / usr / avr / lib / </pre><br><br>  <b>UPDATE: 03/28/2013</b> <br><br><h5>  There is a problem with the binutils version above 2.19 </h5><br>  The problem is that all the above works, everything is compiled, assembled and loaded into the board without the slightest error.  But the firmware does not work.  In my case, the board just blinks with an LED, the second is on, it goes off for a second, that is, the classic Blink. <br><br>  The solution is described <a href="http://en.gentoo-wiki.com/wiki/Crossdev">here</a> , the bug is registered on <a href="https://bugs.gentoo.org/show_bug.cgi%3Fid%3D378387">Gentoo's Bugzilla</a> . <br><br>  To solve the problem, reinstall the toolchain as follows: <br><blockquote>  crossdev -C avr <br>  USE = "multilib -cxx" crossdev - b 2.19.1-r1 -S -s1 --target avr <br>  USE = "multilib cxx" crossdev - b 2.19.1-r1 -S -s4 --target avr <br></blockquote><br>  Everything written above regarding incorrect paths remains valid. <br><br>  <b>UPDATE: 04/13/2013</b> <br><h5>  For systems with a hardened kernel: </h5><br><blockquote>  USE = "multilib -cxx nopie nossp -hardened -pic -openmp" crossdev - b 2.19.1-r1 -S -s1 --target avr <br>  USE = "multilib cxx nopie nossp -hardened -pic -openmp" crossdev - b 2.19.1-r1 -S -s4 --target avr <br></blockquote><br><br><h4>  Instead of conclusion </h4><br>  The board itself and the ways to use it interested me in the context of building the Smart Home system.  Now I have a major overhaul of the apartment in full swing, and I can lay any cables, place any switching boxes, etc. <br><br><h4>  Content </h4><br><ol><li>  <strong>Programming Arduino from Linux, gentoo-way, quick start</strong> </li><li>  <a href="http://habrahabr.ru/post/173157/">Programming Arduino from the console, gentoo-way, nothing more</a> </li></ol><br><br><h4>  Used sources </h4><br><ol><li>  <a href="http://playground.arduino.cc/linux/gentoo">playground.arduino.cc/linux/gentoo</a> </li><li>  <a href="http://forums.gentoo.org/viewtopic-t-907860.html">forums.gentoo.org/viewtopic-t-907860.html</a> </li><li>  <a href="http://arduino.cc/en/Tutorial/blink">arduino.cc/en/Tutorial/blink</a> </li><li>  <a href="http://forums.gentoo.org/viewtopic-t-834097.html">forums.gentoo.org/viewtopic-t-834097.html</a> </li><li>  <a href="https://bugs.gentoo.org/show_bug.cgi%3Fid%3D147155">bugs.gentoo.org/show_bug.cgi?id=147155</a> </li><li>  <a href="http://lpig.wordpress.com/2011/09/28/arduino-and-gentoo/">lpig.wordpress.com/2011/09/28/arduino-and-gentoo</a> </li><li>  <a href="http://en.gentoo-wiki.com/wiki/Crossdev">en.gentoo-wiki.com/wiki/Crossdev</a> </li><li>  <a href="https://bugs.gentoo.org/show_bug.cgi%3Fid%3D378387">bugs.gentoo.org/show_bug.cgi?id=378387</a> </li></ol></div><p>Source: https://habr.com/ru/post/172215/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../172203/index.html">Lenovo ThinkPad Twist S230u Ultrabook Video Review</a></li>
 <li><a href="../172205/index.html">Denial of standard authorization in favor of social</a></li>
 <li><a href="../172209/index.html">Java: keyed executor</a></li>
+<li><a href="../17221/index.html">Folding discussion threads</a></li>
 <li><a href="../172211/index.html">Behavioral factors and what they eat</a></li>
 <li><a href="../172213/index.html">Drupal + Omega + Bootstrap: the rapid creation of fully custom themes without layout (Part 1. Omega)</a></li>
 <li><a href="../172217/index.html">Photo archive metadata. XMP tags of individuals. [HowTo]</a></li>

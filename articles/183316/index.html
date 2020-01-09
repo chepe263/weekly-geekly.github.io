@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Features of receiving packets through the raw socket in Linux</h1><div class="post__text post__text-html js-mediator-article"><img align="right" src="https://habrastorage.org/storage2/4f6/cad/a4a/4f6cada4ab73615286bf600a8b985816.png"><br>  Linux (unlike, for example, from FreeBSD) allows you to use raw sockets not only for sending, but also for receiving data.  In this place there are interesting rakes, which I stepped on.  Now I hasten to show them to those who still don’t know, so that everyone, using his favorite programming language, be it C ++ or Python, can try them out. <br><br>  The essence of the rake is depicted in the figure, so that those who already know, do not waste their time. <br><a name="habracut"></a><br>  I will write examples in C, but you can transfer them to other languages ​​that provide the possibility of low-level work with the TCP \ IP stack in Linux. <br><br><h2>  Some concepts </h2><br>  Let me remind you that to initialize a raw socket, we pass a parameter that indicates the type of protocol.  For example UDP: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>socket(AF_INET, SOCK_RAW, IPPROTO_UDP)</code> <br> <br>  I will call this protocol the <i>level</i> at which the raw socket works.  In the example, we created a raw socket at the UDP level. <br><br>  The raw socket level does not limit you in forming a packet for sending, you can independently create both UDP and IP header.  But when you receive data, the most interesting begins ... <br><br><h2>  Rake </h2><br>  Suppose we created 2 raw sockets at the UDP level and used <i>one</i> of them to send a UDP packet to the UDP echo server.  Echo will return us UDP payload back.  So, the TCP \ IP Stack <b>will copy the</b> received packet to <b>all</b> raw sockets of the level specified in the Protocol IP field of the incoming packet.  I repeat once again - on <b>EVERYTHING</b> , even those that are open in other applications (for this reason, an application operating with raw sockets can only be run with root privileges).  Since the UDP echo server responds with a UDP packet, all raw UDP sockets of the level will receive it. <br><br>  We note another important feature.  Regardless of the level of the raw socket, it delivers a complete packet including IP headers. <br><br>  Thus, every raw socket in Linux is a sniffer at the level at which it was created.  Keep this in mind when developing applications. <br><br><h2>  Example </h2><br>  I did not load the note with a code.  For those who are interested to try, I <br>  laid out the example on <a href="https://github.com/hoxnox/rawsock_recv_example">github</a> .  There is a cmake project that collects a simple UDP echo server and an application that creates 2 raw UDP sockets, one of which sends data, but both are sent to the epoll awaiting a response.  For the purity of the experiment, the echo server and the example should be started up on different machines (do not forget to correct the code in accordance with your IP shnik).  For interest, you can run multiple instances of the example. <br><br>  For extracurricular reading there is a <a href="http://sock-raw.org/papers/sock_raw">good article</a> . <br><br>  Thank you for your attention and a smaller rake! </div><p>Source: <a href="https://habr.com/ru/post/183316/">https://habr.com/ru/post/183316/</a></p>
+     <code>socket(AF_INET, SOCK_RAW, IPPROTO_UDP)</code> <br> <br>  I will call this protocol the <i>level</i> at which the raw socket works.  In the example, we created a raw socket at the UDP level. <br><br>  The raw socket level does not limit you in forming a packet for sending, you can independently create both UDP and IP header.  But when you receive data, the most interesting begins ... <br><br><h2>  Rake </h2><br>  Suppose we created 2 raw sockets at the UDP level and used <i>one</i> of them to send a UDP packet to the UDP echo server.  Echo will return us UDP payload back.  So, the TCP \ IP Stack <b>will copy the</b> received packet to <b>all</b> raw sockets of the level specified in the Protocol IP field of the incoming packet.  I repeat once again - on <b>EVERYTHING</b> , even those that are open in other applications (for this reason, an application operating with raw sockets can only be run with root privileges).  Since the UDP echo server responds with a UDP packet, all raw UDP sockets of the level will receive it. <br><br>  We note another important feature.  Regardless of the level of the raw socket, it delivers a complete packet including IP headers. <br><br>  Thus, every raw socket in Linux is a sniffer at the level at which it was created.  Keep this in mind when developing applications. <br><br><h2>  Example </h2><br>  I did not load the note with a code.  For those who are interested to try, I <br>  laid out the example on <a href="https://github.com/hoxnox/rawsock_recv_example">github</a> .  There is a cmake project that collects a simple UDP echo server and an application that creates 2 raw UDP sockets, one of which sends data, but both are sent to the epoll awaiting a response.  For the purity of the experiment, the echo server and the example should be started up on different machines (do not forget to correct the code in accordance with your IP shnik).  For interest, you can run multiple instances of the example. <br><br>  For extracurricular reading there is a <a href="http://sock-raw.org/papers/sock_raw">good article</a> . <br><br>  Thank you for your attention and a smaller rake! </div><p>Source: https://habr.com/ru/post/183316/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../183312/index.html">Open SmartWatch Project</a></li>
 <li><a href="../183314/index.html">Backdoor in D-Link routers</a></li>
 <li><a href="../183318/index.html">University. What can he give?</a></li>
+<li><a href="../18332/index.html">TOP-10 Western startups that are worth paying attention to in 2008</a></li>
 <li><a href="../183320/index.html">Software package for computing clusters Fujitsu HPC Cluster Suite</a></li>
 <li><a href="../183322/index.html">Proper use of exceptions in Java</a></li>
 <li><a href="../183324/index.html">How difficult is it to change a business model after 2 years? Startup restart history</a></li>
-<li><a href="../183326/index.html">Is it possible to create a business card site in 40 minutes? My experience</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

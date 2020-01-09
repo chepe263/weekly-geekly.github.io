@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Compiler error? Unlikely, but ...</h1><div class="post__text post__text-html js-mediator-article">  Once I liked the saying “Do you think that a compiler error?  Check your code better! ”  Indeed, in my practice this happened - when, it would seem, all the rational reasons for the error were rejected and the thought that this time there was certainly a glitch somewhere in the system, suddenly there was some ridiculously banal error in its code , immediately explaining all the previous oddities. <br><br>  But sometimes the compiler may still be guilty. <br><br><a name="habracut"></a><br>  The project on the TMS570 controller (one of the key features of which influenced the choice was the presence of a floating-point module).  The purpose of a controller for a safety-critical system does not seem to leave a chance that any serious problems may occur with the controller itself.  At least, I really want to believe this. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The project has a very, very complex algorithm that requires a lot of floating-point calculations.  Which, of course, refuses to work on the first implementation attempt.  No wonder, normal development and debugging. <br><br>  But then the strangeness begins.  Where the values ​​of the calculations can never be greater than 1, the error of the “infinite result” suddenly begins to occur.  In this attempt to catch the moment, when this happens, do not lead to success. <br><br>  The final was the following: fragment <br><br><pre><code class="hljs perl"><span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (<span class="hljs-keyword"><span class="hljs-keyword">x</span></span> &gt; <span class="hljs-number"><span class="hljs-number">1</span></span>) { <span class="hljs-keyword"><span class="hljs-keyword">printf</span></span>(“%f”, <span class="hljs-keyword"><span class="hljs-keyword">x</span></span>); }</code> </pre> <br><br>  printed out values ​​of the form 0.0043, i.e.  much less than one ... <br><br>  And here the idea that “perhaps, this time the compiler is to blame,” has once again become more active.  And after some digging in this direction, the problem was suspected, confirmed, and successfully solved. <br><br>  The point was that the compiler incorrectly generated the interrupt input / output code without saving all the floating point registers!  As a result, as soon as during the execution of any floating-point calculations an interrupt occurred, within which floating-point calculations were also performed (and this really happened!), The system began to behave in an unpredictable way like the one described above.  And after manually correcting the interrupt I / O code, the problem was safely solved and no longer manifested itself. <br><br>  Shl.  And when you know where exactly the problem is, it is already easy to find that it was known before.  Unfortunately, information about it was present only on the <a href="http://e2e.ti.com/support/microcontrollers/hercules/f/312/t/63671.aspx">Texas Instruments forum</a> , and was not described anywhere in standard documentation or among known problems. <br><br>  ZZY.  Well, even the purpose of the controller for safety critical systems, as it turned out, does not guarantee that everything in it will work as stated ... </div><p>Source: <a href="https://habr.com/ru/post/131843/">https://habr.com/ru/post/131843/</a></p>
+      The project has a very, very complex algorithm that requires a lot of floating-point calculations.  Which, of course, refuses to work on the first implementation attempt.  No wonder, normal development and debugging. <br><br>  But then the strangeness begins.  Where the values ​​of the calculations can never be greater than 1, the error of the “infinite result” suddenly begins to occur.  In this attempt to catch the moment, when this happens, do not lead to success. <br><br>  The final was the following: fragment <br><br><pre><code class="hljs perl"><span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (<span class="hljs-keyword"><span class="hljs-keyword">x</span></span> &gt; <span class="hljs-number"><span class="hljs-number">1</span></span>) { <span class="hljs-keyword"><span class="hljs-keyword">printf</span></span>(“%f”, <span class="hljs-keyword"><span class="hljs-keyword">x</span></span>); }</code> </pre> <br><br>  printed out values ​​of the form 0.0043, i.e.  much less than one ... <br><br>  And here the idea that “perhaps, this time the compiler is to blame,” has once again become more active.  And after some digging in this direction, the problem was suspected, confirmed, and successfully solved. <br><br>  The point was that the compiler incorrectly generated the interrupt input / output code without saving all the floating point registers!  As a result, as soon as during the execution of any floating-point calculations an interrupt occurred, within which floating-point calculations were also performed (and this really happened!), The system began to behave in an unpredictable way like the one described above.  And after manually correcting the interrupt I / O code, the problem was safely solved and no longer manifested itself. <br><br>  Shl.  And when you know where exactly the problem is, it is already easy to find that it was known before.  Unfortunately, information about it was present only on the <a href="http://e2e.ti.com/support/microcontrollers/hercules/f/312/t/63671.aspx">Texas Instruments forum</a> , and was not described anywhere in standard documentation or among known problems. <br><br>  ZZY.  Well, even the purpose of the controller for safety critical systems, as it turned out, does not guarantee that everything in it will work as stated ... </div><p>Source: https://habr.com/ru/post/131843/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../131836/index.html">rbenv and ruby-build: an easy alternative to RVM</a></li>
 <li><a href="../131839/index.html">Microsoft and the school of Internet marketing "Netology" announced a partnership. Customers benefit!</a></li>
+<li><a href="../13184/index.html">Umbrella</a></li>
 <li><a href="../131840/index.html">Spanish court found piracy harmless</a></li>
 <li><a href="../131841/index.html">What can really give specialized software for marketing?</a></li>
 <li><a href="../131842/index.html">CMS rating system</a></li>

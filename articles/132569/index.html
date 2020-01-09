@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>@Autowired for servlets in the OSGi container</h1><div class="post__text post__text-html js-mediator-article"> Instead of introducing, I send the reader to an excellent article <a href="http://habrahabr.ru/blogs/java/128653/">Using Spring in the OSGi-container</a> which served as the starting point for practical study. <br>  So, to the point.  Consider the classic version - there is the business logic of the application and it somehow <br>  interacts with the outside world.  We use the following link: <br>  client &lt;-&gt; transport &lt;-&gt; receiver &lt;-&gt; serializer / deserializer &lt;-&gt; business logic method. <br>  The serializer begs for a replaceable module, for example, serialization in JSON or serialization in XML. <br>  You can then forget about business logic and focus on a bundle of receiver and serializer. <br>  We use the servlet as the receiver, and for the serializer, for simplicity, we use the implementation of the following interface: <br><a name="habracut"></a><br> <code>interface ISerializer { <br> String selialize(Object obj); <br> } <br></code> <br>  To bind components, use SpringFramework.  Returning again to the <a href="http://habrahabr.ru/blogs/java/128653/">link</a> at the beginning of the article, where the interface injection is based on annotations, the servlet is described something like this <br> <code>@Component <br> public class TestServlet extends HttpServlet { <br> @Autowired <br> private ISerializer serializer; <br> <br> @Override <br> protected void doGet(HttpServletRequest req, HttpServletResponse res) <br> throws ServletException, IOException { <br> // ...      <br> //      Object result; <br> <br> res.setContentType("text/plain"); <br> PrintWriter out = res.getWriter(); <br> out.println(serializer.serialize(obj)); <br> } <br> } <br></code> <br>  This is a far-fetched and not the best example of using serialization, but <br>  the binding of the serializer to the servlet is plausible. <br>  It all started on the Apache Felix server with installed gemini-blueprint and spring modules. <br><br> <code>[INFO] Started jetty 6.1.x at port(s) HTTP:8080 <br> ____________________________ <br> Welcome to Apache Felix Gogo <br> <br> g! lb <br> START LEVEL 1 <br> ID|State |Level|Name <br> 0|Active | 0|System Bundle (4.0.1) <br> 1|Active | 1|AOP Alliance API (1.0.0) <br> 2|Active | 1|Apache Log4J (1.2.16) <br> 3|Active | 1|SLF4J API (1.6.1) <br> 4|Resolved | 1|SLF4J Log4J Binding (1.6.1) <br> 5|Active | 1|SLF4J Jakarta Commons Logging Over SLF4J Binding (1.6.1) <br> 6|Active | 1|gemini-blueprint-core (1.0.0.RELEASE) <br> 7|Active | 1|gemini-blueprint-extender (1.0.0.RELEASE) <br> 8|Active | 1|gemini-blueprint-io (1.0.0.RELEASE) <br> 9|Active | 1|Apache Felix Bundle Repository (1.6.6) <br> 10|Active | 1|Apache Felix Gogo Command (0.12.0) <br> 11|Active | 1|Apache Felix Gogo Runtime (0.10.0) <br> 12|Active | 1|Apache Felix Gogo Shell (0.10.0) <br> 13|Active | 1|Apache Felix Http Jetty (2.2.0) <br> 14|Active | 1|Apache Felix Http Whiteboard (2.2.0) <br> 15|Active | 1|Spring AOP (3.1.0.RC1) <br> 16|Active | 1|Spring ASM (3.1.0.RC1) <br> 17|Active | 1|Spring Aspects (3.1.0.RC1) <br> 18|Active | 1|Spring Beans (3.1.0.RC1) <br> 19|Active | 1|Spring Context (3.1.0.RC1) <br> 20|Active | 1|Spring Context Support (3.1.0.RC1) <br> 21|Active | 1|Spring Core (3.1.0.RC1) <br> 22|Active | 1|Spring Expression Language (3.1.0.RC1) <br></code> <br>  Lyrical digression.  The Jetty web server in delivery with felix 4.0.1 comes with version 6.1, which means you can forget about java-ee-6 with the annotation for the @WebServlet servlet.  Jetty 8 did not have a desire to assemble separately, but it was not possible to launch it immediately. <br>  So, to my surprise, after assembling and installing the package, I received a 404 error in response to Jetty and blamed everything on the lack of mapping. <br>  Googling helped and the activator class was written to start the servlet: <br> <code>public class Activator implements BundleActivator { <br> private ServiceRegistration reg; <br> <br> @Override <br> public void start(BundleContext context) throws Exception { <br> Dictionary&lt;String, String&gt; props = new Hashtable&lt;&gt;(); <br> props.put("alias", "/"); <br> this.reg = context.registerService(Servlet.class.getName(), new TestServlet(), props); <br> } <br> <br> @Override <br> public void stop(BundleContext context) throws Exception { <br> this.reg.unregister(); <br> } <br> } <br></code> <br>  Project rebuilt, running. <br>  The gender of the work is done, the servlet starts and responds, but the variable selializator disappointingly points to null. <br>  It is worth noting that the @Component annotation on the servlet also had its effect.  Looking ahead, I’ll say that two instances of the servlet were actually created.  One was created by annotation and even contacted the serializer, and the second was honestly created in the activator and the @Autowired annotation did not work.  The search for the service implementing ISerializer from the activator was not successful, because  The activator call passed before the service I needed was registered in the system. <br>  Ahead was waiting for another googling, which ultimately helped solve the problem. <br>  If the class is described with the @Component annotation, then the @PostConstruct annotation can be added to one of the class methods (there are restrictions on the method, see the annotation documentation).  In short, this method is called after all dependency injections. <br>  So, we add the method that registers the servlet to Jetty. <br> <code>@PostConstruct <br> public void postConstruct() { <br> BundleContext context = FrameworkUtil.getBundle(this.getClass()).getBundleContext(); <br> Dictionary props = new Properties(); <br> props.put("alias", "/"); <br> context.registerService(Servlet.class.getName(), this, props); <br> } <br></code> <br>  In tutorials on servlet-OSGi bundles, it is written that if you register a servlet yourself, <br>  but it is necessary when unloading the module and re-register it yourself: <br> <code>//  <br> ServiceRegistration reg = context.registerService(Servlet.class.getName(), this, props); <br> <br> //  <br> reg.unregister(); <br></code> <br>  In my case, the call unregister (tried to call from the destroy () method of the servlet) resulted in <br>  error, which said that the service is no longer in that status, i.e.  already unregistered.  Apparently <br>  @Component annotation takes care of this.  At this I calmed down. <br>  In the class-activator is no longer necessary.  The result is a servlet into which you can inject <br>  necessary implementation.  And all this without tedious XML configuration files. <br>  I hope that this article will help someone and get rid of the long search for information in the net. <br><br><h4>  Additional sources </h4><br>  <a href="http://www.box.net/shared/xpqjlccr9vuzurv4ld2v">Archive with an example</a> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/132569/">https://habr.com/ru/post/132569/</a></p>
+    <p>Source: https://habr.com/ru/post/132569/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../132565/index.html">Google has marked the site of Russian Railways as potentially dangerous</a></li>
 <li><a href="../132566/index.html">Android - new Windows</a></li>
 <li><a href="../132567/index.html">Technical aspects of developing an ios application for the portal AllCafe.ru</a></li>
+<li><a href="../13257/index.html">Nevsky Express - terrorism or negligence?</a></li>
 <li><a href="../132570/index.html">40th anniversary of the central processor</a></li>
 <li><a href="../132571/index.html">Google provokes inflation in the adwords network</a></li>
 <li><a href="../132572/index.html">TurnAPI - write documentation easily</a></li>
 <li><a href="../132573/index.html">MPD, home audio storage</a></li>
-<li><a href="../132574/index.html">Red Hat targets Gluster at EMC / VMware</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

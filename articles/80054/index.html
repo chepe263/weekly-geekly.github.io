@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to make a budget geocluster hosting</h1><div class="post__text post__text-html js-mediator-article">  Let's take a classic example as a distributed hosting - creating a blog service based on mu-Wordpress. <br>  The task is to build a fault-tolerant (as far as possible) geo-distributed system with a limited budget.  Accordingly, all the equipment is taken to the rental in various data centers. <br>  And here it should be said that not all Data Centers are equally useful.  High-quality rent a server for $ 800, and for low-quality ones, it is possible to take about the same server for rent already for $ 100.  And it is these features that must be considered when creating a geocluster. <br><br>  Now about the small hacks.  By default, in mu-Wordpress, the upload function of downloadable content is extremely unfortunate - via PHP.  Accordingly, it was replaced by the download by a separate service and the insertion of downloadable content by a direct link to the statics. <br>  The second hack was a modification of the cache control.  In addition to the instructions to cache static design elements, another hack was introduced that prohibited the cache from being written for the duration of its discussion (14 days by default), and after that it was given with a header allowing caching.  In addition, RSS feeds were cunningly cached. <br>  The final hack was the database synchronization system - each INSERT / DELETE / UPDATE was performed on the “neighbor”.  It turned out such a soft raid in the context of MySQL + PHP. <br><a name="habracut"></a><br><img src="http://pix.org.ua/userimages/1_1262713752_603_.png" alt="image"><br><br>  First about the DNS.  Since mu-Wordpress used a subdomain for each blog, the most reasonable solution was to use the Slave DNS service from two independent registrars - gray clouds.  It is inexpensive and completely reliable. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The high-quality Green Data Center, where two servers are rented, was used for primary DNS, initial registration services and a fill form for downloadable content. <br>  Two data centers of average quality were used as the main “backbone” of the geocluster.  Each server had its own neighbor and they synchronized between themselves all the information of the database + files. <br><br>  Thus it was possible to significantly reduce costs at this stage.  However, after a while there was a serious problem, the name of which - search bots. <br><br>  These bots created 200-300 simultaneous connections to each server, which of course didn't lead to anything good - timeouts and 50x errors started.  Of course, it would be possible to reduce the number of requests through robots.txt with the crawl-delay option, but ... who wants to have his blog indexed slowly? <br><br>  And here cheap yellow Data Centers + setting up monitoring and DNS on two servers in the green Data Center helped.  How it all worked: <br><br>  Two yellow data centers functioned as primary (parent) squid proxies.  The remaining three used them as parental ones, which reduced the load on the blue “backbone”. <br>  Monitoring on servers in the green Data Center monitored the availability of yellow and blue, performing a DNS modification in the event of a failure. <br><br>  Now let's talk about fault tolerance.  What did we lose when turning off the green, blue or yellow segments? <br><br><ul><li>  Green - register and download files </li><li>  Blue - in the case of one thing, in the case of all - the admin panel did not work + the last entries outside the cache were not displayed. </li><li>  Yellow - in the case of one nothing, in the case of all - just an increased load on the blue server </li></ul><br><br>  Thus, it was possible to achieve maximum availability + saving the blog in the proxy cache, even with its physical removal.  It was and is - one user accidentally deleted his blog - and this feature is provided.  Turning in time to support his notes were pulled out of the cache, parsed and poured into the newly created blog. <br><br>  PS For server optimization under mu-WordPress, you can write to me in the comments - quite a lot of dogs were eaten by this case;) </div><p>Source: <a href="https://habr.com/ru/post/80054/">https://habr.com/ru/post/80054/</a></p>
+      The high-quality Green Data Center, where two servers are rented, was used for primary DNS, initial registration services and a fill form for downloadable content. <br>  Two data centers of average quality were used as the main “backbone” of the geocluster.  Each server had its own neighbor and they synchronized between themselves all the information of the database + files. <br><br>  Thus it was possible to significantly reduce costs at this stage.  However, after a while there was a serious problem, the name of which - search bots. <br><br>  These bots created 200-300 simultaneous connections to each server, which of course didn't lead to anything good - timeouts and 50x errors started.  Of course, it would be possible to reduce the number of requests through robots.txt with the crawl-delay option, but ... who wants to have his blog indexed slowly? <br><br>  And here cheap yellow Data Centers + setting up monitoring and DNS on two servers in the green Data Center helped.  How it all worked: <br><br>  Two yellow data centers functioned as primary (parent) squid proxies.  The remaining three used them as parental ones, which reduced the load on the blue “backbone”. <br>  Monitoring on servers in the green Data Center monitored the availability of yellow and blue, performing a DNS modification in the event of a failure. <br><br>  Now let's talk about fault tolerance.  What did we lose when turning off the green, blue or yellow segments? <br><br><ul><li>  Green - register and download files </li><li>  Blue - in the case of one thing, in the case of all - the admin panel did not work + the last entries outside the cache were not displayed. </li><li>  Yellow - in the case of one nothing, in the case of all - just an increased load on the blue server </li></ul><br><br>  Thus, it was possible to achieve maximum availability + saving the blog in the proxy cache, even with its physical removal.  It was and is - one user accidentally deleted his blog - and this feature is provided.  Turning in time to support his notes were pulled out of the cache, parsed and poured into the newly created blog. <br><br>  PS For server optimization under mu-WordPress, you can write to me in the comments - quite a lot of dogs were eaten by this case;) </div><p>Source: https://habr.com/ru/post/80054/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,8 +75,8 @@
 <li><a href="../80056/index.html">We do the timer or the first project on the FPGA</a></li>
 <li><a href="../80057/index.html">Nexus one</a></li>
 <li><a href="../80059/index.html">Where to chew granite science</a></li>
+<li><a href="../8006/index.html">Several standard developments ...</a></li>
 <li><a href="../80062/index.html">Pyrant + PyModels - the easiest replacement for Django ORM *</a></li>
-<li><a href="../80065/index.html">encached: caching server</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Find.By - finding & verifying locators</h1><div class="post__text post__text-html js-mediator-article">  I’ll start this article by working with QA Automationg and the fact that I like to automate all routine actions.  So recently, for me, writing, editing and checking locators for elements on the page has become such. <br><br>  Usually this process looks like this: I write an xpath expression in chrome or firepath, then I copy it and add an attribute to an element in C # code.  But locators often need to be fixed or just to check which element it points to.  And even this simple change of the predicate as <i>[@ id = 'myId']</i> to <i>[contains (@id = 'Id')]</i> ends with the test <i>crashing</i> at runtime because I wrote '=' instead of ',' and was too lazy to check the changes.  In general, too many actions with copying, pasting, switching between windows and the like for such a simple task.  I decided to write a plugin for ReSharper, which by Alt + Enter would highlight my element in the browser. <br><a name="habracut"></a><br><h3>  Formulation of the problem </h3><br>  Write plug-ins for ReSharper and Chrome, which together would solve two simple tasks: <br><ul><li>  Static analyzer XPath expressions; </li><li>  Highlight any selenium locator in the browser by Alt + Enter. </li></ul><br><h3>  Decision </h3><br>  With the first task, everything turned out to be quite simple.  I decided not to write my parser and validator for xpath, but just used the XmlDocument class from the .NET library: <br><br><pre><code class="cs hljs">XmlDocument document = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> XmlDocument(); <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> navigator = document.CreateNavigator(); <span class="hljs-keyword"><span class="hljs-keyword">try</span></span> { navigator.Compile(<span class="hljs-string"><span class="hljs-string">"xpath expression"</span></span>); <span class="hljs-comment"><span class="hljs-comment">//   ,    } catch (XPathException exception) { //   }</span></span></code> </pre> <iframe id="embera-iframe-91122" class="embera-facebook-iframe" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.facebook.com/plugins/post.php%3Fhref%3Dhttps%253A%252F%252Fwww.facebook.com%252Fmyslyvets%252Fvideos%252F937537633003172%252F%26width%3D560%26height%3D315%26show_text%3Dtrue%26appId&amp;xid=17259,15700002,15700021,15700186,15700190,15700248,15700253&amp;usg=ALkJrhhuVN36UXWS5UnKdKBOw_dPTvSlLw" width="560" height="315" "="" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowtransparency="true"></iframe><br>  The second part of the question was implemented as follows: <br><ul><li>  ReSharper plugin raises TcpServer for localhost </li><li>  Chrome plugin constantly asks him "Is there anything to highlight?" </li><li>  A list of things to highlight empty until the user presses Alt + Enter and selects the Highlight element. </li></ul><br>  To search for items in dom using XPath, I use the <i>jquery.xpath.js</i> library. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Since I have never written plugins for chrome before, sending requests from the https site to http localhost turned out to be the most difficult for me.  Google Chrome blocks all such requests from the web page.  It took me no time to search for a solution, but it turned out to be very simple and, probably, even logical: http requests can be made from background.js, and then transferred to the page, which I did. <br><br><h3>  Work plug in action </h3><br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/iaJ_VY-dNNc%3Ffeature%3Doembed&amp;xid=17259,15700002,15700021,15700186,15700190,15700248,15700253&amp;usg=ALkJrhjkgn1nm5Ff3LgKTj83sMxiqnlNWg" frameborder="0" allowfullscreen=""></iframe><br><br><h4>  Links </h4><br>  <a href="https://habrahabr.ru/post/270155/">We write the simplest plugin for ReSharper</a> - an article that helped start writing for ReSharper <br>  <a href="https://chrome.google.com/webstore/detail/findby/phhphchblcckjanhfgimfmhopmjoefnb">Find.By chrome</a> - plugin for Google Chrome <br>  <a href="https://resharper-plugins.jetbrains.com/packages/Find.By/">Find.By resharper</a> - plugin for ReSharper <br>  <a href="">Find.By</a> - github project repository </div><p>Source: <a href="https://habr.com/ru/post/306930/">https://habr.com/ru/post/306930/</a></p>
+      Since I have never written plugins for chrome before, sending requests from the https site to http localhost turned out to be the most difficult for me.  Google Chrome blocks all such requests from the web page.  It took me no time to search for a solution, but it turned out to be very simple and, probably, even logical: http requests can be made from background.js, and then transferred to the page, which I did. <br><br><h3>  Work plug in action </h3><br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/iaJ_VY-dNNc%3Ffeature%3Doembed&amp;xid=17259,15700002,15700021,15700186,15700190,15700248,15700253&amp;usg=ALkJrhjkgn1nm5Ff3LgKTj83sMxiqnlNWg" frameborder="0" allowfullscreen=""></iframe><br><br><h4>  Links </h4><br>  <a href="https://habrahabr.ru/post/270155/">We write the simplest plugin for ReSharper</a> - an article that helped start writing for ReSharper <br>  <a href="https://chrome.google.com/webstore/detail/findby/phhphchblcckjanhfgimfmhopmjoefnb">Find.By chrome</a> - plugin for Google Chrome <br>  <a href="https://resharper-plugins.jetbrains.com/packages/Find.By/">Find.By resharper</a> - plugin for ReSharper <br>  <a href="">Find.By</a> - github project repository </div><p>Source: https://habr.com/ru/post/306930/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../306918/index.html">11 Essential Hiring Tips for Starting Employers</a></li>
 <li><a href="../306920/index.html">Is there life after the failure of popular browsers to support the architecture of NPAPI</a></li>
 <li><a href="../306922/index.html">Creating a Doodle Jump game for Android in Intel XDK in 2 hours on JavaScript from scratch</a></li>
 <li><a href="../306924/index.html">Mal, Yes Del: Review younger servers in the HPE ProLiant ML line</a></li>
 <li><a href="../306928/index.html">Learning OpenGL ES2 for Android Lesson number 3. Lighting</a></li>
+<li><a href="../30693/index.html">8 of the best free open source development tools from InfoWorld</a></li>
 <li><a href="../306932/index.html">How we accelerated PHP projects 40 times with caching</a></li>
 <li><a href="../306934/index.html">An example of the calculation of the robust controller (H-infinity control)</a></li>
 <li><a href="../306940/index.html">Coroutines everywhere</a></li>

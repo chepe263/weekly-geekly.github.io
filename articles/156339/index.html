@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to get drivers for old Mobility Radeon cards on Windows 8</h1><div class="post__text post__text-html js-mediator-article">  Relatively recently, AMD released a special driver package for Windows 8, <a href="">AMD Catalyst Legacy 12.6</a> ( <a href="http://support.amd.com/us/kbarticles/Pages/catalystlegacywin8.aspx">link to the news on the AMD website</a> ), but it did not work on a laptop with the Mobility Radeon HD 3400 (this does not mean that it will not work for you - check it before proceeding with the procedure described in this topic). <br><br>  Having visited the site, I discovered that in the section of old mobile maps, Windows 8 is not mentioned at all.  You can start a driver for Windows 7. Do you need it at all, this driver is from the manufacturer, if the eight has a built-in one that works quite well - you decide.  But I’ll say right away that Catalyst Control Center (a graphical configuration utility) <i>may</i> not work, alas.  How to get a driver for Windows 7, I will tell under the cut. <br><a name="habracut"></a><br><ol><li>  Go to the AMD site and download the latest driver for Windows 7 of your architecture. </li><li>  Open the installation of components (windows + X -&gt; Control Panel -&gt; Programs and Components -&gt; Install Windows Components), select the .NET Framework 3.5 component (now it can not be downloaded from the site, and by default it is disabled, it turns on that way. There is also quite An inconvenient way to install it offline, from the installation disk, if someone really needs it - I will try to remember and write in the comments). </li><li>  We are trying to install the driver downloaded from the AMD site.  It should be installed without errors (in his words), but immediately after clicking on the final OK, we understand that in fact nothing has changed, the system still uses the driver from Microsoft.  Important: although the driver did not work, install it (or at least unpack it somewhere on the hard disk) - it is necessary! </li><li>  Download and install the modder: <a href="http://www.hardwareheaven.com/modtool.php">http://www.hardwareheaven.com/modtool.php</a> </li><li>  If you run the modder now, it will crash for an unknown reason, no matter what compatibility options we set for it.  Therefore, download the file by reference, unpack, and replace the eponymous exe file with it in the directory where the modder was installed: <a href="http://www.driverheaven.net/driverheaven-tools-discussion/178628-possible-fix-9-2-later.html">http://www.driverheaven.net/driverheaven-tools-discussion/178628-possible-fix-9-2- later.html</a> . </li><li>  Yeah, now you can run this executable, tell it the path to the folder where the official drivers are unpacked (I have C: \ AMD \ Support \ 12-6-legacy_vista_win7_32_dd_ccc_whql), click the modify button and wait a bit. </li><li>  Now we go to C: \ AMD \ Support \ 12-6-legacy_vista_win7_32_dd_ccc_whql \ Packages \ Drivers \ Display \ W7_INF, or where you unpacked the official drivers there.  We see a bunch of files there.  We are interested in those that end in * .inf, they can be installed.  Installation is performed by clicking the right mouse button on the file and selecting the "install" item.  The names of the files in this directory may be different, for example, my driver was called CL145534.inf.  And not all the infs can be installed there, in my case CW145534.inf lying in the same place was not installed.  Indicator of a successful installation can be considered the appearance of a dialog box that says "successfully installed."  If your driver does not want to be installed due to non-signing, see clause 8, otherwise skip it. </li><li>  This item is needed if Windows refuses to install the driver due to non-signing.  He will also reward us with the eternal inscription "Test Mode" in the right-bottom corner of the desktop (if someone can tell in the comments how to remove this inscription, it would be awesome) <br><ol><li>  We open the command line in the mode of elevated privileges (open the new start menu, type cmd on the keyboard, right-click on the Command Line icon, select “run as administrator” in the pop-up menu at the bottom. </li><li>  We type the following commands there: <br><pre><code class="dos hljs">bcdedit /<span class="hljs-built_in"><span class="hljs-built_in">set</span></span> {current} testsigning on bcdedit /<span class="hljs-built_in"><span class="hljs-built_in">set</span></span> {current} nointegritychecks true</code> </pre> </li><li>  Press on the keyboard (windows button) + R, enter gpedit.msc there and press Enter.  In the window that opens, follow the path User Configuration -&gt; Administrative Templates -&gt; System -&gt; Driver Installation, in the right pane, double-click on the item “Digital Signature of Device Drivers”, select “Off” and click OK </li><li>  Restarting the computer and returning to point 7. (Administrators and experienced Windows users here can remember that there is a gpupdate command and two spaces after it, which allows you to instantly update policies, so it will not work, you really need to reboot) </li></ol><br></li><li>  We open properties of drivers of the video card.  (windows + X -&gt; Device Manager -&gt; Video Adapters -&gt; Your Video Card (ATI Mobility Radeon HD 3400 Series) -&gt; right-click and select “properties” -&gt; Go to the tab “Driver”).  Click the "Update" button, select the "Search for drivers on this computer" option, select the "Select driver from the list of already installed drivers" option.  There will be several drivers, including the one that comes out of the box along with Windows - it will have the line "(Microsoft Corporation - WDDM v1.1)" in its name.  We need not this one, we need one that is called as your card, for example, I have the following: ATI Mobility Radeon HD 3400 Series.  If there is nothing there, go back to point 7 and look for some other inf that you forgot to try to install.  After selecting the driver, click next, then OK, until the installation is complete, and after the installation is completed, we reboot. </li><li>  After rebooting, we make sure that the driver is really the one (we open the properties of the video card drivers, as was done in the previous paragraph, in the “vendor” field the name should change from Microsoft to Advanced Micro Devices). </li><li>  We check that the Catalyst Control Center does not work (right-click on the desktop, the first item of the drop-down menu is the Catalyst Control Center. After selecting this item, it thinks for a few seconds, and then in a separate dialog box writes a message with a general meaning, I don’t know what configure, so do not run).  If your CCC works, be sure to post about it in the comments! </li><li>  Trying to install again: <a href="">http://www2.ati.com/drivers/legacy/amd_catalyst_12.6_legacy_win8.exe</a> .  If established, we must earn the Catalyst Control Center.  If not, well, at least we have a working driver from AMD. </li><li>  Enjoying. </li></ol><br>  I hope this post turned out to be useful to someone, and I’m not banned for a two-page trayswoman. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/156339/">https://habr.com/ru/post/156339/</a></p>
+    <p>Source: https://habr.com/ru/post/156339/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../156323/index.html">Kyocera software - in one line</a></li>
 <li><a href="../156325/index.html">Create NUnit tests in BDD style</a></li>
 <li><a href="../156327/index.html">8% of apps on Google Play potentially threaten user security</a></li>
+<li><a href="../15633/index.html">HabraAJAX not doing its job?</a></li>
 <li><a href="../156333/index.html">You also sit for 10 -15 minutes and can not enter the CAPTCHA?</a></li>
 <li><a href="../156335/index.html">"Co-owner" Facebook faces up to 40 years in prison</a></li>
+<li><a href="../15634/index.html">I'm not smart. I'm genius!</a></li>
 <li><a href="../156343/index.html">The digest of interesting news and materials from the world of ayti for the last week №28 (October 20 - 26, 2012)</a></li>
 <li><a href="../156347/index.html">NetBSD 6.0</a></li>
 <li><a href="../156349/index.html">10,000,000,000,000,000 bytes archived</a></li>
-<li><a href="../156351/index.html">American historian: Wikipedia editors are falling because they have nothing to write about</a></li>
-<li><a href="../156353/index.html">Surface RT live</a></li>
+<li><a href="../15635/index.html">Behavioral Marketing Victims Form the “Do Not Track List”</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

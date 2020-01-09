@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How the clipboard works in Windows</h1><div class="post__text post__text-html js-mediator-article"> Recently, I had the opportunity to debug the clipboard in Windows, and I decided that it would be nice to share the information that I was able to find out.  <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms648709%2528v%3Dvs.85%2529.aspx">The clipboard</a> is a component of Windows that many of us use dozens (hundreds?) Once a day, without really thinking about it.  Before taking up this business, I never even thought about how things work.  As it turned out, there are so many interesting things that you cannot even imagine.  First I will describe how applications store different types of data in the clipboard and how to retrieve them from there, and then how applications can “cling” to the buffer and track changes in it.  In both cases, you will see debug entries that show how to access the data from the debugger. <br><br>  Let's start with a discussion <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649013(v%3Dvs.85).aspx">of clipboard formats</a> .  Such formats are used to describe which types of data can be buffered.  There are a number of predefined <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff729168%2528v%3Dvs.85%2529.aspx">standard formats</a> that an application can use, such as a bitmap, ANSI text, Unicode text and TIFF.  Windows also allows the application to set its own format.  For example, a word processor may register a format that includes text, formatting, and pictures.  Of course, this leads to a certain problem: what happens if you copy the data from a text editor and paste it into Notepad, which does not understand all this formatting and does not display pictures? <br><a name="habracut"></a><br>  Exit - allow simultaneous storage of data in the clipboard in multiple formats.  When I used to think about the clipboard, I imagined that a single object was stored there (“my text” or “my picture”), but actually my data is stored in a buffer in different forms.  A program that takes information from the buffer receives it in the format that it can use. <br><br>  How does the data appear in the clipboard?  Very simply, the application first declares ownership of the clipboard through the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649048%2528v%3Dvs.85%2529.aspx">OpenClipboard</a> function.  After that, the program can clear the clipboard with the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649037%2528v%3Dvs.85%2529.aspx">EmptyClipboard</a> command and, finally, put its data there with the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649051%2528v%3Dvs.85%2529.aspx">SetClipboardData</a> command.  SetClipboardData takes two parameters.  The first is the identifier of one of the clipboard formats that we mentioned above.  The second is an in-memory segment descriptor that contains data in this format.  An application can repeatedly call the SetClipboardData command for each of the formats that it wants to put in the buffer, from best to worst (since the application where the data will be inserted will select the first suitable format from the list).  To make life easier for the developer, Windows automatically converts certain types of formats to the clipboard.  At the end of the process, the program calls <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649035%2528v%3Dvs.85%2529.aspx">CloseClipboard</a> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       When the user clicks the Paste button, the target application calls OpenClipboard and one of the following functions to determine the available data formats: <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649047(v%3Dvs.85).aspx">IsClipboardFormatAvailable</a> , <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649045(v%3Dvs.85).aspx">GetPriorityClipboardFormat</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649038(v%3Dvs.85).aspx">EnumClipboardFormats</a> .  If it finds a suitable format, then calls <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649039(v%3Dvs.85).aspx">GetClipboardData</a> with the identifier of the desired format as a parameter to get the data.  At the end, the application uses the CloseClipboard command to close the buffer. <br><br>  Now let's see how to use the debugger to determine which data is written to the clipboard.  (Note that all my entries are made in Win7 / 2008 R2 - so on other versions of the OS they may look a little different).  Since the buffer is part of Win32k.sys, you will need a kernel debugger.  I like to use <code>win32k!InternalSetClipboardData+0xe4</code> as a reference point.  At such an offset, it is good that it is located behind the RDI register, filled with data from SetClipboardData in a structure known as tagCLIP. <br><br><pre>  kd&gt; u win32k! InternalSetClipboardData + 0xe4-c L5
@@ -212,7 +212,7 @@
  win32k! tagWND
     + 0x118 spwndClipboardListenerNext: 0xfffff900`c1a50080 tagWND </pre><br>  When reaching the last process in the tagWND buffer listening list, the value of its spwndClipboardListenerNext field will be zero: <br><br><pre>  kd&gt; dt 0xfffff900`c1a50080 tagWND spwndClipboardListenerNext
  win32k! tagWND
-    + 0x118 spwndClipboardListenerNext: (null) </pre><br>  Using the window address, we can get to the process name using the same method.  As mentioned earlier, because the tagWND is a kernel structure, the OS itself stores the spwndClipboardListener / spwndClipboardListenerNext pointers, so that they cannot lead to buffer tracking problems such as browsing chains. <br><br>  This ends our review of the Windows clipboard.  I hope for you he became informative.  Want to know more about clipboard monitoring?  <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649016(v%3Dvs.85).aspx">Here is a good MSDN article</a> about it. </div><p>Source: <a href="https://habr.com/ru/post/339442/">https://habr.com/ru/post/339442/</a></p>
+    + 0x118 spwndClipboardListenerNext: (null) </pre><br>  Using the window address, we can get to the process name using the same method.  As mentioned earlier, because the tagWND is a kernel structure, the OS itself stores the spwndClipboardListener / spwndClipboardListenerNext pointers, so that they cannot lead to buffer tracking problems such as browsing chains. <br><br>  This ends our review of the Windows clipboard.  I hope for you he became informative.  Want to know more about clipboard monitoring?  <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms649016(v%3Dvs.85).aspx">Here is a good MSDN article</a> about it. </div><p>Source: https://habr.com/ru/post/339442/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

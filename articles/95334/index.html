@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using hidden Markov models to remove morphological homonymy</h1><div class="post__text post__text-html js-mediator-article">  In a <a href="http://fedor-malyshkin.habrahabr.ru/blog/95324/">previous post,</a> I wrote about what morphological homonymy is (the example with the word <i>“steel”</i> ) and mentioned that for its resolution they use hidden Markov models (Hidden Markov Model, HMM). <br>  First, a little about test markup (in English literature, this process is called <i>“part-of-speech tagging”</i> (POST)) is a manual or automatic process, as a result of which attribute word (att) to each word of the text, which determines what part of speech is This word: noun, verb, adjective, adverb, pronoun, particle, union, interjection, etc.  This is where we come across the problem of "steel." <br><a name="habracut"></a><br>  If you don’t go into the details of the algorithm, then the main question to which he answers is: “Choose the most likely tag for this word.” <br>  And if we talk about the details, then for a given sequence of words, the HMM tagger (the program that implements the algorithm mentioned) selects a tag that maximizes the formula: <br>  <b>[1] P (word | tag) * P (tag | previous n tags)</b> , where <i>“P (word | tag)”</i> is the conditional probability of occurrence of a specified word in a given place, provided that it has the given tag, <i>“P (tag | previous n tags) "</i> - conditional probability of the appearance of this tag, subject to the presence of before this specified series of n tags. <br>  A real tagger defines a sequence of tags for a sequence of words, but for pedagogical purposes we will see how a tagger assigns a tag to a single word. <br>  First we use the basic formula, then we will follow the example, and those who are interested in how the “combat” formula is derived and who needs all the mathematical calculations can refer to the literature indicated at the end of the article. <br>  Two-word (using information only about the previous word) (bigram) tagger will select the tag t <sub>j</sub> for the word w <sub>i</sub> , provided that the previous tag was t <sub>i-1</sub> : <br>  [2] t <sub>i</sub> = argmax (j) P (t <sub>j</sub> | t <sub>i-1</sub> , w <sub>i</sub> ) <br>  Using some simplifications of the Markov conditions (also listed in the literature), the formula [2] can be rewritten in the form: <br>  [3] t <sub>i</sub> = argmax (j) P (t <sub>j</sub> | t <sub>i-1</sub> ) P (w <sub>i</sub> | t <sub>j</sub> ) <br><br><h4>  Example </h4><br>  As an example, use the previous phrases: <br>  <i>"Workers smelted a lot of steel per shift"</i> <i><br></i>  <i>"Children over the summer have become stronger"</i> <br>  In the first example, the word "steel" is a noun, in the second verb.  For the purposes of the example, suppose that in some better way all the words in the sentence were tagged, and only the word “steel” was omitted in both examples. <br>  Now the goal of our tagger is to assign the most likely tag for the following sequences: <br>  <b>a lot of {narech} steel {???}</b> <b><br></b>  <b>summer {SUSCH} steel {???}</b> <br><br>  Let's see how the formula [3] can be applied to our example.  The formula says that if we try to use it for the <i>“lot of steel”</i> sequence, we will need to choose a tag that has the highest probability of two options: <br>  <b>[4] P (EYE | NARECH) P (steel | EYE)</b> <br>  and <br>  <b>[5] P (SUSCH | NARECh) P (steel | SUSCH)</b> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The formula [3] and its generations [4] and [5] consist of 2 parts: the probability of a sequence of tags and the probability of a word for the corresponding tag.  For the <i>"steel", the</i> probabilities P (VALUE | NARECH) and P (SUSCH | NARECH) will answer the question: <i>"What is the probability that after the adverb we will meet the verb (noun)?"</i> .  We can easily resolve this issue using the marked body (for example, <a href="http://ruscorpora.ru/">“ruscorpora.ru”</a> ).  The probability of following a noun after adverbs is greater than a verb (although this is not an exception): <br>  <b>P (EYE | NARECH) = 0.021</b> <b><br></b>  <b>P (SUSCH | NARECh) = 0.34</b> <br><br>  Notice that the second part of the formulas [3], [4] and [5] do not answer the question <i>“What is the probability that the word“ steel ”has the tag GLAG (SUSCH)?”</i> , And <i>“If this tag will be GLAG (SUSCH ), what is the probability that it will be the word "become"? "</i> <br>  <b>P (steel | HEAD) = 0.00003</b> <b><br></b>  <b>P (steel | SUSCH) = 0.00041</b> <br><br>  As a result, we find that in the desired sequence <i>“a lot of steel” the</i> word <i>“steel”</i> should be marked with the tag “ <i>SUSCH”</i> . <br>  <b>P (steel | GLAG) = 0.000007</b> <b><br></b>  <b>P (steel | SUSCH) = 0.00001</b> <b><br></b> <br><br><h4>  Literature </h4><br><ol><li>  Speech And Language Processing, D. Jurafsky, JH Martin, 1999 </li></ol></div><p>Source: <a href="https://habr.com/ru/post/95334/">https://habr.com/ru/post/95334/</a></p>
+      The formula [3] and its generations [4] and [5] consist of 2 parts: the probability of a sequence of tags and the probability of a word for the corresponding tag.  For the <i>"steel", the</i> probabilities P (VALUE | NARECH) and P (SUSCH | NARECH) will answer the question: <i>"What is the probability that after the adverb we will meet the verb (noun)?"</i> .  We can easily resolve this issue using the marked body (for example, <a href="http://ruscorpora.ru/">“ruscorpora.ru”</a> ).  The probability of following a noun after adverbs is greater than a verb (although this is not an exception): <br>  <b>P (EYE | NARECH) = 0.021</b> <b><br></b>  <b>P (SUSCH | NARECh) = 0.34</b> <br><br>  Notice that the second part of the formulas [3], [4] and [5] do not answer the question <i>“What is the probability that the word“ steel ”has the tag GLAG (SUSCH)?”</i> , And <i>“If this tag will be GLAG (SUSCH ), what is the probability that it will be the word "become"? "</i> <br>  <b>P (steel | HEAD) = 0.00003</b> <b><br></b>  <b>P (steel | SUSCH) = 0.00041</b> <br><br>  As a result, we find that in the desired sequence <i>“a lot of steel” the</i> word <i>“steel”</i> should be marked with the tag “ <i>SUSCH”</i> . <br>  <b>P (steel | GLAG) = 0.000007</b> <b><br></b>  <b>P (steel | SUSCH) = 0.00001</b> <b><br></b> <br><br><h4>  Literature </h4><br><ol><li>  Speech And Language Processing, D. Jurafsky, JH Martin, 1999 </li></ol></div><p>Source: https://habr.com/ru/post/95334/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../95318/index.html">As I revived the radio receiver RX-ES20</a></li>
-<li><a href="../95319/index.html">Self-education with self-stimulation</a></li>
+<li><a href="../9532/index.html">Clone iPhone from HTC soon in Europe</a></li>
 <li><a href="../95324/index.html">Extracting the facts. Synonymy and Homonymy</a></li>
 <li><a href="../95328/index.html">Your photo on google.com</a></li>
+<li><a href="../9533/index.html">EXT js Grid - performance issues</a></li>
 <li><a href="../95333/index.html">Autoscan a project in NetBeans 6.9</a></li>
 <li><a href="../95335/index.html">Passing function arguments by name in PHP</a></li>
 <li><a href="../95337/index.html">AeroWindow plugin for jQuery. Creating windows in the style of Windows Aero</a></li>
 <li><a href="../95338/index.html">Google Chrome OS will be released in the fall</a></li>
+<li><a href="../9534/index.html">Think of the listeners</a></li>
 <li><a href="../95345/index.html">Survey for managers of Internet companies and projects</a></li>
-<li><a href="../95346/index.html">About the meaning. Syntax submission trees (submission trees)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

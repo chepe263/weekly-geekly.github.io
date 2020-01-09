@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>And again the attack on Wordpress sites - brute force + XMLRPC</h1><div class="post__text post__text-html js-mediator-article">  From Saturday noon on my server, where about 25 Wordpress sites are hosted, wild brakes started.  Since I managed to survive the previous attacks ( <a href="http://habrahabr.ru/post/188932/">attack 1 - exactly a year ago</a> , <a href="http://habrahabr.ru/post/215543/">attack 2 - in March</a> ) not noticed, I did not immediately understand what was the matter. <br><br>  When I figured it out, it turned out that passwords were being sorted out + multiple requests to XMLRPC. <br><br>  As a result, we managed to cut it all off, although not immediately.  There are three simple methods for avoiding this. <br><a name="habracut"></a><br>  These techniques are most likely known to everyone, but I stepped on a pair of rakes, which I did not find in the descriptions - all of a sudden it will save someone time. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      1. Stop brute force, Limit Login Attempts plugin - we put it exactly, since other protections heavily suspend the server, for example, when using the Login Security Solution plugin the server died after half an hour, the plugin loads the base heavily. <br><br>  In the setup, be sure to enable the checkbox “For proxy” - otherwise it will determine for everyone the ip of your server and automatically block all. <br>  UPDATE, thanks <a href="http://habrahabr.ru/users/darkbyte/" class="user_link">DarkByte</a> , the details are lower in the comments - we <a href="http://habrahabr.ru/users/darkbyte/" class="user_link">’ll enable the</a> checkbox “For proxy” only if the definition doesn’t work when the “Direct connection” is on <br><br><img src="https://habrastorage.org/getpro/habr/post_images/19f/039/c77/19f039c77c6e539bbe09fc19191c5a0f.png"><br><br>  2. Disable XML-RPC - Disable XML-RPC plugin (just activate it and that's it). <br><br>  3. Close wp-login.php - if you access the site via ip, the plugin does not work and the pick-ups continue to hammer the site.  To avoid this, in .htaccess add: <br><br><pre><code class="bash hljs">&lt;Files wp-login.php&gt; Order Deny,Allow Deny from all &lt;/Files&gt;</code> </pre> <br><br>  The wp-login file is copied, renamed to any strange name, for example poletnormalny.php and within the auto-replace file we change all the wp-login.php inscriptions to poletnormalny.php. <br>  Everything, now the admin panel can be accessed only by your file. <br><br>  After these 3 simple steps, the websites began to fly again and calm came. <br><br><h4>  Well, suddenly interesting </h4><br>  One of the options is to see what attacks you.  This can be seen in the nginx logs (for example, here is the path for Debian / var / log / nginx access.log file). <br><br>  If there is a search, then you will see many lines of the form: <br>  87.230.87.xx - - [04 / Aug / 2014: 06: 35: 53 +0400] “POST /wp-login.php HTTP / 1.0” 200 5791 "-" "-" " <br><br>  XMLRPC Requests: <br>  95.0.83.xx - - [04 / Aug / 2014: 06: 48: 03 +0400] "POST /xmlrpc.php HTTP / 1.0" 499 0 "-" "Mozilla / 4.0 (compatible: MSIE 7.0; Windows NT 6.0 ) " </div><p>Source: <a href="https://habr.com/ru/post/232129/">https://habr.com/ru/post/232129/</a></p>
+      1. Stop brute force, Limit Login Attempts plugin - we put it exactly, since other protections heavily suspend the server, for example, when using the Login Security Solution plugin the server died after half an hour, the plugin loads the base heavily. <br><br>  In the setup, be sure to enable the checkbox “For proxy” - otherwise it will determine for everyone the ip of your server and automatically block all. <br>  UPDATE, thanks <a href="http://habrahabr.ru/users/darkbyte/" class="user_link">DarkByte</a> , the details are lower in the comments - we <a href="http://habrahabr.ru/users/darkbyte/" class="user_link">’ll enable the</a> checkbox “For proxy” only if the definition doesn’t work when the “Direct connection” is on <br><br><img src="https://habrastorage.org/getpro/habr/post_images/19f/039/c77/19f039c77c6e539bbe09fc19191c5a0f.png"><br><br>  2. Disable XML-RPC - Disable XML-RPC plugin (just activate it and that's it). <br><br>  3. Close wp-login.php - if you access the site via ip, the plugin does not work and the pick-ups continue to hammer the site.  To avoid this, in .htaccess add: <br><br><pre><code class="bash hljs">&lt;Files wp-login.php&gt; Order Deny,Allow Deny from all &lt;/Files&gt;</code> </pre> <br><br>  The wp-login file is copied, renamed to any strange name, for example poletnormalny.php and within the auto-replace file we change all the wp-login.php inscriptions to poletnormalny.php. <br>  Everything, now the admin panel can be accessed only by your file. <br><br>  After these 3 simple steps, the websites began to fly again and calm came. <br><br><h4>  Well, suddenly interesting </h4><br>  One of the options is to see what attacks you.  This can be seen in the nginx logs (for example, here is the path for Debian / var / log / nginx access.log file). <br><br>  If there is a search, then you will see many lines of the form: <br>  87.230.87.xx - - [04 / Aug / 2014: 06: 35: 53 +0400] “POST /wp-login.php HTTP / 1.0” 200 5791 "-" "-" " <br><br>  XMLRPC Requests: <br>  95.0.83.xx - - [04 / Aug / 2014: 06: 48: 03 +0400] "POST /xmlrpc.php HTTP / 1.0" 499 0 "-" "Mozilla / 4.0 (compatible: MSIE 7.0; Windows NT 6.0 ) " </div><p>Source: https://habr.com/ru/post/232129/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../232135/index.html">The path of a freelancer. Part 1. Tips for beginners</a></li>
 <li><a href="../232137/index.html">New "Authors' Market" on Habré</a></li>
 <li><a href="../232139/index.html">MegaIndex: a technology leader in the field of automated website promotion</a></li>
-<li><a href="../232149/index.html">EtherCalc: Spreadsheets on Node.js</a></li>
+<li><a href="../232141/index.html">How we choose investment funds. Where dreams lead</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

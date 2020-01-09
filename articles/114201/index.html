@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Run as administrator from the command line</h1><div class="post__text post__text-html js-mediator-article">  Yesterday I spent some time running the script from the command line as an administrator.  I needed the equivalent of right-click&gt; "Run as administrator": <br><br><div style="text-align:center;"><img src="http://sergeypopov.info/Content/Shared/runas-from-command-line/runas-ctx-menu.png"></div><br><a name="habracut"></a><br>  So that when you run the script appeared a request from UAC <br><br><div style="text-align:center;"><img src="http://sergeypopov.info/Content/Shared/runas-from-command-line/uac-message.png"></div><br>  The <em>runas.exe</em> utility did not suit me, because  it requires explicitly specifying a username, entering a password, or using saved credentials.  I didn’t even consider “third-party” utilities - I’ll make errors in the code myself, why do I need other people?  :) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Having tried several options, I stopped at my own PowerShell script: <br><br><pre><code class="hljs mel">$ErrorActionPreference = <span class="hljs-string"><span class="hljs-string">'Stop'</span></span> $si = New-Object System.Diagnostics.ProcessStartInfo $si.FileName = $args[<span class="hljs-number"><span class="hljs-number">0</span></span>] $si.Arguments = [String]::Join(<span class="hljs-string"><span class="hljs-string">' '</span></span>, $args[<span class="hljs-number"><span class="hljs-number">1.</span></span>.($args.Count - <span class="hljs-number"><span class="hljs-number">1</span></span>)]) $si.Verb = <span class="hljs-string"><span class="hljs-string">'RunAs'</span></span> $si.UseShellExecute = $true $process = [System.Diagnostics.Process]::Start($si) # Very strange code... # But I spy it <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> MSBuild... # I hope these guys know what they are doing! :) $process.WaitForExit() <span class="hljs-keyword"><span class="hljs-keyword">do</span></span> { [System.Threading.Thread]::Sleep(<span class="hljs-number"><span class="hljs-number">0</span></span>) } <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> (!$process.HasExited) Exit $process.ExitCode</code> </pre> <br>  In fact, this is a <a href="http://msdn.microsoft.com/en-us/library/bb762154(v%3Dvs.85).aspx">ShellExecuteEx ()</a> call with the lpVerb = "RunAs" parameter. <br><br>  I could not use <a href="http://technet.microsoft.com/en-us/library/dd347667.aspx">Start-Process</a> Commanlet because  when specifying the -Verb RunAs and -Wait parameters at the same time, it fails with the error: <br><br><pre>  PS C: \ Users \ psg&gt; Start-Process 'cmd.exe' -Verb RunAs -Wait
@@ -67,14 +67,14 @@
  At line: 1 char: 14
  + Start-Process &lt;&lt;&lt;&lt; 'cmd.exe' -Verb RunAs -Wait
      + CategoryInfo: NotSpecified: (:) [Start-Process], Win32Exception
-     + FullyQualifiedErrorId: System.ComponentModel.Win32Exception, Microsoft.PowerShell.Commands.StartProcessCommand </pre><br>  However, maybe I was just looking badly, and the utility I need still exists? .. In that case, I will be happy for your comments! </div><p>Source: <a href="https://habr.com/ru/post/114201/">https://habr.com/ru/post/114201/</a></p>
+     + FullyQualifiedErrorId: System.ComponentModel.Win32Exception, Microsoft.PowerShell.Commands.StartProcessCommand </pre><br>  However, maybe I was just looking badly, and the utility I need still exists? .. In that case, I will be happy for your comments! </div><p>Source: https://habr.com/ru/post/114201/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../114194/index.html">How to avoid data loss? We make a user manual</a></li>
 <li><a href="../114195/index.html">Another failed Olympic mascot 14: Tetris</a></li>
 <li><a href="../114197/index.html">Policy-based Routing (PBR), as the main purpose (Part 2)</a></li>
 <li><a href="../114198/index.html">Real online, offline events</a></li>
+<li><a href="../1142/index.html">Bulletin board and crossfire.</a></li>
 <li><a href="../114200/index.html">SEO - promotion of a client or website?</a></li>
 <li><a href="../114203/index.html">National Communications Regulatory Commission fights against illegal providers in Ukraine</a></li>
 <li><a href="../114205/index.html">5th Startup Point in St. Petersburg</a></li>

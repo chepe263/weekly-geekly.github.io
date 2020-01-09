@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Creating a map cache in Geoserver using third-party services</h1><div class="post__text post__text-html js-mediator-article">  It all started with the fact that when developing geoportals using ArcGis, customers increasingly began to say something like: “We like everything, but we can do everything the same, but using open source software”, implying at the same time replacing the MSSQL + ArcGis bundle Server + ArcGis Javascript (Silverlight) Toolkit on Postgres (PostGis) + Geoserver + Openlayers. <br><br>  Well, in general, you can understand them, because  1-2-3 million rubles change for 0 rubles.  There was no particular problem in the majority, vector data is transferred either through SHP files, or through converters from MSSQL to PostGis (or simply via SQL queries).  There is a question with raster data.  For example, there is a well-traced, tuned and multi-level cache map of Russia.  In ArcGis, it is stored either in a compact form (in the form of bundles understandable only by ArcGis format) or non-compact, that is, the map tiles are simply located in directories.  Then I was delighted and thought that in the second case everything would be exactly simple.  But no - the tiles are of course divided into levels, however, they have strange names and may lie in strange subfolders, and with the geo-referencing of this cache, just a disaster. <br><br>  But then a very simple and quick solution came - scan your own service (since the service sends tiles to the clear URL of the form "... MapServer / tile / Z / Y / X" where Z is the level number, and X and Y are tiles numbers according to horizontals and verticals respectively).  Now there is another question - how to put these linked tiles on the Geoserver?  In Geoserver, for such purposes <a href="http://docs.geoserver.org/stable/en/user/data/raster/imagepyramid.html">Image Pyramid Plugin is used</a> , or rather not exactly for such - it is mainly used to simplify working with giant TIFF files, the gdal_retile script from the gdal package traverses the TIFF file and creates many small geolocated tiles at different levels, divided into folders with numbers of levels. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      That's all the original data.  At first, I wrote the application in my native C #, but decided to follow the path of this OSS and rewrote it in Java, naturally putting the code on GitHub. <br><a name="habracut"></a><br>  The main form is: <br><br><img src="http://svoyt.com/pyramaker/images/screen1.png" alt="image"><br><br>  Everything is simple: <br>  - Tile url pattern - the url pattern for the tile, where {2} is the position of the level number, {0} is the position of the tile number horizontally (X), {1} is vertically (Y). <br>  - Max layer bounds - geolocation of the entire layer, i.e.  where the countdown begins and ends <br>  - Region layer bounds - geolocation of the desired region <br>  - Levels: Start - the initial "lower" level, for example 4, End the final "upper", for example 0 (the whole map is in one tile) <br>  -Tile size - the size of the tile, which gives the service <br>  - Jpeg compression - if you want output tiff to use compression. <br>  - Reference system WKT - text describing the coordinate system, examples of coordinate systems can be found <a href="http://spatialreference.org/">here</a> <br>  - Path folder for output files <br><br>  That's all - after writing these parameters, click run and download tiles. <br><br>  You can download the program <a href="">here</a> (need Java) <br>  INFA is <a href="http://svoyt.com/Pyramaker/">here</a> <br>  The code is <a href="https://github.com/SVoyt/pyramaker">here</a> <br><br><h5>  And now a small tutorial for those who did not understand, but it became interesting </h5><br>  1. Download and install <a href="http://geoserver.org/display/GEOS/Welcome">Geoserver</a> ; <br>  2. Download and install the <a href="http://docs.geoserver.org/stable/en/user/data/raster/imagepyramid.html">ImagePyramid plugin</a> ; <br>  3. <a href="">Download</a> , unpack and run the application; <br>  4. Click the OSM Example button - the fields are automatically filled in for the OpenStreetMap tiles, the first 5 layers; <br>  5. Select the folder where to create tiles; <br>  6. After completion, open the geoserver and create a pyramid storage and layer; <br>  7. Open the layer preview and enjoy; <br>  8. All the same, but with pictures <a href="http://svoyt.com/Pyramaker/">here</a> . <br><br>  PS There is a glitch with not square pyramids, that is, those whose base is not a square, but a rectangle (very often in the UK epsg: 4326).  For all rectangular (EPSG: 3857 (90013), EPSG: 3395) starting with 0 it seems to work correctly (OSM, Google, Yandex).  And remember about the license agreement services when using content.  Do not break them. </div><p>Source: <a href="https://habr.com/ru/post/166205/">https://habr.com/ru/post/166205/</a></p>
+      That's all the original data.  At first, I wrote the application in my native C #, but decided to follow the path of this OSS and rewrote it in Java, naturally putting the code on GitHub. <br><a name="habracut"></a><br>  The main form is: <br><br><img src="http://svoyt.com/pyramaker/images/screen1.png" alt="image"><br><br>  Everything is simple: <br>  - Tile url pattern - the url pattern for the tile, where {2} is the position of the level number, {0} is the position of the tile number horizontally (X), {1} is vertically (Y). <br>  - Max layer bounds - geolocation of the entire layer, i.e.  where the countdown begins and ends <br>  - Region layer bounds - geolocation of the desired region <br>  - Levels: Start - the initial "lower" level, for example 4, End the final "upper", for example 0 (the whole map is in one tile) <br>  -Tile size - the size of the tile, which gives the service <br>  - Jpeg compression - if you want output tiff to use compression. <br>  - Reference system WKT - text describing the coordinate system, examples of coordinate systems can be found <a href="http://spatialreference.org/">here</a> <br>  - Path folder for output files <br><br>  That's all - after writing these parameters, click run and download tiles. <br><br>  You can download the program <a href="">here</a> (need Java) <br>  INFA is <a href="http://svoyt.com/Pyramaker/">here</a> <br>  The code is <a href="https://github.com/SVoyt/pyramaker">here</a> <br><br><h5>  And now a small tutorial for those who did not understand, but it became interesting </h5><br>  1. Download and install <a href="http://geoserver.org/display/GEOS/Welcome">Geoserver</a> ; <br>  2. Download and install the <a href="http://docs.geoserver.org/stable/en/user/data/raster/imagepyramid.html">ImagePyramid plugin</a> ; <br>  3. <a href="">Download</a> , unpack and run the application; <br>  4. Click the OSM Example button - the fields are automatically filled in for the OpenStreetMap tiles, the first 5 layers; <br>  5. Select the folder where to create tiles; <br>  6. After completion, open the geoserver and create a pyramid storage and layer; <br>  7. Open the layer preview and enjoy; <br>  8. All the same, but with pictures <a href="http://svoyt.com/Pyramaker/">here</a> . <br><br>  PS There is a glitch with not square pyramids, that is, those whose base is not a square, but a rectangle (very often in the UK epsg: 4326).  For all rectangular (EPSG: 3857 (90013), EPSG: 3395) starting with 0 it seems to work correctly (OSM, Google, Yandex).  And remember about the license agreement services when using content.  Do not break them. </div><p>Source: https://habr.com/ru/post/166205/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../166185/index.html">Well, Centos 5.9 was released</a></li>
-<li><a href="../166187/index.html">Lenovo launches Chromebook for schools based on ThinkPad X131E</a></li>
 <li><a href="../166197/index.html">Internet access in difficult administrative conditions</a></li>
 <li><a href="../166199/index.html">Ask a question to the driver of a mars rover</a></li>
+<li><a href="../1662/index.html">RA Advery Announces Market Entry</a></li>
+<li><a href="../16620/index.html">Twisty.apk</a></li>
 <li><a href="../166201/index.html">Switch for strings in C ++ 11</a></li>
 <li><a href="../166207/index.html">Unified Communication Center - Imo.im</a></li>
+<li><a href="../16621/index.html">Goodnight</a></li>
 <li><a href="../166211/index.html">Control of employee access to cloud servers</a></li>
 <li><a href="../166213/index.html">iOS developer: Book review for beginner</a></li>
 <li><a href="../166215/index.html">Geocoding addresses into coordinates and geolocation of your current location in OpenLayers</a></li>
-<li><a href="../166217/index.html">How I fought HP and won</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

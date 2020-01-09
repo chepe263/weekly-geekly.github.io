@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The subtleties of the disable property of the form buttons sent to the server (How to make buttons inactive)</h1><div class="post__text post__text-html js-mediator-article"> Already repeatedly on Habré (in <a href="http://habrahabr.ru/blogs/ui_design_and_usability/47315/">this</a> publication and in <a href="http://habrahabr.ru/blogs/ui_design_and_usability/44145/">this one</a> ) the question was raised that it would be good for the buttons of the form sent to the server to set the property <code>disabled = "disabled"</code> . <br><br>  However, they still have not figured out why this is necessary and how to do it after all.  It would seem that it can be simpler and what you can talk about here at all, but no - in fact everything turned out to be not so trivial.  Immediately, I note that the following reasoning applies to both types of forms: as sent through the usual SUBMIT, and using AJAX. <br><a name="habracut"></a><br><h2>  Why do I need to make buttons inactive </h2><ol><li>  To make it obvious to the user that he has already pressed the button, and that the form is being sent </li><li>  That the server is not loaded with unnecessary requests, and to reduce the likelihood of any error </li></ol>  It is clear that you can prevent unnecessary clicks by hanging a special visualization, saying that the request is accepted and the form is sent (the simplest example is to show some animated gif).  However, the buttons still remain clickable, and the most impatient users will not use this opportunity.  At the same time, the form will not be able to respond to these additional clicks (the animated gif is already spinning), and the user’s frustration will only increase. <br><br>  It is also clear that unnecessary requests can be prevented by hanging on the form of some <code>class="form_is_loading"</code> , and with any sabmite check for the presence of this class.  But why do these checks, when you can do without them, just by making the button inactive? 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h2>  How to make buttons inactive </h2><br><pre>  &lt;input type = "submit" onclick = "this.disabled = true;"&gt; </pre>  This simple option proposed in the aforementioned topics turns out to be insufficient and inoperable. <br><br>  <b>Why it is not enough just to make the pressed button inactive:</b> <br><ol><li>  Submit forms can occur by clicking on Enter.  Therefore, button processing must be hung on the onsubmit event of the form itself.  In addition, the form may have several buttons, and it would be logical to make them all inactive, and not just the button that was pressed. </li><li>  If, after submitting the form, you return to the form page (using the “Back” button in the browser), then caching will work: we will encounter inactive buttons and will not be able to send the form again - without forcibly reloading the page with the loss of all previously filled fields (Return to search form from the search results page here is a lively example). </li><li>  If the form has several buttons (for example, “Publish” and “Cancel”), then we will not be able to transfer to the server which button was pressed: the inactive button does not transmit its name and value - even if we make it inactive on the onsubmit event </li></ol>  <b>So, the script for creating inactive buttons</b> <br><br>  In short, the scenario is as follows. <ol><li>  Buttons make inactive on the event onsubmit forms </li><li>  We return the buttons to the active state before leaving the page for the window.onunload event. </li><li>  Each form button on the onclick event should create a hidden field of the same name through which it will transmit its value to the server </li></ol>  And then a more detailed script with a code layout follows. <br><br><pre> //// html file //////////////////////////////////////////// //////////////////////////
@@ -123,20 +123,20 @@
      }
  }
  &lt;/ script&gt;
-</pre></div><p>Source: <a href="https://habr.com/ru/post/48381/">https://habr.com/ru/post/48381/</a></p>
+</pre></div><p>Source: https://habr.com/ru/post/48381/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../48370/index.html">Gmail Notifier DIY</a></li>
 <li><a href="../48371/index.html">Hybrid forms</a></li>
 <li><a href="../48375/index.html">Set ... code. New kind of earnings.</a></li>
 <li><a href="../48376/index.html">FreeBSD 7.1</a></li>
 <li><a href="../48378/index.html">Development of an information portal for your own region</a></li>
+<li><a href="../4838/index.html">Chechnya wants to transfer to digital television</a></li>
 <li><a href="../48383/index.html">Clear or overflow: hidden - clear the entire stream or create a formatting context?</a></li>
 <li><a href="../48384/index.html">OpenLayers - ways to load data</a></li>
 <li><a href="../48386/index.html">Batch scaling of images</a></li>
 <li><a href="../48387/index.html">Js tips</a></li>
-<li><a href="../48390/index.html">Nokia 5800 - Not Soon ...</a></li>
+<li><a href="../4839/index.html">Top Web Publisher Mistakes</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

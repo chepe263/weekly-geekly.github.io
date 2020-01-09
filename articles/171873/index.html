@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Learn PHPBB3 to respond to HTTP_IF_MODIFIED_SINCE</h1><div class="post__text post__text-html js-mediator-article"> In general, I never google why bb3 does not respond to the HTTP_IF_MODIFIED_SINCE request and does not give the Last-Modified header. <br>  And search engines love this business, because the page processing time is sometimes reduced by several times (no need to compare content). <br>  After studying the problem and digging into the code, the solution has matured. <br>  Finish yourself. <br><a name="habracut"></a><br>  In the functions.php file, around the line <br><br> <code>header('Pragma: no-cache');</code> <br> <br>  Insert below: <br><br><blockquote>  $ pchanged = 0; <br>  if ($ topic_id &lt;1) <br>  { <br>  if ($ forum_id&gt; 0) <br>  { <br>  $ sql = 'SELECT forum_last_post_time <br>  FROM '.  FORUMS_TABLE.  ' <br>  WHERE forum_id = '. $ Forum_id; <br>  $ result = $ db-&gt; sql_query_limit ($ sql, 1, 0, 600); <br>  $ pchanged = $ db-&gt; sql_fetchfield ('forum_last_post_time'); <br>  $ db-&gt; sql_freeresult ($ result); <br>  } else <br>  { <br>  $ sql = 'SELECT MAX (forum_last_post_time) as forum_last_post_time <br>  FROM '.  FORUMS_TABLE; <br>  $ result = $ db-&gt; sql_query_limit ($ sql, 1, 0, 600); <br>  $ pchanged = $ db-&gt; sql_fetchfield ('forum_last_post_time'); <br>  $ db-&gt; sql_freeresult ($ result); <br>  } <br>  } else <br>  { <br>  $ sql = 'SELECT topic_last_post_time <br>  FROM '.  TOPICS_TABLE.  ' <br>  WHERE forum_id = '. $ Forum_id.  'and topic_id ='. $ topic_id; <br>  $ result = $ db-&gt; sql_query_limit ($ sql, 1, 0, 600); <br>  $ pchanged = $ db-&gt; sql_fetchfield ('topic_last_post_time'); <br>  $ db-&gt; sql_freeresult ($ result); <br>  } 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      $ if_modified_since = isset ($ _ SERVER ["HTTP_IF_MODIFIED_SINCE"])?  preg_replace ('/;.*$/', '', $ _SERVER ["HTTP_IF_MODIFIED_SINCE"]): ''; <br>  $ gmdate_mod = gmdate ('D, d MYH: i: s', $ pchanged).  'GMT'; <br>  if ($ if_modified_since&gt; = $ gmdate_mod) { <br>  header ("HTTP / 1.0 304 Not Modified"); <br>  exit; <br>  } <br>  header ("Last-Modified: $ gmdate_mod"); </blockquote><br><br>  The code is dirty, and it can be optimized - this is to your taste.  And so it works. <br>  If the forum id is not specified in the URL (1st page) - the last time the forum is posted in general is taken. <br>  If a topic is specified, then the time of the last post of this topic is taken. <br>  You can also check the current page of the topic, and so on ... Who will finish - post pls.  ;) </div><p>Source: <a href="https://habr.com/ru/post/171873/">https://habr.com/ru/post/171873/</a></p>
+      $ if_modified_since = isset ($ _ SERVER ["HTTP_IF_MODIFIED_SINCE"])?  preg_replace ('/;.*$/', '', $ _SERVER ["HTTP_IF_MODIFIED_SINCE"]): ''; <br>  $ gmdate_mod = gmdate ('D, d MYH: i: s', $ pchanged).  'GMT'; <br>  if ($ if_modified_since&gt; = $ gmdate_mod) { <br>  header ("HTTP / 1.0 304 Not Modified"); <br>  exit; <br>  } <br>  header ("Last-Modified: $ gmdate_mod"); </blockquote><br><br>  The code is dirty, and it can be optimized - this is to your taste.  And so it works. <br>  If the forum id is not specified in the URL (1st page) - the last time the forum is posted in general is taken. <br>  If a topic is specified, then the time of the last post of this topic is taken. <br>  You can also check the current page of the topic, and so on ... Who will finish - post pls.  ;) </div><p>Source: https://habr.com/ru/post/171873/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../171861/index.html">Valve will introduce biometrics Steam Box this summer</a></li>
 <li><a href="../171863/index.html">Multiplayer video chat</a></li>
 <li><a href="../171867/index.html">Creating a phone in a browser using WebRTC and Plivo service</a></li>
 <li><a href="../171869/index.html">Microsoft allowed to install Office 2013 on different computers</a></li>
+<li><a href="../17187/index.html">The only way out ...</a></li>
 <li><a href="../171871/index.html">Speakers' Corner in Dnepropetrovsk in March: Time management and planning in Agile</a></li>
 <li><a href="../171875/index.html">Debian Linux port to Samsung Galaxy Note 10.1 (with stylus support)</a></li>
 <li><a href="../171877/index.html">An inside look: postgraduate study at EPFL. Part 2</a></li>
+<li><a href="../17188/index.html">Web 2.0 and policy</a></li>
 <li><a href="../171881/index.html">In the beta version of Chrome for Android added password synchronization, data compression through SPDY proxy</a></li>
 <li><a href="../171883/index.html">Startup trap</a></li>
-<li><a href="../171891/index.html">Moving The Pirate Bay to North Korea was a joke</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

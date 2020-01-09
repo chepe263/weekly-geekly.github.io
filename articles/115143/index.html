@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to reduce the likelihood of errors at the stage of writing code. Note N1</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/getpro/habr/post_images/a20/013/0cb/a200130cb35c903d1569b7471a8f4d80.png" alt="Check miranda im"><br>  I got to the code of the well-known instant messaging client <a href="http://www.miranda-im.org/">Miranda IM</a> .  Together with various plugins, this is a fairly large project, the size of which is about 950 thousand lines of code in C and C ++.  And, as in any solid project with a history of development, it contains a considerable number of errors and typos. <br><br>  Considering defects in various applications, I noticed some patterns.  And now, using the example of defects found in Miranda IM, I will try to formulate some recommendations that will allow you to avoid many errors and typos at the stage of writing code. <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       For the analysis of Miranda IM, I used (yes, you guessed it) the <a href="http://www.viva64.com/ru/pvs-studio/">PVS-Studio</a> 4.14 analyzer.  The code of the project Miranda IM is very high quality, as evidenced by the popularity of this program.  I myself am a user of this client and have no complaints about it in terms of quality.  The project is collected in Visual Studio with Warning Level 3 (/ W3), and the number of comments is 20% of the entire program text. <br><br><h2>  1. Avoid memset, memcpy, ZeroMemory and similar functions. </h2><br>  We will start with errors that occur when using low-level memory functions such as memset, memcpy, ZeroMemory, and the like. <br><br>  I recommend to avoid these functions in every possible way.  It is clear that you should not literally follow my advice and replace all these functions with cycles.  But I have seen such a huge number of errors associated with the use of these functions, that I highly recommend to be careful with them and use them only when necessary.  In my opinion there are only two cases where the use of these functions is justified: <br><br>  1) Processing large arrays.  That is, where the optimized algorithm of the function will give a gain compared with the processing of elements in a simple cycle. <br><br>  2) Processing a large number of small arrays.  It also makes sense in terms of performance improvement. <br><br>  In all other cases, it is better to try to do without them.  For example, I consider these functions superfluous in a program such as Miranda.  There are no resource-intensive algorithms or huge arrays in it.  Consequently, the use of memset / memcpy functions derives only from the convenience of writing short code.  However, this simplicity is very deceptive and, having saved a few seconds on writing code, you can catch for weeks a vaguely manifested memory corruption error.  Consider a few code examples taken from the Miranda IM project. <br><br>  <a href="http://www.viva64.com/ru/d/0101/">V512</a> A call of the memcpy function will lead to a buffer overflow or underflow.  tabsrmm utils.cpp 1080 <br><pre>  typedef struct _textrangew
@@ -258,20 +258,20 @@
    } else {
      AppendToBuffer (&amp; buffer, &amp; bufferEnd, &amp; bufferAlloced, "\\ ltrpar");
    }
- } </pre><br>  Here are two identical code snippets.  Perhaps this is a mistake.  And perhaps now in any branch need the same set of actions.  And the code is written specifically so that later it was easy to modify.  Here it is necessary to know the program in order to sort out this place erroneously or not. </div><p>Source: <a href="https://habr.com/ru/post/115143/">https://habr.com/ru/post/115143/</a></p>
+ } </pre><br>  Here are two identical code snippets.  Perhaps this is a mistake.  And perhaps now in any branch need the same set of actions.  And the code is written specifically so that later it was easy to modify.  Here it is necessary to know the program in order to sort out this place erroneously or not. </div><p>Source: https://habr.com/ru/post/115143/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../115136/index.html">Web Platform Installer: review of the third version</a></li>
 <li><a href="../115137/index.html">How to write a game in two days</a></li>
 <li><a href="../115139/index.html">Supercomputer on the third generation of Loongson processors</a></li>
+<li><a href="../11514/index.html">We have solved the secret of Yandex, or how the new search results algorithm works</a></li>
 <li><a href="../115140/index.html">Kyiv.py # 2</a></li>
 <li><a href="../115141/index.html">Spy in your pocket. How can your mobile phones give out your geographic coordinates?</a></li>
 <li><a href="../115144/index.html">What OS do you use at home?</a></li>
 <li><a href="../115147/index.html">MinHash - we identify similar sets</a></li>
 <li><a href="../115148/index.html">What are dangerous cheap GPS jammers</a></li>
 <li><a href="../115149/index.html">Droider Chart. Release 42</a></li>
-<li><a href="../115150/index.html">Installing Remote Server Administration Tools (RSAT) on Windows 7 SP1</a></li>
+<li><a href="../11515/index.html">Microsoft pays bloggers to advertise their slogan</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

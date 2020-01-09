@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>QoS configuration on VMWare and Cisco USC</h1><div class="post__text post__text-html js-mediator-article">  We have Asterisk on a virtual machine under vmware, which in turn rotates on the Cisco UCS Blade.  And the challenge was to prioritize voice traffic inside vmware and inside Cisco UCS. <br><br><h1>  1. Cisco UCS </h1><br>  Begin setup with Cisco UCS.  Cisco UCS only supports QoS at the second level.  Accordingly, it is necessary to paint traffic for it with CoS bits. <br>  QoS configuration in UCS Manager is located on the LAN tab, LAN Cloud -&gt; System Class QoS <br><img src="https://habrastorage.org/files/9c4/0cd/557/9c40cd5575bc423c9b1a830a31d7ae21.png"><a name="habracut"></a><br>  Here it is necessary to include the markings that we are going to use and, if desired, change their settings.  For Gold traffic you need to put CoS 3, and for FC - 4. You can read more <a href="http://www.cisco.com/c/en/us/td/docs/unified_computing/ucs/sw/gui/config/guide/2-0/b_UCSM_GUI_Configuration_Guide_2_0/b_UCSM_GUI_Configuration_Guide_2_0_chapter_010011.pdf">here</a> . <br><br>  By default, UCS does not skip labeling from hosts.  In order for UCS to trust labeling, you need to create a QoS Policy in the Polices -&gt; root -&gt; QoS Polises section. <br>  In politics, we ask how to label traffic, and, if desired, we can slaughter a lane.  The important parameter for us here is Host Control, if it is set to None, then all traffic from the interface will be marked with the specified CoS, if the value is Full, UCS will trust the marking on the interface, and will only mark unlabelled traffic. <br>  We put Priority: Best Effort (CoS 0) and Host Control: Full in our policy, so we will trust the labeling from the hosts, and for unmarked frames we will leave CoS 0. <br><img src="https://habrastorage.org/files/22e/8c5/802/22e8c58022714a0a8ba22be21b2961fa.png"><br>  Next, you need to apply this QoS Policy to the interfaces (or interface policies) in the direction of the hosts.  This operation will require a reboot of the hosts. <br><img src="https://habrastorage.org/files/d75/c37/7e1/d75c377e144f40b7ac39829fb9b93b76.png"><br>  This completes the Cisco UCS setup. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h1>  2. Configure VMWare </h1><br>  Now we will configure vmware.  I will consider the case of standard Distributed Virtual Switch and vSphere 6.0. <br>  The first thing you need to do is create a dedicated Port Group for our host with Asterisk. <br>  Next we go to the group port settings (required via the Web Client) in the Traffic filtering and marking section and add a new rule, let's call it RTP.  We specify Action: Tag, CoS Value: 5, Traffic direction: Ingress. <br><img src="https://habrastorage.org/files/160/aab/4b5/160aab4b5b484f9e9b012f7476db1723.png"><br>  Next, add the rule New IP Qualifier.  Protocol: UDP, Source port: range 10000-20000 (see the settings of the rtp port of your asterisk), Source address - the address of your asterisk.  We make a similar rule for sip traffic by selecting CoS 3 and Source port: 5060. <br><img src="https://habrastorage.org/files/cab/53d/302/cab53d30208d446fa98662bdad66a818.png"><br><br><img src="https://habrastorage.org/files/028/81a/3ae/02881a3ae18644d0b9b9e4194046626f.png"><br>  Everything, our traffic from an asterisk is marked.  Now we will give the asterisk a guaranteed band on the uplinks of the virtual switch. <br>  Select our DVS in the web client and go to the Resource Allocation tab and select System Traffic. <br>  First we need to reserve a band for traffic like Virtual Machine Type, we do it at 75% of the width of the physical interface, in this case it is 15000Mbit / s. <br><img src="https://habrastorage.org/files/2fa/1d6/71d/2fa1d671d5234577b1170cf0b92529bf.png"><br>  Now you can set the band for a particular port group.  We move to the Network resource pools and create a new pool, call it Voice, and give it a guaranteed band, for example, at 20Mbit / s <br><img src="https://habrastorage.org/files/cb7/b85/a6c/cb7b85a6cf7341b38f468cdde9862b3d.png"><br>  We return to the group port settings and in the General section apply the created Network resource pool to the port group. <br><img src="https://habrastorage.org/files/a21/df3/f6c/a21df3f6c36d422e9f94553654018b78.png"><br>  Everything, on it setup is complete.  Now, voice traffic will take precedence inside the virtual switch and inside Cisco UCS. </div><p>Source: <a href="https://habr.com/ru/post/261219/">https://habr.com/ru/post/261219/</a></p>
+    <h1>  2. Configure VMWare </h1><br>  Now we will configure vmware.  I will consider the case of standard Distributed Virtual Switch and vSphere 6.0. <br>  The first thing you need to do is create a dedicated Port Group for our host with Asterisk. <br>  Next we go to the group port settings (required via the Web Client) in the Traffic filtering and marking section and add a new rule, let's call it RTP.  We specify Action: Tag, CoS Value: 5, Traffic direction: Ingress. <br><img src="https://habrastorage.org/files/160/aab/4b5/160aab4b5b484f9e9b012f7476db1723.png"><br>  Next, add the rule New IP Qualifier.  Protocol: UDP, Source port: range 10000-20000 (see the settings of the rtp port of your asterisk), Source address - the address of your asterisk.  We make a similar rule for sip traffic by selecting CoS 3 and Source port: 5060. <br><img src="https://habrastorage.org/files/cab/53d/302/cab53d30208d446fa98662bdad66a818.png"><br><br><img src="https://habrastorage.org/files/028/81a/3ae/02881a3ae18644d0b9b9e4194046626f.png"><br>  Everything, our traffic from an asterisk is marked.  Now we will give the asterisk a guaranteed band on the uplinks of the virtual switch. <br>  Select our DVS in the web client and go to the Resource Allocation tab and select System Traffic. <br>  First we need to reserve a band for traffic like Virtual Machine Type, we do it at 75% of the width of the physical interface, in this case it is 15000Mbit / s. <br><img src="https://habrastorage.org/files/2fa/1d6/71d/2fa1d671d5234577b1170cf0b92529bf.png"><br>  Now you can set the band for a particular port group.  We move to the Network resource pools and create a new pool, call it Voice, and give it a guaranteed band, for example, at 20Mbit / s <br><img src="https://habrastorage.org/files/cb7/b85/a6c/cb7b85a6cf7341b38f468cdde9862b3d.png"><br>  We return to the group port settings and in the General section apply the created Network resource pool to the port group. <br><img src="https://habrastorage.org/files/a21/df3/f6c/a21df3f6c36d422e9f94553654018b78.png"><br>  Everything, on it setup is complete.  Now, voice traffic will take precedence inside the virtual switch and inside Cisco UCS. </div><p>Source: https://habr.com/ru/post/261219/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../261201/index.html">Comparison of the performance of languages ​​on the example of the simplest classifier</a></li>
 <li><a href="../261205/index.html">WebAssembly: the beginning of a new era</a></li>
 <li><a href="../261207/index.html">Business Performance Indicator Module (KPI, MTP) based on WordPress</a></li>
 <li><a href="../261209/index.html">Plugin for external comments on Habr and other sites</a></li>
+<li><a href="../261211/index.html">Webinar Recording - What's New in Kerio Operator 2.4</a></li>
 <li><a href="../261215/index.html">Mail.Ru for business news</a></li>
+<li><a href="../26122/index.html">A joke about a hedgehog</a></li>
 <li><a href="../261221/index.html">Testing in another language: what to do if you don’t know it</a></li>
 <li><a href="../261223/index.html">Software oriented storage</a></li>
 <li><a href="../261225/index.html">Top new features for Web, UX and mobile application designers in Photoshop 2015</a></li>
 <li><a href="../261229/index.html">Microsoft Research for Young Scientists - Results, Slides, and Azure Cloud for Research Program</a></li>
-<li><a href="../261233/index.html">We continue to deal with the "historical reasons" in cmd.exe</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Alternative mysql_pconnect for the mysqli driver in php 5.3</h1><div class="post__text post__text-html js-mediator-article">  I used mysqli as a driver for connecting to the database.  The problem began when I added to my test server&gt; 500,000 records in one table.  The connection with the base began to take from 1 to 10 seconds, despite the fact that the settings were: <br><pre><code class="php hljs">$db[<span class="hljs-string"><span class="hljs-string">'default'</span></span>][<span class="hljs-string"><span class="hljs-string">'pconnect'</span></span>] = <span class="hljs-keyword"><span class="hljs-keyword">TRUE</span></span>;</code> </pre> <br>  which should have meant that the connection is through a permanent connection. <a name="habracut"></a><br><br><h3>  A bit of theory </h3><br>  mysql_pconnect does the same thing as mysql_connect, with two important exceptions: <br><ul><li>  When connecting, the function tries to find a pointer to a connection to the same host, with the same login and password.  If such a connection is found, then a pointer to it is returned, a new connection is not opened. </li><li>  Connection to the server will not be closed upon completion of the script.  In this case, mysql_close () does not close the connection opened through mysql_pconnect. </li></ul><br><h3>  Decision </h3><br>  The case turned out to be this.  File /system/database/drivers/mysqli/mysqli_driver.php.  The script ignores the “flag” of the permanent connection and makes the connection through the usual mysqli_connect function: <br><pre> <code class="php hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">db_pconnect</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;db_connect(); }</code> </pre><br><br>  Mysqli does not have a mysqli_pconnect function.  Permanent connections are organized there in another way.  Answer from php.net: <br><pre> <code class="hljs pgsql"><span class="hljs-keyword"><span class="hljs-keyword">To</span></span> <span class="hljs-keyword"><span class="hljs-keyword">open</span></span> a persistent <span class="hljs-keyword"><span class="hljs-keyword">connection</span></span> you must prepend p: <span class="hljs-keyword"><span class="hljs-keyword">to</span></span> the hostname <span class="hljs-keyword"><span class="hljs-keyword">when</span></span> connecting.</code> </pre> <br>  You just need to add “p:” before the host name.  Rewrite db_pconnect () function 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="php hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">db_pconnect</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;hostname = <span class="hljs-string"><span class="hljs-string">'p:'</span></span>.<span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;hostname; <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;db_connect(); }</code> </pre><br><br><h3>  Comment </h3><br>  This solution will work no lower than PHP 5.3. <br>  Rewriting functions in the core of the framework is not a rewarding business, but the solution is very quick and simple.  If there is a more elegant solution with the ability to extend this driver class, then please in the comments. <br><br><h3>  Links </h3><br>  <a href="http://www.php.net/manual/en/mysqli.persistconns.php">The mysqli Extension and Persistent Connections</a> </div><p>Source: <a href="https://habr.com/ru/post/129482/">https://habr.com/ru/post/129482/</a></p>
+    <pre> <code class="php hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">db_pconnect</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;hostname = <span class="hljs-string"><span class="hljs-string">'p:'</span></span>.<span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;hostname; <span class="hljs-keyword"><span class="hljs-keyword">$this</span></span>-&gt;db_connect(); }</code> </pre><br><br><h3>  Comment </h3><br>  This solution will work no lower than PHP 5.3. <br>  Rewriting functions in the core of the framework is not a rewarding business, but the solution is very quick and simple.  If there is a more elegant solution with the ability to extend this driver class, then please in the comments. <br><br><h3>  Links </h3><br>  <a href="http://www.php.net/manual/en/mysqli.persistconns.php">The mysqli Extension and Persistent Connections</a> </div><p>Source: https://habr.com/ru/post/129482/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../129473/index.html">And again Arduino: the printer following the user's Twitter-channel</a></li>
 <li><a href="../129474/index.html">HTML5 context menus came and they look bearable</a></li>
 <li><a href="../129476/index.html">Ulcers and rakes of CSV and Excel: problems and solutions</a></li>
 <li><a href="../129478/index.html">Jonas Nicklas. Workshop in Kiev</a></li>
+<li><a href="../12948/index.html">Heavy proportion of illegal immigrant</a></li>
 <li><a href="../129480/index.html">Attributes in NUnit to implement Data Driven Tests</a></li>
 <li><a href="../129483/index.html">Microsoft Student Day 2011 - Don't Miss October 14th at Digital October!</a></li>
 <li><a href="../129485/index.html">ABBYY FormDesigner: computer requires stiffness</a></li>

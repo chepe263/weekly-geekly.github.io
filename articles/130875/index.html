@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Build DebWRT on the example of Ubiquity RouterStation Pro</h1><div class="post__text post__text-html js-mediator-article">  Greetings, habreads. <br>  I bring to your attention a small how-to on assembling and installing DebWRT on <a href="http://wiki.ubnt.com/RouterStation_Pro">Ubiquity RouterStation Pro</a> <br>  A bit about DebWRT. <br>  As the author of the project himself writes on the <a href="http://debwrt.net/">site</a> : “DebWRT is a project to launch Debian GNU / Linux on embedded devices, such as wireless routers.  DebWRT combines two technologies: Debian and OpenWrt.  Debian is thousands of packages for various architectures and a great package manager, and OpenWrt is a kernel that perfectly supports embedded devices.  Combining these two technologies opens up a whole new world of opportunities. ” <br>  Thus, all the hardware that OpenWRT supports will support DebWRT, but after we have “prepared” it. <br>  So let's get started ... <br><a name="habracut"></a><br>  During the "preparation" I needed the following ingredients: <br><ul><li>  Debian squeeze </li><li>  free space in / usr / src not less than 10GB </li><li>  tea with liver </li></ul>  # apt-get update <br>  # apt-get install build-essential sudo subversion debootstrap makedev libncurses5-dev glib1g-dev gawk flex unzip git-core <br>  #mkdir / usr / src / debwrt <br>  #chmod 777 / usr / src / debwrt <br><br>  It is necessary to collect not from under the root. <br>  #nano / etc / sudoers <br>  non-root-user ALL = (ALL) ALL <br><br>  We take away source OpenWRT DebWRT <br>  $ cd / usr / src <br>  $ svn checkout <a href="https://svn.debwrt.net/debwrt/trunk">svn.debwrt.net/debwrt/trunk</a> debwrt <br>  $ rm -rf /usr/src/debwrt/openwrt/.svn/ <br>  $ cd / usr / src / debwrt <br>  $ svn co svn: //svn.openwrt.org/openwrt/trunk openwrt <br>  $ / usr / src / debwrt / openwrt / scripts / feeds update -a 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,14 +61,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      $ make menuconfig <br>  Choose the necessary system (in my case rspro) <br><ul><li>  Target System (Atheros AR71xx / AR7240 / AR913x) </li><li>  Subtarget (Generic) </li><li>  Target Profile (Ubiquiti RouterStation Pro) </li><li>  Debian Root Filesystem Configuration ---&gt; Use qemu to perform Debian second stage install on the host [disable] </li></ul>  Save and exit <br><br>  $ make openwrt / menuconfig <br>  In the Kernel Modules menu, we mark the drivers we need. <br>  Save and exit <br><br>  $ make openwrt / all V = 99 <br><h6>  first cup of tea </h6><br>  $ make debian / rootfs <br><h6>  second cup of tea </h6><br>  Next, you need to prepare a memory card and flash the device itself. This was already written <a href="http://habrahabr.ru/blogs/linux/113430/">here on</a> Habré. Only in our case, take the firmware from here: <br>  /usr/src/debwrt/bin/name-platform-angel-2.0-1-default/ - right there are modules and headers <br>  /usr/src/debwrt/build/rootfs-mips-angel-2.0-1/ - and this is the system itself and it needs to be copied to DEBWRT_ROOT <br><br>  After the firmware, insert the card, reboot the router and knock on 192.168.1.1 <br>  Login / Password - root / debwrt <br><br>  Now you need to perform the second stage of installation: <br>  -bash-4.1 # / debootstrap / debootstrap --second-stage <br>  -bash-4.1 # rm -rf / var / cache / apt / archives <br>  -bash-4.1 # mkdir -p / var / cache / apt / archives / partial <br>  -bash-4.1 # echo "deb <a href="http://ftp.debian.org/debian">ftp.debian.org/debian</a> squeeze main" &gt;&gt; / etc / apt / sources.list <br>  -bash-4.1 # reboot <br><br>  After the reboot, we go to the router and, if all the stages are successful, then we should see the standard Debian greeting and of course: <br><br>  # apt-get update <br><br>  PS The second stage can be performed on the computer.  To do this, you need to activate the item Use qemu to perform Debian second stage install on the host and install the packages necessary for qemu <br><br>  DebWRT project site: <a href="http://debwrt.net/">debwrt.net</a> <br>  DebWRT Wiki: <a href="http://dev.debwrt.net/wiki">dev.debwrt.net/wiki</a> <br>  DebWRT HCL: <a href="http://dev.debwrt.net/wiki/TableOfSupportedHardware">dev.debwrt.net/wiki/TableOfSupportedHardware</a> <br>  Thanks to the author of the amain project for advice and support and to <a href="http://habrahabr.ru/users/drunken/" class="user_link">drunken</a> habroman for reviewing </div><p>Source: <a href="https://habr.com/ru/post/130875/">https://habr.com/ru/post/130875/</a></p>
+      $ make menuconfig <br>  Choose the necessary system (in my case rspro) <br><ul><li>  Target System (Atheros AR71xx / AR7240 / AR913x) </li><li>  Subtarget (Generic) </li><li>  Target Profile (Ubiquiti RouterStation Pro) </li><li>  Debian Root Filesystem Configuration ---&gt; Use qemu to perform Debian second stage install on the host [disable] </li></ul>  Save and exit <br><br>  $ make openwrt / menuconfig <br>  In the Kernel Modules menu, we mark the drivers we need. <br>  Save and exit <br><br>  $ make openwrt / all V = 99 <br><h6>  first cup of tea </h6><br>  $ make debian / rootfs <br><h6>  second cup of tea </h6><br>  Next, you need to prepare a memory card and flash the device itself. This was already written <a href="http://habrahabr.ru/blogs/linux/113430/">here on</a> Habré. Only in our case, take the firmware from here: <br>  /usr/src/debwrt/bin/name-platform-angel-2.0-1-default/ - right there are modules and headers <br>  /usr/src/debwrt/build/rootfs-mips-angel-2.0-1/ - and this is the system itself and it needs to be copied to DEBWRT_ROOT <br><br>  After the firmware, insert the card, reboot the router and knock on 192.168.1.1 <br>  Login / Password - root / debwrt <br><br>  Now you need to perform the second stage of installation: <br>  -bash-4.1 # / debootstrap / debootstrap --second-stage <br>  -bash-4.1 # rm -rf / var / cache / apt / archives <br>  -bash-4.1 # mkdir -p / var / cache / apt / archives / partial <br>  -bash-4.1 # echo "deb <a href="http://ftp.debian.org/debian">ftp.debian.org/debian</a> squeeze main" &gt;&gt; / etc / apt / sources.list <br>  -bash-4.1 # reboot <br><br>  After the reboot, we go to the router and, if all the stages are successful, then we should see the standard Debian greeting and of course: <br><br>  # apt-get update <br><br>  PS The second stage can be performed on the computer.  To do this, you need to activate the item Use qemu to perform Debian second stage install on the host and install the packages necessary for qemu <br><br>  DebWRT project site: <a href="http://debwrt.net/">debwrt.net</a> <br>  DebWRT Wiki: <a href="http://dev.debwrt.net/wiki">dev.debwrt.net/wiki</a> <br>  DebWRT HCL: <a href="http://dev.debwrt.net/wiki/TableOfSupportedHardware">dev.debwrt.net/wiki/TableOfSupportedHardware</a> <br>  Thanks to the author of the amain project for advice and support and to <a href="http://habrahabr.ru/users/drunken/" class="user_link">drunken</a> habroman for reviewing </div><p>Source: https://habr.com/ru/post/130875/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../130869/index.html">WP7 social client. network "Vkontakte" open source</a></li>
+<li><a href="../13087/index.html">An alternative to flash memory will appear this year.</a></li>
 <li><a href="../130870/index.html">Drupal Bundle Inherit - module for inheriting entity types</a></li>
 <li><a href="../130871/index.html">About networks: a little bit of everything</a></li>
 <li><a href="../130872/index.html">TV monitor</a></li>
@@ -76,8 +76,8 @@
 <li><a href="../130876/index.html">The hunt for bugs: Understanding the architecture of AI through the epic Fail</a></li>
 <li><a href="../130877/index.html">Eliza</a></li>
 <li><a href="../130878/index.html">Three puzzles mutant for ITshnikov</a></li>
+<li><a href="../13088/index.html">The Americans have created the infrastructure for a single global passports</a></li>
 <li><a href="../130881/index.html">Gmail updated again</a></li>
-<li><a href="../130883/index.html">GitHub improves svn support</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

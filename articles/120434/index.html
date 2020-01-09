@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PowerShell: machine vs man</h1><div class="post__text post__text-html js-mediator-article"> Some time ago I inherited a terminal server farm.  And the management set me a task - to eradicate skype, chrome, firefox and mail.ru agents on all terminal servers.  Historically, the company uses thin clients and only privileged users have a full-fledged PC, and the above-mentioned programs are allowed there, and on the terminals - no, no. <br><br><img src="http://lh4.googleusercontent.com/-2aJM7pkoHho/Tec6KUzjXMI/AAAAAAAAAQE/vKffDfMECtc/s288/45191523_1245122983_1web.jpg" alt="image"><br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I demolished all the programs, screwed AD policies that restrict the launch of specified applications and decided that this is probably all.  But a day later I found that users are using the program again, but already a portable version, and the exe-files were renamed 123 * .exe. I confess I was surprised by the awareness and preparedness of users. <br><br>  The issue of closing the Internet or banning absolutely all programs except those that were allowed was not suitable due to the specifics of the office.  There was a sports interest and I decided to use powershell: <br><br>  1. determine the running processes <br> <code>get-process</code> <br> <br>  2. Further, only those that are interesting to us are required - here we pay attention to the fact that if the process is renamed to 123.exe and in the process list it will hang like 123, and this is bad, because  it is not clear whether this is a good process or a bad one, so we look at the description field - even though the skype file is renamed 123 and 123 hangs in the processes, but here’s an old description - skype <br><br> <code>where-object { $_.Description -match 'skype' }</code> <br> <br>  3. stop the found processes: <br><br> <code>Stop-Process -Force</code> <br> <br>  In the dry residue we have a design of the form: <br> <code>get-process | where-object { $_.Description -match "skype" } | Stop-Process -Force</code> <br> <br>  You can put this in a ps1 script and screw it to something, but then you will need to sign it or disable the security requirement — do not run unsigned scripts. <br><br>  I acted differently - I created a task in the scheduler, where I indicated to run the program: <br> <code>C:\Windows\...\powershell.exe</code> <br>  with parameter <br> <code>get-process | where-object { $_.Description -match 'skype' } | Stop-Process -Force</code> <br> <br>  In this case, the launch takes place and the script signature is not required.  Now the task can be launched at least every minute and nail down programs that we don’t want.  And if you add refined filtering <a href="http://social.technet.microsoft.com/Forums/ru-RU/scrlangru/thread/e8779e16-6b35-4f04-9300-d7658319b848/">to this solution</a> , then in general it is possible to wean users from using any given programs in the entire domain (without refined search, the renamed files will not work). </div><p>Source: <a href="https://habr.com/ru/post/120434/">https://habr.com/ru/post/120434/</a></p>
+      I demolished all the programs, screwed AD policies that restrict the launch of specified applications and decided that this is probably all.  But a day later I found that users are using the program again, but already a portable version, and the exe-files were renamed 123 * .exe. I confess I was surprised by the awareness and preparedness of users. <br><br>  The issue of closing the Internet or banning absolutely all programs except those that were allowed was not suitable due to the specifics of the office.  There was a sports interest and I decided to use powershell: <br><br>  1. determine the running processes <br> <code>get-process</code> <br> <br>  2. Further, only those that are interesting to us are required - here we pay attention to the fact that if the process is renamed to 123.exe and in the process list it will hang like 123, and this is bad, because  it is not clear whether this is a good process or a bad one, so we look at the description field - even though the skype file is renamed 123 and 123 hangs in the processes, but here’s an old description - skype <br><br> <code>where-object { $_.Description -match 'skype' }</code> <br> <br>  3. stop the found processes: <br><br> <code>Stop-Process -Force</code> <br> <br>  In the dry residue we have a design of the form: <br> <code>get-process | where-object { $_.Description -match "skype" } | Stop-Process -Force</code> <br> <br>  You can put this in a ps1 script and screw it to something, but then you will need to sign it or disable the security requirement — do not run unsigned scripts. <br><br>  I acted differently - I created a task in the scheduler, where I indicated to run the program: <br> <code>C:\Windows\...\powershell.exe</code> <br>  with parameter <br> <code>get-process | where-object { $_.Description -match 'skype' } | Stop-Process -Force</code> <br> <br>  In this case, the launch takes place and the script signature is not required.  Now the task can be launched at least every minute and nail down programs that we don’t want.  And if you add refined filtering <a href="http://social.technet.microsoft.com/Forums/ru-RU/scrlangru/thread/e8779e16-6b35-4f04-9300-d7658319b848/">to this solution</a> , then in general it is possible to wean users from using any given programs in the entire domain (without refined search, the renamed files will not work). </div><p>Source: https://habr.com/ru/post/120434/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../120428/index.html">Browser Strategy "Paths of History." Architecture and project evolution</a></li>
 <li><a href="../120429/index.html">Creating real-time applications using Server-Sent Events</a></li>
+<li><a href="../12043/index.html">ONG: Problems with ratings in social networks</a></li>
 <li><a href="../120430/index.html">Kango - framework for creating cross-browser extensions</a></li>
 <li><a href="../120432/index.html">Work with KVM virtual machines. Introduction</a></li>
 <li><a href="../120433/index.html">New service from PRUFFI: “we sell” ready start-up teams</a></li>
 <li><a href="../120437/index.html">Himself a PR man. Writers and Speakers</a></li>
 <li><a href="../120438/index.html">Developing games using Cocos2d in Python</a></li>
+<li><a href="../12044/index.html">AMD invested $ 7.5 million in Transmeta</a></li>
 <li><a href="../120442/index.html">Video review Samsung Galaxy S 2</a></li>
 <li><a href="../120443/index.html">Do I need a graduate school?</a></li>
-<li><a href="../120446/index.html">Parking.ru expands its capabilities</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Disk Encryption in XenServer</h1><div class="post__text post__text-html js-mediator-article"> Encrypting local disks (not system), the task turned out to be quite simple. <br><a name="habracut"></a>  1. Choose a partition for future encrypted storage. <br> <code>fdisk -l</code> <br>  On a clean install on a single-disk system, this will be / dev / sda3.  For example, I will use it. <br>  approx.  XenServer uses GPT instead of MBR, so the fdisk listing may contain error information.  Edit partitions are better than gdisk, partx or parted. <br>  2. Check out what we already have storage.  If our target partition is already in use, you will have to delete the corresponding local storage. <br>  Get SR-UUID repository <br> <code>xe sr-list</code> <br>  Before removing the repository, you will have to remove the PBD. <br> <code>xe sr-param-list uuid=&lt;SR-UUID&gt; | grep PBD</code> <br>  Turn off and remove PBD first, and then SR. <br> <code>xe pbd-unplug uuid=&lt;PBD-UUID&gt; <br> xe pbd-destroy uuid=&lt;PBD-UUID&gt; <br> xe sr-destroy uuid= &lt;SR-UUID&gt; <br> xe sr-forget uuid=&lt;SR-UUID&gt;</code> <br>  3. Create an encrypted partition. <br> <code>cryptsetup -c aes-cbc-essiv:sha256 -s 256 luksFormat /dev/sda3</code> <br>  Enter the password for the section and YES to confirm our intentions. <br>  4. We connect our section <br> <code>$ cryptsetup luksOpen /dev/sda3 fs_point</code> <br>  fs_point is the name under which the section will be available in the system, choose at your discretion. <br>  The encrypted partition will be available on the system as / dev / mapper / fs_point. <br>  5. We connect the encrypted partition as local storage <br>  Get the UUID <br> <code>xe host-list</code> <br>  And connect the SR <br> <code>xe sr-create content-type=user device-config:device=/dev/mapper/fs_point host-uuid=$host_uuid name-label="Local Storage - Encrypted" shared=false type=lvm</code> <br>  6. After rebooting the server, you will have to manually decrypt the partition and connect sr. <br>  Decryption section <code>cryptsetup luksOpen /dev/sda3 fs_point</code> <br>  Connecting sr <code>xe pbd-plug uuid=uuid (   xencenter   xe sr-list)</code> <br>  It is convenient to make a script for these two commands. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,15 +62,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/142803/">https://habr.com/ru/post/142803/</a></p>
+    <p>Source: https://habr.com/ru/post/142803/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../142798/index.html">Google Street View in Donetsk</a></li>
-<li><a href="../142799/index.html">Java Agent in Jelastic</a></li>
+<li><a href="../1428/index.html">Yandex.Direct - million per week</a></li>
+<li><a href="../14280/index.html">SILVIA chat bot will breathe life into gadgets</a></li>
 <li><a href="../142800/index.html">ASP.NET MVC: Conversion or injection? That is the question</a></li>
 <li><a href="../142801/index.html">Shareware Building ASP.NET MVC Apps with EF Code First, HTML5, and jQuery</a></li>
 <li><a href="../142802/index.html">The use of analogue "notebook" is not quite as intended</a></li>

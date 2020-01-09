@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Step-by-step description of the live migration of OpenVZ</h1><div class="post__text post__text-html js-mediator-article">  We have 2 HN: node1.srv.my and node2.srv.my.  On node1.srv.my we have a container (service.srv.my) that has grown out of the old node and wants to grow further. <br><br>  We want to reduce the maximum downtime of the container.  How much can this be done? <br>  Answer: Depending on the tasks of the VE, there may be no downtime at all. <br><img title="Openvz_logo" alt="OpenVZ_logo" src="http://elastics.mid.ua/habr/openvz.png"><br><a name="habracut"></a><br>  For example, I have a web service (LNAMP) on service.srv.my with a highly visited site and a group of filler editors.  They have access to the site “on record”.  In general, this is the only category of service users who will notice the move.  Okay.  Let's get started <br><br>  We will use the vzmigrate utility. <br>  1. Temporarily enable root access on the node2.srv.my server in the sshd config: <br>  <em>PermitRootLogin yes</em> - performed on node2.srv.my 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      2. Create keys on node1.srv.my: <br>  <em>ssh-keygen -t rsa -b 4096</em> - executed on node1.srv.my <br><br>  We select an empty password so that they do not even ask us the password when entering by key. <br>  3. Put the key in node2.srv.my: <br>  <em>ssh-copy-id -i ~ / .ssh / id_rsa.pub root@node2.srv.my</em> - executed on node1.srv.my <br><br>  They will be asked to enter the root node2.srv.my root password for validation. <br>  4. Update the DNS for the service.srv.my zone if the IP address changes.  (In this case, it is better to reduce the TTL - minutes to 15.) <br><br>  5. Now we boldly start the migration: <br>  <em>vzmigrate -v --remove-area no --online --rsync = "- v" host_target_ip veid_service.srv.my</em> - runs on node1.srv.my <br><br>  Depending on the size and speed of the network between the nodes, it can take a long time.  It may be worth using screen if connection breaks are likely. <br>  <em>--online</em> will allow relocation without ceasing to provide services service.srv.my <br>  <em>--rsync = "- v"</em> - rsync parameters, here you can configure whether to show files that will be transferred, whether to show the progress of files. <br>  <em>--remove-area no</em> allows you to save files regardless of the success of the transfer.  To my surprise, it still did not prevent the VE from stopping.  Probably I didn’t read something. If you need to be able to quickly cancel the migration, select –remove-area no and rename the configuration file veid.conf.migrated to veid.conf.  If you need to delete files set yes. <br>  <em>host_target_ip</em> is the IP address of node2.srv.my <br>  <em>veid_service.srv.my</em> - service VEID, for example, 301 for me. <br><br>  <em>Sometimes problems arise due to different iptables settings (http://phpsuxx.blogspot.com/2010/08/openvz-error-most-probably-some.html)</em> <br><br>  6. vzlist on node2.srv.my shows that container 301 now works here, on node1.srv.me vzlist shows that there is no container anymore (but we saved the files just in case) <br><br>  7. We may need to change the IP service.srv.my.  In this case, we change the IP in the config and restart VE (vzctl restart 301).  Alternatively, by changing the IP address by using --ipdel and --ipdel. <br><br>  Moving over <br>  People write that when moving the network is not lost: for example, the backup data from VE could merge to the backup server when moving, smoothly moving from one node to another.  But did not check. <br><img title="Migration" alt="migration" src="http://elastics.mid.ua/habr/migration.jpg"><br><br>  For a long time did not write on Habré.  Now I will correct this situation. </div><p>Source: <a href="https://habr.com/ru/post/144219/">https://habr.com/ru/post/144219/</a></p>
+      2. Create keys on node1.srv.my: <br>  <em>ssh-keygen -t rsa -b 4096</em> - executed on node1.srv.my <br><br>  We select an empty password so that they do not even ask us the password when entering by key. <br>  3. Put the key in node2.srv.my: <br>  <em>ssh-copy-id -i ~ / .ssh / id_rsa.pub root@node2.srv.my</em> - executed on node1.srv.my <br><br>  They will be asked to enter the root node2.srv.my root password for validation. <br>  4. Update the DNS for the service.srv.my zone if the IP address changes.  (In this case, it is better to reduce the TTL - minutes to 15.) <br><br>  5. Now we boldly start the migration: <br>  <em>vzmigrate -v --remove-area no --online --rsync = "- v" host_target_ip veid_service.srv.my</em> - runs on node1.srv.my <br><br>  Depending on the size and speed of the network between the nodes, it can take a long time.  It may be worth using screen if connection breaks are likely. <br>  <em>--online</em> will allow relocation without ceasing to provide services service.srv.my <br>  <em>--rsync = "- v"</em> - rsync parameters, here you can configure whether to show files that will be transferred, whether to show the progress of files. <br>  <em>--remove-area no</em> allows you to save files regardless of the success of the transfer.  To my surprise, it still did not prevent the VE from stopping.  Probably I didn’t read something. If you need to be able to quickly cancel the migration, select –remove-area no and rename the configuration file veid.conf.migrated to veid.conf.  If you need to delete files set yes. <br>  <em>host_target_ip</em> is the IP address of node2.srv.my <br>  <em>veid_service.srv.my</em> - service VEID, for example, 301 for me. <br><br>  <em>Sometimes problems arise due to different iptables settings (http://phpsuxx.blogspot.com/2010/08/openvz-error-most-probably-some.html)</em> <br><br>  6. vzlist on node2.srv.my shows that container 301 now works here, on node1.srv.me vzlist shows that there is no container anymore (but we saved the files just in case) <br><br>  7. We may need to change the IP service.srv.my.  In this case, we change the IP in the config and restart VE (vzctl restart 301).  Alternatively, by changing the IP address by using --ipdel and --ipdel. <br><br>  Moving over <br>  People write that when moving the network is not lost: for example, the backup data from VE could merge to the backup server when moving, smoothly moving from one node to another.  But did not check. <br><img title="Migration" alt="migration" src="http://elastics.mid.ua/habr/migration.jpg"><br><br>  For a long time did not write on Habré.  Now I will correct this situation. </div><p>Source: https://habr.com/ru/post/144219/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../144218/index.html">Juniper SRX100, acquaintance</a></li>
 <li><a href="../144220/index.html">Accounting control of game time</a></li>
 <li><a href="../144221/index.html">Methods for evaluating a startup. Continuation</a></li>
+<li><a href="../144223/index.html">E1 allows you to travel without interruption from business</a></li>
 <li><a href="../144225/index.html">Yandeks.Afisha. Xss</a></li>
 <li><a href="../144226/index.html">Programmers and Ponte</a></li>
-<li><a href="../144228/index.html">Facebook shares fell below the placement price</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

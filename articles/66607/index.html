@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Subqueries with Zend_Db_Select</h1><div class="post__text post__text-html js-mediator-article">  Relatively recently, when writing the code of a regular model, I was faced with the task of using a subquery (for example, in a <b>join</b> ).  At the same time, I have been trying for quite some time to write requests “raw” as less as possible;  I use for this OOP a wrapper of <b>Zend Framework</b> .  However, having looked in the <a href="http://framework.zend.com/manual/en/zend.db.select.html">manual</a> , <a href="http://framework.zend.com/apidoc/core/">API</a> , to my surprise, I did not find the necessary funds.  But after referring directly to the code, it became clear that the subquery can be made very easy! <br><a name="habracut"></a><br>  The presence in the code of the internal <b>_join</b> method ( <b>Zend / Db / Select.php file</b> ) of the following line made it clear that not everything is so hopeless: <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">773.   } <font color="#0000ff">else</font> <font color="#0000ff">if</font> ($name instanceof Zend_Db_Expr || $name instanceof Zend_Db_Select) {</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  Tritely based on the fact that for <b>$ name instanceof Zend_Db_Select</b> some kind of logic is laid, we try the following: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">$firstQuery = $db-&gt;select() <br> -&gt;from(array( <font color="#A31515">'u'</font> =&gt; <font color="#A31515">'user'</font> ), <br> array()) <br> -&gt;join(array( <font color="#A31515">'s2u'</font> =&gt; <font color="#A31515">'site2user'</font> ), <br> <font color="#A31515">'s2u.userId = u.id'</font> , <br> array( <font color="#A31515">'siteId'</font> )) <br> -&gt;columns(array( <font color="#A31515">'userCount'</font> =&gt; <font color="#A31515">'count(*)'</font> )) <br> -&gt;group( <font color="#A31515">'s2u.siteId'</font> ); <br> <br> $secondQuery = $db-&gt;select() <br> -&gt;from(array( <font color="#A31515">'s'</font> =&gt; <font color="#A31515">'site'</font> ), <br> array( <font color="#A31515">'siteId'</font> =&gt; <font color="#A31515">'id'</font> , <br> <font color="#A31515">'site'</font> =&gt; <font color="#A31515">'title'</font> )) <br> -&gt;join(array( <font color="#A31515">'n'</font> =&gt; $firstQuery), <br> <font color="#A31515">'n.siteId = s.id'</font> , <br> array( <font color="#A31515">'userCount'</font> )); <br> <br> echo $secondQuery-&gt;assemble();</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  As a result of the script, we get: <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">SELECT</font> `s`.`id` <font color="#0000ff">AS</font> `siteId`, `s`.`title` <font color="#0000ff">AS</font> `site`, `n`.`userCount` <font color="#0000ff">FROM</font> `site` <font color="#0000ff">AS</font> `s` <br> <font color="#0000ff">INNER</font> <font color="#0000ff">JOIN</font> ( <font color="#0000ff">SELECT</font> `su`.`siteId`, <font color="#0000ff">count</font> (*) <font color="#0000ff">AS</font> `userCount` <font color="#0000ff">FROM</font> ` <font color="#0000ff">user</font> ` <font color="#0000ff">AS</font> `u` <br> <font color="#0000ff">INNER</font> <font color="#0000ff">JOIN</font> `site2user` <font color="#0000ff">AS</font> `su` <font color="#0000ff">ON</font> s2u.userId = u.id <font color="#0000ff">GROUP</font> <font color="#0000ff">BY</font> `s2u`.`siteId`) <font color="#0000ff">AS</font> `n` <font color="#0000ff">ON</font> n.siteId = s.id</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  Voila!  I gathered an absolutely correct request. <br><br>  This is a very important feature, because  unleashes hands when writing more abstract patterns.  For example, we create several methods that do not just return some data, but queries in the form of <b>Zend_Db_Select</b> objects.  Then these requests can be modified, embedded in others, i.e.  avoid writing the same SQL code in different places, and this is a big plus with the support and modification of the code. <br><br>  <b>PS</b> This feature has been working for a long time and why it hasn’t yet been included in the manual, PHPDoc, for which the API was received, I honestly don’t understand at all. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/66607/">https://habr.com/ru/post/66607/</a></p>
+    <p>Source: https://habr.com/ru/post/66607/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../66595/index.html">zi.byudzhet or SSS.R (How much is Site.Rub)</a></li>
-<li><a href="../66599/index.html">Simplicity in design. Episode 2. DHT and PEX</a></li>
+<li><a href="../666/index.html">Tips in Allowed html tags</a></li>
+<li><a href="../6660/index.html">Yandex bought Google or one of the two</a></li>
 <li><a href="../66601/index.html">Is it really the case with the display for MacBook Pro?</a></li>
 <li><a href="../66602/index.html">Lighttpd cacti statistics</a></li>
 <li><a href="../66605/index.html">Nginx statistics in cacti</a></li>
+<li><a href="../6661/index.html">Hablability</a></li>
 <li><a href="../66612/index.html">Wii Sports Resort - my first impressions</a></li>
 <li><a href="../66614/index.html">Playing Youtube HD in Silverlight</a></li>
 <li><a href="../66615/index.html">What is .NET RIA Services?</a></li>
 <li><a href="../66616/index.html">Entertaining geography</a></li>
-<li><a href="../66617/index.html">Bitter experience with smscoin.com</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Sore about the source code of database objects</h1><div class="post__text post__text-html js-mediator-article"> Imagine this situation: the development team is working on the program.  At the same time, the source code of the application is not stored anywhere.  Each programmer with the help of a special decompiler unloads the necessary code from the binary, works with it, and then collects it again and gives it to colleagues for further development. <br>  Do you think this is a normal situation?  I think no. <br>  But for some reason, this approach is often used in the development of database applications. <br><a name="habracut"></a><br>  Objects are created and modified “profitably” directly in the database.  Most specialized IDEs provide a wealth of “convenient” tools for this — finding the desired object using the navigation tree, modifying it with a few mouse clicks, etc.  At the same time, few people think about the source code - and when building a version, utilities are often used, which, based on the code of the current database and the code of the production database, generate a diff script (for me it still remains a mystery how, since the alter (tables for example) form in many ways, it all depends on the specific case, on the logic of change, etc.). <br>  It turns out that the source code of the database does not exist, as it were, it is considered to be a kind of machine code that is difficult for a person to perceive and is completely relegated to visual tools for development.  The programmer does not work with the functionality of his DBMS, but with the functionality of a specific IDE, a kind of beautiful and (as it seems at first time) convenient intermediate layer.  In this case, it is necessary to study the IDE, and not the DBMS itself. <br>  It is worth remembering that after you use the actual written code (verified, formatted according to corporeal standards, decorated with comments) to create a database object, this code will not be saved anywhere, you will lose it, and in return you will receive what the machine collects for you ( IDE, special utilities or libraries), based on the database data dictionary.  At the same time, the history of changing objects is lost (it becomes impossible to find out / remember who, when and why created / deleted / changed one or another object), conflicts may arise during joint development and a lot more. <br><br>  You can read about this in “PLSQL Standards Developed for the PLSQL Starter Framework” in the “Source Code Control” chapter: <br><br>  <i>Remember to never modify the PL / SQL stored in the database.</i>  <i>Work from the source code file instead.</i>  <i>Yes, modifying the compiled code inside the database is technically feasible.</i>  <i><b>Java bytecode or C object files</b> .</i> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      and in the chapter “Data Models and DDL”: <br><br>  <i>Most DDL is still created by hand.</i>  <i>Make it clean, commented and readable, <b>just like source code</b> .</i> <br><br>  Finally, I will give the code for creating a simple table in Oracle and what comes out of it after unloading from the database with various utilities. <br><br>  The source code for creating the table: <br> <code>-- This is test_table <br> CREATE TABLE test_table ( <br> id NUMBER(38), -- PK <br> value NUMBER(10,2), -- main value <br> width NUMBER(5,0) -- main width value <br> );</code> <br> <br>  DBMS_METADATA: <br> <code>CREATE TABLE "OBJECTMAN"."TEST_TABLE" <br> ( "ID" NUMBER(38,0), <br> "VALUE" NUMBER(10,2), <br> "WIDTH" NUMBER(5,0) <br> )</code> <br> <br>  Tora: <br> <code>CREATE TABLE objectman.test_table <br> ( <br> id NUMBER(38) <br> , value NUMBER(10,2) <br> , width NUMBER(5) <br> )</code> <br> <br>  TOAD Eclpise plugin: <br> <code>create table test_table <br> ( <br> id number(38), <br> value number(10,2), <br> width number(5) <br> ) <br></code> <br>  As you can see, the hodgepodge is full, who is ready for that. <br><br>  Of course, this does not mean that you need to completely abandon modern visual tools and work in the console editor.  The most important thing is to work with the source code of your database application, control it yourself, do not give it to the machine.  The source code of database applications is no worse than Java or C ++ application code and requires the same treatment: formatting, comments, version control, etc. <br><br>  A few recommendations: <br>  1. All database code (DML, DDL, DCL, TCL, etc.) must be stored in the repository (one object = one file); <br>  2. Proceeding from the first item, it should be possible to assemble a “clean” base ready for use “from scratch” using source codes from the repository (there is no need to make database dumps, cut out unnecessary (test) data, etc.) <br>  3. Edit and compile the object code of the database you need from the file (so instead of navigating through the database of your IDE, the navigator for the project files in the repository will become relevant - find the file, open it for editing, roll to the database). </div><p>Source: <a href="https://habr.com/ru/post/142255/">https://habr.com/ru/post/142255/</a></p>
+      and in the chapter “Data Models and DDL”: <br><br>  <i>Most DDL is still created by hand.</i>  <i>Make it clean, commented and readable, <b>just like source code</b> .</i> <br><br>  Finally, I will give the code for creating a simple table in Oracle and what comes out of it after unloading from the database with various utilities. <br><br>  The source code for creating the table: <br> <code>-- This is test_table <br> CREATE TABLE test_table ( <br> id NUMBER(38), -- PK <br> value NUMBER(10,2), -- main value <br> width NUMBER(5,0) -- main width value <br> );</code> <br> <br>  DBMS_METADATA: <br> <code>CREATE TABLE "OBJECTMAN"."TEST_TABLE" <br> ( "ID" NUMBER(38,0), <br> "VALUE" NUMBER(10,2), <br> "WIDTH" NUMBER(5,0) <br> )</code> <br> <br>  Tora: <br> <code>CREATE TABLE objectman.test_table <br> ( <br> id NUMBER(38) <br> , value NUMBER(10,2) <br> , width NUMBER(5) <br> )</code> <br> <br>  TOAD Eclpise plugin: <br> <code>create table test_table <br> ( <br> id number(38), <br> value number(10,2), <br> width number(5) <br> ) <br></code> <br>  As you can see, the hodgepodge is full, who is ready for that. <br><br>  Of course, this does not mean that you need to completely abandon modern visual tools and work in the console editor.  The most important thing is to work with the source code of your database application, control it yourself, do not give it to the machine.  The source code of database applications is no worse than Java or C ++ application code and requires the same treatment: formatting, comments, version control, etc. <br><br>  A few recommendations: <br>  1. All database code (DML, DDL, DCL, TCL, etc.) must be stored in the repository (one object = one file); <br>  2. Proceeding from the first item, it should be possible to assemble a “clean” base ready for use “from scratch” using source codes from the repository (there is no need to make database dumps, cut out unnecessary (test) data, etc.) <br>  3. Edit and compile the object code of the database you need from the file (so instead of navigating through the database of your IDE, the navigator for the project files in the repository will become relevant - find the file, open it for editing, roll to the database). </div><p>Source: https://habr.com/ru/post/142255/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../142247/index.html">The Pirate Bay: and .torrent files have not gone anywhere</a></li>
 <li><a href="../142248/index.html">Media Piracy in Developing Economies</a></li>
 <li><a href="../142249/index.html">Domain.RUS application filed with ICANN</a></li>
+<li><a href="../14225/index.html">Will Google issue coupons?</a></li>
 <li><a href="../142252/index.html">Results of the initiative to support the development of Windows Phone applications in MCP-clubs and User Group</a></li>
 <li><a href="../142253/index.html">Remart: how I created my business</a></li>
 <li><a href="../142256/index.html">Android UI thread</a></li>
+<li><a href="../14226/index.html">While you were sleeping fell google.</a></li>
 <li><a href="../142260/index.html">Vulnerability in Safari browser in iOS 5.0.1, 5.1, 5.1.1</a></li>
 <li><a href="../142262/index.html">Craft programmer. Golden Rules</a></li>
 <li><a href="../142264/index.html">Google has at its disposal the domain gmail.de and the Gmail trademark in Germany</a></li>
-<li><a href="../142265/index.html">Windows 8 editions became known</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

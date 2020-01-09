@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Prevent hidden Nmap scanning in Linux</h1><div class="post__text post__text-html js-mediator-article">  As you probably know, the NMAP network scanner is designed to scan machines or even entire networks for open ports and it is the most efficient of its kind (especially in capable hands). Hidden NMAP scanning is called such because it is unlikely that the system log will record it because uses irregular combinations of TCP packet flags. <a name="habracut"></a><br>  However, using the ability of netfilter to check flags in the TCP packet header and write events to the log, you can not only block such attempts, but also register the fact of their presence. Here are a couple of rules: <br><br>  <i>iptables -A INPUT -p tcp --tcp-flags ACK, FIN FIN -j LOG --log-prefix "Stealth scan"</i> <i><br></i>  <i>iptables -A INPUT -p tcp --tcp-flags ACK, FIN FIN -j DROP</i> <br><br>  The first rule is for the mandatory recording of events in the log.  After the LOG target, the packet continues moving along the condition chain (unlike the DROP and ACCEPT targets. Accepted or rejected packets will not be sent for further verification).  In this case, a packet that satisfies the first condition will satisfy the second one, according to which it will be rejected.  The parameters --tcp-flags ACK, FIN FIN describe a combination of TCP flags.  The first list of states (ACK, FIN) lists the flags under test, the second (FIN) lists those that are set.  Thus, the condition corresponds to those packets in which there is a FIN-flag, but no ACK.  With a normal TCP connection, this combination is not possible, but it is typical for hidden scanning. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Conduct an experiment: if you have two Linux systems, select one of them with a target, and on the second run something like <br><br>  <i>nmap -sF -p1-50 192.168.0.3</i> <br><br>  (substitute the desired IP address).  Nmap will tell you about open ports.  If you trace the fate of packets through Ethereal, you will see that FIN packets have reached the goal, and in response, RST and ACK packets were sent.  Now add the two rules shown above on the target system and try again.  You will see that Nmap no longer detects open ports, and new messages appear in the log (I have this / var / log / firewall).  Ethereal will show that FIN packages still reach, but do not receive a response.  You can learn a lot from such experiments. </div><p>Source: <a href="https://habr.com/ru/post/101817/">https://habr.com/ru/post/101817/</a></p>
+      Conduct an experiment: if you have two Linux systems, select one of them with a target, and on the second run something like <br><br>  <i>nmap -sF -p1-50 192.168.0.3</i> <br><br>  (substitute the desired IP address).  Nmap will tell you about open ports.  If you trace the fate of packets through Ethereal, you will see that FIN packets have reached the goal, and in response, RST and ACK packets were sent.  Now add the two rules shown above on the target system and try again.  You will see that Nmap no longer detects open ports, and new messages appear in the log (I have this / var / log / firewall).  Ethereal will show that FIN packages still reach, but do not receive a response.  You can learn a lot from such experiments. </div><p>Source: https://habr.com/ru/post/101817/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

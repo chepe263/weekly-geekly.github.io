@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Obtaining zero statistical information in the absence of source data</h1><div class="post__text post__text-html js-mediator-article"> Very often there is the problem of providing some statistics for a specified period.  For example, how many efficiencies have been committed by the system user over the last week.  It would seem that nothing is simpler: <br><br> <code>SELECT Data, COUNT(*) <br> FROM tbl <br> WHERE Data BETWEEN SYSDATE-7 AND SYSDATE <br> GROUP BY Data <br> ORDER BY Data <br></code> <br><br>  For the week we expect to get five lines - one for each working day.  Everything is working.  As long as users perform at least one action per day.  If the table does not have a single row with the date, then as a result of this date will not.  And instead of the expected five lines in the report there will be four ... or three ... or none at all.  And users want to see five, even with zeros! 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a><br>  The solution is to associate a table with data with another one that lists the dates.  You can list the dates, but now the customer wanted a summary report by month, and tomorrow, and by year, he wants.  Again to create tables, already with months and years?  Not very convenient, and not interesting.  And what if you try to "emulate" these tables on the fly?  After all at us and functions are able to return, suitable for use in pure SQL '.  For this we need an auxiliary type: <br><br> <code>CREATE OR REPLACE TYPE TDate_Sequence AS TABLE OF DATE; <br> / <br></code> <br><br>  and, actually, the function itself: <br><br> <code>CREATE OR REPLACE FUNCTION Generate_Date_Sequence( --  - . <br> Data_Beg DATE, /* .*/ <br> Data_End DATE, /* .*/ <br> Step CHAR) /*   : D - , M - , Y - .*/ <br> RETURN TDate_Sequence <br> AS <br> data_curr DATE; <br> stp CHAR; <br> Result TDate_Sequence := TDate_Sequence(); <br> BEGIN <br> stp := UPPER(Step); <br> IF stp = 'D' THEN <br> data_curr := TRUNC(Data_Beg, 'DD'); <br> ELSIF stp = 'M' THEN <br> data_curr := TRUNC(Data_Beg, 'MM'); <br> ELSIF stp = 'Y' THEN <br> data_curr := TRUNC(Data_Beg, 'YYYY'); <br> END IF; <br> --   . <br> WHILE data_curr &lt;= Data_End LOOP <br> Result.EXTEND; <br> Result(Result.LAST) := data_curr; <br> IF stp = 'D' THEN <br> data_curr := data_curr + 1; <br> ELSIF stp = 'M' THEN <br> data_curr := ADD_MONTHS(data_curr, 1); <br> ELSIF stp = 'Y' THEN <br> data_curr := ADD_MONTHS(data_curr, 12); <br> END IF; <br> END LOOP; <br> --  . <br> RETURN Result; <br> END Generate_Date_Sequence; <br> / <br></code> <br><br>  We associate the available data with the generated sequence: <br><br> <code>SELECT data_sequence.column_value Data, COUNT(tbl.Data) <br> FROM TABLE(CAST(Generate_Date_Sequence(SYSDATE-30,SYSDATE,'D') AS TDate_Sequence)) data_sequence, tbl <br> WHERE tbl.Data(+) = data_sequence.column_value <br> GROUP BY data_sequence.column_value <br> ORDER BY data_sequence.column_value <br></code> <br><br>  ... and get so desired by the customer zeros! </div><p>Source: <a href="https://habr.com/ru/post/127273/">https://habr.com/ru/post/127273/</a></p>
+    <a name="habracut"></a><br>  The solution is to associate a table with data with another one that lists the dates.  You can list the dates, but now the customer wanted a summary report by month, and tomorrow, and by year, he wants.  Again to create tables, already with months and years?  Not very convenient, and not interesting.  And what if you try to "emulate" these tables on the fly?  After all at us and functions are able to return, suitable for use in pure SQL '.  For this we need an auxiliary type: <br><br> <code>CREATE OR REPLACE TYPE TDate_Sequence AS TABLE OF DATE; <br> / <br></code> <br><br>  and, actually, the function itself: <br><br> <code>CREATE OR REPLACE FUNCTION Generate_Date_Sequence( --  - . <br> Data_Beg DATE, /* .*/ <br> Data_End DATE, /* .*/ <br> Step CHAR) /*   : D - , M - , Y - .*/ <br> RETURN TDate_Sequence <br> AS <br> data_curr DATE; <br> stp CHAR; <br> Result TDate_Sequence := TDate_Sequence(); <br> BEGIN <br> stp := UPPER(Step); <br> IF stp = 'D' THEN <br> data_curr := TRUNC(Data_Beg, 'DD'); <br> ELSIF stp = 'M' THEN <br> data_curr := TRUNC(Data_Beg, 'MM'); <br> ELSIF stp = 'Y' THEN <br> data_curr := TRUNC(Data_Beg, 'YYYY'); <br> END IF; <br> --   . <br> WHILE data_curr &lt;= Data_End LOOP <br> Result.EXTEND; <br> Result(Result.LAST) := data_curr; <br> IF stp = 'D' THEN <br> data_curr := data_curr + 1; <br> ELSIF stp = 'M' THEN <br> data_curr := ADD_MONTHS(data_curr, 1); <br> ELSIF stp = 'Y' THEN <br> data_curr := ADD_MONTHS(data_curr, 12); <br> END IF; <br> END LOOP; <br> --  . <br> RETURN Result; <br> END Generate_Date_Sequence; <br> / <br></code> <br><br>  We associate the available data with the generated sequence: <br><br> <code>SELECT data_sequence.column_value Data, COUNT(tbl.Data) <br> FROM TABLE(CAST(Generate_Date_Sequence(SYSDATE-30,SYSDATE,'D') AS TDate_Sequence)) data_sequence, tbl <br> WHERE tbl.Data(+) = data_sequence.column_value <br> GROUP BY data_sequence.column_value <br> ORDER BY data_sequence.column_value <br></code> <br><br>  ... and get so desired by the customer zeros! </div><p>Source: https://habr.com/ru/post/127273/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../127266/index.html">Mailing: Down with crutches!</a></li>
 <li><a href="../127267/index.html">How to install fonts in e-books Alphabet n516 and Alphabet n618</a></li>
 <li><a href="../127268/index.html">Creation and promotion of Symbian-hit. Part 2 Money</a></li>
+<li><a href="../12727/index.html">Coffee loyalty</a></li>
 <li><a href="../127270/index.html">Doctrine pagination - count the number of records using SQL_CALC_FOUND_ROWS (MySQL)</a></li>
 <li><a href="../127271/index.html">Zend_Db_Table ease of use</a></li>
 <li><a href="../127274/index.html">Emulate network problems with WANem</a></li>
 <li><a href="../127275/index.html">SCLOG: a bike with all the features of a programming language</a></li>
 <li><a href="../127276/index.html">Language for working with ActionScript events</a></li>
+<li><a href="../12728/index.html">A month from the iPhone: is it so cool?</a></li>
 <li><a href="../127281/index.html">Bypassing the integrated protection of PIC microcontrollers</a></li>
-<li><a href="../127282/index.html">SymmetricDS based PostgreSQL database replication</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

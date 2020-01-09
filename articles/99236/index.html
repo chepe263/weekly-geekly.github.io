@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Search for a character by name</h1><div class="post__text post__text-html js-mediator-article">  Have you ever had a need to find a symbol by its partial name?  It happens to me sometimes, for example, to find the letter “ѣ” that I have never used, to find symbols of the Greek alphabet (σ, ε, μ), etc.  A quite convenient tool for this is kcharselect from KDE4, but for the sake of the only utility it’s a reluctant to put a healthy piece of KDE.  Therefore, there was an idea to write a script that would search for a symbol by description. <br><br><a name="habracut"></a>  The solution is relatively simple.  There is a file with a description of the characters and their codes, we find the desired description, and display it on the screen along with the symbol.  In Gentoo Linux, this file can be found here: / usr / share / misc / unicode (it is part of sys-apps / miscfiles).  The universal option is to take data from <a href="">ftp.unicode.org</a> <br><br>  The code itself looks like this: <blockquote><code><font color="#408080"><em>#!/usr/bin/env python</em></font> <br> <font color="#008000"><strong>from</strong></font> <font color="#0000FF"><strong>__future__</strong></font> <font color="#008000"><strong>import</strong></font> print_function <br> <font color="#008000"><strong>from</strong></font> <font color="#0000FF"><strong>sys</strong></font> <font color="#008000"><strong>import</strong></font> argv, version_info <br> <font color="#008000"><strong>import</strong></font> <font color="#0000FF"><strong>csv</strong></font> <br> <font color="#008000"><strong>import</strong></font> <font color="#0000FF"><strong>re</strong></font> <br> <font color="#008000"><strong>if</strong></font> version_info[ <font color="#666666">0</font> ] <font color="#666666">==</font> <font color="#666666">3</font> : <br> <font color="#008000">unichr</font> <font color="#666666">=</font> <font color="#008000">chr</font> <br> <br> data <font color="#666666">=</font> <font color="#BA2121">'/usr/share/misc/unicode'</font> <br> descriptions <font color="#666666">=</font> csv <font color="#666666">.</font> reader( <font color="#008000">open</font> (data), delimiter <font color="#666666">=</font> <font color="#BA2121">';'</font> ) <br> request <font color="#666666">=</font> re <font color="#666666">.</font> compile( <font color="#BA2121">" "</font> <font color="#666666">.</font> join(argv[ <font color="#666666">1</font> :]), flags <font color="#666666">=</font> re <font color="#666666">.</font> I) <br> <font color="#008000"><strong>for</strong></font> record <font color="#AA22FF"><strong>in</strong></font> descriptions: <br> <font color="#008000"><strong>if</strong></font> request <font color="#666666">.</font> findall(record[ <font color="#666666">1</font> ]): <br> (code, descr) <font color="#666666">=</font> record[: <font color="#666666">2</font> ] <br> <font color="#008000"><strong>print</strong></font> (code, <font color="#008000">unichr</font> ( <font color="#008000">int</font> (code, <font color="#666666">16</font> )), descr)</code> </blockquote> <br>  A little about the code and work.  In general, there is a module <a href="http://docs.python.org/library/unicodedata.html">unicodedata</a> , but it allows you to search only by the full name.  You could also do without CSV (for example, just use split (';')).  The script apparently completely understands regular expressions.  And yes, it would be possible to use grep, awk / sed, and then somehow distort the number (by the way, I'm not sure about the latter), but making python work under Windows is easier than all these utilities.  Since the application runs from the console, depending on the font, some characters may not be displayed. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Examples of using. <br> <code>$ python ./unicodesearch.py yat&lt;br/&gt;0462 Ѣ CYRILLIC CAPITAL LETTER YAT&lt;br/&gt;0463 ѣ CYRILLIC SMALL LETTER YAT&lt;br/&gt;...&lt;br/&gt;$ python ./unicodesearch.py "greek.*epsilon$"&lt;br/&gt;0395 Ε GREEK CAPITAL LETTER EPSILON&lt;br/&gt;03B5 ε GREEK SMALL LETTER EPSILON&lt;br/&gt;&lt;br/&gt;$ python ./unicodesearch.py heavy check mark&lt;br/&gt;2714 ✔ HEAVY CHECK MARK&lt;br/&gt;</code> </div><p>Source: <a href="https://habr.com/ru/post/99236/">https://habr.com/ru/post/99236/</a></p>
+      Examples of using. <br> <code>$ python ./unicodesearch.py yat&lt;br/&gt;0462 Ѣ CYRILLIC CAPITAL LETTER YAT&lt;br/&gt;0463 ѣ CYRILLIC SMALL LETTER YAT&lt;br/&gt;...&lt;br/&gt;$ python ./unicodesearch.py "greek.*epsilon$"&lt;br/&gt;0395 Ε GREEK CAPITAL LETTER EPSILON&lt;br/&gt;03B5 ε GREEK SMALL LETTER EPSILON&lt;br/&gt;&lt;br/&gt;$ python ./unicodesearch.py heavy check mark&lt;br/&gt;2714 ✔ HEAVY CHECK MARK&lt;br/&gt;</code> </div><p>Source: https://habr.com/ru/post/99236/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

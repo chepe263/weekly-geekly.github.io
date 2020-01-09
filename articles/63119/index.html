@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Optimization with closures</h1><div class="post__text post__text-html js-mediator-article">  It is given - once a second the AJAX script is twitching, there are several calls to the same function (let's call it updater) with different arguments.  The function, in accordance with the arguments, updates a certain set of DOM elements (changes content, hides, shows) on the current page.  Used jQuery, effects, etc.  Those.  About such code comes to the client ... <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">updater( <font color="#A31515">'id1'</font> , 10, 20); <br> updater( <font color="#A31515">'id33'</font> , 11, 22); <br> updater( <font color="#A31515">'id181'</font> , 102, 27);</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  The problem is that after an increase in the number of called functions (an increase in the number of typical blocks) everything is terribly slow, a lot of time is spent on jQuery, the choice of DOM elements by selectors. <br><br>  It is required whenever possible quickly and without serious consequences, without changing a layout and without refusing jQuery to optimize the process. <br><a name="habracut"></a><br>  Solution - we make a function that generates for each type block a new update function using closures.  At the same time, all "long" operations ($ ('. Class .class'). Parent ('div'), etc., should be cached. <br><br>  Let it be earlier <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">function</font> updater(rootId, arg2, arg3) <br> { <br> $( <font color="#A31515">'#'</font> +rootId+ <font color="#A31515">' .some .selector'</font> ).some().action(); <br> $( <font color="#A31515">'#'</font> +rootId+ <font color="#A31515">' .some2 .selector3'</font> ).some().action(); <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br>  We pregenerate all the "updates" and call the right one - all the results of the "long" operations are cached, leaving only the updates of the elements and manipulations with them, depending on the remaining arguments. <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">function</font> makeUpdater(rootId) { <br> <font color="#0000ff">if</font> ($( <font color="#A31515">'#'</font> +rootId).length&gt;0) <br> { <br> <font color="#0000ff">var</font> someVar = $( <font color="#A31515">'#'</font> +rootId+ <font color="#A31515">' .some .selector'</font> ); <br> <font color="#0000ff">var</font> someVar2 = $( <font color="#A31515">'#'</font> +rootId+ <font color="#A31515">' .some2 .selector3'</font> ); <br> <font color="#0000ff">return</font> <font color="#0000ff">function</font> (arg2, arg3) { <br> someVar.some().action(); <br> someVar2.some().action(); <br> <font color="#008000">// do smth else...</font> <br> } <br> } <br> <font color="#0000ff">else</font> <br> <font color="#0000ff">return</font> <font color="#0000ff">function</font> (arg2, arg3) {} <br> } <br> <br> <font color="#0000ff">var</font> updaters = <font color="#0000ff">new</font> Array(); <br> <font color="#0000ff">var</font> idx = 0; <br> $( <font color="#A31515">'div.rootElement'</font> ).each( <font color="#0000ff">function</font> () { <br> updaters[idx++] = makeUpdater($( <font color="#0000ff">this</font> ).attr( <font color="#A31515">'id'</font> )); <br> }); <br> <br> <font color="#0000ff">function</font> updater(rootId, arg2, arg3) { <br> updaterFnc = <font color="#008000">//  rootId      updaters</font> <br> updaterFnc(arg2, arg3); <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>UPD: An</b> alternative solution is selector caching: <a href="http://habrahabr.ru/blogs/jquery/63145/">habrahabr.ru/blogs/jquery/63145</a> </div><p>Source: <a href="https://habr.com/ru/post/63119/">https://habr.com/ru/post/63119/</a></p>
+      <b>UPD: An</b> alternative solution is selector caching: <a href="http://habrahabr.ru/blogs/jquery/63145/">habrahabr.ru/blogs/jquery/63145</a> </div><p>Source: https://habr.com/ru/post/63119/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../63114/index.html">MMS activation on iPhone 2G</a></li>
 <li><a href="../63116/index.html">In 2008, Svyazinvest's daughters laundered almost 3 billion rubles. on Oracle</a></li>
 <li><a href="../63118/index.html">C # -like events for PHP. Reflection, closures ...</a></li>
+<li><a href="../6312/index.html">Microsoft cheated customers with stickers</a></li>
 <li><a href="../63120/index.html">Creative Question: Project Manager vs Designer</a></li>
 <li><a href="../63123/index.html">How is Open XML?</a></li>
 <li><a href="../63125/index.html">“When will you send the logo in curves?!”</a></li>
 <li><a href="../63126/index.html">Foldable Amphibian Flippers</a></li>
-<li><a href="../63127/index.html">Unusual hype around the App Store</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

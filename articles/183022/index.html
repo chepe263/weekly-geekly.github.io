@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Random'ization in Python. Is it random?</h1><div class="post__text post__text-html js-mediator-article"><img src="http://srs-logistic.com/upload/blog/img_Karsya/4ef/4ef1687b76908989c26016de8c7708a7.jpg" alt="image"><br>  Good time of day, habravchane.  Despite the deep title of the post, its essence consists in describing the struggle with its own stupidity in solving the problems already studied.  Recently, often pondered the topic of "randomness."  What sets this same chance?  In view of the fact that I like to reach everything myself, I did not get into search engines, but I got into Python. <br><a name="habracut"></a><br>  First, the following algorithm came to mind: <br>  1) Get a certain number of random numbers. <br>  2) Find out how many in each random number of numbers "0", "1", "2", etc. <br>  3) Calculate the sum of these numbers. <br>  4) For clarity, build a diagram. <br>  As a result, I was extremely surprised by my stupidity: <br><img src="http://s1.ipicture.ru/uploads/20130610/4brMf1R4.png" alt="image"><br>  Why does the number of zeros so markedly exceed the number of all other digits?  The answer was simple, but about him a little later. <br>  I decided to increase the number of random numbers, suspecting in advance that the number would level off. <br>  However, the picture that I saw was frightening: <br><img src="http://s1.ipicture.ru/uploads/20130610/4brMf1R4.png" alt="image"><br><img src="https://habrastorage.org/getpro/geektimes/post_images/328/b95/7c2/328b957c230e8de901104d955cffce53.png" alt="image"><br>  The question after this immediately arose to the code in which the “random” number is generated as: <br><pre><code class="python hljs"><span class="hljs-keyword"><span class="hljs-keyword">while</span></span> ii&lt;kol: a = random.random() z = str(a) L = len(z) i = <span class="hljs-number"><span class="hljs-number">0</span></span> <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> i &lt;L: <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"0"</span></span>: s0 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"1"</span></span>: s1 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"2"</span></span>: s2 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"3"</span></span>: s3 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"4"</span></span>: s4 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"5"</span></span>: s5 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"6"</span></span>: s6 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"7"</span></span>: s7 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"8"</span></span>: s8 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"9"</span></span>: s9 +=<span class="hljs-number"><span class="hljs-number">1</span></span> i+=<span class="hljs-number"><span class="hljs-number">1</span></span> ii +=<span class="hljs-number"><span class="hljs-number">1</span></span></code> </pre> <br>  I think you already guessed what was my first mistake?  And it was in random.random (), which returns a random number from 0 to 1 with a certain number of decimal places. <br>  This was not the end.  Correcting the error: <br><pre> <code class="python hljs"><span class="hljs-meta"><span class="hljs-meta">... </span></span><span class="hljs-keyword"><span class="hljs-keyword">while</span></span> ii&lt;kol: a = random.random() z = str(a) l = len(z) i = <span class="hljs-number"><span class="hljs-number">2</span></span> <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> i &lt;L: <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"0"</span></span>: s0 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"1"</span></span>: ...</code> </pre><br>  Got the following picture of "random": <br><img src="http://s2.ipicture.ru/uploads/20130610/b8bjeyKg.png" alt="image"><br>  This situation did not change with the increase in the number of numbers.  However, here the answer was not at all in theory, but again in implementation.  Guess? <br>  The fact is that Python rounds the number obtained using random.random ().  It is easy enough to understand that when rounding, “rounding to 0” is much less likely than “rounding off to any other number”.  Since  in order to “round up to 0,” it is necessary that the penultimate digit of a random number is 9. And this chance is 1 to 10. <br>  “Healing” code: <br><br><pre> <code class="python hljs"><span class="hljs-keyword"><span class="hljs-keyword">while</span></span> ii&lt;kol: a = random.random() z = str(a) l = len(z) i = <span class="hljs-number"><span class="hljs-number">2</span></span> <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> i &lt;L<span class="hljs-number"><span class="hljs-number">-1</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"0"</span></span>: s0 +=<span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-keyword"><span class="hljs-keyword">elif</span></span> z[i]==<span class="hljs-string"><span class="hljs-string">"1"</span></span>:</code> </pre><br><br><img src="http://s2.ipicture.ru/uploads/20130610/WWDtpfdb.png" alt="image"><br>  <s>Justice</s> Randomness triumphed.  Stupidity was destroyed.  Be careful, dear habravchane.  Thanks to everyone who read this post to the end. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/183022/">https://habr.com/ru/post/183022/</a></p>
+    <p>Source: https://habr.com/ru/post/183022/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../183018/index.html">Web Design + Mac OS - Adobe = Sketch. The new tool is better than all the old</a></li>
 <li><a href="../183024/index.html">Numbers in itself</a></li>
 <li><a href="../183028/index.html">How to quickly make a cyborg cockroach</a></li>
+<li><a href="../18303/index.html">Dual networks: businesses and consumers</a></li>
 <li><a href="../183030/index.html">RedHat's cloud-based OpenShift platform completed testing and unveiled the first paid tariff with a trial period.</a></li>
 <li><a href="../183032/index.html">DevConf 2013, June 14, 2013 - 2 days left. 6 exclusive workshops on highoad and design - June 15!</a></li>
-<li><a href="../183038/index.html">Back to nature. Why experienced web developer eventually leaned toward native applications</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

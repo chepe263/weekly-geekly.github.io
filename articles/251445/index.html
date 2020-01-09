@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Vulnerability in WP-Slimstat plugin 3.9.5 and below for WordPress</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/8bb/c3b/190/8bbc3b190aa344f29b84a3d8d79b843f.png"><br><br>  Users of the WP-Slimstat plugin version 3.9.5 and below should upgrade as soon as possible!  During the next security audit, we discovered a security error, due to which an attacker could obtain the “secret” key of the plug-in and, thus, implement a SQL injection. <br><br>  Successful implementation of this bug can lead to attacks like “blind sql injection” (Blind SQL-Injection), which will allow an attacker to obtain data from the database, including the username, password hash, and in some configurations and secret keys of WordPress itself (full control of the site). <a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      WP-Slimstat uses a “secret” key to sign data sent from / to the client.  Looking at how this key is generated, it can be concluded that it is easy for an attacker to recognize it: <br><img src="https://habrastorage.org/files/26a/2ea/0ff/26a2ea0ff4da4581af93fa412c23c9c1.png"><br><br>  The hash from the time when the plugin was installed is used as a “secret” key.  An attacker could use sites such as, for example, <a href="https://archive.org/">Internet Archive</a> , to find out the approximate time of site creation (after this there are approximately 30 million values ​​to check that for modern CPUs it will take about 10 minutes). <br><br>  To be able to perform brute force, you only need to get valid and signed data from the plugin.  They are easy to find in different fragments of generated web pages: <br><img src="https://habrastorage.org/files/e46/27d/6b1/e4627d6b15d54d508f8fe183a3852cea.png"><br><br>  At first glance, this may seem complicated, but, looking at how this data structure is used in the plugin, you can follow a simple way of signing data and hashing a composite string consisting of payload and a “secret” token: <br><img src="https://habrastorage.org/files/3e5/58a/3c9/3e558a3c97154af3a5684afd85209655.png"><br><br>  Knowing this information, an attacker can brutalize timestamps until he receives the same signature as the site he attacked. <br><br>  During the investigation, we were able to establish that we can pass arbitrary data when calling <b>unserialize ()</b> , which will later be passed to the <b>maybe_insert_row ()</b> method via the <b>$ content_info</b> variable: <br><img src="https://habrastorage.org/files/31d/a9c/459/31da9c4591464c52804c60f0d9a75555.png"><br><br><img src="https://habrastorage.org/files/569/5f0/3fe/5695f03fe7e745c8aefb3683ed5d571f.png"><br><br>  Given that we control <b>$ _data</b> , we can add an associative array to it, whose indexes are SQL expressions, for example: <pre><code class="sql hljs">array(“1=sleep(100)–“=&gt;”1″)</code> </pre> <br>  This ability to perform any requests allows an attacker to get any data from the database.  This is a dangerous vulnerability and you should update the plugin as soon as possible. </div><p>Source: <a href="https://habr.com/ru/post/251445/">https://habr.com/ru/post/251445/</a></p>
+      WP-Slimstat uses a “secret” key to sign data sent from / to the client.  Looking at how this key is generated, it can be concluded that it is easy for an attacker to recognize it: <br><img src="https://habrastorage.org/files/26a/2ea/0ff/26a2ea0ff4da4581af93fa412c23c9c1.png"><br><br>  The hash from the time when the plugin was installed is used as a “secret” key.  An attacker could use sites such as, for example, <a href="https://archive.org/">Internet Archive</a> , to find out the approximate time of site creation (after this there are approximately 30 million values ​​to check that for modern CPUs it will take about 10 minutes). <br><br>  To be able to perform brute force, you only need to get valid and signed data from the plugin.  They are easy to find in different fragments of generated web pages: <br><img src="https://habrastorage.org/files/e46/27d/6b1/e4627d6b15d54d508f8fe183a3852cea.png"><br><br>  At first glance, this may seem complicated, but, looking at how this data structure is used in the plugin, you can follow a simple way of signing data and hashing a composite string consisting of payload and a “secret” token: <br><img src="https://habrastorage.org/files/3e5/58a/3c9/3e558a3c97154af3a5684afd85209655.png"><br><br>  Knowing this information, an attacker can brutalize timestamps until he receives the same signature as the site he attacked. <br><br>  During the investigation, we were able to establish that we can pass arbitrary data when calling <b>unserialize ()</b> , which will later be passed to the <b>maybe_insert_row ()</b> method via the <b>$ content_info</b> variable: <br><img src="https://habrastorage.org/files/31d/a9c/459/31da9c4591464c52804c60f0d9a75555.png"><br><br><img src="https://habrastorage.org/files/569/5f0/3fe/5695f03fe7e745c8aefb3683ed5d571f.png"><br><br>  Given that we control <b>$ _data</b> , we can add an associative array to it, whose indexes are SQL expressions, for example: <pre><code class="sql hljs">array(“1=sleep(100)–“=&gt;”1″)</code> </pre> <br>  This ability to perform any requests allows an attacker to get any data from the database.  This is a dangerous vulnerability and you should update the plugin as soon as possible. </div><p>Source: https://habr.com/ru/post/251445/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../251435/index.html">We stamp windows: automated deployment of Windows virtual machines to Hyper-V using Vagrant (part 1)</a></li>
 <li><a href="../251437/index.html">Creating a convenient export of photos in VK. Part 1. iPhoto</a></li>
 <li><a href="../251439/index.html">The output temperature, traffic jams and exchange rates on the LED matrix Raspberry Pi</a></li>
+<li><a href="../25144/index.html">The trust</a></li>
 <li><a href="../251441/index.html">Few obscure frontend tricks</a></li>
 <li><a href="../251443/index.html">Visual Studio 2015 CTP6 released</a></li>
 <li><a href="../251447/index.html">In search of the best signal of the mobile Internet in the spring of 2015</a></li>
 <li><a href="../251449/index.html">Complete energy autonomy or how to survive with solar panels in the outback (part 2. practical)</a></li>
+<li><a href="../25145/index.html">Delicious XML</a></li>
 <li><a href="../251451/index.html">Usb killer</a></li>
 <li><a href="../251459/index.html">We make a map of cable routes "on the knee"</a></li>
-<li><a href="../251461/index.html">A year and a half of working with SAP hybris: normal flight. The most important thing you need to know about developing on eCommerce platforms</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

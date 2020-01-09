@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>ACID to SQLite</h1><div class="post__text post__text-html js-mediator-article">  This post describes the system of locking and maintaining atomicity, consistency, isolation and reliability (ACID) in SQLite, as well as algorithms for writing and reading from the database file. <br><a name="habracut"></a><br><h4>  Pager Module </h4><br>  Locking and parallel access in SQLite version 3 and higher is handled by a pager (pager module).  This module is responsible for ACID.  The pager is not interested in the details of the encodings of the database, B - trees, indexes, etc. From his point of view, the database is one file divided into equal blocks (pages) numbered starting from 1. The pager communicates with the operating system using the OS layer Interface.  In this post, “flow”, “process” and “thread” are equivalent concepts. <br><br><h4>  Locks </h4><br>  From the point of view of a single process, a database file can be in one of the 5 blocking states listed below: <br><ul><li>  <b>UNLOCKED</b> - The default state.  The database is unlocked, any threads can read and write data. </li><li>  <b>SHARED</b> - The database is readable, but not writable. </li><li>  <b>RESERVED</b> - The process <u>plans to</u> write to a file, but is currently reading.  Only one <b>RESERVED</b> lock can be at a time.  Together with this mode can be used <b>SHARED</b> lock. </li><li>  <b>PENDING</b> - The process <u>waits</u> for all <b>SHARED</b> locks to end to start recording and switch to <b>EXCLUSIVE</b> mode. </li><li>  <b>EXCLUSIVE</b> - The process writes to the database file.  No other base locks in parallel with this are not allowed. </li></ul><br><br>  Below are the algorithms for reading and writing data when using a <b>rollback</b> log as a guarantee of the integrity of the database. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Algorithm for reading data from the database </h4><br>  To read from the database, the process should perform the following steps: <br><ol><li>  Open the database file and get the <b>SHARED</b> lock if this action cannot be returned <b>SQLITE_BUSY</b> . </li><li>  Check if the base has a hot rollback log.  If not, you can read the data from the database.  If yes, then step 3. </li><li>  Get a <b>pending</b> and then <b>EXCLUSIVE</b> lock.  If it is not possible to get these locks, it means that another process is already rolling back.  In this case, remove all locks and return <b>SQLITE_BUSY</b> . </li><li>  Read the rollback log and the master log (when several databases are attached, a special file (master journal) is created, which stores data on the rollback logs for each of the attached databases). </li><li>  Roll back </li><li>  Delete the redo log file (depending on the journal_mode option of the PRAGMA command <b>,</b> deleting occurs differently). </li><li>  Delete the master log file, if possible. </li><li>  Remove <b>PENDING</b> and <b>EXCLUSIVE</b> locks, but leave the <b>SHARED</b> lock, and read the database. </li></ol><br><br><h4>  Algorithm for writing data to the database </h4><br>  To write data to the database, the process must first perform the following steps: <br><ol><li>  Get <b>SHARED</b> lock (read algorithm from the database). </li><li>  Get a <b>RESERVED</b> lock.  If this is not possible, return <b>SQLITE_BUSY</b> . </li><li>  Create a redo log.  The size of the database, as well as the name of the master of the journal, if such exists, is written in the title of the journal. </li><li>  Before making changes to any database page, the process first writes this page to the redo log.  The modified pages are first written to RAM, which means that the base file does not change, and other processes can read data from the base.  If the data change is over and the process produces a <b>COMMIT</b> , or if the memory is full, go to step 5. </li><li>  Ensure that all rollback log data was actually written to disk. </li><li>  Get a <b>pending</b> and then <b>EXCLUSIVE</b> lock.  If it is not possible to obtain data locks, you must <u>wait</u> until the database file is released. </li><li>  Write all the data from RAM to disk in the database file (if the reason for writing was an overflow of RAM, then return to step 4). </li><li>  Delete the redo log file (depending on the journal_mode option of the PRAGMA command <b>,</b> deleting occurs differently). </li><li>  Remove <b>PENDING</b> and <b>EXCLUSIVE</b> locks. </li></ol><br><br>  The atomic commit algorithm is discussed in more detail in another post: <a href="http://habrahabr.ru/post/181584/">habrahabr.ru/post/181584</a> </div><p>Source: <a href="https://habr.com/ru/post/223483/">https://habr.com/ru/post/223483/</a></p>
+    <h4>  Algorithm for reading data from the database </h4><br>  To read from the database, the process should perform the following steps: <br><ol><li>  Open the database file and get the <b>SHARED</b> lock if this action cannot be returned <b>SQLITE_BUSY</b> . </li><li>  Check if the base has a hot rollback log.  If not, you can read the data from the database.  If yes, then step 3. </li><li>  Get a <b>pending</b> and then <b>EXCLUSIVE</b> lock.  If it is not possible to get these locks, it means that another process is already rolling back.  In this case, remove all locks and return <b>SQLITE_BUSY</b> . </li><li>  Read the rollback log and the master log (when several databases are attached, a special file (master journal) is created, which stores data on the rollback logs for each of the attached databases). </li><li>  Roll back </li><li>  Delete the redo log file (depending on the journal_mode option of the PRAGMA command <b>,</b> deleting occurs differently). </li><li>  Delete the master log file, if possible. </li><li>  Remove <b>PENDING</b> and <b>EXCLUSIVE</b> locks, but leave the <b>SHARED</b> lock, and read the database. </li></ol><br><br><h4>  Algorithm for writing data to the database </h4><br>  To write data to the database, the process must first perform the following steps: <br><ol><li>  Get <b>SHARED</b> lock (read algorithm from the database). </li><li>  Get a <b>RESERVED</b> lock.  If this is not possible, return <b>SQLITE_BUSY</b> . </li><li>  Create a redo log.  The size of the database, as well as the name of the master of the journal, if such exists, is written in the title of the journal. </li><li>  Before making changes to any database page, the process first writes this page to the redo log.  The modified pages are first written to RAM, which means that the base file does not change, and other processes can read data from the base.  If the data change is over and the process produces a <b>COMMIT</b> , or if the memory is full, go to step 5. </li><li>  Ensure that all rollback log data was actually written to disk. </li><li>  Get a <b>pending</b> and then <b>EXCLUSIVE</b> lock.  If it is not possible to obtain data locks, you must <u>wait</u> until the database file is released. </li><li>  Write all the data from RAM to disk in the database file (if the reason for writing was an overflow of RAM, then return to step 4). </li><li>  Delete the redo log file (depending on the journal_mode option of the PRAGMA command <b>,</b> deleting occurs differently). </li><li>  Remove <b>PENDING</b> and <b>EXCLUSIVE</b> locks. </li></ol><br><br>  The atomic commit algorithm is discussed in more detail in another post: <a href="http://habrahabr.ru/post/181584/">habrahabr.ru/post/181584</a> </div><p>Source: https://habr.com/ru/post/223483/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../223461/index.html">Why, why, our Protons do not fly</a></li>
-<li><a href="../223463/index.html">Dangerous security</a></li>
-<li><a href="../223465/index.html">Contest “Big ky $ h” on PHDays: the image of the RBS system is available for download</a></li>
+<li><a href="../223467/index.html">Massive Azure Platform Update: All TechEd NA 2014 Announcements</a></li>
+<li><a href="../22347/index.html">GoogleTalk, part II (ICQ transports & some tips)</a></li>
 <li><a href="../223477/index.html">Braille keyboard phone went on sale</a></li>
+<li><a href="../22348/index.html">Open source as a search engine optimization tool for software developers</a></li>
 <li><a href="../223481/index.html">AT & T flooded New York charging stations for smartphones</a></li>
 <li><a href="../223485/index.html">A student development and innovation center has been created at MIREA.</a></li>
 <li><a href="../223491/index.html">Free seminar ADVANSERV and Huawei May 28, 2014</a></li>
 <li><a href="../223497/index.html">Law enforcement agencies detain hacking group Blackshades</a></li>
-<li><a href="../223501/index.html">HTML5 attacks: what you need to know</a></li>
-<li><a href="../223505/index.html">The future comes to AMF 2014</a></li>
+<li><a href="../2235/index.html">Yandex Cup Final will be shown on O2TV</a></li>
+<li><a href="../22350/index.html">GoogleTalk, part III (calls, VoIP & SIP)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

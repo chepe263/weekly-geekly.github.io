@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Algorithm of collaborative filtering</h1><div class="post__text post__text-html js-mediator-article">  Collaborative filtering (eng. Collaborative filtering) is a method that gives automatic predictions based on the accumulated information about the interests and tastes of users. <br><br>  Most often, you can recommend music or books already having some data about the user.  For example, Amazon or Ozon remember what I am looking for or where I went and builds a recommendation from me.  But it is better that the user himself entered them into his profile, you can even tell him that you have this system and that he himself could choose what to give him next time. <br><a name="habracut"></a><br>  You can <a href="http://code.google.com/p/openslopeone/">fasten OpenSlopeOne</a> , which is written by a Chinese programmer. <br><br>  Consider an example.  There are 4 users in the bookstore: Vasya, Zhenya, Yura, Larisa and 8 products.  About each we have information: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <table><tbody><tr><td>  Name </td><td>  Bought (id) </td><td>  Looked through </td></tr><tr><td>  Vasya </td><td>  1,6,7 </td><td>  2.3 </td></tr><tr><td>  Zhenya </td><td>  1,2,3 </td><td>  5,7,4 </td></tr><tr><td>  Yura </td><td>  7,8 </td><td>  1.4 </td></tr><tr><td>  Larisa </td><td>  eight </td><td>  6 </td></tr></tbody></table><br><br>  <b>Algorithm setting:</b> <br><br>  config.ini.php <br> <code>; &lt;?php exit; ?&gt; DO NOT REMOVE THIS LINE <br> [database] <br> host = localhost <br> username =    mysql <br> password =    mysql <br> dbname =   <br> port = 3306 <br> adapter = PDO_MYSQL ; PDO_MYSQL or MYSQLI</code> <br> <br>  Create two tables: <br><br> <code>CREATE TABLE IF NOT EXISTS oso_user_ratings ( <br> user_id int(11) NOT NULL, item_id int(11) NOT NULL, rating decimal(14,4) NOT NULL default '0.0000', KEY item_id (item_id), KEY user_id (user_id,item_id) <br> ) ENGINE=MyISAM DEFAULT CHARSET=utf8; <br> <br> CREATE TABLE IF NOT EXISTS oso_slope_one ( <br> item_id1 int(11) NOT NULL, item_id2 int(11) NOT NULL, times int(11) NOT NULL, rating decimal(14,4) NOT NULL <br> ) ENGINE=MyISAM DEFAULT CHARSET=utf8;</code> <br> <br>  The oso_user_ratings table is intended for storing user information.  If the user bought, then we put 1 in the rating field, if he didn’t buy, then we put 0 (we need to correctly calculate the formula: <a href="http://ru.wikipedia.org/wiki/Slope_One">similarity of items as cosine between vectors of purchases in the matrix of users and items</a> , but for example I will show the <i>principle</i> ).  And accordingly, in the user_id fields, enter the user id and in item_id enter the product id. <br><br>  The principle is that in the oso_slope_one table each product generates by weight.  For example, if Petya bought this product, and Petya has my goods purchased, then it is logical to think that Petya's products can come to me.  The more matches with users, the greater the percentage that I need this product.  SlopeOne translates as a slope to one, that is, it primarily displays to me, those products that have the highest priority (bought) from other users with common interests. <br><br>  test.php <br> <code>&lt;?php <br> require './OpenSlopeOne.php'; <br> $openslopeone = new OpenSlopeOne(); <br> $openslopeone-&gt;initSlopeOneTable(); <br> $openslopeone-&gt;initSlopeOneTable('MySQL'); <br> //     id 1 <br> var_dump($openslopeone-&gt;getRecommendedItemsByUser(1)); <br> ?&gt; <br></code> <br><br>  The algorithm recommended to me: <br>  - 8 goods Larissa, t. To.  My purchased goods 6 she looked through. <br>  - he recommended 2.3 goods to me, which Zhenya firstly bought with my common product with id 1 and in addition I already looked through it <br>  - etc. <br><br>  <i>There is a small mistake, he also gives me the goods that the user bought with common interests, but I already have it.</i>  <i>This is due to the fact that we recorded data in the table not by the formula, but 0 or 1.</i> <i><br></i>  <i>My goal was simply to show the principle of work and give food for thought and why you should push off.</i>  <i>Also, each algorithm must be twisted under its public.</i> <br><br>  <b>PS</b> If anyone is familiar with the recommendations supplement in the comments.  Maybe even in my article there are errors, tk.  Not much test, and the project in which the algorithm was applied is under development. </div><p>Source: <a href="https://habr.com/ru/post/80955/">https://habr.com/ru/post/80955/</a></p>
+    <table><tbody><tr><td>  Name </td><td>  Bought (id) </td><td>  Looked through </td></tr><tr><td>  Vasya </td><td>  1,6,7 </td><td>  2.3 </td></tr><tr><td>  Zhenya </td><td>  1,2,3 </td><td>  5,7,4 </td></tr><tr><td>  Yura </td><td>  7,8 </td><td>  1.4 </td></tr><tr><td>  Larisa </td><td>  eight </td><td>  6 </td></tr></tbody></table><br><br>  <b>Algorithm setting:</b> <br><br>  config.ini.php <br> <code>; &lt;?php exit; ?&gt; DO NOT REMOVE THIS LINE <br> [database] <br> host = localhost <br> username =    mysql <br> password =    mysql <br> dbname =   <br> port = 3306 <br> adapter = PDO_MYSQL ; PDO_MYSQL or MYSQLI</code> <br> <br>  Create two tables: <br><br> <code>CREATE TABLE IF NOT EXISTS oso_user_ratings ( <br> user_id int(11) NOT NULL, item_id int(11) NOT NULL, rating decimal(14,4) NOT NULL default '0.0000', KEY item_id (item_id), KEY user_id (user_id,item_id) <br> ) ENGINE=MyISAM DEFAULT CHARSET=utf8; <br> <br> CREATE TABLE IF NOT EXISTS oso_slope_one ( <br> item_id1 int(11) NOT NULL, item_id2 int(11) NOT NULL, times int(11) NOT NULL, rating decimal(14,4) NOT NULL <br> ) ENGINE=MyISAM DEFAULT CHARSET=utf8;</code> <br> <br>  The oso_user_ratings table is intended for storing user information.  If the user bought, then we put 1 in the rating field, if he didn’t buy, then we put 0 (we need to correctly calculate the formula: <a href="http://ru.wikipedia.org/wiki/Slope_One">similarity of items as cosine between vectors of purchases in the matrix of users and items</a> , but for example I will show the <i>principle</i> ).  And accordingly, in the user_id fields, enter the user id and in item_id enter the product id. <br><br>  The principle is that in the oso_slope_one table each product generates by weight.  For example, if Petya bought this product, and Petya has my goods purchased, then it is logical to think that Petya's products can come to me.  The more matches with users, the greater the percentage that I need this product.  SlopeOne translates as a slope to one, that is, it primarily displays to me, those products that have the highest priority (bought) from other users with common interests. <br><br>  test.php <br> <code>&lt;?php <br> require './OpenSlopeOne.php'; <br> $openslopeone = new OpenSlopeOne(); <br> $openslopeone-&gt;initSlopeOneTable(); <br> $openslopeone-&gt;initSlopeOneTable('MySQL'); <br> //     id 1 <br> var_dump($openslopeone-&gt;getRecommendedItemsByUser(1)); <br> ?&gt; <br></code> <br><br>  The algorithm recommended to me: <br>  - 8 goods Larissa, t. To.  My purchased goods 6 she looked through. <br>  - he recommended 2.3 goods to me, which Zhenya firstly bought with my common product with id 1 and in addition I already looked through it <br>  - etc. <br><br>  <i>There is a small mistake, he also gives me the goods that the user bought with common interests, but I already have it.</i>  <i>This is due to the fact that we recorded data in the table not by the formula, but 0 or 1.</i> <i><br></i>  <i>My goal was simply to show the principle of work and give food for thought and why you should push off.</i>  <i>Also, each algorithm must be twisted under its public.</i> <br><br>  <b>PS</b> If anyone is familiar with the recommendations supplement in the comments.  Maybe even in my article there are errors, tk.  Not much test, and the project in which the algorithm was applied is under development. </div><p>Source: https://habr.com/ru/post/80955/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../80947/index.html">Now VKontakte API not only for Flash</a></li>
 <li><a href="../80948/index.html">About Habrahabr, statistics and cakes</a></li>
 <li><a href="../80949/index.html">Mozilla cancels the release of Firefox 3.7</a></li>
+<li><a href="../8095/index.html">More about mashups</a></li>
 <li><a href="../80951/index.html">GPRS inside. Part 1</a></li>
 <li><a href="../80954/index.html">Photo uploader as vkontakte on Flex</a></li>
 <li><a href="../80956/index.html">E-Sigs</a></li>
 <li><a href="../80958/index.html">Linux instead of Windows. Is the game worth the candle?</a></li>
+<li><a href="../8096/index.html">Lawlessness</a></li>
 <li><a href="../80961/index.html">23 logos with hidden meanings</a></li>
 <li><a href="../80962/index.html">The computer of your dreams. Part 2: Reality and Fiction</a></li>
-<li><a href="../80963/index.html">What you need for a good, high-quality startup</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

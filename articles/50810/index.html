@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Ubuntu Open Week: Encrypted Private Directories</h1><div class="post__text post__text-html js-mediator-article"><h5>  Brief compilation of irc-chat in the framework of Ubuntu Open Week on the topic "Encrypted Private Directories" </h5><br>  <a href="https://wiki.ubuntu.com/MeetingLogs/openweekintrepid/PrivateDirectories">Encrypted personal directories</a> .  Speaker: <a href="https://launchpad.net/~kirkland">Dustin Kirkland</a> <br><br>  We have before us a representative of the Ububtu Server Team with a fascinating, but slightly superficial report on the state of affairs in cryptography for end users of Ubuntu.  Since the release of Intrepid Ibex, it has become easier for users to keep their little secrets secret.  You can easily become a great paranoid like this: <br><a name="habracut"></a><br> <code><br> $ sudo apt-get update <br> $ sudo apt-get install ecryptfs-utils <br> $ ecryptfs-setup-private <br></code> <br>  Ok, after installing ecryptfs-utils, the PAM module <i>pam_ecryptfs</i> will appear in the system.  When you enter your password when logging in, this module uses it to decrypt the <i>~ / .ecryptfs / wrapped-passphrase</i> file, which contains the following password phrase to be mounted by the <i>/sbin/mount.ecryptfs_private</i> utility.  This setuid utility does what it’s supposed to do with such a name — it mounts <i>~ / .Private</i> to <i>~ / Private</i> , using a special file system called <b>ecryptfs</b> .  This is an <a href="https://launchpad.net/ecryptfs">Enterprise Cryptographic Filesystem</a> , developed by guys from IBM.  There are other solutions to this plan, for example, encfs, truecrypt, dmcrypt, and others.  But ecryptfs was chosen for the implementation of <i>~ / Private</i> encryption and that is why: <br><ul><li>  it is already in the kernel since 2.6.19 in many distros (now .28) </li><li>  a lot of experts are working on it, it has been reviewed by the community and distrostroiteley </li><li>  it will not disappear, which is important for reliable and long-term data storage </li><li>  nuclear cryptography is "theoretically" faster than user space </li><li>  based on proven and time-tested "nuclear" encryption algorithms </li><li>  Each FS file is encrypted individually, as opposed to block encryption </li></ul><br>  Oops!  Consider the last point, a very controversial statement.  After all, other solutions allow you to fully encrypt a partition or even an entire device, for example, a swap partition or an LVM volume.  But for the user <i>~ / Private</i> approach with encryption of each file in the file system separately, there is one significant advantage - an incremental backup of the stored data.  For example, a user may simply <b>rsync -aP. Private</b> to a remote server, and will surely be sure that even the root remote backup server will not be able to access the contents of the backup.  Well, except to the name of the files that are not yet encrypted in the current implementation.  Work on this goes and in Jaunty we can expect the appearance of such a functional. <br><br>  <b>Question</b> : What happens to <b>ecryptfs</b> with user autologone?  <b>Answer</b> : Yes, since you log in automatically, then do not enter the password, so your <i>Private is</i> not mounted properly.  But this behavior is provided by the design.  But in fact, with autologon, this is what happens: you go into the <i>Private</i> directory by the file manager and see only a link to the application of the form “Access Your Private Data”.  The link launches the <i>/ usr / bin / ecryptfs-mount-private</i> application, which asks for your login password, then mount it. <br>  <b>Question</b> : What about performance?  <b>Answer</b> : The author has no performance problems.  He suggests that if you compile to <i>~ / Private,</i> then perhaps a 10% performance loss may occur.  Further, the author reveals a completely rational idea: from the point of view of performance, it is totally to encrypt the whole section, this is one thing, and selecting and placing in <i>~ / Private</i> sensitive access-hiding data is another.  You decide for the safety of what data is willing to pay lower access performance.  LVM encryption also requires a password when booting, which is not good for a remote server. <br>  <b>Question</b> : Why not encrypt the entire user house?  <b>Answer</b> : They had an idea, but so far not everything is so simple.  They will think further, expand the functionality, make it more convenient.  Like now?  That's how: <br> <code>ln -s /home/kirkland/Private/.ssh /home/kirkland/.ssh</code> <br>  <b>Q</b> : Will graphical tools be developed?  <b>Answer</b> : yes, probably, in Jaunty. <br>  <b>Question</b> : What about physical keys for encryption?  Can use USB flash drives to store keys?  <b>Answer</b> : <b>ecryptfs</b> supports flexible key management for encryption: <br><ol><li>  pkcs11-helper </li><li>  openssl </li><li>  passphrase </li><li>  tspi </li></ol><br>  So far only passphrase is used.  For starters, you can simply copy <i>~ / .ecryptfs / wrapped-passphrase</i> to a USB flash drive, then install a symlink on it.  Perhaps the idea will be developed in the future!  There will also be infrastructure work in Ubunt itself to support OpenGPG hardware cards, Trusted Computing chips, biometrics readers (fingerprint). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,18 +60,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Next in the chat is a demonstration of a simple example of accessing your data on a guest machine and <a href="https://wiki.ubuntu.com/EncryptedPrivateDirectory">links</a> to <a href="http://help.ubuntu.com/community/EncryptedPrivateDirectory">additional information</a> . <br><br>  The hour set aside for this wonderful topic is over.  The author and the listeners exchanged courtesies and said goodbye. </div><p>Source: <a href="https://habr.com/ru/post/50810/">https://habr.com/ru/post/50810/</a></p>
+      Next in the chat is a demonstration of a simple example of accessing your data on a guest machine and <a href="https://wiki.ubuntu.com/EncryptedPrivateDirectory">links</a> to <a href="http://help.ubuntu.com/community/EncryptedPrivateDirectory">additional information</a> . <br><br>  The hour set aside for this wonderful topic is over.  The author and the listeners exchanged courtesies and said goodbye. </div><p>Source: https://habr.com/ru/post/50810/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../50797/index.html">Parable of the staff</a></li>
 <li><a href="../50802/index.html">And again Fugue!</a></li>
 <li><a href="../50803/index.html">Russian "Fisbook" will contextual advertising</a></li>
 <li><a href="../50808/index.html">The beginning of a scientific career (part 3)</a></li>
 <li><a href="../50809/index.html">Simple implementation of the scheme of the stepping motor on the micron</a></li>
+<li><a href="../5081/index.html">Spamhaus Project is bent on lawsuits</a></li>
 <li><a href="../50811/index.html">Quoting great</a></li>
 <li><a href="../50812/index.html">Signals and Slots in Qt</a></li>
 <li><a href="../50813/index.html">Parking winchester heads on a laptop under FreeBSD</a></li>

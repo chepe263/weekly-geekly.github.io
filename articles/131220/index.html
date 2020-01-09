@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to understand why the server fell without connecting a monitor and keyboard to it?</h1><div class="post__text post__text-html js-mediator-article"> It so happens that the server freezes, but neither the keyboard nor the monitor is connected to it. <br><br>  I do not have an extra monitor, and finding that the server is not responding over the network, <br>  take a monitor from my computer and connect to the server in the closet there is no desire and strength. <br><br>  Linux has a kernel feature like <b>Netconsole</b> . <br>  Netconsole allows you to send messages from the kernel to a remote computer. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,18 +61,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      To set up a netconsole, you need another (constantly on) computer that will receive a message over the network. <br><a name="habracut"></a><br>  <i>Tested on Ubuntu 10.04</i> <br><br>  <b>On the server that we are debugging perform:</b> <br><br>  1. In / etc / modules add netconsole <br><br>  2. In /etc/modprobe.d/netconsole.conf we write <br> <code>options netconsole netconsole=SRCPORT@SRCHOST/eth0,DSTPORT@DSTHOST/DSTMAC</code> <br> <br>  Where SRCPORT and SRCHOST are respectively the port and the IP address of the server that is being debugged. <br><br>  And DSTPORT and DSTHOST port and IP address of the server that will receive messages. <br><br>  DSTMAC is the MAC address of the server that will receive messages IF it is on the same network.  If it is behind a router or somewhere on the Internet, then you need to specify the MAC address of the nearest router (Gateway). <br><br>  You should get something like <br> <code>options netconsole netconsole=6666@192.168.1.2/eth0,6666@192.168.1.3/e0:91:f5:7d:e6:38</code> <br> <br>  <b>On the server that will receive messages.</b> <br><br>  We need to run a program that will listen to the DSTPORT UDP port and record messages somewhere. <br><br>  The easiest way is to run a netcat that will display everything that comes to the port.  In order that after closing the window, this program does not stop working, you can run it in screen. <br><br>  1. Run the screen <br> <code>screen -U -D -RR</code> <br> <br>  2. Run in the netcat window <br> <code>netcat -l -u DSTHOST DSTPORT</code> <br> <br>  <b>How to understand that everything works?</b> <br><br>  You can wait for some event, but how to make sure that the messages really go?  You can activate the SysRQ kernel mechanism. <br> <code>echo 1 &gt; /proc/sys/kernel/sysrq <br> echo h &gt; /proc/sysrq-trigger</code> <br> <br>  After that, on the server that receives messages in the window with netcat, a text like <br> <code>[ 7849.700372] SysRq : HELP : loglevel(0-9)....</code> <br> <br>  <b>Links</b> <br><br><ul><li>  <a href="https://wiki.ubuntu.com/Kernel/Netconsole">wiki.ubuntu.com/Kernel/Netconsole</a> </li><li>  <a href="http://www.cyberciti.biz/tips/linux-netconsole-log-management-tutorial.html">www.cyberciti.biz/tips/linux-netconsole-log-management-tutorial.html</a> </li></ul></div><p>Source: <a href="https://habr.com/ru/post/131220/">https://habr.com/ru/post/131220/</a></p>
+      To set up a netconsole, you need another (constantly on) computer that will receive a message over the network. <br><a name="habracut"></a><br>  <i>Tested on Ubuntu 10.04</i> <br><br>  <b>On the server that we are debugging perform:</b> <br><br>  1. In / etc / modules add netconsole <br><br>  2. In /etc/modprobe.d/netconsole.conf we write <br> <code>options netconsole netconsole=SRCPORT@SRCHOST/eth0,DSTPORT@DSTHOST/DSTMAC</code> <br> <br>  Where SRCPORT and SRCHOST are respectively the port and the IP address of the server that is being debugged. <br><br>  And DSTPORT and DSTHOST port and IP address of the server that will receive messages. <br><br>  DSTMAC is the MAC address of the server that will receive messages IF it is on the same network.  If it is behind a router or somewhere on the Internet, then you need to specify the MAC address of the nearest router (Gateway). <br><br>  You should get something like <br> <code>options netconsole netconsole=6666@192.168.1.2/eth0,6666@192.168.1.3/e0:91:f5:7d:e6:38</code> <br> <br>  <b>On the server that will receive messages.</b> <br><br>  We need to run a program that will listen to the DSTPORT UDP port and record messages somewhere. <br><br>  The easiest way is to run a netcat that will display everything that comes to the port.  In order that after closing the window, this program does not stop working, you can run it in screen. <br><br>  1. Run the screen <br> <code>screen -U -D -RR</code> <br> <br>  2. Run in the netcat window <br> <code>netcat -l -u DSTHOST DSTPORT</code> <br> <br>  <b>How to understand that everything works?</b> <br><br>  You can wait for some event, but how to make sure that the messages really go?  You can activate the SysRQ kernel mechanism. <br> <code>echo 1 &gt; /proc/sys/kernel/sysrq <br> echo h &gt; /proc/sysrq-trigger</code> <br> <br>  After that, on the server that receives messages in the window with netcat, a text like <br> <code>[ 7849.700372] SysRq : HELP : loglevel(0-9)....</code> <br> <br>  <b>Links</b> <br><br><ul><li>  <a href="https://wiki.ubuntu.com/Kernel/Netconsole">wiki.ubuntu.com/Kernel/Netconsole</a> </li><li>  <a href="http://www.cyberciti.biz/tips/linux-netconsole-log-management-tutorial.html">www.cyberciti.biz/tips/linux-netconsole-log-management-tutorial.html</a> </li></ul></div><p>Source: https://habr.com/ru/post/131220/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../131213/index.html">How not to lose money when paying via PayPal</a></li>
 <li><a href="../131214/index.html">Tactic winner: convince the enemy that he is doing everything right</a></li>
 <li><a href="../131216/index.html">An inside look: LED bulbs</a></li>
 <li><a href="../131217/index.html">BlueStacks - Android application player for Windows 7</a></li>
 <li><a href="../131219/index.html">Does your IT job fit your IT education? Do you like it?</a></li>
+<li><a href="../13122/index.html">facebook.com code leak</a></li>
 <li><a href="../131222/index.html">Analysis of the world market structure using graph theory methods</a></li>
 <li><a href="../131225/index.html">Application of RFM analysis in customer base segmentation</a></li>
 <li><a href="../131226/index.html">10 years of Windows XP</a></li>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Habrawars: utility for graphical debugging</h1><div class="post__text post__text-html js-mediator-article">  I decided to share a plugin for the game <a href="http://habrawars.appspot.com/">HabraWars</a> - a graphical debugger.  Able to be embedded in the engine and display points, lines and text.  The rest can be screwed to taste. <br><a name="habracut"></a><br>  With the help of the plugin you can draw something useful.  For example, you can see what my bot thinks :) <br><img src="http://www.picamatic.com/show/2009/11/24/08/39/6062427_412x442.png"><br><br>  Source: <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#0000ff">var</font> debug = <font color="#0000ff">true</font> ; <font color="#008000">// Enable or disable debugging</font> <br> <br> <font color="#008000">// Usage example: draws a yellow message at (100,200) point for 50 frames</font> <br> <font color="#008000">// if (debug) debug.plotText(100, 200, 'Hello world!', 'yellow', 50);</font> <br> <br> <font color="#0000ff">var</font> DebugHelper = <font color="#0000ff">function</font> () { <br> <font color="#0000ff">this</font> ._2Pi = 2 * Math.PI; <br> <font color="#0000ff">this</font> .padding = 10; <br> <font color="#0000ff">this</font> .canvas = <font color="#0000ff">null</font> ; <br> <br> <font color="#0000ff">var</font> engine = <font color="#0000ff">null</font> ; <br> <font color="#0000ff">var</font> window = ( <font color="#0000ff">function</font> () { <font color="#0000ff">return</font> <font color="#0000ff">this</font> ; })(); <br> <font color="#0000ff">if</font> (window) { <br> engine = window.engine; <br> } <br> <br> <font color="#0000ff">if</font> (engine) { <br> <font color="#0000ff">this</font> .canvas = engine.canvas; <br> <font color="#0000ff">var</font> oldDraw = engine.draw; <br> <font color="#0000ff">var</font> self = <font color="#0000ff">this</font> ; <br> <font color="#0000ff">if</font> ( <font color="#0000ff">this</font> .canvas) { <br> engine.draw = <font color="#0000ff">function</font> (a, b, c, d, e, f) { <br> oldDraw.apply(engine, arguments); <br> self._draw(); <br> } <br> } <br> } <br> <font color="#0000ff">this</font> .shapes = []; <br> }; <br> <br> DebugHelper.prototype._draw = <font color="#0000ff">function</font> (x, y) { <br> <font color="#0000ff">var</font> len = <font color="#0000ff">this</font> .shapes.length; <br> <br> <font color="#0000ff">for</font> ( <font color="#0000ff">var</font> i = 0; i &lt; len; i++) { <br> <font color="#0000ff">var</font> shape = <font color="#0000ff">this</font> .shapes.shift(); <br> <br> <font color="#0000ff">if</font> (shape.type === <font color="#A31515">'point'</font> ) { <br> <font color="#0000ff">this</font> ._drawPoint(shape); <br> } <br> <font color="#0000ff">else</font> <font color="#0000ff">if</font> (shape.type === <font color="#A31515">'line'</font> ) { <br> <font color="#0000ff">this</font> ._drawLine(shape); <br> } <br> <font color="#0000ff">else</font> <font color="#0000ff">if</font> (shape.type === <font color="#A31515">'text'</font> ) { <br> <font color="#0000ff">this</font> ._drawText(shape); <br> } <br> <br> shape.frameCount--; <br> <font color="#0000ff">if</font> (shape.frameCount &gt; 0) { <br> <font color="#0000ff">this</font> .shapes.push(shape); <br> } <br> } <br> }; <br> <br> DebugHelper.prototype._drawPoint = <font color="#0000ff">function</font> (point) { <br> <font color="#0000ff">if</font> (! <font color="#0000ff">this</font> .canvas) <font color="#0000ff">return</font> ; <br> <font color="#0000ff">this</font> .canvas.beginPath(); <br> <font color="#0000ff">this</font> .canvas.fillStyle = point.color; <br> <font color="#0000ff">this</font> .canvas.arc( <font color="#0000ff">this</font> .padding + point.x, <font color="#0000ff">this</font> .padding + point.y, point.size, 0, <font color="#0000ff">this</font> ._2Pi, <font color="#0000ff">true</font> ); <br> <font color="#0000ff">this</font> .canvas.fill(); <br> }; <br> <br> DebugHelper.prototype._drawLine = <font color="#0000ff">function</font> (line) { <br> <font color="#0000ff">if</font> (! <font color="#0000ff">this</font> .canvas) <font color="#0000ff">return</font> ; <br> <font color="#0000ff">this</font> .canvas.beginPath(); <br> <font color="#0000ff">this</font> .canvas.strokeStyle = line.color; <br> <font color="#0000ff">this</font> .canvas.moveTo( <font color="#0000ff">this</font> .padding + line.x1, <font color="#0000ff">this</font> .padding + line.y1); <br> <font color="#0000ff">this</font> .canvas.lineTo( <font color="#0000ff">this</font> .padding + line.x2, <font color="#0000ff">this</font> .padding + line.y2); <br> <font color="#0000ff">this</font> .canvas.closePath(); <br> <font color="#0000ff">this</font> .canvas.stroke(); <br> }; <br> <br> DebugHelper.prototype._drawText = <font color="#0000ff">function</font> (text) { <br> <font color="#0000ff">if</font> (! <font color="#0000ff">this</font> .canvas) <font color="#0000ff">return</font> ; <br> <font color="#0000ff">this</font> .canvas.font = <font color="#A31515">"10pt Arial"</font> ; <br> <font color="#0000ff">this</font> .canvas.fillStyle = text.color; <br> <font color="#0000ff">this</font> .canvas.fillText(text.text, <font color="#0000ff">this</font> .padding + text.x, <font color="#0000ff">this</font> .padding + text.y); <br> }; <br> <br> DebugHelper.prototype.plotPoint = <font color="#0000ff">function</font> (x, y, color, size, frameCount) { <br> <font color="#0000ff">this</font> .shapes.push({ <br> <font color="#A31515">'type'</font> : <font color="#A31515">'point'</font> , <br> <font color="#A31515">'frameCount'</font> : (frameCount ? frameCount : 1), <br> <font color="#A31515">'x'</font> : x, <br> <font color="#A31515">'y'</font> : y, <br> <font color="#A31515">'color'</font> : (color ? color : <font color="#A31515">'white'</font> ), <br> <font color="#A31515">'size'</font> : (size ? size : 1) <br> }); <br> }; <br> <br> DebugHelper.prototype.plotLine = <font color="#0000ff">function</font> (x, y, x2, y2, color, frameCount) { <br> <font color="#0000ff">this</font> .shapes.push({ <br> <font color="#A31515">'type'</font> : <font color="#A31515">'line'</font> , <br> <font color="#A31515">'frameCount'</font> : (frameCount ? frameCount : 1), <br> <font color="#A31515">'x1'</font> : x, <br> <font color="#A31515">'y1'</font> : y, <br> <font color="#A31515">'x2'</font> : x2, <br> <font color="#A31515">'y2'</font> : y2, <br> <font color="#A31515">'color'</font> : (color ? color : <font color="#A31515">'white'</font> ) <br> }); <br> }; <br> <br> DebugHelper.prototype.plotText = <font color="#0000ff">function</font> (x, y, text, color, frameCount) { <br> <font color="#0000ff">this</font> .shapes.push({ <br> <font color="#A31515">'type'</font> : <font color="#A31515">'text'</font> , <br> <font color="#A31515">'frameCount'</font> : (frameCount ? frameCount : 1), <br> <font color="#A31515">'x'</font> : x, <br> <font color="#A31515">'y'</font> : y, <br> <font color="#A31515">'text'</font> : text, <br> <font color="#A31515">'color'</font> : (color ? color : <font color="#A31515">'white'</font> ) <br> }); <br> }; <br> <br> <font color="#0000ff">if</font> (debug) debug = <font color="#0000ff">new</font> DebugHelper(); <br></font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/76148/">https://habr.com/ru/post/76148/</a></p>
+    <p>Source: https://habr.com/ru/post/76148/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../76134/index.html">New HP Solid State Drives</a></li>
-<li><a href="../76135/index.html">Team development using git and Trac in the Midnight Commander project</a></li>
+<li><a href="../76137/index.html">Battle of mobile browsers: which of the phones gives the real Internet?</a></li>
 <li><a href="../76138/index.html">Your provider gives fair unlimited tariffs?</a></li>
+<li><a href="../7614/index.html">US bans other states to form alliances</a></li>
 <li><a href="../76144/index.html">Writing Comet-chat</a></li>
 <li><a href="../76147/index.html">The action "Interface = understanding": the results of the first stage are summed up</a></li>
 <li><a href="../76149/index.html">Large tables and unique keys</a></li>
+<li><a href="../7615/index.html">Personal messages - to whom and how</a></li>
 <li><a href="../76152/index.html">ScrumTrek and AgileRussia: Requirements Management in Agile Workshop | December 2nd</a></li>
 <li><a href="../76153/index.html">Battle tank (Tanchiki) aka Battle City 2. Now on the iPhone!</a></li>
 <li><a href="../76154/index.html">Erlang User Conference 2009 in Stockholm, Sweden</a></li>
-<li><a href="../76156/index.html">Announcement of training on designing user interfaces or interface secrets of successful websites and programs</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

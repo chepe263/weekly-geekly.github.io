@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>IPv6 Practice - Home Network</h1><div class="post__text post__text-html js-mediator-article">  Abstract: A story about some of the features of IPv6 on the example of the configuration of a complex home IPv6 network.  Includes multicast descriptions, configuration details and debugging of router advertisement, stateless DHCP, etc.  Described for linux system.  In addition to the configuration itself, we will carefully discuss some IPv6 concepts in theoretical terms, as well as some techniques when working with IPv6. <br><br><h1>  Why IPv6? </h1><br>  This is a clear question: why do I wear IPv6 now, when there is almost no benefit from it now? <br><br>  Now you can mess around with IPv6 completely safely, without any negative consequences.  You can peacefully understand the rakes and features, have it idle for months and <em>nobody cares</em> .  In my senior years I do not plan on becoming a blinded conservative kobolist who has written kobol all his life and nothing more, and all the novelties for him are “nonsense and nonsense”.  But my honorable imaginary competitor, when IPv6 becomes a product reality, will either not be my competitor, or painfully and in a state of distress, deal with DAD, RA, temporary dynamic addresses and other strange things to which 30+ RFCs are dedicated.  And that IPv6 will become the main protocol even during my lifetime - this is obvious, since there are no alternatives (even if they were, their implementation is more effort than the completion of IPv6 implementation, that is, any alternative will always lag behind).  And that the addresses do end up in sight, by the way the process of managing them went into the second stage - the stage of the secondary market.  When the free reserves of speculation and hamsters of addresses are finished, the stage of severe consolidation will begin - that is, the removal of everything unimportant from the addresses, the transfer of all “to one address”, etc.  Around this time, IPv6 will begin to be used for real work. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       However, the story is not about the future of IPv6, but about the practice of working with it.  In St. Petersburg, there is such a provider - <a href="http://tiera.ru/">Tier</a> .  And I am their home user.  This is one of the few providers, or perhaps the only one in the city, who provides IPv6 to home users.  The user is allocated one IPv6 address (for a router or a computer), plus a / 64 grid for everything else (that is, four billion times more addresses than all the IPv4 addresses can be - all in one hand).  I will try not only to describe “how to configure IPv6”, but to understand the basic concepts of the protocol using practical examples with theoretical inserts. <br><br>  Network structure: <br><img src="https://habrastorage.org/getpro/habr/post_images/f5e/296/1ba/f5e2961ba0ac03cab9766cf9827f6e5d.png"><br>  (Original pictures: <a href="https://github.com/amarao/dia_schemes">github.com/amarao/dia_schemes</a> ) <br><ul><li>  1, 2, 3 - devices in the local network, working over WiFi </li><li>  4 - WiFi router, forced to work in the access point (bridge) role, that is, a switch between WiFi and LAN </li><li>  5 - eth3 network interface that distributes the Internet on the local network </li><li>  6 - my home computer (main computer) - <a href="http://desunote.ru/">desunote.ru</a> , which deals with Internet distribution, that is, it works as a router </li><li>  7 - eth2, Tiera network connection interface </li></ul><br><a name="habracut"></a><br>  I’ll skip the whole IPv4 part (nothing interesting - plain nat) and concentrate on IPv6. <br><br>  The settings I received from Tiera for IPv6: <br><ol><li>  Address 2a00: 11d8: 1201: 0: 962b: 18: e716: fb97 / 128 I have been issued for a computer / gateway </li><li>  Network 2a00: 11d8: 1201: 32b0 :: / 64 issued to me for home devices </li></ol><br><br>  At the provider, the network 2a00: 11d8: 1201: 32b0 :: / 64 is routed through 2a00: 11d8: 1201: 0: 962b: 18: e716: fb97 (that is, through my computer).  Note, that's all I got.  No gateways, etc.  - here begins the magic of IPv6, and the most interesting.  "It works by itself." <br><br>  Let's start with a simple one: setting 2a00: 11d8: 1201: 0: 962b: 18: e716: fb97 on eth2 for a computer.  For readability, I’ll leave all configs and file names to the last section. <br><br>  We register the ipv6 address on the interface eth2 ... And a miracle, it starts to work.  Why?  How did the computer know where to send the packages next?  And why / 128 is a valid network for ipv6?  After all, / 128 means a network of 1 ip address and no more.  There can be no gateway! <br><br>  In order to understand what is happening, we need to look at the configuration of the network (I will cut out all unnecessary, so as not to be frightened by the conclusion): <br><br>  # <code>ip address show eth2</code> (usually abbreviate to <code>ip as eth2</code> ) <br><pre> eth2: &lt;BROADCAST, MULTICAST, UP, LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP qlen 1000
@@ -208,20 +208,20 @@ subnet 10.13.77.0 netmask 255.255.255.0 {<font></font>
 </pre><br><h1>   IPv6? </h1><br>     . - raid, LVM XFS, BTRFS, LUCKS,    -, dns-  ..        IPv6. <br><br>       .    : <br><pre>iptables -t filter -A INPUT<font></font>
 ip6tables -t filter -A INPUT<font></font>
 (  - iptables -L -v,  ip6tables -L -v)<font></font>
-</pre><br><br>     : <br><img src="https://habrastorage.org/getpro/habr/post_images/498/291/49e/49829149e32062f522c9da0490f5b97d.png"><br><ul><li> 4.5% (2.7 ) IPv6 </li><li> 95.5% (59 ) —  , ,  IP </li></ul><br>  , IPv6        (      ,   ?). <br><br>  ,     IPv6 (   —     )        .    IPv6  ,      —     teredo (   IPv6,   ). <br><br>   ,           (  ),   IPv6 -    . <br><br><h1>     </h1><br>  , , IPv6   . <br>  (4+)    .       ,      IPv6 (   IPv4)  deep sleep . <br>   , IOS' IPv6   . </div><p>Source: <a href="https://habr.com/ru/post/192164/">https://habr.com/ru/post/192164/</a></p>
+</pre><br><br>     : <br><img src="https://habrastorage.org/getpro/habr/post_images/498/291/49e/49829149e32062f522c9da0490f5b97d.png"><br><ul><li> 4.5% (2.7 ) IPv6 </li><li> 95.5% (59 ) —  , ,  IP </li></ul><br>  , IPv6        (      ,   ?). <br><br>  ,     IPv6 (   —     )        .    IPv6  ,      —     teredo (   IPv6,   ). <br><br>   ,           (  ),   IPv6 -    . <br><br><h1>     </h1><br>  , , IPv6   . <br>  (4+)    .       ,      IPv6 (   IPv4)  deep sleep . <br>   , IOS' IPv6   . </div><p>Source: https://habr.com/ru/post/192164/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../192146/index.html">Copy works in the public domain? National Indian hut to help you</a></li>
+<li><a href="../19215/index.html">Maintaining standards is not easy</a></li>
 <li><a href="../192150/index.html">Installation Guide and Guide for Web Deploy in Windows Server 2008 R2</a></li>
 <li><a href="../192152/index.html">The digest of news from the world of mobile development for the last week №22 (August 26 - September 1, 2013)</a></li>
 <li><a href="../192160/index.html">NNM-Club is under the threat of blocking and preparing for it, and the Rutor and Opensharing are illegally detained in the Registry</a></li>
 <li><a href="../192162/index.html">Record-breakers. Continuation</a></li>
 <li><a href="../192166/index.html">On Friday, September 6, NASA launches the LADEE probe to the moon to study the rarefied atmosphere and study dust particles.</a></li>
 <li><a href="../192168/index.html">Enclosed ecosystem in Russian</a></li>
+<li><a href="../19217/index.html">Step 3. Configuring repositories and localization</a></li>
 <li><a href="../192170/index.html">Nokia Lumia 1020: Visual Advantage in Jing Zhang's Vision</a></li>
 <li><a href="../192172/index.html">In an attempt to look beyond your university, or another reflection on the educational process</a></li>
-<li><a href="../192174/index.html">ThL W11 Monkey King - Monkey King</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

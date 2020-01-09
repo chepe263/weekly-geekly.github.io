@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Modeling PHP flight on the wings of Erlang</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/storage/074d55cb/60ab54be/a663de18/f66763d3.png">  <i>This article outlines the thoughts and fantasies on the topic "how to combine Erlang and PHP to make universal happiness happen", and not a description of the finished technology or product.</i>  <i>However, we intend to implement it, most likely, in the form of an open-source project, unless, of course, the respected habra audience dissuade :) Actually, one of the main tasks of this article is to understand how interesting the idea is and potentially useful to the wider PHP community .</i>  <i>By the way, some of the problems discussed in the article are also valid for other popular scripting languages ​​(I mean Ruby and Python here), so the proposed solution may also be relevant for them.</i> <br><a name="habracut"></a><br><h1>  Prehistory </h1>  Due to certain objective and subjective circumstances, PHP is used as a language for server programming in <a title="Megaplan site" href="http://megaplan.ru/">Megaplan</a> .  Over time, we began to embarrass and annoy some of the limitations of PHP, we began to miss some of the "advanced" features, such as: multithreading, delayed launch, message queues, etc.  In addition, we are limited to using our own custom solutions for each problem, since Megaplan is not only a SaaS application, but also comes in the form of a cross-platform boxed version for three OS types: server Windows, Linux and FreeBSD.  Adding the next custom component (even if there was a cross-platform solution) significantly complicates the installation and support of the boxes.  Even the lack of a normal standard crond in Windows is annoying. <br><br>  In general, there is a need to "pump up" PHP.  There is, of course, an alternative radical solution - to move to Java, but for us this is not an option - too much of the worst code has already been written in several years.  Besides, I'm not sure that you can elegantly solve the problem of a large-scale comet on JVM.  And PHP is too early to write off - it is still the most popular language for web development (at least in Russia), programmers are easier to find than for other languages. <br><br>  On the basis of a ripe need and the fact that at a certain moment I caught sight of and very much liked Erlang, the idea of ​​solving problems matured - to build an Erlang virtual machine into our standard environment and compensate for the shortcomings of PHP with the unique capabilities of this functional language. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       First, I’ll talk about what tasks with the help of “clean” PHP are made with difficulty and what features we lack, and then I will describe the proposed solution.  So… <br><br><h1>  Problems </h1>  In this article, I assume that long-running processes in PHP are an exceptionally unreliable crutch, under which you need to substitute another crutch so that it somehow lives.  It does not inspire optimism even the fact that in PHP 5.3 there appeared a <a title="PHP documentation link" href="http://php.net/manual/en/features.gc.php">normal garbage collector</a> .  <a title="article on Habré about phpDaemon" href="http://habrahabr.ru/blogs/php/79377/">PhpDaemon does</a> not convince, which many people like, but is tied to libevent, therefore it will not work under Windows.  Currently, there is no normal native and, most importantly, reliable way to "demonize" PHP programs.  And even if you try to go to work with <a title="habrasslink" href="http://habrahabr.ru/blogs/php/103875/">FastCGI</a> , you still need a controller, who will restart the process regularly.  In short, in my opinion, the only PHP production mode is the classic FastCGI (or apache + prefork + mod_php under unix-like systems). <br><br>  Almost all the restrictions that will be discussed are associated with this circumstance. <br><br><h2>  Background launch </h2><br>  I think many developers who wrote in PHP a little more than “Hello World!” Faced the problem of delayed launch, for example, with the simplest task of sending email in response to some user action.  In PHP, there are 2 solutions for such a task (both ugly): <br><ul><li>  or try to send a letter directly online immediately in the same script and risk running into the inactivity and unavailability of the postal service, </li><li>  or write down somewhere a task to send and once a minute, pull a script on cron, which the tasks will rake. </li></ul>  Familiar?  You will probably argue that there are other ways, for example, such a perversion: to form a new process using pcntl.  But here I will answer that this is at least not cross-platform, and generally looks like a hack.  And you want to have a beautiful and reliable solution. <br><br><h2>  Comet </h2><br>  All the newfangled tasty things like long-polling, websockets, etc., of course, can be done in pure PHP, but this is only at the cost of a whole long-standing php process for each connection.  On any serious amount of clients of resources you will not save enough on such luxury. <br><blockquote>  <i><font color="grey">I hear someone in the far ranks give a hint about mod_php (worker) mod_pp with a couple of.</font></i>  <i><font color="grey">Guys, do not use thread-safe php in production, this is wrong.</font></i>  <i><font color="grey">Moreover, on really serious loads, even this will not save.</font></i> </blockquote>  And we really want to have a common event space between the client and the server.  Well, imagine this fairy tale: the server initiates an event: <br><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span>
@@ -187,7 +187,7 @@ Comet         ,   ,    Erlang--    -,  long-polling   ,   http-        push-  . 
 <li>  Erlang'.</li>
 </ul> ,    :)<br>
 <br>
-<strong> ? Welcome!</strong></div><p>Source: <a href="https://habr.com/ru/post/119839/">https://habr.com/ru/post/119839/</a></p>
+<strong> ? Welcome!</strong></div><p>Source: https://habr.com/ru/post/119839/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -196,11 +196,11 @@ Comet         ,   ,    Erlang--    -,  long-polling   ,   http-        push-  . 
 <li><a href="../119834/index.html">FFmpeg audio / video file converter</a></li>
 <li><a href="../119837/index.html">Competition for developers with a prize pool of $ 100,000 and the first affiliate conference for participants in the Evernote Gallery</a></li>
 <li><a href="../119838/index.html">14-year-old caught "hacker" is now working on Microsoft</a></li>
+<li><a href="../11984/index.html">Moneybox of info and plugins for Fox</a></li>
 <li><a href="../119840/index.html">Completed HTML5 Games Contest</a></li>
 <li><a href="../119841/index.html">Five ways to call a function</a></li>
 <li><a href="../119842/index.html">HTC Flyer review. Flight to Ukraine</a></li>
 <li><a href="../119843/index.html">Another attack on Sony</a></li>
-<li><a href="../119845/index.html">iPhone 5 and new display</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Debugging EXC_BAD_ACCESS on Mac OS X and iPhone</h1><div class="post__text post__text-html js-mediator-article"> Hello!  In this article I will try to talk about how you can make your life easier when debugging iPhone and Mac applications.  It is about debugging EXC_BAD_ACCESS exceptions, one of the most unpleasant in nature. <br><a name="habracut"></a><br>  The <b>EXC_BAD_ACCESS</b> exception occurs when we try to send a message to an object that has already been released (released).  The situation is usually complicated by the fact that by the time the error pops up, the call stack no longer contains information that could help us.  That is, it is not clear which object was released.  And, all the more, it is not clear where in the code it was released :).  It becomes even more fun if the application is multi-threaded. <br><br>  Fortunately, the guys from <b>Apple</b> did their best to help us.  They created a stub class <b>NSZombie</b> .  If you turn it on I will support it (how to do it - I’ll tell you below), after deleting each object in its place (that is, by its address in memory), the “zombie” will live and receive messages, which will allow you to determine which object released and fix the error. <br><br>  So, let's begin.  One day, your iPhone or Mac application started to crash and you see the following message in the debugger console: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Program received signal: “EXC_BAD_ACCESS”. <br><br>  And, in fact, nothing more.  The call stack most likely did not help you either. <br><br>  In the <b>Groups &amp; Files</b> window (on the left in <b>xCode</b> ) find the <b>Executables</b> branch.  Right-click on the executable file of your application and select <b>Get Info</b> in the drop-down menu.  In the window that appears, open the <b>Arguments</b> tab and add two environment variables: <b>NSZombieEnabled</b> and <b>MallocStackLoggingNoCompact</b> .  Set <b>NSZombieEnabled</b> to <b>YES</b> , and <b>MallocStackLoggingNoCompact</b> to <b>1</b> .  How it should look is shown in the screenshot: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/5e5/50c/c87/5e550cc87b6ffe55f0315971594c3c00.jpg" alt="image"><br><br>  Now start your application and repeat the steps necessary to reproduce the error.  In the debugger console, instead of the <b>EXC_BAD_ACCESS message,</b> you should see something like this: <br><br> <code>2010-01-25 14:35:24.840 MyApplication[1393:20b] *** -[CFString retain]: message sent to deallocated instance 0x42a5060</code> <br> <br>  This means that once you had a <b>CFString</b> object at the address <b>0x42a5060</b> .  He has already been released, and your program does not let up and tries to send him a <b>retain</b> message.  It remains to find this object and find in the code the place where the extra <b>release</b> was called.  Either not caused by <b>retain</b> , depends on the specific situation :) <br><br>  The following will help you: in the debugger console, type the following command: <br><br> <code>shell malloc_history 1393 0x42a5060</code> <br> <br>  Instead of 1393, you should enter your process ID (PID).  You can view it in the console error message immediately after the application name.  And instead of 0x42a5060, enter the address of the object that was freed (you can also look in the error message). <br><br>  As a result, your eyes will appear a terrible picture like this: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/a4e/99b/838/a4e99b838f155b6e69f71cbe41667973.jpg" alt="image"><br><br>  Do not worry, everything is not as scary as it might seem at first glance.  Close to the bottom, look for the names of the classes and methods that are present in your code.  That is, written by you.  Somewhere there hid the malicious call <b>release</b> .  Search and correct. <br><br>  PS Out of the corner of my eye, I read somewhere that it is possible to catch such errors using Instruments / ObjectAlloc.  I would be very grateful if someone gave me a vodka ... Oh, a tip </div><p>Source: <a href="https://habr.com/ru/post/90725/">https://habr.com/ru/post/90725/</a></p>
+      Program received signal: “EXC_BAD_ACCESS”. <br><br>  And, in fact, nothing more.  The call stack most likely did not help you either. <br><br>  In the <b>Groups &amp; Files</b> window (on the left in <b>xCode</b> ) find the <b>Executables</b> branch.  Right-click on the executable file of your application and select <b>Get Info</b> in the drop-down menu.  In the window that appears, open the <b>Arguments</b> tab and add two environment variables: <b>NSZombieEnabled</b> and <b>MallocStackLoggingNoCompact</b> .  Set <b>NSZombieEnabled</b> to <b>YES</b> , and <b>MallocStackLoggingNoCompact</b> to <b>1</b> .  How it should look is shown in the screenshot: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/5e5/50c/c87/5e550cc87b6ffe55f0315971594c3c00.jpg" alt="image"><br><br>  Now start your application and repeat the steps necessary to reproduce the error.  In the debugger console, instead of the <b>EXC_BAD_ACCESS message,</b> you should see something like this: <br><br> <code>2010-01-25 14:35:24.840 MyApplication[1393:20b] *** -[CFString retain]: message sent to deallocated instance 0x42a5060</code> <br> <br>  This means that once you had a <b>CFString</b> object at the address <b>0x42a5060</b> .  He has already been released, and your program does not let up and tries to send him a <b>retain</b> message.  It remains to find this object and find in the code the place where the extra <b>release</b> was called.  Either not caused by <b>retain</b> , depends on the specific situation :) <br><br>  The following will help you: in the debugger console, type the following command: <br><br> <code>shell malloc_history 1393 0x42a5060</code> <br> <br>  Instead of 1393, you should enter your process ID (PID).  You can view it in the console error message immediately after the application name.  And instead of 0x42a5060, enter the address of the object that was freed (you can also look in the error message). <br><br>  As a result, your eyes will appear a terrible picture like this: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/a4e/99b/838/a4e99b838f155b6e69f71cbe41667973.jpg" alt="image"><br><br>  Do not worry, everything is not as scary as it might seem at first glance.  Close to the bottom, look for the names of the classes and methods that are present in your code.  That is, written by you.  Somewhere there hid the malicious call <b>release</b> .  Search and correct. <br><br>  PS Out of the corner of my eye, I read somewhere that it is possible to catch such errors using Instruments / ObjectAlloc.  I would be very grateful if someone gave me a vodka ... Oh, a tip </div><p>Source: https://habr.com/ru/post/90725/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../90724/index.html">Mexico will turn off 25.9 million mobile phones</a></li>
 <li><a href="../90726/index.html">How to implement an idea?</a></li>
 <li><a href="../90727/index.html">Transport of the future</a></li>
+<li><a href="../9073/index.html">Virtual startups competition announced</a></li>
 <li><a href="../90733/index.html">Divorce from mobile scam</a></li>
 <li><a href="../90734/index.html">On Seopult live Hosting Community talks about Makhost</a></li>
-<li><a href="../90735/index.html">Habraicon</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

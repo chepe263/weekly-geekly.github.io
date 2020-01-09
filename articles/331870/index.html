@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Cobian Backup and sending messages to Telegram</h1><div class="post__text post__text-html js-mediator-article"><p>  I think there are very few system administrators who do not backup any data.  This note will be useful (I hope) for those who use such software as <strong>Cobian Backup</strong> .  And especially for those who do not have backup in one place, or even in different cities. </p><br><p>  As you already understood from the title, I want to share with you a small script that allows you to send <strong>something</strong> (in my case, a piece of the log file) to the telegram. </p><br><p>  For those who are wondering why it is Telegram, because Cobian Backup can send messages to the post office - I will explain my point of view.  Telegram is a popular developing messenger that uses a huge number of people.  In my subjective opinion, this is more convenient than an email client.  Also, this method was tested on ooooochen bad internet - everything works.  And sending by email in the same conditions did not work. </p><a name="habracut"></a><br><h3 id="skript-dlya-otpravki-soobscheniy-v-telegram">  Script for sending messages to Telegram </h3><br><p>  Logic for myself, I built the following.  When performing a task in Cobian Backup, in the last but one line of the log file we have about the following text: "2017-05-31 12:11 Copy completed. Errors: 0, processed files: 3893, copied files: 3893, total size: 2.43 GB ".  So I somehow need to pull this penultimate line from the log file.  Well, actually what I did - below. </p><br><p>  To send messages we will use PowerShell.  I borrowed the script myself <a href="https://groosha.gitbooks.io/telegram-bot-lessons/content/telegram_powershell.html"><strong>here</strong></a> , but modified it a little bit. </p><br><pre><code class="hljs mel">$chat_id = <span class="hljs-string"><span class="hljs-string">'chat_id'</span></span> #  id ,     .     ,   . $date=get-<span class="hljs-keyword"><span class="hljs-keyword">date</span></span> -uformat <span class="hljs-string"><span class="hljs-string">"%Y-%m-%d"</span></span> #      $text = get-content -Path (<span class="hljs-string"><span class="hljs-string">'c:\Program Files (x86)\Cobian Backup 11\Logs\log '</span></span>+$date+<span class="hljs-string"><span class="hljs-string">'.txt'</span></span>) -Encoding UTF8 # ,    cobian backup $token = <span class="hljs-string"><span class="hljs-string">'token'</span></span> # ,      [<span class="hljs-keyword"><span class="hljs-keyword">string</span></span>]$text=$text[$text.count<span class="hljs-number"><span class="hljs-number">-2</span></span>] #   #     $payload = @{ <span class="hljs-string"><span class="hljs-string">"chat_id"</span></span> = $chat_id; <span class="hljs-string"><span class="hljs-string">"text"</span></span> = <span class="hljs-string"><span class="hljs-string">"$text"</span></span>; <span class="hljs-string"><span class="hljs-string">"parse_mode"</span></span> = <span class="hljs-string"><span class="hljs-string">'HTML'</span></span>; } Invoke-WebRequest <span class="hljs-string"><span class="hljs-string">` -Uri ("https://api.telegram.org/bot{0}/sendMessage" -f $token) `</span></span> -Method Post <span class="hljs-string"><span class="hljs-string">` -ContentType "application/json;charset=utf-8" `</span></span> -Body (ConvertTo-Json -Compress -InputObject $payload)</code> </pre> <br><h3 id="nastroyka-cobian-backup">  Cobian Backup Setup </h3><br><p>  For those who use Cobian Backup as a backup utility, I think you shouldn’t describe how tasks are created.  For those who are just going to - I think after installation you don’t even need to look for something on the Internet - everything is very simple and accessible.  True, there is one BUT - Cobian Backup does not know how to execute PowerShell scripts.  Well, it does not matter - but he knows what BAT is.  To run use the following BATnik </p><br><pre> <code class="dos hljs">TIMEOUT /T <span class="hljs-number"><span class="hljs-number">5</span></span> /NOBREAK <span class="hljs-variable"><span class="hljs-variable">%SystemRoot%</span></span>\System32\WindowsPowerShell\v1.<span class="hljs-number"><span class="hljs-number">0</span></span>\PowerShell.exe -ExecutionPolicy ByPass -command "C:\ToTelegram.ps1"</code> </pre> <br><p>  ToTelegram.ps1 is a script that we previously created in PowerShell.  After creating the bat file, you can already add its execution to the task.  In the task parameters, pop up the menu item "Additional actions" and add our BAT file to the final actions. </p><br><p>  That's basically all, as you can see nothing complicated.  I hope for someone it will be useful. </p><br><p>  PS This script satisfies my needs, but I will be very happy if someone makes their suggestions and comments. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/331870/">https://habr.com/ru/post/331870/</a></p>
+    <p>Source: https://habr.com/ru/post/331870/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

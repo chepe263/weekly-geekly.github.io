@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to work with connection timeouts: Case Ticketmaster</h1><div class="post__text post__text-html js-mediator-article">  We constantly share our experience in optimizing the service systems of our IaaS provider: <br><br><ul><li>  <a href="https://habrahabr.ru/company/1cloud/blog/260523/">How our IaaS provider API works</a> </li><li>  <a href="https://habrahabr.ru/company/1cloud/blog/261139/">How we developed our DNS manager</a> </li></ul><br>  Today, our attention was attracted by the Ticketmaster <a href="http://tech.ticketmaster.com/2015/03/12/the-case-of-the-recurring-network-timeout/">case</a> .  Let us briefly analyze it. <br><br> <a href="http://habrahabr.ru/company/1cloud/blog/269247/"><img src="https://habrastorage.org/files/be7/5b6/b7d/be75b6b7d20146a7b7e46e301d066084.jpg"></a> <br><a name="habracut"></a><br>  <i>/ Photo by <a href="https://www.flickr.com/photos/ginnerobot/">Ginny</a> / <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC</a></i> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,10 +64,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Oden Espinoza (Audyn Espinoza) tells us that the Ticketmaster team is constantly monitoring.  The IT department of the project likes to optimize the service, but it is necessary to solve IT problems as they appear. <br><br>  In this case, it all started with the fact that one of the requests received an unusually high number of timeouts.  Appeal to the monitoring logs showed that the problem is typical for the entire cluster as a whole.  Timeouts were observed here every minute. <br><br>  Additional assessment of the situation using tcpdump showed that the problem can be localized at the stage of passing through the firewall.  For a more detailed investigation, it was decided to apply OPNET and Wireshark. <br><br>  These tools have shown that the SYN package passes without problems, but his friend SYN / ACK cannot do this.  When the trial package was sent in the opposite direction, the result was the same. <br><br>  As a result, the team returned to reviewing the work of the firewall.  They found out that when a valid TCP connection downtime was reached, a retransmission of the SYN packet began, and the SYN / ACK never passed through the virtual firewall. <br><br>  Final Verdict: SNMP monopolized the CPU every 60 seconds, as shown by monitoring the firewall.  It was a bug at the code level.  To solve the problem, the command has disabled the SNMP polling system. <br><br>  PS A little about the work of our IaaS provider: <br><br><ul><li>  <a href="http://habrahabr.ru/company/1cloud/blog/244121/">About IT infrastructure IaaS-provider</a> </li><li>  <a href="http://habrahabr.ru/company/1cloud/blog/243133/">About the redesign of our site</a> </li></ul></div><p>Source: <a href="https://habr.com/ru/post/269247/">https://habr.com/ru/post/269247/</a></p>
+      Oden Espinoza (Audyn Espinoza) tells us that the Ticketmaster team is constantly monitoring.  The IT department of the project likes to optimize the service, but it is necessary to solve IT problems as they appear. <br><br>  In this case, it all started with the fact that one of the requests received an unusually high number of timeouts.  Appeal to the monitoring logs showed that the problem is typical for the entire cluster as a whole.  Timeouts were observed here every minute. <br><br>  Additional assessment of the situation using tcpdump showed that the problem can be localized at the stage of passing through the firewall.  For a more detailed investigation, it was decided to apply OPNET and Wireshark. <br><br>  These tools have shown that the SYN package passes without problems, but his friend SYN / ACK cannot do this.  When the trial package was sent in the opposite direction, the result was the same. <br><br>  As a result, the team returned to reviewing the work of the firewall.  They found out that when a valid TCP connection downtime was reached, a retransmission of the SYN packet began, and the SYN / ACK never passed through the virtual firewall. <br><br>  Final Verdict: SNMP monopolized the CPU every 60 seconds, as shown by monitoring the firewall.  It was a bug at the code level.  To solve the problem, the command has disabled the SNMP polling system. <br><br>  PS A little about the work of our IaaS provider: <br><br><ul><li>  <a href="http://habrahabr.ru/company/1cloud/blog/244121/">About IT infrastructure IaaS-provider</a> </li><li>  <a href="http://habrahabr.ru/company/1cloud/blog/243133/">About the redesign of our site</a> </li></ul></div><p>Source: https://habr.com/ru/post/269247/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

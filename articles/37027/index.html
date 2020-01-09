@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Package Level Caching</h1><div class="post__text post__text-html js-mediator-article"> Good day.  I want to talk about one of the ways to cache data in my favorite Oracle. <br>  Let's look at caching rarely changing data (for example, directories) at the package level.  This method is not scalable, because it is based on the packet state — cached data falls into the PGA, i.e.  into a “private” memory area inaccessible to other users.  So  if you have 1000 users and they call the package functions, then you will have 1000 instances of cached data.  “Bad” - you will say, yes, it is bad, but it is not necessary for all users to give the rights to execute this package.  However, this method is widely used. <br>  Bad or good, you can decide only for a particular case. <br><a name="habracut"></a><br>  So, let's begin: <br>  First sign: <br><br> <code>CREATE TABLE testname <br> ( <br> ID NUMBER, <br> Name VARCHAR2(100) <br> );</code> <br> <br>  Now fill it up: <br><br> <code>INSERT INTO TestName(id, name) VALUES (1, 'Ivan'); <br> INSERT INTO TestName(id, name) VALUES (2, 'Stepan'); <br> INSERT INTO TestName(id, name) VALUES (3, 'Sidor'); <br> COMMIT;</code> <br> <br>  Now the actual package: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>CREATE OR REPLACE PACKAGE TestNamePck IS <br> <br> --     ID <br> FUNCTION GetNameByID(pID NUMBER) RETURN VARCHAR2; <br> <br> END TestNamePck; <br> <br> / <br> <br> CREATE OR REPLACE PACKAGE BODY TestNamePck IS <br> <br> --     <br> CURSOR TestCur IS <br> SELECT * FROM TestName; <br> <br> SUBTYPE TTestName IS TestName%ROWTYPE; <br> <br> TYPE TTestName_ByID IS TABLE OF TTestName INDEX BY VARCHAR2(38); <br> <br> myTestName TTestName; <br> <br> TestName_ByID TTestName_ByID; <br> <br> --     ID <br> FUNCTION GetNameByID(pID NUMBER) RETURN VARCHAR2 IS <br> BEGIN <br> IF TestName_ByID.EXISTS(TO_CHAR(pId)) THEN <br> RETURN TestName_ByID(TO_CHAR(pId)) .Name; <br> ELSE <br> RETURN NULL; <br> END IF; <br> END; <br> <br> --   <br> BEGIN <br> OPEN TestCur; <br> FETCH TestCur INTO myTestName; <br> WHILE TestCur%found LOOP <br> TestName_ByID(TO_CHAR(myTestName.ID)) := myTestName; <br> FETCH TestCur INTO myTestName; <br> END LOOP; <br> CLOSE TestCur; <br> END TestNamePck; <br> <br> / <br></code> <br><br>  After all of the above, we have: <br><br> <code>SQL&gt; set serveroutput on; <br> SQL&gt; set feedback off; <br> SQL&gt;exec dbms_output.put_line(testnamepck.getnamebyid(pid =&gt; 1)); <br> <br> Ivan <br> <br> SQL&gt;exec dbms_output.put_line(testnamepck.getnamebyid(pid =&gt; 2)); <br> <br> Stepan <br> <br> SQL&gt;exec dbms_output.put_line(testnamepck.getnamebyid(pid =&gt; 3)); <br> <br> Sidor <br> <br> SQL&gt; <br></code> <br><br>  As can be seen from the package body code, the directory cache is first initialized by filling in the associative array TestName_ByID.  After that, the function of obtaining the name by ID simply uses the Exists method of the associative array to determine if a value exists. <br>  Naturally, you need to add error handlers; here is a simple example to explain the principle of caching based on packet state. <br></div><p>Source: <a href="https://habr.com/ru/post/37027/">https://habr.com/ru/post/37027/</a></p>
+     <code>CREATE OR REPLACE PACKAGE TestNamePck IS <br> <br> --     ID <br> FUNCTION GetNameByID(pID NUMBER) RETURN VARCHAR2; <br> <br> END TestNamePck; <br> <br> / <br> <br> CREATE OR REPLACE PACKAGE BODY TestNamePck IS <br> <br> --     <br> CURSOR TestCur IS <br> SELECT * FROM TestName; <br> <br> SUBTYPE TTestName IS TestName%ROWTYPE; <br> <br> TYPE TTestName_ByID IS TABLE OF TTestName INDEX BY VARCHAR2(38); <br> <br> myTestName TTestName; <br> <br> TestName_ByID TTestName_ByID; <br> <br> --     ID <br> FUNCTION GetNameByID(pID NUMBER) RETURN VARCHAR2 IS <br> BEGIN <br> IF TestName_ByID.EXISTS(TO_CHAR(pId)) THEN <br> RETURN TestName_ByID(TO_CHAR(pId)) .Name; <br> ELSE <br> RETURN NULL; <br> END IF; <br> END; <br> <br> --   <br> BEGIN <br> OPEN TestCur; <br> FETCH TestCur INTO myTestName; <br> WHILE TestCur%found LOOP <br> TestName_ByID(TO_CHAR(myTestName.ID)) := myTestName; <br> FETCH TestCur INTO myTestName; <br> END LOOP; <br> CLOSE TestCur; <br> END TestNamePck; <br> <br> / <br></code> <br><br>  After all of the above, we have: <br><br> <code>SQL&gt; set serveroutput on; <br> SQL&gt; set feedback off; <br> SQL&gt;exec dbms_output.put_line(testnamepck.getnamebyid(pid =&gt; 1)); <br> <br> Ivan <br> <br> SQL&gt;exec dbms_output.put_line(testnamepck.getnamebyid(pid =&gt; 2)); <br> <br> Stepan <br> <br> SQL&gt;exec dbms_output.put_line(testnamepck.getnamebyid(pid =&gt; 3)); <br> <br> Sidor <br> <br> SQL&gt; <br></code> <br><br>  As can be seen from the package body code, the directory cache is first initialized by filling in the associative array TestName_ByID.  After that, the function of obtaining the name by ID simply uses the Exists method of the associative array to determine if a value exists. <br>  Naturally, you need to add error handlers; here is a simple example to explain the principle of caching based on packet state. <br></div><p>Source: https://habr.com/ru/post/37027/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

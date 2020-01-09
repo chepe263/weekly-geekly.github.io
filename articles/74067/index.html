@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using jQuery in GreaseMonkey scripts</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/getpro/habr/post_images/8fc/9b4/2f2/8fc9b42f2a7d862a910e6d1f77cdfe7b.png">  I want to talk about the convenient and unnecessarily rarely used innovations GreaseMonkey version 0.8, which has been available for more than a year.  They will help make custom scripts more modular, and most importantly, they will enable us to use jQuery without tweaks, which will allow us to “write less and do more”.  We are talking about the new meta-parameters of user scripts: <a href="http://wiki.greasespot.net/Metadata_block">@resource</a> and <a href="http://wiki.greasespot.net/Metadata_block">@require</a> . <br><a name="habracut"></a><br>  Consider a small example: <a href="">habratest.user.js</a> .  The script adds the GreaseMonkey logo to the Habrahabr menu, when clicked, the text “Hello, world!” Will be displayed, taken from an external file. <br><blockquote><code><font color="#008000">// ==Userscript==&lt;br&gt;// @name   habratest&lt;br&gt;// @namespace habratest&lt;br&gt;// @include  http://habrahabr.ru/*&lt;br&gt;// @include  http://*.habrahabr.ru/*&lt;br&gt;// @resource gm_logo http://veg.slutsk.net/habr/greasemonkey.png&lt;br&gt;// @resource hello http://veg.slutsk.net/habr/hello.txt&lt;br&gt;// @require  http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js&lt;br&gt;// ==/Userscript==</font> &lt;br&gt;&lt;br&gt;$( <font color="#0000ff">document</font> ).ready( <font color="#0000ff">function</font> ()&lt;br&gt;{&lt;br&gt;    $( <font color="#A31515">"ul.panel-nav-top"</font> ).append( <font color="#A31515">'&lt;li style="float: right;" id="habratest"&gt;&lt;/li&gt;'</font> );&lt;br&gt;    $( <font color="#A31515">"#habratest"</font> ).append( <font color="#A31515">'&lt;img src="'</font> +GM_getResourceURL( <font color="#A31515">"gm_logo"</font> )+ <font color="#A31515">'"&gt;'</font> );&lt;br&gt;    $( <font color="#A31515">"#habratest img"</font> ).click( <font color="#0000ff">function</font> ()&lt;br&gt;    {&lt;br&gt;        alert(GM_getResourceText( <font color="#A31515">"hello"</font> ));&lt;br&gt;    });&lt;br&gt;});</code> </blockquote> <br>  <b>@resource</b> allows <b>you</b> to bind external files to a user script: images, text files, etc.  - all that may be needed at run time.  In the example, “gm_logo” is the name of the resource.  The GM_getResourceURL function is used to get a local link to a file (for example, a picture), GM_getResourceText - to get text from a file (a file can contain, for example, a large piece of HTML).  Both functions take as the parameter the name of the resource.  The advantage of using resources instead of direct links to the server is that the specified files are downloaded once during the installation of the script and in the future are always taken from the local machine. <br><br>  Much more interesting is <b>@require</b> , which allows you to connect external libraries to the script.  You can of course fence any code with the dynamic creation of a script tag, rather nontrivial ways to expect it to load.  But in this case, the library file will be requested from the server every time a new page is opened in the browser.  These shortcomings are devoid of @require - the file will be requested only once during the installation, and most importantly - it will be guaranteed to be executed before the execution of your custom script begins. <br><br>  As a useful example, I suggest looking at the script code of <a href="">yandexru.user.js</a> , which on the search results pages adds the “Search without exception” option to the query form, the “Search this site” field, and also displays whether the set region affected the search results. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Unfortunately, today such things can only be done in Firefox.  It makes sense to hint to the developers of GreaseMonkey analogues for other browsers, so that they think about the support of such useful functions.  But if you are writing a script for personal use, it is quite possible to use these capabilities today. </div><p>Source: <a href="https://habr.com/ru/post/74067/">https://habr.com/ru/post/74067/</a></p>
+      Unfortunately, today such things can only be done in Firefox.  It makes sense to hint to the developers of GreaseMonkey analogues for other browsers, so that they think about the support of such useful functions.  But if you are writing a script for personal use, it is quite possible to use these capabilities today. </div><p>Source: https://habr.com/ru/post/74067/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../74059/index.html">Ericsson Spider Computer</a></li>
+<li><a href="../7406/index.html">Wiki world</a></li>
 <li><a href="../74061/index.html">ASP.NET MVC 2: areas (areas) - description, use</a></li>
 <li><a href="../74062/index.html">Jeans on Habré</a></li>
 <li><a href="../74064/index.html">6 Gigabit SAS for 6th Generation HP ProLiant</a></li>

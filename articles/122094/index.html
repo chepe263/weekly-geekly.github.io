@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Simple additional control of memcached data status</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/b07/def/065/b07def06597c35f103d22fb282c0bf87.jpg" align="left" hspace="8" vspace="5" alt="image">  Monitoring memcached is not the last thing.  Both at the stage of testing and at the stage of maintenance of an already working loaded resource.  There are not so many tools out of the box for this, and if you are working with PHP, you are often limited to memcache (or memcached), namely <br><br>  Memcache :: getStats () <br><br> <code>$memcache = new Memcache; <br> $memcache-&gt;connect('localhost',11211); <br> print_r($memcache-&gt;getStats()); <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      which returns a typical data set <br><br> <code>Array ( [pid] =&gt; 25722 [uptime] =&gt; 4487286 [time] =&gt; 1308323074 [version] =&gt; 1.2.2 [pointer_size] =&gt; 64 [rusage_user] =&gt; 2646.005365 [rusage_system] =&gt; 17108.873237 <b>[curr_items] =&gt; 37761</b> [total_items] =&gt; 10764857 <b>[bytes] =&gt; 140070186</b> [curr_connections] =&gt; 5 [total_connections] =&gt; 17360659 [connection_structures] =&gt; 31 [cmd_get] =&gt; 89154830 [cmd_set] =&gt; 10764857 <b>[get_hits] =&gt; 83452021 [get_misses] =&gt; 5702809</b> [evictions] =&gt; 0 [bytes_read] =&gt; 3527860756618 [bytes_written] =&gt; 4234517241183 <b>[limit_maxbytes] =&gt; 2147483648</b> [threads] =&gt; 1 )</code> <br> <br>  It seems all is well. <br>  We see that we have 133.5 Mb of 2 Gb allocated for memcached and about 37 thousand keys. <br>  Hits misses refer to as 83/5, which also does not inspire fear. <br><a name="habracut"></a><br><br>  But!  What we see is not what we need!  (Well, or at least I needed it).  Indeed, among these keys are those that are outdated.  And, running a little ahead, I will say that there are even more of them than the “live” values, and usually 10 times (unless of course the toad strangled you to allocate an extremely sufficient amount of memory).  For the garbage collector kills outdated (or not outdated) keys for 2 reasons: <br>  1) Out of free memory.  (here and current can fly away) <br>  2) The data was requested and turned out to be expired. <br><br>  There is a way out for this, and it is simple to ugliness - periodically polling all the keys. <br>  PHP is not the best option for this.  I wanted something “closer to the body”. <br>  Solved.  We write on bash / sh and put it on cron.  In my case, 1 launch is enough at the end of the main “loaded” time (we have about 21-30 Moscow time). <br><br>  As a server - quite pop Debian Lenny. <br><br>  So, we need libmemcached, its memdump (displaying a complete list of keys) and memccat (data request by key), bash / sh, and a couple of minutes ... <br><br> <code>#!/bin/sh <br> cd /usr/local/src/libmemcached-0.49/clients <br> <br> ./memdump --servers=127.0.0.1 &gt;/home/memdump.dat <br> <br> while read i; do <br> <br> memccat $i --servers=127.0.0.1 &gt;/dev/null 2&gt;&amp;1 <br> <br> done &lt;/home/memdump.dat <br> <br> #----------------------------------------- <br> #   ,   <br> # <br> #  -   1       . <br> #     too long.... <br></code> <br><br>  It is especially convenient to see the real number of “live” sessions that we also have in the memkesh. <br><br>  It remains to add: on the production server, once a day, about 850-1000 Mb of data of the keys is killed (from 2 GB allocated) and I almost always have <b>real</b> data about the state of memcached. </div><p>Source: <a href="https://habr.com/ru/post/122094/">https://habr.com/ru/post/122094/</a></p>
+      which returns a typical data set <br><br> <code>Array ( [pid] =&gt; 25722 [uptime] =&gt; 4487286 [time] =&gt; 1308323074 [version] =&gt; 1.2.2 [pointer_size] =&gt; 64 [rusage_user] =&gt; 2646.005365 [rusage_system] =&gt; 17108.873237 <b>[curr_items] =&gt; 37761</b> [total_items] =&gt; 10764857 <b>[bytes] =&gt; 140070186</b> [curr_connections] =&gt; 5 [total_connections] =&gt; 17360659 [connection_structures] =&gt; 31 [cmd_get] =&gt; 89154830 [cmd_set] =&gt; 10764857 <b>[get_hits] =&gt; 83452021 [get_misses] =&gt; 5702809</b> [evictions] =&gt; 0 [bytes_read] =&gt; 3527860756618 [bytes_written] =&gt; 4234517241183 <b>[limit_maxbytes] =&gt; 2147483648</b> [threads] =&gt; 1 )</code> <br> <br>  It seems all is well. <br>  We see that we have 133.5 Mb of 2 Gb allocated for memcached and about 37 thousand keys. <br>  Hits misses refer to as 83/5, which also does not inspire fear. <br><a name="habracut"></a><br><br>  But!  What we see is not what we need!  (Well, or at least I needed it).  Indeed, among these keys are those that are outdated.  And, running a little ahead, I will say that there are even more of them than the “live” values, and usually 10 times (unless of course the toad strangled you to allocate an extremely sufficient amount of memory).  For the garbage collector kills outdated (or not outdated) keys for 2 reasons: <br>  1) Out of free memory.  (here and current can fly away) <br>  2) The data was requested and turned out to be expired. <br><br>  There is a way out for this, and it is simple to ugliness - periodically polling all the keys. <br>  PHP is not the best option for this.  I wanted something “closer to the body”. <br>  Solved.  We write on bash / sh and put it on cron.  In my case, 1 launch is enough at the end of the main “loaded” time (we have about 21-30 Moscow time). <br><br>  As a server - quite pop Debian Lenny. <br><br>  So, we need libmemcached, its memdump (displaying a complete list of keys) and memccat (data request by key), bash / sh, and a couple of minutes ... <br><br> <code>#!/bin/sh <br> cd /usr/local/src/libmemcached-0.49/clients <br> <br> ./memdump --servers=127.0.0.1 &gt;/home/memdump.dat <br> <br> while read i; do <br> <br> memccat $i --servers=127.0.0.1 &gt;/dev/null 2&gt;&amp;1 <br> <br> done &lt;/home/memdump.dat <br> <br> #----------------------------------------- <br> #   ,   <br> # <br> #  -   1       . <br> #     too long.... <br></code> <br><br>  It is especially convenient to see the real number of “live” sessions that we also have in the memkesh. <br><br>  It remains to add: on the production server, once a day, about 850-1000 Mb of data of the keys is killed (from 2 GB allocated) and I almost always have <b>real</b> data about the state of memcached. </div><p>Source: https://habr.com/ru/post/122094/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../122088/index.html">Make the interface easier</a></li>
 <li><a href="../122089/index.html">By adding one thing you always take something else away.</a></li>
+<li><a href="../12209/index.html">Google Documents and Tables are not well integrated with Blogger</a></li>
 <li><a href="../122090/index.html">15th issue of PROGRAMIST</a></li>
 <li><a href="../122091/index.html">The role of techir in Agile - Tetris game</a></li>
 <li><a href="../122093/index.html">A look into the future of the profession. What should a programmer have to do besides programming?</a></li>
 <li><a href="../122095/index.html">Go Web Development</a></li>
 <li><a href="../122097/index.html">NetScaler: Video Balancing</a></li>
+<li><a href="../122099/index.html">Good programmer</a></li>
 <li><a href="../122100/index.html">10 Oatmeal Fonts</a></li>
 <li><a href="../122101/index.html">Interview with Nigel Cunningham, TuxOnIce developer</a></li>
-<li><a href="../122102/index.html">Apple patent - infrared transmitters and anti-bootleg</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

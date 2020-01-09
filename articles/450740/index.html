@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Smart lamp base for REDMOND - add to smart home</h1><div class="post__text post__text-html js-mediator-article"><p>  This review focuses on the smart base brand REDMOND - SkySocket 202S.  I caught an article about the circuitry of this base, as I read that I noticed that the brain of this device is a chip from Nordic Semiconductor 51 series (nRF51822). <a name="habracut"></a></p><br><p>  My main hobby at the moment is building a smart home.  Slowly building a radio network of devices on the protocol MySensors.  In short, it is possible to say that this is a very simple and convenient protocol, on the basis of which in one hour in Ardunno IDE you can assemble a pair of devices from arduino modules and launch your first radio network of sensors.  Recently, I have been making devices for my MySensors network on the nRF51822 and nRF52832 radio modules, so I drew attention to this base. </p><br><img src="https://habrastorage.org/webt/t9/sl/d7/t9sld7yqaw2s3ndeevi2mhsaofg.jpeg"><br><img src="https://habrastorage.org/webt/4j/1k/kt/4j1kktrzln-mfgwy5r-mvt4tdls.jpeg"><br><p>  Having bought it in the online store (for quite a little money in the region of 700 rubles) and disassembling, I saw that the board conveniently removed 4 contacts for programming.  Without thinking twice, I took out my Chinese ST-LINK programmer and multimeter and started to dial the board to jot down a diagram of the device.  In the process of mapping the device, it became clear that only 4 pins were used on the module, a button on the p0.27 pin, a bizzer on the p0.26 pin, a triac relay on the p0.16 pin and a zero detector circuit on the p0.00 pin.  For 20 minutes, I sketched the program in the Arduino IDE (I wrote it with MySensors above very easily and quickly), I connected the ST-LINK programmer and compilation, loading, the programmer stopped flashing and turned on in green, so the firmware was loaded.  Immediately opened the browser, opened Majordomo, in the module MySensors already displayed a new device in the network - REDMOND nRF51 1.0.  It remains only to create objects, to make buttons, which I immediately did.  In total in an hour and a half already I managed a bulb in this socle under the MySensors protocol. </p><br><img src="https://habrastorage.org/webt/ui/2l/qf/ui2lqfsifojtavv2c2nwtezk_pq.png"><br><iframe width="560" height="315" src="https://www.youtube.com/embed/ApcpM_Oh7uE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe><br><p>  Telegram chat of our community mysensors, where everything will tell and help - <a href="https://t.me/mysensors_rus"></a>  <a href="https://t.me/mysensors_rus">https://t.me/mysensors_rus</a> </p><br><p>  Arduino code (it seems the backlight is not supported): </p><br><pre><code class="plaintext hljs">#define BUTTON_PIN 27 #define BIZZER_PIN 26 #define ZERO_CROSS_PIN 0 #define RELAY_PIN 16 boolean iswitch = 1; boolean flag_button = 0; static uint32_t previousMillis; //#define MY_DEBUG #define MY_DISABLED_SERIAL #define MY_RADIO_NRF5_ESB //#define MY_PASSIVE_NODE #define MY_NODE_ID 200 #define MY_PARENT_NODE_ID 0 #define MY_PARENT_NODE_IS_STATIC //#define MY_TRANSPORT_UPLINK_CHECK_DISABLED #define MY_REPEATER_FEATURE #define RELAY_ID 1 #include &lt;MySensors.h&gt; MyMessage lMsg(RELAY_ID, V_STATUS); void preHwInit() { pinMode(BUTTON_PIN, INPUT_PULLUP); pinMode(BIZZER_PIN, OUTPUT); pinMode(ZERO_CROSS_PIN, INPUT); pinMode(RELAY_PIN, OUTPUT); } void before() { //delay(2000); while (digitalRead(ZERO_CROSS_PIN) != 0) { //digitalWrite(RELAY_PIN, iswitch); //wait(200); } digitalWrite(RELAY_PIN, iswitch); } void presentation() { sendSketchInfo("REDMOND nRF51", "1.0"); wait(100); present(RELAY_ID, S_BINARY, "LIGHT SWITCH"); } void setup() { myTone(800, 50); delay(70); myTone(1500, 150); delay(30); wait(500); send(lMsg.set(iswitch)); wait(100); } void loop() { if (digitalRead(BUTTON_PIN) == LOW &amp;&amp; flag_button == 0) { flag_button = 1; previousMillis = millis(); wait(20); myTone(800, 50); delay(100); //myTone(1500, 200); //delay(30); } if (digitalRead(BUTTON_PIN) == LOW &amp;&amp; flag_button == 1) { } if (digitalRead(BUTTON_PIN) == HIGH &amp;&amp; flag_button == 1) { if ((millis() - previousMillis &gt; 0) &amp;&amp; (millis() - previousMillis &lt;= 3000)) { flag_button = 0; myTone(800, 50); delay(70); myTone(1500, 150); delay(30); iswitch = !iswitch; while (digitalRead(ZERO_CROSS_PIN) != 0) { //iswitch = !iswitch; } digitalWrite(RELAY_PIN, iswitch); myTone(1500, 150); delay(30); wait(100); send(lMsg.set(iswitch)); wait(300); } if (millis() - previousMillis &gt; 3000) { flag_button = 0; wait(100); } } } void receive(const MyMessage &amp; message) { if (message.type == V_STATUS) { if (message.sensor == RELAY_ID) { if (mGetCommand(message) == 1) { if (message.isAck()) { //AckG = 1; } else { // iswitch = !iswitch; while (digitalRead(ZERO_CROSS_PIN) != 0) { //iswitch = !iswitch; } digitalWrite(RELAY_PIN, iswitch); wait(200); myTone(800, 50); delay(70); myTone(1500, 150); delay(30); wait(100); send(lMsg.set(iswitch)); wait(1000); } } if (mGetCommand(message) == 2) { } } } /* if (message.isAck()) { (message.sensor == LIGHT_SENS_ID) { } (message.sensor == TEMP_INT_ID) { } } */ } void myTone(uint32_t j, uint32_t k) { j = 500000 / j; k += millis(); while (k &gt; millis()) { digitalWrite(BIZZER_PIN, HIGH); delayMicroseconds(j); digitalWrite(BIZZER_PIN, LOW ); delayMicroseconds(j); } } void playSound() { }</code> </pre> <br><p>  <a href="https://habr.com/ru/post/450860/">Continued - Smart Socket REDMOND</a> </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/450740/">https://habr.com/ru/post/450740/</a></p>
+    <p>Source: https://habr.com/ru/post/450740/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

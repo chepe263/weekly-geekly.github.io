@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Stop being cute and smart</h1><div class="post__text post__text-html js-mediator-article">  <i>This text is a translation of the article <a href="http://lucumr.pocoo.org/2013/12/9/stop-being-clever/">'Stop Being Cute and Clever' by the</a> well-known (at least in the Python-community) Armin Ronher.</i> <br><br>  I spent the last few days in my free time creating a <a href="http://timesched.pocoo.org/">scheduler</a> .  The idea was simple: create a clone of <a href="http://www.worldtimebuddy.com/">worldtime buddy</a> using AngularJS and some other JavaScript libraries. <br><br>  And you know what?  It was not fun.  I haven’t been so angry for a long time working on something, which means something, because usually I quickly express my discontent (I apologize to my followers on Twitter). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       I regularly use JavaScript, but I rarely have to deal with other people's code.  Usually I'm only tied to jQuery, underscore and sometimes AngularJS.  However, this time I went all-in and decided to use different third-party libraries. <br><br>  For this project, I used jQuery, without which you can’t do without (and why?), And AngularJS with some UI components (angular-ui and jQuery UI bindings).  To work with time zones, moment.js was used. <br><br>  I want to immediately note that I am not going to criticize someone’s specific code.  Moreover, if someone looks into my JavaScript source code, their code will be a little better, and sometimes worse, because I didn’t spend much time on it, and in general I don’t have too much experience with this language. <br><br>  However, I noticed a disturbing tendency for code to appear in terrible quality in JavaScript libraries (at least in those I use), and wondered why this was happening. <br><a name="habracut"></a><br>  I had a lot of problems with js-libraries, and all of them were the result of the fact that everyone seems to spit on the features of the language. <br><br>  The reason I began to actively explore third-party JavaScript code was because my naive attempt to send 3mb city names to typeahead.js autocompletion library resulted in an incredibly slow UI.  Obviously, now no intelligent person will send so much data to the field with autocompletion at once, but will first filter them on the server side.  But this problem lies not in slow data loading, but just in slow filtering.  What I could not understand, because even if there is a linear search for 26,000 items, it should not be so slow. <br><br><h4>  Prehistory </h4><br>  So, the interface slowed down - obviously, the error was in my attempt to transfer too much data.  But it is interesting that the performance dropped exactly when using the typeahead widget.  And sometimes in a very peculiar way.  To show how crazy it was, I’ll give a few initial tests: <br><br><ol><li>  We are looking for San Francisco, typing "san".  ~ 200ms. </li><li>  We are looking for San Francisco, typing “fran”.  ~ 200ms. </li><li>  We are looking for San Francisco, typing "san fran".  Second. </li><li>  We are looking for San Francisco, again typing "san".  Second. </li></ol><br>  What is going on?  How does a search break if we search for something more than once? <br><br>  The first thing I did was use the new Firefox profiler to see what wasted so much time.  And very quickly found in a typeahead a bunch of things that were too strange. <br><br>  The bottleneck was found fairly quickly.  The problem was an epic blunder when choosing <a href="">a data structure</a> and a strange algorithm.  The way to search for matches is bizarre and includes such wonderful things as going through a list of strings and further checking each of them for entering other lists, including the original one.  When there are 6000 elements in the first list, and for each, a linear search is started to check whether this element is really in the list, it all takes a very long time. <br><br>  Yes, mistakes happen, and if you run tests with small amounts of data, you won't even notice them.  Thousands of cities and time zones I sent were too many.  Also, not everyone writes search functions every day, so I don’t blame anyone. <br><br>  But due to the fact that I had to debug this piece, I stumbled upon the strangest code of all that I had seen before.  After further research, it turned out that the same eccentricities are found not only in typeahead. <br><br>  Based on this, I am now convinced that JS is a kind of Wild West software development.  First of all, because it competes with the PHP code of the year 2003 in terms of quality, but it seems that this concerns fewer people, since it works on the client side and not on the server.  You do not have to pay for slow javascript. <br><br><h4>  Smart Code </h4><br>  The first painful point is people to whom JS seems like a sweet and 'smart' language.  And it makes me ridiculously paranoid when reviewing the code and searching for bugs.  Even if you know the applied idioms, you cannot be sure whether the side effects will be intentional or someone just made a mistake. <br><br>  For example, I will give a piece of typeahead.js: <br><pre><code class="javascript hljs">_transformDatum: <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">datum</span></span></span><span class="hljs-function">) </span></span>{
@@ -223,20 +223,20 @@ JS     .   ,  ,   .    ,    ,   . <br>
   ,  JavaScript-     ,  .<br>
 <br>
 Armin Ronacher,<br>
-09/12/2013</div><p>Source: <a href="https://habr.com/ru/post/205616/">https://habr.com/ru/post/205616/</a></p>
+09/12/2013</div><p>Source: https://habr.com/ru/post/205616/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../205598/index.html">Released - Nanocad 5.1 FREE</a></li>
 <li><a href="../205600/index.html">Google introduced the LG G Pad 8.3, Sony Z Ultra and white Nexus 7</a></li>
 <li><a href="../205608/index.html">Why switch to DDR4?</a></li>
+<li><a href="../20561/index.html">Comment spammer note</a></li>
 <li><a href="../205612/index.html">How SmartTV forgot about the main thing</a></li>
 <li><a href="../205614/index.html">How to "send" the client</a></li>
+<li><a href="../20562/index.html">Engineers made a plan for the 21st century</a></li>
 <li><a href="../205620/index.html">Using SQLite in Android development. Tips and tricks</a></li>
 <li><a href="../205622/index.html">Optimization of Android applications for x86. 2GIS Experience</a></li>
 <li><a href="../205626/index.html">Python for microcontrollers</a></li>
-<li><a href="../205636/index.html">Central Bank of Russia approved the official sign of the ruble</a></li>
-<li><a href="../205638/index.html">Xperia and KitKat</a></li>
+<li><a href="../205630/index.html">Electronic children on billboards react to real planes</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Linux at home or ...</h1><div class="post__text post__text-html js-mediator-article"><h1 id="kak-zastavit-linux-zapuskat-cherez-wine-professionalnyy-soft-na-primere-adobe-photoshop-ss-2018-bez-ispolzovaniya-instrumentariya-play-on-linux">  How to make Linux run professional software through Wine using the example of Adobe Photoshop CC 2018 without using the Play on Linux toolkit. </h1><br><p>  All that will be written under the cat is an experiment that you yourself can crank on your workstation with the operating system based on the Linux kernel or on macOS as you like. </p><a name="habracut"></a><br><h2 id="podgotovka-k-eksperimentu">  Preparing for the experiment </h2><br><p>  You will first need a basic toolkit with which we will work. </p><br><p>  In my case it is: </p><br><ul><li>  Distribution Archlinux.  <a href="https://www.archlinux.org/">#</a> </li><li>  Wine Staging with Gallium Nine support, version 3.13 <br>  And also the necessary software (Adobe Photoshop CC 2018 is specified as an experimental example) </li></ul><br><h2 id="pervyy-etap">  First stage </h2><br><h3 id="podgotovka-rabochego-prostranstva">  Workspace preparation </h3><br><p>  The first thing we need to do at this stage is to force Wine to create a working directory with the parameters we need. </p><br><blockquote>  This is done quite simply: <br><pre><code class="hljs 1c">WINEARCH=win32 <span class="hljs-meta"><span class="hljs-meta"># </span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword"></span></span></span><span class="hljs-meta"> win64      </span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword"></span></span></span><span class="hljs-meta">    WINEPREFIX=$HOME/.WineExperiment # </span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword"></span></span></span><span class="hljs-meta">    export WINEARCH export WINEPREFIX #               wine wineboot # </span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword"></span></span></span><span class="hljs-meta">    WINEARCH  WINEPREFIX    </span></span></code> </pre> <br></blockquote><br><h3 id="podgotovka-k-ustanovke-i-ustanovka">  Preparing for installation and installation </h3><br><p>  In the future, we will need the tools winedump, grep and winetricks.  <a href="https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks">#</a> </p><br><p>  Using <code>winedump dump &lt;&gt; -j import | grep offset</code>  <code>winedump dump &lt;&gt; -j import | grep offset</code> find the necessary libraries to work with the installer. </p><br><p>  In my case, everything you need is already in the standard environment. </p><br><p>  And if you need components to run the installer, then you need to follow these lines. </p><br><pre> <code class="hljs nginx"><span class="hljs-attribute"><span class="hljs-attribute">wget</span></span> &lt;  <span class="hljs-comment"><span class="hljs-comment">#&gt; chmod +x ./winetricks ./winetricks --gui #     </span></span></code> </pre> <br><blockquote>  For the curious <br>  If you need a winetricks installed in the environment, then either download it to the $ HOME / bin directory, then set the execution rights to this file and then add it to the PATH variable in .bashrc, or use the package manager to install it. <br>  In my case, I use the universal method available in many distributions: <br><pre> <code class="hljs sql">pkcon <span class="hljs-keyword"><span class="hljs-keyword">install</span></span> winetricks</code> </pre> <br></blockquote><p>  Let's try to start the installer using <code>WINEDLLOVERRIDES=winemenubuilder.exe=d wine &lt;&gt;</code> . </p><br><blockquote>  For the curious. <br>  You have the right to use <code>WINEDEBUG=info</code> to detect errors in the work of the installer. <br><br>  For the unknowing <br>  <code>WINEDLLOVERRIDES=winemenubuilder.exe=d</code> disables the creation of shortcuts and types. </blockquote><br><h2 id="vtoroy-etap">  Second phase </h2><br><h3 id="zapusk-i-poisk-problem">  Run and search for problems </h3><br><p>  For this stage, we need the same tools that are used in the first stage. </p><br><p>  Run the <code>wine cmd</code> to enter the work environment. <br>  Using the <code>cd</code> go to the folder with the program and run it. </p><br><p>  If necessary, enter or register.  In my case, I use this program in trial mode because there is no money. </p><br><p>  And it starts and runs without kicks, but not everything is as smooth as it seemed. </p><br><p>  Photoshop saw that I was using a graphics card with an insufficient amount of video memory, and therefore I would have to discard some functions such as 3D and a small number of filters. </p><br><blockquote>  Decision <br><pre> <code class="hljs 1c">./winetricks settings videomemorysize=<span class="hljs-number"><span class="hljs-number">512</span></span> <span class="hljs-meta"><span class="hljs-meta">#     </span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword"></span></span></span><span class="hljs-meta"> </span></span></code> </pre> <br></blockquote><p>  On closing, Photoshop produced an error in the CEPHtmlEngine subroutine. </p><br><blockquote>  Decision <br>  This error appears only once.  You can ignore her. </blockquote><br><h2 id="otchet">  Report </h2><br><p>  As part of this experiment, you can verify that the software is working on a platform that is clearly incompatible to run with standard settings. <br>  But as follows from the experiment, there were no problems requiring any actions from the user, I deliberately did not consider the problems associated with the graphics card and where the solution is simply to close the error report window as one that requires additional actions. </p><br><h4 id="ps">  PS </h4><br><p>  Write in the comments if something is not clear, we will understand together or vice versa, to supplement the text of the article with your sentence. </p><br><p>  Thank you for your time. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/421703/">https://habr.com/ru/post/421703/</a></p>
+    <p>Source: https://habr.com/ru/post/421703/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../421691/index.html">Statistical Process Management (Part 1. Implementation Experience)</a></li>
-<li><a href="../421693/index.html">The Story Of An API: How We Turned Frankenstein Into A Handsome Boy</a></li>
 <li><a href="../421695/index.html">[Not] ordinary networks: how to detect water in your bag using Wi-Fi</a></li>
 <li><a href="../421699/index.html">How to get rid of errors with tables of Active Object when restoring Jira from backup</a></li>
+<li><a href="../4217/index.html">YouTube wants independence</a></li>
+<li><a href="../42170/index.html">User Experience 2008</a></li>
 <li><a href="../421701/index.html">Sandbox and Python Learning Cheat Sheet</a></li>
 <li><a href="../421705/index.html">Automation against chaos</a></li>
 <li><a href="../421707/index.html">FB2D - 2D framework for Linux Frame Buffer (Rust)</a></li>
 <li><a href="../421709/index.html">New (and old) units of measure in CSS that you’d hardly heard of</a></li>
+<li><a href="../42171/index.html">Would you be interested in articles on the language Parser studio Lebedev?</a></li>
 <li><a href="../421711/index.html">Analysis of service requests using machine learning</a></li>
-<li><a href="../421713/index.html">How to find bots on YouTube: external commentator interaction patterns</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

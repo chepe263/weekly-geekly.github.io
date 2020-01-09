@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The simplest reminder of bash dumplings</h1><div class="post__text post__text-html js-mediator-article">  Since I was so lazy that I started brewing tea right in a mug, I started using the teatime applet.  Already after the third day, the setting “Dumplings” started there.  Of course, not the best solution, given the characteristics of the cooking process of this wonderful dish. <br>  Since I too was too lazy to write an applet, I decided to jot down a tiny reminder script. <br><br><h4>  So, setting the problem </h4><br>  The essence of the task is extremely simple - two timers, one notifies about boiling water, the second - about the readiness of the dish.  Notification is best accompanied by light effects for improved response. <br><br><h4>  Implementation </h4><br><a name="habracut"></a><br><h5>  Sketch </h5><br>  The simplest option can be described as: <br><ul><li>  wait for the nth amount of time </li><li>  notify boiling water </li><li>  wait for the nth amount of time </li><li>  notify of readiness </li></ul><br>  The notification itself consists of: <br><ul><li>  Standard notice </li><li>  Signal speaker </li><li>  Flashing drive door </li></ul><br><h5>  Training </h5><br>  Notification is done via <code>notify-send</code> .  Text message command: <br> <code>notify-send  </code> <br>  To be sure, set the <code>-t 10000</code> flag so that the message is held for 10 seconds. <br>  The signal is given by the speaker with the <code>beep</code> command.  Estets can edit the frequency and duration, but the default settings suit me. <br>  The door opens and closes with the commands <code>eject -r</code> and <code>eject -t</code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,15 +59,15 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      If there are no libraries, you can install them: <br> <code>sudo apt-get install libnotify-bin beep</code> <br> <br><h5>  Code </h5><br>  Without further ado, let's take the simplest one given above.  The only thing is we will put in a separate procedure all dances with notifications.  We give her the text and the number of beeps / door openings. <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh before_boil=8 after_boil=10 beep=true tray=true cry(){ notify-send -t 10000 "$2" "$3" i=$1 while [ $i -gt 0 ]; do if $beep; then beep; fi if $tray; then eject -r; eject -t; fi i=$(($i-1)) done } cry 0 " " "    .       " sleep ${before_boil}m cry 1 " " " ,  ,  .     -----" sleep ${after_boil}m cry 2 " " " , !"</span></span></code> </pre><br>  In the header of the configuration script: <br><ul><li>  time to boil </li><li>  cooking time (from boiling to readiness) </li><li>  whether to beep </li><li>  open drive </li></ul><br>  All intervals measured on its plate, adjust if necessary. </div><p>Source: <a href="https://habr.com/ru/post/127523/">https://habr.com/ru/post/127523/</a></p>
+      If there are no libraries, you can install them: <br> <code>sudo apt-get install libnotify-bin beep</code> <br> <br><h5>  Code </h5><br>  Without further ado, let's take the simplest one given above.  The only thing is we will put in a separate procedure all dances with notifications.  We give her the text and the number of beeps / door openings. <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh before_boil=8 after_boil=10 beep=true tray=true cry(){ notify-send -t 10000 "$2" "$3" i=$1 while [ $i -gt 0 ]; do if $beep; then beep; fi if $tray; then eject -r; eject -t; fi i=$(($i-1)) done } cry 0 " " "    .       " sleep ${before_boil}m cry 1 " " " ,  ,  .     -----" sleep ${after_boil}m cry 2 " " " , !"</span></span></code> </pre><br>  In the header of the configuration script: <br><ul><li>  time to boil </li><li>  cooking time (from boiling to readiness) </li><li>  whether to beep </li><li>  open drive </li></ul><br>  All intervals measured on its plate, adjust if necessary. </div><p>Source: https://habr.com/ru/post/127523/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../127516/index.html">Color techniques in web design</a></li>
 <li><a href="../127518/index.html">Delving deep into Graphics2D</a></li>
+<li><a href="../12752/index.html">Playstation 3 will receive a TV tuner</a></li>
 <li><a href="../127520/index.html">The effect of saving and loading the game state on the game process</a></li>
 <li><a href="../127521/index.html">You are not authorized by keys yet? Then we go to you</a></li>
 <li><a href="../127522/index.html">Developing a simple google chrome extension</a></li>
@@ -75,7 +75,7 @@
 <li><a href="../127525/index.html">Create a chat on Node.js and Socket.IO</a></li>
 <li><a href="../127526/index.html">How to make your home "smarter"?</a></li>
 <li><a href="../127529/index.html">JavaScript: handle include_once / import for PHP</a></li>
-<li><a href="../127530/index.html">Online identification in Yandex.Money through Alfa-Click</a></li>
+<li><a href="../12753/index.html">Update: Apple Safari 3.0.3 Beta</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Organization of web application development with jQuery widgets</h1><div class="post__text post__text-html js-mediator-article"><h4>  Problem </h4><br>  In this article, I wanted to share my experience in developing web applications using jQuery. <br>  During the process of writing business logic for a web application, it became necessary to competently build code for further development and refactoring of the project.  Since this was the first experience in the "web industry", it was decided to go ahead.  After some time, it became clear that the time to search for the required fragment takes much more than the development.  Next, I would like to offer my own vision of the proper organization and structuring of jQuery code. <br><a name="habracut"></a><br><h4>  Decision </h4><br>  Having studied the existing fashion trends, it became clear that the best use of patterns.  Their organization is similar to that found in other programming languages ​​and looks like this: <br>  - "constructor" (the method allows you to create or return the desired object) <br>  - base class (structure containing basic methods) <br>  - inherited class (structure containing additional methods, in addition to the base). <br>  Thus, you can rank JQuery to OOP, because at least polymorphism is present. <br>  Consider the constructs examined above in more detail.  First, consider the "constructor".  It is a function that allows you to create or obtain an instance of an object for further work with it.  The following code demonstrates its structure: <br><br>  $ .widget = function (name, object) { <br>  $ .fn [name] = function (options) { <br>  return this.each (function () { <br>  var instance = $ .data (this, name); // get the object if it was created otherwise an empty object <br><br>  if (! instance) { <br>  instance = $ .data (this, name, Object.create (object)); // create an object <br>  instance. (options, this);} // initialization <br>  }); <br>  }; <br>  }; 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      As you can see from the code, the mechanism is simple.  The task is reduced to the so-called caching of objects that are accessed by the key (name).  Also, when an object is created, it is initialized, but this action is not necessary, since delayed initialization is possible. <br>  Now consider how the classes should look like.  Let's start with the base class: <br><br>  var BaseCl = { <br>  init: function (options, element) { <br>  this.options = $ .extend ({}, this.options, options); // "glues" options options <br>  this.element = $ (element); // saves a reference to the base object <br>  }, <br><br>  options: { <br>  name: '' <br>  }, <br><br>  func1: function (val) { <br>  ... <br>  }, <br>  func2: function (val) { <br>  ... <br>  } <br>  }; <br><br>  The class contains the init method for initializing the necessary parameters as well as a set of additional methods and structures. <br>  And the last class, which is an extension of the base class, is inheritable: <br><br>  var ChildCl = BaseCl.extend ({ <br>  init: function (options, element) { <br>  this.options = $ .extend ({}, this.options, options); // "glues" options options <br>  this.element = $ (element); // saves a reference to the base object <br>  }, <br><br>  options: { <br>  name: '' <br>  }, <br><br>  func3: function () { <br>  ... <br>  }, <br>  func4: function () { <br>  ... <br>  } <br>  }); <br><br>  As you can see this class is attached to the base.  Since there is a definition of the initialization method in the definition of the class being listened to, this method will be overridden.  In addition, ChildCl allows you to call both methods defined in your body and methods of the next class. <br><br>  Lastly, I will give methods that allow you to access the objects created: <br><br>  $ .widget ('child', ChildCl); <br><br>  $ (document) .ready (function () { <br><br>  // call like this <br>  $ ('# div'). child ({name: 'hello world'}); <br>  var chld = $ ('# div'). data ('child'); <br>  chld.func1 (''); <br>  chld.func3 (); <br><br>  //or <br>  $ ('# div'). child ({name: 'hell'}); <br>  $ ('# div'). child ('func1', ''); <br><br>  }); <br><br><h4>  Conclusion </h4><br>  This structuring helped to more fully organize the interaction of application objects and reduce the time spent on searching and refactoring code. </div><p>Source: <a href="https://habr.com/ru/post/140009/">https://habr.com/ru/post/140009/</a></p>
+      As you can see from the code, the mechanism is simple.  The task is reduced to the so-called caching of objects that are accessed by the key (name).  Also, when an object is created, it is initialized, but this action is not necessary, since delayed initialization is possible. <br>  Now consider how the classes should look like.  Let's start with the base class: <br><br>  var BaseCl = { <br>  init: function (options, element) { <br>  this.options = $ .extend ({}, this.options, options); // "glues" options options <br>  this.element = $ (element); // saves a reference to the base object <br>  }, <br><br>  options: { <br>  name: '' <br>  }, <br><br>  func1: function (val) { <br>  ... <br>  }, <br>  func2: function (val) { <br>  ... <br>  } <br>  }; <br><br>  The class contains the init method for initializing the necessary parameters as well as a set of additional methods and structures. <br>  And the last class, which is an extension of the base class, is inheritable: <br><br>  var ChildCl = BaseCl.extend ({ <br>  init: function (options, element) { <br>  this.options = $ .extend ({}, this.options, options); // "glues" options options <br>  this.element = $ (element); // saves a reference to the base object <br>  }, <br><br>  options: { <br>  name: '' <br>  }, <br><br>  func3: function () { <br>  ... <br>  }, <br>  func4: function () { <br>  ... <br>  } <br>  }); <br><br>  As you can see this class is attached to the base.  Since there is a definition of the initialization method in the definition of the class being listened to, this method will be overridden.  In addition, ChildCl allows you to call both methods defined in your body and methods of the next class. <br><br>  Lastly, I will give methods that allow you to access the objects created: <br><br>  $ .widget ('child', ChildCl); <br><br>  $ (document) .ready (function () { <br><br>  // call like this <br>  $ ('# div'). child ({name: 'hello world'}); <br>  var chld = $ ('# div'). data ('child'); <br>  chld.func1 (''); <br>  chld.func3 (); <br><br>  //or <br>  $ ('# div'). child ({name: 'hell'}); <br>  $ ('# div'). child ('func1', ''); <br><br>  }); <br><br><h4>  Conclusion </h4><br>  This structuring helped to more fully organize the interaction of application objects and reduce the time spent on searching and refactoring code. </div><p>Source: https://habr.com/ru/post/140009/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -77,7 +77,7 @@
 <li><a href="../140012/index.html">Fair generation of DOCX files in PHP. Part 2</a></li>
 <li><a href="../140014/index.html">Commentary of the day: Everyone's irish on March 17th!</a></li>
 <li><a href="../140016/index.html">A series of meetings with Dmitry Grishin students</a></li>
-<li><a href="../140019/index.html">Changes on Habré eyes of the developer from</a></li>
+<li><a href="../140018/index.html">As we celebrated March 8</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

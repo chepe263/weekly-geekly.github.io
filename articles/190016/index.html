@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>ntdll! LdrHotPatchRoutine & DEP / ASLR bypass (MS13-063)</h1><div class="post__text post__text-html js-mediator-article">  Yesterday, Microsoft released a set of security updates for its products, among which was the <a href="https://technet.microsoft.com/en-us/security/bulletin/ms13-063">MS13-063</a> update, which fixes the ability to bypass such "mitigating" exploitation mechanisms as DEP &amp; ASLR.  Techniques to bypass these mechanisms in exploits were demonstrated by NSFocus Security Labs rewriters at the CanSecWest and VUPEN conferences at Pwn2Own 2013. <br><br>  We have already <a href="http://habrahabr.ru/company/eset/blog/184428/">written</a> about the EMET v4 mechanisms, in which the possibility appeared to counteract the use of the <i>ntdll! LdrHotPatchRoutine method</i> for loading the code of the desired library in memory, bypassing so.  restrictions imposed by DEP &amp; ASLR.  <i>LdrHotPatchRoutine is</i> used by the OS as part of hot patching (repairing components without rebooting) and allows you to load dynamic libraries from various locations, including the network (via UNC addresses).  MS13-063 introduces a fix for the OS, similar in capabilities to that demonstrated in EMET. <br><br><img src="https://habrastorage.org/storage2/e7b/7cd/1b4/e7b7cd1b474695ae97ac2f11c1acbd50.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Operation of <i>LdrHotPatchRoutine</i> is closely related to the ASLR bypass using the well-known UserSharedData structure (KUSER_SHARED_DATA), which is projected to hard-coded addresses in user mode (0x7ffe0000) and in kernel mode (0xffdf0000).  The structure is used to quickly access OS components operating in user mode and the kernel to some shared service data (debug information, timer information, OS version, etc.).  When using some function pointers in UserSharedData, an attacker can quickly figure out the address of the desired function.  In particular, 64-bit versions of Windows prior to Windows 8 stored in this structure pointers to the functions of the 32-bit version of ntdll, which the OS uses for WoW64. <br><br><a name="habracut"></a><img src="https://habrastorage.org/storage2/c62/87d/35c/c6287d35c755857bcb1828a68e2d7e49.png"><br><br>  Thus, the described method of operating UserSharedData &amp; LdrHotPatchRoutine is <i>the ability of an attacker to initiate a call to the undocumented function <i>LdrHotPatchRoutine</i> with the necessary argument through one of the pointers to UserSharedData</i> , which makes DEP &amp; ASLR useless.  MS13-063 aims to eliminate the desired pointer in UserSharedData so that an attacker cannot predict the address of <i>LdrHotPatchRoutine</i> .  The screenshot below shows a part of UserSharedData, where you can see that the update has eliminated other function pointers in the structure (to prevent their possible exploitation in the future). <br><br><img src="https://habrastorage.org/storage2/a8c/1c0/096/a8c1c0096d54b37d2e0d63cca34dfc14.png"><br><br>  The function pointers have been moved to the ntdll! LdrSystemDllInitBlock structure, i.e.  making it in the field of view of the ASLR, which eliminates the possible disclosure of the address in the future. <br><br><img src="https://habrastorage.org/storage2/9cc/5c8/eb2/9cc5c8eb20de4e0fef190d9fe0087a5b.png"><br><br>  <a href="http://blogs.technet.com/b/srd/archive/2013/08/12/mitigating-the-ldrhotpatchroutine-dep-aslr-bypass-with-ms13-063.aspx">http://blogs.technet.com/b/srd/archive/2013/08/12/mitigating-the-ldrhotpatchroutine-dep-aslr-bypass-with-ms13-063.aspx</a> </div><p>Source: <a href="https://habr.com/ru/post/190016/">https://habr.com/ru/post/190016/</a></p>
+      Operation of <i>LdrHotPatchRoutine</i> is closely related to the ASLR bypass using the well-known UserSharedData structure (KUSER_SHARED_DATA), which is projected to hard-coded addresses in user mode (0x7ffe0000) and in kernel mode (0xffdf0000).  The structure is used to quickly access OS components operating in user mode and the kernel to some shared service data (debug information, timer information, OS version, etc.).  When using some function pointers in UserSharedData, an attacker can quickly figure out the address of the desired function.  In particular, 64-bit versions of Windows prior to Windows 8 stored in this structure pointers to the functions of the 32-bit version of ntdll, which the OS uses for WoW64. <br><br><a name="habracut"></a><img src="https://habrastorage.org/storage2/c62/87d/35c/c6287d35c755857bcb1828a68e2d7e49.png"><br><br>  Thus, the described method of operating UserSharedData &amp; LdrHotPatchRoutine is <i>the ability of an attacker to initiate a call to the undocumented function <i>LdrHotPatchRoutine</i> with the necessary argument through one of the pointers to UserSharedData</i> , which makes DEP &amp; ASLR useless.  MS13-063 aims to eliminate the desired pointer in UserSharedData so that an attacker cannot predict the address of <i>LdrHotPatchRoutine</i> .  The screenshot below shows a part of UserSharedData, where you can see that the update has eliminated other function pointers in the structure (to prevent their possible exploitation in the future). <br><br><img src="https://habrastorage.org/storage2/a8c/1c0/096/a8c1c0096d54b37d2e0d63cca34dfc14.png"><br><br>  The function pointers have been moved to the ntdll! LdrSystemDllInitBlock structure, i.e.  making it in the field of view of the ASLR, which eliminates the possible disclosure of the address in the future. <br><br><img src="https://habrastorage.org/storage2/9cc/5c8/eb2/9cc5c8eb20de4e0fef190d9fe0087a5b.png"><br><br>  <a href="http://blogs.technet.com/b/srd/archive/2013/08/12/mitigating-the-ldrhotpatchroutine-dep-aslr-bypass-with-ms13-063.aspx">http://blogs.technet.com/b/srd/archive/2013/08/12/mitigating-the-ldrhotpatchroutine-dep-aslr-bypass-with-ms13-063.aspx</a> </div><p>Source: https://habr.com/ru/post/190016/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../190022/index.html">Automotive technology. IT look</a></li>
 <li><a href="../190024/index.html">Elsevier - my contribution to his fall [translation]</a></li>
 <li><a href="../190028/index.html">Little Things to Remember When Using RavenDB</a></li>
-<li><a href="../190032/index.html">ARMs for the little ones: what time is it?</a></li>
+<li><a href="../19003/index.html">A bit of practice: hotkeys with jQuery</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

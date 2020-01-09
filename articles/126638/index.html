@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Fast update of projects on client servers via FTP</h1><div class="post__text post__text-html js-mediator-article"><h4>  Task </h4><br>  Often we have to deal with long-term projects that require development on a test server under Linux, and after checking by the client, updating the code on its server.  Of course, it makes sense to use a version control system (we use SVN), and when there is access to the client server via SSH, it suffices to do the command svn update or svn checkout, for example. <br><br><h4>  Problem </h4><br>  However, when the client server has only FTP access, you have to upload updates manually using one of the alternatives: <br>  - copy all project files via FTP in order not to miss anything <br>  - make a list of files that have been changed since the previous release, and upload only them. <br><br><h4>  Decision </h4><br>  I want to share a solution that allows you to automate this process, and update the project on the client server by simply running the script on your dev server.  To do this, it is proposed to write a simple Shell script that will do the following: <br>  1) Export project code from version control system <br>  2) Update the project code on the client server <br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The solution to the first problem is extremely simple: <br> <code>#     <br> rm -r /home/project/release_folder/ <br> #      <br> svn export --force http//svn.yourserver.com/repositary_name /home/project/release_folder/</code> <br> <br>  In this case, of course, depending on the version control system used, parameters can be set, for example, to post a specific revision to the release. <br><br>  To solve the second problem, you can use the lftp command, which has a large set of parameters and allows extensive file manipulations using the ftp protocol: <br><br>  # sync folder with release with folder on remote client server <br> <code>lftp -f sync_script.x</code> <br> <br>  Contents of the sync_script.x file: <br> <code>open login:password@customerserver.com <br> mirror -c -e -R -X '*.config.php' --no-perms /home/project/release_folder htdocs/sub <br> exit</code> <br> <br>  As you can see, this command allows you to create an exact mirror of the folder with the release on a remote client server.  In this case, we can, for example, using its parameters, prohibit updating certain files, or changing the permissions of files on a remote server. <br><br>  Having made such a script on your server, it is enough to start it, and wait a couple of seconds until it updates the release folder and synchronizes its contents with the client server via FTP.  It saves great time and nerves + eliminates the “human factor”.  By expanding this script, you can update the project on at least a hundred servers in just a couple of minutes. </div><p>Source: <a href="https://habr.com/ru/post/126638/">https://habr.com/ru/post/126638/</a></p>
+      The solution to the first problem is extremely simple: <br> <code>#     <br> rm -r /home/project/release_folder/ <br> #      <br> svn export --force http//svn.yourserver.com/repositary_name /home/project/release_folder/</code> <br> <br>  In this case, of course, depending on the version control system used, parameters can be set, for example, to post a specific revision to the release. <br><br>  To solve the second problem, you can use the lftp command, which has a large set of parameters and allows extensive file manipulations using the ftp protocol: <br><br>  # sync folder with release with folder on remote client server <br> <code>lftp -f sync_script.x</code> <br> <br>  Contents of the sync_script.x file: <br> <code>open login:password@customerserver.com <br> mirror -c -e -R -X '*.config.php' --no-perms /home/project/release_folder htdocs/sub <br> exit</code> <br> <br>  As you can see, this command allows you to create an exact mirror of the folder with the release on a remote client server.  In this case, we can, for example, using its parameters, prohibit updating certain files, or changing the permissions of files on a remote server. <br><br>  Having made such a script on your server, it is enough to start it, and wait a couple of seconds until it updates the release folder and synchronizes its contents with the client server via FTP.  It saves great time and nerves + eliminates the “human factor”.  By expanding this script, you can update the project on at least a hundred servers in just a couple of minutes. </div><p>Source: https://habr.com/ru/post/126638/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,10 +73,10 @@
 <li><a href="../126636/index.html">Goblin launches discount service</a></li>
 <li><a href="../126637/index.html">Meet Skitch for Android</a></li>
 <li><a href="../126639/index.html">Leading experts of the world will perform at Tech ∙ Ed Russia 2011: Rafal Lukavetski</a></li>
+<li><a href="../12664/index.html">Details about Medison Celebrity: there will be no freebies !?</a></li>
 <li><a href="../126640/index.html">Advanced IP Scanner beta testing: Radmin licenses to the best beta testers!</a></li>
 <li><a href="../126641/index.html">YouTube video quests - new trend?</a></li>
 <li><a href="../126642/index.html">Sharing YouTube videos with Hangouts</a></li>
-<li><a href="../126643/index.html">Persistent non-blocking cookies using HTTP headers</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

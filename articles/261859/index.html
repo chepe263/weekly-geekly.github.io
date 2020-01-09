@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Animation of filtering markers in Yandex Maps API</h1><div class="post__text post__text-html js-mediator-article">  The latest version of the Yandex Maps API is all good.  But there is no limit to perfection.  I wanted to filter objects on the map via fade. <br>  Let's see if this is possible. <br><img src="https://habrastorage.org/files/b5e/08f/107/b5e08f10702044a9a345439df129e749.gif"><br><a name="habracut"></a><br>  The task is to filter one or more objects on the map, hiding the rest with the effect.  For example, with increasing transparency. <br>  We start to dig. <br>  Access to DOM elements of markers, like other geo objects, is absent in the API.  That, in general, is correct.  Depending on the browser and the way geo objects are displayed, this can be either a few nested DOM elements or a picture drawn on the canvas. <br>  Digging deeper.  What we have is, where can we get a DOM element to later assign it a css class with transition and opacity? <br>  Here it is - the pane property in options for a geoobject. <br>  Each geoobject has a layer (pane) to which it is displayed. <br>  Let's see what layers there are: <br><blockquote>  'ground': pane.MovablePane (zIndex: 100) - the lowest bottom to accommodate the map substrate; <br>  'areas': pane.MovablePane (zIndex: 200) —Pain of polygon objects, such as polygons; <br>  'shadows': pane.MovablePane (zIndex: 300) - payne shadows of map objects that are higher; <br>  'places': pane.MovablePane (zIndex: 400) - payne point objects, such as labels; <br>  'events': pane.EventsPane (zIndex: 500) - the payne, intended for listening to map events; <br>  'overlaps': pane.MovablePane (zIndex: 600) - Payne for objects that do not require, the use of active areas to implement their interactivity; <br>  'balloon': pane.MovablePane (zIndex: 700) - balun pein; <br>  'outerBalloon': pane.MovablePane (zIndex: 800) - external paleun balun; <br>  'controls': pane.StaticPane (zIndex: 900) - map controls; <br>  'copyrights': pane.StaticPane (zIndex: 1000) - Pein copyrights; <br>  'hint': pane.StaticPane (zIndex: 1100) - Payne hint; <br>  'outerHint': pane.StaticPane (zIndex: 1200) - external paint hint. <br></blockquote><br>  Now we are interested in the <b>places</b> layer <br>  There is also a layer of shadows and areas.  So, if we have objects with shadows or polygons, we will have to work with them. <br>  But now we are interested in the principle itself. <br>  Each layer has a property getElement (), which gives us access to the DOM element. <br>  Let's add another layer to the map. <br><pre><code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> selectedPane = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> ymaps.pane.MovablePane(myMap, { <span class="hljs-attr"><span class="hljs-attr">zIndex</span></span>: <span class="hljs-number"><span class="hljs-number">420</span></span>}), myMap.panes.append(<span class="hljs-string"><span class="hljs-string">'selected'</span></span>, selectedPane);</code> </pre> <br>  Now, add the styles <br><pre> <code class="css hljs"><span class="hljs-selector-class"><span class="hljs-selector-class">.hiding</span></span> <span class="hljs-selector-tag"><span class="hljs-selector-tag">ymaps</span></span> { <span class="hljs-attribute"><span class="hljs-attribute">transition</span></span>: opacity <span class="hljs-number"><span class="hljs-number">1s</span></span>; } <span class="hljs-selector-class"><span class="hljs-selector-class">.hidden</span></span> <span class="hljs-selector-tag"><span class="hljs-selector-tag">ymaps</span></span> { <span class="hljs-attribute"><span class="hljs-attribute">opacity</span></span>: <span class="hljs-number"><span class="hljs-number">0</span></span>; }</code> </pre><br>  Now we can set our main layer, to which labels are displayed, css-class <br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> placesPane = myMap.panes.get(<span class="hljs-string"><span class="hljs-string">'places'</span></span>).getElement(); $(placesPane).addClass(<span class="hljs-string"><span class="hljs-string">'hiding'</span></span>);</code> </pre><br>  Fine!  Now, if we set the css-class <b>hiding</b> and <b>hidden to</b> our main layer, we get the damping effect in 1 second! <br>  It remains to make sure that the selected (filtered) markers do not disappear together in the rest. <br>  And for this we have a new layer <b>selectedPane</b> ! <br>  Moving our tags to selectedPane <br><pre> <code class="javascript hljs">myPlaceMark.options.set(<span class="hljs-string"><span class="hljs-string">'pane'</span></span>, <span class="hljs-string"><span class="hljs-string">'selected'</span></span>);</code> </pre><br>  And set the layer with the other labels css-class hidden. <br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> placesPane = myMap.panes.get(<span class="hljs-string"><span class="hljs-string">'places'</span></span>).getElement(); $(placesPane).addClass(<span class="hljs-string"><span class="hljs-string">'hidden'</span></span>);</code> </pre><br>  Oh yeah!  Everything fades nicely. <br><br>  In a <a href="http://jsfiddle.net/29g3oyfs/10/">fidle,</a> tags are filtered by clicking on a tag and are returned back in a second. <br>  The same can be done with collections, filters, etc. <br>  You can add other effects. <br>  For example, you can specify transform elements (translate (@x, @y)) with random coordinates outside the viewport — then the labels will “scatter” when filtered.  The scope for fantasy is huge here. <br><br>  Hope this was helpful. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/261859/">https://habr.com/ru/post/261859/</a></p>
+    <p>Source: https://habr.com/ru/post/261859/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../261849/index.html">Elm or functional programming for the web, understandable to the teapot</a></li>
+<li><a href="../26185/index.html">Phone for $ 10</a></li>
 <li><a href="../261851/index.html">Windows 10 IoT - a small overview of the new edition of the OS for small devices</a></li>
 <li><a href="../261853/index.html">Xonix to Javascript with pictures</a></li>
 <li><a href="../261855/index.html">RTCOMM fell</a></li>
 <li><a href="../261857/index.html">7 rules for creating beautiful interfaces</a></li>
+<li><a href="../26186/index.html">Google App Engine: templates and statics (css, js, images)</a></li>
 <li><a href="../261861/index.html">Mail server on own site with postfix</a></li>
 <li><a href="../261863/index.html">We write maintainable code</a></li>
+<li><a href="../26187/index.html">Generation Next</a></li>
 <li><a href="../261871/index.html">"Under the hood" Postgres indexes</a></li>
-<li><a href="../261873/index.html">AccountLogic 2.0: brought to mind, but not to the end</a></li>
-<li><a href="../261875/index.html">What to choose - Kavaynost, Robosity or Sociality?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

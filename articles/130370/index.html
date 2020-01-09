@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The dangers of the finalize method</h1><div class="post__text post__text-html js-mediator-article">  While writing an article about <a href="http://www.javaspecialist.ru/2012/08/blog-post.html">using phantom links,</a> I needed to refer to the inconvenience arising from working with the finalize method.  In addition, I believe that this topic will be useful to all java developers who are beginning java, and some points will not be superfluous to remember even experienced programmers, because using the finalize method is very simple, which cannot be said about searching for the last thing.  Even if you firmly believe never to use the finalize method, this does not mean that your previous colleagues did not use them, and you do not need to understand how they work. <br><a name="habracut"></a><br>  So, let's go from the obvious to the less intuitive. <br><ol><li>  Since the finalize method is called at the first garbage collection following the moment when your object became unreachable, it is quite possible that it will not be called at all, because your application can finish its work without reaching this garbage collection itself.  Although, of course, there is one remarkable method <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/System.html">System.runFinalizersOnExit (true)</a> , which <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/System.html">causes</a> that at the start of the program, the finalize method will still work for objects that are already unattainable during the correct shutdown of the application. </li><li>  The JVM specification does not define the question of the multithreading method of finalization.  In HotSpot, all finalize methods will be called sequentially in one Finalizer thread.  However, if you call the <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/System.html">System.runFinalization ()</a> method, another thread will be born that will block the current one and will execute the finalize methods if the appropriate objects are in the queue.  And this may well occur parallel to the main stream Finalizer. </li><li>  Redefining the finalize method significantly extends the lifetime of the object after death, since it will not be removed from memory until the second garbage collection.  And considering the first two points, if you have a finalize method that is heavy and / or there are a lot of such objects, then objects can hang for a long time in the finalization phase and continue to occupy space in the memory. </li><li>  During the execution of the finalize method, you can restore an object reference, for example, by placing it in some static context, thereby resurrecting the object.  The danger of such a maneuver is that the second time the method finalize this object will never be called.  Therefore, if for some reason you really need to resurrect this object, then it’s better to create a copy inside the finalize method. </li><li>  One of the most unpleasant problems encountered when using the finalize method is reordering.  Imagine that you have two objects with an overridden finalize method, one of which refers to the other.  So, if these objects have become unattainable, then the order of calling the methods of finalization will occur in a random order.  Thus, you will have the potential danger of invoking some method on an already finalized object from the finalize method of another object and getting an error.  And the problem will not occur on every object, which will add a headache when debugging. </li><li>  According to Joshua Bloch, author of the famous book “Effective Java: Programming Language Guide”, for objects with a redefined method finalize, allocation and assembly can occur 430 times slower than a regular object. </li><li>  Any exceptions thrown in the method body will be ignored. </li><li>  One should not forget to call super.finalize () at the end of the method.  And given the previous point, this should be done in the finally block. </li></ol><br>  According to the above, the use of the finalize method should be avoided if possible; rather, you should not rely on it.  It is better to free resources programmatically, and in the finalize method to log if this was not done for some reason, in order to find and fix the problem in time. <br>  If, however, you still need to release resources during the assembly of the object, then most likely it is better to <a href="http://www.javaspecialist.ru/2012/08/blog-post.html">use phantom links</a> for this <a href="http://www.javaspecialist.ru/2012/08/blog-post.html">.</a> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/130370/">https://habr.com/ru/post/130370/</a></p>
+    <p>Source: https://habr.com/ru/post/130370/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

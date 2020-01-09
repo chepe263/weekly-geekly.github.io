@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Googlebot strange behavior</h1><div class="post__text post__text-html js-mediator-article">  Recently, when logging into Google Webmaster Tools, I began to notice on my site an increase in the number of “Transition failed” errors, which in my case arose due to the so-called cyclic redirection.  Such are the features used by the "engine" of the site.  But in none of the browsers this error was repeated, when requested by "hands", that is, via telnet - no anomalies were noticed either.  Nevertheless, errors in the GWT continued to appear again and again, pointing to the same URLs of my site and annoying only by their existence.  I had to think hard of it, but I still managed to get to the bottom of the problem. <br><a name="habracut"></a><br>  So, there is a tag cloud on the site that generates links of the form: / blog / tag / tag_name /.  Since tags are set by users, they can contain almost any UTF-8 character.  In addition, on such pages (with topics on a specific tag) periodically put links from other sites / social networks / forums.  Often, due to differences in URL coding methods, these links lead to non-canonical pages. <br><br>  I will give an example.  There is a “Harry Potter” tag, which in encoded form can be either “Harry + Potter” or “Harry% 20potter”.  The site can be links with both options.  But for the site's engine, when REQUEST_URI is decoded, these links are absolutely identical, which is why duplicate pages appear, which the search engines dislike very much.  To combat these duplicates when loading the page, I decode the URL, and then encode it back with the PHP function <a href="http://php.net/urlencode">urlencode ()</a> and compare it with the originally requested string.  If they do not match, give the 301st code to the browser and send it to the correct URL.  Thus, double pages in the eyes of the search engine are “glued together”. <br><br>  It seems to be pretty simple.  Why did Googlebot get hung up on some of these links?  Fortunately, GWT has a special feature - “View as Googlebot”, which allows you to look at the site as if through the eyes of a search bot.  Well, we try.  For this example, I'll take another tag: “guns'n'roses”.  So, we tell the bot to load the page / blog / tag / guns'n'roses /.  The bot answers that everything is fine, the answer is received: <br><pre><code class="html hljs xml">HTTP/1.1 301 Moved Permanently ... Location: /blog/tag/guns%27n%27roses/</code> </pre> <br>  That's right, single quotes are encoded as% 27 according to <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC 3986</a> .  Ok, now we are trying to direct the bot to the URL / blog / tag / guns% 27n% 27roses / (as if we were a regular browser).  In response, we get: <br><pre> <code class="html hljs xml">HTTP/1.1 301 Moved Permanently ... Location: /blog/tag/guns%27n%27roses/</code> </pre><br>  and a remarkably fair at first glance: “A redirect to itself was found on the page.  This can lead to an endless redirect loop. ” 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      But in the server logs we see that in fact the request was again: “GET / blog / tag / guns'n'roses / HTTP / 1.1” instead of clearly and clearly stated “GET / blog / tag / guns% 27n% 27roses / Http / 1.1.  It turns out that Googlebot decided to interpret the value of the Location directive in its own way, spitting on the RFC, torturing itself and my site with meaningless requests. <br><br>  Further <a href="http://www.monperrus.net/martin/google%2Burl%2Bencoding">googling</a> helped to find out that Google’s search bot has particular sympathy for the following characters: <br> <b><code>, @ ~ * ( ) ! $ '</code></b> <br>  and does not convert them to the corresponding codes <br> <b><code>%2C %40 %7E %2A %28 %29 %21 %24 %27</code></b> <br>  how can it spoil your nerves and spend the time of already tortured webmasters :) </div><p>Source: <a href="https://habr.com/ru/post/151517/">https://habr.com/ru/post/151517/</a></p>
+      But in the server logs we see that in fact the request was again: “GET / blog / tag / guns'n'roses / HTTP / 1.1” instead of clearly and clearly stated “GET / blog / tag / guns% 27n% 27roses / Http / 1.1.  It turns out that Googlebot decided to interpret the value of the Location directive in its own way, spitting on the RFC, torturing itself and my site with meaningless requests. <br><br>  Further <a href="http://www.monperrus.net/martin/google%2Burl%2Bencoding">googling</a> helped to find out that Google’s search bot has particular sympathy for the following characters: <br> <b><code>, @ ~ * ( ) ! $ '</code></b> <br>  and does not convert them to the corresponding codes <br> <b><code>%2C %40 %7E %2A %28 %29 %21 %24 %27</code></b> <br>  how can it spoil your nerves and spend the time of already tortured webmasters :) </div><p>Source: https://habr.com/ru/post/151517/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../151508/index.html">Solving the problem of "empty admin" MODX Revo</a></li>
 <li><a href="../151510/index.html">The digest of interesting news and materials from the world of ayti for the last week №22 (September 8 - 14, 2012)</a></li>
 <li><a href="../151511/index.html">Once again about the unbearable ease of testing</a></li>
 <li><a href="../151512/index.html">Terminal Keynote - we show presentations in the terminal</a></li>
 <li><a href="../151514/index.html">Lighting model for two-dimensional horror games</a></li>
+<li><a href="../151516/index.html">Clover Trail will not work under Linux</a></li>
 <li><a href="../151518/index.html">IPv4 agony beginning: last / 8</a></li>
 <li><a href="../151520/index.html">Hewlett-Packard Company again thought about the release of a smartphone</a></li>
 <li><a href="../151521/index.html">Intel plans to do away with passwords "by the wave of the hand"</a></li>

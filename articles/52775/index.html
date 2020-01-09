@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We draw animated gifs with libgd.</h1><div class="post__text post__text-html js-mediator-article">  The point of this article is to give an idea of ​​using <a href="http://ru.wikipedia.org/wiki/GD">the GD library</a> in conjunction with C. <br><br>  Download libgd or read more about its use here: <a href="http://www.libgd.org/">http://www.libgd.org/</a> (eng.) <br><br>  After installing GD, the list of functions and the types of received / returned data can be viewed in the /usr/local/include/gd.h file (in my case, otherwise <b>sudo updatedb &amp;&amp; locate gd.h</b> ) to understand the purpose of functions is quite simple by their name. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The code of a small program with my description, which draws this: <br><br> <a href="http://tinypic.com/"><img src="https://habrastorage.org/getpro/habr/post_images/618/f1d/44c/618f1d44cd329e5672087dfe6fade9ed.gif" alt="Image and video hosting by TinyPic"></a> <br><br><a name="habracut"></a><br><br>  If anything is unclear, I’ll provide a more detailed explanation below. <br><br>  So, let's begin: <br><br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#008000">//   </font> <br> #include &lt;gd.h&gt; <br> #include &lt;stdio.h&gt; <br> <br> <font color="#0000ff">int</font> main( <font color="#0000ff">int</font> argc, <font color="#0000ff">char</font> **argv) { <br> <br> gdImagePtr im,im_clear; <font color="#008000">//        </font> <br> <font color="#0000ff">int</font> black, white, trans; <font color="#008000">//     </font> <br> FILE *out1; <font color="#008000">//   </font> <br> <br> im = gdImageCreate(100, 100); <font color="#008000">//    100100</font> <br> im_clear = gdImageCreate(100, 100); <br> <br> white = gdImageColorAllocate(im, 255, 255, 255); <font color="#008000">//  </font> <br> black = gdImageColorAllocate(im, 0, 0, 0); <br> trans = gdImageColorAllocate(im, 1, 1, 1); <br> <br> gdImageCopy (im_clear, im, 0,0,0,0, 100, 100); <font color="#008000">//    im  im_clear</font> <br> <font color="#0000ff">if</font> (argc&gt;1) out1 = fopen(argv[1], <font color="#A31515">"wb"</font> ); <font color="#0000ff">else</font> out1 = fopen( <font color="#A31515">"anim.gif"</font> , <font color="#A31515">"wb"</font> ); <font color="#008000">//      </font> <br> gdImageGifAnimBegin(im, out1, 1, 0); <font color="#008000">//  gif-</font> <br> <br> <font color="#0000ff">for</font> ( <font color="#0000ff">int</font> i=0;i&lt;25;i++) <br> { <br> gdImageCopy (im, im_clear, 0,0,0,0, 100, 100); <font color="#008000">//  im</font> <br> gdImageRectangle(im, i*2, i*2, 100-i*2-1, 100-i*2-1, black); <font color="#008000">//  </font> <br> gdImageGifAnimAdd(im, out1, 0, 0, 0, 10, 1, NULL); <font color="#008000">//   </font> <br> }; <br> <br> putc ( <font color="#A31515">';'</font> , out1); <font color="#008000">//    </font> <br> fclose(out1); <font color="#008000">// </font> <br> <br> gdImageDestroy(im); <font color="#008000">//   </font> <br> gdImageDestroy(im_clear); <br> <br> } <br></font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  Save the file <br>  compile it, in my case like this: <b>gcc-lgd filename_o-o imname executable_file</b> <br>  and run: <b>./ executable_file_name [where_save_picture]</b> <br><br>  upd: Ubuntu 8.10 OS was used in my case, in your case there may be minor differences in the commands. </div><p>Source: <a href="https://habr.com/ru/post/52775/">https://habr.com/ru/post/52775/</a></p>
+      The code of a small program with my description, which draws this: <br><br> <a href="http://tinypic.com/"><img src="https://habrastorage.org/getpro/habr/post_images/618/f1d/44c/618f1d44cd329e5672087dfe6fade9ed.gif" alt="Image and video hosting by TinyPic"></a> <br><br><a name="habracut"></a><br><br>  If anything is unclear, I’ll provide a more detailed explanation below. <br><br>  So, let's begin: <br><br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black"><font color="#008000">//   </font> <br> #include &lt;gd.h&gt; <br> #include &lt;stdio.h&gt; <br> <br> <font color="#0000ff">int</font> main( <font color="#0000ff">int</font> argc, <font color="#0000ff">char</font> **argv) { <br> <br> gdImagePtr im,im_clear; <font color="#008000">//        </font> <br> <font color="#0000ff">int</font> black, white, trans; <font color="#008000">//     </font> <br> FILE *out1; <font color="#008000">//   </font> <br> <br> im = gdImageCreate(100, 100); <font color="#008000">//    100100</font> <br> im_clear = gdImageCreate(100, 100); <br> <br> white = gdImageColorAllocate(im, 255, 255, 255); <font color="#008000">//  </font> <br> black = gdImageColorAllocate(im, 0, 0, 0); <br> trans = gdImageColorAllocate(im, 1, 1, 1); <br> <br> gdImageCopy (im_clear, im, 0,0,0,0, 100, 100); <font color="#008000">//    im  im_clear</font> <br> <font color="#0000ff">if</font> (argc&gt;1) out1 = fopen(argv[1], <font color="#A31515">"wb"</font> ); <font color="#0000ff">else</font> out1 = fopen( <font color="#A31515">"anim.gif"</font> , <font color="#A31515">"wb"</font> ); <font color="#008000">//      </font> <br> gdImageGifAnimBegin(im, out1, 1, 0); <font color="#008000">//  gif-</font> <br> <br> <font color="#0000ff">for</font> ( <font color="#0000ff">int</font> i=0;i&lt;25;i++) <br> { <br> gdImageCopy (im, im_clear, 0,0,0,0, 100, 100); <font color="#008000">//  im</font> <br> gdImageRectangle(im, i*2, i*2, 100-i*2-1, 100-i*2-1, black); <font color="#008000">//  </font> <br> gdImageGifAnimAdd(im, out1, 0, 0, 0, 10, 1, NULL); <font color="#008000">//   </font> <br> }; <br> <br> putc ( <font color="#A31515">';'</font> , out1); <font color="#008000">//    </font> <br> fclose(out1); <font color="#008000">// </font> <br> <br> gdImageDestroy(im); <font color="#008000">//   </font> <br> gdImageDestroy(im_clear); <br> <br> } <br></font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  Save the file <br>  compile it, in my case like this: <b>gcc-lgd filename_o-o imname executable_file</b> <br>  and run: <b>./ executable_file_name [where_save_picture]</b> <br><br>  upd: Ubuntu 8.10 OS was used in my case, in your case there may be minor differences in the commands. </div><p>Source: https://habr.com/ru/post/52775/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../52767/index.html">Why I will not be successful</a></li>
 <li><a href="../52768/index.html">US investors startups Web 2.0: your song is sung!</a></li>
 <li><a href="../52769/index.html">Hidden settings Safari 4</a></li>
+<li><a href="../5277/index.html">Google News will be integrated into Beeline wap-portal</a></li>
 <li><a href="../52771/index.html">4D games</a></li>
 <li><a href="../52772/index.html">The unofficial photos of the Motorola Android-smartphone got into the Internet</a></li>
 <li><a href="../52776/index.html">New W3C Standard Translation - Sparql protocol for RDF</a></li>
 <li><a href="../52777/index.html">Spam and asya</a></li>
 <li><a href="../52778/index.html">Cisco: Certification paths are inscrutable</a></li>
+<li><a href="../5278/index.html">Explode in the "Oh, work!" Development on the web and neveb</a></li>
 <li><a href="../52784/index.html">Feelings and Habr (web.12)</a></li>
-<li><a href="../52785/index.html">Linux server as a power supply</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

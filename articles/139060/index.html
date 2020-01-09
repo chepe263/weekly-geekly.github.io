@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using the result of jQuery.ajax outside the call function or you can do without cron</h1><div class="post__text post__text-html js-mediator-article"> Recently I started using jQuery.ajax.  In the process of writing a single script, I found that you cannot immediately use the ajax response of the request.  In my case, the request is sent to the server script, which in turn from a third-party domain fills the json file.  Firebug filling is tracked from 12 to 20 seconds, which is long enough by my standards (you can’t keep people waiting so much).  I came up with the following way out: <br><br>  Enter the global variable (date, exchange rate to the ruble): <a name="habracut"></a><br> <code>var jscurr = jQuery.parseJSON('{"data":"2012-01-22","USD":31.9344,"EUR":40.3842,"UAH":3.98135}')</code> <br> <br>  Our request for an external server: <br> <code>jQuery(document).ready(function() { <br> jQuery.ajax({ <br> type: "GET", <br> url: "proxy.php", <br> dataType: "script", <br> cashe: false, <br> complete: curencesjson(), <br> success: curencesjsonT() <br> }); <br> });// onLoad</code> <br> <br>  By complete, open the old json file, give the user the opportunity to start working with yesterday's data: <br> <code>function curencesjson() { <br> jQuery.ajax({ <br> url: 'curences.json', <br> dataType: "json", <br> cache: false, <br> success: function(jscur) { <br> jsreturn(jscur); <br> } <br> }); <br> <br> //    success <br> function jsreturn(jscur){ <br> jscurr = jscur; <br> } <br> }</code> <br> <br>  20 seconds after the start of proxy.php, until json is fully updated, we read it again, give out actual data to people, we do all this with success: <br> <code>function curencesjsonT() { <br> setTimeout(function(){ <br> jQuery.ajax({ <br> url: 'curences.json', <br> dataType: "json", <br> cache: false, <br> success: function(jscur) { <br> jsreturn(jscur); <br> } <br> }); <br> }, 20000); <br> } <br> <br> // success       <br></code> <br><br>  Thus, it was possible to start updating json data without cron.  Also the result of the ajax request is available outside the call function. <br>  In the server script, of course, a check by date is organized, the update will occur only once, with the arrival of the first visitor to the page with the script on each new day. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Maybe it could have been easier, but this is only the beginning of my experience. </div><p>Source: <a href="https://habr.com/ru/post/139060/">https://habr.com/ru/post/139060/</a></p>
+      Maybe it could have been easier, but this is only the beginning of my experience. </div><p>Source: https://habr.com/ru/post/139060/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

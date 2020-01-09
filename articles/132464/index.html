@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Graphical installation of Scientific Linux 6 on ServerLoft servers</h1><div class="post__text post__text-html js-mediator-article">  I have been using leased servers in some projects for a long time and one of the data centers I use is <a href="http://serverloft.com/">ServerLoft</a> . <br><br>  Recently (to be precise, after the release of RHEL6) it became necessary to install CentOS6 or SL6 on a server, but the problem is that ServerLoft does not offer the option of installing version 6 of the OS data (for now at least).  Manually installing the OS specialists of this DC do not produce. <br><br>  Almost all servers in ServerLoft are provided with IPMI / iLO / iRMC / etc.  Due to this fact, a text console can be obtained on the server, and even a graphical one for HP servers, and this makes it possible to install the required OS without any particular difficulties. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Details below. <a name="habracut"></a><br><br>  The installation of Scientific Linux 6 will be discussed below (the CentOS6 installation shouldn’t be any different, but I didn’t put the 6th CentOS because of its slow but sure departure to the dustbin of history, unfortunately for the community). <br><br>  If the server is just provided, then to start the installation of the SL6 you need to go to the interface of the ServerLoft personal account and install any version of CentOS5 (I usually install CentOS5 x86_64 minimal RAID1) through Restore. <br><br>  After a successful Restore procedure, you must have SSH root access to the target server. <br><br><h4>  IPMI </h4><br>  Typically, the Restore procedure involves automatically configuring the IPMI interface on the server. <br>  The IP address of the management interface (also known as IPMI) can be viewed in your account in the server description.  Immediately I recommend trying to access HTTPS at this IP address and make sure that you see something sane in the browser, otherwise you need to issue a ticket and inform the experts that you have problems with IPMI (such problems are usually solved by restarting power). <br><br>  Now you can go to the server and change the password to IPMI. <br><br>  Determine which IPMI channel is responsible for interacting with the network: <br><br> <code># for i in {0..15}; do ipmitool channel info $i 2&gt;/dev/null | grep -i LAN &gt; /dev/null &amp;&amp; echo $i; done</code> <br> <br>  Usually, channel 2 is responsible for LAN.  It will be used in the future.  If your script above returned something else, then this number should be used further. <br><br>  Now look at the list of users on the second channel: <br><br> <code># ipmitool user list 2</code> <br> <br>  Usually the list looks like this or similar: <br><pre> ID Name Enabled Callin Link Auth IPMI Msg Channel Priv Limit
@@ -328,12 +328,12 @@
  21:52:41 Please manually connect your client to loftXXXX.serverloft.com:1 (123.123.123.170) to begin the install.
  Press &lt;enter&gt; for a shell
  21:52:41 Starting graphical installation.
-</pre><br><br>  We are happy.  On a local system that runs in graphical mode, start the VNC client: <br><br> <code>$ vncviewer loftXXXX.serverloft.com:1</code> <br>  (or any other favorite VNC client) <br><br>  and make the installation in full graphical mode. <br><br>  PS <a href="http://fedoraproject.org/wiki/Anaconda/Options">Parameters</a> for the kernel, which are transferred to Anaconda during installation.  Here you can transfer the path to the kikcstart file and all network settings so that the system is installed automatically.  The kickstart file must first be written, but this article is not about how to write it, but only to show how to install a fresh OS in a convenient installer mode. <br>  PPS A text installation is quite suitable for someone, but unfortunately, you cannot fully configure mdraid and LVM. </div><p>Source: <a href="https://habr.com/ru/post/132464/">https://habr.com/ru/post/132464/</a></p>
+</pre><br><br>  We are happy.  On a local system that runs in graphical mode, start the VNC client: <br><br> <code>$ vncviewer loftXXXX.serverloft.com:1</code> <br>  (or any other favorite VNC client) <br><br>  and make the installation in full graphical mode. <br><br>  PS <a href="http://fedoraproject.org/wiki/Anaconda/Options">Parameters</a> for the kernel, which are transferred to Anaconda during installation.  Here you can transfer the path to the kikcstart file and all network settings so that the system is installed automatically.  The kickstart file must first be written, but this article is not about how to write it, but only to show how to install a fresh OS in a convenient installer mode. <br>  PPS A text installation is quite suitable for someone, but unfortunately, you cannot fully configure mdraid and LVM. </div><p>Source: https://habr.com/ru/post/132464/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../132458/index.html">zen koan for gamedev</a></li>
 <li><a href="../132459/index.html">Tsung: Web Application Load Testing</a></li>
+<li><a href="../13246/index.html">UFO Types</a></li>
 <li><a href="../132460/index.html">Games, squeezed out of the NES maximum (part 2)</a></li>
 <li><a href="../132461/index.html">Orange San Francisco II will be available in the UK soon</a></li>
 <li><a href="../132463/index.html">Reactive Extensions for javascript. Complete guide</a></li>
@@ -341,7 +341,7 @@
 <li><a href="../132466/index.html">Pianorama. Android and iOS apps</a></li>
 <li><a href="../132467/index.html">Does your team conduct code revisions?</a></li>
 <li><a href="../132469/index.html">Semiconductor devices - diode</a></li>
-<li><a href="../132471/index.html">Did you do Olympiad programming? Did you benefit from the experience?</a></li>
+<li><a href="../13247/index.html">Odnoklassniki launched clone Youtube</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

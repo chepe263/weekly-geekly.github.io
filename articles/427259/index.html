@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>What the Turing Test actually tests</h1><div class="post__text post__text-html js-mediator-article">  Some time ago I <a href="https://habr.com/post/427123/">offered to play Test Turing</a> with my bot Misha.  Who tried it, he knows that the robot player is determined elementarily.  Who has not tried, can read about it in the first comment under that article. <br><br>  Now the time has come to arrange a debriefing, tell about the device of the bot and draw conclusions. <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/wh/jf/st/whjfstnwrekjyudmitgjaqkhemi.png"></div><br><a name="habracut"></a><br><h2>  Rules of the game </h2><br>  The rules of the game were listed in the previous article, I repeat here, so that you and me do not follow the links. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <ol><li>  Each participant connected to the bot can take on the role of the player who answers the questions, or the judge who asks these questions. <br></li><li>  If a participant chooses to be a judge, the bot randomly selects a player for him - either among human players, or by connecting a robot.  That is, in the game, the respondent is always alone, and the judge asks questions only to him. <br></li><li>  If a participant chooses to be a player, then the bot likewise seeks him as a member of a participating judge <br></li><li>  The game is divided into tours of 5 questions.  At the end of each round, the judge decides with whom he communicates, with a person or with a car - this is where the game ends.  If he cannot decide, he can start the next round or give up, stopping the game. <br></li><li>  The robot plays the role of a little boy, Misha, five years old.  In order for the judge not to facilitate the task, it is recommended that the human player also respond on behalf of Misha. <br></li></ol><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/5o/hn/q3/5ohnq3poaw3kcy9hpq_g7utadbq.png"></div><br>  From the moment of launch until the writing of the article, 256 games were played (a bit strange, but true). <br><br>  Of these, we ended up with an obvious result, that is, both sides played until the end of the next round (no one played more than one round) and the judge made the decision - 115 games <br><br><ul><li>  solution "robot" - 74 </li><li>  decision "man" - 41 </li></ul><br>  There were 26 erroneous decisions, of which: <br><br><ul><li>  “robot” solution (actually a human being) - 15 </li><li>  decision "man" (actually a robot) - 11 </li></ul><br>  As you see, more often people were mistaken for robots than robots for humans. <br><br>  As a result, the robot was correctly defined in (74-15) / 115 = 51% of games, and the robot was taken for 11/115 = 9.5% of games, that is, we can confidently say that Misha-bot failed the test. <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/fl/9r/g8/fl9rg8vdr_04iztb-3u9kdkr-qk.png"></div><br>  For comparison, at a <a href="http://www.cnews.ru/news/top/rossijskij_konkurent_siri_priznan_luchshim">competition in 2012,</a> 29% of 150 conversations judges took the <a href="https://ru.wikipedia.org/wiki/%25D0%2596%25D0%25B5%25D0%25BD%25D1%258F_%25D0%2593%25D1%2583%25D1%2581%25D1%2582%25D0%25BC%25D0%25B0%25D0%25BD">bot-Odessa Zhenya Gustman</a> per person, and in 2014 - 33% of judges based on the results of 300 conversations. <br><h2>  What is under the hood </h2><br>  The bot is written in Python and by and large consists of three modules: <br><br><ul><li>  proper bot with game engine <br></li><li>  robot manager <br></li><li>  robot <br></li></ul><br>  The main game algorithm is contained in the Game class, which stores the participants' id and implements a simple state machine: <br><br><ul><li>  Beginning of the game <br></li><li>  We are waiting for a question from the judge <br></li><li>  Waiting for a response from the player <br></li><li>  We are waiting for a decision from the judge <br></li><li>  Game over <br></li></ul><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/ao/ih/3b/aoih3bnisp6g0rsvyhxswvm5oym.jpeg"></div><br>  On transitions between states, the bot passes the judge's questions to the player, the answers from the player to the judge.  It is transmitted only by one message and the bot becomes in the next state, so if someone tried to ask or answer two, he saw that the bot does not allow it. <br><br>  When the bot receives a response from the robot, it transmits it not immediately, but with a time delay - it did not immediately appear, I added it according to the remark <a href="https://habr.com/users/galqiwi/" class="user_link">galqiwi</a> , thank you. <br><br>  Each state change is saved in the SQLite database, in case of unforeseen situations - loss of power, reboot of the operating system, or simply the bot owner (I, I mean) wanted to stop it and redo something.  With the new launch, the bot loads the saved games from the database and the game continues. <br><br>  Further, there are two waiting lines - the judges waiting for the players, and the players waiting for the judges.  When a participant starts a new game, the corresponding queue is viewed, is there a partner for him.  If not, the member himself is queued. <br><br>  In a separate thread lives dispatcher robots.  He periodically scans the queue of judges waiting for players, and creates a copy of the robot for them.  It specifically made a delay so that the robot does not always have time to intercept the judge and the human player also had a chance to connect to the game.  The dispatcher has the ability to create different versions of robots, you just need to register their classes.  But so far only one has been implemented. <br><br>  And finally, the robot module.  But before telling about the inside of the robot, I’ll tell you about the question and answer database with which it works. <br><br>  At first I typed this text file: <br><br><pre><code>T: 
@@ -189,7 +189,7 @@ Q:  ?</code></pre><br>
     ,          .     ,       «   ?»,      (1950),        ,   .    «  »      ,    . <br>
 <br>
 :<br>
-"… <i>   ,          ,   ,          ,      ;    ,     ,     .</i>"</div><p>Source: <a href="https://habr.com/ru/post/427259/">https://habr.com/ru/post/427259/</a></p>
+"… <i>   ,          ,   ,          ,      ;    ,     ,     .</i>"</div><p>Source: https://habr.com/ru/post/427259/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -198,11 +198,11 @@ Q:  ?</code></pre><br>
 <li><a href="../427253/index.html">typeof Everything and duck misunderstandings</a></li>
 <li><a href="../427255/index.html">Cowon D2: musical long-liver</a></li>
 <li><a href="../427257/index.html">Cameron Craig: Seven Lessons Learned in 10 Years of Managing Apple's PR Department</a></li>
+<li><a href="../42726/index.html">Strange SMS allegedly from Beeline</a></li>
 <li><a href="../427263/index.html">Be a security ninja: webinar recording and bonus level</a></li>
 <li><a href="../427265/index.html">Protobuffers are wrong</a></li>
 <li><a href="../427267/index.html">SNMP + Java is a personal experience. Writing MIB files parser</a></li>
 <li><a href="../427269/index.html">Google OKR Video Five Years Later - Review of Google Ventures OKR Implementation Experience (2012-2017)</a></li>
-<li><a href="../427271/index.html">History and experience of using machine translation. Yandex lecture</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

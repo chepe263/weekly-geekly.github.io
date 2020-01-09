@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to see the links inside your PowerShell module</h1><div class="post__text post__text-html js-mediator-article"><p>  Good day, colleagues.  A hundred years ago, somewhere I described a quick and dirty way to see the call graph inside your PowerShell script.  Now, it’s time, so to speak, to pull the owl on the globe and look at the dependency graph inside the module. </p><a name="habracut"></a><br><p>  First of all, you need to install the <a href="">PSQuickGraph module</a> from the Powershell Gallery.  And after that run the script, the base of which can be taken <a href="https://gist.github.com/eosfor/e66b1bb2c4d7fa5279dc1ffbcfd6f205">here</a> .  Honestly, I did not quite understand how to insert the code from the gist into the post on the habr.  If someone tells you in comments, I will be very grateful. </p><br><p>  So let's continue.  First of all, in two words about the module itself.  It is built on the <a href="https://archive.codeplex.com/%3Fp%3Dquickgraph">QuickGraph</a> library.  In essence, this is a PowerShell wrapper over a library that is designed for quick and rough tests with graphs.  One of these tests can be a piece that parses your PowerShell code, generates a link graph from it, and presents it visually. </p><br><p>  In addition, the script itself uses the built-in PowerShell access mechanism to its <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">AST,</a> which, in fact, greatly simplifies our analysis of the code.  In the end, by combining one and the other, we get a graph. </p><br><p>  As a result, the script itself consists of two parts.  A piece of "parser" working with AST, and the part that connects AST and the graph.  This part is described in the following example. </p><br><pre><code class="hljs mel">#    ( PSQuickGraph) $g = New-Graph -Type BidirectionalGraph #  PS1 ,  AST        $f = dir <span class="hljs-string"><span class="hljs-string">"C:\Repo\Work\Tools\*.ps1"</span></span> -Recurse | Find-Function $f.name | % { Add-Vertex -Vertex $_ -Graph $g} #   ,    ,         ,      $f | % { $fName = $_.name $tmpFile = New-TemporaryFile $_.line &gt;&gt; ($tmpFile.fullname) $expr = Find-Expression -Fullname $tmpFile.fullname $expr.name | ? {$_} | ? {$_ -notin <span class="hljs-string"><span class="hljs-string">"%"</span></span>,<span class="hljs-string"><span class="hljs-string">"where"</span></span>,<span class="hljs-string"><span class="hljs-string">"?"</span></span>,<span class="hljs-string"><span class="hljs-string">"select"</span></span>,<span class="hljs-string"><span class="hljs-string">"out-null"</span></span>,<span class="hljs-string"><span class="hljs-string">"sort"</span></span>,<span class="hljs-string"><span class="hljs-string">"ft"</span></span>,<span class="hljs-string"><span class="hljs-string">"fl"</span></span>,<span class="hljs-string"><span class="hljs-string">"Write-Verbose"</span></span> } | % { Add-Edge -From $fName -to $_ -Graph $g} } #   Show-GraphLayout -Graph $g #     DOT Export-Graph -Format Graphviz -Graph $g -Path C:\Temp\g.gv</code> </pre> <br><p>  Well, something like this: </p><br><p><img src="https://habrastorage.org/webt/my/5j/p5/my5jp5jvx4p9988bwxj9qbdtvqg.png" alt="moduleStructure"></p><br><p>  In addition, the last command exports the graph to the DOT format, which allows you to torment it even in the <a href="https://www.graphviz.org/">graphviz</a> application </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/425225/">https://habr.com/ru/post/425225/</a></p>
+    <p>Source: https://habr.com/ru/post/425225/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

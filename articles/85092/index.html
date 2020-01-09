@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Building and running HipHop-PHP</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="http://wiki.developers.facebook.com/images/a/ac/HipHop_logo_white.png"><br>  Almost three weeks ago <a href="http://developers.facebook.com/news.php%3Fblog%3D1%26story%3D358">, a</a> new project from Facebook <a href="http://developers.facebook.com/news.php%3Fblog%3D1%26story%3D358">was announced</a> .  It is called HipHop-PHP. <br>  For the general public, the source code <a href="http://github.com/facebook/hiphop-php">became available</a> only a day ago. <br><br>  HipHop was created to improve the performance of Facebook.  It converts PHP code to C ++ code and compiles it with g ++.  HipHop is available under the opensource license. <br><br>  This article describes the process of building HipHop from source codes and its use. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <a name="habracut"></a><br><h3>  Assembly process </h3><br><h4>  1. Clone the repository </h4><br>  <em>$ git clone git: //github.com/facebook/hip-php</em> <br><br><h4>  2. Install the necessary libraries </h4><br>  Install the required libraries listed in <a href="http://wiki.github.com/facebook/hiphop-php/building-and-installing">http://wiki.github.com/facebook/hiphop-php/building-and-installing</a> .  Check out the minimal versions. <br><br>  <strong>Remarks:</strong> <br><ol><li>  For <strong>TBB (Thread Building Blocks)</strong> minimum version 2.2, although it is not written </li><li>  Need to rebuild <strong>libcurl</strong> and <strong>libevent</strong> with patches from developers <br>  If you saw the message " <em>struct evhttp_request has no member named ext_method"</em> - it means that you have not patched libevent </li><li>  I also needed to install <a href="http://code.google.com/p/google-perftools/">Google Perftools</a> </li></ol><br><h4>  3. Install the libmbfl library </h4><br>  <em>$ cd hiphop-php</em> <br>  <em>$ git submodule init</em> <br>  <em>$ git submodule update</em> <br><br><h4>  4. Set up environment variables </h4><br>  <em>$ export HPHP_HOME = `pwd`</em> <br>  <em>$ export HPHP_LIB = `pwd` / bin</em> <br><br><h4>  5. Before assembly </h4><br>  HipHop build uses <strong>cmake</strong> .  In the source script, some libraries were missing. <br>  To fix this, install the patch: <br><br>  <em>$ curl <a href="">sparcs.kaist.ac.kr/~tinuviel/hiphop/cmake-missing-library.diff</a> |</em>  <em>patch -p1</em> <br><br><h4>  6. If you have a 32-bit system </h4><br>  HipHop was originally written for 64-bit architecture.  If you have 32-bit, then you need to install patches: <br><br>  <em>$ curl <a href="">sparcs.kaist.ac.kr/~tinuviel/hiphop/src-util-hash-long-long.diff</a> |</em>  <em>patch -p1</em> <br>  <em>$ curl <a href="">sparcs.kaist.ac.kr/~tinuviel/hiphop/src-cpp-base-ssize_t.diff</a> |</em>  <em>patch -p1</em> <br>  <em>$ curl <a href="">sparcs.kaist.ac.kr/~tinuviel/hiphop/src-lib-format-string.diff</a> |</em>  <em>patch -p1</em> <br><br><h4>  7. Build </h4><br>  <em>$ cmake.</em> <br><br>  and if there are no mistakes, then <br><br>  <em>$ make</em> <br><br><h4>  Add-on for users of Debian, Ubuntu and others </h4><br>  The installation process is well described <a href="http://wiki.github.com/facebook/hiphop-php/building-and-installing-on-ubuntu-910">here</a> , but do not forget the patches for the 32-bit system. <br><br><h3>  Launch </h3><br>  Let's create in the src / hphp folder an index.php file with contents <br><blockquote><ol><li>  <font color="#000080">&lt;</font> <font color="#008080">?</font>  php </li><li>  echo <font color="#FF0000">'Hello HipHop'</font> <font color="#008080">;</font> </li><li>  <font color="#008080">?</font>  <font color="#000080">&gt;</font> </li></ol></blockquote><br>  Compile and run: <br><pre>  $ time ./hphp index.php --keep-tempdir = 1 --log = 3
@@ -166,20 +166,20 @@
  Processing: 52,136 32.2 137,216
  Waiting: 0 3 1.5 3 17
  Total: 52 136 32.2 137 216
-</pre><br><h4>  Test number 3.  <a href="http://www.timestretch.com/FractalBenchmark.html">Fractal benchmark</a> </h4><br><table cellpadding="4"><tbody><tr><th>  Language </th><th>  Time </th><th>  Relative Speed </th></tr><tr><td>  <a href="http://www.timestretch.com/FractalBenchmark.html">C gcc-4.4.3</a> </td><td align="right">  0.05 seconds </td><td align="right">  1.00 x </td></tr><tr><td>  <a href="http://www.timestretch.com/FractalBenchmark.html">Hiphop</a> </td><td align="right">  0.18 seconds </td><td align="right">  3.60 x </td></tr><tr><td>  <a href="http://www.timestretch.com/FractalBenchmark.html">Python 2.51</a> </td><td align="right">  2.35 seconds </td><td align="right">  47.00 x </td></tr><tr><td>  <a href="http://www.timestretch.com/FractalBenchmark.html">PHP 5.2.12</a> </td><td align="right">  3.08 seconds </td><td align="right">  61.60 x </td></tr></tbody></table><br><br><h3>  Conclusions (personal opinion) </h3><br>  In two tests, it was almost twice as slow as standard PHP.  But do not forget that this is just the first version.  The HipHop build process itself is quite heavy, and as such there is no installation at all.  You can install it only in order to understand the possibility of transforming your PHP application into C ++.  The obvious minus of HipHop is the lack of support for PostgreSQL (so far only MySQL) and the inability to connect existing PHP modules.  I hope that this project is still ahead. <br><br>  That's all.  More about the launch of HipHop can be read <a href="http://wiki.github.com/facebook/hiphop-php/running-hiphop">here</a> . <br><br>  Also on GitHub there are two interesting fork: <br><ol><li>  <a href="http://github.com/h4ck3rm1k3/hiphop-php/">http://github.com/h4ck3rm1k3/hiphop-php/</a> - contains add-ons to build deb-package </li><li>  <a href="http://github.com/sanxiyn/hiphop-php/tree/32bit">http://github.com/sanxiyn/hiphop-php/tree/32bit</a> - contains already installed patches for the 32-bit version <br></li></ol></div><p>Source: <a href="https://habr.com/ru/post/85092/">https://habr.com/ru/post/85092/</a></p>
+</pre><br><h4>  Test number 3.  <a href="http://www.timestretch.com/FractalBenchmark.html">Fractal benchmark</a> </h4><br><table cellpadding="4"><tbody><tr><th>  Language </th><th>  Time </th><th>  Relative Speed </th></tr><tr><td>  <a href="http://www.timestretch.com/FractalBenchmark.html">C gcc-4.4.3</a> </td><td align="right">  0.05 seconds </td><td align="right">  1.00 x </td></tr><tr><td>  <a href="http://www.timestretch.com/FractalBenchmark.html">Hiphop</a> </td><td align="right">  0.18 seconds </td><td align="right">  3.60 x </td></tr><tr><td>  <a href="http://www.timestretch.com/FractalBenchmark.html">Python 2.51</a> </td><td align="right">  2.35 seconds </td><td align="right">  47.00 x </td></tr><tr><td>  <a href="http://www.timestretch.com/FractalBenchmark.html">PHP 5.2.12</a> </td><td align="right">  3.08 seconds </td><td align="right">  61.60 x </td></tr></tbody></table><br><br><h3>  Conclusions (personal opinion) </h3><br>  In two tests, it was almost twice as slow as standard PHP.  But do not forget that this is just the first version.  The HipHop build process itself is quite heavy, and as such there is no installation at all.  You can install it only in order to understand the possibility of transforming your PHP application into C ++.  The obvious minus of HipHop is the lack of support for PostgreSQL (so far only MySQL) and the inability to connect existing PHP modules.  I hope that this project is still ahead. <br><br>  That's all.  More about the launch of HipHop can be read <a href="http://wiki.github.com/facebook/hiphop-php/running-hiphop">here</a> . <br><br>  Also on GitHub there are two interesting fork: <br><ol><li>  <a href="http://github.com/h4ck3rm1k3/hiphop-php/">http://github.com/h4ck3rm1k3/hiphop-php/</a> - contains add-ons to build deb-package </li><li>  <a href="http://github.com/sanxiyn/hiphop-php/tree/32bit">http://github.com/sanxiyn/hiphop-php/tree/32bit</a> - contains already installed patches for the 32-bit version <br></li></ol></div><p>Source: https://habr.com/ru/post/85092/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../85084/index.html">Mount FTP resource as local FS</a></li>
 <li><a href="../85088/index.html">Start life from scratch - features reset button</a></li>
 <li><a href="../85089/index.html">Looking for work: practical experience</a></li>
+<li><a href="../8509/index.html">Interesting…</a></li>
 <li><a href="../85090/index.html">Innovations on Timelance.ru</a></li>
 <li><a href="../85091/index.html">Hosting Performance Check</a></li>
 <li><a href="../85094/index.html">Rare Microsystems MS-21C-E laptop</a></li>
 <li><a href="../85095/index.html">Design Pattern "Adapter" / "Adapter"</a></li>
 <li><a href="../85096/index.html">.NET and working with unmanaged code. Part 2</a></li>
 <li><a href="../85099/index.html">Ping.fm Why are you like this?</a></li>
-<li><a href="../85100/index.html">Spell Checker in Visual Studio</a></li>
+<li><a href="../851/index.html">New feature in Google search</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

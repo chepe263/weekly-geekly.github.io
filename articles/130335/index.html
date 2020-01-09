@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -101,7 +101,7 @@
  root @ testgateway: ~ # apt-get upgrade
 </pre><br>  The next step is to install additional packages for our proxy server, as you probably guessed, we will use the SQUID + SAMS bundle, but we will configure a typical case, IP authorization, and to facilitate our lives, turn all users to the proxy port.  This bundle can then be easily configured to authorize by login / password, and even associate with AD. <br>  We will install the necessary packages for our case as follows: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -109,7 +109,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <pre>  root @ testgateway: ~ # apt-get install libpcre3 libpcre3-dev libmysqlclient15-dev php5-ldap php-fpdf squid squidguard gcc make php5-gd
@@ -168,20 +168,20 @@
  proxy 19162 0.0 0.4 5080 1636?  Ss 12:40 0:00 (samsredir)
  proxy 19163 0.0 0.4 5080 1640?  Ss 12:40 0:00 (samsredir)
  proxy 19164 0.0 0.0 1616 316?  Ss 12:40 0:00 (unlinkd)
-</pre><br>  If the picture is identical, then it all started well. <br>  Next we go to configure our SAMS, this is already done through the web interface, we type in the browser address of our proxy, we had it 192.168.0.237/sams, and we see an invitation page for entering both a user and a password. <br>  But before we do this, we need to fix a small bug of this system, namely due to the release of PHP5.3, the settings pages are displayed a little incorrectly, or rather, they are not displayed at all.  But this operation is not complicated, just edit two files: <br>  /usr/local/share/sams/src/configtray.php <br>  /usr/local/share/sams/src/webconfigtray.php <br>  We rename GetHostName into GetHostNameSams and it all worked. <br>  Next, I will use the example of small screenshots to show what and where you need to edit, so that everything works as we need.  Invitation, default login: Admin, password: qwerty <br><br><img src="http://img213.imageshack.us/img213/2157/40365055.png" alt="image"><br><br>  The next step, setting up the web interface, set the following parameters: <br><br><img src="http://img3.imageshack.us/img3/6722/47530631.png" alt="image"><br><br>  The SAMS administration window does not fit the width of the screen, so I will describe with text, authorization, set the IP, request redirection file <a href="">192.168.0.237/sams/icon/classic/blank.gif</a> , path to the directory where the request ban files are <a href="http://192.168.0.237/sams/messages">192.168.0.237/sams/messages</a> , the redirector built SAMS, and the last to save data on traffic in the database for the last 12 months. <br>  Next, we proceed to setting up the templates, delete everything so that nothing prevents us and create a new one. <br><br><img src="http://img705.imageshack.us/img705/1323/39464936.png" alt="image"><br><br>  Next we add the user and associate it with our template. <br><br><img src="http://img841.imageshack.us/img841/9872/35734411.png" alt="image"><br><br>  Next, run the samsd daemon: /etc/init.d/samsd start.  And reconfigure SQUID. <br>  After that, if the user enters a proxy in the browser, everything starts to work fine, but since it is not convenient for us to do this for all users, so apply the classic admin trick, turning HTTP traffic to the proxy port of the server. <br><br>  iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 3128 <br><br>  This is how we got a proxy, with a user-friendly web interface, maybe someone will accuse me of plagiarism, they say it was all 100 times, but I just want to note that, as I said at the very beginning of the article, this proxy setting option for the lazy, because  almost all SQUID goodies, such as traffic restrictions, creation of access lists, allowed domains, a ban on downloading, can be obtained from the web settings.  And also we easily get a system for viewing statistics, which can be used by any user of your organization by accessing the page under your login.  Of course, there remains the difficulty with regard to the traffic of torrents, mail and another non-80 port, and this too has its own solution, which will fit very well into the big picture. <br>  If questions will be formed, you are welcome, we will discuss all the other subtleties of customization </div><p>Source: <a href="https://habr.com/ru/post/130335/">https://habr.com/ru/post/130335/</a></p>
+</pre><br>  If the picture is identical, then it all started well. <br>  Next we go to configure our SAMS, this is already done through the web interface, we type in the browser address of our proxy, we had it 192.168.0.237/sams, and we see an invitation page for entering both a user and a password. <br>  But before we do this, we need to fix a small bug of this system, namely due to the release of PHP5.3, the settings pages are displayed a little incorrectly, or rather, they are not displayed at all.  But this operation is not complicated, just edit two files: <br>  /usr/local/share/sams/src/configtray.php <br>  /usr/local/share/sams/src/webconfigtray.php <br>  We rename GetHostName into GetHostNameSams and it all worked. <br>  Next, I will use the example of small screenshots to show what and where you need to edit, so that everything works as we need.  Invitation, default login: Admin, password: qwerty <br><br><img src="http://img213.imageshack.us/img213/2157/40365055.png" alt="image"><br><br>  The next step, setting up the web interface, set the following parameters: <br><br><img src="http://img3.imageshack.us/img3/6722/47530631.png" alt="image"><br><br>  The SAMS administration window does not fit the width of the screen, so I will describe with text, authorization, set the IP, request redirection file <a href="">192.168.0.237/sams/icon/classic/blank.gif</a> , path to the directory where the request ban files are <a href="http://192.168.0.237/sams/messages">192.168.0.237/sams/messages</a> , the redirector built SAMS, and the last to save data on traffic in the database for the last 12 months. <br>  Next, we proceed to setting up the templates, delete everything so that nothing prevents us and create a new one. <br><br><img src="http://img705.imageshack.us/img705/1323/39464936.png" alt="image"><br><br>  Next we add the user and associate it with our template. <br><br><img src="http://img841.imageshack.us/img841/9872/35734411.png" alt="image"><br><br>  Next, run the samsd daemon: /etc/init.d/samsd start.  And reconfigure SQUID. <br>  After that, if the user enters a proxy in the browser, everything starts to work fine, but since it is not convenient for us to do this for all users, so apply the classic admin trick, turning HTTP traffic to the proxy port of the server. <br><br>  iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 3128 <br><br>  This is how we got a proxy, with a user-friendly web interface, maybe someone will accuse me of plagiarism, they say it was all 100 times, but I just want to note that, as I said at the very beginning of the article, this proxy setting option for the lazy, because  almost all SQUID goodies, such as traffic restrictions, creation of access lists, allowed domains, a ban on downloading, can be obtained from the web settings.  And also we easily get a system for viewing statistics, which can be used by any user of your organization by accessing the page under your login.  Of course, there remains the difficulty with regard to the traffic of torrents, mail and another non-80 port, and this too has its own solution, which will fit very well into the big picture. <br>  If questions will be formed, you are welcome, we will discuss all the other subtleties of customization </div><p>Source: https://habr.com/ru/post/130335/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../130329/index.html">GDD 2011: Developer Impressions</a></li>
+<li><a href="../13033/index.html">IBM announced a new initiative "Big Green Linux".</a></li>
 <li><a href="../130330/index.html">Unix-way reminder</a></li>
 <li><a href="../130332/index.html">Google+ is the best example that Google doesn't understand the Platform.</a></li>
 <li><a href="../130333/index.html">You are out of the office \ home needed the Internet. Wi-Fi search found unfamiliar open network.</a></li>
 <li><a href="../130334/index.html">Google Chrome Extension Habrahabr.ru-Tools-PATCHED</a></li>
 <li><a href="../130338/index.html">Organization of technical support work on LeaderTask</a></li>
 <li><a href="../130339/index.html">Numberama. Reviving your favorite game on iOS</a></li>
+<li><a href="../13034/index.html">Here, after all, damn, to which the marasmic Internet fever of people already brings</a></li>
 <li><a href="../130341/index.html">Yandex can not find a song about Putin</a></li>
 <li><a href="../130342/index.html">The results of the action with Groupon. Practical experience</a></li>
-<li><a href="../130343/index.html">Acer Aspire 7560G: an impressive desktop with a new-generation AMD quad-core processor</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

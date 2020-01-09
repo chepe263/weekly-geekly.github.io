@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Silent algorithms: model “make, write, (assign to another)”</h1><div class="post__text post__text-html js-mediator-article"> <i>Following the advice of a habrapublic, I try a new version of the translation of the term " <b>lock-free</b> "</i> <br><br>  <a href="http://habrahabr.ru/blogs/system_programming/118515/">Last time,</a> we saw an “unconcerned” algorithm where the capture was implemented so that the stream accessing the captured data does not wait for their release, but is sent in a “workaround” (calculates the required result without using the cache services).  In his next post, Raymond explains how this algorithm can be improved in the event that there is no “workaround”.  The algorithm, however, remains inconspicuous: each stream continues to work, without waiting for the release of the captured data. <br><br>  In the common variable, two service bits are now needed: in addition to the capture flag, as in the previous example, the “new job is assigned” flag;  and if the work assigned is complex, then besides the flag, it will also need to be stored somewhere else and its parameters.  For example, a pointer to an (memory-aligned) object with parameters can be stored in a common variable, and two named flags can be stored in the free low-order bits of the pointer. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Before performing an action on an object, we first capture it by setting the corresponding flag atomically.  If it turns out that the object has already been captured, we will entrust the execution of our action to the seizing thread by setting the second flag. <br><br>  If the object was able to be captured, then after the completion of work with it, we remove the capture flag and at the same time check whether we have been assigned a new job.  (Ie if there were no appeals to the object during the time we kept it captured.) If there is work, then we will do it;  and so on, until one day when unlocking the object of deferred work will not be.  We have no right to leave the object in the state “not captured, but there is work”. <br><a name="habracut"></a><br>  The resulting model “make, write, (instruct another)” is woven from a multitude of cycles in case of all sorts of failures.  Every atomic operation is a cycle;  execution of deferred work is carried out in a cycle;  and each time a call from <code>InterlockedCompareExchange</code> reveals a rewrite of the data used, you need to roll back all the work done and perform it from the beginning.  The model is very complicated.  Raymond describes it as follows: “In the whole world, perhaps, only five will be able to implement it correctly, and I don’t belong to these five.” Nevertheless, he gives an example of an object called GroupWait, which supports two operations: <ul><li>  AddWait: Add a new handle to the list. </li><li>  SignalAll: Install all events in the list, automatically deleting each event simultaneously with its installation.  For the event to be set the next time you call SignalAll, you need to add it to the list again. </li></ul>  Implemented an object simply as a list of handles.  It is clear that it could be implemented without a sophisticated, tacky model: for example, using <a href="http://msdn.microsoft.com/en-us/library/ms684121.aspx">atomic list functions</a> implemented since Windows XP.  The task was chosen only to accompany the verbal description with an approximate code.  Do not take GroupWait as a sample implementation of a stream-safe list. <br><br>  So, we use the lower two bits of the pointer to store two flags: a capture flag indicating that some thread is performing a list operation;  and a work flag indicating that the user requested the setting of events at the time the list was captured. <br><br><pre> // WARNING!  IF YOU USE THIS CODE YOU ARE AN IDIOT - READ THE TEXT ABOVE
@@ -190,15 +190,15 @@
    }
   } // try to unlock again
  } // end of function
-</pre><br>  To perform a deferred job, we go around the list until we find the set bit S. In the first element, in which the bit S is set, we reset the outgoing pointer to “steal” the rest of the list;  then, bypassing this remainder, we set each event, and delete the item.  As before, we “steal” the list so that simultaneous calling from several threads does not lead to multiple installation of the event.  At the end, when the work is done, we again try to unlock the list - in the expectation that one day there will be no new work, and we will be able to right out of the function. <br><hr>  As you can see, the basic idea of ​​the “make, write, (instruct another)” model is quite simple, but its implementation, taking into account all the subtleties, can cause a headache.  It is best to leave the implementation of such pieces to system programmers who have enough time, patience and ability to cope with all this.  For example, in an interview with <a href="http://channel9.msdn.com/shows/Going%2BDeep/Arun-Kishan-Farewell-to-the-Windows-Kernel-Dispatcher-Lock/">Arun Kishan: Inside Windows 7 — Farewell to the Windows Kernel Dispatcher Lock</a> — the architect who worked on the Windows kernel talks about using this particular model. </div><p>Source: <a href="https://habr.com/ru/post/118850/">https://habr.com/ru/post/118850/</a></p>
+</pre><br>  To perform a deferred job, we go around the list until we find the set bit S. In the first element, in which the bit S is set, we reset the outgoing pointer to “steal” the rest of the list;  then, bypassing this remainder, we set each event, and delete the item.  As before, we “steal” the list so that simultaneous calling from several threads does not lead to multiple installation of the event.  At the end, when the work is done, we again try to unlock the list - in the expectation that one day there will be no new work, and we will be able to right out of the function. <br><hr>  As you can see, the basic idea of ​​the “make, write, (instruct another)” model is quite simple, but its implementation, taking into account all the subtleties, can cause a headache.  It is best to leave the implementation of such pieces to system programmers who have enough time, patience and ability to cope with all this.  For example, in an interview with <a href="http://channel9.msdn.com/shows/Going%2BDeep/Arun-Kishan-Farewell-to-the-Windows-Kernel-Dispatcher-Lock/">Arun Kishan: Inside Windows 7 — Farewell to the Windows Kernel Dispatcher Lock</a> — the architect who worked on the Windows kernel talks about using this particular model. </div><p>Source: https://habr.com/ru/post/118850/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../118844/index.html">Anonymity is not, accept! (Russian subtitles)</a></li>
 <li><a href="../118845/index.html">Difficult work vs routine work</a></li>
 <li><a href="../118846/index.html">Verification of five open projects with general-purpose static analyzers</a></li>
 <li><a href="../118847/index.html">Canobuvosti, 90th edition</a></li>
 <li><a href="../118849/index.html">Oculographic studies: what the view does not tell</a></li>
+<li><a href="../11885/index.html">Introduce managers.</a></li>
 <li><a href="../118851/index.html">History of e-books: Firstborn</a></li>
 <li><a href="../118852/index.html">Happy Radio !!!</a></li>
 <li><a href="../118853/index.html">Drop-down lists: ergonomics and design</a></li>

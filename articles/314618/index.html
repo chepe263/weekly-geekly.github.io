@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Once executed block in an arbitrary place of code (C ++ 11 and higher)</h1><div class="post__text post__text-html js-mediator-article">  I want to provide a small ready-made solution for those who may need to write a large (or not so) piece of code that the program must execute exactly 1 time;  and you may need to place it anywhere (within the limits of reasonable and C ++ syntax rules).  If the need for this arises more often than a couple of times in the entire project, it would be good to have at least some more or less working solution for this case. <br><a name="habracut"></a><br><h4>  Immediately to the point </h4><br>  Without arguing for a long time, I immediately post my code that works with the C ++ 11 standard and higher. <br><br><pre><code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">include</span></span></span><span class="hljs-meta"> </span><span class="hljs-meta-string"><span class="hljs-meta"><span class="hljs-meta-string">&lt;iostream&gt; #define DO_ONCE(...) { static bool _do_once_ = ([&amp;](){ __VA_ARGS__ }(), true); (void)_do_once_; } void Foo(int val) { using namespace std; //  _do_once_        DO_ONCE static unsigned int _do_once_ = 1; DO_ONCE ( cout &lt;&lt; "[First call of 'Foo' function]" &lt;&lt; endl; ) cout &lt;&lt; "Calls: " &lt;&lt; _do_once_++ &lt;&lt; ", value: " &lt;&lt; val &lt;&lt; endl; } int main(int argc, char** argv) { using namespace std; for (auto val : {1, 2, 3}) { Foo(val); DO_ONCE ( Foo(val); ) } system("pause &gt; nul"); return 0; } /*  : [First call of 'Foo' function] Calls: 1, value: 1 Calls: 2, value: 1 Calls: 3, value: 2 Calls: 4, value: 3 /*</span></span></span></span></code> </pre> <br>  Consider the most important piece of code that does all the work required: <br><br><pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">define</span></span></span><span class="hljs-meta"> DO_ONCE(...) { static bool _do_once_ = ([&amp;](){__VA_ARGS__}(), true); (void)_do_once_; }</span></span></code> </pre><br>  It looks not very clear and nice, so I'll sign a little more: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">define</span></span></span><span class="hljs-meta"> DO_ONCE(...) \ { \ static bool _do_once_ = ([&amp;] ( ) { __VA_ARGS__ } ( ), true); \ (void)_do_once_; \ }</span></span></code> </pre><br>  It works like this - in the code block, a local static variable of the bool type is created, which, using the comma operator, is initialized in two stages: <br><br>  <b>1.</b> Using the operator "parentheses" is called lambda: <br><br><pre> <code class="cpp hljs">[&amp;] ( ) { __VA_ARGS__ }</code> </pre><br>  which captures by reference all that is in scope and executes the expression that the user passed to the macro DO_ONCE through arguments packed in <i>__VA_ARGS__</i> .  The preset macro <i>__VA_ARGS__</i> will allow you to save all the code inside the block, even if it contains commas (which the preprocessor considers as separators of arguments at the parsing stage). <br><br>  <b>2.</b> The _do_once_ variable is assigned the value true (the assigned value and the type of the variable itself do not play a role, not counting the size occupied in the program).  The record "(void) _do_once_;"  need to avoid warning about an unused variable. <br><br>  At this, the variable initialization is completed and the code will never be executed again, which was what was required. <br><br>  <b>Cons of the approach:</b> <br><br>  - Requires standard C ++ 11, <br>  - Requires the creation of 1 variable for each DO_ONCE block. <br><br>  <b>Pros:</b> <br><br>  - Good readability, simple syntax. <br>  - There are no restrictions on the number of operators in the block and on their type (do not try to enter there break and continue, if the loop is outside the body of the block DO_ONCE or the case label, if DO_ONCE is inside the switch). <br>  - The ability to work with variables and functions that are available in the scope of a DO_ONCE call without the additional cost of passing them as arguments. <br>  - There is no risk to get the error of redefining the _do_once_ variable, since  in the body of the block, it simply replaces this name from the outer scope. <br><br>  References: <br>  » <a href="https://msdn.microsoft.com/ru-ru/library/dd293608.aspx">Lambda expressions</a> <br>  » <a href="https://msdn.microsoft.com/ru-ru/library/ms177415.aspx">Macro with variable argument lists</a> </div><p>Source: <a href="https://habr.com/ru/post/314618/">https://habr.com/ru/post/314618/</a></p>
+    <pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">define</span></span></span><span class="hljs-meta"> DO_ONCE(...) \ { \ static bool _do_once_ = ([&amp;] ( ) { __VA_ARGS__ } ( ), true); \ (void)_do_once_; \ }</span></span></code> </pre><br>  It works like this - in the code block, a local static variable of the bool type is created, which, using the comma operator, is initialized in two stages: <br><br>  <b>1.</b> Using the operator "parentheses" is called lambda: <br><br><pre> <code class="cpp hljs">[&amp;] ( ) { __VA_ARGS__ }</code> </pre><br>  which captures by reference all that is in scope and executes the expression that the user passed to the macro DO_ONCE through arguments packed in <i>__VA_ARGS__</i> .  The preset macro <i>__VA_ARGS__</i> will allow you to save all the code inside the block, even if it contains commas (which the preprocessor considers as separators of arguments at the parsing stage). <br><br>  <b>2.</b> The _do_once_ variable is assigned the value true (the assigned value and the type of the variable itself do not play a role, not counting the size occupied in the program).  The record "(void) _do_once_;"  need to avoid warning about an unused variable. <br><br>  At this, the variable initialization is completed and the code will never be executed again, which was what was required. <br><br>  <b>Cons of the approach:</b> <br><br>  - Requires standard C ++ 11, <br>  - Requires the creation of 1 variable for each DO_ONCE block. <br><br>  <b>Pros:</b> <br><br>  - Good readability, simple syntax. <br>  - There are no restrictions on the number of operators in the block and on their type (do not try to enter there break and continue, if the loop is outside the body of the block DO_ONCE or the case label, if DO_ONCE is inside the switch). <br>  - The ability to work with variables and functions that are available in the scope of a DO_ONCE call without the additional cost of passing them as arguments. <br>  - There is no risk to get the error of redefining the _do_once_ variable, since  in the body of the block, it simply replaces this name from the outer scope. <br><br>  References: <br>  » <a href="https://msdn.microsoft.com/ru-ru/library/dd293608.aspx">Lambda expressions</a> <br>  » <a href="https://msdn.microsoft.com/ru-ru/library/ms177415.aspx">Macro with variable argument lists</a> </div><p>Source: https://habr.com/ru/post/314618/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../314606/index.html">Some facts about python asyncio</a></li>
 <li><a href="../314608/index.html">How to increase the effectiveness of your email list</a></li>
+<li><a href="../31461/index.html">Google Maps and WordPress 2.x Integration</a></li>
 <li><a href="../314610/index.html">Update Vivaldi 1.4 for Linux - the hunt for flash plugin</a></li>
 <li><a href="../314612/index.html">Data Center and Digital Transformation</a></li>
 <li><a href="../314616/index.html">A person. Anders Hejlsberg - creator of Turbo Pascal, Delphi and C #</a></li>
+<li><a href="../31462/index.html">Soon: nothing between you and your device</a></li>
 <li><a href="../314620/index.html">Product Design Digest October 2016</a></li>
 <li><a href="../314622/index.html">Setting up email notifications in MS SQL Server</a></li>
 <li><a href="../314624/index.html">EF Core: Setting the name of the generated models in Scaffolding</a></li>
 <li><a href="../314628/index.html">Auto-collection of data on completed tasks in MS SQL Server</a></li>
-<li><a href="../314630/index.html">Auto-collection of data about changes in database schemas in MS SQL Server</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>AMQP-REST</h1><div class="post__text post__text-html js-mediator-article">  About <a href="http://habrahabr.ru/search/%3Fq%3Damqp">AMQP</a> talked a lot.  <a href="http://code.google.com/p/amqp-rest/">Another development</a> focused on AJAX. <br>  <b>Opportunities:</b> <br><ul><li>  read one message from the queue </li><li>  read all messages from the queue </li><li>  find out the length of the queue </li><li>  post message in exchange </li></ul><br>  Data is returned in JSON. <br><a name="habracut"></a><br><br><h6>  Assembly </h6><br><ul><li>  install libevent (available in ports, already installed in most servers) <a href="http://monkey.org/~provos/libevent/">monkey.org/~provos/libevent</a> </li><li>  install rabbitmq-c <a href="http://hg.rabbitmq.com/rabbitmq-c/">hg.rabbitmq.com/rabbitmq-c</a> </li><li>  set the protocol code-generation <a href="http://hg.rabbitmq.com/rabbitmq-codegen/">hg.rabbitmq.com/rabbitmq-codegen</a> </li><li>  Install amqpcpp <a href="http://code.google.com/p/rabbitcpp/">code.google.com/p/rabbitcpp</a> </li><li>  run the Makefile; </li><li>  copy amqp-rest to / usr / local / bin </li><li>  edit n.conf and copy to /usr/local/etc/amqp-rest.conf </li></ul><br><blockquote>  logfile /usr/local/var/amqp.log <font color="#66cc66">;</font>  <font color="#808080"># logfile</font> <br><br>  pidfile / tmp / amqp.  <font color="#008000">pid</font> <font color="#66cc66">;</font>  <font color="#808080"># pidfile</font> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,17 +64,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      log_level notice <font color="#66cc66">;</font>  <font color="#808080"># the level of logging: error, notice, warning, debug</font> <br><br>  daemon on <font color="#66cc66">;</font>  <font color="#808080"># daemon mode</font> <br><br>  port <font color="#ff4500">80</font> <font color="#66cc66">;</font>  <font color="#808080"># http port, default 80</font> <br>  <font color="#008000">http</font> 10.0.0.1 <font color="#66cc66">;</font>  <font color="#808080"># bind IP</font> <br><br>  amqp: <font color="#ff4500">5672</font> <font color="#66cc66">;</font>  <font color="#808080"># amqp connection string psw: login @ host: port / vhost</font> <br></blockquote><br><br><h6>  Launch </h6><br> <code>./amqp-rest [  -] <br> ./amqp-rest stop //   <br> kill -s HUP `ps | grep amqp-rest | awk '{print $1}'` //     <br></code> <br><br><h6>  Using </h6><br>  <b>reading one item from the queue</b> <br>  the queue name is the right side of the url to the last slash.  For url / sss / q2, the queue name is “q2”.  This is done intentionally, since all URLs are hung on a specific location and proxied through nginx. <br> <code><a href="http://10.0.0.1/"></a> curl 10.0.0.1:8080/sss/q2 <br> {"result": "OK", "message":"message 2", size : 2} <br> // size -  ,     . <br></code> <br><br>  <b>reading all items from the queue</b> <br> <code><a href="http://10.0.0.1/"></a> curl 10.0.0.1:8080/sss/q2?all <br> {"result": "OK", "count" : 2, messages ["message 3","the text\"xxxx\" tttt"]} <br> // count -   . <br></code> <br><br>  <b>queue size</b> <br> <code><a href="http://10.0.0.1/"></a> curl 10.0.0.1:8080/sss/q2?count <br> {"result": "Ok", "count": 3 } <br></code> <br><br>  <b>publication</b> <br>  The name of the exchange is also the part of the url between the last slash and '?', And the key of the exchange is the part of the url, after the question mark.  For example for urla <a href="http://10.0.0.1/">10.0.0.1</a> : 8080 / sss / ex1? News <br>  the name of the exchange is “ex1”, and the key of the exchange (routing key) is “news” <br> <code><a href="http://10.0.0.1/"></a> curl -d 'some post data' 10.0.0.1:8080/sss/ex1?news <br> {"result": "Ok"} <br></code> <br><br>  Of course, everything is designed for AJAX.  nginx stands front server and proxies requests for amqp-rest.  You can do without nginx, if you hang them on different IP.  In my case, I use ngx_accesskey_module to protect against spam.  Perhaps this functionality will be transferred to amqp-rest in the future. <br><br><h6>  conclusion </h6><br>  what seems to be performance: 1300rps <br>  memory space 601k </div><p>Source: <a href="https://habr.com/ru/post/93322/">https://habr.com/ru/post/93322/</a></p>
+      log_level notice <font color="#66cc66">;</font>  <font color="#808080"># the level of logging: error, notice, warning, debug</font> <br><br>  daemon on <font color="#66cc66">;</font>  <font color="#808080"># daemon mode</font> <br><br>  port <font color="#ff4500">80</font> <font color="#66cc66">;</font>  <font color="#808080"># http port, default 80</font> <br>  <font color="#008000">http</font> 10.0.0.1 <font color="#66cc66">;</font>  <font color="#808080"># bind IP</font> <br><br>  amqp: <font color="#ff4500">5672</font> <font color="#66cc66">;</font>  <font color="#808080"># amqp connection string psw: login @ host: port / vhost</font> <br></blockquote><br><br><h6>  Launch </h6><br> <code>./amqp-rest [  -] <br> ./amqp-rest stop //   <br> kill -s HUP `ps | grep amqp-rest | awk '{print $1}'` //     <br></code> <br><br><h6>  Using </h6><br>  <b>reading one item from the queue</b> <br>  the queue name is the right side of the url to the last slash.  For url / sss / q2, the queue name is “q2”.  This is done intentionally, since all URLs are hung on a specific location and proxied through nginx. <br> <code><a href="http://10.0.0.1/"></a> curl 10.0.0.1:8080/sss/q2 <br> {"result": "OK", "message":"message 2", size : 2} <br> // size -  ,     . <br></code> <br><br>  <b>reading all items from the queue</b> <br> <code><a href="http://10.0.0.1/"></a> curl 10.0.0.1:8080/sss/q2?all <br> {"result": "OK", "count" : 2, messages ["message 3","the text\"xxxx\" tttt"]} <br> // count -   . <br></code> <br><br>  <b>queue size</b> <br> <code><a href="http://10.0.0.1/"></a> curl 10.0.0.1:8080/sss/q2?count <br> {"result": "Ok", "count": 3 } <br></code> <br><br>  <b>publication</b> <br>  The name of the exchange is also the part of the url between the last slash and '?', And the key of the exchange is the part of the url, after the question mark.  For example for urla <a href="http://10.0.0.1/">10.0.0.1</a> : 8080 / sss / ex1? News <br>  the name of the exchange is “ex1”, and the key of the exchange (routing key) is “news” <br> <code><a href="http://10.0.0.1/"></a> curl -d 'some post data' 10.0.0.1:8080/sss/ex1?news <br> {"result": "Ok"} <br></code> <br><br>  Of course, everything is designed for AJAX.  nginx stands front server and proxies requests for amqp-rest.  You can do without nginx, if you hang them on different IP.  In my case, I use ngx_accesskey_module to protect against spam.  Perhaps this functionality will be transferred to amqp-rest in the future. <br><br><h6>  conclusion </h6><br>  what seems to be performance: 1300rps <br>  memory space 601k </div><p>Source: https://habr.com/ru/post/93322/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../93313/index.html">May meeting in Donetsk</a></li>
 <li><a href="../93314/index.html">Once again on the selection of programmers (part 1)</a></li>
 <li><a href="../93317/index.html">The ranks of open source games added to another 4 cool copies</a></li>
 <li><a href="../93319/index.html">CS5. Russian help</a></li>
+<li><a href="../9332/index.html">Is Nokia in Russia all right?</a></li>
 <li><a href="../93320/index.html">The leak of oil in the Gulf of Mexico is proposed to be blocked by a nuclear explosion</a></li>
 <li><a href="../93323/index.html">Computer mastered parking with skidding</a></li>
 <li><a href="../93324/index.html">Java extension: aliases</a></li>

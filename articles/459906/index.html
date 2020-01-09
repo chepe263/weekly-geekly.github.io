@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Tic Tac Toe, Part 3: Undo / Redo with commands storage</h1><div class="post__text post__text-html js-mediator-article"><blockquote>  <a href="https://habr.com/ru/post/456474/">Tic Tac Toe, Part 0: Comparing Svelte and React</a> <br>  <a href="https://habr.com/ru/post/458752/">Tic Tac Toe, Part 1: Svelte and Canvas 2D</a> <br>  <a href="https://habr.com/ru/post/459630/">Tic Tac Toe, Part 2: Undo / Redo with state storage</a> <br>  Tic Tac Toe, Part 3: Undo / Redo with commands storage <br>  <a href="https://habr.com/ru/post/460621/">Tic Tac Toe, Part 4: Interacting with the Flask backend using HTTP</a> </blockquote><p>  In this part, the implementation of the Tic Tac Toe game is considered using the Command pattern, with the storage of Undo / Redo commands instead of storing individual states, with random access to each step of the game history. </p><a name="habracut"></a><br><h6 id="startovyy-kod">  Start code </h6><br><p>  The last part of the article ended with this code: <a href="https://svelte.dev/repl/b18067ae927246e790f5c3b4be185396%3Fversion%3D3.6.4">Code for REPL</a> . </p><br><p>  Let's comment out all the code that, when making changes, will produce errors.  All the cells of the playing field fill the units: <a href="https://svelte.dev/repl/c44c1da834334d9a8d668c4ed41005d3%3Fversion%3D3.6.7">Code for REPL</a> </p><br><h6 id="hranilische-state">  State repository </h6><br><p>  <a href="https://svelte.dev/repl/43c48c7ebaa843c1961f20774df1f317%3Fversion%3D3.6.7">RELP code</a> </p><br><p>  Added <strong>state</strong> storage.  The playing field now displays the contents of the <strong>state</strong> repository.  The game field is filled with twos by default.  Added status display in the <strong>App</strong> component. </p><br><h6 id="klass-command">  Command Class </h6><br><p>  <a href="https://svelte.dev/repl/3ef95b6c4f5a4c35bb0a481dbc0776cc%3Fversion%3D3.6.7">RELP code</a> </p><br><p>  Added the <strong>Command</strong> class to the <strong>helpers.js</strong> file.  The <strong>History</strong> class is changed to store commands instead of states. </p><br><p>  Here I was unable to perform the correct status update.  If anyone knows, tell me, please.  And, in general, is it possible to use <strong>state</strong> storage like this? </p><br><h6 id="perevod-hoda">  Move translation </h6><br><p>  <a href="https://svelte.dev/repl/7e7078bf3a3448b99691355aa4f08d7b%3Fversion%3D3.6.7">RELP code</a> </p><br><p>  Added ban on clicking on an already filled cell.  In the constructor of the <strong>Command</strong> class, the translation was performed.  Corrected status output. </p><br><h6 id="sostoyanie-igrovogo-polya">  State of the playing field </h6><br><p>  <a href="https://svelte.dev/repl/b6fe3bcacd6f401bb871334631c5d1f7%3Fversion%3D3.6.7">RELP code</a> </p><br><p>  At the previous stages there was a doubt about the correct use of the separate <strong>state</strong> repository, so it was removed, and the storage of the state of the playing field was transferred to the <strong>History</strong> class - the field <strong>state was</strong> added. </p><br><h6 id="proizvolnyy-dostup">  Random access </h6><br><p>  <a href="https://svelte.dev/repl/297ab5efef2443dab621bab3e9a24844%3Fversion%3D3.6.7">RELP code</a> <br>  Added list of steps.  Random access to any step of the game is performed by sequentially executing Undo or Redo commands to the selected command. </p><br><h6 id="opredelenie-pobeditelya">  Determination of the winner </h6><br><p>  <a href="https://svelte.dev/repl/2be218ff7e0941d4ba4f74c9809f8877%3Fversion%3D3.6.7">RELP code</a> <br>  The winner is determined.  Added <strong>status</strong> repository to display status. </p><br><h6 id="zaklyuchenie">  Conclusion </h6><br><p>  Storing the history of moves with the help of states is more convenient to use, but costly from memory, because at each step the entire game state is duplicated.  In the case of applications with a large model size, it is better to use command storage in history. </p><br><h6 id="repozitoriy-na-github">  GitHub Repository </h6><br><p>  <a href="https://github.com/nomhoi/tic-tac-toe-part3">https://github.com/nomhoi/tic-tac-toe-part3</a> </p><br><p>  Installing the game on the local computer: </p><br><pre><code class="bash hljs">git <span class="hljs-built_in"><span class="hljs-built_in">clone</span></span> https://github.com/nomhoi/tic-tac-toe-part3.git <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> tic-tac-toe-part3 npm install npm run dev</code> </pre> <br><p>  Run the game in the browser at: <a href="http://localhost:5000/">http: // localhost: 5000 /</a> . </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/459906/">https://habr.com/ru/post/459906/</a></p>
+    <p>Source: https://habr.com/ru/post/459906/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

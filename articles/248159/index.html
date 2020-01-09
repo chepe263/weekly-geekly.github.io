@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A short course in computer graphics: we write a simplified OpenGL do it yourself, article 2 of 6</h1><div class="post__text post__text-html js-mediator-article"><h1>  Course content </h1><br><ul><li>  <a href="http://habrahabr.ru/post/248153/">Article 1: Bresenham algorithm</a> </li><li>  <b>Article 2: rasterization of the triangle + clipping of the rear faces</b> </li><li>  <a href="http://habrahabr.ru/post/248179/">Article 3: Removing invisible surfaces: z-buffer</a> </li><li>  Article 4: Required Geometry: Matrix Festival <br><ul><li>  <a href="http://habrahabr.ru/post/248611/">4a: Construction of perspective distortion</a> </li><li>  <a href="http://habrahabr.ru/post/248723/">4b: we move the camera and what follows from this</a> </li><li>  <a href="http://habrahabr.ru/post/249467/">4c: a new rasterizer and perspective distortion correction</a> </li></ul></li><li>  <a href="http://habrahabr.ru/post/248963/">Article 5: We write shaders for our library</a> </li><li>  <a href="http://habrahabr.ru/post/249139/">Article 6: A little more than just a shader: shadow rendering</a> </li></ul><br><h3>  Code enhancement </h3><br><ul><li>  <a href="http://habrahabr.ru/post/248909/">Article 3.1: It’s time to refactor</a> </li><li>  <a href="http://habrahabr.ru/post/249101/">Article 3.14: Beautiful Matrix Class</a> </li></ul><br><br><br><hr><h3>  The official translation (with a bit of polishing) is available <a href="https://github.com/ssloy/tinyrenderer/wiki">here.</a> </h3><hr><br><br><h3>  Update: </h3><br>  <b>Attention, <a href="http://habrahabr.ru/post/249467/">Article 4c</a> provides a new, simpler version of the rasterizer.</b> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,7 +64,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Let's get acquainted, it's me. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/b58/d5f/0e8/b58d5f0e8f7de59bcad1354b0fc92a35.png"><br><br>  That is, the model of my head, rendered in the program, which we will do in the next hour or two. <br><br>  Last time we drew a wire mesh of a three-dimensional model, this time we fill in polygons.  More precisely, the triangles, since OpenGL almost every polygon triangulates, so there’s no need to disassemble the complex case.  I remind you that this series of articles was created for <i>independent</i> programming.  The time I give here is not the time to read my code.  This is the time to write your code from scratch.  My code is here only to compare your (working) code with mine.  I’m not a good programmer at all, so your code can be significantly better than mine.  Any criticism is welcome, any questions glad. <br><br>  <b>Please, if you follow this tutorial and write your code, post it on github.com/code.google.com and the like and give links in the comments!</b>  <b>It may well help both you (other people may advise something) and future readers.</b> <br><a name="habracut"></a><br><h1>  Draw a filled triangle </h1><br>  So, the topic for today (about two hours for badly programming, but motivated students): drawing two-dimensional triangles.  Last time we disassembled the Brezenham algorithm for rasterization of the segment, now the task is to draw a filled triangle.  You will laugh, but this is not a trivial task.  I don't know why, but I know that it is.  Most of my students, without prompts, spend significantly more than a couple of hours on this task.  Let's determine the method, and then we will program. <br><br>  At the very beginning, let's consider this pseudocode: <br><br><pre> triangle (vec2 points [3]) {
@@ -173,7 +173,7 @@
              triangle (screen_coords [0], screen_coords [1], screen_coords [2], image, TGAColor (intensity * 255, intensity * 255, intensity * 255, 255));
          }
      }
-</pre><br><br>  But the scalar product can be negative, what does it mean?  This means that the light falls behind the polygon.  If the model is good (usually not our concern, but 3d modelers), then we just can not draw this triangle.  This allows you to quickly remove some of the invisible triangles.  In English literature, called <a href="http://en.wikipedia.org/wiki/Back-face_culling">back-face culling</a> . <br><br><img src="https://habrastorage.org/getpro/habr/post_images/a3a/f41/137/a3af4113710b41eb09ed4b935891da80.png"><br>  Does my head model look more detailed?  Well, in it a quarter of a million triangles.  Nothing, we will add the details later, after receiving the picture that I gave for the seed in the first article. <br><br>  Notice, the internal cavity of the mouth is drawn over the lips.  Well, what, such a quick clipping of invisible triangles removes all unnecessary only for convex models.  We will remove these flaws next time by encoding the z-buffer. <br><br>  <a href="https://github.com/ssloy/tinyrenderer/tree/e1a3f2b0f9638fa6db9e0437c621132e1baa3fb1">The current version of the</a> renderer. </div><p>Source: <a href="https://habr.com/ru/post/248159/">https://habr.com/ru/post/248159/</a></p>
+</pre><br><br>  But the scalar product can be negative, what does it mean?  This means that the light falls behind the polygon.  If the model is good (usually not our concern, but 3d modelers), then we just can not draw this triangle.  This allows you to quickly remove some of the invisible triangles.  In English literature, called <a href="http://en.wikipedia.org/wiki/Back-face_culling">back-face culling</a> . <br><br><img src="https://habrastorage.org/getpro/habr/post_images/a3a/f41/137/a3af4113710b41eb09ed4b935891da80.png"><br>  Does my head model look more detailed?  Well, in it a quarter of a million triangles.  Nothing, we will add the details later, after receiving the picture that I gave for the seed in the first article. <br><br>  Notice, the internal cavity of the mouth is drawn over the lips.  Well, what, such a quick clipping of invisible triangles removes all unnecessary only for convex models.  We will remove these flaws next time by encoding the z-buffer. <br><br>  <a href="https://github.com/ssloy/tinyrenderer/tree/e1a3f2b0f9638fa6db9e0437c621132e1baa3fb1">The current version of the</a> renderer. </div><p>Source: https://habr.com/ru/post/248159/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -186,7 +186,7 @@
 <li><a href="../248163/index.html">.NET Developer Skills</a></li>
 <li><a href="../248165/index.html">Review of the most interesting materials on data analysis and machine learning №31 (January 12 - 18, 2015)</a></li>
 <li><a href="../248169/index.html">A large list of materials for studying Meteor.JS</a></li>
-<li><a href="../248173/index.html">The legacy of Jacob Bernoulli in Wolfram Language (Mathematica)</a></li>
+<li><a href="../24817/index.html">New moon</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

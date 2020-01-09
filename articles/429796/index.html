@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How DeviceLock DLP prevents leakage of sensitive data on GitHub</h1><div class="post__text post__text-html js-mediator-article"><p>  Recently, there has been a lot of news about random leaks of various confidential data from a web service for hosting IT projects and their joint development of GitHub. </p><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/0s/2l/j2/0s2lj2hes5qrpb6_chhwi9hnbu8.png"></div><br><p>  I emphasize that we’ll talk about random leaks, i.e.  due to negligence and without malicious intent from the perpetrators of incidents. <a name="habracut"></a>  Write off such leaks to the inexperience of employees in IT matters will not work, because  GitHub users are overwhelmingly developers, i.e.  well qualified and competent personnel.  Unfortunately, even very good specialists sometimes make banal mistakes, especially when it comes to security issues.  Let's take it as negligence. </p><cut></cut><br><p>  Here are some very well known examples related to GitHub: </p><br><ul><li>  2014 - Uber company leaked personal data to 50 thousand of its drivers.  The reason was that in the GitHub public repository, the Uber developers saved the access keys to the Amazon cloud (AWS), which, in turn, stored the same lost data. </li><li>  2017 - it turned out that the developers of the manufacturer of quadrocopters DJI saved the company's SSL certificate private key and AES keys for encrypting the firmware in the public GitHub repository.  In addition, there are credentials for Amazon Web Services, which, in turn, contained flight logs, passport data and driver licenses for DJI customers. </li><li>  2017 - DXC Technologies, a major US IT outsourcing engineer, uploaded AWS access keys to the GitHub public repository. </li><li>  2017 - GitHub public repository revealed source codes, reports and development plans for several large financial institutions in Canada, the United States and Japan, which were placed there by employees of the Indian outsourcing company Tata Consultancy Service, whose customers were affected financial institutions. </li></ul><br><p>  Obviously, all these instances of unintentional leaks could easily have been prevented by monitoring the data uploaded to GitHub.  No one talks about a total ban on access to GitHub, this is a meaningless and even harmful idea (if there is a ban, but the service is needed, then the developers will bypass this ban).  A solution is needed that prevents information leaks and has a real-time content analyzer that does not allow to upload only data to GitHub that should not be there for security reasons (for example, access keys to the Amazon cloud). </p><br><p>  I will show you how to solve this particular problem, using the example of DeviceLock DLP.  Our baseline data are: </p><br><ul><li>  GitHub account, </li><li>  AWS key, </li><li>  DeviceLock DLP version 8.3. </li></ul><br><p>  To begin with, we define that the AWS key is the protected data and its getting to GitHub must be prevented. </p><br><p><img src="https://habrastorage.org/webt/mk/ln/xo/mklnxofofuertskboy2qszyd0p4.png"></p><br><p>  Since the key is a set of bytes without any pronounced signatures (yes, I know about the text “BEGIN / END PRIVATE KEY” at the beginning and at the end, but this is a very weak signature and it is better not to rely on it), we will use identification on <a href="https://www.devicelock.com/ru/products/dlp-suite/content.html">digital prints</a> . </p><br><p><img src="https://habrastorage.org/webt/wa/sr/ky/wasrkyoccbyfnfhkurii61w_psc.png"></p><br><p>  Add the key file to the DeviceLock DLP digital fingerprints database so that the product “knows” our key “in person” and can identify it unambiguously later (and not confuse, for example, with test keys that can be easily uploaded to GitHub). </p><br><p><img src="https://habrastorage.org/webt/cu/xc/gw/cuxcgwjngjmlbogp-24m65mzi84.png"></p><br><p>  Now let's create a content filtering rule for file storages in DeviceLock DLP (GitHub falls under our classification of “file storages”, within which, in addition to GitHub, more than 15 different file exchange and synchronization services are supported). </p><br><p><img src="https://habrastorage.org/webt/mw/9u/rq/mw9urqsiogk4rp2rqutgdoq0f-q.png"></p><br><p>  According to this rule, any users are prohibited from loading data with digital fingerprints that match the ones specified above, and when detecting prohibited data, corresponding events (incident records) and shadow copies should be recorded in the central archive logs, in addition to actually executing the action with the prohibition of downloading data to GitHub . </p><br><p>  Let's now try to load the AWS key into the GitHub repository. </p><br><p><img src="https://habrastorage.org/webt/xx/3a/lk/xx3alks9wtfx5jxfwafci2ugwqq.png"></p><br><p>  As you can see, the “for some reason” download process failed, and DeviceLock DLP warned us that this operation was blocked by it (of course, the message is configurable and deactivated). </p><br><p><img src="https://habrastorage.org/webt/2z/sx/ur/2zsxurp_59e1ufkzs02nkhhf9eo.png"></p><br><p>  At the same time, if you look at the DeviceLock DLP shadow copy log, you can find that key there. </p><br><p><img src="https://habrastorage.org/webt/y6/v3/6x/y6v36xs-seazvr0zwga4hpwslew.png"></p><br><p>  Thus, in this example, it was shown how using DeviceLock DLP to solve the particular problem of preventing the leakage of any confidential data (digital prints can be taken from almost any files) to cloud storages. </p><br><p>  Of course, in addition to preventing data leakage to GitHub, you can still carry out periodic inventory repositories and identify information in them that should not be there.  GitHubs, Git Secrets, Git Hound, Truffle Hog, and many other free utilities have been created for scanning GitHub repositories. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/429796/">https://habr.com/ru/post/429796/</a></p>
+    <p>Source: https://habr.com/ru/post/429796/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../429792/index.html">Artificial intelligence, engaged in physics, can deduce the laws of imaginary universes</a></li>
 <li><a href="../429794/index.html">Google tells how the "exponential" growth of AI changes the very nature of computing</a></li>
 <li><a href="../429798/index.html">Sales of plug-in electric vehicles in the USA (with charts): October 2018</a></li>
+<li><a href="../4298/index.html">Oh my God!</a></li>
 <li><a href="../429800/index.html">Symfony Bundle for exporting statistics in Prometheus format</a></li>
 <li><a href="../429804/index.html">Friendly WEB resource protection against brute force attacks</a></li>
 <li><a href="../429808/index.html">Roscosmos may lose the largest order due to the FSB</a></li>
-<li><a href="../429812/index.html">Apple: T2 coprocessor can block DIY-repair of new MacBook and MacMini</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Mikrotik: a little trick switch chip</h1><div class="post__text post__text-html js-mediator-article">  My <a href="https://habrahabr.ru/post/313248/">last article</a> about the switch chip on Mikrotik caused an ambiguous reaction, and the comment of one of the readers prompted the idea.  And so: how on RB952Ui-5ac2nD to make more than one switching group? <br><a name="habracut"></a><br><h3>  We bypass the restriction of the Atheros8227 chip </h3><br>  <em>(I think with others it is possible similarly)</em> <br><br>  The idea here is simple, thanks <a href="https://habrahabr.ru/users/Ivan_83/">Ivan_83</a> for the idea (it was his <a href="https://habrahabr.ru/post/313248/">comment that</a> gave the direction of thought). <br><br>  We formulate the problem: there is a home Internet with television, but the prefix must be given a cable not after our NAT, but before it.  Usually the provider offers a small switch to your router (what a nightmare, so many unnecessary devices!), Or if the router knows how, you create a bridge on it from two ports that you give to the external network (incoming cable + TV set-top box).  But, the aforesaid Mikrotik does not know how to use two switching groups, and therefore, we have to make a soft bridge (and I want to give it to the hardware). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Now implementation: let's unite all the ports in the switching group (set up the master port): <br><br><pre><code class="bash hljs">/interface ethernet <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether1 master-port=ether2-master</code> </pre> <br><img src="https://habrastorage.org/files/32a/ab9/4e8/32aab94e878b4b89a5a9e48bb5a34a18.PNG" width="738"><br><br>  Similarly for all others. <br><br>  Now take and create two VLANs, one for the external network (for example, VID: 1) and for the inside (VID: 2): <br><br><pre> <code class="bash hljs">/interface vlan add interface=ether2-master \ name=ext vlan-id=1 add interface=ether2-master \ name=V_LAN vlan-id=2</code> </pre><br><img src="https://habrastorage.org/files/754/987/52a/75498752a92643d18da8994af4b60fa5.PNG"><br><br>  Now create the VLAN table: <br><br><pre> <code class="bash hljs">/interface ethernet switch vlan add ports=ether1,ether2-master,ether3,ether4,ether5,switch1-cpu switch=switch1 vlan-id=1 add ports=ether1,ether2-master,ether3,ether4,ether5,switch1-cpu switch=switch1 vlan-id=2</code> </pre><br><img src="https://habrastorage.org/files/5e4/f95/da5/5e4f95da5a5049fca23627a3f49b0859.PNG"><br><br>  And on the switching chip, we “combine” the ports using VLAN.  All ports will be rastegirovanny (except for the CPU), and the default VLAN will be the one that corresponds to the destination port (for the external network 1, for the internal 2): <br><br><pre> <code class="bash hljs">/interface ethernet switch port <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether1 default-vlan-id=1 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether2-master default-vlan-id=1 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether3 default-vlan-id=2 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether4 default-vlan-id=2 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether5 default-vlan-id=2 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> switch1-cpu default-vlan-id=2 vlan-header=add-if-missing vlan-mode=secure</code> </pre><br><img src="https://habrastorage.org/files/797/03e/448/79703e44814846dba049b42a82430a2d.PNG"><br><br>  Everything, now the switching chip will do the work we need. </div><p>Source: <a href="https://habr.com/ru/post/313702/">https://habr.com/ru/post/313702/</a></p>
+      Now implementation: let's unite all the ports in the switching group (set up the master port): <br><br><pre><code class="bash hljs">/interface ethernet <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether1 master-port=ether2-master</code> </pre> <br><img src="https://habrastorage.org/files/32a/ab9/4e8/32aab94e878b4b89a5a9e48bb5a34a18.PNG" width="738"><br><br>  Similarly for all others. <br><br>  Now take and create two VLANs, one for the external network (for example, VID: 1) and for the inside (VID: 2): <br><br><pre> <code class="bash hljs">/interface vlan add interface=ether2-master \ name=ext vlan-id=1 add interface=ether2-master \ name=V_LAN vlan-id=2</code> </pre><br><img src="https://habrastorage.org/files/754/987/52a/75498752a92643d18da8994af4b60fa5.PNG"><br><br>  Now create the VLAN table: <br><br><pre> <code class="bash hljs">/interface ethernet switch vlan add ports=ether1,ether2-master,ether3,ether4,ether5,switch1-cpu switch=switch1 vlan-id=1 add ports=ether1,ether2-master,ether3,ether4,ether5,switch1-cpu switch=switch1 vlan-id=2</code> </pre><br><img src="https://habrastorage.org/files/5e4/f95/da5/5e4f95da5a5049fca23627a3f49b0859.PNG"><br><br>  And on the switching chip, we “combine” the ports using VLAN.  All ports will be rastegirovanny (except for the CPU), and the default VLAN will be the one that corresponds to the destination port (for the external network 1, for the internal 2): <br><br><pre> <code class="bash hljs">/interface ethernet switch port <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether1 default-vlan-id=1 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether2-master default-vlan-id=1 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether3 default-vlan-id=2 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether4 default-vlan-id=2 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> ether5 default-vlan-id=2 vlan-header=always-strip vlan-mode=secure <span class="hljs-built_in"><span class="hljs-built_in">set</span></span> switch1-cpu default-vlan-id=2 vlan-header=add-if-missing vlan-mode=secure</code> </pre><br><img src="https://habrastorage.org/files/797/03e/448/79703e44814846dba049b42a82430a2d.PNG"><br><br>  Everything, now the switching chip will do the work we need. </div><p>Source: https://habr.com/ru/post/313702/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../313692/index.html">Connecting the ADC to the FPGA. Features, complexity, implementation</a></li>
-<li><a href="../313694/index.html">History of programming languages: C # - ahead of the rest</a></li>
 <li><a href="../313696/index.html">[Bookmark] Zoo neural network architectures. Part 1</a></li>
 <li><a href="../313698/index.html">Pro information systems and old sewer pipes</a></li>
+<li><a href="../3137/index.html">Learn to really work!</a></li>
+<li><a href="../31370/index.html">Social games at the chips factory</a></li>
 <li><a href="../313700/index.html">Twelve commandments of software localization</a></li>
 <li><a href="../313704/index.html">Homemade Business Process Description Notation</a></li>
 <li><a href="../313706/index.html">Xcode Build System: advanced tutorial</a></li>
 <li><a href="../313708/index.html">The data center in the suitcase: one day in the life of an IT specialist in auto racing</a></li>
+<li><a href="../31371/index.html">iPhone - The Untold Story. Part 1</a></li>
 <li><a href="../313710/index.html">Malware + Blockchain = ❤️</a></li>
-<li><a href="../313712/index.html">Why write on Habr? Examples from practice</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

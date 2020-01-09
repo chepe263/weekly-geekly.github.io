@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Storing user passwords in Google Chrome on Android</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/df1/2a2/cb6/df12a2cb62de3053756cd22e6be47ea3.png" alt="image"></div><br>  Hi Habr!  I am a young developer specializing in Android development and information security.  Not so long ago, I wondered: how does Google Chrome store saved user passwords?  Analyzing the information from the network and the files of the chrome itself ( <a href="https://habrahabr.ru/post/134982/">this</a> article was especially informative), I found certain similarities and differences in the implementation of saving passwords on different platforms, and for demonstration I wrote applications for extracting passwords from the Android version of the browser. <br><a name="habracut"></a><br><h3>  How it works? </h3><br>  As we can know from various online publications on this topic, Google Chrome on a PC stores the passwords of its users in the following directory: <br><br><blockquote>  "C: \ Users \ SomeUser \ AppData \ Local \ Google \ Chrome \ User Data \ Default \" in the file " <b>Login Data</b> ". </blockquote><br>  This file is a SQLite database, and it is quite possible to open and view it.  In the <b>logins</b> table we can see the following fields of interest: <b>origin_url</b> (site address), <b>username_value</b> (login), <b>password_value</b> (password).  The password is represented by a byte array, and is encrypted using a machine key, individual for each system.  More details can be found in <a href="https://habrahabr.ru/post/134982/">this</a> article.  Thus, some kind of protection in the Windows client is present. <br><br><h3>  Android </h3><br>  But since I'm more interested in Android, my attention was taken, respectively, by the Android browser client. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      By “picking up” the <b>Google Chrome</b> package ( <i>com.android.chrome</i> ), I found that its structure is very similar to the structure of a PC client, and it was not difficult to find the exact same database responsible for storing user passwords.  The full path to the database is: <i>"/data/data/com.android.chrome/app_chrome/Default/Login Data"</i> .  In general, this database is very similar to its “big sister” from the PC version, having only one, but a very significant difference - passwords are stored here in clear form.  The question arises: is it possible to programmatically extract passwords from the database?  The answer turned out to be quite obvious - yes, if your application has root-rights. <br><br><h3>  Implementation </h3><br>  For greater clarity, it was decided to make your own tool to extract passwords from the browser database. <br><br>  If you describe his work in two words, it works like this: <br><br><ul><li>  Gets root. </li><li>  Copies Chrome database to its directory. </li><li>  Using chmod gets access to a copy of the database. </li><li>  It opens the database, and retrieves information about logins and passwords. </li></ul><br>  The application was posted on <a href="https://play.google.com/store/apps/details%3Fid%3Dru.semper_viventem.chromeor">Google Play</a> . <br><br>  GitHub project: <a href="https://github.com/Semper-Viventem/ChromeOR">ChromeOR</a> . <br><br><h3>  Conclusion </h3><br>  As a conclusion from the work done, you can say that if you have root-rights, pull out the password database from the browser <s>and send it to your server</s> - the task is completely solvable, and this fact should make you think about whether any application should trust the superuser rights . <br><br>  Hope this article was informative.  Thanks for attention! </div><p>Source: <a href="https://habr.com/ru/post/312470/">https://habr.com/ru/post/312470/</a></p>
+      By “picking up” the <b>Google Chrome</b> package ( <i>com.android.chrome</i> ), I found that its structure is very similar to the structure of a PC client, and it was not difficult to find the exact same database responsible for storing user passwords.  The full path to the database is: <i>"/data/data/com.android.chrome/app_chrome/Default/Login Data"</i> .  In general, this database is very similar to its “big sister” from the PC version, having only one, but a very significant difference - passwords are stored here in clear form.  The question arises: is it possible to programmatically extract passwords from the database?  The answer turned out to be quite obvious - yes, if your application has root-rights. <br><br><h3>  Implementation </h3><br>  For greater clarity, it was decided to make your own tool to extract passwords from the browser database. <br><br>  If you describe his work in two words, it works like this: <br><br><ul><li>  Gets root. </li><li>  Copies Chrome database to its directory. </li><li>  Using chmod gets access to a copy of the database. </li><li>  It opens the database, and retrieves information about logins and passwords. </li></ul><br>  The application was posted on <a href="https://play.google.com/store/apps/details%3Fid%3Dru.semper_viventem.chromeor">Google Play</a> . <br><br>  GitHub project: <a href="https://github.com/Semper-Viventem/ChromeOR">ChromeOR</a> . <br><br><h3>  Conclusion </h3><br>  As a conclusion from the work done, you can say that if you have root-rights, pull out the password database from the browser <s>and send it to your server</s> - the task is completely solvable, and this fact should make you think about whether any application should trust the superuser rights . <br><br>  Hope this article was informative.  Thanks for attention! </div><p>Source: https://habr.com/ru/post/312470/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../312448/index.html">Personal experience of implementing the GLPI system. Part 1</a></li>
-<li><a href="../312450/index.html">Neural networks for beginners. Part 1</a></li>
 <li><a href="../312456/index.html">1C in the clouds</a></li>
 <li><a href="../312458/index.html">Facebook and Google have released Yarn, a new JavaScript package manager.</a></li>
+<li><a href="../31246/index.html">Seven Wonders of the IT World</a></li>
 <li><a href="../312460/index.html">ONLYOFFICE or Libre: about the battle of formats and co-editing</a></li>
+<li><a href="../31247/index.html">Social networks and group formation</a></li>
 <li><a href="../312472/index.html">Why super-mega-about machine learning in 15 minutes still does not become</a></li>
 <li><a href="../312476/index.html">How Asana makes it easier to work with the team, documents and brings more profit</a></li>
+<li><a href="../31248/index.html">Interview with Richard Stallman</a></li>
 <li><a href="../312482/index.html">Hackathon according to criminal statistics</a></li>
 <li><a href="../312484/index.html">How to love mbed, and then screw it up twice</a></li>
-<li><a href="../312490/index.html">How to assemble bigrams for a body of any size on a home computer</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

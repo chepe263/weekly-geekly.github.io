@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Non-blocking queues: message exchange between threads</h1><div class="post__text post__text-html js-mediator-article">  The idea to write a similar module spawned the PLM of our corporate product.  Inspecting our design documentation, we were told that in no case should our code block the task from which it is called, and generally take away as little as possible of its time, such is the feature of building the system <a name="habracut"></a>  , watchdogs, etc.  The task involved the transfer of certain messages from one task to another, something like logs, advanced diagnostics.  Task recipient is created to record the result in a file, since it is obvious from the original task of writing to a file that there can be no talk.  And although the source (producer) is one, and the consumer (consumer) is also one, and even the presence of mutexes or semaphores would not affect the initial task, it was decided to completely abandon them.  Again, in the future it was possible to extend the task to several other tasks, and therefore the situation when one task expects another, although limitedly acceptable (and the source code for exchanging its informational messages does use semaphores), is very undesirable. <br><br>  It was originally intended to make a static circular buffer, where each element contains a bit that determines the origin or consumer.  The algorithm is extremely simple, the source writes its data to the cell where the bit is zero, and then “publishes” the change, writing one to this bit and proceeds to the next element.  The consumer from the element for which this bit is equal to one reads the message, and then the bit clears.  No race conditions, everything seems to be fine.  But the very first traffic test revealed that in one slice the source could theoretically produce about 30-40 thousand elements.  In reality, of course, it will be less, since it still does something except for the production of these lines, but it is not possible to determine the size of the buffer, which would be sufficient.  One of the reasons for this is also unstable write speed to the file - on some systems there are CF cards instead of hard drives.  And I would not like to lose messages. <br><br>  Having rummaged in the Internet, I came across the following solution, which I implemented in my task: <a href="http://drdobbs.com/architecture-and-design/210604448">drdobbs.com/architecture-and-design/210604448</a> <br>  The algorithm is described in sufficient detail; I will not repeat it here. <br>  Two changes I made: <br>  1) I do not understand why the source, not the consumer, frees the elements.  The release of elements by the consumer also does not create the race condition (by the way, how can this phrase be understood in Russian?).  This removes some of the load from the consumer and reduces memory usage, as consumed items are removed immediately. <br>  2) Also, a traffic test, or rather a profiler, revealed that malloc is a relatively expensive operation.  Since the maximum size of the original messages is known, it was decided to group the allocation of memory in one operation at once into 8 elements.  This gave more than a twofold increase in speed, in particular, halved the processor load that we add to the original task. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Here it is necessary to make a reservation right away that the source code was on a plugin-free C, which, moreover, by virtue of a non-disclosure agreement, I cannot publish.  Malloch doesn’t belong to C-Sharpe anymore, so the second point is no longer applicable.  And I study B-Sharp already in my free time, and I am writing for myself.  Once they offered a job, I didn’t go through just the lack of experience with this magic language, and since then I have been doing it.  Well, okay, more to the point. <br><br><h5>  Implementing a non-blocking C # queue </h5><br>  The first step is to describe the queue element. <br><pre>         class queItem
@@ -214,20 +214,20 @@
        return result;
        }
      }
-</pre><br>  The last function is used by handler threads in a loop, processing the message, or, if it is not received, by performing Thread.Sleep (). </div><p>Source: <a href="https://habr.com/ru/post/130101/">https://habr.com/ru/post/130101/</a></p>
+</pre><br>  The last function is used by handler threads in a loop, processing the message, or, if it is not received, by performing Thread.Sleep (). </div><p>Source: https://habr.com/ru/post/130101/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../130093/index.html">Understanding WinAPI</a></li>
 <li><a href="../130094/index.html">A special case of using Sikuli to solve a problem on Facebook</a></li>
 <li><a href="../130095/index.html">German police accused of using spyware</a></li>
 <li><a href="../130096/index.html">Choosing a disk system for the database MySQL</a></li>
 <li><a href="../130098/index.html">Plex Media Center</a></li>
+<li><a href="../1301/index.html">Search site - messages from the tape</a></li>
 <li><a href="../130102/index.html">Do you often use bank plastic cards?</a></li>
 <li><a href="../130103/index.html">Seminar "What is the use of metrics?" In St. Petersburg</a></li>
 <li><a href="../130104/index.html">The first startup incubator in Moldova - “Simpals Garage”</a></li>
 <li><a href="../130105/index.html">How I sent spam</a></li>
-<li><a href="../130108/index.html">Residents of the richest Chinese village built a skyscraper</a></li>
+<li><a href="../130107/index.html">Microsoft + ACT or Microsoft vs. SPO?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

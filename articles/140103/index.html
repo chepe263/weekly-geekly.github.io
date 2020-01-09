@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -56,7 +56,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Use Git as a tool for web application deployment.</h1><div class="post__text post__text-html js-mediator-article">  Hi, Habrosoobschestvo! <br><br>  Continuing the topic of using git hooks, I want to tell you about post-merge and post-checkout <br><br><h4>  What we have </h4><br>  We have a web application that we are developing.  We need to quickly and easily add changes to production. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -64,23 +64,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  What does git offer us </h4><br>  <b>post-merge</b> - This hook is called 'git-merge', after we have executed 'git-pull' or 'git-merge' on the local repository.  The hook will fail if we have conflicts with merge. <br>  <b>Post-checkout</b> - This hook is called 'git-checkout' after we execute 'git-clone' or 'git-checkout'. <br><a name="habracut"></a><br><h4>  What we do </h4><br>  The deployment mechanism will be something like this: <br>  1. Raise the git server.  We translate all development to git.  The tested code is uploaded to the repository. <br>  2. We write hooks that will do what we need to do after deployment.  In this case, the post-merge hook. <br>  3. If we want to deploy a working configuration on a clean server, then we write a post-checkout hook <br><br>  For example, after the deployment we need to clean up some folder and restart the Apache. <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash /etc/init.d/apache2 stop find /path/to/folder -type f -delete /etc/init.d/apache2 start</span></span></code> </pre> <br><br>  Put this script in .git / hooks / post-merge. <br>  We execute git pull and we run this script. <br><br>  Similarly for post-checkout hook <br><br><h4>  Pros: </h4><br><ul><li>  Fast delivery of changes to production. </li><li>  Automation </li><li>  Centralized storage of a working web project </li></ul><br><br><h4>  Minuses: <br></h4><br><ul><li>  This scheme will not work if we create new branches by <b>git checkout -b newBranch</b> </li><li>  This scheme will not work if we manually merge changes to the local storage. </li></ul><br><br>  <b>UPD:</b> The goal is not to show the only and kosher kind of deployment, but how you can still use git hooks.  And yes, I know about Capistrano, Vlad the Deployer, Chef (solo), Puppet and others. </div><p>Source: <a href="https://habr.com/ru/post/140103/">https://habr.com/ru/post/140103/</a></p>
+    <h4>  What does git offer us </h4><br>  <b>post-merge</b> - This hook is called 'git-merge', after we have executed 'git-pull' or 'git-merge' on the local repository.  The hook will fail if we have conflicts with merge. <br>  <b>Post-checkout</b> - This hook is called 'git-checkout' after we execute 'git-clone' or 'git-checkout'. <br><a name="habracut"></a><br><h4>  What we do </h4><br>  The deployment mechanism will be something like this: <br>  1. Raise the git server.  We translate all development to git.  The tested code is uploaded to the repository. <br>  2. We write hooks that will do what we need to do after deployment.  In this case, the post-merge hook. <br>  3. If we want to deploy a working configuration on a clean server, then we write a post-checkout hook <br><br>  For example, after the deployment we need to clean up some folder and restart the Apache. <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash /etc/init.d/apache2 stop find /path/to/folder -type f -delete /etc/init.d/apache2 start</span></span></code> </pre> <br><br>  Put this script in .git / hooks / post-merge. <br>  We execute git pull and we run this script. <br><br>  Similarly for post-checkout hook <br><br><h4>  Pros: </h4><br><ul><li>  Fast delivery of changes to production. </li><li>  Automation </li><li>  Centralized storage of a working web project </li></ul><br><br><h4>  Minuses: <br></h4><br><ul><li>  This scheme will not work if we create new branches by <b>git checkout -b newBranch</b> </li><li>  This scheme will not work if we manually merge changes to the local storage. </li></ul><br><br>  <b>UPD:</b> The goal is not to show the only and kosher kind of deployment, but how you can still use git hooks.  And yes, I know about Capistrano, Vlad the Deployer, Chef (solo), Puppet and others. </div><p>Source: https://habr.com/ru/post/140103/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../140096/index.html">How to choose freelancer orders</a></li>
-<li><a href="../140097/index.html">Promotion of the application in the AppStore</a></li>
 <li><a href="../140098/index.html">PsychoPy in Brief</a></li>
 <li><a href="../140099/index.html">Excursion to the regional offices of Kaspersky Lab</a></li>
+<li><a href="../1401/index.html">What did Manstein talk about? About management.</a></li>
+<li><a href="../14010/index.html">Technology, look into the future</a></li>
 <li><a href="../140102/index.html">We translate the numbers between the binary and decimal systems "on the fly", the explanation is "on the fingers"</a></li>
 <li><a href="../140104/index.html">March 2012 patches - Remote Desktop vulnerability</a></li>
 <li><a href="../140105/index.html">MVP experts respond on the TechNet and MSDN forums.</a></li>
+<li><a href="../140106/index.html">How to solve print subsystem problems in a terminal server</a></li>
+<li><a href="../140107/index.html">Runetology (138): Editor-in-Chief of Cnews.ru Maxim Kazak</a></li>
 <li><a href="../140108/index.html">Canobuvosti, 135th edition</a></li>
-<li><a href="../140109/index.html">Grid update via ajax</a></li>
-<li><a href="../140110/index.html">The new Xbox will not appear before 2013</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

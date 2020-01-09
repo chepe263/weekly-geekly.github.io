@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Filter for typography</h1><div class="post__text post__text-html js-mediator-article"> Recently <a href="http://kigorw.habrahabr.ru/">Igor Kononuchenko</a> laid out a <a href="http://habrahabr.ru/blogs/python/42633/">version of a typographer written in Python</a> .  Igor thanks a lot.  And I modestly decided to make a typographic filter for django from the library.  Not that it is difficult - but for beginners, like me, it can be useful.  What actually happened. <a name="habracut"></a><br><br>  1. To start, downloaded through SVN library from Google code: <a href="http://code.google.com/p/typo-py/">http://code.google.com/p/typo-py/</a> . <br><br>  2. As a guide in writing filters turned to <a href="http://docs.djangoproject.com/en/dev/howto/custom-template-tags/">official documentation</a> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      3. I did tests on a previously written Portfolio model - hence, such paths turned out.  The file <i>typographus.py</i> put in <i>mysite / portfolio / templatetags</i> (don’t forget to put an empty <i>__init__.py</i> file there).  At the end of the file I added the filter code itself: <br><br> <code>from django import template <br> register=template.Library() <br> <br> @register.filter <br> @stringfilter <br> def typographus(string): <br> """Russian typorgify""" <br> if type(string) is not unicode: <br> string = unicode(string) <br> return Typographus().process(string) <br></code> <br><br>  4. In the <i>settings.py</i> file in the <i>INSTALLED_APPS</i> list, added a line, <i>mysite.portfolio.templatetags.typographus</i> , which connects the handler. <br><br>  5. In the html-template we got the following code: <br><br> <code>{% extends "base.html" %} <br> {% load typographus %} <br> ... <br> {% block content %} <br> <br> {% autoescape off %} <br> &lt;h1&gt;{{ portfolio.title|typographus }}&lt;/h1&gt; <br> {{ portfolio.text|linebreaks|typographus }} <br> {% endautoescape %} <br> <br> {% endblock %} <br></code> <br><br>  That's all.  In the process of writing, I managed to run into a little problem: the typographer himself requires a line in utf8, and if a filter chain is used (for paragraph <i>breaks</i> : <i>{{portfolio.text | linebreaks | typographus}}</i> ), an error is <i>generated</i> .  Therefore, in the filter itself there is a check for the type of the string and a conference in utf8, if necessary. <br><br>  I learned a little crumpled - I just recently used Django - if where I was wrong, correct me.  And thanks again to <a href="http://kigorw.habrahabr.ru/">Igor</a> for the typographer. <br></div><p>Source: <a href="https://habr.com/ru/post/42860/">https://habr.com/ru/post/42860/</a></p>
+      3. I did tests on a previously written Portfolio model - hence, such paths turned out.  The file <i>typographus.py</i> put in <i>mysite / portfolio / templatetags</i> (don’t forget to put an empty <i>__init__.py</i> file there).  At the end of the file I added the filter code itself: <br><br> <code>from django import template <br> register=template.Library() <br> <br> @register.filter <br> @stringfilter <br> def typographus(string): <br> """Russian typorgify""" <br> if type(string) is not unicode: <br> string = unicode(string) <br> return Typographus().process(string) <br></code> <br><br>  4. In the <i>settings.py</i> file in the <i>INSTALLED_APPS</i> list, added a line, <i>mysite.portfolio.templatetags.typographus</i> , which connects the handler. <br><br>  5. In the html-template we got the following code: <br><br> <code>{% extends "base.html" %} <br> {% load typographus %} <br> ... <br> {% block content %} <br> <br> {% autoescape off %} <br> &lt;h1&gt;{{ portfolio.title|typographus }}&lt;/h1&gt; <br> {{ portfolio.text|linebreaks|typographus }} <br> {% endautoescape %} <br> <br> {% endblock %} <br></code> <br><br>  That's all.  In the process of writing, I managed to run into a little problem: the typographer himself requires a line in utf8, and if a filter chain is used (for paragraph <i>breaks</i> : <i>{{portfolio.text | linebreaks | typographus}}</i> ), an error is <i>generated</i> .  Therefore, in the filter itself there is a check for the type of the string and a conference in utf8, if necessary. <br><br>  I learned a little crumpled - I just recently used Django - if where I was wrong, correct me.  And thanks again to <a href="http://kigorw.habrahabr.ru/">Igor</a> for the typographer. <br></div><p>Source: https://habr.com/ru/post/42860/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

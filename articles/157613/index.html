@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>So how to delete millions of files from one folder?</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/20a/a48/289/20aa482895be84829892f626c15d46d4.jpg" align="right" title="Random picture"><br>  <s>Enchanting</s> arrangement of points over i in the matter of deleting files from a crowded directory. <br><br>  I read the article <a href="http://habrahabr.ru/post/152193/">Unusual hard disk overflow or how to delete millions of files from one folder</a> and was very surprised.  Really, in the standard Linux toolkit there are no simple tools for working with overflowed directories and it is necessary to resort to such low-level methods as calling <code>getdents()</code> directly. <br><br>  For those who are not aware of the problem, a brief description: if you accidentally created in a single directory a huge number of files without a hierarchy - i.e.  from 5 million files in a single flat directory, then quickly remove them will not work.  In addition, not all utilities in linux can do this in principle - either they will heavily load the processor / HDD, or they will take a lot of memory. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       So I took the time, organized a test site and tried various tools, both suggested in the comments and found in various articles and my own. <br><a name="habracut"></a><br><h3>  Training </h3><br>  So how to create a crowded directory on your HDD of the working computer, then you don’t want to suffer with its removal, we will create a virtual file system in a separate file and mount it through a loop device.  Fortunately, with Linux, everything is simple. <br><br>  Create an empty 200GB file <br><pre> <code class="python hljs"><span class="hljs-comment"><span class="hljs-comment">#!python f = open("sparse", "w") f.seek(1024 * 1024 * 1024 * 200) f.write("\0")</span></span></code> </pre><br><blockquote>  Many people recommend using the dd utility for this, for example <code>dd if=/dev/zero of=disk-image bs=1M count=1M</code> , but this works incomparably slower, and the result, as I understand it, is the same. </blockquote><br>  Format the file in ext4 and mount it as a file system <br><pre> <code class="bash hljs">mkfs -t ext4 -q sparse <span class="hljs-comment"><span class="hljs-comment"># </span><span class="hljs-doctag"><span class="hljs-comment"><span class="hljs-doctag">TODO:</span></span></span><span class="hljs-comment"> less FS size, but change -N option sudo mount sparse /mnt mkdir /mnt/test_dir</span></span></code> </pre><br><blockquote>  Unfortunately, I found out about the -N option of the mkfs.ext4 command after the experiments.  It allows you to increase the limit on the number of inode on FS, without increasing the size of the image file.  But, on the other hand, the standard settings are closer to real conditions. </blockquote><br>  Create a set of empty files (will work for several hours) <br><pre> <code class="python hljs"><span class="hljs-comment"><span class="hljs-comment">#!python for i in xrange(0, 13107300): f = open("/mnt/test_dir/{0}_{0}_{0}_{0}".format(i), "w") f.close() if i % 10000 == 0: print i</span></span></code> </pre><br><blockquote>  By the way, if at the beginning the files were created fairly quickly, then the next ones were added more and more slowly, random pauses appeared, the memory usage of the kernel increased.  So storing a large number of files in a flat directory is in itself a bad idea. </blockquote><br>  We check that all inodes on the FS are exhausted. <br><pre>  $ df -i
@@ -75,20 +75,20 @@
   7591 be / 4 seriy 13.74 M / s 0.00 B / s 0.00% 98.95% perl -e chdi ...
   5919 be / 0 root 11.18 M / s 1438.88 K / s 0.00% 93.85% [loop0] </pre><br>  It turns out that the use of readdir is quite possible? <br><br><h4>  Uninstall through a C program readdir + unlink </h4><br><pre> <code class="cpp hljs"><span class="hljs-comment"><span class="hljs-comment">//file: cleandir.c #include &lt;dirent.h&gt; #include &lt;sys/types.h&gt; #include &lt;unistd.h&gt; int main(int argc, char *argv[]) { struct dirent *entry; DIR *dp; chdir("/mnt/test_dir"); dp = opendir("."); while( (entry = readdir(dp)) != NULL ) { if ( strcmp(entry-&gt;d_name, ".") &amp;&amp; strcmp(entry-&gt;d_name, "..") ){ unlink(entry-&gt;d_name); // maybe unlinkat ? } } }</span></span></code> </pre><br> <code>$ gcc -o cleandir cleandir.c</code> <br> <code>$ ./cleandir</code> <br>  Under <code>strace</code> it calls <code>getdents()</code> once, then <code>unlink()</code> many times, and so on in a loop.  Took <b>128Kb of</b> memory, not growing. <br>  Removes successfully. <br><pre>  iotop:
   7565 be / 4 seriy 11.70 m / s 0.00 b / s 0.00% 98.88% ./cleandir
-  5919 be / 0 root 12.97 M / s 1079.23 K / s 0.00% 92.42% [loop0] </pre><br>  Again, we are convinced that using <code>readdir</code> is quite normal, if you do not accumulate the results in memory, but delete the files right away. <br><br><h4>  findings </h4><br><ul><li>  You can use the combination of <code>readdir()</code> + <code>unlink()</code> functions to remove directories containing millions of files. </li><li>  In practice, it is better to use <code>rm -r /my/dir/</code> , since  it comes up smarter - first it builds a relatively small list of files in memory, calling <code>readdir()</code> several times, and then deletes files from this list.  This allows you to more smoothly alternate the load on the reading and writing, which increases the removal rate. </li><li>  To reduce the load on the system used in combination with <code>nice</code> or <code>ionice</code> .  Or use scripting languages ​​and insert small sleep () in cycles.  Or generate a list of files through <code>ls -l</code> and skip it through a <a href="http://habrahabr.ru/post/152193/">slow down pipe</a> . </li><li>  Do not believe everything that is written on the Internet, of course!  Various blogs often discuss this problem, and regularly suggest inoperative solutions. </li></ul><br>  PS: Unfortunately, I did not find functions in Python for iterative reading of a directory, to which I am extremely surprised;  os.listdir () and os.walk () read the entire directory.  Even PHP has <a href="http://www.php.net/manual/ru/function.readdir.php">readdir</a> . </div><p>Source: <a href="https://habr.com/ru/post/157613/">https://habr.com/ru/post/157613/</a></p>
+  5919 be / 0 root 12.97 M / s 1079.23 K / s 0.00% 92.42% [loop0] </pre><br>  Again, we are convinced that using <code>readdir</code> is quite normal, if you do not accumulate the results in memory, but delete the files right away. <br><br><h4>  findings </h4><br><ul><li>  You can use the combination of <code>readdir()</code> + <code>unlink()</code> functions to remove directories containing millions of files. </li><li>  In practice, it is better to use <code>rm -r /my/dir/</code> , since  it comes up smarter - first it builds a relatively small list of files in memory, calling <code>readdir()</code> several times, and then deletes files from this list.  This allows you to more smoothly alternate the load on the reading and writing, which increases the removal rate. </li><li>  To reduce the load on the system used in combination with <code>nice</code> or <code>ionice</code> .  Or use scripting languages ​​and insert small sleep () in cycles.  Or generate a list of files through <code>ls -l</code> and skip it through a <a href="http://habrahabr.ru/post/152193/">slow down pipe</a> . </li><li>  Do not believe everything that is written on the Internet, of course!  Various blogs often discuss this problem, and regularly suggest inoperative solutions. </li></ul><br>  PS: Unfortunately, I did not find functions in Python for iterative reading of a directory, to which I am extremely surprised;  os.listdir () and os.walk () read the entire directory.  Even PHP has <a href="http://www.php.net/manual/ru/function.readdir.php">readdir</a> . </div><p>Source: https://habr.com/ru/post/157613/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../157603/index.html">How to become a millionaire in the AppStore or a few formulas about promotion and sales. Part 1</a></li>
 <li><a href="../157605/index.html">Taming the triceps dragon or how authentication in Bacula works</a></li>
 <li><a href="../157607/index.html">Control of mobile expenses within the organization</a></li>
 <li><a href="../157609/index.html">EPAM IT Share # 2: Can you Kanban? Fault tolerance</a></li>
+<li><a href="../15761/index.html">Sybase PowerDesigner - one of the best UML design tools</a></li>
 <li><a href="../157611/index.html">NVIDIA turned to Linux</a></li>
 <li><a href="../157615/index.html">Implementing a Singleton design pattern for PHP 5.4</a></li>
 <li><a href="../157617/index.html">MongoDb for developers. Week 2</a></li>
 <li><a href="../157619/index.html">Real-time identification and positioning technologies</a></li>
+<li><a href="../15762/index.html">ICANN: Russia will not have a "separate Internet"</a></li>
 <li><a href="../157621/index.html">PyGA: using Google Analytics tracking in a backend written in Python</a></li>
-<li><a href="../157627/index.html">ScrollUP buttons. Fast scrolling on any site</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

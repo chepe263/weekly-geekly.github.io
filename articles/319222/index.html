@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Reducing the amount of PostgreSQL data on disk</h1><div class="post__text post__text-html js-mediator-article">  Usually when compiling data structures and tables, no one bothers with the order of the columns.  Actually, what's the point?  If necessary, you can change the order of the columns in the SELECT, so why bother?  So, there is something to worry about, since the order of the columns can significantly affect the size of the table.  Yes, the size of the table may depend on the order of the columns, even if the data are the same. <br><a name="habracut"></a><br>  How is this explained?  There is such a thing as the alignment of the CPU data, and the low-level size of the data structure depends on it.  The conscious choice of the order of the columns makes it possible to optimize the size of the data.  Do not believe?  Let's try: <br><br><pre><code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># CREATE TABLE t_test ( i1 int, i2 int, i3 int, v1 varchar(100), v2 varchar(100), v3 varchar(100) ); CREATE TABLE</span></span></code> </pre> <br>  In this example, 6 columns.  3 integer columns one after another and 3 varchar columns, also one after another.  Add 10 million lines to this table: <br><br><pre> <code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># INSERT INTO t_test SELECT 10, 20, 30, 'abcd', 'abcd', 'abcd' FROM generate_series(1, 10000000); INSERT 0 10000000</span></span></code> </pre><br>  The total size of the table is 574 MBytes: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># SELECT pg_size_pretty(pg_relation_size('t_test')); pg_size_pretty ---------------- 574 MB (1 row)</span></span></code> </pre><br>  Let's try to change the location of these columns.  In the following example, after the varchar column there is an integer column.  This is repeated three times: <br><br><pre> <code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># CREATE TABLE t_test ( v1 varchar(100), i1 int, v2 varchar(100), i2 int, v3 varchar(100), i3 int ); CREATE TABLE</span></span></code> </pre><br>  Now add 10 million lines ... <br><br><pre> <code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># INSERT INTO t_test SELECT 'abcd', 10, 'abcd', 20, 'abcd', 30 FROM generate_series(1, 10000000); INSERT 0 10000000</span></span></code> </pre><br>  ... and the table will increase significantly: <br><br><pre> <code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># SELECT pg_size_pretty(pg_relation_size('t_test')); pg_size_pretty ---------------- 651 MB (1 row)</span></span></code> </pre><br>  The data in the table has not changed - they are simply selected to illustrate this effect.  If I wrote “abc” instead of “abcd”, we would not see the difference in size, but a string of 4 characters no longer fits in a smaller buffer. <br><br><h3>  Conclusion </h3><br>  An important conclusion that can be drawn from this experiment is that packing the same types of data next to each other definitely makes sense.  In addition, I found that it makes sense to pack integer columns at the beginning of tables.  Often, this may add a couple more percent to performance, simply because the data structure is slightly smaller than if it is not done. <br><br>  <i>From the translator:</i> <i><br><br></i>  <i>Article author: Hans-Jürgen Schönig.</i>  <i>The original is available by <a href="http://www.cybertec.at/shrinking-the-storage-footprint-of-data/">reference</a> .</i> </div><p>Source: <a href="https://habr.com/ru/post/319222/">https://habr.com/ru/post/319222/</a></p>
+    <pre> <code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># SELECT pg_size_pretty(pg_relation_size('t_test')); pg_size_pretty ---------------- 574 MB (1 row)</span></span></code> </pre><br>  Let's try to change the location of these columns.  In the following example, after the varchar column there is an integer column.  This is repeated three times: <br><br><pre> <code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># CREATE TABLE t_test ( v1 varchar(100), i1 int, v2 varchar(100), i2 int, v3 varchar(100), i3 int ); CREATE TABLE</span></span></code> </pre><br>  Now add 10 million lines ... <br><br><pre> <code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># INSERT INTO t_test SELECT 'abcd', 10, 'abcd', 20, 'abcd', 30 FROM generate_series(1, 10000000); INSERT 0 10000000</span></span></code> </pre><br>  ... and the table will increase significantly: <br><br><pre> <code class="sql hljs">test=<span class="hljs-comment"><span class="hljs-comment"># SELECT pg_size_pretty(pg_relation_size('t_test')); pg_size_pretty ---------------- 651 MB (1 row)</span></span></code> </pre><br>  The data in the table has not changed - they are simply selected to illustrate this effect.  If I wrote “abc” instead of “abcd”, we would not see the difference in size, but a string of 4 characters no longer fits in a smaller buffer. <br><br><h3>  Conclusion </h3><br>  An important conclusion that can be drawn from this experiment is that packing the same types of data next to each other definitely makes sense.  In addition, I found that it makes sense to pack integer columns at the beginning of tables.  Often, this may add a couple more percent to performance, simply because the data structure is slightly smaller than if it is not done. <br><br>  <i>From the translator:</i> <i><br><br></i>  <i>Article author: Hans-Jürgen Schönig.</i>  <i>The original is available by <a href="http://www.cybertec.at/shrinking-the-storage-footprint-of-data/">reference</a> .</i> </div><p>Source: https://habr.com/ru/post/319222/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using Google Spreadsheet as JSON backend</h1><div class="post__text post__text-html js-mediator-article">  When writing a simple web application or prototyping something, sometimes you want to have a quick and simple means of storing, editing and retrieving data. <br>  For example, you write a simple blog and you don’t want to build a backend to write, edit and store posts there, but you want to conveniently collect this data as JSON - Google Drive will help you with this. <br><a name="habracut"></a><br><h4>  Step 1: Creating a table and publishing it to the web </h4><br>  With a blog as an example, you probably want to create a table like this: <br><img src="https://habrastorage.org/getpro/habr/post_images/72a/5fa/0b0/72a5fa0b023dff502fd6c8770a3119a7.png"><br><br>  Then you can publish this document on the web.  To do this, select "File"&gt; "Publish on the Internet ...".  At the bottom of the dialog you can see the link to the data, but it gives us access only to HTML (try changing “html” to “json” - it will not work). <br><br>  Copy everything after key = (in my example, <code>0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c</code> ) and substitute this in the URL: <code><a href="https://spreadsheets.google.com/feeds/list/PUT-KEY-HERE/od6/public/values%3Falt%3Djson-in-script%26callback%3D"></a> spreadsheets.google.com/feeds/list/PUT-KEY-HERE/od6/public/values?alt=json-in-script&amp;callback=</code>  <code><a href="https://spreadsheets.google.com/feeds/list/PUT-KEY-HERE/od6/public/values%3Falt%3Djson-in-script%26callback%3D"></a> spreadsheets.google.com/feeds/list/PUT-KEY-HERE/od6/public/values?alt=json-in-script&amp;callback=</code> instead of " <code>PUT-KEY-HERE</code> ". 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      URL for my example: <code><a href="https://spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values%3Falt%3Djson-in-script%26callback%3D"></a> spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values?alt=json-in-script&amp;callback=</code>  <code><a href="https://spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values%3Falt%3Djson-in-script%26callback%3D"></a> spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values?alt=json-in-script&amp;callback=</code> .  This link does not work directly from the browser, but if you add something, for example “x”, to this URL, it will show your data as JSONP. <br><br>  You can also get the data as pure JSON (but you will need to skip it first through a CORS proxy, for example cors.io) via the link: <code><a href="https://spreadsheets.google.com/feeds/list/PUT-KEY-HERE/od6/public/values%3Falt%3Djson"></a> spreadsheets.google.com/feeds/list/PUT-KEY-HERE/od6/public/values?alt=json</code> <br> <br>  Now in your web application you can get data and use it as you like, like this: <br><pre> <code class="javascript hljs">$.getJSON(<span class="hljs-string"><span class="hljs-string">"http://cors.io/spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values?alt=json"</span></span>, <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">data</span></span></span><span class="hljs-function">) </span></span>{ <span class="hljs-comment"><span class="hljs-comment">//first row "title" column console.log(data.feed.entry[0]['gsx$title']['$t']); });</span></span></code> </pre></div><p>Source: <a href="https://habr.com/ru/post/202452/">https://habr.com/ru/post/202452/</a></p>
+      URL for my example: <code><a href="https://spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values%3Falt%3Djson-in-script%26callback%3D"></a> spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values?alt=json-in-script&amp;callback=</code>  <code><a href="https://spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values%3Falt%3Djson-in-script%26callback%3D"></a> spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values?alt=json-in-script&amp;callback=</code> .  This link does not work directly from the browser, but if you add something, for example “x”, to this URL, it will show your data as JSONP. <br><br>  You can also get the data as pure JSON (but you will need to skip it first through a CORS proxy, for example cors.io) via the link: <code><a href="https://spreadsheets.google.com/feeds/list/PUT-KEY-HERE/od6/public/values%3Falt%3Djson"></a> spreadsheets.google.com/feeds/list/PUT-KEY-HERE/od6/public/values?alt=json</code> <br> <br>  Now in your web application you can get data and use it as you like, like this: <br><pre> <code class="javascript hljs">$.getJSON(<span class="hljs-string"><span class="hljs-string">"http://cors.io/spreadsheets.google.com/feeds/list/0AtMEoZDi5-pedElCS1lrVnp0Yk1vbFdPaUlOc3F3a2c/od6/public/values?alt=json"</span></span>, <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">data</span></span></span><span class="hljs-function">) </span></span>{ <span class="hljs-comment"><span class="hljs-comment">//first row "title" column console.log(data.feed.entry[0]['gsx$title']['$t']); });</span></span></code> </pre></div><p>Source: https://habr.com/ru/post/202452/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../202434/index.html">Detect fake photos through incompatible shadows</a></li>
 <li><a href="../202440/index.html">Do you wash your hands with soap? Then tea without sugar</a></li>
 <li><a href="../202442/index.html">Sony sold 1 million playstation 4 per day</a></li>
 <li><a href="../202446/index.html">Testing in Yandex: we build our Lunapark</a></li>
+<li><a href="../20245/index.html">jQuery for the smallest or dynamic page loading (AJAX)</a></li>
 <li><a href="../202450/index.html">AJL - component for loading JS and CSS files with JavaScript</a></li>
 <li><a href="../202454/index.html">MPAA suggests using night vision goggles in movie theaters to detect pirates.</a></li>
 <li><a href="../202456/index.html">Decomposition, a task without a complete set of data, desktops and marketing</a></li>
 <li><a href="../202458/index.html">[Female look] Review Highscreen Omega Prime Mini: a smartphone with five colorful panels included</a></li>
+<li><a href="../20246/index.html">MySQL optimization</a></li>
 <li><a href="../202460/index.html">People with code past or sunset programmers</a></li>
-<li><a href="../202462/index.html">We set up e-commerce in Google Analytics</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Storing the code in the database or collect the code brick by brick</h1><div class="post__text post__text-html js-mediator-article"><h6>  This article is written by <a href="https://habrahabr.ru/users/napolsky/" class="user_link">Napolsky</a> .  For a known reason, he could not publish it.  If you liked the article - encourage the author in a known manner. </h6><br>  In this topic, I will talk about one approach I developed in web programming, the heart of which is storing code in a database.  A few notes on the following text: <br><ul><li>  Under the phrase "page code" means the executable (php) code </li><li>  In all matters relating to performance, there is a net page generation time, without the use of accelerators, caching systems, and so on. </li></ul><br><h3>  How it all began </h3><br>  In order to understand, and “why it is actually necessary,” we will quickly go through the path that led me to the storage of the code in the database.  It so happened that I started my way in web programming not by writing any scripts or modules for existing systems, but immediately by writing my own website engine from absolute zero.  At this point, I had two years of programming experience in C ++ and, of course, tried to build my own web engine on OOP (though at that time PHP had one name from PHP :)).  Within reason, I really love my “bikes”.  Especially big ones.  And before using a ready-made solution, I always ask myself: “Is it possible to write better?”. <br><a name="habracut"></a><br><br>  <font color="#888">In general, the writing of their bikes is very useful, especially for novice developers (when the first place is to raise professionalism, and not to write code in the allotted time and budget).</font>  <font color="#888">Only writing your own solutions gives an understanding of how something is arranged from the inside at the lowest level.</font>  <font color="#888">And this in turn gives an understanding of the complexity, resource intensity, speed of various approaches, which ultimately results in the choice of the right tools for solving the problem.</font>  <font color="#888">For example, at the university we were forced to write our pushbacks for arrays, so that we would not forget that something much larger could seem to be hidden behind simple and trivial things.</font> <br><br>  The result was an engine built according to a rather classical scheme: folders with classes, modules, templates, and so on.  Well, respectively, the endless inclusions of all this when generating pages.  And since the rationalizer lives in me, as in many programmers, I was worried about the costs of this approach.  In particular, most of all I didn’t like the fact that I <strong>had to plug in a lot of “unnecessary” code</strong> (“dead” code that will not be executed on the page) for pages (for example, the entire library, when this page only needs one function her). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       <font color="#888">Have you thought about the number of "dead" code on the page?</font>  <font color="#888">In fact, its amount is usually 7-15 times the amount of code that will actually be executed when the page is accessed.</font>  <font color="#888">Take for example a class of comments.</font>  <font color="#888">It will have the render (), delete (), edit (), add (), compress (), answer (), and so on methods. At the same time, only 1 of these methods will usually be called for 1 script execution (delete delete, edit - when editing and t d), and the rest will not be called.</font>  <font color="#888">So consider how many such extra code runs on the page.</font> <br><br>  At first, I tried to optimize, “cutting” and “gluing together” large libraries or classes to the needs of different pages, thus reducing the number of inclusions and dead code.  But this, of course, is a dead end road.  Time went by.  Projects written on this engine (the kingdom of heaven :) they became more and more.  Along with this, the number and size of the connected code grew, and with it the time of page generation.  I began to think more and more about how to get rid of the "dead" code.  And then I was visited by a bold, even crazy thought.  What if… <br><br><h3>  The birth of an idea </h3><br>  <strong>But what if you divide the code into as small independent parts as possible so that you can only collect what you really need on the page?</strong>  That is, to separate all functions, classes (ideally, and methods of classes), and so on.  Thus, we will get many many small "bricks", from which we will later fold the page.  Thus, it will be possible to <strong>completely get rid of the "dead" code and inclusions</strong> .  I was really excited by this idea, but there were more questions than answers: how to do it, would it work, what pitfalls await in implementation, how fast is such a system?  In short, so far I have not had any idea how to implement it and how it will work.  But try, of course, worth it. <br><br><h3>  Warrior's way </h3><br>  The ideology is that by breaking everything into as small pieces of code as possible, we can collect anything from them. There was no question of how to store code “bricks” - since they were not code, but were essentially data with a set attributes, the only possible option was to use db.  I will try to show the principle of operation of such a system as simply and abstractly as possible, only by conveying the essence. <br><br><h6>  1 Storing bricks </h6><br>  Everything is simple and clear: each individual function, a class (and even a class method is better), a module controller, a module presentation, and so on are a separate line in the database.  For example, in the simplest case, the table can be of the form <strong>id | code | name | componentType</strong> (where <strong>componentType</strong> is a type of brick (function, class, module ..)) <br><br><h6>  2 Storage dependencies </h6><br>  Since the code of one brick can cause another brick (for example, function-function type, module-function dependencies, or even page-module dependencies), you need to store replications.  This can be done using the replication table, which, in the simplest case, has the form <strong>id | parentId | childId</strong> .  Thus, we solve the problem of proper collection of “bricks” for nested structures: <br><br><blockquote><code>function A()<br>
@@ -126,7 +126,7 @@
 <h3></h3><br>
      ,         ,      .     ,    ,       . ,  ,    ,    :         .   -,      «»   .      ,      ,    .   ,     ,               CMS,   .<br>
 <br>
-P.S.   ,          .</div><p>Source: <a href="https://habr.com/ru/post/66309/">https://habr.com/ru/post/66309/</a></p>
+P.S.   ,          .</div><p>Source: https://habr.com/ru/post/66309/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -135,11 +135,11 @@ P.S.   ,          .</div><p>Source: <a href="https://habr.com/ru/post/66309/">ht
 <li><a href="../66306/index.html">What is your attitude towards MMORPG?</a></li>
 <li><a href="../66307/index.html">Automation of work * nix system administrator</a></li>
 <li><a href="../66308/index.html">Mug - meter</a></li>
+<li><a href="../6631/index.html">Why desktop mail is better than web interface</a></li>
 <li><a href="../66310/index.html">Timbild SIMPALS: Rubilovo and Myasko)</a></li>
 <li><a href="../66311/index.html">What materials about Java you are interested in in Russian?</a></li>
 <li><a href="../66314/index.html">CARGADOR DE CELULAR - charge mobile phone with your left foot</a></li>
 <li><a href="../66317/index.html">Amateur radio, hackers, amateurs and models of railways</a></li>
-<li><a href="../66318/index.html">Boost is easy. Part 2. Boost.Date_time</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

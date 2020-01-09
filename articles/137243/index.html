@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Weekday programmer or a rare compiler error</h1><div class="post__text post__text-html js-mediator-article">  We have the following code: <br><br><pre><code class="java hljs"><span class="hljs-number"><span class="hljs-number">1</span></span> <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">A</span></span></span><span class="hljs-class"> </span></span>{ <span class="hljs-number"><span class="hljs-number">2</span></span> <span class="hljs-number"><span class="hljs-number">3</span></span> <span class="hljs-keyword"><span class="hljs-keyword">private</span></span> B line; <span class="hljs-number"><span class="hljs-number">4</span></span> <span class="hljs-number"><span class="hljs-number">5</span></span> <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">foo</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-number"><span class="hljs-number">6</span></span> <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> (Integer line : line.getElements()) { <span class="hljs-number"><span class="hljs-number">7</span></span> <span class="hljs-number"><span class="hljs-number">8</span></span> } <span class="hljs-number"><span class="hljs-number">9</span></span> } <span class="hljs-number"><span class="hljs-number">10</span></span> } <span class="hljs-number"><span class="hljs-number">11</span></span> <span class="hljs-number"><span class="hljs-number">12</span></span> <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">B</span></span></span><span class="hljs-class"> </span></span>{ <span class="hljs-number"><span class="hljs-number">13</span></span> <span class="hljs-number"><span class="hljs-number">14</span></span> <span class="hljs-function"><span class="hljs-function">List&lt;Integer&gt; </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">getElements</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-number"><span class="hljs-number">15</span></span> <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> <span class="hljs-keyword"><span class="hljs-keyword">null</span></span>; <span class="hljs-comment"><span class="hljs-comment">// doesn't matter 16 } 17 }</span></span></code> </pre> <br><br>  Question: will the code be compiled? <br>  Answer: should, but will not 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,16 +63,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a><br><br>  And now we explain why. <br><br>  It is clear that in line 6 eclipsing of the class field of the loop variable occurs.  But, according to the specification it is not so!  The funny thing is that one popular paid IDE for Java behaves correctly, and the compiler complains that getElements () is missing from line. <br><br>  We read the specification: <br><br><blockquote>  The enhanced for statement has the form: <br><br>  EnhancedForStatement: <br>  for (VariableModifiersopt Type Identifier: Expression) Statement <br>  It should be of an array type (§10.1), or a compile-time error occurs. <br>  FormalParameter of the contained statement (§14.14) <br></blockquote><br><br>  For those who are too lazy to read in English: <br><br>  for (VariableModifiersopt Type Identifier: Expression) Statement <br><br><br><br>  The scope of a local variable declared in the Identifier extends to the Statement.  Those.  Expression is not covered. <br><br>  Thus, field darkening should not occur here, but it does.  Zasabmichen bug on this topic under the number <a href="http://bugs.sun.com/bugdatabase/view_bug.do%3Fbug_id%3D7139681">7139681</a> , but it will appear in the public access only after a couple of days. <br><br>  Be careful! <br><br>  PS I asked the appropriate question on the <a href="http://stackoverflow.com/questions/9051879/foreach-with-variable-name-equal-to-field-name/9051923">SO</a> , waiting for updates. <br><br>  PPS Java 1.6.0.26 64bit </div><p>Source: <a href="https://habr.com/ru/post/137243/">https://habr.com/ru/post/137243/</a></p>
+    <a name="habracut"></a><br><br>  And now we explain why. <br><br>  It is clear that in line 6 eclipsing of the class field of the loop variable occurs.  But, according to the specification it is not so!  The funny thing is that one popular paid IDE for Java behaves correctly, and the compiler complains that getElements () is missing from line. <br><br>  We read the specification: <br><br><blockquote>  The enhanced for statement has the form: <br><br>  EnhancedForStatement: <br>  for (VariableModifiersopt Type Identifier: Expression) Statement <br>  It should be of an array type (§10.1), or a compile-time error occurs. <br>  FormalParameter of the contained statement (§14.14) <br></blockquote><br><br>  For those who are too lazy to read in English: <br><br>  for (VariableModifiersopt Type Identifier: Expression) Statement <br><br><br><br>  The scope of a local variable declared in the Identifier extends to the Statement.  Those.  Expression is not covered. <br><br>  Thus, field darkening should not occur here, but it does.  Zasabmichen bug on this topic under the number <a href="http://bugs.sun.com/bugdatabase/view_bug.do%3Fbug_id%3D7139681">7139681</a> , but it will appear in the public access only after a couple of days. <br><br>  Be careful! <br><br>  PS I asked the appropriate question on the <a href="http://stackoverflow.com/questions/9051879/foreach-with-variable-name-equal-to-field-name/9051923">SO</a> , waiting for updates. <br><br>  PPS Java 1.6.0.26 64bit </div><p>Source: https://habr.com/ru/post/137243/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../137237/index.html">We are pumping a DropBox account by mail in the .EDU zone in 15 minutes</a></li>
 <li><a href="../137238/index.html">Invites to broadcast. Toaster {ruby}</a></li>
 <li><a href="../137239/index.html">Top 10 tips on how to increase page loading speed</a></li>
+<li><a href="../13724/index.html">iCar: Apple will produce cars</a></li>
 <li><a href="../137240/index.html">Automatic notification of readers about the news using VKontakte. Part 4</a></li>
 <li><a href="../137242/index.html">How to choose the main tasks</a></li>
 <li><a href="../137244/index.html">Troll circuitry. Decision</a></li>

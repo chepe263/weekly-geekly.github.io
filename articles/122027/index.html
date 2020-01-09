@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to study source codes</h1><div class="post__text post__text-html js-mediator-article">  When I was (not very successfully) reading errors and typos in the previous post, <a href="https://habrahabr.ru/users/bobry/" class="user_link">bobry</a> offered to discuss how to make a story in the console (which is Shift-PgUp). <br><br>  The obvious way to do something related to the terminals is to look at what others have done and do the same.  In the process of studying this, we noticed an interesting feature: some programs, showing the contents, restore the screen before launching the application (mc, vim, nano, less, etc.).  In addition, when they start, the scroll bar disappears (in xterm / gnome-terminal). <br><br>  To study “how” it was decided to focus on MC, as the oldest (and independent of ncurses) application. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Next comes the romatic story of how mc makes toggle_panel () with a lot of quotes from the source code. <br><br>  At the same time, the reader will be able to see what the “look in the source” process looks like. <br><a name="habracut"></a><br>  So, the source code is MC.  It is known that the screen "behind" can be seen on Ctrl-O.  The combination of buttons appeared in the old Norton Commander, from which all subsequent NC console clones borrowed it: Dos Navigator, Volkov Commander, Far Navigator, etc. <br><br>  They downloaded raw materials (apt-get source mc), looked inside. <br><br>  Pretty quickly, we found the keybind.c file, where it was easy to see that the Ctrl-letter combinations were encoded as “CL” (in our case, “Co”).  A simple array of enums (or is it definees? Not important), the required line: <br><br><pre>     {XCTRL ('o'), CK_ShowCommandLine, "Co"},
@@ -123,7 +123,7 @@
 </pre><br>  Hmm ... It turns out that in linux and in FreeBSD this is handled differently.  (But what about solaris? There is no more your solaris, Oracle threw the boots onto the remote.) <br><br>  We look handle_console_linux, through it console_save.  What do we see?  MC forks a separate process called cons.saver, which does ioctl, reading and writing to strange / dev / vcsa * devices.  What kind of devices? <br><br><h1>  Oh, new, wonderful world </h1><br>  It turns out that linux has pseudo-devices that correspond to the CGA (VGA) memory of the adapter in text mode, where the data is stored as an array <br><br>  struct { <br>  char char; <br>  char Attrib; <br>  } <br><br>  Yes, yes, that old long forgotten DOS, with direct access to video memory.  We check - indeed, hexdump files completely show us the contents of the screen.  Note that to access the device, you must have the rights to it.  This is usually done in the following way: they put a group on the device file, put the owner of this group on the file, and set the sgid-bit to it. <br><br>  In Debian, cons.saver has sgid bits for the tty group (common group for accessing pseudo-terminals), and in centos for the special group vcsa.  In principle, agree with the approach of RHEL / CentOS, it is more secure. <br><br>  So, a special file ... That is, the MC with the help of a cunning hack reads the contents of the screen, and when necessary, writes it back ... <br><br>  But the virtual machine console is not on the VGA-adapter!  This is a clean serial port.  And a simple check is suspicious - on all virtual machines vcsa is pristine clean, because we do not have a VGA adapter.  I mean, video cards. <br><br>  What to do?  Well, for starters, check out what mc will do in a serial port situation.  As we know, there is no difference between a UNIX98 pseudo-terminal and a serial port.  We go back to the real linux (console), log in via ssh to any server, start mc, and, voila - not supported. <br><br>  Thus, we, making the console on the serial port, in principle, cannot provide an analogue of vcsa - and the hack in mc about ctrl-o cannot work.  Basically. <br><br><h1>  What about xterm? </h1><br>  Implementing an esc code for xterm would be easy.  But ... We do not have access to the contents of the virtual machines, we can not change the environment of the users - and therefore, by default, linux expects that on the serial port it has the terminal type linux (TERM = linux) and does not implement xterm / xrvt functions meaning - they still will not use. <br><br>  Just in case, we check how mc learns about the existence of xterm extensions ... <br><br><pre>     const char * termvalue;
 
      termvalue = getenv ("TERM");
-</pre><br><br>  Alas, the environment variable (and I was hoping for a query string).  Well, definitely not.  Alas. <br><br>  By the way, exactly the same hack (but adjusted for architectural features) is used in FreeBSD.  Alas. <br><br><h1>  Morality? </h1><br>  We will not fully work Ctrl-O in our wonderful console in Linux.  Alas, never.  And the rest was interesting. <br><br>  ... By the way, if you have a live server and it is alive, you can remotely see what's happening on consoles there - cat / dev / vcsa *.  And special fans can watch and watch others work on consoles. </div><p>Source: <a href="https://habr.com/ru/post/122027/">https://habr.com/ru/post/122027/</a></p>
+</pre><br><br>  Alas, the environment variable (and I was hoping for a query string).  Well, definitely not.  Alas. <br><br>  By the way, exactly the same hack (but adjusted for architectural features) is used in FreeBSD.  Alas. <br><br><h1>  Morality? </h1><br>  We will not fully work Ctrl-O in our wonderful console in Linux.  Alas, never.  And the rest was interesting. <br><br>  ... By the way, if you have a live server and it is alive, you can remotely see what's happening on consoles there - cat / dev / vcsa *.  And special fans can watch and watch others work on consoles. </div><p>Source: https://habr.com/ru/post/122027/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -134,9 +134,9 @@
 <li><a href="../122026/index.html">Android slider from LG with two screens</a></li>
 <li><a href="../122028/index.html">IPO for dummies. Part V: Life after IPO</a></li>
 <li><a href="../122029/index.html">We learn bash-scripts, we write Xonix</a></li>
+<li><a href="../12203/index.html">YouTube redesign player</a></li>
 <li><a href="../122030/index.html">Choosing a microcontroller together</a></li>
 <li><a href="../122031/index.html">Interview Mark Shuttleworth: in Ubuntu, the default browser will be Google Chrome</a></li>
-<li><a href="../122033/index.html">Kinect for Windows SDK beta</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

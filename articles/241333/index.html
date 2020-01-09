@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Building a mirrored volume on Windows Server 2008 r2</h1><div class="post__text post__text-html js-mediator-article"><h4>  Understanding Disk Mirroring (RAID 1) </h4><br>  When using a mirrored raid array, two identical volumes are located on two different physical disks.  Any data recorded in the mirrored volume is actually recorded on both disks, so that in case of failure of one of the disks, the data are available on the second.  Unlike a stripe, when I / O speeds increase due to the distribution of one logical volume across multiple physical disks and parallel block write / read, mirroring reduces performance due to the fact that all transactions write data to each disk in the array. <br><br><h4>  Create a mirror (RAID 1) using “Disk Management” </h4><br>  To create a mirrored disk array, the disks must be converted from normal to dynamic.  In this section we analyze the possibility of creating a “mirror” of two identical hard disks in Windows 2008. <br><img src="https://habrastorage.org/files/8af/e46/2a8/8afe462a8a7a444ea6fc2fd97d2c5c15.png"><br><a name="habracut"></a><br>  To do this, run "Disk Management".  This can be done from the command line by executing the <b>compmgmt.msc</b> command or from the “Start” menu by selecting Storage -&gt; Disk Management. <br>  In our example, the system contains 3 disks, numbered 0, 1 and 2, respectively.  Disk 0 is a system disk, disks 1 and 2 will be used to create a “mirror”. <br>  In Disk Management, right-click on an unlabeled area in the graphic display of the first disk used for the mirrored volume.  Select "New Mirrored Volume ..." to launch the New Mirror Volume Wizard.  Clicking "Next" on the welcome screen will take you to the disk selection window.  As mentioned earlier, the mirror array should consist of two disks.  In the "Selected" column, the wizard will display only the currently selected disk.  More than one disk is required to continue.  To add a disk to a mirrored volume, select the second disk from the available disks in the left column and click “Add”: <br><br><img src="https://habrastorage.org/files/ca9/9b4/e95/ca99b4e95a2a4bf29b80f84ae4f5ea70.jpg">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       After selecting the drives, click Next to create and assign a drive letter or mount point to the volume.  The “Next” button will bring up the “Format Volume” window, where you can select the file system type and the possibility of compression.  To display a summary of the operation being performed, click Next.  To confirm the operation, click "Finish";  the volumes will be formatted and a mirrored volume will be created, ready to use. <br><br>  If you use only two disks, you can get the following picture: <br><br><img src="https://habrastorage.org/files/1a6/3b5/ec0/1a63b5ec05004deb9963110ffb1968c2.jpg"><br><br>  And to get rid of the reserved area, which is present on only one disk, we will perform the following actions: <br>  Run the command with administrative privileges <br><pre> bcdboot c: \ windows / sc:
@@ -117,20 +117,20 @@
  Diskpart succeeded in adding a mirror to the volume.
 </pre><br><br>  After that, Windows Server 2008 will start synchronization, the time of which depends on the size of the mirrored volume.  During synchronization, in the volume list, mirrored (with the Mirror type) will have the “Rebuild” status.  After the end - Healthy. <br><br><h4>  Disassembling and removing the mirror disk array </h4><br>  Windows Server 2008 includes the functions of disassembling a mirrored raid array (two separate and independent volumes are created containing identical data) and “mirror” deletions (in this case, all data on the “mirror” is deleted). <br>  To disassemble a disk array using Disk Management, right-click on one of the volumes and select “Break Mirrored Volume” in the menu that appears. <br>  From the command line, in the diskpart application, use a “break” command indicating one of the two disks of the mirrored raid array: <br><pre> DISKPART&gt; break disk = 2
 </pre><br><br>  To remove a mirror from the array, delete all synchronized data, right-click on the mirrored volume in Disk Management and select "Remove Mirror".  Alternatively, you can use the “break” command in the diskpart with the NOKEEP parameter: <br><pre> DISKPART&gt; break nokeep disk = 2
-</pre><br><br><h4>  Recovery mirror raid array </h4><br>  If one of the disks of the raid array fails, even in this case there is good news - in contrast to the “strap”, all the data relevant at the time of the accident remained on the second disk.  In this case, it is important to replace the failed disk and rebuild the mirror before the second disk stops working. <br>  Right-click on the damaged volume and select "Remove Mirror".  Next, connect a new disk of sufficient size to create a mirror.  Right-click on the work volume from the current mirror and select “Add Mirror” in the menu that appears, select the new disk and click “Add Mirror”.  Windows will rebuild a mirrored raid array using a new disk.  As mentioned earlier, the time for reassembly and synchronization of data depends on the performance of the disks and their size. </div><p>Source: <a href="https://habr.com/ru/post/241333/">https://habr.com/ru/post/241333/</a></p>
+</pre><br><br><h4>  Recovery mirror raid array </h4><br>  If one of the disks of the raid array fails, even in this case there is good news - in contrast to the “strap”, all the data relevant at the time of the accident remained on the second disk.  In this case, it is important to replace the failed disk and rebuild the mirror before the second disk stops working. <br>  Right-click on the damaged volume and select "Remove Mirror".  Next, connect a new disk of sufficient size to create a mirror.  Right-click on the work volume from the current mirror and select “Add Mirror” in the menu that appears, select the new disk and click “Add Mirror”.  Windows will rebuild a mirrored raid array using a new disk.  As mentioned earlier, the time for reassembly and synchronization of data depends on the performance of the disks and their size. </div><p>Source: https://habr.com/ru/post/241333/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../241323/index.html">Design Patterns</a></li>
 <li><a href="../241325/index.html">The FBI has asked the US Congress to legally weaken the protection of iOS and Android devices</a></li>
 <li><a href="../241327/index.html">What is holacracy and why you don't need it</a></li>
 <li><a href="../241329/index.html">The spread of smartphones: what does the market do to attract the “later majority”?</a></li>
+<li><a href="../24133/index.html">Reader for Google Reader.</a></li>
 <li><a href="../241331/index.html">Startup Marketing (continued): Nine Traffic Quality Levels</a></li>
 <li><a href="../241335/index.html">How to use the API of a site that does not have an API?</a></li>
 <li><a href="../241339/index.html">Startup marketing: A client who disappeared at the bottom of a funnel and why pay too much attention to traffic is dangerous for your business</a></li>
+<li><a href="../24134/index.html">Legal aspects of downloading music and movies</a></li>
 <li><a href="../241341/index.html">About the state of affairs in OpenStack for service providers</a></li>
 <li><a href="../241343/index.html">Computer vision: recognizing clothes in a photo using a mobile application</a></li>
-<li><a href="../241345/index.html">Pangu released iOS 8.1 jailbreak without Cydia</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

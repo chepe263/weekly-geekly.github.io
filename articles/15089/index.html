@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>JavaScript Requests</h1><div class="post__text post__text-html js-mediator-article">  There is a need: pass parameters directly to JavaScript. <br>  We can pass parameters through GET, POST, but when passing these parameters, a new page will simply load, i.e.  if the browser cache is <br><br>  some.so/index.php?id=2 <br><br>  and we request 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      some.so/index.php?id=3 <br><br>  then the server will generate a new page for us, it will not take some.so/index.php?id=2 from the cache (and it will be correct to do it). <br><br>  The same situation is with POST, so it’s possible to say that GET and POST methods can pass parameters to javascript, but this is not entirely true.  Because  the parameters are transmitted to the server, new content is generated there, and there you can do anything.  Although GET variables are taken directly from window.location.href, at least in some way server language re-generate JavaScript every time.  and this is all just an imitation of JavaScript requests. <br><br>  However, there is one character in the standard URL that will help us. <br><br><a name="habracut"></a><br><br>  This is a pound symbol (#), although some say it is a symbol of the English currency, but this is not important now. <br><br>  The trick is that if there is a cache <br><br>  some.so/index.php#id:2 <br><br>  and we will request <br><br>  some.so/index.php # id <br><br>  then the second page will be taken from the cache (which it got after the first request). <br><br>  So, let's get down to business: after the lattice character in the URL, it is allowed to use symbols <br>  : _ -. <br>  and any Latin characters. <br><br>  Let the pair (key: value) be separated by a dot;  the key itself is separated from the value by a colon, and the screening will be done using an underscore. <br><br>  Thus, if we want to pass 2 parameters, it will look something like this: <br><br>  some.so/index.php#id:2.par2:dgsdgd <br><br>  if we want to transfer dot characters, colons or non-Latin characters, we do it like this: <br><br>  some.so/index.php#id:_56_34.par2:_21_20_54 <br><br>  From the usual links some.so/index.php#chapter7 such requests to JavaScript (jR = JavaScript Request) can be distinguished by the presence of a colon (:) after #, since  I have never seen someone put a colon there. <br><br>  Writing js functions that will handle jR is not difficult - take window.location.href, trim it with regexp, split the string into an array, split the array elements into a key and value.  That's all. <br><br>  It really works, and really saves traffic, gives funny effects with AJAX, in general, experiment. <br><br>  Of course, TBL would not be very happy for such use, but still, I think, client-side JavaScript deserved that now it will be able to receive parameters directly for itself.  Hooray! </div><p>Source: <a href="https://habr.com/ru/post/15089/">https://habr.com/ru/post/15089/</a></p>
+      some.so/index.php?id=3 <br><br>  then the server will generate a new page for us, it will not take some.so/index.php?id=2 from the cache (and it will be correct to do it). <br><br>  The same situation is with POST, so it’s possible to say that GET and POST methods can pass parameters to javascript, but this is not entirely true.  Because  the parameters are transmitted to the server, new content is generated there, and there you can do anything.  Although GET variables are taken directly from window.location.href, at least in some way server language re-generate JavaScript every time.  and this is all just an imitation of JavaScript requests. <br><br>  However, there is one character in the standard URL that will help us. <br><br><a name="habracut"></a><br><br>  This is a pound symbol (#), although some say it is a symbol of the English currency, but this is not important now. <br><br>  The trick is that if there is a cache <br><br>  some.so/index.php#id:2 <br><br>  and we will request <br><br>  some.so/index.php # id <br><br>  then the second page will be taken from the cache (which it got after the first request). <br><br>  So, let's get down to business: after the lattice character in the URL, it is allowed to use symbols <br>  : _ -. <br>  and any Latin characters. <br><br>  Let the pair (key: value) be separated by a dot;  the key itself is separated from the value by a colon, and the screening will be done using an underscore. <br><br>  Thus, if we want to pass 2 parameters, it will look something like this: <br><br>  some.so/index.php#id:2.par2:dgsdgd <br><br>  if we want to transfer dot characters, colons or non-Latin characters, we do it like this: <br><br>  some.so/index.php#id:_56_34.par2:_21_20_54 <br><br>  From the usual links some.so/index.php#chapter7 such requests to JavaScript (jR = JavaScript Request) can be distinguished by the presence of a colon (:) after #, since  I have never seen someone put a colon there. <br><br>  Writing js functions that will handle jR is not difficult - take window.location.href, trim it with regexp, split the string into an array, split the array elements into a key and value.  That's all. <br><br>  It really works, and really saves traffic, gives funny effects with AJAX, in general, experiment. <br><br>  Of course, TBL would not be very happy for such use, but still, I think, client-side JavaScript deserved that now it will be able to receive parameters directly for itself.  Hooray! </div><p>Source: https://habr.com/ru/post/15089/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -76,7 +76,7 @@
 <li><a href="../150892/index.html">Delphi Ecosystem</a></li>
 <li><a href="../150894/index.html">Anatomy of public procurement legislation</a></li>
 <li><a href="../150895/index.html">DARPA Shows Silicone "Chameleon"</a></li>
-<li><a href="../15090/index.html">Kyrgyz startup ZONA.KG launched</a></li>
+<li><a href="../150896/index.html">What were the logos of companies like before they became known?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

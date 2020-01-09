@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Powershell - logging to file</h1><div class="post__text post__text-html js-mediator-article">  Good day, $ username! <br><br>  I want to share with you a function that I use instead of the usual display of information on the screen or just writing to a file. <br><br>  The function was written in order to display information on the screen and in the log (textual), intended to replace the standard write-host. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a><br>  Of goodies: <br><ul><li>  The exact date and time of the event </li><li>  Event type </li><li>  Counting errors and warnings </li><li>  Information output in color (depending on the type of event) </li><li>  Log format compatible with CSV ([TAB] separated) </li></ul><br><br>  The function is declared globally, which means that within one session it is enough to initialize it once - read the launch file with it. <br><br>  Use options: <br> <code>write-log "Hello !" <br> 14.07.2011 00:22:15 info Hello ! <br> write-log -message "Hello !" -type warning <br> <br> write-log -message "Hello !" -type error -silent <br> <br> ,   : <br> write-log -message "Hello !" -type CustomType logfile c:\enter\your\path\here.log <br></code> <br><br>  The number of errors and warnings (for the entire session or until the variables are manually reset) are stored in <b>$ errorcount</b> and <b>$ warningcount</b> . <br><br>  Personally, I have this function stored in the <b>set-functions.ps1</b> file, and in the scripts I call it like this: <br><br>  The very beginning of any (where necessary) of my script: <br><pre> <code class="perl hljs">$ver=<span class="hljs-string"><span class="hljs-string">"0.1"</span></span> $ProgrammName=<span class="hljs-string"><span class="hljs-string">"SomeScriptName"</span></span> try { <span class="hljs-comment"><span class="hljs-comment">#          ./Set-Functions.ps1 #  $global:logfilename = "log`\"+ $ProgrammName +".log" write-log "$ProgrammName (ver $ver) started." } catch { return "Error loading functions Set-Functions.ps1" }</span></span></code> </pre><br><br>  <b>The body of the write-log function:</b> <br><pre> <code class="perl hljs">$ver = <span class="hljs-string"><span class="hljs-string">"0.4"</span></span> $dt=Get-Date -Format <span class="hljs-string"><span class="hljs-string">"dd-MM-yyyy"</span></span> New-Item -ItemType directory <span class="hljs-keyword"><span class="hljs-keyword">log</span></span> -Force | out-null <span class="hljs-comment"><span class="hljs-comment">#    $global:logfilename="log\"+$dt+"_LOG.log" [int]$global:errorcount=0 #   [int]$global:warningcount=0 #   function global:Write-log #     -    . {param($message,[string]$type="info",[string]$logfile=$global:logfilename,[switch]$silent) $dt=Get-Date -Format "dd.MM.yyyy HH:mm:ss" $msg=$dt + "`t" + $type + "`t" + $message #: 01.01.2001 01:01:01 [tab] error [tab]  Out-File -FilePath $logfile -InputObject $msg -Append -encoding unicode if (-not $silent.IsPresent) { switch ( $type.toLower() ) { "error" { $global:errorcount++ write-host $msg -ForegroundColor red } "warning" { $global:warningcount++ write-host $msg -ForegroundColor yellow } "completed" { write-host $msg -ForegroundColor green } "info" { write-host $msg } default { write-host $msg } } } }</span></span></code> </pre><br><br>  This example has only one drawback - it is “synchronous”, that is, it does not handle the problem of simultaneous recording to the log file.  Who knows how to change this, please in the comments. </div><p>Source: <a href="https://habr.com/ru/post/124105/">https://habr.com/ru/post/124105/</a></p>
+    <a name="habracut"></a><br>  Of goodies: <br><ul><li>  The exact date and time of the event </li><li>  Event type </li><li>  Counting errors and warnings </li><li>  Information output in color (depending on the type of event) </li><li>  Log format compatible with CSV ([TAB] separated) </li></ul><br><br>  The function is declared globally, which means that within one session it is enough to initialize it once - read the launch file with it. <br><br>  Use options: <br> <code>write-log "Hello !" <br> 14.07.2011 00:22:15 info Hello ! <br> write-log -message "Hello !" -type warning <br> <br> write-log -message "Hello !" -type error -silent <br> <br> ,   : <br> write-log -message "Hello !" -type CustomType logfile c:\enter\your\path\here.log <br></code> <br><br>  The number of errors and warnings (for the entire session or until the variables are manually reset) are stored in <b>$ errorcount</b> and <b>$ warningcount</b> . <br><br>  Personally, I have this function stored in the <b>set-functions.ps1</b> file, and in the scripts I call it like this: <br><br>  The very beginning of any (where necessary) of my script: <br><pre> <code class="perl hljs">$ver=<span class="hljs-string"><span class="hljs-string">"0.1"</span></span> $ProgrammName=<span class="hljs-string"><span class="hljs-string">"SomeScriptName"</span></span> try { <span class="hljs-comment"><span class="hljs-comment">#          ./Set-Functions.ps1 #  $global:logfilename = "log`\"+ $ProgrammName +".log" write-log "$ProgrammName (ver $ver) started." } catch { return "Error loading functions Set-Functions.ps1" }</span></span></code> </pre><br><br>  <b>The body of the write-log function:</b> <br><pre> <code class="perl hljs">$ver = <span class="hljs-string"><span class="hljs-string">"0.4"</span></span> $dt=Get-Date -Format <span class="hljs-string"><span class="hljs-string">"dd-MM-yyyy"</span></span> New-Item -ItemType directory <span class="hljs-keyword"><span class="hljs-keyword">log</span></span> -Force | out-null <span class="hljs-comment"><span class="hljs-comment">#    $global:logfilename="log\"+$dt+"_LOG.log" [int]$global:errorcount=0 #   [int]$global:warningcount=0 #   function global:Write-log #     -    . {param($message,[string]$type="info",[string]$logfile=$global:logfilename,[switch]$silent) $dt=Get-Date -Format "dd.MM.yyyy HH:mm:ss" $msg=$dt + "`t" + $type + "`t" + $message #: 01.01.2001 01:01:01 [tab] error [tab]  Out-File -FilePath $logfile -InputObject $msg -Append -encoding unicode if (-not $silent.IsPresent) { switch ( $type.toLower() ) { "error" { $global:errorcount++ write-host $msg -ForegroundColor red } "warning" { $global:warningcount++ write-host $msg -ForegroundColor yellow } "completed" { write-host $msg -ForegroundColor green } "info" { write-host $msg } default { write-host $msg } } } }</span></span></code> </pre><br><br>  This example has only one drawback - it is “synchronous”, that is, it does not handle the problem of simultaneous recording to the log file.  Who knows how to change this, please in the comments. </div><p>Source: https://habr.com/ru/post/124105/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../124098/index.html">Paid and free applications: two in one</a></li>
-<li><a href="../124099/index.html">Roscomix</a></li>
+<li><a href="../1241/index.html">Text Store</a></li>
+<li><a href="../12410/index.html">Constructive talked ...</a></li>
 <li><a href="../124100/index.html">Installing and Configuring Functional Testing in Symfony2 with Behat and Mink</a></li>
 <li><a href="../124102/index.html">Facebook offers to create a page for drug promotion.</a></li>
 <li><a href="../124104/index.html">Expansion to highlight useful comments in posts Habrahabra</a></li>
 <li><a href="../124107/index.html">Moscow GTUG - reboot</a></li>
 <li><a href="../124108/index.html">Generation of analytical surfaces on the example of maps. Part 3</a></li>
+<li><a href="../12411/index.html">Google Fashion boutiques opened in China and Turkey</a></li>
 <li><a href="../124110/index.html">Writing automated tests to test the desktop user interface</a></li>
 <li><a href="../124111/index.html">Beta Flash Player 11 (including 64-bit) and Air 3 (with Molehill 3D) have been released</a></li>
-<li><a href="../124112/index.html">Dramophon: Portable Digital Drum Set</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>System automatically generate settings for the DNS server Bind</h1><div class="post__text post__text-html js-mediator-article">  The service often has to create a lot of DNS zones, add or modify records in them.  Manually, this is a rather painstaking and complicated process: after all, you need to keep in mind the syntax and not make mistakes in the details.  For such things, the most it is to get the job done by the computer <br><br>  IAdmin is a system created for the automatic generation of Bind configs on a hosting server and represents the iadmin database in the MySQL database and a script that generates configuration files based on the data from the database.  To set up Bind, dns_domains, dns_records, dns_subgmail tables are used.  The main script written in Perl reads data from the iadmin database and creates configuration files.  Zone files are generated in the / var / cache / bind / directory.  Other zone files that are not served by iadmin are also stored there.  The same system creates a config for the secondary-DNS, which is transferred there.  Until the script runs, all changes from the database are NOT materialized. <br><a name="habracut"></a><br><h4>  Data </h4><br><h5>  Dns_domains table </h5><br><br>  The table consists of the following fields and is the main table for configuring the DNS server: <br><ul><li>  <b>id</b> - the sequence number of the record </li><li>  <b>domainname</b> - the name of the domain whose zone will be supported by Bind </li><li>  <b>www</b> - Do you need a subdomain www (1 - required) </li><li>  <b>ftp</b> - Whether ftp subdomain is required (1 is required) </li><li>  <b>mail</b> - Are MX records required in the zone (1 is required) </li><li>  <b>typemai</b> l - Defines a template for generating MX records ('our' - Postfix will serve, 'gmail' - Google Apps is activated on the domain).  If mail = 0, this field is ignored.  Further changes are possible. <br></li><li>  <b>secondaryfor</b> - For which DNS servers (IP), our server will be secondary (NULL - master) </li><li>  <b>hosted_on</b> - Record A: IP address where the site is hosted with the given domain name </li><li>  <b>enable</b> - Whether the zone is active (1 is active).  Otherwise, this zone is not generated.  It should be noted that if the zone answers enable = 0, it will not throw it out of the bind service, but any settings via the iadmin system will not affect any </li><li>  <b>serial</b> - Serial zone.  After any changes in this table, or in dns_records, dns_subgmail, you need to increase the value.  The structure year_month_day_application - thus it is convenient to see when there were changes in the zone. </li><li>  <b>owner</b> - write NS-servers English (1) or standard (0) </li></ul><br>  For example, in order to add the English-speaking iadmin.vip zone to the service, with gmail and without ftp (hosting 123.123.4.56), you need to write the following line in the table: <br><table><tbody><tr><td>  id <br></td><td>  domainname <br></td><td>  www <br></td><td>  ftp <br></td><td>  mail <br></td><td>  typemail <br></td><td>  secondaryfor <br></td><td>  hosted_on <br></td><td>  enable <br></td><td>  serial <br></td><td>  owner <br></td></tr><tr><td>  215 <br></td><td>  iadmin.vip <br></td><td>  one <br></td><td>  0 <br></td><td>  one <br></td><td>  gmail <br></td><td>  Null <br></td><td>  123.123.4.56 <br></td><td>  one <br></td><td>  2010082001 <br></td><td>  one <br></td></tr></tbody></table>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <br><br>  This entry will allow you to generate a zone file of approximately the following content: <br><pre> $ TTL 86400
@@ -158,7 +158,7 @@
  _jabber._tcp.sync.iadmin.vip.  IN SRV 20 0 5269 xmpp-server2.l.google.com.
  _jabber._tcp.sync.iadmin.vip.  IN SRV 20 0 5269 xmpp-server3.l.google.com.
  _jabber._tcp.sync.iadmin.vip.  IN SRV 20 0 5269 xmpp-server4.l.google.com.
-</pre><br>  Also, we must remember that after this we need to change the serial in the dns_domains domain zone. <br><h4>  Script </h4><br>  The script, based on the data stored in iadmin, writes configuration files for bind (Now it is on perl, it will most likely be rewritten in python later). <br>  Sources posted on <a href="https://github.com/rpisarev/iadmin">github</a> </div><p>Source: <a href="https://habr.com/ru/post/111678/">https://habr.com/ru/post/111678/</a></p>
+</pre><br>  Also, we must remember that after this we need to change the serial in the dns_domains domain zone. <br><h4>  Script </h4><br>  The script, based on the data stored in iadmin, writes configuration files for bind (Now it is on perl, it will most likely be rewritten in python later). <br>  Sources posted on <a href="https://github.com/rpisarev/iadmin">github</a> </div><p>Source: https://habr.com/ru/post/111678/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -168,10 +168,10 @@
 <li><a href="../111675/index.html">Construction of the suffix tree: Ukkonen algorithm</a></li>
 <li><a href="../111676/index.html">loop_dance - quick deployment background scheduler</a></li>
 <li><a href="../111679/index.html">Development of a touch keyboard for their devices</a></li>
+<li><a href="../11168/index.html">What does digg work on</a></li>
 <li><a href="../111680/index.html">Wrapper for calling functions at their address</a></li>
 <li><a href="../111681/index.html">Implementing XMPP Publish / Subscribe via Twisted</a></li>
 <li><a href="../111682/index.html">Problems using SVG buttons in browsers</a></li>
-<li><a href="../111683/index.html">Just two years left before the information age begins.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

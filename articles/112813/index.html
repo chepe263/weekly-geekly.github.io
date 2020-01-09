@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>MODx - slightly improve the Evolution admin panel</h1><div class="post__text post__text-html js-mediator-article">  I spent the last 3 days studying Revolution, and decided that it was too early to translate my projects into it.  But I really liked one feature in the admin panel there, namely: when opening any resource, the save tyr stands on “Continue editing”.  That is, you open a resource, edit it, save it and you can edit it further. <br><br>  Personally, this is very convenient for me, since I edit all the chunks and snippets in the amine using EditArea. <br>  But in Evolution you need to rearrange the tyrchik from “Close” to “Continue” when entering the resource, which is very annoying, because EdiatArea can save the document by Ctrl + S, and if in the heat of changes I forgot to rearrange the tyrchik and clicked, by habit Ctrl + S will have to look for what you just edited. <br><br>  Trifle, but not nice.  And from such trifles there is a working day and mood in general. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The solution is simple: you need to make a plugin that will switch the tyrchik to the desired position for me. <br><br><img src="https://habrastorage.org/storage/79658ca9/70b3d100/6e134dea/5be8d794.png"><br><br><a name="habracut"></a><br><br>  5 minutes to study the layout of the admin panel, and the desired item is found - this is select # stay. <br>  Next thing is the technique: <br>  Create a plugin (Manage Elements-&gt; Plugins-&gt; Create Plugin), call it AlwaysStay and copy the code <br><pre><code class="php hljs">$e = &amp; $modx-&gt;Event; <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> ($e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnDocFormRender"</span></span> || $e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnTempFormRender"</span></span> || $e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnChunkFormRender"</span></span> || $e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnSnipFormRender"</span></span> || $e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnPluginFormRender"</span></span> ) { $html = <span class="hljs-string"><span class="hljs-string">" &lt;script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' type='text/javascript'&gt;&lt;/script&gt; &lt;script type='text/javascript'&gt; var j = jQuery.noConflict(); j(document).ready(function() { if (j('#stay #stay3').attr('selected') == true) { j('#stay #stay2').attr('selected', true) }; }) &lt;/script&gt; "</span></span>; $e-&gt;output($html); }</code> </pre> <br>  <b>Updated</b> <br>  Thanks comrade <a href="https://habrahabr.ru/users/andchir/" class="user_link">Andchir</a> for a more pleasant code, I advise you to use it if you do not need jquery. <br><pre> <code class="javascript hljs"> &lt;script type=<span class="hljs-string"><span class="hljs-string">'text/javascript'</span></span>&gt; <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(!$(<span class="hljs-string"><span class="hljs-string">'stay'</span></span>).value) $(<span class="hljs-string"><span class="hljs-string">'stay'</span></span>).value=<span class="hljs-number"><span class="hljs-number">2</span></span>; <span class="xml"><span class="hljs-tag"><span class="xml"><span class="hljs-tag">&lt;/</span></span><span class="hljs-name"><span class="xml"><span class="hljs-tag"><span class="hljs-name">script</span></span></span></span><span class="xml"><span class="hljs-tag">&gt;</span></span></span></span></code> </pre><br><br>  On the "System Events" tab, we note <br> <code>OnDocFormRender <br> OnTempFormRender <br> OnChunkFormRender <br> OnSnipFormRender <br> OnPluginFormRender <br></code> <br>  We save and everything is ready. <br><br>  We go into any document or snippet and see that the tyrchik is in the “Continue” position.  If you rearrange it to the “Create a new” position, then it will also remain. <br>  If you want the plugin to not work on chunks, for example, disable the corresponding event (OnChunkFormRender). </div><p>Source: <a href="https://habr.com/ru/post/112813/">https://habr.com/ru/post/112813/</a></p>
+      The solution is simple: you need to make a plugin that will switch the tyrchik to the desired position for me. <br><br><img src="https://habrastorage.org/storage/79658ca9/70b3d100/6e134dea/5be8d794.png"><br><br><a name="habracut"></a><br><br>  5 minutes to study the layout of the admin panel, and the desired item is found - this is select # stay. <br>  Next thing is the technique: <br>  Create a plugin (Manage Elements-&gt; Plugins-&gt; Create Plugin), call it AlwaysStay and copy the code <br><pre><code class="php hljs">$e = &amp; $modx-&gt;Event; <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> ($e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnDocFormRender"</span></span> || $e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnTempFormRender"</span></span> || $e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnChunkFormRender"</span></span> || $e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnSnipFormRender"</span></span> || $e-&gt;name == <span class="hljs-string"><span class="hljs-string">"OnPluginFormRender"</span></span> ) { $html = <span class="hljs-string"><span class="hljs-string">" &lt;script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' type='text/javascript'&gt;&lt;/script&gt; &lt;script type='text/javascript'&gt; var j = jQuery.noConflict(); j(document).ready(function() { if (j('#stay #stay3').attr('selected') == true) { j('#stay #stay2').attr('selected', true) }; }) &lt;/script&gt; "</span></span>; $e-&gt;output($html); }</code> </pre> <br>  <b>Updated</b> <br>  Thanks comrade <a href="https://habrahabr.ru/users/andchir/" class="user_link">Andchir</a> for a more pleasant code, I advise you to use it if you do not need jquery. <br><pre> <code class="javascript hljs"> &lt;script type=<span class="hljs-string"><span class="hljs-string">'text/javascript'</span></span>&gt; <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(!$(<span class="hljs-string"><span class="hljs-string">'stay'</span></span>).value) $(<span class="hljs-string"><span class="hljs-string">'stay'</span></span>).value=<span class="hljs-number"><span class="hljs-number">2</span></span>; <span class="xml"><span class="hljs-tag"><span class="xml"><span class="hljs-tag">&lt;/</span></span><span class="hljs-name"><span class="xml"><span class="hljs-tag"><span class="hljs-name">script</span></span></span></span><span class="xml"><span class="hljs-tag">&gt;</span></span></span></span></code> </pre><br><br>  On the "System Events" tab, we note <br> <code>OnDocFormRender <br> OnTempFormRender <br> OnChunkFormRender <br> OnSnipFormRender <br> OnPluginFormRender <br></code> <br>  We save and everything is ready. <br><br>  We go into any document or snippet and see that the tyrchik is in the “Continue” position.  If you rearrange it to the “Create a new” position, then it will also remain. <br>  If you want the plugin to not work on chunks, for example, disable the corresponding event (OnChunkFormRender). </div><p>Source: https://habr.com/ru/post/112813/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../112817/index.html">Two more Russian Wikipedias have reached 1,000 articles</a></li>
 <li><a href="../112818/index.html">3DMark Vantage: New Total Record</a></li>
 <li><a href="../112819/index.html">In South Korea, conducted a demonstrative testing technology LTE-Advanced</a></li>
+<li><a href="../11282/index.html">AT & T equips its stores before selling the iPhone</a></li>
 <li><a href="../112820/index.html">Himself AppStor</a></li>
-<li><a href="../112822/index.html">Basics of photography: shutter speed, aperture, DOF, photosensitivity</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

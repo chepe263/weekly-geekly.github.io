@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>POKA-YOKE design: from “smell” to fragrance</h1><div class="post__text post__text-html js-mediator-article">  <i>From the translator.</i>  <i>This is a translation of a series of posts from the blog of Mark Siman.</i>  <i>I do not want to combine some of the posts, despite the fact that they are small in size, but just try to keep the structure proposed by Mark.</i> <br><br>  <i>A little more from the translator.</i>  <i>POKA-YOKE can be translated as “foolproof” or fault tolerant.</i> <br><br>  Encapsulation is one of the most misunderstood concepts in object-oriented programming (OOP).  It seems that most people think that, with regard to encapsulation, the concept of " <i>hiding information</i> " simply means that private fields should be disclosed through public properties (or getter \ setter methods in languages ​​that do not have the property support ). <a name="habracut"></a><br>  Have you ever wondered what the <i>real</i> advantage is in inheriting code like the following? <br><pre><code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">private</span></span> <span class="hljs-keyword"><span class="hljs-keyword">string</span></span> name; <span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">string</span></span> Name { <span class="hljs-keyword"><span class="hljs-keyword">get</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.name; } <span class="hljs-keyword"><span class="hljs-keyword">set</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.name = <span class="hljs-keyword"><span class="hljs-keyword">value</span></span>; } }</code> </pre> <br>  For me, such code looks terribly redundant (and <a href="http://msdn.microsoft.com/en-us/library/bb384054.aspx">automatic properties</a> are not the answer, this is just a trick of the compiler, which, as before, will create a field).  No information is, in fact, hidden.  <a href="http://lostechies.com/derickbailey/">Derik Bailey</a> wrote a <a href="http://lostechies.com/derickbailey/2011/03/28/encapsulation-youre-doing-it-wrong/">good post about why this way of encapsulation is too narrow</a> , so I will not repeat his conclusions here. <br>  So what <i>does</i> encapsulation really <i>mean</i> ? <br>  The main advantage of object orientation is the production of related pieces of code (classes) that solve given problems once and for all, so that programmers can use these classes without knowing anything about their internal implementation details. <br><blockquote>  This is the whole essence of encapsulation: proposing (opening) solving a problem without requiring the consumer to have a full understanding of the subject area. </blockquote><br>  Here is a list of what well-designed classes provide: <br><ul><li>  You do not have to understand the internal details of the tabular data stream ( <a href="http://en.wikipedia.org/wiki/Tabular_Data_Stream">TDS</a> ) in order to use ADO.NET in conjunction with SQL Server. </li><li>  You do not have to understand the internal details of drawing on the screen in order to use WPF or WinForms. </li><li>  You do not have to understand the internal details of the reflection in order to use the DI Container. </li><li>  You do not have to understand how to effectively sort the list in order to sort the list using the .NET framework. </li><li>  Etc. </li></ul><br>  It is this feature that makes encapsulation so important.  A class must hide information that it encapsulates in order to protect it from "naive" users.  <a href="http://en.wikipedia.org/wiki/Encapsulation_%2528object-oriented_programming%2529">Wikipedia says the following:</a> <br><blockquote>  Hiding the viscera of the object ensures its integrity, preventing users from setting the internal data of the component in a contradictory or incorrect state. </blockquote><br>  Keep in mind that users are <i>not expected to</i> fully understand the guts of a class implementation.  This makes the encapsulation definition obvious: <br><blockquote>  Encapsulation is a fault tolerance mechanism. </blockquote><br>  It does not follow from this that encapsulation means concealment of difficulties.  Whenever complexity is hidden ( <a href="http://blog.ploeh.dk/2011/04/27/ProviderIsNotAPattern.aspx">as with the Provider pattern</a> ), the feedback time increases.  Fast feedback is highly preferred, so it is advisable to avoid delays in feedback when there is a possibility. <br><blockquote>  Encapsulation is not about hiding difficulties, on the contrary, about how to reveal complexity in a fault-tolerant form. </blockquote><br>  In Lean ( <i>note translator: lean software development process</i> ) this is known as foolproof ( <a href="http://en.wikipedia.org/wiki/Poka-yoke">poka-yoke</a> ), I find the only way to think of encapsulation as Poka-yoke design: APIs that make it so difficult to do something wrong, as much as possibly. <br>  Considering that <a href="http://blog.ploeh.dk/2011/04/29/FeedbackMechanismsAndTradeoffs.aspx">compilation is the cheapest mechanism for obtaining feedback</a> , it is preferable to design the API so that the code can only be compiled if the classes are used correctly.  (n <i>. translator. I think it is more correct to say: “design the API in this way (if possible) so that in cases of its misuse, users will receive compilation errors indicating the problem and, if this is not possible, they would receive a notification in during the program as early as possible.</i> ) <br>  In the series of posts, I will look at various design “smells” that break encapsulation and prepare a guide on how to improve the designed code in order to make it more secure, thus moving from “smells” to fragrance. <br><ol><li>  <a href="http://habrahabr.ru/post/205114/">The "smell" of design: time I connectivity.</a> </li><li>  <a href="http://habrahabr.ru/post/205088/">The "smell" of design: an obsession with primitives.</a> </li><li>  <a href="http://habrahabr.ru/post/205096/">Code smell: automatic properties.</a> </li><li>  <a href="http://habrahabr.ru/post/205098/">Design smell: excessive attribute Required.</a> </li><li>  <a href="http://habrahabr.ru/post/205102/">Design smell: designer by default.</a> </li></ol><br>  Postscript: <a href="http://habrahabr.ru/post/205108/">At boundaries, applications are not object-oriented.</a> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/205086/">https://habr.com/ru/post/205086/</a></p>
+    <p>Source: https://habr.com/ru/post/205086/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../205074/index.html">We simulate a kettle in wind river simics</a></li>
 <li><a href="../205076/index.html">Refinement of the ventilator or ventilation control from the carbon dioxide sensor</a></li>
 <li><a href="../205078/index.html">How and why I started going to Management fights in Kiev</a></li>
+<li><a href="../20508/index.html">IBM Lotus Notes and Domino 8.0.1</a></li>
 <li><a href="../205082/index.html">The results of one study: a minute of inactivity of the average data center costs $ 7900</a></li>
 <li><a href="../205084/index.html">MacroGroovy - working with AST on Groovy has never been easier</a></li>
 <li><a href="../205088/index.html">The "smell" of design: an obsession with primitives</a></li>
+<li><a href="../20509/index.html">Opera Mobile 9.0 build 331</a></li>
 <li><a href="../205092/index.html">Friday post: phone case with airbags</a></li>
 <li><a href="../205096/index.html">Code "smell": automatic properties</a></li>
 <li><a href="../205098/index.html">Design smell: excessive attribute Required</a></li>
-<li><a href="../205100/index.html">Record Gain. Part 2</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

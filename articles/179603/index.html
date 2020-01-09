@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Site, non-standard port and Kerio Control</h1><div class="post__text post__text-html js-mediator-article">  Good day.  I want to talk about a very simple, at first glance, problem, the solution of which took me about half an hour, despite the fact that I have been administering Kerio Control for a long time and know this product well. <br><br>  Given: the site of the bank, access to which is carried out on non-standard (TCP 5099) port.  And the computer on which this site does not open. <br><br><img src="https://habrastorage.org/storage2/fe3/fdd/82c/fe3fdd82cceb2a1624f969a85a1d99c8.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a>  In my network, only those ports that are needed are open for users, and when I saw the problem, I immediately opened the Kerio administration console to add the required port to the allowing rule.  But this has already been done (apparently, for the same site even earlier).  A little thought, looking at the traffic logs and trying to open this site from another computer (successfully), I was puzzled. <br><br>  Not knowing what to think, I created a new temporary rule that would allow the problem computer to have full access to the Internet on all ports and included detailed logs on this rule to see what was happening. <br><br><img src="https://habrastorage.org/storage2/5af/c71/893/5afc71893337adf53a833122ccfd00f1.png"><br><br>  The magazine fun ran the lines of the computer's network activity, but the site still did not open. <br>  Starting to get angry at an incomprehensible problem that delayed me at work, I began to carefully review all the Kerio logs that would mention the problem host and saw a line that informed me that P2P connections were detected on this computer.  According to the setting, only non-P2P connections were allowed to this computer: <br><br><img src="https://habrastorage.org/storage2/597/467/d59/597467d599e7450727a6e8dfd611a642.png"><br><br>  Absolutely innocuous option that prohibits torrent clients, but usually does not interfere with the work of the user, in this case played a cruel joke with me. <br><br><img src="https://habrastorage.org/storage2/250/81f/b27/25081fb2738a24c799e2437d254a414a.png"><br><br>  Port 5099 was blocked, despite the fact that it did not fall into the range of "suspicious" ports;  Why it happened is not clear. <br><br>  After the reason was found, the solution was simple - adding one more to the list of Kerio services, <br>  working on port 5099: <br><br><img src="https://habrastorage.org/storage2/a70/2e1/616/a702e16165f2bbac755be5147df5bb6e.png"><br><br>  And adding this service to the P2P filter exception list. <br><br>  I wish all system administrators fewer such problems to leave time for something really interesting.  And obedient users who are not trying to use corporate computers for entertainment. </div><p>Source: <a href="https://habr.com/ru/post/179603/">https://habr.com/ru/post/179603/</a></p>
+    <a name="habracut"></a>  In my network, only those ports that are needed are open for users, and when I saw the problem, I immediately opened the Kerio administration console to add the required port to the allowing rule.  But this has already been done (apparently, for the same site even earlier).  A little thought, looking at the traffic logs and trying to open this site from another computer (successfully), I was puzzled. <br><br>  Not knowing what to think, I created a new temporary rule that would allow the problem computer to have full access to the Internet on all ports and included detailed logs on this rule to see what was happening. <br><br><img src="https://habrastorage.org/storage2/5af/c71/893/5afc71893337adf53a833122ccfd00f1.png"><br><br>  The magazine fun ran the lines of the computer's network activity, but the site still did not open. <br>  Starting to get angry at an incomprehensible problem that delayed me at work, I began to carefully review all the Kerio logs that would mention the problem host and saw a line that informed me that P2P connections were detected on this computer.  According to the setting, only non-P2P connections were allowed to this computer: <br><br><img src="https://habrastorage.org/storage2/597/467/d59/597467d599e7450727a6e8dfd611a642.png"><br><br>  Absolutely innocuous option that prohibits torrent clients, but usually does not interfere with the work of the user, in this case played a cruel joke with me. <br><br><img src="https://habrastorage.org/storage2/250/81f/b27/25081fb2738a24c799e2437d254a414a.png"><br><br>  Port 5099 was blocked, despite the fact that it did not fall into the range of "suspicious" ports;  Why it happened is not clear. <br><br>  After the reason was found, the solution was simple - adding one more to the list of Kerio services, <br>  working on port 5099: <br><br><img src="https://habrastorage.org/storage2/a70/2e1/616/a702e16165f2bbac755be5147df5bb6e.png"><br><br>  And adding this service to the P2P filter exception list. <br><br>  I wish all system administrators fewer such problems to leave time for something really interesting.  And obedient users who are not trying to use corporate computers for entertainment. </div><p>Source: https://habr.com/ru/post/179603/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../179583/index.html">Video interview from Silicon Valley. Sergey Burkov - a serial entrepreneur, mentor 500 Startups, the first head of the Google development center in Russia</a></li>
-<li><a href="../179587/index.html">Idea. Constructor sites in the dialogue mode</a></li>
-<li><a href="../179589/index.html">Internal cuisine: a recipe for effective work with a remote employee. Part 1</a></li>
 <li><a href="../179595/index.html">Ubuntu ui toolkit on Ubuntu Touch and Android</a></li>
 <li><a href="../179597/index.html">Work with bad files on the command line in Linux</a></li>
+<li><a href="../1796/index.html">Intel and Siemens become partners</a></li>
+<li><a href="../17960/index.html">In 2008 a Russian-language domain “.рф” will appear in Russia</a></li>
+<li><a href="../179601/index.html">ABS vs PLA. What to choose for 3D printing?</a></li>
 <li><a href="../179605/index.html">Write your Watermark TextBox and PasswordBox for Win8 / RT, Windows Phone</a></li>
 <li><a href="../179609/index.html">Application for Russian StackOverflow has moved to the Commitment stage</a></li>
+<li><a href="../17961/index.html">GOOGLE service attendance. Statistics. Gmail & GoogleMaps - leaders.</a></li>
 <li><a href="../179613/index.html">Library for homomorphic encryption HELib</a></li>
 <li><a href="../179615/index.html">Errors found in C ++ Builder libraries</a></li>
-<li><a href="../179619/index.html">How much bring Top Free applications on the App Store</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

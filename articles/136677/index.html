@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Features of the behavior of the new TCP / IP stack of Windows</h1><div class="post__text post__text-html js-mediator-article">  Starting from Windows Vista, Microsoft in its operating systems switched to a new network stack - Next Generation TCP / IP Stack.  The stack includes many different buns: the Windows Filtering Platform, a scalable TCP window, and other goodies, but this is not about them at all, but about one specific behavior of the new network stack. <br>  Any self-respecting network scanner must be able to determine the OS of the scanned node, and the more parameters are used, the more accurate the expected result.  For example, the Nmap network scanner uses a very wide set of metrics to determine the operating system: various TCP metrics (behavior of timestamp values, TCP options reordering), IP metrics (packet sequence number generation algorithm, processing IP packet flags), and other metrics. <br><br>  We at Positive Technologies also collect metrics and determine the OS version, so I would like to tell you about a metric I recently discovered that allows us to identify Windows systems with a new stack. <a name="habracut"></a>  The method is based on the analysis of ICMP Timestamp responses.  ICMP Timestamps (ICMP Timestamps) is a distant ancestor of the time synchronization protocols, allowing you to query the time set on a remote system.  The structure of the request and response ICMP Timestamp is shown in Figure 1. <br><div style="text-align:center;"><img src="https://habrastorage.org/storage2/1b9/89b/fa2/1b989bfa2a71d2b84c682d3f7065dab7.png"></div><br>  Figure 1 - Structure of the response to the request ICMP Timestamp <br><br>  The standard ICMP header is highlighted in red, then there are the timestamp fields for the moment of sending the request, the moment of receiving the request by the user acting remotely, and the time the response was sent by this user.  Timestamps - the number of milliseconds elapsed since midnight UTC.  If the host does not have the ability to transfer data about his time to the accuracy of milliseconds, then he should set the most significant bit to one and transmit at least some data about the time.  We are interested in the last label.  The fact is that Microsoft, as is often the case, approached the RFC implementation rather frivolously: instead of the network byte order, Windows sends a timestamp with the host byte order and does not set the high bit to one, even though it sends timestamps with Accurate to the second.  Moreover, starting with Vista, for reasons that can only be guessed, Windows systems create strange timestamps. <br>  The expected behavior of the time stamps is depicted in Figure 2. The blue dots on the graphs are responsible for the time stamps received from the server, and the server time graph is marked in red.  The abscissa axis on the graphs shows the time from the start of the experiment, the ordinate axis represents the value of time marks in seconds.  The string &lt;applied translation&gt; indicates that a transfer was made from the network byte order to the host order. <br><div style="text-align:center;"><img src="https://habrastorage.org/storage2/12a/f62/eab/12af62eab0ce02880e85c5ba9c14bdda.png"></div><br>  Figure 2 - The normal behavior of time stamps 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      However, the picture shown in Figure 3 (in a higher temporal resolution) was actually observed. <br><div style="text-align:center;"><img src="https://habrastorage.org/storage2/52c/507/1a3/52c5071a38f0874d556d5146ad9b52f7.png"></div><br>  Figure 3 - Behavior of time stamps on a large scale <br><br>  It can be seen that with a period of one second, the value of the time stamp sent is increased from true to greater than true by 10,000 seconds.  The gaps that are visible on the graph are just a consequence of the fact that the Windows scheduler decided that it was time to interrupt the execution of our program. <br>  Probably, with such timestamps, Windows wants to confuse an attacker trying to find out the time on a remote host.  This behavior is observed only for Windows systems with a new stack, which allows you to implement a new way to identify these systems. <br>  Thanks for attention. <br><br>  Sources: <br>  <a href="http://technet.microsoft.com/library/bb878108">Next Generation TCP / IP Stack in Windows Vista and Windows Server 2008</a> <br>  <a href="http://www.insidepro.com/kk/180/180r.shtml">Depths and Tops of the Network Stack by Vista Chris Kaspersky aka Myshch</a> <br>  <a href="http://nmap.org/book/osdetect.html">Nmap Network Scanning.</a>  <a href="http://nmap.org/book/osdetect.html">Chapter 8. Remote OS Detection</a> </div><p>Source: <a href="https://habr.com/ru/post/136677/">https://habr.com/ru/post/136677/</a></p>
+      However, the picture shown in Figure 3 (in a higher temporal resolution) was actually observed. <br><div style="text-align:center;"><img src="https://habrastorage.org/storage2/52c/507/1a3/52c5071a38f0874d556d5146ad9b52f7.png"></div><br>  Figure 3 - Behavior of time stamps on a large scale <br><br>  It can be seen that with a period of one second, the value of the time stamp sent is increased from true to greater than true by 10,000 seconds.  The gaps that are visible on the graph are just a consequence of the fact that the Windows scheduler decided that it was time to interrupt the execution of our program. <br>  Probably, with such timestamps, Windows wants to confuse an attacker trying to find out the time on a remote host.  This behavior is observed only for Windows systems with a new stack, which allows you to implement a new way to identify these systems. <br>  Thanks for attention. <br><br>  Sources: <br>  <a href="http://technet.microsoft.com/library/bb878108">Next Generation TCP / IP Stack in Windows Vista and Windows Server 2008</a> <br>  <a href="http://www.insidepro.com/kk/180/180r.shtml">Depths and Tops of the Network Stack by Vista Chris Kaspersky aka Myshch</a> <br>  <a href="http://nmap.org/book/osdetect.html">Nmap Network Scanning.</a>  <a href="http://nmap.org/book/osdetect.html">Chapter 8. Remote OS Detection</a> </div><p>Source: https://habr.com/ru/post/136677/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../136675/index.html">Censorship on the Internet will not</a></li>
 <li><a href="../136676/index.html">Vim is ported to iOS</a></li>
 <li><a href="../136679/index.html">Happy New Year of the Dragon</a></li>
+<li><a href="../13668/index.html">Toughbook CF-74 is fully protected</a></li>
 <li><a href="../136682/index.html">The number of Internet users in the world exceeded 2 billion</a></li>
 <li><a href="../136683/index.html">Achievements in Visual Studio</a></li>
 <li><a href="../136684/index.html">Exchange 1C with a client on C # using 1C web services</a></li>
-<li><a href="../136691/index.html">New MIT algorithm accelerates fast Fourier transform tenfold</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

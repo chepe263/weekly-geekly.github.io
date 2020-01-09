@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Caching in the Spring Framework 3.1</h1><div class="post__text post__text-html js-mediator-article">  I may be mistaken, but it seems to me that the well-known Spring Framework reached its peak for version 2.5 (when the active use of annotations was implemented) and the “polishing” goes essentially - even the major release 3.0 is not much different from 2.5.  The same can be said about the <a href="http://blog.springsource.com/2011/02/11/spring-framework-3-1-m1-released/">upcoming 3.1</a> - small improvements, phishchechki - but no more.  However, one "fishechka" in 3.1 seemed to me especially interesting - this is caching. <br><img src="http://www.springsource.org/sites/all/themes/dotorg09/images/dotorg09_logo.png" alt="image"><br><a name="habracut"></a><br>  In any application under development, we may at some point encounter a performance problem.  One way to solve problems is caching.  Naturally, you can cache the data returned from the database (Hibernate - the most used in java makes it so) - but much more interesting is the caching of the values ​​returned from the “services” level.  Calculating such values ​​can be quite time-consuming, including many calls to the database, other services, calculations — and, accordingly, caching at this level can lead to more significant results. <br>  In the Spring Framework 3.1, this can be done using the <a href="http://static.springsource.org/spring/docs/3.1.0.M1/spring-framework-reference/html/cache.html">@Cacheable</a> annotation <a href="http://static.springsource.org/spring/docs/3.1.0.M1/spring-framework-reference/html/cache.html">.</a> <br>  In fact, service level caching could have been done in the Spring Framework before, just now it will be much easier. <br><h5>  Value caching </h5><br>  For example, if during the profiling you find out that a particular method is “stupid”, for example (as in the documentation), the book return method on the ISBN: <br><br> <code>public Book findBook(ISBN isbn) {...} <br></code> <br>  Now, in order to cache the values ​​returned by this method, just add an annotation: <br><br> <code>@Cacheable("books") <br> public Book findBook(ISBN isbn) {...} <br></code> <br>  This annotation will hang the interceptor itself, create a key by parameters, check if there is a value in the cache, if not, call the method and cache the result. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      And it's all?  Almost for completeness you need: <br><h5>  Configure application caching </h5><br>  This is done in the application context xml configuration file: <br><br> <code><a href="http"></a> <a href=""></a> &lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" <br> xmlns:cache="http://www.springframework.org/schema/cache" <br> xsi:schemaLocation="http://www.springframework.org/schema/beans www.springframework.org/schema/beans/spring-beans.xsdhttp://www.springframework.org/schema/cache www.springframework.org/schema/cache/spring-cache.xsd"&gt; <br> &lt;cache:annotation-driven /&gt; <br></code> <br>  and configure cache-manager — for example, the simplest one (using ConcurrentMap) <br><br> <code>&lt;bean class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean" p:name="default"/&gt; <br> &lt;bean class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean" p:name="books"/&gt; <br> <br> <br> <br></code> <br>  or ehcache (you can use other implementations): <br><br> <code>&lt;bean id="cacheManager" class="org.springframework.cache.ehcache.EhcacheCacheManager" p:cache-manager="ehcache"/&gt; <br> &lt;bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="ehcache.xml"/&gt; <br></code> <br><h5>  Cleaning cache </h5><br>  It is necessary to cache data carefully - it is always a potential source of errors when the data is updated, but the cache is not there and the application uses outdated data.  Cache clearing can also be performed using the annotation - @CacheEvict: <br><br> <code>@CacheEvict(value = "books", allEntries=true) <br> public void loadBooks(InputStream batch) <br></code> <br><br>  That's all.  Simply?  It seems yes.  In fact, the caching mechanism is quite flexible, there are a number of additional features (such as writing your own annotations, generating keys, and much more. But the basic functionality looks so simple. </div><p>Source: <a href="https://habr.com/ru/post/113945/">https://habr.com/ru/post/113945/</a></p>
+      And it's all?  Almost for completeness you need: <br><h5>  Configure application caching </h5><br>  This is done in the application context xml configuration file: <br><br> <code><a href="http"></a> <a href=""></a> &lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" <br> xmlns:cache="http://www.springframework.org/schema/cache" <br> xsi:schemaLocation="http://www.springframework.org/schema/beans www.springframework.org/schema/beans/spring-beans.xsdhttp://www.springframework.org/schema/cache www.springframework.org/schema/cache/spring-cache.xsd"&gt; <br> &lt;cache:annotation-driven /&gt; <br></code> <br>  and configure cache-manager — for example, the simplest one (using ConcurrentMap) <br><br> <code>&lt;bean class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean" p:name="default"/&gt; <br> &lt;bean class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean" p:name="books"/&gt; <br> <br> <br> <br></code> <br>  or ehcache (you can use other implementations): <br><br> <code>&lt;bean id="cacheManager" class="org.springframework.cache.ehcache.EhcacheCacheManager" p:cache-manager="ehcache"/&gt; <br> &lt;bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="ehcache.xml"/&gt; <br></code> <br><h5>  Cleaning cache </h5><br>  It is necessary to cache data carefully - it is always a potential source of errors when the data is updated, but the cache is not there and the application uses outdated data.  Cache clearing can also be performed using the annotation - @CacheEvict: <br><br> <code>@CacheEvict(value = "books", allEntries=true) <br> public void loadBooks(InputStream batch) <br></code> <br><br>  That's all.  Simply?  It seems yes.  In fact, the caching mechanism is quite flexible, there are a number of additional features (such as writing your own annotations, generating keys, and much more. But the basic functionality looks so simple. </div><p>Source: https://habr.com/ru/post/113945/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../113939/index.html">Developer Preview 1 ExtJs 4 released</a></li>
+<li><a href="../11394/index.html">Question to specialists on Yandex-optimization</a></li>
 <li><a href="../113940/index.html">Cyber ​​Elegans Project</a></li>
 <li><a href="../113941/index.html">LJ in DB (Groovy script)</a></li>
 <li><a href="../113942/index.html">Microsoft’s response to Mozilla’s IE9 opinion</a></li>
 <li><a href="../113944/index.html">Blog is a convenient platform for finding interesting bloggers.</a></li>
 <li><a href="../113948/index.html">XCP repository moved to github</a></li>
 <li><a href="../113949/index.html">Sony's first warning</a></li>
+<li><a href="../11395/index.html">Quick search</a></li>
 <li><a href="../113950/index.html">Devices that never see the Russian market</a></li>
 <li><a href="../113951/index.html">Android Ice Cream combines Honeycomb for tablets and Gingerbread for phones</a></li>
-<li><a href="../113952/index.html">A new content payment system from Google is introduced.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Tornado WebSocket Chat for your Django project</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/af3/4b4/0a5/af34b40a5d32825e460d6c52441101a5.jpg" alt="Tornado" align="right" title="Tornado logo">  Recently, I launched the site <a href="http://backgrounddating.com/">backgrounddating.com</a> and <a href="http://habrahabr.ru/post/159693/">wrote</a> about it here on Habrahabr.  Of course, I already spoke about some of the technical details of the implementation of this project, but I would like to write about one of the site’s capabilities separately, especially since the documentation (both in Russian and in English) on this topic on the Internet is still quite small. .  So, it’s about real-time chat between two users.  The task is to allow any user to send messages to other users, and if the recipient of the message has a chat with these users, he immediately saw the incoming messages (otherwise, he could read the messages later: that is, when the chat opens, history of recent posts). <br><br>  If you need to allow users to communicate not only together, but in groups of any number of people, then this can be done almost elementarily: the described implementation, in fact, is designed for such an extension of functionality. <br><br>  Immediately clarify that this is not the only way to implement this.  You can use another asynchronous web server (for example, node.js), you can use another message queue (or <a href="https://github.com/facebook/tornado/blob/master/demos/chat/chatdemo.py">not to use</a> it at all if you like the features of this option: the same web server worker must communicate with users of the same channel).  I do not even claim that this option is the best (but in this case it came up better than anyone).  In the end, here we will not consider crutches at all (long polling, Flash) for old browsers (and these are almost all versions of IE, for example) that do not support web sockets, and we will not even consider connecting from those browsers that already support the WebSocket protocol, but not the standardized version ( <a href="http://tools.ietf.org/html/rfc6455">RFC 6455</a> ), but one of the obsolete ones.  For information on how to enable support for the outdated version of “draft 76” (aka “hixie-76”), see the Tornado <a href="http://www.tornadoweb.org/documentation/websocket.html">documentation</a> . <br><a name="habracut"></a><br>  However, what can be said for sure - this method works well, and not in one project, but in many (the described implementation method has been used for a long time, even though there is not very much information about it yet).  For example, the server running Background Dating is currently the youngest VPS from Linode (512 MiB of memory), but the load on the processor did not rise by more than 20-40 percent, and the use of RAM is about 30%.  And the resources are mainly used by gunicorn (the web server on which Django runs) and PostgreSQL.  But there is absolutely nothing surprising, since it is not a secret for anyone that Tornado is easy enough not only to work quickly, but even to cope with the <a href="http://en.wikipedia.org/wiki/C10k_problem">C10k</a> (which was already in the Habrahabr). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       So, we will use <a href="https://djangoproject.com/">Django</a> 1.4.2, <a href="http://tornadoweb.org/">Tornado</a> 2.4, <a href="http://redis.io/">Redis</a> 2.6.5 and <a href="http://postgresql.org/">PostgreSQL</a> 9.2.1 (in fact, you can use another relational DBMS - Django has many different backends).  The standard <a href="https://github.com/andymccurdy/redis-py">Redis-py</a> client for Python will be used to connect to Redis, as well as the <a href="https://github.com/evilkost/brukva">brükva</a> (asynchronous Redis client for use with Tornado).  In order to deploy all this on the server, we will use <a href="http://haproxy.1wt.eu/">haproxy</a> and <a href="http://nginx.org/">nginx</a> , we will use the <a href="http://haproxy.1wt.eu/">gunicorn</a> web server to run the Django project in production, and <a href="http://supervisord.org/">Supervisor</a> will manage the launch of the web servers for Django and Tornado. <br><br>  If you feel that you lack theoretical knowledge (for example, you do not quite understand what an asynchronous non-blocking web server is, a message queue, and so on), I recommend first reading the relevant documentation, and if you have questions, write to comments (or me by <a href="">mail</a> ).  I also recommend to pay attention to several discussions on the topic ( <a href="http://softwaremaniacs.org/forum/django/32804/">1</a> , <a href="http://softwaremaniacs.org/forum/django/35701/">2</a> , <a href="http://softwaremaniacs.org/forum/django/19643/">3</a> , <a href="http://softwaremaniacs.org/forum/python/22061/">4</a> , <a href="http://softwaremaniacs.org/forum/django/36629/">5</a> , <a href="http://softwaremaniacs.org/forum/python/22160/">6</a> , <a href="http://softwaremaniacs.org/forum/python/39706/">7</a> ) on the excellent <a href="http://softwaremaniacs.org/forum/">forum of</a> Python-guru Ivan Sagalayev, as well as on the <a href="http://kmike.ru/files/django-realtime.pdf">slides of the</a> report “We connect the synchronous framework with asynchronous (for example django)” , which is another Python-guru, Mikhail Korobov, read at <a href="http://2011.devconf.ru/programm/python_perl">DevConf 2011</a> . <br><br>  The source code of the considered solution is present both in this article <a href="https://github.com/aruseni/chat">and on GitHub</a> . <br><br><h3>  Django setup </h3><br>  Create a Django project and go to the directory that appears: <br><br><pre> django-admin.py startproject myproject
@@ -183,7 +183,7 @@ backend socket_backend<font></font>
     server server2 localhost:8001 weight 1 maxconn 5000 check<font></font>
     server server2 localhost:8002 weight 1 maxconn 5000 check<font></font>
     server server2 localhost:8003 weight 1 maxconn 5000 check<font></font>
-</pre><br>   ,     , Host     chat,   localhost:8000, localhost:8001, localhost:8002  localhost:8003,       localhost:8100. <br><br>   haproxy    80-     IPv4-.     IPv6 (   ,     /),     frontend   bind   IPv6-  80-   . <br><br>   ,      IPv6-   (, ,   AAAA-  DNS),     .     ,        .   —    IPv6,    <a href="http://en.wikipedia.org/wiki/IPv6_brokenness_and_DNS_whitelisting">DNS whitelisting</a> .  <a href="http://events.yandex.ru/talks/325/"></a> , ,  —           IPv6,           1—2   (    ). <br><br> , Tornado-    ,         —        ,         ( 80   443). <br><br>     haproxy  ,    backend    Host,  <a href="https://gist.github.com/3767467">   Upgrade</a> —  ,     Django,  Tornado        (  ),  WS-   Tornado-,    —  Django-. <br><br>  ,     .     ,   ,       ,    (   Django  Tornado         ), ,      .      !     . <br></div><p>Source: <a href="https://habr.com/ru/post/160123/">https://habr.com/ru/post/160123/</a></p>
+</pre><br>   ,     , Host     chat,   localhost:8000, localhost:8001, localhost:8002  localhost:8003,       localhost:8100. <br><br>   haproxy    80-     IPv4-.     IPv6 (   ,     /),     frontend   bind   IPv6-  80-   . <br><br>   ,      IPv6-   (, ,   AAAA-  DNS),     .     ,        .   —    IPv6,    <a href="http://en.wikipedia.org/wiki/IPv6_brokenness_and_DNS_whitelisting">DNS whitelisting</a> .  <a href="http://events.yandex.ru/talks/325/"></a> , ,  —           IPv6,           1—2   (    ). <br><br> , Tornado-    ,         —        ,         ( 80   443). <br><br>     haproxy  ,    backend    Host,  <a href="https://gist.github.com/3767467">   Upgrade</a> —  ,     Django,  Tornado        (  ),  WS-   Tornado-,    —  Django-. <br><br>  ,     .     ,   ,       ,    (   Django  Tornado         ), ,      .      !     . <br></div><p>Source: https://habr.com/ru/post/160123/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -195,8 +195,8 @@ backend socket_backend<font></font>
 <li><a href="../160125/index.html">Filter for comments Habrahabr as userscript</a></li>
 <li><a href="../160127/index.html">Web server abroad + statics in Russia = speeding up page loading speed</a></li>
 <li><a href="../160129/index.html">Everything you need to know about Do Not Track: Microsoft vs. Google and Mozilla</a></li>
+<li><a href="../16013/index.html">Improving the efficiency of online stores</a></li>
 <li><a href="../160131/index.html">Study: the closure of Megaupload could have a negative impact on the box office of many films</a></li>
-<li><a href="../160133/index.html">RIM Shares Show Record Growth</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Downgrade Debian: from testing to stable</h1><div class="post__text post__text-html js-mediator-article">  As you know, Debian stable is always stable, like a brick.  Testing becomes such only in the second half of stay in testing.  What to do if testing was registered everywhere in sources.list in your beloved Debian Lenny, and when Lenny became stable on February 14, your system was updated to Squeeze, thereby bringing a bunch of minor and unpleasant bugs?  Officially, the downgrade is not supported - but this does not mean that it is not possible.  I could not find the instructions for the downgrade with Squeeze (all instructions are quite old), therefore I decided to write this one. <br><a name="habracut"></a><br>  So, for a start, we need to climb into /etc/apt/sources.list and replace testing and squeeze with stable, bringing everything to something like this: <br><blockquote><code><a href="http://mirror.yandex.ru/debian/"></a> <a href="http://security.debian.org/"></a> deb mirror.yandex.ru/debian stable main contrib non-free <br> deb security.debian.org stable/updates main contrib non-free</code> </blockquote> <br>  So, first we need to deal with apt-pinning.  Create a file / etc / apt / preferences with similar content: <br><blockquote> <code>Package: * <br> Pin: release a=stable <br> Pin-Priority: 1001 <br> Package: * <br> Pin: release a=testing <br> Pin-Priority: 60 <br> Package: * <br> Pin: release a=unstable <br> Pin-Priority: 50</code> </blockquote> <br>  Thus, priority will be given to packages from a stable repository. <br>  Now update the package information: <br><blockquote> <code>$ sudo apt-get update</code> </blockquote> <br>  And we make the first downgrade attempt: <br><blockquote> <code>$ sudo apt-get dist-upgrade</code> </blockquote> <br>  If everything goes well, then we will be shown that it is necessary to downgrade about a thousand packages, remove a few dozen (and not only some unimportant things can be among them, but also quite used software, in my case - gedit and deluge. Nothing put it later).  We agree, downgrade a certain number of packages, stumble upon the first error: <br><blockquote> <code>dpkg: error processing /var/cache/apt/archives/gstreamer0.10-plugins-good_0.10.8-4.1~lenny1_i386.deb (--unpack): <br> trying to overwrite `/usr/lib/gstreamer-0.10/libgstcdio.so', which is also in package gstreamer0.10-plugins-ugly <br> dpkg-deb: subprocess paste killed by signal (Broken pipe)</code> </blockquote> <br>  We treat it, in general, at random.  With some helps: <br><blockquote> <code>$ sudo dpkg -i --force-overwrite /var/cache/apt/archives/gstreamer0.10-plugins-good_0.10.8-4.1~lenny1_i386.deb</code> </blockquote> <br>  Some of them manage to be cured through Synaptic: either Edit&gt; Broken Packages, or use the Broken Packages filter and try to remove / reinstall one at a time. <br>  It is often not possible to deliver with --force-overwrite due to unsatisfied dependencies: <br><blockquote> <code>$ sudo dpkg -i --force-overwrite /var/cache/apt/archives/gconf2-common_2.22.0-1_all.deb</code> <br> <code>dpkg - warning: downgrading gconf2-common from 2.26.0-1 to 2.22.0-1. <br> (Reading database ... 248673 files and directories currently installed.) <br> Preparing to replace gconf2-common 2.26.0-1 (using .../gconf2-common_2.22.0-1_all.deb) ... <br> Unpacking replacement gconf2-common ... <br> dpkg: dependency problems prevent configuration of gconf2-common: <br> gconf2-common depends on ucf; however: <br> Package ucf is not configured yet. <br> dpkg: error processing gconf2-common (--install): <br> dependency problems - leaving unconfigured <br> Errors were encountered while processing: <br> gconf2-common</code> </blockquote> <br>  Well, we put dependences: <br><blockquote> <code>$ sudo dpkg -i --force-overwrite /var/cache/apt/archives/ucf_3.0016_all.deb</code> <br> <code>(Reading database ... 248668 files and directories currently installed.) <br> Preparing to replace ucf 3.0016 (using .../archives/ucf_3.0016_all.deb) ... <br> Unpacking replacement ucf ... <br> Setting up ucf (3.0016) ... <br> Processing triggers for man-db ...</code> </blockquote> <br>  ... and again we put the package itself: <br><blockquote> <code>$ sudo dpkg -i --force-overwrite /var/cache/apt/archives/gconf2-common_2.22.0-1_all.deb</code> <br> <code>(Reading database ... 248668 files and directories currently installed.) <br> Preparing to replace gconf2-common 2.22.0-1 (using .../gconf2-common_2.22.0-1_all.deb) ... <br> Unpacking replacement gconf2-common ... <br> Setting up gconf2-common (2.22.0-1) ... <br> Replacing config file /etc/gconf/2/path with new version</code> </blockquote> <br>  There are packages to which we cannot satisfy the dependencies - they appeared only in Squeeze.  So, we simply do not need them: <br><blockquote> <code>sudo dpkg --remove libnm-util1</code> </blockquote> <br>  If something depends on them - great, first remove the dependent package, then go back to that. <br>  Getting through the first (largest) portion of errors, we renew our <br><blockquote> <code>$ sudo apt-get dist-upgrade</code> </blockquote> <br>  and repeat the procedure. <br>  As a result, we have a completely normal Debian Lenny.  Although, of course, problems are possible.  In my case, problems have arisen with the /usr/lib/libgssapi_krb5.so.2 library.  Without it, it was impossible to log in (except in safe mode), and some programs did not work.  I had to take this library from Squeeze and put it in Lenny - everything worked perfectly. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/59242/">https://habr.com/ru/post/59242/</a></p>
+    <p>Source: https://habr.com/ru/post/59242/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../59229/index.html">qiwi.ru escapes without warning</a></li>
 <li><a href="../59236/index.html">We combine twitter.com and vkontakte.ru</a></li>
 <li><a href="../59237/index.html">Using EAC with Wine</a></li>
 <li><a href="../59239/index.html">Work with medical data</a></li>
+<li><a href="../5924/index.html">Professor Umnov has increased the range of WiFi to 100 km</a></li>
 <li><a href="../59240/index.html">Where does the [mathematician - programmer] bachelor go?</a></li>
 <li><a href="../59243/index.html">Installing a mercurial repository on a debian server with apache2</a></li>
 <li><a href="../59245/index.html">Opening blog</a></li>

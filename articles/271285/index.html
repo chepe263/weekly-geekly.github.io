@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Regular expressions and math parser</h1><div class="post__text post__text-html js-mediator-article">  Once upon a time I needed a parser for mathematical expressions in C #.  Of course, downloading the finished implementation is not a problem.  But only I did not have the Internet in those years.  As a result, absolutely without hesitation and without the theoretical foundations of parsers, finite automata, and other things, it was written through regular expressions.  Minutes past 10. It is worth noting that only arithmetic actions and brackets were needed.  Support for trigonometric functions and other things not required. <br><a name="habracut"></a><br>  First, select regular expressions for numbers and actions: <br><pre><code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">private</span></span> <span class="hljs-keyword"><span class="hljs-keyword">const</span></span> <span class="hljs-built_in"><span class="hljs-built_in">string</span></span> RegexBr = <span class="hljs-string"><span class="hljs-string">"\\(([1234567890\\.\\+\\-\\*\\/^%]*)\\)"</span></span>; <span class="hljs-comment"><span class="hljs-comment">//  private const string RegexNum = "[-]?\\d+\\.?\\d*"; //  private const string RegexMulOp = "[\\*\\/^%]"; //   private const string RegexAddOp = "[\\+\\-]"; //  </span></span></code> </pre> <br>  Now the method that separates the resulting string into elements and recursively calculates them: <br><pre> <code class="cpp hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">double</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">Parse</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(</span></span><span class="hljs-built_in"><span class="hljs-function"><span class="hljs-params"><span class="hljs-built_in">string</span></span></span></span><span class="hljs-function"><span class="hljs-params"> str)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-comment"><span class="hljs-comment">//   var matchSk = Regex.Match(str, RegexBr); if (matchSk.Groups.Count &gt; 1) { string inner = matchSk.Groups[0].Value.Substring(1, matchSk.Groups[0].Value.Trim().Length - 2); string left = str.Substring(0, matchSk.Index); string right = str.Substring(matchSk.Index + matchSk.Length); return Parse(left + Parse(inner).ToString(CultureInfo.InvariantCulture) + right); } //   var matchMulOp = Regex.Match(str, string.Format("({0})\\s?({1})\\s?({2})\\s?", RegexNum, RegexMulOp, RegexNum)); var matchAddOp = Regex.Match(str, string.Format("({0})\\s?({1})\\s?({2})\\s?", RegexNum, RegexAddOp, RegexNum)); var match = matchMulOp.Groups.Count &gt; 1 ? matchMulOp : matchAddOp.Groups.Count &gt; 1 ? matchAddOp : null; if (match != null) { string left = str.Substring(0, match.Index); string right = str.Substring(match.Index + match.Length); return Parse(left + ParseAct(match).ToString(CultureInfo.InvariantCulture) + right); } //   try { return double.Parse(str, CultureInfo.InvariantCulture); } catch (FormatException) { throw new FormatException(string.Format("   '{0}'", str)); } }</span></span></code> </pre><br>  And the last write method that directly calculates the value of the action: <br><pre> <code class="cpp hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">private</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">double</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">ParseAct</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(Match match)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">double</span></span> a = <span class="hljs-keyword"><span class="hljs-keyword">double</span></span>.Parse(match.Groups[<span class="hljs-number"><span class="hljs-number">1</span></span>].Value, CultureInfo.InvariantCulture); <span class="hljs-keyword"><span class="hljs-keyword">double</span></span> b = <span class="hljs-keyword"><span class="hljs-keyword">double</span></span>.Parse(match.Groups[<span class="hljs-number"><span class="hljs-number">3</span></span>].Value, CultureInfo.InvariantCulture); <span class="hljs-keyword"><span class="hljs-keyword">switch</span></span> (match.Groups[<span class="hljs-number"><span class="hljs-number">2</span></span>].Value) { <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> <span class="hljs-string"><span class="hljs-string">"+"</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> a + b; <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> <span class="hljs-string"><span class="hljs-string">"-"</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> a - b; <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> <span class="hljs-string"><span class="hljs-string">"*"</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> a * b; <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> <span class="hljs-string"><span class="hljs-string">"/"</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> a / b; <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> <span class="hljs-string"><span class="hljs-string">"^"</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> Math.Pow(a, b); <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> <span class="hljs-string"><span class="hljs-string">"%"</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> a % b; <span class="hljs-keyword"><span class="hljs-keyword">default</span></span>: <span class="hljs-keyword"><span class="hljs-keyword">throw</span></span> <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> FormatException($<span class="hljs-string"><span class="hljs-string">"   '{match.Value}'"</span></span>); } }</code> </pre><br>  I had this “abnormal programming”.  I don’t see any point in the full text of the source text - it is unlikely that anyone will need it.  But in any case, to make a class of three pieces is a matter of a couple of seconds. <br><br>  Thanks for attention. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/271285/">https://habr.com/ru/post/271285/</a></p>
+    <p>Source: https://habr.com/ru/post/271285/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../271275/index.html">NOT useful tips for the programmer</a></li>
 <li><a href="../271277/index.html">Webinar "Kerio Operator - Why is VoIP?"</a></li>
 <li><a href="../271279/index.html">400 amazing free services</a></li>
+<li><a href="../27128/index.html">Windows XP SP3, time synchronization and excessive traffic consumption</a></li>
 <li><a href="../271281/index.html">Angular and RequireJS project builder and some build thoughts</a></li>
 <li><a href="../271283/index.html">Trash in bookmarks and disabling side panels in the assembly Vivaldi 1.0.330.3</a></li>
 <li><a href="../271287/index.html">Development of secure banking applications: the main problems and how to avoid them</a></li>
 <li><a href="../271289/index.html">Transfer server farms to more advanced and energy efficient server cooling technologies</a></li>
+<li><a href="../27129/index.html">DotProject - lack of documentation sindrom</a></li>
 <li><a href="../271291/index.html">Introduction to 3D Touch</a></li>
 <li><a href="../271293/index.html">Drupal 8 released</a></li>
-<li><a href="../271295/index.html">Security Week 47: {not} Hacked Tor, Gmail Warns About Decryption, Barcode Attack</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

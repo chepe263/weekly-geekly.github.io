@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We display nodes on Google Maps</h1><div class="post__text post__text-html js-mediator-article"> Suppose that we have a fairly simple task - to show the location of objects (nodes, users) on the map.  For example, <a href="http://show.giftcentral.ru/offices">offices</a> , or, say, <a href="http://giftcentral.ru/shop">gift shops</a> .  Those.  we have to get a page where the map with the location of all objects of a given type is displayed, and show the map on the page of each individual object.  It will be about the 6th version of <a href="http://drupal.org/">Drupal</a> , but in 5-ke everything is the same (to be honest, the screen at the end was shot exactly with Drupal 5).  To accomplish this task, <a href="http://www.b2blog.ru/">I</a> will use the following modules: <a href="http://drupal.org/project/gmap">GMAP</a> , <a href="http://drupal.org/project/location">Location</a> , <a href="http://drupal.org/project/views">Views</a> ( <a href="http://www.ajaxplanet.ru/">I also</a> use <a href="http://drupal.org/project/cck">CCK</a> &amp; <a href="http://drupal.org/project/contemplate">Contemplate</a> on my site, but they are so auxiliary in this task that we shouldn’t talk about them). <a name="habracut"></a><img src="https://habrastorage.org/getpro/habr/post_images/dd4/929/ef2/dd4929ef2af85bfa5c7d0a8a46acf995.png" alt="inclusion of modules" width="714" height="414">  So, swing-turn.  For GMAP to work properly, we’ll need <a href="http://code.google.com/intl/ru/apis/maps/signup.html">to get the Google Maps API Key from Google</a> .  The deal is free and fast.  The resulting key is entered in the GMAP settings, then we set the settings for the card. <img src="https://habrastorage.org/getpro/habr/post_images/eb6/4ef/f28/eb64eff2851f5c3c265d04fa79a1a5b3.png" alt="GMap settings" width="711" height="1045">  Then we will have to configure the Location module (it is the Location ... it was looking for a long time) <img src="https://habrastorage.org/getpro/habr/post_images/d4b/008/2a5/d4b0082a56dba1e5d1cb32abfad8c27f.png" alt="Location module settings" width="715" height="557"><br>  The main thing that should concern us here is the country and the daw "Use a Google Map to set latitude and longitude" Well, now let's allow the use of geolocation for our materials.  So, I already have the type of material "Office", the entries in which I will be mapping: <img src="https://habrastorage.org/getpro/habr/post_images/495/fe5/f77/495fe5f77e2354c373cd6c712e3e1e17.png" alt="allow the use of coordinates for nodes" width="789" height="1647">  Above, I indicated that for each entry there can be only one address, I set the city and country by default.  It remains quite a bit: create a map where all the objects will be shown and display the map on the page of the object itself. Output the shared map via the View: <img src="https://habrastorage.org/getpro/habr/post_images/b7e/123/9d0/b7e1239d056a5c2a05f4efe863da89a5.png" alt="creating a view for displaying data on a map" width="714" height="516">  The main thing here - Style: Gmap.  Well, the list of fields with the filter ... Now it remains to show the map on the page of the office itself.  Here it is necessary to get into the code a little.  So, in the template for this type of materials I added the following construction: <code>&lt;?php print gmap_simple_map($node-&gt;locations[0]['latitude'], $node-&gt;locations[0]['longitude'], '', '&lt;strong&gt;'.$node-&gt;locations[0]['name'].'&lt;/strong&gt;&lt;br/&gt;'.$node-&gt;locations[0]['street'], 15, '650px', '400px', FALSE,''); ?&gt;</code>  <code>&lt;?php print gmap_simple_map($node-&gt;locations[0]['latitude'], $node-&gt;locations[0]['longitude'], '', '&lt;strong&gt;'.$node-&gt;locations[0]['name'].'&lt;/strong&gt;&lt;br/&gt;'.$node-&gt;locations[0]['street'], 15, '650px', '400px', FALSE,''); ?&gt;</code> Ie  I draw a map of 650x400 pixels, show a marker on it, in the description window I write the name of the node and the address.  That is, in fact, everything ... Let's try it in action?  Add a record and put down the location there: <br><img src="https://habrastorage.org/getpro/habr/post_images/c40/ba3/e20/c40ba3e205f81c08cdb5aa07f50a2950.png" alt="editing the material, specify the coordinates" width="721" height="912">  Let's see what the map looks like on the object page: <img src="https://habrastorage.org/getpro/habr/post_images/a4e/1bb/f56/a4e1bbf56a4f3c0095ba2bd057798968.png" alt="Singer's house on the map" width="701" height="548">  This is the page with the list of objects.  So far, there are only 2 of them, so not too impressive: <img src="https://habrastorage.org/getpro/habr/post_images/13a/d75/2ac/13ad752ac56327dfe0337ba59af793c3.png" alt="office map" width="659" height="389">  However, it is possible to show, say, the <a href="http://giftcentral.ru/shop">list of gift shops in St. Petersburg</a> or the <a href="http://www.ride.spb.ru/map/node">location of the lion statues in St. Petersburg</a> : <a href="http://giftcentral.ru/shop"><img src="https://habrastorage.org/getpro/habr/post_images/fb0/981/d01/fb0981d01e9698fbf3933f40f12ea161.jpg" alt="list of gift stores in St. Petersburg"></a> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/56505/">https://habr.com/ru/post/56505/</a></p>
+    <p>Source: https://habr.com/ru/post/56505/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../56494/index.html">Free certification exam for undergraduate and graduate students</a></li>
-<li><a href="../56495/index.html">Snowflake LLC - Part 2. Consider various aspects of registration and start working</a></li>
 <li><a href="../56496/index.html">Linux VPN server - addressing MPPE and non-encryption clients</a></li>
 <li><a href="../56497/index.html">Tuning nginx</a></li>
 <li><a href="../56499/index.html">DB_Pgsql_Type: transparent conversion of complex PostgreSQL types to PHP and back</a></li>
+<li><a href="../565/index.html">The ability to install neutral karma</a></li>
+<li><a href="../5650/index.html">Fotofilmusigner in photos (vol. 2 - “Video”)</a></li>
 <li><a href="../56506/index.html">Import news from one format in WordPress</a></li>
 <li><a href="../56508/index.html">Do I need a store that sells computers / laptops only with Ubuntu preinstalled?</a></li>
 <li><a href="../56509/index.html">"The right driver." Project Diary. Part 2. Development and support.</a></li>

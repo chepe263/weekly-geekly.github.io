@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Solving the problem of sound in one ear for some videos on Youtube</h1><div class="post__text post__text-html js-mediator-article">  Not long ago, I encountered the following problem: when watching some videos on youtube, the sound goes only to the left speaker.  When listening through headphones, it causes some inconvenience. <br><br>  A software solution for Windows 7 was found using powershell and the <a href="http://naudio.codeplex.com/">NAudio</a> sound <a href="http://naudio.codeplex.com/">library</a> .  The basic idea is to convert stereo to mono. <br><a name="habracut"></a><br><br><ol><li>  Download and unpack the archive with the library </li><li>  Launch from the start menu of PowerShell ISE </li><li>  Connect types from the library, replacing the path with your own: <br><pre><code class="php hljs">add-type -path <span class="hljs-string"><span class="hljs-string">'C:/Users/xxxxx/Downloads/NAudio-Release/NAudio.dll'</span></span></code> </pre> </li><li>  Remember the default audio output device id: <br><pre> <code class="php hljs">$devices = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.CoreAudioApi.MMDeviceEnumerator $defaultDevice = $devices.GetDefaultAudioEndpoint([NAudio.CoreAudioApi.DataFlow]::Render, [NAudio.CoreAudioApi.Role]::Multimedia) $defaultDeviceId = $defaultDevice.ID -replace <span class="hljs-string"><span class="hljs-string">'{.+}\.{(.+)}$'</span></span>, <span class="hljs-string"><span class="hljs-string">'$1'</span></span></code> </pre></li><li>  Change the default audio output device to any alternative (programs should not be able to change it): <br>  Control Panel-&gt; Hardware and Sound-&gt; Sound-&gt; Playback </li><li>  Run the following code, after replacing the device id with your own: <br><pre> <code class="php hljs">$waveIn = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.Wave.WasapiLoopbackCapture $waveOut = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.Wave.DirectSoundOut($defaultDeviceId, <span class="hljs-number"><span class="hljs-number">100</span></span>) $waveInProvider = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.Wave.WaveInProvider($waveIn) $waveProvider16 = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.Wave.WaveFloatTo16Provider($waveInProvider) $monoProvider16 = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.Wave.StereoToMonoProvider16($waveProvider16) $monoProvider16.leftVolume = <span class="hljs-number"><span class="hljs-number">1</span></span> $monoProvider16.rightVolume = <span class="hljs-number"><span class="hljs-number">1</span></span> $waveOut.init($monoProvider16) $waveOut.play() $waveIn.startRecording()</code> </pre><br><div class="spoiler">  <b class="spoiler_title">detailed description</b> <div class="spoiler_text">  Grab all sound output to the new device by default: <br><pre> <code class="php hljs">$waveIn = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.Wave.WasapiLoopbackCapture</code> </pre> <br>  We output the sound to the previous device by default (headphones are connected to its connector) with a delay of 100ms to prevent clicks: <br><pre> <code class="php hljs">$waveOut = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.Wave.DirectSoundOut($defaultDeviceId, <span class="hljs-number"><span class="hljs-number">100</span></span>)</code> </pre> <br>  We have a stereo to mono converter, but it only works with 16 bit format.  There is also a converter to the appropriate format.  Applying them consistently, we achieve the desired result: <br><pre> <code class="php hljs">$waveProvider16 = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.Wave.WaveFloatTo16Provider($waveInProvider) $monoProvider16 = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span>-object NAudio.Wave.StereoToMonoProvider16($waveProvider16)</code> </pre> <br>  Set the volume for the right and left channels: <br><pre> <code class="php hljs">$monoProvider16.leftVolume = <span class="hljs-number"><span class="hljs-number">1</span></span> $monoProvider16.rightVolume = <span class="hljs-number"><span class="hljs-number">1</span></span></code> </pre> <br>  Bind to exit: <br><pre> <code class="php hljs">$waveOut.init($monoProvider16)</code> </pre> <br>  Run the process: <br><pre> <code class="php hljs">$waveOut.play() $waveIn.startRecording()</code> </pre> <br></div></div><br></li><li>  <b>Go to youtube and watch video</b> </li><li>  You can stop the redirection as follows: <br><pre> <code class="php hljs">$waveIn.stopRecording() $waveOut.stop()</code> </pre></li><li>  Do not forget to return the default device. </li></ol><br>  The method is not perfect: a second audio output device and a global reconfiguration are required. <br>  PS The approach described above had an alternative: insert the connector into the headphone jack not completely. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/201870/">https://habr.com/ru/post/201870/</a></p>
+    <p>Source: https://habr.com/ru/post/201870/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../201856/index.html">Problems removing regular clutter on printed forms</a></li>
+<li><a href="../20186/index.html">Sun acquires innotek GmbH</a></li>
 <li><a href="../201860/index.html">Lua API ++</a></li>
 <li><a href="../201862/index.html">Comparison of the performance of the entire line of Nexus smartphones in one video</a></li>
 <li><a href="../201864/index.html">How to realize a childhood dream and program something for Dendy</a></li>

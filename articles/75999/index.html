@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Taming rsync on Mac OS X</h1><div class="post__text post__text-html js-mediator-article"> Most users of Apple computers use Time Machine (TM), a built-in Mac OS X backup solution for their data.  However, I belong to a minority that does not use the “time machine”. <br><br>  The fact is that I need backup over the network, and via the network, Time Machine can copy data either to Time Capsule or to a shared folder shared on a computer running Mac OS X Leopard (and higher).  I am not going to buy a time capsule, because it does not inspire confidence in me, and there is no other poppy in the house.  There are various hacks with which you can force TM to write backups to any network folder, but all these hacks have side effects that you don’t feel like fighting with.  Therefore - rsync, rsync and rsync again.  However, Apple would not have been Apple if, in the spirit of caring for the user, had not laid a rake along the way, with which we will fight now :) <a name="habracut"></a><br><br>  The rake is that Mac OS X comes with a very <i>strange</i> version of rsync.  Let's take a closer look at it with the rsync --version command: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>rsync version 2.6.9 protocol version 29 <br> Capabilities: 64-bit files, socketpairs, hard links, symlinks, batchfiles, <br> inplace, IPv6, 64-bit system inums, 64-bit internal inums</code> <br> <br>  Firstly, it is very old (the current version, 3.0.7, has an improved file comparison algorithm and is faster).  Secondly, Apple's rsync is built with the support of the HFS + file system metadata and supports the special -E key to save these same metadata ... but at the same time there should be the same "modified" version of rsync at the other end.  That is, the “recipient” of the backup copy again can only be a computer with Mac OS X (Tiger or higher). <br><br>  It does not matter, this problem is mostly solved.  First, we will compile the latest version of rsync on a Mac (you should have Xcode installed). <br><br>  Download the source code: <br> <code><a href=""></a> <a href=""></a> cd ~/Desktop <br> curl -O rsync.samba.org/ftp/rsync/src/rsync-3.0.7.tar.gz <br> tar -xzvf rsync-3.0.7.tar.gz <br> rm rsync-3.0.6.tar.gz <br> curl -O rsync.samba.org/ftp/rsync/src/rsync-patches-3.0.7.tar.gz <br> tar -xzvf rsync-patches-3.0.7.tar.gz <br> rm rsync-patches-3.0.7.tar.gz <br> cd rsync-3.0.7</code> <br> <br>  Apply the relevant patches: <br> <code>patch -p1 &lt;patches/fileflags.diff <br> patch -p1 &lt;patches/crtimes.diff</code> <br> <br>  Now we collect: <br> <code>./prepare-source <br> ./configure <br> make <br> sudo make install</code> <br> <br>  Checking what we did: <br> <code><a href="http://rsync.samba.org/"></a> melchior:~ pavel$ /usr/local/bin/rsync --version <br> rsync version 3.0.7 protocol version 30 <br> Copyright (C) 1996-2009 by Andrew Tridgell, Wayne Davison, and others. <br> Web site: rsync.samba.org <br> Capabilities: <br> 64-bit files, 64-bit inums, 64-bit timestamps, 64-bit long ints, <br> socketpairs, hardlinks, symlinks, IPv6, batchfiles, inplace, <br> append, ACLs, xattrs, no iconv, symtimes, file-flags <br></code> <br><br>  Now you need to compile rsync on a Linux machine that will be used for backup, using the patch fileflags, but <b>WITHOUT the crtimes patch</b> !  In Ubuntu 9.10, for this you must first install the "means of production": <br><br> <code>sudo apt-get install build-essential <br> sudo apt-get build-dep rsync</code> <br> <br>  Making a test run: <br><br> <code>/usr/local/bin/rsync -aHAXxzv --protect-args --fake-super --rsync-path="/usr/local/bin/rsync" ~/Documents/ pavel@192.168.1.5:/home/pavel/backup</code> <br> <br>  There is only one problem left: when trying to backup to an ext3 partition, rsync scolds that the extended attributes of the files do not fit in the space allocated for them.  To solve this problem, I formatted the backup disk on XFS. <br><br>  The main disadvantage of this method is that it does not save the attributes of the time of creation and modification of the file.  However, for me it is uncritical, because I need a remote backup not to create a bootable copy of the system disk, but to ensure the safety of documents dear to my heart. <br><br>  rsync is good because you can write a script and run it regularly with cron.  In this case, the backup will be carried out without your intervention.  But this is a topic for a separate entry ... </div><p>Source: <a href="https://habr.com/ru/post/75999/">https://habr.com/ru/post/75999/</a></p>
+     <code>rsync version 2.6.9 protocol version 29 <br> Capabilities: 64-bit files, socketpairs, hard links, symlinks, batchfiles, <br> inplace, IPv6, 64-bit system inums, 64-bit internal inums</code> <br> <br>  Firstly, it is very old (the current version, 3.0.7, has an improved file comparison algorithm and is faster).  Secondly, Apple's rsync is built with the support of the HFS + file system metadata and supports the special -E key to save these same metadata ... but at the same time there should be the same "modified" version of rsync at the other end.  That is, the “recipient” of the backup copy again can only be a computer with Mac OS X (Tiger or higher). <br><br>  It does not matter, this problem is mostly solved.  First, we will compile the latest version of rsync on a Mac (you should have Xcode installed). <br><br>  Download the source code: <br> <code><a href=""></a> <a href=""></a> cd ~/Desktop <br> curl -O rsync.samba.org/ftp/rsync/src/rsync-3.0.7.tar.gz <br> tar -xzvf rsync-3.0.7.tar.gz <br> rm rsync-3.0.6.tar.gz <br> curl -O rsync.samba.org/ftp/rsync/src/rsync-patches-3.0.7.tar.gz <br> tar -xzvf rsync-patches-3.0.7.tar.gz <br> rm rsync-patches-3.0.7.tar.gz <br> cd rsync-3.0.7</code> <br> <br>  Apply the relevant patches: <br> <code>patch -p1 &lt;patches/fileflags.diff <br> patch -p1 &lt;patches/crtimes.diff</code> <br> <br>  Now we collect: <br> <code>./prepare-source <br> ./configure <br> make <br> sudo make install</code> <br> <br>  Checking what we did: <br> <code><a href="http://rsync.samba.org/"></a> melchior:~ pavel$ /usr/local/bin/rsync --version <br> rsync version 3.0.7 protocol version 30 <br> Copyright (C) 1996-2009 by Andrew Tridgell, Wayne Davison, and others. <br> Web site: rsync.samba.org <br> Capabilities: <br> 64-bit files, 64-bit inums, 64-bit timestamps, 64-bit long ints, <br> socketpairs, hardlinks, symlinks, IPv6, batchfiles, inplace, <br> append, ACLs, xattrs, no iconv, symtimes, file-flags <br></code> <br><br>  Now you need to compile rsync on a Linux machine that will be used for backup, using the patch fileflags, but <b>WITHOUT the crtimes patch</b> !  In Ubuntu 9.10, for this you must first install the "means of production": <br><br> <code>sudo apt-get install build-essential <br> sudo apt-get build-dep rsync</code> <br> <br>  Making a test run: <br><br> <code>/usr/local/bin/rsync -aHAXxzv --protect-args --fake-super --rsync-path="/usr/local/bin/rsync" ~/Documents/ pavel@192.168.1.5:/home/pavel/backup</code> <br> <br>  There is only one problem left: when trying to backup to an ext3 partition, rsync scolds that the extended attributes of the files do not fit in the space allocated for them.  To solve this problem, I formatted the backup disk on XFS. <br><br>  The main disadvantage of this method is that it does not save the attributes of the time of creation and modification of the file.  However, for me it is uncritical, because I need a remote backup not to create a bootable copy of the system disk, but to ensure the safety of documents dear to my heart. <br><br>  rsync is good because you can write a script and run it regularly with cron.  In this case, the backup will be carried out without your intervention.  But this is a topic for a separate entry ... </div><p>Source: https://habr.com/ru/post/75999/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../75995/index.html">Linus - Nobel!</a></li>
 <li><a href="../75996/index.html">Windows 8</a></li>
 <li><a href="../75998/index.html">CodeCraft - the battle of programmers</a></li>
+<li><a href="../76/index.html">html in the mail</a></li>
+<li><a href="../760/index.html">About karma</a></li>
 <li><a href="../76001/index.html">Type control of function arguments in Lua</a></li>
 <li><a href="../76002/index.html">Programmer and bugs - relevant at all times</a></li>
 <li><a href="../76003/index.html">Debian announces official support for DebSrc3.0</a></li>
-<li><a href="../76004/index.html">Is the iPhone warranty in Russia a myth or a reality?</a></li>
-<li><a href="../76007/index.html">"Predicted" date of announcement 8.0-RELEASE</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

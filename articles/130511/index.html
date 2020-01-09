@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>"Correct" utf-8 encoding in nginx / apache settings</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/storage1/b85e8ca5/7eb6c555/f5ddee32/afde7af2.png">  I hope that this post will be useful to many developers, because  judging by the numerous threads on the Internet, the problem is quite frequent.  The essence of the problem is the following: incorrect name of utf-8 encoding in nginx / apache settings.  At the same time, the content returned by the server is perceived normally in all browsers except Internet Explorer. <br><a name="habracut"></a><br><br><br>  Often, many developers, when configuring virtual hosts, copy settings from somewhere on the Internet or from other places.  And at the same time, an error “migrates” to their settings.  In the case of nginx, this is the directive: <br><blockquote>  charset utf8; </blockquote><br>  In the case of Apache, this is: <br><blockquote>  &lt;Directory / path / to / site /&gt; <br>  AddDefaultCharset UTF8 <br>  &lt;/ Directory&gt; <br></blockquote><br>  So - there is no such encoding as <b>utf8</b> !  Correctly write <b>utf-8</b> (hyphenated).  Most browsers (Firefox&gt; = 3, Opera&gt; = 9, Chrome&gt; = 4, Safari&gt; = 4) are loyal to specifying <b>utf8</b> as an encoding, and perceive the content given out correctly, but all versions of <b>Internet Explorer</b> (including even the latest, 9th) ) instead of content give out "krakozyabry."  Of course, this situation is easy to manage even without fixing the settings of the web server.  For example, in the case of returning dynamic content using PHP, you can explicitly specify the encoding in the script itself: <br><blockquote>  <font color="black">header ( <font color="#A31515">'Content-type: text / html; charset = utf-8'</font> );</font> </blockquote><br>  Or use the following tag in HTML: <br><blockquote>  <font color="black"><font color="#0000ff">&lt;</font> <font color="#800000">meta</font> <font color="#ff0000">http-equiv</font> <font color="#0000ff">= "content-type"</font> <font color="#ff0000">content</font> <font color="#0000ff">= "text / html; charset = utf-8"</font> <font color="#0000ff">/&gt;</font></font> </blockquote><br>  And everything would be fine, but the situation becomes more complicated when using AJAX JavaScript tries to reach static content.  An example using jQuery: <br><blockquote>  <font color="black">$ ( <font color="#0000ff">document</font> ) .ready ( <font color="#0000ff">function</font> () {</font> <font color="black"><br></font>  <font color="black"><font color="#0000ff">function</font> print_r ()</font> <font color="black"><br></font>  <font color="black">{</font> <font color="black"><br></font>  <font color="black"><font color="#008000">// ...</font></font> <font color="black"><br></font>  <font color="black">}</font> <font color="black"><br></font>  <font color="black">$ .ajax ({</font> <font color="black"><br></font>  <font color="black">url: <font color="#A31515">"/test.txt"</font> ,</font> <font color="black"><br></font>  <font color="black">dataType: <font color="#A31515">"text"</font> ,</font> <font color="black"><br></font>  <font color="black">success: <font color="#0000ff">function</font> (data, textStatus) {</font> <font color="black"><br></font>  <font color="black">$ ( <font color="#A31515">'#res'</font> ) .html (data);</font> <font color="black"><br></font>  <font color="black">},</font> <font color="black"><br></font>  <font color="black">error: <font color="#0000ff">function</font> (jqXHR, textStatus, errorThrown) {</font> <font color="black"><br></font>  <font color="black">$ ( <font color="#A31515">'#res'</font> ) .html ( <font color="#A31515">'jqXHR:'</font> + print_r (jqXHR) + <font color="#A31515">'&lt;br /&gt; textStatus:'</font> + textStatus + <font color="#A31515">'&lt;br /&gt; errorThrown:'</font> + print_r (errorThrown));</font> <font color="black"><br></font>  <font color="black">}</font> <font color="black"><br></font>  <font color="black">});</font> <font color="black"><br></font>  <font color="black">});</font> </blockquote><br>  In this case, IE produces the following error: <br><blockquote>  <font color="black">{</font> <font color="black"><br></font>  <font color="black">jqXHR: {</font> <font color="black"><br></font>  <font color="black">readyState: 4,</font> <font color="black"><br></font>  <font color="black">status: 0,</font> <font color="black"><br></font>  <font color="black">statusText: <font color="#A31515">'error'</font></font> <font color="black"><br></font>  <font color="black">},</font> <font color="black"><br></font>  <font color="black">textStatus: <font color="#A31515">'error'</font> ,</font> <font color="black"><br></font>  <font color="black">errorThrown: {</font> <font color="black"><br></font>  <font color="black">name: <font color="#A31515">'Error'</font> ,</font> <font color="black"><br></font>  <font color="black">number: -1072896658,</font> <font color="black"><br></font>  <font color="black">description: <font color="#A31515">'Could not complete the action.</font></font>  <font color="black"><font color="#A31515">Error c00ce56e. '</font></font>  <font color="black">,</font> <font color="black"><br></font>  <font color="black">message: <font color="#A31515">'Could not complete the action.</font></font>  <font color="black"><font color="#A31515">Error c00ce56e. '</font></font> <font color="black"><br></font>  <font color="black">}</font> <font color="black"><br></font>  <font color="black">}</font> </blockquote><br>  This JS error is quite nontrivial.  And if users, who have already encountered such a thing, immediately understand what is the matter, then those who encounter such a thing for the first time may be perplexed and take a long time to figure out the reason. <br><br>  <b>PS</b> As it was rightly noted in the comments, when accessing MySQL, the query is used to indicate in which encoding to access the database: <br><blockquote>  SET NAMES utf8 </blockquote><br>  And in general, wherever there is a reference to the utf-8 encoding, for example, when creating a table: <br><blockquote>  CREATE TABLE `some_table` (...) ENGINE = innoDB DEFAULT CHARSET = utf8 </blockquote><br>  The encoding is utf8, not utf-8.  That is, in this case, the recording goes WITHOUT a hyphen, which makes even more cognitive dissonance in understanding what is happening ... </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/130511/">https://habr.com/ru/post/130511/</a></p>
+    <p>Source: https://habr.com/ru/post/130511/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../130505/index.html">Asus Eee Pad Transformer - how to disassemble a tablet and what it consists of</a></li>
 <li><a href="../130506/index.html">The single interface is the biggest redesign in Google history.</a></li>
 <li><a href="../130507/index.html">Mobile Professional Days in Kharkov</a></li>
 <li><a href="../130508/index.html">Meet Payoneer at RIW-2011</a></li>
 <li><a href="../130509/index.html">Google+ search widget</a></li>
+<li><a href="../13051/index.html">fullscreen vs window</a></li>
 <li><a href="../130513/index.html">My Mahjong</a></li>
 <li><a href="../130514/index.html">Panoramic camera-ball gives a 360 ° view.</a></li>
 <li><a href="../130515/index.html">When trigger replication is preferable to PostgreSQL built-in</a></li>

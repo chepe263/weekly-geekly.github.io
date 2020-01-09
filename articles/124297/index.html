@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Solving the time zone problem in a web application</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/storage1/1bc68cd8/368d12c7/28bca041/61995cd5.png"><br><br>  When launching our project in a region where the time zone was different from Moscow, we faced the problem of the difference between local time and server time (Moscow time zone).  I must say that the logic of the project’s work is strongly tied to dates and times and it was impossible to leave a date in Moscow time.  Almost all the dates were stored in MySQL database in DATETIME format, which, as it turned out later, is not the best way to organize the work of the application in several time zones. <a name="habracut"></a><br><br>  The data type <b>DATETIME</b> is used to store the date and time in the range 1000-01-01 00:00:00 - 9999-12-31 23:59:59.  When sampling, the date is extracted exactly the same that was recorded, regardless of the temporary settings of the database.  You can convert the date to a specific time zone using the CONVERT_TZ function or adjust it manually in other ways. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Another type for storing dates, <b>TIMESTAMP</b> , is the <u>only</u> type for storing a date in MySQL, depending on the time zone.  This type of data converts the time from local to UTC while saving, and when retrieving it back, taking into account the zone.  Importantly, all operations and output are <u>similar to the DATETIME type</u> (starting with MySQL 5.0). <br>  Also this type has very convenient features - it allows you to set NOW () as a default value, as well as a value when updating a record. <br>  The disadvantage of TIMESTAMP is the limited date range (1970 - 2038).  For this reason, it is not suitable for storing historical events or events of a distant future, but here and time zones are not critical. <br><br>  So we needed to find a solution that does not require large-scale rewriting of code and SQL queries, so the options to adjust the time in queries or using PHP tools did not look good. <br>  As a result, the following was done: <br>  - All dates in the database were converted to TIMESTAMP <br>  - When initializing a user session, the following code was added that sets the locale for MySQL and PHP: <br><br> <code>&lt;?php <br> date_default_timezone_set($user-&gt;timezone); <br> db::q("SET `time_zone`='".date('P')."'"); <br> ?&gt; <br></code> <br>  The <a href="http://php.net/manual/en/function.date-default-timezone-set.php">date_default_timezone_set ()</a> function accepts a string identifier of the time zone, for example “Europe / Moscow”, and sets it for all date and time functions. <br>  The SQL query sets the time zone for all queries within the current connection (for more details, see the <a href="http://dev.mysql.com/doc/refman/5.0/en/time-zone-support.html">official documentation</a> ). <br>  As a result, this solution works wonderfully in different time zones and is a working way to solve the problem. <br><br>  The conclusions of this post are simple: for projects with a wide geographic coverage, you should always use the TIMESTAMP type for storing time stamps, which will allow you to avoid headaches in the future. <br><br>  <b>UPD:</b> As <a href="https://habrahabr.ru/users/homm/" class="user_link">homm</a> rightly pointed <a href="https://habrahabr.ru/users/homm/" class="user_link">out</a> , for the base it is more correct to set the time not by offset (as in the code above), but by the time zone identifier, otherwise daylight saving time transitions and other historical changes for this zone are not taken into account.  In this case, you need to load the corresponding data into the database using <a href="http://dev.mysql.com/doc/refman/5.5/en/mysql-tzinfo-to-sql.html">mysql_tzinfo_to_sql</a> and update them in a timely manner. </div><p>Source: <a href="https://habr.com/ru/post/124297/">https://habr.com/ru/post/124297/</a></p>
+      Another type for storing dates, <b>TIMESTAMP</b> , is the <u>only</u> type for storing a date in MySQL, depending on the time zone.  This type of data converts the time from local to UTC while saving, and when retrieving it back, taking into account the zone.  Importantly, all operations and output are <u>similar to the DATETIME type</u> (starting with MySQL 5.0). <br>  Also this type has very convenient features - it allows you to set NOW () as a default value, as well as a value when updating a record. <br>  The disadvantage of TIMESTAMP is the limited date range (1970 - 2038).  For this reason, it is not suitable for storing historical events or events of a distant future, but here and time zones are not critical. <br><br>  So we needed to find a solution that does not require large-scale rewriting of code and SQL queries, so the options to adjust the time in queries or using PHP tools did not look good. <br>  As a result, the following was done: <br>  - All dates in the database were converted to TIMESTAMP <br>  - When initializing a user session, the following code was added that sets the locale for MySQL and PHP: <br><br> <code>&lt;?php <br> date_default_timezone_set($user-&gt;timezone); <br> db::q("SET `time_zone`='".date('P')."'"); <br> ?&gt; <br></code> <br>  The <a href="http://php.net/manual/en/function.date-default-timezone-set.php">date_default_timezone_set ()</a> function accepts a string identifier of the time zone, for example “Europe / Moscow”, and sets it for all date and time functions. <br>  The SQL query sets the time zone for all queries within the current connection (for more details, see the <a href="http://dev.mysql.com/doc/refman/5.0/en/time-zone-support.html">official documentation</a> ). <br>  As a result, this solution works wonderfully in different time zones and is a working way to solve the problem. <br><br>  The conclusions of this post are simple: for projects with a wide geographic coverage, you should always use the TIMESTAMP type for storing time stamps, which will allow you to avoid headaches in the future. <br><br>  <b>UPD:</b> As <a href="https://habrahabr.ru/users/homm/" class="user_link">homm</a> rightly pointed <a href="https://habrahabr.ru/users/homm/" class="user_link">out</a> , for the base it is more correct to set the time not by offset (as in the code above), but by the time zone identifier, otherwise daylight saving time transitions and other historical changes for this zone are not taken into account.  In this case, you need to load the corresponding data into the database using <a href="http://dev.mysql.com/doc/refman/5.5/en/mysql-tzinfo-to-sql.html">mysql_tzinfo_to_sql</a> and update them in a timely manner. </div><p>Source: https://habr.com/ru/post/124297/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../124287/index.html">Larry Page has reported for the second quarter: a lot of numbers</a></li>
+<li><a href="../12429/index.html">How a Windows fan put Ubuntu: a per-minute diary</a></li>
 <li><a href="../124291/index.html">Microsoft creates its own social search engine?</a></li>
 <li><a href="../124294/index.html">Site like Obama's: so beautiful and glowing</a></li>
 <li><a href="../124295/index.html">Osmand User Guide</a></li>
 <li><a href="../124296/index.html">Risk Management and Pistachios</a></li>
+<li><a href="../1243/index.html">Web 2.0 Project List</a></li>
+<li><a href="../12430/index.html">Air or Air?</a></li>
 <li><a href="../124300/index.html">Mozilla is developing an alternative to OpenID</a></li>
 <li><a href="../124302/index.html">Configure Kannel SMS Gateway</a></li>
 <li><a href="../124305/index.html">Create an email newsletter that sells</a></li>
-<li><a href="../124306/index.html">BitTorrent Inc will release a paid version of uTorrent</a></li>
-<li><a href="../124310/index.html">DoS vulnerability in Open vSwitch</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

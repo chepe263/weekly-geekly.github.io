@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Unreachable System.Windows.Forms.ScrollBar.Maximum</h1><div class="post__text post__text-html js-mediator-article">  Today I ran into a rather strange thing.  When working with Windows.Forms.ScrollBar, the user cannot reach the maximum value.  Neither the mouse nor the keyboard can not set the slider to "maximum". <br>  For example, suppose there is a hScrollBar (the heir of the ScrollBar) on the form. <br>  His properties: <blockquote>  hScrollBar1.Minimum = 0, <br>  hScrollBar1.Maximum = 100. </blockquote>  In this scenario, the user cannot get the value of hScrollBar1.Value is greater than 91, although a maximum of 100. <br><img src="http://w2zwqg.blu.livefilestore.com/y1pTDpPCRwE91L5TXwV6YC7kpI2l95rcMKcgq6gqYSKBlTqQrANKths4KdLgaBb04vNdr26RzFoR0wxxuDJXCtOYw/System.Windows.Forms.ScrollBar.Maximum.gif" alt="System.Windows.Forms.ScrollBar"><br><a name="habracut"></a><br>  At first I sinned on .Net 4.0 beta, then on Windows 7 RC.  In my mind, this behavior did not fit the element.  Asking friends to check on earlier versions, I was convinced that everyone sees this ... <br><br>  I found <a href="http://msdn.microsoft.com/ru-ru/library/system.windows.forms.scrollbar.maximum.aspx">the ScrollBar class in MSDN</a> , they confirmed: <blockquote>  The highest value can only be set programmatically.  This largest value for the scroll bar cannot be set by the user at run time.  The highest value that a user can specify is determined by the formula: 1 plus the value of the Maximum property minus the value of the LargeChange property.  If necessary, you can set the Maximum property to the size of the object -1, so that the value of this expression is 1. </blockquote>  Checked, really, with hScrollBar1.LargeChange = 1, the maximum is reached, but the page scrolling is not different from the usual (± 1 per action). <br><br>  I did not find an exact explanation of the reasons.  But some say that this effect is explained by the nature of the ScrollBar - the current value reflects the position of the left (upper) border of the slider: <br><img src="http://w2zwqg.blu.livefilestore.com/y1pTz6ow3689uFhfFza_HUEPCCvPG_3A_L61Y3gi9xM9s1WkHJflbBM_q3g2S_6xlcweYQkE5QUq5IxaReZLw3VF3nJwJXI94qk/System.Windows.Forms.ScrollBar.png" alt="System.Windows.Forms.ScrollBar"><br>  Then why at decrease of property LargeChange the size of a slider remains the same, and the maximum is reached? <br>  After all, it was possible, for example, to reflect the position of the center of the slider in the area between the blue markers: <br><img src="http://w2zwqg.blu.livefilestore.com/y1pW3_mfonyqBiHuWALXas9wObYgpvYHJSu0wTmndHFnp5kjLi2A4Z8NhSOJBVeD5fcU7bubqKdYQ_NLEj6OcugLk68z4g3Go4U/System.Windows.Forms.ScrollBar2.png" alt="System.Windows.Forms.ScrollBar">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,16 +59,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      In general, this is a very strange behavior of the element, and I thought that some would be interested to know this.  Maybe someone can even explain it?  =) <br><br>  PS In <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.primitives.scrollbar.aspx">WPF ScrollBar</a> honestly runs by default from 0 to 1. <br><br>  <b>UPD:</b> And here is the explanation based on the concept of “page” - <a href="http://habrahabr.ru/users/mrshadow/" class="user_link">mrShadow</a> explained everything in the <a href="http://habrahabr.ru/blogs/net/60336/">comment</a> : <blockquote>  Kagbe size of the slider corresponds to the size of the display area (page), the length of the scroll bar - the size of the entire area available for viewing.  If the slider is in the leftmost part of the bar, its position is 0, and in the display area it is from 0 to {page size}.  Accordingly, the extreme right area from {full length - page size} to {full length} corresponds to the position of the slider {maximum value - size of the slider}.  The slider position {maximum value} would correspond to a (non-existent) region from {full length} to {full length + page size}. </blockquote></div><p>Source: <a href="https://habr.com/ru/post/60336/">https://habr.com/ru/post/60336/</a></p>
+      In general, this is a very strange behavior of the element, and I thought that some would be interested to know this.  Maybe someone can even explain it?  =) <br><br>  PS In <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.primitives.scrollbar.aspx">WPF ScrollBar</a> honestly runs by default from 0 to 1. <br><br>  <b>UPD:</b> And here is the explanation based on the concept of “page” - <a href="http://habrahabr.ru/users/mrshadow/" class="user_link">mrShadow</a> explained everything in the <a href="http://habrahabr.ru/blogs/net/60336/">comment</a> : <blockquote>  Kagbe size of the slider corresponds to the size of the display area (page), the length of the scroll bar - the size of the entire area available for viewing.  If the slider is in the leftmost part of the bar, its position is 0, and in the display area it is from 0 to {page size}.  Accordingly, the extreme right area from {full length - page size} to {full length} corresponds to the position of the slider {maximum value - size of the slider}.  The slider position {maximum value} would correspond to a (non-existent) region from {full length} to {full length + page size}. </blockquote></div><p>Source: https://habr.com/ru/post/60336/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../60325/index.html">Manage VirtualBox using the console</a></li>
-<li><a href="../60327/index.html">Installing official Nvidia drivers on Lenovo Thinkpad T61P</a></li>
+<li><a href="../6033/index.html">Moo: Web 2.0 style business cards</a></li>
 <li><a href="../60330/index.html">Ribbon</a></li>
+<li><a href="../60332/index.html">Study in Poland</a></li>
 <li><a href="../60334/index.html">Comparative analysis of frameworks for working with ontologies for .NET and Java</a></li>
 <li><a href="../60335/index.html">Command line wi-fi network scanner</a></li>
 <li><a href="../60339/index.html">How much does it cost to use styles on the site?</a></li>

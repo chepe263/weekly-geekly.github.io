@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Experience of using spacecraft (FSM) in the web interface in Python</h1><div class="post__text post__text-html js-mediator-article"><h5>  Introduction </h5><br>  Recently, I needed to attach a web interface to one program. <a name="habracut"></a><br>  More precisely, no web interface was already there, but it worked only in one direction, it rendered the results of the program core.  And it took to introduce interactivity. <br><br>  The program in its original form translated a block diagram representation recorded in XML files into its graphical representation.  The kernel of the program read XML files, displayed blocks of the block diagram described in these files into objects and then from these objects drew a picture and showed it through the browser. <br><br>  In accordance with the new requirements, it was necessary to add interactive editing.  And that means, it was necessary to add links, forms, handle errors and issue messages about them, check the data entered in the forms, take into account browser buttons that allow you to move through the history and so on.  And most importantly, in all this is not confused. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       I have a habit for confusing programs to draw flowcharts.  For a program that operates in a mode when there are pronounced states in which a program may be located, events to which it should react (for example button presses) and transitions from one state to another, the concept of a finite state machine or spacecraft is ideal; FSM or Finit State Machine.  Once, even under DOS, I figured out the menus of a single sophisticated program only when I drew a state diagram of a spacecraft for it. <br><br><h5>  What is KA (state machine) </h5><br>  Those who know what it is, can safely skip this section. <br><br>  KA, this is an approach to describing the operation of automata.  It distinguishes the states depicted on the diagrams in the form of circles with an inscription inside and transitions that are drawn in the form of arrows connecting the circle-states.  Arrows can do the same trick as returning to the same state.  Arrows also usually have symbols. <br><br>  The work of a spacecraft, in fact, consists in transitions from one state to another. <br><br><h5>  What can give the application of the spacecraft approach in this case? </h5><br>  In this case, it is to describe the operation of the web interface. <br><br>  - You can draw a readable diagram of interface states. <br>  - You can write code organized by this diagram. <br>  - It will be easy to move from code to diagram and vice versa. <br>  - Easy to understand / add / delete states and actions. <br>  - It is relatively easy to cover all the transitions of the interface, which makes testing easier. <br>  - You can easily create a state table, which facilitates testing. <br><br><h5>  Wednesday </h5><br>  In developing this software, the following software was used: <br>  Language: Python 2.5.4 <br>  Web server: Cherrypy 3.1.1 <br><br><h5>  Implementation and operation of the code </h5><br><h6>  Organization code spacecraft </h6><br>  The fact that cherrypy was used as a web server dictated some requirements for code organization. <br><br>  The code was organized like this: The entire web interface is implemented in the HomePage class. <br>  Anchor point, both for the web interface and for the spacecraft, the index () method <br><br>  KA is also implemented in the HomePage class.  The SC code can be divided into three parts: <br><br>  1. Code in the index () method.  Receives the 'tostate' parameter from the browser and calls the control methods, implements the control loop of the spacecraft. <br><br>  2. Spacecraft control methods.  fsm_transition (self, to_state), fsm_process_methods (self, fsm_data) <br><br>  3. Dictionary of spacecraft data (self.fsm_trans). <br><br>  4. Interface methods of spacecraft.  These are the methods called upon transitions from one state of the spacecraft to another and performing the specific actions necessary for these transitions. <br><br><h6>  SC data dictionary </h6><br>  The description of the code is best to start with the vocabulary data dictionary.  Here he is: <br><br><pre> self.fsm_trans = {
@@ -143,7 +143,7 @@
          if i == last_func:
              return method () # For last function return its return value
          method ()
-</pre><br><br>  Here, I think, everything is trivial. <br><br><h6>  About the choice of the method of processing interface methods </h6><br>  There are no particular reasons for storing methods in an array.  It would be quite possible for each transition to have its own method, in which nested interface methods would be called. <br><br>  The given method of processing was chosen deliberately in order to have all the calls to the interface functions in one place and at the same nesting level for readability of the code.  In the implemented code, you can simply take the printed spacecraft diagram and look at the code of the data dictionary of the spacecraft to see which chains of actions are performed for transitions from one <br>  states to another. <br><br><h6>  Conclusion </h6><br>  I believe that the use of a spacecraft in the design approach allowed us to write flexible, readable, transparent and easily supported code. <br><br><h6>  Appendix: Example of a QA chart (fragment of a real chart) </h6><br><img src="https://habrastorage.org/getpro/habr/post_images/754/44d/66f/75444d66f61932c051f80a56f3ea4214.png" alt="image"></div><p>Source: <a href="https://habr.com/ru/post/60751/">https://habr.com/ru/post/60751/</a></p>
+</pre><br><br>  Here, I think, everything is trivial. <br><br><h6>  About the choice of the method of processing interface methods </h6><br>  There are no particular reasons for storing methods in an array.  It would be quite possible for each transition to have its own method, in which nested interface methods would be called. <br><br>  The given method of processing was chosen deliberately in order to have all the calls to the interface functions in one place and at the same nesting level for readability of the code.  In the implemented code, you can simply take the printed spacecraft diagram and look at the code of the data dictionary of the spacecraft to see which chains of actions are performed for transitions from one <br>  states to another. <br><br><h6>  Conclusion </h6><br>  I believe that the use of a spacecraft in the design approach allowed us to write flexible, readable, transparent and easily supported code. <br><br><h6>  Appendix: Example of a QA chart (fragment of a real chart) </h6><br><img src="https://habrastorage.org/getpro/habr/post_images/754/44d/66f/75444d66f61932c051f80a56f3ea4214.png" alt="image"></div><p>Source: https://habr.com/ru/post/60751/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

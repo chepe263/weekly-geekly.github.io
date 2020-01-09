@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Cryptography in Java. Class MessageDigest</h1><div class="post__text post__text-html js-mediator-article"><p>  Hi, Habr!  I present to you the translation of the third article "Java MessageDigest" by Jakob Jenkov from the <a href="http://tutorials.jenkov.com/java-cryptography/index.html">series of articles for beginners</a> who want to learn the basics of cryptography in Java. </p><a name="habracut"></a><br><h2 id="oglavlenie">  Table of contents: </h2><br><ol><li>  <a href="https://habr.com/ru/post/444764/">Cryptography</a> </li><li>  <a href="https://habr.com/ru/post/444814/">Cipher</a> </li><li>  MessageDigest </li><li>  <a href="https://habr.com/ru/post/445228/">Mac</a> </li><li>  <a href="https://habr.com/ru/post/445330/">Signature</a> </li><li>  <a href="https://habr.com/ru/post/445560/">KeyPair</a> </li><li>  <a href="https://habr.com/ru/post/445560/">KeyGenerator</a> </li><li>  <a href="https://habr.com/ru/post/445560/">KeyPairGenerator</a> </li><li>  <a href="https://habr.com/ru/post/445786/">KeyStore</a> </li><li>  <a href="https://habr.com/ru/post/446322/">Keytool</a> </li><li>  <a href="https://habr.com/ru/post/446888/">Certificate</a> </li><li>  <a href="https://habr.com/ru/post/446888/">CertificateFactory</a> </li><li>  <a href="https://habr.com/ru/post/446888/">Certpath</a> </li></ol><br><h1 id="java-messagedigest-daydzhest-soobscheniya">  Java MessageDigest (Message Digest) </h1><br><p>  The Java class MessageDigest represents a cryptographic hash function that can compute message digest from binary data.  When you receive an encrypted data set, you cannot be sure that it was not changed during transport.  Message digest helps solve this problem. </p><br><p>  To determine whether the encrypted data has been modified during transport, the sender must calculate the digest of the message from the data and send it along with the data.  The other party, receiving the encrypted data and message digest, can recalculate the message digest from the data and check whether the calculated message digest matches the message digest obtained with the data.  If the two digest messages match, there is a possibility that the encrypted data was not changed during transport. </p><br><p>  There are several conditions that must be met in order for a message digest to be useful as a mechanism for detecting changes.  However, the exact conditions are part of a cryptographic theory that is not covered in this article, but only explains how to use Java to get a message digest in the MessageDigest class. </p><br><h3 id="sozdanie-ekzemplyara-messagedigest">  Creating an instance of MessageDigest </h3><br><p>  To create an instance of the MessageDigest class, the static <em>getInstance ()</em> method of the MessageDigest class is called.  Here is an example of creating an instance of MessageDigest: </p><br><pre><code class="java hljs">MessageDigest messageDigest = MessageDigest.getInstance(<span class="hljs-string"><span class="hljs-string">"SHA-256"</span></span>);</code> </pre> <br><p>  The string parameter passed to the <em>getInstance ()</em> method determines the digest algorithm used for a particular message. </p><br><h3 id="algoritmy-daydzhesta-soobscheniya">  Message Digest Algorithms </h3><br><p>  The Java Cryptography API supports the following message digest algorithms (external cryptographic providers may support more): </p><br><ul><li>  MD2 </li><li>  MD5 </li><li>  SHA-1 </li><li>  SHA-256 </li><li>  SHA-384 </li><li>  SHA-512 </li></ul><br><p>  Not all of these algorithms are equally safe.  At the time of this writing, it is recommended to use SHA-256 or higher to get the highest possible level of security. </p><br><h3 id="vychislenie-daydzhesta-soobscheniya">  Calculate message digest </h3><br><p>  After creating an instance of MessageDigest, you can use it to compute a message digest.  If you have one data block for calculating a message digest, use the <em>digest ()</em> method.  Here is the calculation of a message digest from a single data block: </p><br><pre> <code class="java hljs"><span class="hljs-keyword"><span class="hljs-keyword">byte</span></span>[] data1 = <span class="hljs-string"><span class="hljs-string">"0123456789"</span></span>.getBytes(<span class="hljs-string"><span class="hljs-string">"UTF-8"</span></span>); MessageDigest messageDigest = MessageDigest.getInstance(<span class="hljs-string"><span class="hljs-string">"SHA-256"</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">byte</span></span>[] digest = messageDigest.digest(data1);</code> </pre> <br><p>  If there are several data blocks to include in the same message digest, call the <em>update ()</em> method and end with <em>digest ()</em> .  Here is the calculation of a message digest from several data blocks: </p><br><pre> <code class="java hljs"><span class="hljs-keyword"><span class="hljs-keyword">byte</span></span>[] data1 = <span class="hljs-string"><span class="hljs-string">"0123456789"</span></span>.getBytes(<span class="hljs-string"><span class="hljs-string">"UTF-8"</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">byte</span></span>[] data2 = <span class="hljs-string"><span class="hljs-string">"abcdefghijklmnopqrstuvxyz"</span></span>.getBytes(<span class="hljs-string"><span class="hljs-string">"UTF-8"</span></span>); MessageDigest messageDigest = MessageDigest.getInstance(<span class="hljs-string"><span class="hljs-string">"SHA-256"</span></span>); messageDigest.update(data1); messageDigest.update(data2); <span class="hljs-keyword"><span class="hljs-keyword">byte</span></span>[] digest = messageDigest.digest();</code> </pre> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/444974/">https://habr.com/ru/post/444974/</a></p>
+    <p>Source: https://habr.com/ru/post/444974/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

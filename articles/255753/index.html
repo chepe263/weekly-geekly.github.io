@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Creating dials for Android Wear on OpenGL ES 2.0</h1><div class="post__text post__text-html js-mediator-article">  As soon as Google announced the possibility of creating custom dials in the new Android 5.0 for Android Wear, we ordered a new ASUS ZenWatch in the nearest online store in order to try out this latest feature.  It was decided not to port one of the existing three-dimensional live wallpapers, but to create a new scene just for the clock.  As a result, a concept was created and an application with a set of five digital dials was created, implemented in 3D using OpengGL ES 2.0. <br><br><img src="https://habrastorage.org/files/7c8/68f/cb1/7c868fcb1a2a42ffa58efdc7b12f80ce.jpg"><br><a name="habracut"></a><br><h2>  Initial concept </h2><br>  The idea of ​​the dial originated under the impression of this work (by beeple): <br><br><iframe src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://player.vimeo.com/video/18876537&amp;xid=17259,15700022,15700186,15700190,15700248,15700253&amp;usg=ALkJrhjWPhOrow0_hBOJw7G8rHfSe4T2HQ" width="560" height="315" frameborder="0" title="numbers" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The video looks cool and does not seem complicated at first glance.  However, we found some technical limitations that prevented the creation of the same scene as in the video.  It’s not so easy to make numbers from lines (wireframe) that would correctly overlap each other.  In short, this would require a large number of draw commands (draw calls) and a very limited clock iron could not cope with so many draw calls.  So we moved to another idea - add depths to the numbers from the pixel fonts from old computers. <br><br><h2>  OpenGL ES configuration without depth component </h2><br>  The <a href="https://developer.android.com/reference/android/support/wearable/watchface/Gles2WatchFaceService.html">Gles2WatchFaceService</a> class from the Android Wear API does not provide access to all the features necessary to create a full-fledged three-dimensional dial scene.  The main problem that we immediately encountered was the impossibility of choosing the necessary configuration of OpenGL ES.  In fact, this class does not provide access to EGL at all.  It is enough to start the 'Tilt' dial from the API example, but it has no flexibility to customize EGL.  This example does not require a depth buffer, as it does not contain any intersecting geometry.  In <i>Gles2WatchFaceService</i> , the configuration is simply selected without <i>EGL_DEPTH_SIZE</i> and the API does not allow it to be changed. <br><br>  In view of the discovery of such a significant limitation, it was decided to decompile the source code and create its own <i>Gles2WatchFaceService</i> implementation with blackjack and the correct EGL configuration. <br><br>  Also, a very well-known developer of live wallpaper and dials <i>Kittehface Software</i> reported on <a href="http://www.kittehface.com/2014/12/opengl-config-crash-on-smart-watches.html">his blog</a> that Moto360 does not work with a completely correct 16-bit EGL configuration.  Therefore, on all devices, our application always uses 32-bit color.  Many thanks to <i>Kittehface Software</i> for warning us and other developers about this - finding the cause of the crash on Moto360 could take days, and we didn’t have the clock itself at that time. <br><br>  We will not provide the full code of the decompiled class <i>Gles2WatchFaceService</i> because it will still change with the release of the new API.  Here are the changes we made in the decompiled <i>Gles2WatchFaceService</i> : <br><br>  1. Update the search for a suitable config with the depth component: <br><br><pre>  private static final int [] EGL_CONFIG_ATTRIB_LIST = new int [] {
@@ -116,11 +116,11 @@
  {
       gl_FragColor = mix (uColorBottom, uColor, clamp (vColor, 0.0, 1.0));
  }
-</pre><br></div></div>  As you can see, almost all the calculations have already been done in the vertex shader - the fragment one only interpolates the colors. <br><br>  Link to the archive with shaders for the RenderMonkey program: <a href="">dl.dropboxusercontent.com/u/20585920/shaders_watchface.rar</a> <br><br><h2>  Publication </h2><br>  When you publish an Android Wear app on Google Play, you should check the <i>“Distribute your app on Android Wear”</i> box.  This initiates the process of moderating the application for compliance with the <a href="https://developer.android.com/distribute/essentials/quality/wear.html">Wear App Quality</a> requirements.  In our case, this process took only a few hours. </div><p>Source: <a href="https://habr.com/ru/post/255753/">https://habr.com/ru/post/255753/</a></p>
+</pre><br></div></div>  As you can see, almost all the calculations have already been done in the vertex shader - the fragment one only interpolates the colors. <br><br>  Link to the archive with shaders for the RenderMonkey program: <a href="">dl.dropboxusercontent.com/u/20585920/shaders_watchface.rar</a> <br><br><h2>  Publication </h2><br>  When you publish an Android Wear app on Google Play, you should check the <i>“Distribute your app on Android Wear”</i> box.  This initiates the process of moderating the application for compliance with the <a href="https://developer.android.com/distribute/essentials/quality/wear.html">Wear App Quality</a> requirements.  In our case, this process took only a few hours. </div><p>Source: https://habr.com/ru/post/255753/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../255739/index.html">Composer & Packagist 101</a></li>
+<li><a href="../25574/index.html">Communication and Gameplay: exntend, two parts of one whole or even separately?</a></li>
 <li><a href="../255741/index.html">PVS-Studio security research</a></li>
 <li><a href="../255745/index.html">Philosophy of evolution and the evolution of the Internet</a></li>
 <li><a href="../255747/index.html">Interview with James Bach for DUMP2015</a></li>

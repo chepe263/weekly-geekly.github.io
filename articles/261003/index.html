@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Linux Profiling Mechanisms</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/367/3e7/2da/3673e72da71843829004e9b11c86dcf1.jpg"><br><br>  The last couple of years I have been writing under the Linux kernel and often see how people suffer from the ignorance of long-standing, generally accepted and (almost) convenient tools.  For example, once we debugged the network at the <a href="http://metrotek.spb.ru/ethond.html">next reincarnation of</a> <a href="http://metrotek.spb.ru/b3et.html">our device</a> and tried to understand what <nobr>kind of</nobr> miracles happen with the processing of packets.  Our first urge was to open the kernel sources and insert printk in the right places, collect logs, process them with <nobr>some kind of</nobr> python and then think for a long time.  But no wonder I read <a href="http://lwn.net/">lwn.net</a> .  I remembered that the kernel has ready-made and well-functioning mechanisms for tracing and profiling the kernel: those basic mechanisms with which you can collect <nobr>some</nobr> readings from the kernel, and then analyze them. <br><a name="habracut"></a><br>  In the Linux kernel such mechanisms 3: <br><ol><li>  tracepoints </li><li>  kprobes </li><li>  perf events </li></ol><br><br>  Based on these 3 kernel features, absolutely all profilers and tracers are built that are available for Linux, including <code>ftrace</code> , <code>perf</code> , <code>SystemTap</code> , <code>ktap</code> and others.  In this article I will tell you what they (mechanisms) give, how they work, and next time we will look at specific tools. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h2>  Kernel tracepoints </h2><br>  Kernel tracepoints is a kernel tracing framework, made through static code instrumentation.  Yes, you understood correctly, most of the important functions of the kernel (network, memory management, scheduler) are statically instrumented.  On my kernel, the number of tracepoints is: <br><pre>  [etn] $ perf list tracepointt |  wc -l
@@ -159,14 +159,14 @@
    branch-loads [Hardware cache event]
    branch-load-misses [Hardware cache event] </pre><br></div></div><br><br>  It can be seen that x86 will be richer for such things. <br><br>  To access "perf events", a special system call <a href="http://web.eece.maine.edu/~vweaver/projects/perf_events/perf_event_open.html"><code>perf_event_open</code></a> was made, to which you send the event itself and the config, which describes what you want to do with this event.  In response, you get a file descriptor from which you can read the data collected by <code>perf</code> on the event. <br><br>  On top of this, <code>perf</code> provides many different features, such as grouping events, filtering, outputting to different formats, analyzing collected profiles, etc. Therefore, <code>perf</code> now shoves everything that is possible: from tracepoint to <a href="https://lwn.net/Articles/643139/">eBPF</a> and to the point that all <code>ftrace</code> they want to make part of <code>perf</code> <a href="http://thread.gmane.org/gmane.linux.kernel/1136520">[3]</a> <a href="https://lkml.org/lkml/2013/10/16/15">[4]</a> . <br><br>  In short, “perf_events” is of little interest in itself, and <code>perf</code> itself deserves a separate article, so for the seed I will show a simple example. <br><br>  We speak: <br><pre>  root @ etn: ~ # perf timechart record apt-get update
  ...
- root @ etn: ~ # perf timechart -i perf.data -o timechart.svg </pre><br>  And we get this miracle: <br><img src="https://habrastorage.org/files/339/39e/f84/33939ef84fa44053a2c8ab5a20c3cd00.png" alt="Perf timechart">  Perf timechart <br><br><h2>  Conclusion </h2><br>  Thus, knowing a little more about tracing and profiling in the kernel, you can make life much easier for yourself and your friends, especially if you learn how to use real tools like <code>ftrace</code> , <code>perf</code> and <code>SystemTap</code> , but more on that another time. <br><br><h2>  Read </h2><br><ul><li>  <a href="https://events.linuxfoundation.org/sites/events/files/slides/kernel_profiling_debugging_tools_0.pdf">https://events.linuxfoundation.org/sites/events/files/slides/kernel_profiling_debugging_tools_0.pdf</a> </li><li>  <a href="http://events.linuxfoundation.org/sites/events/files/lcjp13_zannoni.pdf">http://events.linuxfoundation.org/sites/events/files/lcjp13_zannoni.pdf</a> </li><li>  <em>tracepoints</em> : <ul><li>  <a href="http://lxr.free-electrons.com/source/Documentation/trace/tracepoints.txt%3Fv%3D3.13">Documentation / trace / tracepoints.txt</a> </li><li>  <a href="http://lttng.org/files/thesis/desnoyers-dissertation-2009-12-v27.pdf">http://lttng.org/files/thesis/desnoyers-dissertation- <nobr>2009-12-v27</nobr> .pdf</a> </li><li>  <a href="http://lwn.net/Articles/379903/">http://lwn.net/Articles/379903/</a> </li><li>  <a href="http://lwn.net/Articles/381064/">http://lwn.net/Articles/381064/</a> </li><li>  <a href="http://lwn.net/Articles/383362/">http://lwn.net/Articles/383362/</a> </li></ul></li><li>  <em>kprobes</em> : <ul><li>  <a href="http://lxr.free-electrons.com/source/Documentation/kprobes.txt%3Fv%3D3.13">Documentation / kprobes.txt</a> </li><li>  <a href="https://lwn.net/Articles/132196/">https://lwn.net/Articles/132196/</a> </li></ul></li><li>  <em>perf_events</em> : <ul><li>  <a href="http://web.eece.maine.edu/~vweaver/projects/perf_events/">http://web.eece.maine.edu/~vweaver/projects/perf_events/</a> </li><li>  <a href="https://lwn.net/Articles/441209/">https://lwn.net/Articles/441209/</a> </li></ul></li></ul></div><p>Source: <a href="https://habr.com/ru/post/261003/">https://habr.com/ru/post/261003/</a></p>
+ root @ etn: ~ # perf timechart -i perf.data -o timechart.svg </pre><br>  And we get this miracle: <br><img src="https://habrastorage.org/files/339/39e/f84/33939ef84fa44053a2c8ab5a20c3cd00.png" alt="Perf timechart">  Perf timechart <br><br><h2>  Conclusion </h2><br>  Thus, knowing a little more about tracing and profiling in the kernel, you can make life much easier for yourself and your friends, especially if you learn how to use real tools like <code>ftrace</code> , <code>perf</code> and <code>SystemTap</code> , but more on that another time. <br><br><h2>  Read </h2><br><ul><li>  <a href="https://events.linuxfoundation.org/sites/events/files/slides/kernel_profiling_debugging_tools_0.pdf">https://events.linuxfoundation.org/sites/events/files/slides/kernel_profiling_debugging_tools_0.pdf</a> </li><li>  <a href="http://events.linuxfoundation.org/sites/events/files/lcjp13_zannoni.pdf">http://events.linuxfoundation.org/sites/events/files/lcjp13_zannoni.pdf</a> </li><li>  <em>tracepoints</em> : <ul><li>  <a href="http://lxr.free-electrons.com/source/Documentation/trace/tracepoints.txt%3Fv%3D3.13">Documentation / trace / tracepoints.txt</a> </li><li>  <a href="http://lttng.org/files/thesis/desnoyers-dissertation-2009-12-v27.pdf">http://lttng.org/files/thesis/desnoyers-dissertation- <nobr>2009-12-v27</nobr> .pdf</a> </li><li>  <a href="http://lwn.net/Articles/379903/">http://lwn.net/Articles/379903/</a> </li><li>  <a href="http://lwn.net/Articles/381064/">http://lwn.net/Articles/381064/</a> </li><li>  <a href="http://lwn.net/Articles/383362/">http://lwn.net/Articles/383362/</a> </li></ul></li><li>  <em>kprobes</em> : <ul><li>  <a href="http://lxr.free-electrons.com/source/Documentation/kprobes.txt%3Fv%3D3.13">Documentation / kprobes.txt</a> </li><li>  <a href="https://lwn.net/Articles/132196/">https://lwn.net/Articles/132196/</a> </li></ul></li><li>  <em>perf_events</em> : <ul><li>  <a href="http://web.eece.maine.edu/~vweaver/projects/perf_events/">http://web.eece.maine.edu/~vweaver/projects/perf_events/</a> </li><li>  <a href="https://lwn.net/Articles/441209/">https://lwn.net/Articles/441209/</a> </li></ul></li></ul></div><p>Source: https://habr.com/ru/post/261003/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../260991/index.html">Getting rid of "historical causes" in cmd.exe</a></li>
-<li><a href="../260993/index.html">Solving sparse SLAEs of large dimensions using ManagedCuda in .NET</a></li>
-<li><a href="../260995/index.html">The general concept of the direction SafeCityNET</a></li>
 <li><a href="../260999/index.html">Functional DDS generator on the FPGA</a></li>
+<li><a href="../261/index.html">Callback for payphones</a></li>
+<li><a href="../2610/index.html">President of India and Hillary Clinton were noted on Yahoo! Answersers</a></li>
+<li><a href="../26100/index.html">The idea of ​​the project "Slogans"</a></li>
 <li><a href="../261001/index.html">Product or service</a></li>
 <li><a href="../261005/index.html">TKGate - an open-source digital circuit simulator: the project is alive again</a></li>
 <li><a href="../261007/index.html">How to pass "test free data recovery software" (part 2)</a></li>

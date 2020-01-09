@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Magento. We write the module. Add CAPTCHA and additional fields to the registration</h1><div class="post__text post__text-html js-mediator-article">  I want to share the experience of programming modules for Magento.  Many thanks to <a href="https://habrahabr.ru/users/jeje/" class="user_link">jeje</a> for the invitation. <br>  The article describes in detail the creation of a module that implements the additional functions of customer registration.  Objectives - to give an idea about the development of Magento on a specific example from beginning to end, to show the main approaches, the organization of the code, point out some features.  The article focuses more on beginners, but those familiar with Magento can take something useful for themselves.  Of course, it’s impossible to describe everything in one article, but if the topic turns out to be relevant, this could be the beginning of a series of articles. <br>  The following points are affected: <br><ul><li>  module creation </li><li>  work with blocks, templates and layout (layout) </li><li>  controller override </li><li>  module installation scripts </li></ul><br>  As a result, we will get registration with CAPTCHA verification, group selection field and saving invitation code. <br><br><a name="habracut"></a><br><br><img src="http://fursov.org/images/registration_page_screenshot.png" alt="Registration page">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h3>  What is conceived </h3><br>  There is a registration page / magento / customer / account / create.  We want to add a CAPTCHA check, and also ask the customers for the group and invitation code.  The obtained data is stored in the database.  By default, Magento defines three groups of General, Wholesale and Retailer clients.  Of these, we offer to choose a future client.  Magento does not know anything about the invitation code - we will create a new attribute. <br><br>  I want to note that this is <u>not a ready-made solution</u> , but just an example, compiled for convenience of presentation. <br><br><h3>  Search </h3><br>  We are looking for where the template files are located, where and how the registration data is saved. <br><ol><li> Customer Registration Form Templates <br>  <code>/magento/app/design/frontend/default/default/template/customer/form/register.phtml</code> - registration form <br></li><li>  Attributes add in the installer module, example: <br> <code>/magento/app/code/core/Mage/Customer/sql/customer_setup/mysql4-upgrade-0.8.7-0.8.8.php</code> <br>  the details will be lower when we write the installer for our module. </li><li>  We find the description of variable fields (attributes) in the module configuration: <br> <code>/magento/app/code/core/Mage/Customer/etc/config.xml</code> <br>  inside <code>&lt;fieldsets&gt;</code> tags <br></li><li>  The registration form will post the data to the address: <br><pre>  http: // localhost / magento / customer / account / createpost / </pre><br>  Accordingly, the request is processed by the Mage_ <b>Customer</b> _ <b>Account</b> Controller method <b>createPost</b> Action method (line # 234) <br></li></ol><br><br><h2>  Implementation </h2><br>  The variant with the change of found files is not considered.  Create your own theme and module. <br>  The theme is simple: <br><ol><li>  create a new folder in / magento / app / design / frontend / default / mytheme <br>  <strong>default</strong> - interface name <br>  <strong>mytheme</strong> is the name of our theme <br></li><li>  we copy files with preservation of directory structure in a new theme </li><li>  edit / create templates at your discretion </li></ol><br>  The templates of our theme with the same name will block the templates of the standard theme.  Thus, we do not make changes to the native Magento files. <br><br>  With the module a little more interesting: <br>  Create a new module - <strong>CustomerMod</strong> .  The folder structure of all modules is the same: <br><pre> magento / app / code / local /
@@ -263,20 +263,20 @@
 		 &lt;/ helpers&gt;				
 	 &lt;/ global&gt;	
  &lt;/ config&gt;
-</pre></blockquote><br><br>  And the captcha is ready. <br><br><img src="http://fursov.org/images/captcha_screenshot.png" alt="CAPTCHA screenshot"><br><br><h2>  Conclusion </h2><br><br>  Thanks to read to the end!  I hope you find it interesting or at least helpful :).  You can <a href="">download the finished sample</a> .  Magento version 1.3.2.4 was used for writing the article. <br>  If the topic is interesting in Habré, then I will gladly listen to the wishes of the new article. <br>  There are ideas and some materials for articles on the topic: <br><ul><li>  Magento Review Gingerbread and Rake </li><li>  Events and listeners in Magento on the example of adding an email-notification. </li><li>  Debugging in Magento (about the test page, about Firebug, about Mage :: log) </li><li>  Models in Magento.  Add your entities and attributes </li><li>  How I Added Blocks to Magento Email Templates </li><li>  PDF to Magento.  Bitter truth </li><li>  Work with collections in Magento on the example of creating a report </li><li>  IDE selection / configuration for Magento development </li></ul><br></div><p>Source: <a href="https://habr.com/ru/post/78003/">https://habr.com/ru/post/78003/</a></p>
+</pre></blockquote><br><br>  And the captcha is ready. <br><br><img src="http://fursov.org/images/captcha_screenshot.png" alt="CAPTCHA screenshot"><br><br><h2>  Conclusion </h2><br><br>  Thanks to read to the end!  I hope you find it interesting or at least helpful :).  You can <a href="">download the finished sample</a> .  Magento version 1.3.2.4 was used for writing the article. <br>  If the topic is interesting in Habré, then I will gladly listen to the wishes of the new article. <br>  There are ideas and some materials for articles on the topic: <br><ul><li>  Magento Review Gingerbread and Rake </li><li>  Events and listeners in Magento on the example of adding an email-notification. </li><li>  Debugging in Magento (about the test page, about Firebug, about Mage :: log) </li><li>  Models in Magento.  Add your entities and attributes </li><li>  How I Added Blocks to Magento Email Templates </li><li>  PDF to Magento.  Bitter truth </li><li>  Work with collections in Magento on the example of creating a report </li><li>  IDE selection / configuration for Magento development </li></ul><br></div><p>Source: https://habr.com/ru/post/78003/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../77994/index.html">podcasting and streaming audio program</a></li>
-<li><a href="../77996/index.html">Site of the company "ChernomorStroyServis"</a></li>
 <li><a href="../77997/index.html">Discussion of problems and methods of education: an informal meeting</a></li>
 <li><a href="../77999/index.html">Opera Unite - a potential hole!</a></li>
+<li><a href="../78/index.html">About debut</a></li>
+<li><a href="../780/index.html">Incorrect processing of some links during publication</a></li>
 <li><a href="../78000/index.html">Enter text into TextInput by mask</a></li>
 <li><a href="../78005/index.html">Nigma will share a million transitions</a></li>
+<li><a href="../7801/index.html">Opened MySpace for the Chinese</a></li>
 <li><a href="../78012/index.html">SharePoint security - Part 1: Introduction</a></li>
 <li><a href="../78014/index.html">What would you pay a startup for? What should a pro account have compared to the free version?</a></li>
 <li><a href="../78016/index.html">Online passport copy fraud</a></li>
-<li><a href="../78017/index.html">Tale of why I got up and left</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

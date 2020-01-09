@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
  ...
 </pre><br><h4>  Problem: </h4><br>  Obviously, the reason was exactly in init connect, which when connected performed SET NAMES cp1251, because all values ​​were transferred to the application as cp1251. <br><div class="spoiler">  <b class="spoiler_title">SET NAMES</b> <div class="spoiler_text">  Let me remind you that SET NAMES defines the encoding in which the client sends data to the server and also the encoding in which the server sends the return response to the client. </div></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,27 +63,27 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Problems of this kind are usually solved quite simply - immediately after connecting to the database in our application, we execute a query or a group of queries of the type: <br> <code>SET CHARACTER SET UTF8; <br> SET NAMES UTF8;</code> <br>  But, as for me, any extra query to the database is not comme il faut at all, and the crutches in the framework code too.  Therefore, at first I tried to resolve the issue through technical support. <br>  The guys from technical support of the host company told me that they cannot transfer the base to the server configured under utf8, since  all the servers they work with the same configuration on cp1251, and no one will change the server settings due to one project, because <br>  changes affect all databases on this server (I understand them perfectly).  But the problem had to be solved somehow ... <br><br><h4>  Decision: </h4><br>  However, the Symfony solution turned out to be quite elegant, which was the reason for writing this article. <br>  I came to the aid of a tiny EventListener, which I hung on the postConnect event. <br><br>  To create it, you need to make an entry in the app / config / config.yml file (if you use YAML) in the “services” section: <br><pre>  services:
      onconnect.listener:
          class: Dev \ SomeBundle \ EventListener \ OnConnect
          tags:
-              - {name: doctrine.event_listener, event: postConnect} </pre><br><br>  Now in our Bundle, you need to create a listener file that corresponds to the namespace specified in the configuration above ( <i>Dev \ SomeBundle \ EventListener \ OnConnect</i> ). <br>  those.  We <i>put the</i> <i>OnConnect.php</i> file in the <i>Dev / SomeBundle / EventListener</i> folder as follows: <br><br><pre> <code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-comment"><span class="hljs-comment">//file src/Dev/SomeBundle/EventListener/OnConnect.php namespace Dev\SomeBundle\EventListener; use Doctrine\Common\Persistence\Event\LifecycleEventArgs; use Doctrine\ORM\EntityManager; class OnConnect { public function postConnect( $event ) { $conn = $event-&gt;getConnection(); $conn-&gt;executeQuery("SET NAMES UTF8"); } }</span></span></code> </pre><br><br>  In my case, the problem with the encoding was completely eliminated, and besides, I did not have to insert any “hacks” into the doctrine or framework code.  The event listening mechanism is widely used in symfony for solving various tasks.  In the example described above, <b>Symfony 2.2.0 (Standard Edition) was used</b> . <br><br><h4>  Findings: </h4><br><ol><li>  Pay attention to the settings of the MySQL server settings, some servers by default can work with a different encoding. </li><li>  If you do not have the ability to configure MySQL server properly, you can use the technique described above. </li></ol></div><p>Source: <a href="https://habr.com/ru/post/176463/">https://habr.com/ru/post/176463/</a></p>
+              - {name: doctrine.event_listener, event: postConnect} </pre><br><br>  Now in our Bundle, you need to create a listener file that corresponds to the namespace specified in the configuration above ( <i>Dev \ SomeBundle \ EventListener \ OnConnect</i> ). <br>  those.  We <i>put the</i> <i>OnConnect.php</i> file in the <i>Dev / SomeBundle / EventListener</i> folder as follows: <br><br><pre> <code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-comment"><span class="hljs-comment">//file src/Dev/SomeBundle/EventListener/OnConnect.php namespace Dev\SomeBundle\EventListener; use Doctrine\Common\Persistence\Event\LifecycleEventArgs; use Doctrine\ORM\EntityManager; class OnConnect { public function postConnect( $event ) { $conn = $event-&gt;getConnection(); $conn-&gt;executeQuery("SET NAMES UTF8"); } }</span></span></code> </pre><br><br>  In my case, the problem with the encoding was completely eliminated, and besides, I did not have to insert any “hacks” into the doctrine or framework code.  The event listening mechanism is widely used in symfony for solving various tasks.  In the example described above, <b>Symfony 2.2.0 (Standard Edition) was used</b> . <br><br><h4>  Findings: </h4><br><ol><li>  Pay attention to the settings of the MySQL server settings, some servers by default can work with a different encoding. </li><li>  If you do not have the ability to configure MySQL server properly, you can use the technique described above. </li></ol></div><p>Source: https://habr.com/ru/post/176463/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../176449/index.html">Open data, Rosstat, Prosecutor's Office and all-all-all</a></li>
 <li><a href="../176455/index.html">Setting up a cluster with several regions for cloud storage of objects with OpenStack Swift</a></li>
 <li><a href="../176457/index.html">Twitter Bootstrap 3: Unofficial First Look</a></li>
 <li><a href="../176459/index.html">Two-factor authentication on Citrix NetScaler</a></li>
+<li><a href="../17646/index.html">60 years since the invention of the Transistor!</a></li>
 <li><a href="../176461/index.html">Probabilistic models: Bayesian networks</a></li>
 <li><a href="../176467/index.html">Dynamic Access Control: Reshaping Resource Management</a></li>
 <li><a href="../176469/index.html">New Brief: Samsung Launches 128-Gbps 3-Bit MLC NAND Memory Based on 10-nm Process Technology</a></li>
 <li><a href="../176473/index.html">Javascript Interface Abstract Notation</a></li>
 <li><a href="../176477/index.html">How to make the best landing page: checklist of 50 points</a></li>
-<li><a href="../176481/index.html">Vulnerability on Habrahabr or how to steal an invite</a></li>
+<li><a href="../17648/index.html">Printing the contents of the folder: the decision from the creators of windows</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

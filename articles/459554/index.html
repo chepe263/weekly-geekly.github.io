@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Watch for file changes with Alerting OpenDistro for Elasticsearch</h1><div class="post__text post__text-html js-mediator-article"><p>  Today there was a need to monitor changes of certain files on the server, there are many different ways for example <a href="https://osquery.io/">osquery from facebook</a> , but since I recently started using <a href="https://opendistro.github.io/">Open Distro for Elasticsearch</a> I decided to monitor the files with an elastic, one of its <a href="https://www.elastic.co/products/beats/auditbeat">beat'ov</a> . </p><a name="habracut"></a><br><p>  I will not describe the installation of the Elastics stack and Auditbeat, everything according to the manuals, the only thing after installation is to edit the <i><b>auditbeat.yml</b></i> file, add the path to the monitored file to the <i>file_integrity</i> module. </p><br><p>  After setting up and running, an <i><b>auditbeat- *</b></i> index will appear in kibana </p><br><p><img src="https://habrastorage.org/webt/_v/ch/is/_vchisvguysfxsrreltz4doi9am.png"></p><br><p>  Next, we create the monitoring, specify the monitoring name, check interval, as well as the type of monitoring and the index file: </p><br><p><img src="https://habrastorage.org/webt/rq/mr/nz/rqmrnza6s4v2oegdcwutdtsf13k.png"></p><br><p>  In the <strong><em>Define extraction query</em></strong> we write the following: </p><br><div class="spoiler">  <b class="spoiler_title">Define extraction query</b> <div class="spoiler_text"><pre><code class="haskell hljs">{ <span class="hljs-string"><span class="hljs-string">"query"</span></span>: { <span class="hljs-string"><span class="hljs-string">"bool"</span></span>: { <span class="hljs-string"><span class="hljs-string">"must"</span></span>: [ { <span class="hljs-string"><span class="hljs-string">"match_phrase"</span></span>: { <span class="hljs-string"><span class="hljs-string">"file.path"</span></span>: { <span class="hljs-string"><span class="hljs-string">"query"</span></span>: <span class="hljs-string"><span class="hljs-string">"&lt;/  &gt;"</span></span> } } } ], <span class="hljs-string"><span class="hljs-string">"filter"</span></span>: [ { <span class="hljs-string"><span class="hljs-string">"term"</span></span>: { <span class="hljs-string"><span class="hljs-string">"event.action"</span></span>: { <span class="hljs-string"><span class="hljs-string">"value"</span></span>: <span class="hljs-string"><span class="hljs-string">"attributes_modified"</span></span> # ,  created  deleted } } }, { <span class="hljs-string"><span class="hljs-string">"range"</span></span>: { <span class="hljs-string"><span class="hljs-string">"@timestamp"</span></span>: { <span class="hljs-string"><span class="hljs-string">"from"</span></span>: <span class="hljs-string"><span class="hljs-string">"now-1m"</span></span> #     } } } ], <span class="hljs-string"><span class="hljs-string">"adjust_pure_negative"</span></span>: true, <span class="hljs-string"><span class="hljs-string">"boost"</span></span>: <span class="hljs-number"><span class="hljs-number">1</span></span> } } }</code> </pre> </div></div><br><p>  After we press the Run button and check the request, this should appear: </p><br><p><img src="https://habrastorage.org/webt/we/vt/qa/wevtqa-ee8sjr-qlfcbdub9fty0.png"></p><br><p>  We try to change the target file and run the query again: </p><br><p><img src="https://habrastorage.org/webt/tz/or/ss/tzorssruusjbtsl1ng-34mbuxj0.png"></p><br><p>  as you see, <strong><em>hits</em></strong> has changed to 2, click update and create a trigger for changing values: </p><br><p><img src="https://habrastorage.org/webt/ku/ku/tm/kukutmc1rziafsbdemb7ogalj_g.png"></p><br><p>  We leave everything as in the picture. </p><br><p>  Then you can set up notifications in slack or another messenger. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/459554/">https://habr.com/ru/post/459554/</a></p>
+    <p>Source: https://habr.com/ru/post/459554/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Wireless communications "smart home". Part two, practical</h1><div class="post__text post__text-html js-mediator-article">  After writing a <a href="http://habrahabr.ru/post/171613/">couple of</a> <a href="http://habrahabr.ru/post/195884/">big</a> posts about “radioed” smart home, there were quite a few people who wanted to get code that would help deal with this topic in more detail. <br>  For some reason I didn’t want to post my original version of the code - I prepared a “lightweight” version that would explain my main ideas. <br><img src="https://habrastorage.org/getpro/habr/post_images/026/dec/bb6/026decbb6bfe1e77ef7698a15e1ae211.jpg"><br>  In order to make the post the most spectacular and useful, today we are implementing a home mini-system (clock, calendar, weather, monitoring battery charge levels in sensors, etc.) consisting of one “main” module (with a large LED matrix in as an indicator), two autonomous sensors (will measure the temperature) and a time synchronization module via NTP. <br><a name="habracut"></a><br>  First, a brief talk about the components of the project: <br><img src="https://habrastorage.org/getpro/habr/post_images/df5/bfd/78c/df5bfd78c1c3cb0904eb55842b086566.jpg"><br><h5>  Shield MaTrix </h5><br>  Expansion card for Arduino Mega (there <a href="http://toster.ru/q/48336">will be a</a> separate post about the process of its creation, but a little later).  This extension allows you to control the output of information on four 8x8 bicolor LED arrays, forming a single 32x8 field (the resolution is small, but the inscriptions are quite large). <br><img src="https://habrastorage.org/getpro/habr/post_images/f89/bb7/bb5/f89bb7bb5dd4b9d9cd541193f0b4b61c.jpg"><br>  Additionally, the board has: <br><ul><li>  Integrated clock module (RTC) - based on DS1307 with backup battery (CR1220 or CR1226) </li><li>  Interface for connecting the RF module nRF24L01 + </li><li>  Clock button (for example, to turn off the alarm sound) </li><li>  38 kHz IR receiver (for remote control) </li><li>  Wiring for connecting an RGB LED with a common cathode or anode (the choice is made by jumper) </li><li>  Light sensor (for example, to automatically adjust the brightness) </li><li>  Piezo emitter "squeaker" </li><li>  I2C interface </li><li>  xBee interface </li><li>  Interface to connect Arduino-shildov. </li></ul><br><img src="https://habrastorage.org/getpro/habr/post_images/c36/b9e/4aa/c36b9e4aae233b38bf7872f4f450b9f4.jpg"><br>  The module was developed "from what was" and made as simple as possible for users.  The display unit is built on well-known shift registers (74HD595D - LED control "in columns") and a demultiplexer (74HD138D - control "rows").  Naturally, dynamic display is used. <br><br>  In order to make it even easier to use - a <a href="https://github.com/stepanovalex/MaTrix">library</a> was written with basic primitives (“display a line”, “creeping line”, brightness adjustment, there are several effects). <br><img src="https://habrastorage.org/getpro/habr/post_images/698/1fc/804/6981fc80425f0dd84064a16f7bc7e3ae.jpg"><br>  The shield itself does not contain an MK, you need to connect an “Arduino Mega” or a compatible clone to it (I used <a href="http://devicter.ru/goods/Freaduino-Mega-ATMega-2560">one</a> ). <br><br>  Shield MaTrix scheme is available <a href="">by reference</a> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h5>  Sensor node </h5><br>  This is an arduino-compatible module built on the Atmega328 base, powered by one CR2032 lithium battery, having an on-board temperature sensor (MCP9700), a button, an LED, and three connectors for connecting possible extensions (sensors, etc.). <br><img src="https://habrastorage.org/getpro/habr/post_images/0f0/cd6/3ed/0f0cd63ed4fabbc586d53707b78b1402.jpg"><br>  From the sensor features: <br><ul><li>  Board size - 3x4 cm. </li><li>  Two nRF24L01 + power options: the module is powered continuously or taken from one of the digital pins (the choice is made by a jumper). </li><li>  Programming <a href="http://devicter.ru/goods/USBtinyISP-Arduino-bootloader-programmer">via ISP</a> or <a href="http://devicter.ru/goods/Foca-v2-1-FT232RL">FT232 based programmer</a> (or similar) from the Arduino environment. </li><li>  There is a voltage divider (for measuring the supply voltage) </li><li>  Two digital pins are output to the “Digital” connector (power is also present in the connector). </li><li>  Two analog pins - to the “Analog” connector (there is also power). </li><li>  The I2C bus is a separate corresponding connector (also with power). </li><li>  MK clocking is possible both with the help of a 16 MHz quartz resonator installed on the board, and with the help of the built-in oscillator (this is, of course, not a “trick” of a particular module, but simply the capabilities of atmega328). </li></ul><br><img src="https://habrastorage.org/getpro/habr/post_images/8b9/d52/b83/8b9d52b83db8d45a14c2259456d0e720.jpg"><br>  About the development of this module, too, I will write an article, if there is interest among readers. <br><br>  In our case, to save the battery, we will use the MK with clocking from the internal oscillator at a frequency of 8 MHz and “ask” the MK to continue operating at reduced voltage (from 1.8V).  To do this, in the boards.txt file, add the following lines: <br><pre><code class="cpp hljs">s328o8.name=Sensor328 (int8MHz, <span class="hljs-number"><span class="hljs-number">1.8</span></span>V)
@@ -399,20 +399,20 @@ Message sensor;
 <li><a href="http://devicter.ru/goods/modul-2-4g-nrf24l01">nRF24l01+</a></li>
 </ul><br>
 <br>
-P.S. ,    ,         (    —      ).</div><p>Source: <a href="https://habr.com/ru/post/202898/">https://habr.com/ru/post/202898/</a></p>
+P.S. ,    ,         (    —      ).</div><p>Source: https://habr.com/ru/post/202898/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../202884/index.html">Overcoming the hidden dangers of KVO in Objective C</a></li>
 <li><a href="../202888/index.html">Asteroids javascript implementation</a></li>
+<li><a href="../20289/index.html">Google, Android and open source</a></li>
 <li><a href="../202890/index.html">PHP creator Rasmus Lerdorf - about anarchy and democracy in language development, PHP 5.6 and complaining programmers</a></li>
 <li><a href="../202894/index.html">Galileo is the first Arduino-compatible microcomputer on the Intel platform. Now Available!</a></li>
 <li><a href="../202896/index.html">Continuous Integration in Selectle</a></li>
+<li><a href="../2029/index.html">In China, another dissident convicted of speech on the Internet</a></li>
 <li><a href="../202900/index.html">KUB-BS - controller “for growth” for monitoring container-type objects, including Cellular base stations</a></li>
 <li><a href="../202904/index.html">Budget VDS for training and development</a></li>
 <li><a href="../202906/index.html">Livejack blackjack</a></li>
 <li><a href="../202908/index.html">Automatic spell checker, model Noisy Channel</a></li>
-<li><a href="../202910/index.html">Automatic testing of iOS applications</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

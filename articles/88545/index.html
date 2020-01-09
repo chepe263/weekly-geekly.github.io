@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Xname.org vulnerability</h1><div class="post__text post__text-html js-mediator-article"> Found the other day an unpleasant vulnerability on the popular DNS hosting <a href="http://xname.org/">XName.org</a> <br>  The fact is that ns2.xname.org allows you to transfer any zone located on it (with an AXFR request), regardless of where the request comes from. <br><a name="habracut"></a>  For example: <br><br> <code><a href="http://www.xname.org/"></a> <a href="http://www.xname.org/"></a> <a href="http://www.xname.org/"></a> <a href="http://www.xname.org/"></a> <a href="http://www.xname.org/"></a> <a href="http://www.xname.org/"></a> porfel@porfel-laptop:~$ dig xname.org @ns2.xname.org axfr <br> <br> ; &lt;&lt;&gt;&gt; DiG 9.6.1-P2 &lt;&lt;&gt;&gt; xname.org @ns2.xname.org axfr <br> ;; global options: +cmd <br> xname.org. 600 IN SOA ns0.xname.org. yann.hirou.org. 2009030501 600 1800 3600000 10800 <br> xname.org. 600 IN TXT "v=spf1 a:vhosting.freexion.net a:ns0.xname.org a:ns1.xname.org a:ns2.xname.org a:g1.xname.org ip4:195.234.42.0/24 ~all" <br> xname.org. 600 IN NS ns0.xname.org. <br> xname.org. 600 IN NS ns1.xname.org. <br> xname.org. 600 IN NS ns2.xname.org. <br> xname.org. 600 IN NS ns3.xtremeweb.de. <br> xname.org. 600 IN MX 10 mxg1.freexion.net. <br> xname.org. 600 IN MX 20 mx2.oav.net. <br> xname.org. 600 IN A 92.243.14.172 <br> demo.xname.org. 600 IN CNAME www.xname.org. <br> dev.xname.org. 600 IN CNAME www.xname.org. <br> error.xname.org. 600 IN A 193.218.105.155 <br> g1.xname.org. 600 IN A 92.243.14.172 <br> myip.xname.org. 600 IN CNAME www.xname.org. <br> ns0.xname.org. 600 IN A 195.234.42.1 <br> ns1.xname.org. 600 IN A 87.98.164.164 <br> ns2.xname.org. 600 IN AAAA 2a01:e0b:1:64:240:63ff:fee8:6155 <br> ns2.xname.org. 600 IN A 88.191.64.64 <br> o1.xname.org. 600 IN A 91.121.207.58 <br> o1b.xname.org. 600 IN A 87.98.135.241 <br> source.xname.org. 600 IN CNAME www.xname.org. <br> test.xname.org. 600 IN NS ns0.xname.org. <br> test.xname.org. 600 IN NS ns1.xname.org. <br> url.xname.org. 600 IN CNAME www.xname.org. <br> www.xname.org. 600 IN CNAME g1.xname.org. <br> xname.org. 600 IN SOA ns0.xname.org. yann.hirou.org. 2009030501 600 1800 3600000 10800 <br> ;; Query time: 147 msec <br> ;; SERVER: 88.191.64.64#53(88.191.64.64) <br> ;; WHEN: Tue Mar 23 01:36:15 2010 <br> ;; XFR size: 26 records (messages 3, bytes 791) <br> <br> porfel@porfel-laptop:~$ <br></code> <br><br>  When requesting a zone from any other authoritative DNS server, we get the following: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>porfel@porfel-laptop:~$ dig xname.org @ns0.xname.org axfr <br> <br> ; &lt;&lt;&gt;&gt; DiG 9.6.1-P2 &lt;&lt;&gt;&gt; xname.org @ns0.xname.org axfr <br> ;; global options: +cmd <br> ; Transfer failed. <br> porfel@porfel-laptop:~$</code> <br> <br>  From which it can be concluded that the developers simply did not want to give this zone. <br>  I checked this assumption on my domains (transfer is allowed only for authoritative servers) - the same thing allows you to get the entire zone, regardless of whether it is allowed in the configuration or not. <br>  Thus, ~ 175,000 domains that use XName as DNS servers are at risk. <br><br>  I want to give advice to users of this service: be careful, and do not register anything secret in the zone.  And if there are “secret” subdomains - take care of authorization for them. <br>  Thanks for attention. <br><br>  PS: A service administration letter with a description of the problem and a request to fix it was written on Wednesday, but so far neither the answer, nor the greeting ... </div><p>Source: <a href="https://habr.com/ru/post/88545/">https://habr.com/ru/post/88545/</a></p>
+     <code>porfel@porfel-laptop:~$ dig xname.org @ns0.xname.org axfr <br> <br> ; &lt;&lt;&gt;&gt; DiG 9.6.1-P2 &lt;&lt;&gt;&gt; xname.org @ns0.xname.org axfr <br> ;; global options: +cmd <br> ; Transfer failed. <br> porfel@porfel-laptop:~$</code> <br> <br>  From which it can be concluded that the developers simply did not want to give this zone. <br>  I checked this assumption on my domains (transfer is allowed only for authoritative servers) - the same thing allows you to get the entire zone, regardless of whether it is allowed in the configuration or not. <br>  Thus, ~ 175,000 domains that use XName as DNS servers are at risk. <br><br>  I want to give advice to users of this service: be careful, and do not register anything secret in the zone.  And if there are “secret” subdomains - take care of authorization for them. <br>  Thanks for attention. <br><br>  PS: A service administration letter with a description of the problem and a request to fix it was written on Wednesday, but so far neither the answer, nor the greeting ... </div><p>Source: https://habr.com/ru/post/88545/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

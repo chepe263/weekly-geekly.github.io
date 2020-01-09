@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using parse_transform</h1><div class="post__text post__text-html js-mediator-article">  <b>Disclaimer: The</b> described tool has a controversial reputation.  I do not urge to use it wherever I get, I only introduce the concepts used in order to reduce some of the thrill of technology. <br><br>  The source code as well as a text copy of the article can be found <a href="https://gist.github.com/2146886">on the githab</a> . <br><br><h1>  What is parse_transform </h1><br>  <a href="http://www.erlang.org/doc/man/compile.html">parse_transform</a> is the mechanism for changing AST before compiling.  It is intended to change the meaning of constructs (semantics), without going beyond the Erlang syntax. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Unfortunately, there is little information on the Web about this, which makes the entry threshold very high for a non-guru erlang. <br><br><h1>  What do we do </h1><br>  In this article, I will talk a little about AST Erlang, give an example of simple transformations, and show the process of writing a parse_transform to create a stateless gen_server (the task doesn’t have much sense, but as an example of use it will do), and in the end I’ll give you a link on a set of novice transformer. <br><br><a name="habracut"></a><br><h1>  AST in Erlang </h1><br>  Just in case: <a href="http://ru.wikipedia.org/wiki/AST">AST definition</a> <br><br>  It is better to see AST once, than read its <a href="http://www.erlang.org/doc/apps/erts/absform.html">description a</a> hundred times.  Therefore, we will write a small module to see how each line is transformed. <br><br>  So, the source text <i>astdemo.erl</i> : <br><pre><code class="erlang hljs"><span class="hljs-keyword"><span class="hljs-keyword">-module</span></span><span class="hljs-params"><span class="hljs-params">(astdemo)</span></span>. -export([hello/<span class="hljs-number"><span class="hljs-number">0</span></span>, hello/<span class="hljs-number"><span class="hljs-number">2</span></span>]). hello() -&gt; hello(<span class="hljs-string"><span class="hljs-string">"world"</span></span>, <span class="hljs-number"><span class="hljs-number">1</span></span>). hello(_What, <span class="hljs-number"><span class="hljs-number">0</span></span>) -&gt; ok; hello(What, Count) -&gt; io:format(<span class="hljs-string"><span class="hljs-string">"Hello, ~s~n"</span></span>, [What]), hello(What, Count - <span class="hljs-number"><span class="hljs-number">1</span></span>).</code> </pre> <br><br>  To see the AST, you need to set a parse_file function from the epp module to this file: <br><pre>  Eshell V5.8.5 (abort with ^ G)
@@ -145,20 +145,20 @@
  {ok, &lt;0.39.0&gt;}
  3&gt; gen_server: call (D, hello).
  {hello, {&lt;0.32.0&gt;, # Ref &lt;0.0.0.83&gt;}}
-</pre><br>  Success!  It remains to finish the owl and put it on the githab. <br><br><h1>  Results </h1><br>  An interested reader, I hope, met AST in Erlang, and also got a rough idea about the methods of its transformation.  Perhaps someone first learned about the parse_transform. <br>  The article contains information that should be enough to start writing your own transform.  Slightly below will be criticism and a link to a library useful for transformations. <br><br><h1>  Criticism of the method </h1><br>  First, the use of parse_transform (in the event that it is in a separate project) is added dependent on your project.  In the case of rebar, this is fatal. <br>  Second, people who read (and, especially, edit) such code may not immediately understand the concept.  Therefore, we need not only good documentation, but also a noticeable link to it at the beginning of the source code. <br>  Thirdly, the possibilities for writing your own dialects are very limited.  Before the AST gets under your scalpel, a regular parser works.  Therefore, the introduction of tricky keywords and own operators can break the parser, greatly complicating the task. <br><br><h1>  Library parse_trans </h1><br>  <a href="https://github.com/esl/parse_trans">parse_trans</a> is a useful thing for writing parse_transforms.  It allows you to make a recursive map to a tree, which is extremely useful when modifying expressions at irregular depths.  In the examples there is a very concise way of rewriting the operator “!” To the <i>gproc: send</i> call. </div><p>Source: <a href="https://habr.com/ru/post/140374/">https://habr.com/ru/post/140374/</a></p>
+</pre><br>  Success!  It remains to finish the owl and put it on the githab. <br><br><h1>  Results </h1><br>  An interested reader, I hope, met AST in Erlang, and also got a rough idea about the methods of its transformation.  Perhaps someone first learned about the parse_transform. <br>  The article contains information that should be enough to start writing your own transform.  Slightly below will be criticism and a link to a library useful for transformations. <br><br><h1>  Criticism of the method </h1><br>  First, the use of parse_transform (in the event that it is in a separate project) is added dependent on your project.  In the case of rebar, this is fatal. <br>  Second, people who read (and, especially, edit) such code may not immediately understand the concept.  Therefore, we need not only good documentation, but also a noticeable link to it at the beginning of the source code. <br>  Thirdly, the possibilities for writing your own dialects are very limited.  Before the AST gets under your scalpel, a regular parser works.  Therefore, the introduction of tricky keywords and own operators can break the parser, greatly complicating the task. <br><br><h1>  Library parse_trans </h1><br>  <a href="https://github.com/esl/parse_trans">parse_trans</a> is a useful thing for writing parse_transforms.  It allows you to make a recursive map to a tree, which is extremely useful when modifying expressions at irregular depths.  In the examples there is a very concise way of rewriting the operator “!” To the <i>gproc: send</i> call. </div><p>Source: https://habr.com/ru/post/140374/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../140367/index.html">The evening of Badoo at RHS ++ will end with the drawing of iPad 3!</a></li>
-<li><a href="../140368/index.html">Overview Typesafe Stack 2.0 and an introduction to the model of actors on the example of Akka 2.0</a></li>
 <li><a href="../140369/index.html">PHP warning / notice messages in the JS console + secret button</a></li>
+<li><a href="../14037/index.html">IMac style name generator</a></li>
+<li><a href="../140371/index.html">The perfect tutorial in the game - tips from PopCap</a></li>
 <li><a href="../140372/index.html">Tablet Review: Sony Tablet P</a></li>
 <li><a href="../140373/index.html">Steganography. Hide text information in the bmp file. Practical implementation in C #</a></li>
 <li><a href="../140375/index.html">Cloud Platform Overview</a></li>
 <li><a href="../140376/index.html">Xeon E5: a new generation of server processors</a></li>
 <li><a href="../140378/index.html">KLADR died, long live FIAS?</a></li>
-<li><a href="../140382/index.html">Dropbox (+23 GB) (with a fly in the ointment)</a></li>
-<li><a href="../140383/index.html">Putting in order the outlet</a></li>
+<li><a href="../14038/index.html">SMS against the "green snake"</a></li>
+<li><a href="../140380/index.html">Crossbrowser CSS3 Reflection</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

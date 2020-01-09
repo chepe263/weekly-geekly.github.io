@@ -28,12 +28,12 @@ diff -ur a/kernel/nv-drm.cb/kernel/nv-drm.c --- a/kernel/nv-drm.c 2013-08-14 06:
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@ diff -ur a/kernel/nv-drm.cb/kernel/nv-drm.c --- a/kernel/nv-drm.c 2013-08-14 06:
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Patch for nvidia-319.49 driver for Linux 3.12.0+ kernel</h1><div class="post__text post__text-html js-mediator-article">  For those who know and who need. <br><a name="habracut"></a><br><pre><code class="diff hljs">diff -ur a/kernel/nv-drm.cb/kernel/nv-drm.c --- a/kernel/nv-drm.c 2013-08-14 06:33:23.000000000 +0400 +++ b/kernel/nv-drm.c 2013-09-26 02:46:03.528914493 +0400 @@ -106,7 +106,9 @@ .unlocked_ioctl = drm_ioctl, .mmap = drm_gem_mmap, .poll = drm_poll, +#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(3, 12, 0) .fasync = drm_fasync, +#endif .read = drm_read, .llseek = noop_llseek, }; @@ -202,13 +204,6 @@ memset(&amp;nv_obj-&gt;base, 0, sizeof(nv_obj-&gt;base)); nv_obj-&gt;pages = pages; - ret = drm_gem_private_object_init(nvl-&gt;drm, &amp;nv_obj-&gt;base, size); - if (ret) - { - status = RM_ERR_OPERATING_SYSTEM; - goto done; - } - ret = drm_gem_handle_create(file_priv, &amp;nv_obj-&gt;base, handle); if (ret) { @@ -216,6 +211,7 @@ goto done; } + drm_gem_private_object_init(nvl-&gt;drm, &amp;nv_obj-&gt;base, size); drm_gem_object_unreference_unlocked(&amp;nv_obj-&gt;base); status = RM_OK; diff -ur a/kernel/nv-linux.hb/kernel/nv-linux.h --- a/kernel/nv-linux.h 2013-08-14 06:33:23.000000000 +0400 +++ b/kernel/nv-linux.h 2013-09-26 02:24:58.863000000 +0400 @@ -1037,7 +1037,11 @@ #endif #if !defined(NV_VMWARE) +#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(3, 11, 0) #define NV_NUM_PHYSPAGES num_physpages +#else +#define NV_NUM_PHYSPAGES get_num_physpages() +#endif #define NV_GET_CURRENT_PROCESS() current-&gt;tgid #define NV_IN_ATOMIC() in_atomic() #define NV_LOCAL_BH_DISABLE() local_bh_disable()</code> </pre> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,23 +63,23 @@ diff -ur a/kernel/nv-drm.cb/kernel/nv-drm.c --- a/kernel/nv-drm.c 2013-08-14 06:
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/195284/">https://habr.com/ru/post/195284/</a></p>
+    <p>Source: https://habr.com/ru/post/195284/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../195268/index.html">The history of drives in advertising. Part 1: 1956-1991</a></li>
-<li><a href="../195270/index.html">iOS 7 makes iPhone waterproof</a></li>
 <li><a href="../195274/index.html">Co-op streams from scratch in 33 rows on Haskell</a></li>
 <li><a href="../195276/index.html">Digital good (direct electronic payments in the hands of musicians, artists and other creators)</a></li>
+<li><a href="../19528/index.html">CSS Rounding Issues</a></li>
 <li><a href="../195280/index.html">A look at the light in a new light: Scientists have created an unprecedented form of matter. (translation of the article)</a></li>
+<li><a href="../195282/index.html">Sketch.app website design (Mac OS). Part 1: Plugins and Prototype</a></li>
 <li><a href="../195288/index.html">How we “moved” the entire infrastructure to the “cloud” in 5 days</a></li>
+<li><a href="../19529/index.html">Positive: Jumping :)</a></li>
+<li><a href="../1953/index.html">SUP-Fabrik site is open</a></li>
+<li><a href="../19530/index.html">Subtle programmer humor</a></li>
 <li><a href="../195308/index.html">New 5-Mpix IP Video Camera with Autofocus</a></li>
-<li><a href="../195312/index.html">VLC 2.1 released</a></li>
-<li><a href="../195314/index.html">How Moscow helps IT-entrepreneurs</a></li>
-<li><a href="../195316/index.html">IBM Trial Software</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

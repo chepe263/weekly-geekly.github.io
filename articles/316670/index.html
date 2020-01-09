@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We build PVS-Studio in Eclipse CDT (Linux)</h1><div class="post__text post__text-html js-mediator-article">  The news about the possibility of <a href="https://habrahabr.ru/company/pvs-studio/blog/316484/">free source verification using PVS-Studio has</a> finally stimulated me to implement source verification in Eclipse CDT.  And then for CLion / QtCreator / etc <a href="http://www.viva64.com/ru/m/0036/">it was written as</a> , but purple was bypassed :) For the experiments we used: Eclipse IDE for C / C ++ Developers, Version: Neon.1a Release (4.6.1), Build id: 20161007-1200 and PVS-Studio 6.11.20138.1.  And that's what happened. <br><a name="habracut"></a><br>  To begin, let's wrap the analyzer's call into the script (about it later) and we will call it as an external utility.  In the configuration, specify the working directory: <br><br><div class="spoiler">  <b class="spoiler_title">External Tools Configurations / Main</b> <div class="spoiler_text"><img src="https://habrastorage.org/getpro/habr/post_images/b8f/651/c83/b8f651c83086e576a317dfebd7f8d066.jpg" width="792" height="649"><br></div></div><br>  And turn on the checkbox "Allocate console": <br><br><div class="spoiler">  <b class="spoiler_title">External Tools Configurations / Common</b> <div class="spoiler_text"><img src="https://habrastorage.org/getpro/habr/post_images/64d/dd5/8f5/64ddd58f550f8909133cb6268a883df7.jpg" width="792" height="649"><br></div></div><br>  The disadvantage of this method is that the output will not be understood by the Eclipse parser, and it can be seen only in the console: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <div class="spoiler">  <b class="spoiler_title">Run as External Tool</b> <div class="spoiler_text"> <a href=""><img src="https://habrastorage.org/getpro/habr/post_images/363/c9d/6e9/363c9d6e9f47bc371040ffbca7841980.png" width="800" height="569"></a> <br></div></div><br>  If this method does not suit you, you can embed the check into an external utility for assembly.  The method is not suitable for all projects, but if it suits, then go to the project properties and configure the External Builder parameters for the current configuration: <br><br><ol><li>  We select External builder as Build type </li><li>  Uncheck “Use default build command” </li><li>  In the field "Build command" enter our script </li><li>  Check "Generate Makefiles automatically" </li></ol><br><div class="spoiler">  <b class="spoiler_title">C / C ++ Build</b> <div class="spoiler_text"><img src="https://habrastorage.org/getpro/habr/post_images/dc2/69b/f93/dc269bf93a2c1dcf3fc69cde37fc26df.jpg" width="800" height="620"><br></div></div><br>  The "-k" key Eclipse adds itself.  Accordingly, when building a project, our script will be called with the "-k all" keys, while clearing, with the "-k clean". <br><br>  As a result, we will receive an automatic check of the project during the assembly, plus the output that Eclipse understands and, as a result, navigation through the sources in the Problems window: <br><br><div class="spoiler">  <b class="spoiler_title">Run as Builder</b> <div class="spoiler_text"> <a href=""><img src="https://habrastorage.org/getpro/habr/post_images/847/69f/4eb/84769f4ebaa6b68107d2da4291cd822c.png" width="800" height="595"></a> <br></div></div><br>  Well, now the script itself: <br><br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh #      External Tool,   `make clean`: if [ -z "$1" ]; then make -f makefile clean fi #   ,  : if [ "$2" = "clean" ]; then make -f makefile clean #      : exit fi #  clean    External Tool -  : TEMPLOG=$(tempfile) #   `strace`,      : pvs-studio-analyzer trace -- make -f makefile all 2&gt;&amp;1 | sed '/strace: umovestr:/d' - pvs-studio-analyzer analyze -o "$TEMPLOG" #   ,       : RC=$(plog-converter -t errorfile "$TEMPLOG" | sed '/The documentation for all/d' -) rm -f "$TEMPLOG" echo "$RC"</span></span></code> </pre> <br>  For now.  On real projects, nothing has been driven yet, maybe some shortcomings will come out there.  But the general scheme is clear in principle. <br></div><p>Source: <a href="https://habr.com/ru/post/316670/">https://habr.com/ru/post/316670/</a></p>
+    <div class="spoiler">  <b class="spoiler_title">Run as External Tool</b> <div class="spoiler_text"> <a href=""><img src="https://habrastorage.org/getpro/habr/post_images/363/c9d/6e9/363c9d6e9f47bc371040ffbca7841980.png" width="800" height="569"></a> <br></div></div><br>  If this method does not suit you, you can embed the check into an external utility for assembly.  The method is not suitable for all projects, but if it suits, then go to the project properties and configure the External Builder parameters for the current configuration: <br><br><ol><li>  We select External builder as Build type </li><li>  Uncheck “Use default build command” </li><li>  In the field "Build command" enter our script </li><li>  Check "Generate Makefiles automatically" </li></ol><br><div class="spoiler">  <b class="spoiler_title">C / C ++ Build</b> <div class="spoiler_text"><img src="https://habrastorage.org/getpro/habr/post_images/dc2/69b/f93/dc269bf93a2c1dcf3fc69cde37fc26df.jpg" width="800" height="620"><br></div></div><br>  The "-k" key Eclipse adds itself.  Accordingly, when building a project, our script will be called with the "-k all" keys, while clearing, with the "-k clean". <br><br>  As a result, we will receive an automatic check of the project during the assembly, plus the output that Eclipse understands and, as a result, navigation through the sources in the Problems window: <br><br><div class="spoiler">  <b class="spoiler_title">Run as Builder</b> <div class="spoiler_text"> <a href=""><img src="https://habrastorage.org/getpro/habr/post_images/847/69f/4eb/84769f4ebaa6b68107d2da4291cd822c.png" width="800" height="595"></a> <br></div></div><br>  Well, now the script itself: <br><br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh #      External Tool,   `make clean`: if [ -z "$1" ]; then make -f makefile clean fi #   ,  : if [ "$2" = "clean" ]; then make -f makefile clean #      : exit fi #  clean    External Tool -  : TEMPLOG=$(tempfile) #   `strace`,      : pvs-studio-analyzer trace -- make -f makefile all 2&gt;&amp;1 | sed '/strace: umovestr:/d' - pvs-studio-analyzer analyze -o "$TEMPLOG" #   ,       : RC=$(plog-converter -t errorfile "$TEMPLOG" | sed '/The documentation for all/d' -) rm -f "$TEMPLOG" echo "$RC"</span></span></code> </pre> <br>  For now.  On real projects, nothing has been driven yet, maybe some shortcomings will come out there.  But the general scheme is clear in principle. <br></div><p>Source: https://habr.com/ru/post/316670/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../316674/index.html">Veeam 9.5 and VMware vCloud Director backup</a></li>
 <li><a href="../316676/index.html">Front-end and ad blockers (for example, Adblock Plus)</a></li>
 <li><a href="../316678/index.html">AngelList crowdfunding platform and Product Hunt platform create a single ecosystem for IT startups</a></li>
-<li><a href="../316680/index.html">Web technologies for designers - why and how</a></li>
+<li><a href="../31668/index.html">Apple began to publish daily MobileMe status reports.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

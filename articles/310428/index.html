@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Taming Yota with Zyxel</h1><div class="post__text post__text-html js-mediator-article">  I think many happy owners of high-speed Internet from Yota faced these two problems: <br><br>  1. Internet connection disappears completely <br>  2. Connection as it is, but it is not (very, very low speed) <br><br>  Below are ways to deal with them.  Immediately, I note that the solutions are for those who have a Zyxel router and a usb modem Yota. <br><a name="habracut"></a><br><h2>  Ping help us </h2><br>  The guys from Zyxel apparently heard about situations when the Internet falls off completely, and made Ping Checker for us.  This setting allows you to check the availability of any node, pinging it if packets are lost, then it’s time to reboot the modem, which it automatically does. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img src="https://habrastorage.org/files/010/207/a4d/010207a4d40f4a7097e0c5c119a7e98d.jpg"><br><br>  In the picture, the Ping Checker settings, 8.8.8.8 - public dns from Google is quite a good site to check. <br><br><h2>  Reboot the modem.  Fast, cheap, high quality </h2><br>  When there is a connection, and the speed is unsatisfactory or it is just almost zero, the Google server will respond, so Ping Checker will not help us.  It remains only to restart the modem. <br><br>  Can: <br><br>  1. Pull out the modem and reinsert it; <br>  2. Turn off / on the router; <br>  3. Go to the web interface and reboot the modem there by clicking on the appropriate button; <br>  4. Connect via telnet and reboot via CLI. <br><br>  The latter method will be automated further.  Rebooting the modem will require only double clicking on the icon.  You can connect to the Zyxel router via telnet using the same username and password as in the web interface.  After it opens the CLI. <br><br>  Here is a guide for this very CLI.  For those who do not read the instructions, it will be very useful to know that the question mark displays a list of all available commands, the question mark after the command displays a list of command parameters. <br><br>  So to the point.  First you need to get the naming of the modem interface (you can see in the web interface), I called YotaOne0: <br><br><img src="https://habrastorage.org/files/45d/98b/ff4/45d98bff4f814338b06058cd7e853e76.jpg"><br><br>  Connect via telnet, enter the username and password, then: <br><br><pre><code class="bash hljs">interface YotaOne0 usb power-cycle 0</code> </pre> <br>  Everything, the modem has to reboot. <br><br>  It remains only to automate the above process.  Here, of course, it all depends on the OS that you use.  Below the bash script, you can probably do something like this for Windows: <br><br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/usr/bin/expect -f spawn telnet 192.168.1.1 expect "Login: " send "_( admin)\r" expect "Password: " send "_\r" expect "(config)&gt; " send "interface YotaOne0 usb power-cycle 0\r" send "exit\r" interact</span></span></code> </pre> <br>  Create some file, let's say reboot_yota.command, replace the username and password with your own, execute: <br><br><pre> <code class="bash hljs">chmod +x reboot_yota.command</code> </pre> <br>  Is done.  Double click on the file, reboots the modem. <br><br>  Immediately emphasize, tested only on Mac OS, works fine.  I hope someone will help) </div><p>Source: <a href="https://habr.com/ru/post/310428/">https://habr.com/ru/post/310428/</a></p>
+    <img src="https://habrastorage.org/files/010/207/a4d/010207a4d40f4a7097e0c5c119a7e98d.jpg"><br><br>  In the picture, the Ping Checker settings, 8.8.8.8 - public dns from Google is quite a good site to check. <br><br><h2>  Reboot the modem.  Fast, cheap, high quality </h2><br>  When there is a connection, and the speed is unsatisfactory or it is just almost zero, the Google server will respond, so Ping Checker will not help us.  It remains only to restart the modem. <br><br>  Can: <br><br>  1. Pull out the modem and reinsert it; <br>  2. Turn off / on the router; <br>  3. Go to the web interface and reboot the modem there by clicking on the appropriate button; <br>  4. Connect via telnet and reboot via CLI. <br><br>  The latter method will be automated further.  Rebooting the modem will require only double clicking on the icon.  You can connect to the Zyxel router via telnet using the same username and password as in the web interface.  After it opens the CLI. <br><br>  Here is a guide for this very CLI.  For those who do not read the instructions, it will be very useful to know that the question mark displays a list of all available commands, the question mark after the command displays a list of command parameters. <br><br>  So to the point.  First you need to get the naming of the modem interface (you can see in the web interface), I called YotaOne0: <br><br><img src="https://habrastorage.org/files/45d/98b/ff4/45d98bff4f814338b06058cd7e853e76.jpg"><br><br>  Connect via telnet, enter the username and password, then: <br><br><pre><code class="bash hljs">interface YotaOne0 usb power-cycle 0</code> </pre> <br>  Everything, the modem has to reboot. <br><br>  It remains only to automate the above process.  Here, of course, it all depends on the OS that you use.  Below the bash script, you can probably do something like this for Windows: <br><br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/usr/bin/expect -f spawn telnet 192.168.1.1 expect "Login: " send "_( admin)\r" expect "Password: " send "_\r" expect "(config)&gt; " send "interface YotaOne0 usb power-cycle 0\r" send "exit\r" interact</span></span></code> </pre> <br>  Create some file, let's say reboot_yota.command, replace the username and password with your own, execute: <br><br><pre> <code class="bash hljs">chmod +x reboot_yota.command</code> </pre> <br>  Is done.  Double click on the file, reboots the modem. <br><br>  Immediately emphasize, tested only on Mac OS, works fine.  I hope someone will help) </div><p>Source: https://habr.com/ru/post/310428/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../310406/index.html">Many-to-many attitudes without a third table in PostgreSQL using Elixir Ecto</a></li>
 <li><a href="../310414/index.html">A person. Michael Dell's dream come true</a></li>
 <li><a href="../310418/index.html">101 ways of making RabbitMQ and a bit about pipeline architecture</a></li>
+<li><a href="../31042/index.html">Apple I or Motherboard of all Apple Motherboards</a></li>
 <li><a href="../310420/index.html">WD My Cloud Mirror - inaccessibility from under networks of the range 172.16.0.0/12</a></li>
 <li><a href="../310422/index.html">Zone.js or how Dart saved Angular</a></li>
+<li><a href="../31043/index.html">Challenging Viacom and Microsoft, Google CEO feels happy</a></li>
 <li><a href="../310432/index.html">Application on Elm in seconds</a></li>
 <li><a href="../310434/index.html">As we wrote freelance exchange for Telegram</a></li>
 <li><a href="../310436/index.html">Your blog on vibe-d, part 1: a simple web application using encryption</a></li>
 <li><a href="../310438/index.html">First steps in Java: how to start developing without installing anything</a></li>
-<li><a href="../310442/index.html">USB killer type-c</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

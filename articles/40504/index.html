@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Crash dumps and KeCapturePersistentThreadState</h1><div class="post__text post__text-html js-mediator-article"> I found here a very entertaining undocumented function exported by the kernel, which is not referenced inside the kernel, but which does a very interesting thing.  Namely, it writes into the transferred piece of memory a full minidump at the given time. <br>  It is very useful given the fact that there (in the dump) there are offsets of non-exported structures like PsLoadedModuleList, which can be useful. <br>  Thanks to Freeman for the help) <br><br> <code>ULONG <br> NTAPI <br> KeCapturePersistentThreadState( <br> PCONTEXT Context, <br> PKTHREAD Thread, <br> ULONG BugCheckCode, <br> ULONG BugCheckParameter1, <br> ULONG BugCheckParameter2, <br> ULONG BugCheckParameter3, <br> ULONG BugCheckParameter4, <br> PVOID VirtualAddress <br> );</code> <br> <br>  Input parameters: <br>  Context - the current context (you can from the balda, you just need to fill in the EIP &amp; ESP) <br>  Thread - the current thread.  you can specify NULL, then it will take the current <br>  BugCheckCode, ParametersX - the bugcheck code and arguments that it will write to the dump. <br>  VirtualAddress - the address of the allocated 16 pages of memory (64kb), where it will put neatly prepared kreshdamp. <br><br>  Example: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Dump Header: <br> <code>typedef struct _DUMP_HEADER { <br> /* 00 */ ULONG Signature; <br> /* 04 */ ULONG ValidDump; <br> /* 08 */ ULONG MajorVersion; <br> /* 0c */ ULONG MinorVersion; <br> /* 10 */ ULONG DirectoryTableBase; <br> /* 14 */ PULONG PfnDataBase; <br> /* 18 */ PLIST_ENTRY PsLoadedModuleList; <br> /* 1c */ PLIST_ENTRY PsActiveProcessHead; <br> /* 20 */ ULONG MachineImageType; <br> /* 24 */ ULONG NumberProcessors; <br> /* 28 */ ULONG BugCheckCode; <br> /* 2c */ ULONG BugCheckParameter1; <br> /* 30 */ ULONG BugCheckParameter2; <br> /* 34 */ ULONG BugCheckParameter3; <br> /* 38 */ ULONG BugCheckParameter4; <br> /* 3c */ CHAR VersionUser[32]; <br> /* 5c */ UCHAR PaeEnabled; <br> UCHAR NotUsed[3]; <br> /* 60 */ PVOID KdDebuggerDataBlock; <br> } DUMP_HEADER, *PDUMP_HEADER;</code> <br> <br>  Using the function: <a href="http://www.everfall.com/paste/id.php%3Fmkgmkfg1a057">www.everfall.com/paste/id.php?mkgmkfg1a057</a> <br><br>  Kodes gets the dump, shows the address MmPfnDatabase, PsActiveProcessHead, PsLoadedModuleList and dumps the dump to disk.  You can safely push the dump into WinDbg and study <br><br>  In general, a very entertaining thing ... <br><br>  You will need to rewrite your <b>gr8lkd</b> (http://gr8lkd.googlecode.com/) using this feature. </div><p>Source: <a href="https://habr.com/ru/post/40504/">https://habr.com/ru/post/40504/</a></p>
+      Dump Header: <br> <code>typedef struct _DUMP_HEADER { <br> /* 00 */ ULONG Signature; <br> /* 04 */ ULONG ValidDump; <br> /* 08 */ ULONG MajorVersion; <br> /* 0c */ ULONG MinorVersion; <br> /* 10 */ ULONG DirectoryTableBase; <br> /* 14 */ PULONG PfnDataBase; <br> /* 18 */ PLIST_ENTRY PsLoadedModuleList; <br> /* 1c */ PLIST_ENTRY PsActiveProcessHead; <br> /* 20 */ ULONG MachineImageType; <br> /* 24 */ ULONG NumberProcessors; <br> /* 28 */ ULONG BugCheckCode; <br> /* 2c */ ULONG BugCheckParameter1; <br> /* 30 */ ULONG BugCheckParameter2; <br> /* 34 */ ULONG BugCheckParameter3; <br> /* 38 */ ULONG BugCheckParameter4; <br> /* 3c */ CHAR VersionUser[32]; <br> /* 5c */ UCHAR PaeEnabled; <br> UCHAR NotUsed[3]; <br> /* 60 */ PVOID KdDebuggerDataBlock; <br> } DUMP_HEADER, *PDUMP_HEADER;</code> <br> <br>  Using the function: <a href="http://www.everfall.com/paste/id.php%3Fmkgmkfg1a057">www.everfall.com/paste/id.php?mkgmkfg1a057</a> <br><br>  Kodes gets the dump, shows the address MmPfnDatabase, PsActiveProcessHead, PsLoadedModuleList and dumps the dump to disk.  You can safely push the dump into WinDbg and study <br><br>  In general, a very entertaining thing ... <br><br>  You will need to rewrite your <b>gr8lkd</b> (http://gr8lkd.googlecode.com/) using this feature. </div><p>Source: https://habr.com/ru/post/40504/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../40498/index.html">Are you still not using Twitter?</a></li>
-<li><a href="../40499/index.html">Prompt local WiKi / Notepad ^ 2 / Blog for OS X :-)</a></li>
+<li><a href="../405/index.html">For movie lovers and not only</a></li>
+<li><a href="../4050/index.html">Google shows trends</a></li>
 <li><a href="../40500/index.html">Intel has released a dual-core Atom processor</a></li>
 <li><a href="../40503/index.html">Curves on Google Maps</a></li>
 <li><a href="../405033/index.html">Laser engraving as a business. Equipment capabilities for 30 thousand rubles</a></li>
 <li><a href="../40506/index.html">We play in the country and some JavaScript</a></li>
 <li><a href="../40508/index.html">Ten small programs, without which it is uncomfortable to live</a></li>
+<li><a href="../4051/index.html">Baidu launched Baidupedia</a></li>
 <li><a href="../40511/index.html">University 2.0 and development of a complex of services for students and teachers</a></li>
 <li><a href="../40515/index.html">About fla-source</a></li>
-<li><a href="../40517/index.html">Malware is actively advertised in Google AdSense and Yandex.Direct.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

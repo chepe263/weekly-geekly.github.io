@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Save contents of vCenter Content Library</h1><div class="post__text post__text-html js-mediator-article"><p>  Starting with the sixth version, <strong>VMware vSphere</strong> has a convenient feature that allows you to monitor the relevance of the virtual infrastructure at remote sites and branches, setting fire and sword standards for the virtual infrastructure of the main office.  It is called the Content Library and distributes templates between your data centers. </p><br><p>  What is it for?  Well, the most trivial example is that you have a set of truly true and virtual machine template blessed by all services, from which everything must be deployed in your organization.  The fact that they are personally on your host at the central office does not mean that everyone else will receive them on time, their version will be relevant and you will not have to fence your gardens in the field.  Therefore, you simply sign up your branches for updates from the head office, and administrators of remote sites will always have access to the necessary templates.  Very comfortably. </p><br><p><img src="https://habrastorage.org/webt/8h/ww/zo/8hwwzokgwb4wflqn4b9poiqwsac.png"></p><br><p>  In the Content Library, you can still add related files, disk images and much more, but today we will not talk about it.  Despite three years behind him, still many are wondering “How to backup objects inside the Content Library?”.  There are completely normal files with which any trouble can happen just the same, but there is no access to them through the usual backup options for virtual environments.  Therefore, we answer under the cut to such an important question ... </p><a name="habracut"></a><br><p>  For a start, let's see what we want to put in backup. </p><br><p>  The Content Library itself is a logical entity within your vCenter that stores links to files in the repository.  Leaving vCenter without backup is a lot of extremely brave ones, which means that the library itself, as a logical entity, is considered protected. </p><br><p>  But the files it points to are ordinary objects on one of your datastores connected to the hypervisor.  And without proper protection in the event of a collapse of the repository, they will be lost along with all the contents. </p><br><p>  As mentioned earlier, the classic approach with backup of virtual machines is not suitable here for obvious reasons.  So, we will save objects in the storage using one of the oldest functions of <strong>Veeam Backup and Replication</strong> - File Copy Job.  Its main task is to give the user the ability to easily copy files between objects connected to Veeam B &amp; R.  For example, between hosts and / or regular servers. </p><br><p>  Perhaps this method may seem clumsy and far from perfect, but its main advantage is that it will always work while the hypervisor can reach its storage.  And we can save as separate files, and the entire folder with the entire content. </p><br><p><img src="https://habrastorage.org/webt/bl/od/ow/blodowxbjnya0altb7mzze_kpkc.png"></p><br><p>  So, the wizard for creating File Copy Job: we set the name and at the second step Source choose what exactly we want to save.  Folders c Content Library are called by the template - contentlib-UID - without any hint of the human-readable name.  If you have literally one or two of them, then personally it is easier for me to look inside.  If there are a lot of libraries, then you can search for the desired UID in vCenter.  It is used in the Subscription URL, which is in the library description. </p><br><p><img src="https://habrastorage.org/webt/yr/4r/gh/yr4rghgt7kaxt2tdcu3ed7z_h68.png"></p><br><p>  It is very important to remember that the place where the files will be saved, you can not select the Veeam repository, there will not be supported versioning or increments, i.e.  This is not a full backup in the classic sense of the word, but simply a copy of the files at the time of launch.  And with each pass will download the full version of all files. </p><br><p>  Why is that?  Because for each task there must be its own tool.  This tool is designed to transparently copy files from anywhere to anywhere, as if you did not close your favorite file manager. </p><br><p><img src="https://habrastorage.org/webt/vt/pq/mf/vtpqmfxsxn3pzosp6f_vqpwrnx8.png"></p><br><p>  But I do not want to throw you on such a minor note and will tell you how you can still achieve versioning, increments and other advantages of a full backup - Veeam Agents. </p><br><p>  If you are copying your files to a Windows or Linux server that is already protected with Veeam Agents, then no further action is required from you.  But you can create a separate File Level Backup, taking the folder to which the files are copied.  Although if your task is to just save files aside once, these are already obvious excesses. </p><br><p><img src="https://habrastorage.org/webt/0d/ki/eq/0dkieqjtxvmh2w0ec2goi5wb9au.png"></p><br><p>  We talked about backup, let's now a little about recovery.  As already mentioned, File Copy will simply copy the files, not knowing if they are part of the Content Library or vmdk disks, and how critical the information is. </p><br><p>  As you can see, vCenter uses unique UIDs for both folders and for each file, so in case of a crash, you can restore the Content Library by downloading the folders back. <br>  Therefore, remember - this is far from the most ideal solution with a claim to the functionality of a full backup, but when you need to do here and now, this function will really save you. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/434468/">https://habr.com/ru/post/434468/</a></p>
+    <p>Source: https://habr.com/ru/post/434468/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Processing Russian text data in Azure Machine Learning</h1><div class="post__text post__text-html js-mediator-article">  Literally, Microsoft’s hackathon on Azure ML has just ended.  In the process of solving one of the tasks, the processing of Russian-language text data was required, and preferably within the system.  As a result, having spent significant time searching for a solution, I want to share it.  I hope that this will help someone to save time and not to beat his head against the wall in vain. <br><a name="habracut"></a><br>  As you know, Azure ML has two languages ​​for developing scripts within the system.  Let's start with Python, where the problem is solved most easily. <br><br>  Standard function that is called for data processing: <br><br><pre><code class="python hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">azureml_main</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(dataframe1 = None, dataframe2 = None)</span></span></span><span class="hljs-function">:</span></span> <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> index, row <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> dataframe1.iterrows(): search = str(row[<span class="hljs-string"><span class="hljs-string">'Search'</span></span>]).decode(<span class="hljs-string"><span class="hljs-string">'utf-8'</span></span>)</code> </pre> <br>  Here we take the Search column from the dataset, which is connected to the first input of the block “Execute Python Script” and convert it from utf-8.  After that, all string functions work with this line correctly.  In case we need to return text data, we need to perform the reverse operation: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="python hljs"> out_list.append(str.encode(<span class="hljs-string"><span class="hljs-string">'utf-8'</span></span>)) <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> pandas.DataFrame(out_list)</code> </pre><br>  To use stemming, you need to import the RussianStemmer class, create an object, call the constructor with False parameters, and then use this object.  You cannot use the True parameter to load a standard set of stop words at the moment, an error is generated. <br><br><pre> <code class="python hljs"><span class="hljs-keyword"><span class="hljs-keyword">from</span></span> nltk.stem.snowball <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> RussianStemmer stemmer = RussianStemmer(<span class="hljs-keyword"><span class="hljs-keyword">False</span></span>) stemmer.stem(word)</code> </pre><br>  Solving a similar problem for R looks so simple that it seems an incredible time that I had to kill to find this solution. <br><br><pre> <code class="hljs pgsql"><span class="hljs-keyword"><span class="hljs-keyword">search</span></span>&lt;-dataset1$<span class="hljs-keyword"><span class="hljs-keyword">Search</span></span> <span class="hljs-keyword"><span class="hljs-keyword">Encoding</span></span>(<span class="hljs-keyword"><span class="hljs-keyword">search</span></span>)&lt;-<span class="hljs-string"><span class="hljs-string">'UTF-8'</span></span></code> </pre><br>  Similarly, select the Search column and set the encoding explicitly.  After this call, the string functions start working with the text correctly, I checked on the stringi library.  Reverse conversion is not required, everything works fine and so. <br><br>  Similarly, we implement stemming in R. I’ll draw your attention to the need to specify the UTF-8 encoding, otherwise the stemmer will not do anything. <br><br><pre> <code class="hljs lisp">library(<span class="hljs-name"><span class="hljs-name">SnowballC</span></span>) stems &lt;- wordStem(<span class="hljs-name"><span class="hljs-name">words</span></span>, language = <span class="hljs-string"><span class="hljs-string">"russian"</span></span>)</code> </pre></div><p>Source: <a href="https://habr.com/ru/post/259915/">https://habr.com/ru/post/259915/</a></p>
+    <pre> <code class="python hljs"> out_list.append(str.encode(<span class="hljs-string"><span class="hljs-string">'utf-8'</span></span>)) <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> pandas.DataFrame(out_list)</code> </pre><br>  To use stemming, you need to import the RussianStemmer class, create an object, call the constructor with False parameters, and then use this object.  You cannot use the True parameter to load a standard set of stop words at the moment, an error is generated. <br><br><pre> <code class="python hljs"><span class="hljs-keyword"><span class="hljs-keyword">from</span></span> nltk.stem.snowball <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> RussianStemmer stemmer = RussianStemmer(<span class="hljs-keyword"><span class="hljs-keyword">False</span></span>) stemmer.stem(word)</code> </pre><br>  Solving a similar problem for R looks so simple that it seems an incredible time that I had to kill to find this solution. <br><br><pre> <code class="hljs pgsql"><span class="hljs-keyword"><span class="hljs-keyword">search</span></span>&lt;-dataset1$<span class="hljs-keyword"><span class="hljs-keyword">Search</span></span> <span class="hljs-keyword"><span class="hljs-keyword">Encoding</span></span>(<span class="hljs-keyword"><span class="hljs-keyword">search</span></span>)&lt;-<span class="hljs-string"><span class="hljs-string">'UTF-8'</span></span></code> </pre><br>  Similarly, select the Search column and set the encoding explicitly.  After this call, the string functions start working with the text correctly, I checked on the stringi library.  Reverse conversion is not required, everything works fine and so. <br><br>  Similarly, we implement stemming in R. I’ll draw your attention to the need to specify the UTF-8 encoding, otherwise the stemmer will not do anything. <br><br><pre> <code class="hljs lisp">library(<span class="hljs-name"><span class="hljs-name">SnowballC</span></span>) stems &lt;- wordStem(<span class="hljs-name"><span class="hljs-name">words</span></span>, language = <span class="hljs-string"><span class="hljs-string">"russian"</span></span>)</code> </pre></div><p>Source: https://habr.com/ru/post/259915/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../259903/index.html">Social networks in Russia, spring 2015. Figures, trends, forecasts</a></li>
-<li><a href="../259905/index.html">Who Hacked the Electric Substation: Analysis of the Digital Substation Takeover Contest</a></li>
 <li><a href="../259907/index.html">Creating games without canvas: Matreshka.js</a></li>
 <li><a href="../259909/index.html">How-to: Typography in the design of email-letters</a></li>
+<li><a href="../25991/index.html">Unobtrusive javascript</a></li>
 <li><a href="../259911/index.html">How we tested a static analysis on our project of a training simulator of endovascular surgery</a></li>
+<li><a href="../259913/index.html">Another story of your own project or “Motivate me!”</a></li>
 <li><a href="../259917/index.html">Welcome to the Softlayer Workshop June 16</a></li>
 <li><a href="../259919/index.html">USB adapter for a B7-28 digital voltmeter based on Arduino Mega</a></li>
+<li><a href="../25992/index.html">Reading wiki via icq is real</a></li>
 <li><a href="../259921/index.html">Typical billing scheme</a></li>
 <li><a href="../259923/index.html">Preparing reports for the board of directors in 20 minutes</a></li>
-<li><a href="../259925/index.html">Arduino + ESP8266 from scratch on the example of a Wi-Fi thermometer, part one</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

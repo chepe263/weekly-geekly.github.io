@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>TreeDb. Data structure</h1><div class="post__text post__text-html js-mediator-article">  Here, after <a href="http://akalend.habrahabr.ru/blog/80928/">yesterday's discussion, and</a> sketched an approximate structure of information storage: <br><img src="http://avoreg.ru/pic_b/0fdd965183c1c205d6d873d6db2aa46a.jpg"><br><a name="habracut"></a>  Read more ... <br><br>  Initially, a search is performed in the array <b>of 2BIdx structures</b> , which contains the structure from the first two bytes of the key name and the second value: the index of the directory array (Dir).  In pic - this is the leftmost TB.  tbl <br>  In general, table 2BIdx is not needed, but its use speeds up the selection of Dir arrays. <br><br>  <b>The Dir key array</b> is a list structure and has about the following fields: <br>  - Key name <br>  - pointer (or rather index) to the next element of the list <br>  - pointer (as an option index) to the Node element <br>  - nesting level. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,10 +63,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The Dir key array has the dimension of 2 ^ 16 (65536) elements - if it is allowed by the language :(. Each array is dynamically allocated from the memory pool. The element number for all elements of the array is pass-through and is calculated as follows: <br>  - the upper two bytes are the number of the Dir array, <br>  - the lower two bytes - the index in the array. <br><br>  all the keys in the array are sorted, so the pseudo-list structure is used (to minimize malloc). <br><br>  Next, from the Dir structure, we get into <b>the Node structure</b> .  All Node - are in the array of structures of 2 ^ 16 (65536) elements.  The numbering of the elements of the structures is through, the algorithm for calculating the location of the node by index (# Node / index) is the same as in the Dir array <br><br>  <b>Node structure</b> : <br>  - index in the Dir array (backward link) <br>  - Level nesting <br>  - Next, index next node (brother) <br>  - First - index on the first element of the nested structure <br>  - pointer to the data and the length of the data. <br><br>  Extraction of data occurs at.  All data are piled up without separators.  Knowing the Dinna and the address of the first byte of data, we easily “retrieve” from it and pass it on to processing. <br>  If the data block is not enough, then there is a request for the next block. <br><br>  I will try to implement such a scheme.  Can anyone have any additional ideas? <br><br>  Scaling ideas (oh, far to me before it): have a single Dir structure, according to my calculations, it should occupy about 2M in memory, in which the node address + server number is indicated (for example, the highest byte of the structure can be a number) </div><p>Source: <a href="https://habr.com/ru/post/80988/">https://habr.com/ru/post/80988/</a></p>
+      The Dir key array has the dimension of 2 ^ 16 (65536) elements - if it is allowed by the language :(. Each array is dynamically allocated from the memory pool. The element number for all elements of the array is pass-through and is calculated as follows: <br>  - the upper two bytes are the number of the Dir array, <br>  - the lower two bytes - the index in the array. <br><br>  all the keys in the array are sorted, so the pseudo-list structure is used (to minimize malloc). <br><br>  Next, from the Dir structure, we get into <b>the Node structure</b> .  All Node - are in the array of structures of 2 ^ 16 (65536) elements.  The numbering of the elements of the structures is through, the algorithm for calculating the location of the node by index (# Node / index) is the same as in the Dir array <br><br>  <b>Node structure</b> : <br>  - index in the Dir array (backward link) <br>  - Level nesting <br>  - Next, index next node (brother) <br>  - First - index on the first element of the nested structure <br>  - pointer to the data and the length of the data. <br><br>  Extraction of data occurs at.  All data are piled up without separators.  Knowing the Dinna and the address of the first byte of data, we easily “retrieve” from it and pass it on to processing. <br>  If the data block is not enough, then there is a request for the next block. <br><br>  I will try to implement such a scheme.  Can anyone have any additional ideas? <br><br>  Scaling ideas (oh, far to me before it): have a single Dir structure, according to my calculations, it should occupy about 2M in memory, in which the node address + server number is indicated (for example, the highest byte of the structure can be a number) </div><p>Source: https://habr.com/ru/post/80988/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -78,8 +78,8 @@
 <li><a href="../80989/index.html">Can we set up an experiment?</a></li>
 <li><a href="../80990/index.html">Programming of industrial automation interfaces</a></li>
 <li><a href="../80993/index.html">Ubuntu user day</a></li>
+<li><a href="../80998/index.html">Nein, Internet Explorer!</a></li>
 <li><a href="../80999/index.html">Red Hat, Zimbra, EnterpriseDB and other Open Software (OPO) for Russia and the CIS</a></li>
-<li><a href="../81000/index.html">As in the ATM trial software turned out!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

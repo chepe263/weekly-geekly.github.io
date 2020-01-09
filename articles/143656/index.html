@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Manage the boot of virtual machines</h1><div class="post__text post__text-html js-mediator-article">  One of the ideas, within which the selector cloud develops, is maximum administrator freedom when working with a cloud machine.  Differences with the real server should be minimal, and all new functions should not disrupt the feeling of a “real” machine. <br><br>  Now we have taken a very big step to implement this - we implemented a load management interface.  Up to this point, experiments with booting (different kernel versions, boot options, etc.) could lead to a non-working machine, and fixing this problem was problematic (unplugging the disk, plugging it back, etc.). <br><br>  Now this problem is solved.  I think these two screenshots will explain the capabilities of the system more than the test description: <br><img src="https://habrastorage.org/getpro/habr/post_images/046/f27/7f9/046f277f9511d438f7113057c910a2b2.png" alt="download options for a virtual machine in the selectle cloud"><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Just want to warn you that the configuration dialog is far from the safest thing.  The absence of some options at boot or, on the contrary, extraneous options can make the virtual machine non-working. <br><br>  Not all kernels are compatible with all distributions.  For example, loading modern systems from 2.6.18 is not a good idea.  Shipping Centos with 3.1 - too. <br><br><h1>  Detailed description </h1><br>  The selection begins with an indication of where to ship the core.  There are two options: “from the virtual machine disk” and “external kernel”.  We provide the external core (along with the initrd), the internal one is read from the boot disk.  If the internal core is selected, you can specify which disk to boot from and specify the grub menu item.  An empty field means "default". <br><br>  In this mode, the “Kernel Parameters” are appended to the arguments that are written in grub.cfg (menu.lst).  In particular, this opens the way to the single and init = / bin / sh options. <br><br>  The second mode is the external kernel boot mode.  For Centos, it is best to choose 2.6.18, for all others - 3.1 (2.6.34 left just in case). <br><br>  Important: in the external kernel mode, the arguments are taken only from the “kernel parameters” field.  If you do not specify all the necessary arguments here, there will be problems with loading.  The key parameters that should be - barrier = off (for 3.1, without it there will be problems with ext4), console (without it there will be no console) and root (without it, the system will not know where to boot from).  A sample of the parameters is inserted automatically when selecting one or another kernel, however, you need to understand that this is just a sample, and most likely, when externally loaded, you will need to specify additional parameters (for example, changing the console settings to console = xvc0 when loading 3.1 to debian ). <br><br>  The kernel accepts a lot of parameters, some of them are processed by the kernel, some of them are modules.  A complete list of the possible (not all that is applicable in the conditions of virtualization) is <a href="http://git.kernel.org/%3Fp%3Dlinux/kernel/git/torvalds/linux.git%3Ba%3Dblob_plain%3Bf%3DDocumentation/kernel-parameters.txt%3Bhb%3DHEAD">here</a> . </div><p>Source: <a href="https://habr.com/ru/post/143656/">https://habr.com/ru/post/143656/</a></p>
+      Just want to warn you that the configuration dialog is far from the safest thing.  The absence of some options at boot or, on the contrary, extraneous options can make the virtual machine non-working. <br><br>  Not all kernels are compatible with all distributions.  For example, loading modern systems from 2.6.18 is not a good idea.  Shipping Centos with 3.1 - too. <br><br><h1>  Detailed description </h1><br>  The selection begins with an indication of where to ship the core.  There are two options: “from the virtual machine disk” and “external kernel”.  We provide the external core (along with the initrd), the internal one is read from the boot disk.  If the internal core is selected, you can specify which disk to boot from and specify the grub menu item.  An empty field means "default". <br><br>  In this mode, the “Kernel Parameters” are appended to the arguments that are written in grub.cfg (menu.lst).  In particular, this opens the way to the single and init = / bin / sh options. <br><br>  The second mode is the external kernel boot mode.  For Centos, it is best to choose 2.6.18, for all others - 3.1 (2.6.34 left just in case). <br><br>  Important: in the external kernel mode, the arguments are taken only from the “kernel parameters” field.  If you do not specify all the necessary arguments here, there will be problems with loading.  The key parameters that should be - barrier = off (for 3.1, without it there will be problems with ext4), console (without it there will be no console) and root (without it, the system will not know where to boot from).  A sample of the parameters is inserted automatically when selecting one or another kernel, however, you need to understand that this is just a sample, and most likely, when externally loaded, you will need to specify additional parameters (for example, changing the console settings to console = xvc0 when loading 3.1 to debian ). <br><br>  The kernel accepts a lot of parameters, some of them are processed by the kernel, some of them are modules.  A complete list of the possible (not all that is applicable in the conditions of virtualization) is <a href="http://git.kernel.org/%3Fp%3Dlinux/kernel/git/torvalds/linux.git%3Ba%3Dblob_plain%3Bf%3DDocumentation/kernel-parameters.txt%3Bhb%3DHEAD">here</a> . </div><p>Source: https://habr.com/ru/post/143656/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../143649/index.html">Retail vs online store</a></li>
+<li><a href="../143651/index.html">Universal assessment system (goals, methods, actions, etc.)</a></li>
 <li><a href="../143652/index.html">Model of a neuron with a reaction to sequences</a></li>
 <li><a href="../143653/index.html">QuickBlox - backend for mobile applications</a></li>
 <li><a href="../143654/index.html">In Peterhof with a smartphone</a></li>
@@ -74,8 +74,8 @@
 <li><a href="../143657/index.html">An example of integration of Last.FM API and VK.COM API to update the contents of its player</a></li>
 <li><a href="../143658/index.html">Aleph PHP Framework</a></li>
 <li><a href="../143659/index.html">[SSD only] Activating TRIM on Mac OS Lion / Mountain Lion 10.8</a></li>
+<li><a href="../14366/index.html">Fotochki</a></li>
 <li><a href="../143660/index.html">Apple refuses Google Maps in iOS 6</a></li>
-<li><a href="../143661/index.html">Symptoms of an epidemic: the flow of web design</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

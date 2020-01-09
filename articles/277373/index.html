@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Eclipse on Java or read stackracks more attentively</h1><div class="post__text post__text-html js-mediator-article"> I do web development, at work we use the stack of technologies on <a href="http://www.scala-lang.org/">scala</a> for our projects, the basis of this stack is the <em>Lift framework</em> , also known as <a href="http://www.liftweb.net/">liftweb</a> .  <em>Lift</em> uses <a href="http://www.scala-sbt.org/"><abbr title="Simple build tools">sbt</abbr></a> to manage the build and <a href="https://eclipse.org/jetty/">jetty</a> or another servlet container as a web server. <br><br>  Once I had to work from home, it worked perfectly, the development version of the server started up, everything was as usual.  But the next day, when I returned to work at the office, when I first started the server, there was a complete bummer.  A <code>java.net.ConnectException</code> with the text <code>Connection timed out: connect</code> and a trace of 86 lines spread out wide on the console screen right at the start.  Unfortunately, it was not written where exactly it could not establish a connection.  Since the server is only starting up, the only connection that it should attempt to establish is <code>LISTEN</code> on a specific port.  But the exception is clearly not about that.  Moreover, the port has already responded with some kind of error more than <em>500</em> . <a name="habracut"></a><br><br>  From the right googled just <a href="http://stackoverflow.com/questions/27107703/jetty-has-a-timeout-exception-loading-the-war">that</a> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       I decided to clean the caches and try again.  Again the same exception.  Well, we should try to clean the <a href="https://en.wikipedia.org/wiki/Apache_Ivy">ivy</a> caches, maybe some broken library was busy.  Did not help.  Maybe something with the disk?  Disk check showed no errors (SSD disk).  How is it that yesterday everything worked at home ?!  And the day before yesterday, and here at work, everything worked.  Maybe the system is not updated, and there is already a fix?  No new updates.  Maybe antivirus or firewall?  Disconnected, did not help.  It was thought that perhaps the system considered my version of java completely unsafe and blocked its network.  I rearranged the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK</a> , deleting all the old versions, just in case, once again I cleaned all the caches and did a disk cleanup using the system tools.  Did not help. <br><br>  Strangely, the DNS servers and houses and <a href="https://developers.google.com/speed/public-dns/">Google are</a> registered here, in theory should work the same way. <br><br>  I began to search for what the address could be, I found only the schema definition in the <code>web.xml</code> in the <code>WEB-INF</code> folder in the root of the web server's public directory.  Googled replacement for the <abbr title="Document Type Definition">DTD</abbr> file <code>web-app_2_3.dtd</code> and didn’t really find anything.  And in truth, I could not believe that this url should be twitching at all. <br><br>  Here is the schema definition: <br> <code>&lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd"&gt;</code> <br> <br>  Another thought that had to be checked - if you take a laptop on which it works, bring it to work and try to start it in a working network - it will work or not.  Checked  Does not work.  Same exception. <br><br>  This is already interesting.  So the local network is to blame, but where exactly we can’t go is unclear.  I tried to start the project from machines of other developers - the same error. <br><br>  Here at the colleague the sensible thought flashed - and what if to start in general without network.  Checked - swears at the fact that it can not kill all the same <code>java.sun.com</code> .  I decided to study the problems with this domain in more detail.  But he does not ping at all!  I tried <code>traceroute</code> - timeout occurs somewhere in the provider area or a little further.  Through the mobile network everything works.  Those.  either the provider or the one who sells the channel to him does not know where to go. <br><br>  It is impossible to work this way, at first I wanted to download the necessary file through the channels through which it is available and put it on my server.  But later, on the recommendation of a colleague, I tried to remove the schema definition from the xml file in general.  And lo and behold!  Everything worked, no one swears.  I publish the text of the exception here in case someone else steps on it - loading the article will save yourself a couple of hours: <br><br><div class="spoiler">  <b class="spoiler_title">Exception</b> <div class="spoiler_text"><pre>  java.net.ConnectException: Connection timed out: connect
@@ -138,14 +138,14 @@
          at java.util.concurrent.FutureTask.run (Unknown Source)
          at java.util.concurrent.ThreadPoolExecutor.runWorker (Unknown Source)
          at java.util.concurrent.ThreadPoolExecutor $ Worker.run (Unknown Source)
-         at java.lang.Thread.run (Unknown Source) </pre><br></div></div><br>  Now the provider's address also pings, apparently the problem has withdrawn itself. <br><br>  And yes, perhaps, after a careful study of the glass eye stack, it would still catch on the line <code>com.sun.org.apache.xerces.internal.impl.XMLEntityManager.startDTDEntity</code> and it would become clear that this is exactly the case.  But IMHO, the address to which you could not connect, it is necessary to write exceptions in the text!  I don’t know where to submit patches for the <code>com.sun.org</code> code, I haven’t sent any reports yet. <br><br>  PS <code>java.sun.com</code> now is <em>CNAME</em> at <code>www-legacy.oraclegha.com</code> .  Perhaps it is so legacy that it somehow became the cause. <br></div><p>Source: <a href="https://habr.com/ru/post/277373/">https://habr.com/ru/post/277373/</a></p>
+         at java.lang.Thread.run (Unknown Source) </pre><br></div></div><br>  Now the provider's address also pings, apparently the problem has withdrawn itself. <br><br>  And yes, perhaps, after a careful study of the glass eye stack, it would still catch on the line <code>com.sun.org.apache.xerces.internal.impl.XMLEntityManager.startDTDEntity</code> and it would become clear that this is exactly the case.  But IMHO, the address to which you could not connect, it is necessary to write exceptions in the text!  I don’t know where to submit patches for the <code>com.sun.org</code> code, I haven’t sent any reports yet. <br><br>  PS <code>java.sun.com</code> now is <em>CNAME</em> at <code>www-legacy.oraclegha.com</code> .  Perhaps it is so legacy that it somehow became the cause. <br></div><p>Source: https://habr.com/ru/post/277373/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../277361/index.html">Kimono service is closing</a></li>
 <li><a href="../277363/index.html">Who works in Innopolis?</a></li>
 <li><a href="../277367/index.html">Popular reasons for the fall of sites</a></li>
 <li><a href="../277369/index.html">How to the developer to "join" the theme of DevOps</a></li>
+<li><a href="../27737/index.html">Matryoshka 2.0</a></li>
 <li><a href="../277371/index.html">The advantages of using unique shaders in computer games: personal experience and observation</a></li>
 <li><a href="../277375/index.html">Installing and configuring cacti 0.8.8f from scratch under Ubuntu 14.04</a></li>
 <li><a href="../277381/index.html">The first reports of PHDays VI: how to break transport maps, set up hacker mousetraps and sell vulnerabilities for $ 100,000</a></li>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>From searching to examining documents in network balls and file dumps</h1><div class="post__text post__text-html js-mediator-article"><p><img src="https://habrastorage.org/webt/zh/jo/0e/zhjo0e9prb-1pvswivhiwzthvei.jpeg"></p><br><p>  In the <a href="https://habrahabr.ru/post/340518/">previous article</a> we talked about our open-source product for searching data by balls and file dumps.  Since then, we have improved the product and significantly improved the search by adding named entities, tags, statistics on demand and folder structure.  These improvements allow you to move from search to data analysis, the article will look at all this in more detail. </p><a name="habracut"></a><br><h2 id="teoreticheskaya-chast">  Theoretical part </h2><br><p>  First, I will tell you about the theoretical part, namely how tags and named entities work in Ambar. </p><br><p>  Tags in Ambar is additional meta information at the file level, give an example - you found a scan boo.  last year’s report, so that you can’t lose it anymore, you can add a “report” tag to it.  After all the reports are marked, you can easily find them by searching by tag. </p><br><p><img src="https://habrastorage.org/webt/c2/tl/6f/c2tl6fmmfjafjddpm3t80cuvpiy.gif" alt="tagging"></p><br><p>  To make life easier, Ambar can automatically tag by internal rules, examples of rules: </p><br><ul><li> affix the tag "image" if the MIME document has an <code>image</code> type </li><li>  affix the tag "archive" if the document has the extension zip, rar, 7z, etc. </li></ul><br><p>  To summarize, with the help of tags Ambar can answer the following search requests: show all images (request: <code>tags:image</code> ), show all the files on which the word 'confidential' is recognized by using OCR (request: <code>tags:ocr </code> ), show me all report scans (request: <code>tags:image,</code> ). </p><br><p>  Named entities in Ambar work at the document content level, for example, Ambar is now able to find IP addresses, TIN, company names, phone numbers, car registration numbers, URI identifiers (links), email addresses in the document contents.  mail. </p><br><p>  A named entity is a certain rule that makes it possible to determine with high probability that a given word or several words in a text define an entity of a certain type.  For example, for an INN, you can simplifyly describe the rules as follows: 11 or 13 digits, which satisfy the special rule for calculating the checksum.  After the named entity is found, we bring it to a normal form, so the following phone numbers are the same entity: +7 999 111 22 33 and 8999111-22-33. </p><br><p>  You can see which Ambar entities are found in the document using the "View" button.  It is also worth noting that the types of named entities found in the document are immediately added as tags, this means that if IP addresses are found in the document content, the file will certainly receive an "ip" tag. </p><br><p><img src="https://habrastorage.org/webt/n5/_z/ku/n5_zkuv1i3nhlslqp7t0vh5x4y0.png" alt="entity view"></p><br><p>  To summarize, Ambar is able to respond to the following search queries using named entities: show me all the files where the IP address 192.168.1.1 is found (request: <code>entitites:"192.168.1.1"</code> ), show me the scans of documents in which the TIN of such and such a company is found (request: <code>entitites:"123123123123" tags:ocr</code> ).  Finally, I will say a secret - in the next Ambar release, we plan to add a connection of third-party entities as plug-ins. </p><br><h2 id="ot-teorii-k-praktike">  From theory to practice </h2><br><p>  Suppose you have already set up Ambar and have indexed a certain number of files, in order to understand what is stored on these balls, I suggest entering a search query <code>*</code> (show all) and switching to the "Statistics" view.  From this view, it becomes immediately clear how many files were found and what their size was, as well as what types of files were found (for torrents and movies for sure not to leave!). </p><br><p><img src="https://habrastorage.org/webt/gs/uj/tz/gsujtz2v1xdqvn8crdy7-dt5gly.png" alt="View statistics"></p><br><p>  Suppose you find that 30% of your balls are occupied by <code>.avi</code> files from last year's corporate party, how do you know in which folders they are located?  Enter the query <code>size&gt;500M filename:*.avi</code> and go to the folder view.  We see in which folders the greatest number of hits and delete them with a pure soul. </p><br><p><img src="https://habrastorage.org/webt/v-/zv/1z/v-zv1zatxdrvhzryi9vs0ypdbdw.png" alt="Folder view"></p><br><p>  Consider a more complex example; you need to find an employee’s phone number.  Enter the query <code>" " tags:phone</code> and go to the "Statistics" tab.  We select found named entities of the phone type and go to the detailed view to view the text of the document, if we use a lot of results, use a table view or refine the query. </p><br><p><img src="https://habrastorage.org/webt/df/db/ut/dfdbutlqbphjdfczxcwusjo7yt8.png" alt="Detailed view"></p><br><p>  In the future, we plan to develop the analytical part of Ambar, namely the creation of custom user tagging rules, custom entities (there have already been requests to add car brands) and the visualization of links between the found entities. </p><br><p>  Thanks for attention! </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/342978/">https://habr.com/ru/post/342978/</a></p>
+    <p>Source: https://habr.com/ru/post/342978/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

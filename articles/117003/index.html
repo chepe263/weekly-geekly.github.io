@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Notes geek. zsh shell</h1><div class="post__text post__text-html js-mediator-article"><h5>  Take the first. </h5><br><br>  At some point, there was an urgent need to get hold of the English-Russian dictionary in the console, <br>  during the 2-minute search for packages of happiness was not found. <br>  Well, you have to make your own dictionary, remembering that in chromium there is a plugin for the dictionary, it was decided to gut its contents, and screw the dictionary from google to the console. <br>  Well, then the code for zsh. <br>  In the comments resources that were viewed during the search for a solution. <br><a name="habracut"></a><br><pre><code class="bash hljs">gdictionary () ( <span class="hljs-comment"><span class="hljs-comment"># http://code.google.com/p/dict-lookup-chrome-ext/source/browse/trunk/extension/lookup.js # http://www.google.com/dictionary?langpair=en|ru&amp;q=chemist&amp;hl=ru&amp;aq=f # http://www.zsh.org/mla/users/2006/msg00063.html # GET "http://www.google.com/dictionary?langpair=en|ru&amp;q=$1&amp;hl=ru&amp;aq=f" | grep dct-tt | sed /'class=\"dct-e/d' | sed '/&lt;a\ href/d' | sed 's/&lt;span class="dct-tt"&gt;//g' |sed 's/&lt;\/span&gt;//' | sed '/&lt;span /d' | head -n 3 )</span></span></code> </pre> <br><br>  Regulars were selected quickly and thoughtlessly; after solving the original problem, they were not subject to editing. <br>  Well, in the end: <br>  <b>limbo ~ $ gdictionary hello</b> <br>  acclamation <br>  greeting <br>  exclamation of surprise 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,18 +62,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  Take the second. </h5><br><br>  It took to record a voice, a quick search brought to arecord. <br>  In order not to return to this issue in the future, I decided to record the voice on a hot track. <br>  As a result, the next monster was born: <br><br><pre> <code class="bash hljs"><span class="hljs-function"><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">run_microphone</span></span></span></span> () { ps au | grep -v grep | grep -q arecord &amp;&amp; killall arecord || arecord -F 5 -D hw:1,0 -t wav -f dat -c 1 | lame - &gt; ~/microphone/`date +%F-%R`.mp3 &amp; } <span class="hljs-built_in"><span class="hljs-built_in">zle</span></span> -N run_microphone run_microphone <span class="hljs-built_in"><span class="hljs-built_in">bindkey</span></span> <span class="hljs-string"><span class="hljs-string">"^[[24~"</span></span> run_microphone</code> </pre><br><br>  As a result, the first time you press F12, the computer writes sound from the microphone to ~ / microphone / <br>  The next time you press F12, the recording stops. <br><br>  hw: 1.0 for arecord is the following shamanism: <br>  <b>limbo ~ $ cat / proc / asound / pcm</b> <br>  00-00: ALC662 rev1 Analog: ALC662 rev1 Analog: <br>  00-01: ALC662 rev1 Digital: ALC662 rev1 Digital <br>  00-03: NVIDIA HDMI: NVIDIA HDMI: Playback 1 <br>  0 <b>1-0</b> 0: USB Audio: USB Audio: <b>capture</b> 1 &lt;- watch movies. <br><br><h5>  Take third </h5><br><br>  I've been using yakuake for a long time.  For those who do not know, leaving the console, such as in the quake. <br>  Well, as she stopped, I like her, why I do not know. <br>  As a result, a replacement was made from the usual konsole. <br><br><pre> <code class="bash hljs">konsole-on () ( qdbus `qdbus | grep konsole` /konsole/MainWindow_1 setVisible 1 qdbus `qdbus | grep konsole` /konsole/MainWindow_1 showFullScreen qdbus `qdbus | grep konsole` /konsole/MainWindow_1 setFocus ) konsole-off () ( qdbus `qdbus | grep konsole` /konsole/MainWindow_1 setVisible 0 ) konsole-full () ( ps -C konsole --no-heading || /usr/bin/konsole qdbus `qdbus | grep konsole` /konsole/MainWindow_1 Get com.trolltech.Qt.QWidget visible \ | grep -q <span class="hljs-literal"><span class="hljs-literal">true</span></span> &amp;&amp; konsole-off || konsole-on )</code> </pre><br><br>  Well, then konsole-full zabindenna button. <br>  When you first press the console is displayed, the second hides. <br><br><h5>  Part last, final </h5><br><br>  In the final, KDE went into oblivion, and dwm reigned in its place. <br>  As it turned out terribly handy thing. <br>  But the story of how to live with a DE of 20 kilobytes will continue the series. <br>  Behind this otklanivayus. </div><p>Source: <a href="https://habr.com/ru/post/117003/">https://habr.com/ru/post/117003/</a></p>
+    <h5>  Take the second. </h5><br><br>  It took to record a voice, a quick search brought to arecord. <br>  In order not to return to this issue in the future, I decided to record the voice on a hot track. <br>  As a result, the next monster was born: <br><br><pre> <code class="bash hljs"><span class="hljs-function"><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">run_microphone</span></span></span></span> () { ps au | grep -v grep | grep -q arecord &amp;&amp; killall arecord || arecord -F 5 -D hw:1,0 -t wav -f dat -c 1 | lame - &gt; ~/microphone/`date +%F-%R`.mp3 &amp; } <span class="hljs-built_in"><span class="hljs-built_in">zle</span></span> -N run_microphone run_microphone <span class="hljs-built_in"><span class="hljs-built_in">bindkey</span></span> <span class="hljs-string"><span class="hljs-string">"^[[24~"</span></span> run_microphone</code> </pre><br><br>  As a result, the first time you press F12, the computer writes sound from the microphone to ~ / microphone / <br>  The next time you press F12, the recording stops. <br><br>  hw: 1.0 for arecord is the following shamanism: <br>  <b>limbo ~ $ cat / proc / asound / pcm</b> <br>  00-00: ALC662 rev1 Analog: ALC662 rev1 Analog: <br>  00-01: ALC662 rev1 Digital: ALC662 rev1 Digital <br>  00-03: NVIDIA HDMI: NVIDIA HDMI: Playback 1 <br>  0 <b>1-0</b> 0: USB Audio: USB Audio: <b>capture</b> 1 &lt;- watch movies. <br><br><h5>  Take third </h5><br><br>  I've been using yakuake for a long time.  For those who do not know, leaving the console, such as in the quake. <br>  Well, as she stopped, I like her, why I do not know. <br>  As a result, a replacement was made from the usual konsole. <br><br><pre> <code class="bash hljs">konsole-on () ( qdbus `qdbus | grep konsole` /konsole/MainWindow_1 setVisible 1 qdbus `qdbus | grep konsole` /konsole/MainWindow_1 showFullScreen qdbus `qdbus | grep konsole` /konsole/MainWindow_1 setFocus ) konsole-off () ( qdbus `qdbus | grep konsole` /konsole/MainWindow_1 setVisible 0 ) konsole-full () ( ps -C konsole --no-heading || /usr/bin/konsole qdbus `qdbus | grep konsole` /konsole/MainWindow_1 Get com.trolltech.Qt.QWidget visible \ | grep -q <span class="hljs-literal"><span class="hljs-literal">true</span></span> &amp;&amp; konsole-off || konsole-on )</code> </pre><br><br>  Well, then konsole-full zabindenna button. <br>  When you first press the console is displayed, the second hides. <br><br><h5>  Part last, final </h5><br><br>  In the final, KDE went into oblivion, and dwm reigned in its place. <br>  As it turned out terribly handy thing. <br>  But the story of how to live with a DE of 20 kilobytes will continue the series. <br>  Behind this otklanivayus. </div><p>Source: https://habr.com/ru/post/117003/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../116992/index.html">Director of the Linux Foundation: no need to offend Microsoft</a></li>
-<li><a href="../116994/index.html">Using UpdatePanel and others like it</a></li>
-<li><a href="../116997/index.html">A brilliant example of Chinese engineering is a 500 GB portable hard drive.</a></li>
 <li><a href="../116998/index.html">Steve Pavlina - 30 days without Facebook</a></li>
 <li><a href="../116999/index.html">GNOME 3.0 release</a></li>
+<li><a href="../117/index.html">Post office?</a></li>
+<li><a href="../1170/index.html">Multiple search</a></li>
+<li><a href="../11700/index.html">Skyscraper greenhouses will be able to feed the citizens</a></li>
 <li><a href="../117004/index.html">Biglion mastered the black promotion?</a></li>
 <li><a href="../117005/index.html">List of sites that store cleartext passwords</a></li>
 <li><a href="../117006/index.html">All moves are recorded.</a></li>

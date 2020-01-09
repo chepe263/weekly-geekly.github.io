@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Signing files through the browser</h1><div class="post__text post__text-html js-mediator-article">  In a number of projects, it is required to sign arbitrary format files (for example, tender documentation in PDF format) when uploading them to the server. <br>  Usually a signature is required according to GOST R 34.10-2001, using X.509 digital certificates.  In this case, the signature itself is then conveniently stored on the server in the CMS detached format. <br>  Just want to note that the problem is solved for a long time (CryptoPro CSP, CAPICOM, etc).  But there are nuances that make such a decision is not always convenient.  For one of the projects, we proposed a solution for file signing, which really made life easier for end users and technical support.  About him below. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/2d0/691/c4a/2d0691c4a83dbe951c65395a9a77e534.png"><br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The general scheme of the solution is shown in the picture. <br>  Components on the client. <br><ol><li>  <a href="http://www.rutoken.ru/products/all/rutoken-ds/">Rutoken EDS</a> as a hardware SKZI </li><li>  <a href="http://www.rutoken.ru/products/all/rutoken-plugin/">Rutoken Plugin</a> to support Rutoken EDS in the browser + support for digital certificates </li></ol><br>  On the server we use a modified openssl + wrapper for ASP.NET.  Using openssl gives you the opportunity to go to MagPro CryptoPack 2.1 2.1 certified by CIPS without any special changes to the server part. <br><br>  Description of the protocol by which the signature occurs. <br><ol><li>  Uploading the document to the server using standard browser tools (or generating a document on the server, as often happens) </li><li>  Calculation of the hash sum from the document on the server according to GOST R 34.11-94 using openssl </li><li>  Sending the calculated hash sum to the client </li><li>  Signature according to GOST R 34.10-2001 hash amount on the client with the private key associated with the certificate </li><li>  Sending a signature and certificate to the server </li><li>  Signature verification </li><li>  Packaging signature and certificate in CMS format detached </li></ol><br><br>  Now about the technical means. <br>  The server-wrapper library over openssl has the following API: <br><ol><li>  Hash Sum function <br>  <i>unsigned char * HashData (unsigned char * buffer, size_t size);</i> <br></li><li>  CMS formation function detached <br>  <i>char * CreateSignedCMSDetached (unsigned char * signature, const char * cert);</i> <br></li><li>  The signature verification function is not universal and is implemented only for this project, so I will not describe it here. </li></ol><br><br>  As you can see, these functions are fairly easy to call from ASP.NET (and not only). <br><br>  On the client, the hash signature is executed by a sequence of calls to the Rutoken Plugin: <br><ol><li>  User selects certificate </li><li>  Find the private key by certificate <br>  <i>getKeyByCertificate (deviceId, certId, resultCallback, errorCallback) → {string}</i> <br></li><li>  Get the “body” of the certificate to be sent to the server <br>  <i>getCertificate (deviceId, certId, resultCallback, errorCallback) → {string}</i> <br></li><li>  Sign a hash using the private key <br>  <i>rawSign (deviceId, keyId, data, options, resultCallback, errorCallback) → {string}</i> <br>  Returns the signature of GOST R 34.10-2001 in hex from the transmitted hash <br></li></ol><br><br>  The hash and certificate are sent to the server. <br>  The solution is easy for both the developer and the end user. </div><p>Source: <a href="https://habr.com/ru/post/214881/">https://habr.com/ru/post/214881/</a></p>
+      The general scheme of the solution is shown in the picture. <br>  Components on the client. <br><ol><li>  <a href="http://www.rutoken.ru/products/all/rutoken-ds/">Rutoken EDS</a> as a hardware SKZI </li><li>  <a href="http://www.rutoken.ru/products/all/rutoken-plugin/">Rutoken Plugin</a> to support Rutoken EDS in the browser + support for digital certificates </li></ol><br>  On the server we use a modified openssl + wrapper for ASP.NET.  Using openssl gives you the opportunity to go to MagPro CryptoPack 2.1 2.1 certified by CIPS without any special changes to the server part. <br><br>  Description of the protocol by which the signature occurs. <br><ol><li>  Uploading the document to the server using standard browser tools (or generating a document on the server, as often happens) </li><li>  Calculation of the hash sum from the document on the server according to GOST R 34.11-94 using openssl </li><li>  Sending the calculated hash sum to the client </li><li>  Signature according to GOST R 34.10-2001 hash amount on the client with the private key associated with the certificate </li><li>  Sending a signature and certificate to the server </li><li>  Signature verification </li><li>  Packaging signature and certificate in CMS format detached </li></ol><br><br>  Now about the technical means. <br>  The server-wrapper library over openssl has the following API: <br><ol><li>  Hash Sum function <br>  <i>unsigned char * HashData (unsigned char * buffer, size_t size);</i> <br></li><li>  CMS formation function detached <br>  <i>char * CreateSignedCMSDetached (unsigned char * signature, const char * cert);</i> <br></li><li>  The signature verification function is not universal and is implemented only for this project, so I will not describe it here. </li></ol><br><br>  As you can see, these functions are fairly easy to call from ASP.NET (and not only). <br><br>  On the client, the hash signature is executed by a sequence of calls to the Rutoken Plugin: <br><ol><li>  User selects certificate </li><li>  Find the private key by certificate <br>  <i>getKeyByCertificate (deviceId, certId, resultCallback, errorCallback) → {string}</i> <br></li><li>  Get the “body” of the certificate to be sent to the server <br>  <i>getCertificate (deviceId, certId, resultCallback, errorCallback) → {string}</i> <br></li><li>  Sign a hash using the private key <br>  <i>rawSign (deviceId, keyId, data, options, resultCallback, errorCallback) → {string}</i> <br>  Returns the signature of GOST R 34.10-2001 in hex from the transmitted hash <br></li></ol><br><br>  The hash and certificate are sent to the server. <br>  The solution is easy for both the developer and the end user. </div><p>Source: https://habr.com/ru/post/214881/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../214865/index.html">IP Addressing System</a></li>
-<li><a href="../214867/index.html">Mozilla investigates why Dell UK is charging £ 16.25 for installing Firefox</a></li>
 <li><a href="../214871/index.html">DG approved a draft law on blocking websites with any pirated content</a></li>
 <li><a href="../214873/index.html">Google Summer of Code 2014</a></li>
+<li><a href="../214877/index.html">Release of KPHP and engines</a></li>
 <li><a href="../214879/index.html">Airbus will join the "space drivers"</a></li>
+<li><a href="../21488/index.html">Best Antivirus 2008</a></li>
 <li><a href="../214883/index.html">How to become a quantum in the HFT-company</a></li>
 <li><a href="../214885/index.html">The contest "Professional Analyst" starts at InfoTeKS Academy</a></li>
 <li><a href="../214889/index.html">Crowd testing service Utest: how to max out</a></li>
+<li><a href="../21489/index.html">Future for Lem?</a></li>
 <li><a href="../214891/index.html">Olympic traffic: how and how much watched the Olympics on the Internet</a></li>
-<li><a href="../214893/index.html">Highscreen Alpha Tab: tablet phone on Android 4.2 with a diagonal of 8.1 inches</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

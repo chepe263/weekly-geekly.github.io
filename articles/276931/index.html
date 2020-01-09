@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Web version of Server Management Tools for TP 2016</h1><div class="post__text post__text-html js-mediator-article"> New Server Management Tools are available on the web (on the new <a href="https://portal.azure.com/">Azure</a> portal), so far in the preview. <br>  This “utility” allows you to get information and manage the server through the Azure website (both virtual machines in Azure and on the ground).  Works for all versions \ editions ( <b>including Nano</b> ) 2016 TP4, the utilities themselves are currently located in Azure. <br><img src="https://habrastorage.org/files/2f1/6b8/68b/2f16b868b02c4ae1897338577ead0b0f.png"><a name="habracut"></a><br><br>  <b>Architecture:</b> <br><img src="https://habrastorage.org/getpro/habr/post_images/130/dc2/cf7/130dc2cf7db0a89d8900755372a28806.png" alt="image"><br>  As you can see from this picture, the architecture is simple and simple, you need a browser, a gateway server, an Azure subscription, and a server (s) that you need to manage (and). <br>  Server management tools Gateway can be installed on an OS in Azure or “on the ground”; after its configuration, it can be connected to a server or many servers that need to be managed.  Gateway server needs internet to communicate with Azure.  Gateway server may be 2012 r2, but then you need to install <a href="https://www.microsoft.com/en-us/download/details.aspx%3Fid%3D48729">WMF 5.0</a> .  For ideas and suggestions there is a <a href="https://windowsserver.uservoice.com/forums/295071-management-tools">UserVoice</a> . <br><br>  <b>Functional:</b> <br>  1. View and change the OS configuration; <br>  2. View various OS metrics; <br>  3. OS device management (for this, the device manager was rewritten in TP); <br>  4. View OS events; <br>  5. View a list of installed roles and components; <br>  6. The powershell console. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,14 +60,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>Testing:</b> <br>  To get started, you need to create a new Server Management Tools object in the Azure portal (new&gt; in the search bar Server management tools&gt; fill in all the fields).  When you first create, you will need to create a new Server management tools Gateway, I chose a virtual machine in Azure (indicated its internal IP when creating).  Ideally, the Gateway server and the managed server should be on the same network.  After the gate is created, it will tell you that it cannot find the Server management tools Gateway, this is normal, because  You have not installed it yet.  :) <br><img src="https://habrastorage.org/getpro/habr/post_images/766/ba5/ca6/766ba5ca69a096d8f79d1eb347c72faa.png" alt="image"><br>  Zmakayte in this line, follow the instructions that you provide (in fact, just download and install the MSI file, then further below and further).  If you did everything correctly the picture will change. <br><img src="https://habrastorage.org/getpro/habr/post_images/1be/c2f/523/1bec2f5239345eaf06c8486dc916d7f1.png" alt="image"><br>  Now you only need to specify the username / password to manage the server (with local administrator rights on the target server). <br><br>  <b>Here are a couple of screenshots for the seed:</b> <br>  Device manager <br><img src="https://habrastorage.org/files/dbc/033/d62/dbc033d628534d81bc32701a75ac1a92.png"><br>  Event viewer <br><img src="https://habrastorage.org/files/bd4/de3/15a/bd4de315a3ee4f69a1328710d25fac1f.png"><br>  Process explorer <br><img src="https://habrastorage.org/files/a55/e51/faf/a55e51faf9b2430ca67fc8ce918e482c.png"><br>  Registry <br><img src="https://habrastorage.org/files/f60/1c8/d3b/f601c8d3b18942219915f062bd03a528.png"><br><br>  <b>Nuances!</b> <br>  To manage servers in the Workgroup, you need to add them to the Trusted hosts on the Server management tools Gateway: <br> <code><code>winrm set winrm/config/client @{ TrustedHosts="&lt;&gt;" } <br>    : <br> Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" <br></code> <br>        ,        : <br> <code>REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 <br></code> <br>     : <code>NETSH advfirewall firewall add rule name="WinRM 5985" protocol=TCP dir=in localport=5985 action=allow <br></code> <br>         15    ,   ! <br>     <a href="http://blogs.technet.com/b/nanoserver/archive/2016/02/09/server-management-tools-is-now-live.aspx"></a> . <br> .       , ,          (  powershell). <br> .     Server Management tools  <a href="https://portal.azure.com/"> </a> .</code> </div><p>Source: <a href="https://habr.com/ru/post/276931/">https://habr.com/ru/post/276931/</a></p>
+      <b>Testing:</b> <br>  To get started, you need to create a new Server Management Tools object in the Azure portal (new&gt; in the search bar Server management tools&gt; fill in all the fields).  When you first create, you will need to create a new Server management tools Gateway, I chose a virtual machine in Azure (indicated its internal IP when creating).  Ideally, the Gateway server and the managed server should be on the same network.  After the gate is created, it will tell you that it cannot find the Server management tools Gateway, this is normal, because  You have not installed it yet.  :) <br><img src="https://habrastorage.org/getpro/habr/post_images/766/ba5/ca6/766ba5ca69a096d8f79d1eb347c72faa.png" alt="image"><br>  Zmakayte in this line, follow the instructions that you provide (in fact, just download and install the MSI file, then further below and further).  If you did everything correctly the picture will change. <br><img src="https://habrastorage.org/getpro/habr/post_images/1be/c2f/523/1bec2f5239345eaf06c8486dc916d7f1.png" alt="image"><br>  Now you only need to specify the username / password to manage the server (with local administrator rights on the target server). <br><br>  <b>Here are a couple of screenshots for the seed:</b> <br>  Device manager <br><img src="https://habrastorage.org/files/dbc/033/d62/dbc033d628534d81bc32701a75ac1a92.png"><br>  Event viewer <br><img src="https://habrastorage.org/files/bd4/de3/15a/bd4de315a3ee4f69a1328710d25fac1f.png"><br>  Process explorer <br><img src="https://habrastorage.org/files/a55/e51/faf/a55e51faf9b2430ca67fc8ce918e482c.png"><br>  Registry <br><img src="https://habrastorage.org/files/f60/1c8/d3b/f601c8d3b18942219915f062bd03a528.png"><br><br>  <b>Nuances!</b> <br>  To manage servers in the Workgroup, you need to add them to the Trusted hosts on the Server management tools Gateway: <br> <code><code>winrm set winrm/config/client @{ TrustedHosts="&lt;&gt;" } <br>    : <br> Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" <br></code> <br>        ,        : <br> <code>REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 <br></code> <br>     : <code>NETSH advfirewall firewall add rule name="WinRM 5985" protocol=TCP dir=in localport=5985 action=allow <br></code> <br>         15    ,   ! <br>     <a href="http://blogs.technet.com/b/nanoserver/archive/2016/02/09/server-management-tools-is-now-live.aspx"></a> . <br> .       , ,          (  powershell). <br> .     Server Management tools  <a href="https://portal.azure.com/"> </a> .</code> </div><p>Source: https://habr.com/ru/post/276931/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../276919/index.html">New Java-conference from JUG.ru in Novosibirsk</a></li>
+<li><a href="../27692/index.html">Microsoft Expression Media 2</a></li>
 <li><a href="../276921/index.html">Best practices for protecting e-commerce sites</a></li>
 <li><a href="../276923/index.html">Creating the concept of mobile f2p games. Part 1</a></li>
 <li><a href="../276925/index.html">EDI standard. Technical Overview</a></li>
@@ -76,7 +76,7 @@
 <li><a href="../276935/index.html">Reset suspended RDP sessions</a></li>
 <li><a href="../276937/index.html">Algorithm for creating a list of all permutations or placements</a></li>
 <li><a href="../276939/index.html">DUMP-2016 Developer Conference: Ekaterinburg, April 8</a></li>
-<li><a href="../276941/index.html">Deploying Linux distribution with SCCM 2012</a></li>
+<li><a href="../27694/index.html">Eclipse PDT 1.0.3</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Installing SphinxSE on Percona Server</h1><div class="post__text post__text-html js-mediator-article">  Neither <a href="http://habrahabr.ru/search/%3Fq%3D%255Bsphinx%255D%26target_type%3Dposts">Sphinx</a> , nor <a href="http://habrahabr.ru/search/%3Fq%3D%255Bpercona%255D%26target_type%3Dposts">Percona Server needs</a> any special introduction.  SphinxSE is not the main, but in some way more convenient access interface to Sphinx searchd, designed as a storage engine of the MySQL plugin. <br><br>  The Sphinx documentation describes the installation of SphinxSE, but it does not work.  Under the cut there is a short instruction on a bunch of percones with a sphinx, which worked for me and, possibly, will save someone a few hours of healthy sleep. <br><a name="habracut"></a><br>  So, we have Percona Server 5.5.28 and Sphinx 2.0.6 installed from the packages.  In my case, this is RPM on CentOS 6. <br><div class="spoiler">  <b class="spoiler_title">If sphinx is not installed, requiring libmysqlclient.so.x</b> <div class="spoiler_text">  And in the system there is only a more recent version of the library, just put the package Percona-Server-shared-compat </div></div><br>  To build the plugin, we need the source of both packages.  Download and unpack: <br><pre><code class="bash hljs">[user@host ~]$ wget http://sphinxsearch.com/files/sphinx-2.0.6-release.tar.gz [user@host ~]$ tar -xzf sphinx-2.0.6-release.tar.gz [user@host ~]$ wget http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.28-29.1/<span class="hljs-built_in"><span class="hljs-built_in">source</span></span>/Percona-Server-55-5.5.28-rel29.1.334.rhel6.src.rpm [user@host ~]$ rpm -i Percona-Server-55-5.5.28-rel29.1.334.rhel6.src.rpm [user@host ~]$ <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> rpmbuild/ [user@host rpmbuild]$ rpmbuild -bp SPECS/percona-server.spec</code> </pre> <br>  We carry out the first two steps from the <a href="http://sphinxsearch.com/docs/current.html">official documentation</a> , they are common to both methods: <br><pre> <code class="bash hljs">[user@host rpmbuild]$ <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> BUILD/Percona-Server-5.5.28-rel29.1/Percona-Server-5.5.28-rel29.1/ [user@host Percona-Server-5.5.28-rel29.1]$ cp -R ~/sphinx-2.0.6-release/mysqlse storage/sphinx [user@host Percona-Server-5.5.28-rel29.1]$ sh BUILD/autorun.sh</code> </pre><br><h2>  Method 1 - official </h2><br>  We offer to build and install MySQL completely.  Understandably, this does not suit us.  We are trying to build only the plugin: <br><pre> <code class="bash hljs">[user@host Percona-Server-5.5.28-rel29.1]$ ./configure [user@host Percona-Server-5.5.28-rel29.1]$ <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> storage/sphinx/ [user@host sphinx]$ make</code> </pre><br>  Go to <i>.so</i> , copy it to the MySQL plugins directory (replace the path with yours): <br><pre> <code class="bash hljs">[root@host sphinx]<span class="hljs-comment"><span class="hljs-comment"># cp ha_sphinx.so /usr/lib64/mysql/plugin/</span></span></code> </pre><br>  Now we climb into the mysql install plugin: <br><pre> <code class="bash hljs">[user@host sphinx]$ mysql -uroot -p mysql&gt; INSTALL PLUGIN sphinx SONAME <span class="hljs-string"><span class="hljs-string">'ha_sphinx.so'</span></span>; mysql&gt; SHOW ENGINES;</code> </pre><br>  We see <b>SPHINX</b> in the list of engines - everything seems to be fine.  Create a lookup table: <br><pre> <code class="bash hljs">CREATE TABLE sphinx ( id BIGINT UNSIGNED NOT NULL, weight INTEGER NOT NULL, query VARCHAR(3072) NOT NULL, INDEX(query) ) ENGINE=SPHINX CONNECTION=<span class="hljs-string"><span class="hljs-string">"sphinx://127.0.0.1:9312/*"</span></span>;</code> </pre><div class="spoiler">  <b class="spoiler_title">Note</b> <div class="spoiler_text">  In the documentation, instead of BIGINT and 127.0.0.1, INTEGER and localhost are indicated, respectively, but the table is not created with them and the host does not resolve. </div></div><br>  <b>And we fall out in segfault.</b>  The DBMS crashes on any access to this table, and even just by querying <i>show tables</i> . <br><br><h2>  Method 2 - Work </h2><br>  <a href="http://sphinxsearch.com/forum/view.html%3Fid%3D10017">From Google,</a> we <a href="http://sphinxsearch.com/forum/view.html%3Fid%3D10017">will</a> learn about the magic key <b>-DBUILD_CONFIG = mysql_release</b> for cmake. <br><pre> <code class="bash hljs">[user@host Percona-Server-5.5.28-rel29.1]$ rm -f CMakeCache.txt [user@host Percona-Server-5.5.28-rel29.1]$ cmake . -DBUILD_CONFIG=mysql_release [user@host Percona-Server-5.5.28-rel29.1]$ <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> storage/sphinx/ &amp;&amp; make</code> </pre><div class="spoiler">  <b class="spoiler_title">Hidden text</b> <div class="spoiler_text">  In that post there are still a lot of terrible options, but they are needed only for the complete assembly of MySQL. </div></div><br>  Instead of manually clearing the cache and running cmake, you can edit cmake / configure.pl <br><pre> <code class="diff hljs"><span class="hljs-deletion"><span class="hljs-deletion">-my $cmakeargs = ""; +my $cmakeargs = "-DBUILD_CONFIG=mysql_release";</span></span></code> </pre>  and run configure. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Copy <i>ha_sphinx.so</i> to / usr / lib64 / mysql / plugin / and restart the perkona.  Oddly enough, it works. </div><p>Source: <a href="https://habr.com/ru/post/161461/">https://habr.com/ru/post/161461/</a></p>
+      Copy <i>ha_sphinx.so</i> to / usr / lib64 / mysql / plugin / and restart the perkona.  Oddly enough, it works. </div><p>Source: https://habr.com/ru/post/161461/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../161451/index.html">NASA talked about the new rover and other Mars exploration plans</a></li>
 <li><a href="../161453/index.html">Runetology (176): Sergey Zhitinsky, Director of Web Services Development Subscribe.ru</a></li>
 <li><a href="../161455/index.html">Tricks of the developer under iOS. Splash screen</a></li>
 <li><a href="../161457/index.html">Let's taste API v2 maps for Android from Google</a></li>
 <li><a href="../161459/index.html">The history of reverse engineering of one SMS Trojan for Android</a></li>
+<li><a href="../16146/index.html">Startup: success formula</a></li>
 <li><a href="../161463/index.html">Unity3d Getting started, practical advice. Review</a></li>
 <li><a href="../161465/index.html">Google launches Knowledge Graph for Russian-speaking users</a></li>
 <li><a href="../161467/index.html">Create a complex maze in the background of the web page</a></li>
 <li><a href="../161469/index.html">PHP API in javascript. PHP.JS Overview</a></li>
-<li><a href="../161471/index.html">Receive congratulations from radio listeners for listeners</a></li>
+<li><a href="../16147/index.html">The fastest computer in the world remains the fastest</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

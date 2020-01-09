@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Experience setting up nginx on debian</h1><div class="post__text post__text-html js-mediator-article">  Yesterday evening I devoted a fuss with the nginx http server as a front-end to apache.  As you know, <a href="http://nginx.net/">nginx</a> is a lightweight reliable HTTP server written by <a href="http://sysoev.ru/">Igor Sysoev</a> (an employee of <a href="http://rambler.ru/">Rambler</a> ).  It is great for issuing static pages, especially under load.  Usually, the nginx + apache bundle is configured, in which nginx serves all incoming requests to the server, gives static files on its own, and requests dynamic content to apache to apache. <br><br>  So, there are a lot of articles in the Internet on setting up the work of this couple, including in Russian, and there is no point in writing about it.  And I will tell you better about the nuances that I encountered yesterday when setting up nginx to work in the right mode, and at the same time I will show and comment on my configuration of this server. <br><br><a name="habracut"></a><br><h2>  My configuration </h2><br>  For a start, what was actually required to be done?  The server was configured for <a href="http://habrometr.ru/">Habrometer</a> .  He had to produce statics (logo and css) and dynamics (the actual pages of the site and png-habrometers).  At the same time, it was necessary to take into account that the habrometer is created on the fly if it is not in the cache (and the cache is cleaned every 2 hours when new data is requested).  Site pages also need to be cached.  That was the task. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The implementation was decided to do as follows.  nginx when processing a request must follow the following rules: <br><ol><li>  If static is requested, then just return it (all static in stuff stuff). </li><li>  If a site page is requested, you need to check the cache;  if the file is not found in the cache, send the request to the apache backend.  The page cache should be cleaned with a given frequency (for different pages the frequency is different). </li><li>  If the informer is requested, then you need to check the cache for the presence of a file.  If the file is not there, send a request to the backend. </li></ol><br>  The file system is selected for caching habrometers.  All generated informers are added to the / image_cache / directory and it is cleaned every 2 hours when the source data is updated.  Informers are drawn and put into this directory by a PHP script with the corresponding request. <br><br>  Memcache is selected for caching site pages.  it is easy and convenient to work with it (from both nginx and PHP) and it can clean the cached pages itself after a specified time interval, which cannot be done by the FS without additional scripts.  Yes, and memcache will work faster, because  All good is stored in the RAM. <br><br>  The result was the following server configuration: <br><br>  # cat /etc/nginx/nginx.conf <br><pre>  user www-data;
@@ -144,12 +144,12 @@
  } </pre><br>  If we find the file in the cache, then we simply return it to the user, informing that the file can be cached before the next update (modification of the file + 2 hours): <br><pre>  location / image_cache / {
      root / home / habrometr / public_html;
      expires modified + 2h;
- } </pre><br>  Note the presence of the rewrite last flag and the break directive;  for her.  Without the use of these two directives, I could not force nginx 0.4 (I did not check it with 0.7) immediately go to the location / image_cache / section, i.e.  after finding the file, he proceeded to skip, which is incorrect. </div><p>Source: <a href="https://habr.com/ru/post/50317/">https://habr.com/ru/post/50317/</a></p>
+ } </pre><br>  Note the presence of the rewrite last flag and the break directive;  for her.  Without the use of these two directives, I could not force nginx 0.4 (I did not check it with 0.7) immediately go to the location / image_cache / section, i.e.  after finding the file, he proceeded to skip, which is incorrect. </div><p>Source: https://habr.com/ru/post/50317/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../50302/index.html">Table binding in Model :: find ()</a></li>
 <li><a href="../50305/index.html">Fresh modification of the OSX.Trojan.iServices trojan</a></li>
+<li><a href="../5031/index.html">WiFi Liberator fights for free WiFi access</a></li>
 <li><a href="../50310/index.html">The basics</a></li>
 <li><a href="../50312/index.html">Building a relational structure from the ER model</a></li>
 <li><a href="../50314/index.html">Four generations of SaaS</a></li>
@@ -157,7 +157,7 @@
 <li><a href="../50326/index.html">An indispensable assistant for large MySQL dumps</a></li>
 <li><a href="../50327/index.html">Laws for life</a></li>
 <li><a href="../50328/index.html">Methods for protecting a web form without captcha</a></li>
-<li><a href="../50333/index.html">Ubuntu Open Week: Ubuntu hike to servers</a></li>
+<li><a href="../5033/index.html">I'm back! Yo</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

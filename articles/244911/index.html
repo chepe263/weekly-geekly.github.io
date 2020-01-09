@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>WordPress for paranoid, part 1</h1><div class="post__text post__text-html js-mediator-article">  So, if you are a happy owner of <a href="http://nginx.org/">nginx</a> , a noble paranoid and, after some devil, you decided to install wordpress, then ... The first thing that came to mind was “we must restrict this creature’s freedom!”. <br><br>  Account settings, as well as the settings for php5-fpm, I will omit, since everyone has their own cockroaches, and someone even runs apache.  But here are common for Wordpress, I will describe in this part.  I will write about what I did, what happened and why. <br><a name="habracut"></a><br><h5>  Folders </h5><br><ul><li>  wp-admin </li><li>  wp-content </li><li>  wp-includes </li></ul><br><h5>  Php files </h5><br><ul><li>  wp-activate.php </li><li>  wp-blog-header.php </li><li>  wp-comments-post.php </li><li>  wp-config.php </li><li>  wp-config-sample.php </li><li>  wp-cron.php </li><li>  wp-links-opml.php </li><li>  wp-load.php </li><li>  wp-login.php </li><li>  wp-mail.php </li><li>  <strong>wp-postpass.php</strong> (about this <a href="https://habr.com/ru/post/244911/">below</a> ) </li><li>  wp-settings.php </li><li>  wp-signup.php </li><li>  wp-trackback.php </li><li>  xmlrpc.php </li><li>  <strong>xmlrpc.txt</strong> (more on this <a href="https://habr.com/ru/post/244911/">below</a> ) </li></ul><br>  This is a typical set for Wordpress 4.0. <br><br>  What do we need?  We need to restrict access to php files and admin panel, render statics, close xmlrpc. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  Restrict access to the admin panel and to php files </h4><br>  In my wordpress version, I do not save user comments and do not use xmlrpc.  How to safely give access to comments, as well as a number of other pressing issues on nginx and wordpress will be examined in the second part of this article, which, of course, will be created in the presence of these.  Since there is no apache, the .htaccess file is useless. <br>  Therefore, close the above whistlers: <br><br><pre> location ~ * ^ / (\. htaccess | xmlrpc \ .php) $ {
@@ -192,20 +192,20 @@
 </pre><br><br>  Then if the request arguments contain <em>attachment_id, eval, duplicate, base64, substring, preg_replace, create_function,</em> nginx will return error 403, and the request will not be passed to the dynamics for the execution of a potential vulnerability. <br><br><h4>  Buns via subs_filter from nginx </h4><br>  The purpose of this module has been reviewed <a href="&amp;xid=17259,15700021,15700186,15700191,15700253&amp;usg=ALkJrhj8hnyWcRZjg6rHE3Hg72poEAZQ9w#ngx_">here</a> . <br><br>  <strong>Task:</strong> wordpress by default opens links to the media file in the current window.  And you need to new. <br><br>  <strong>Solution:</strong> add a small code to the nginx command line. <br><br><pre> subs_filter '&lt;a href=\'https://static.example.com/uploads/(.*?)\'&gt;' '&lt;a href = \' https: //static.example.com/uploads/$1 \ 'target = \' _ blank \ '&gt;' gi;
  subs_filter '&lt;a href=\"https://static.example.com/uploads/(.*?)\"&gt;' '&lt;a href = \ "https: //static.example.com/uploads/$1 \ "target = \" _ blank \ "&gt; 'gi;
 </pre><br><br>  After that, the target = "_ blank" will be added to the links to media files using frontend. <br><br> <strong><a name="xmlrpctxt"></a></strong>  <strong>Task:</strong> everywhere xmlrpc.php links ... need to be removed. <br><br>  <strong>Solution:</strong> add a small code to the nginx command line. <br><br><pre> subs_filter 'https://example.com/xmlrpc.php' 'https://example.com/xmlrpc.txt' gi;
-</pre><br><br>  Well, in xmlrpc.txt you can shove the Easter egg. <br><br><h4>  Afterword </h4><br><ul><li>  example.com and static.example.com replace with your servers.  Examples will work not only with php5-fpm, but also with apache; </li><li>  The article considers only static caching in a CDN, without dynamic caching.  The reason is very simple: at free rates, the cache update time is 30 minutes.  That is, your page will be in the cache for half an hour.  Although now you can switch to <a href="https://support.cloudflare.com/hc/en-us/articles/200168246-What-does-CloudFlare-Development-mode-mean-">development mode</a> every time you update the site (instead of <em>selectively</em> resetting the cache every time); </li><li>  The location shows the main points.  I am guided by the fact that the reader does not put nginx and wordpress for the first time in his life.  Take the article as a hint to action and no more; </li><li>  Descriptions of the regulars can be found <a href="http://regexkit.sourceforge.net/Documentation/pcre/pcresyntax.html">here</a> and read <a href="http://www.regular-expressions.info/lookaround.html">this</a> article here.  I use the <a href="http://regexkit.sourceforge.net/Documentation/pcre/pcresyntax.html">negative look behind the</a> construction when distributing statics, that is, the regular schedule takes the value of <strong>location</strong> , looks from the end to the beginning and if <strong>.php is</strong> not found, then the file is given.  If php is found in the request, the <strong>location is</strong> incorrect, and since all locations exclude <strong>php</strong> , you will select <strong>root</strong> for <strong>dummy</strong> , in which there is no <strong>php</strong> file (just an empty folder) and which will return <strong>404</strong> ; </li><li>  <a href="https://www.cloudflare.com/">CloudFlare</a> .com is a great <strong>CDN</strong> provider, and already on a <a href="https://www.cloudflare.com/plans">free plan</a> you get a nehily functional that is enough for almost any project. </li></ul><br>  Good luck to you! </div><p>Source: <a href="https://habr.com/ru/post/244911/">https://habr.com/ru/post/244911/</a></p>
+</pre><br><br>  Well, in xmlrpc.txt you can shove the Easter egg. <br><br><h4>  Afterword </h4><br><ul><li>  example.com and static.example.com replace with your servers.  Examples will work not only with php5-fpm, but also with apache; </li><li>  The article considers only static caching in a CDN, without dynamic caching.  The reason is very simple: at free rates, the cache update time is 30 minutes.  That is, your page will be in the cache for half an hour.  Although now you can switch to <a href="https://support.cloudflare.com/hc/en-us/articles/200168246-What-does-CloudFlare-Development-mode-mean-">development mode</a> every time you update the site (instead of <em>selectively</em> resetting the cache every time); </li><li>  The location shows the main points.  I am guided by the fact that the reader does not put nginx and wordpress for the first time in his life.  Take the article as a hint to action and no more; </li><li>  Descriptions of the regulars can be found <a href="http://regexkit.sourceforge.net/Documentation/pcre/pcresyntax.html">here</a> and read <a href="http://www.regular-expressions.info/lookaround.html">this</a> article here.  I use the <a href="http://regexkit.sourceforge.net/Documentation/pcre/pcresyntax.html">negative look behind the</a> construction when distributing statics, that is, the regular schedule takes the value of <strong>location</strong> , looks from the end to the beginning and if <strong>.php is</strong> not found, then the file is given.  If php is found in the request, the <strong>location is</strong> incorrect, and since all locations exclude <strong>php</strong> , you will select <strong>root</strong> for <strong>dummy</strong> , in which there is no <strong>php</strong> file (just an empty folder) and which will return <strong>404</strong> ; </li><li>  <a href="https://www.cloudflare.com/">CloudFlare</a> .com is a great <strong>CDN</strong> provider, and already on a <a href="https://www.cloudflare.com/plans">free plan</a> you get a nehily functional that is enough for almost any project. </li></ul><br>  Good luck to you! </div><p>Source: https://habr.com/ru/post/244911/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../244897/index.html">How to become a speaker at PHDays V</a></li>
-<li><a href="../244899/index.html">How the theory of “tasks to be done” can change so much</a></li>
+<li><a href="../24490/index.html">May 14: the day of freelancer! What do I want to give you ...</a></li>
 <li><a href="../244901/index.html">Introduction of professional standards for IT specialties in the Labor Code of the Russian Federation</a></li>
 <li><a href="../244905/index.html">Preprocessors and meta-languages ​​in error correction programs</a></li>
 <li><a href="../244907/index.html">Information technology and big money</a></li>
+<li><a href="../24491/index.html">Portable web server</a></li>
 <li><a href="../244913/index.html">How to buy shares of Apple, Google and Facebook in Russia</a></li>
+<li><a href="../24492/index.html">UFO</a></li>
 <li><a href="../244921/index.html">We continue to put OpenWrt on anything. D-link DNS-320L</a></li>
 <li><a href="../244923/index.html">NetApp backup paradigm</a></li>
 <li><a href="../244925/index.html">AngularJS 1.x - translation course from CodeSchool</a></li>
-<li><a href="../244929/index.html">Ten Typical Questions at HTML Interviews</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

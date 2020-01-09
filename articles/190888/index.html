@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PVS-Studio finally got to Boost</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/getpro/habr/post_images/4a3/a8a/c08/4a3a8ac08fe5162e7ead6f9d78b45c23.png" alt="Boost and PVS-Studio"><br><br>  We have long wanted to check out the Boost library.  We did not have confidence that the results of the test would be enough for an article.  However, the desire did not disappear.  Two times we tried to do this, but we retreated without understanding how to replace the compiler call with the PVS-Studio.exe call.  Now we are armed with new tools, and the third attempt was successful.  So, is it possible to find errors in Boost? <br><br><a name="habracut"></a><br><h2>  Boost </h2><br>  Boost is a collection of free libraries that extend the functionality of C ++.  The project was created after the adoption of the C ++ standard, when many were unhappy that some libraries were not included in the standard.  The project is a kind of “testing ground” for various language extensions, and some libraries are candidates for inclusion in the following C ++ standards.  References: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <ul><li>  <a href="http://www.viva64.com/go.php%3Furl%3D1271">Boost</a> library site. </li><li>  Wikipedia.  <a href="http://www.viva64.com/go.php%3Furl%3D1272">Boost</a> . </li><li>  Download <a href="http://www.viva64.com/go.php%3Furl%3D1273">Boost</a> . </li></ul><br><br>  Boost is a “heavy” code in which complex templates are actively used.  In a sense, this library is a test for compilers.  It often happens that a compiler is able to compile only a part of projects from the modern Boost library. <br><br>  However, we had problems not with parsing the code.  In extreme cases, the analyzer can afford to quietly miss the very confusing design.  It turned out to be difficult for us to integrate into the assembly itself. <br><br>  I will remind the existing options for checking projects with PVS-Studio. <br><br><h3>  If there is an ordinary project for Visual Studio or Embarcadero C ++ Builder </h3><br>  Everything is simple here.  Project analysis can be performed directly from the development environment.  Another option is to start PVS-Studio from the command line and get a file with the results of the checkout on exit.  This mode is useful in continuous integration systems (for example, Cruise Control, Draco.NET, or Team Foundation Build).  <a href="http://www.viva64.com/ru/d/0001/">This mode is</a> described in more detail in the documentation.  About interaction with continuous integration systems can be found <a href="http://www.viva64.com/ru/d/0006/">here</a> . <br><br><h3>  If there is no project (or the project is essentially a disguised makefile) </h3><br>  In this case, you need to create an assembly mode, when instead of the compiler (or with it) the code analyzer is launched.  The output also produces a report file.  The necessary <a href="http://www.viva64.com/ru/d/0007/">magic spells are</a> also described in the documentation.  In this case, the magician must be very careful, study the manual in detail and not forget a single character. <br><br>  This is the approach we should have used to test Boost.  It’s a pity we were insufficiently magicians or just lazy.  It was not possible to figure out the build system in order to transfer all the necessary parameters to the console version of the analyzer. <br><br><h3>  We came to the aid of a new third option verification projects </h3><br>  My colleague has already mentioned this mode in a recent post “ <a href="http://www.viva64.com/ru/b/0206/">From the Cellar of the Secret PVS-Studio Developer's Lab</a> ”.  No need to fully integrate into the assembly system.  It is enough just to get <a href="http://www.viva64.com/ru/t/0076/">preprocessed * .i files</a> .  It is much easier.  That is what we did. <br><br>  Then, using the prototype of the new tool (PVS-Studio Standalone), we performed an analysis of all * .i files and received a long-awaited report.  In the same program, you can conveniently work with the list of errors and make corrections to the code. <br><br>  I hope we will include this tool in the distribution kit through several versions.  Perhaps this will happen in PVS-Studio 5.10. <br><br><h3>  A few words about the regime, which is not, but which we dream </h3><br>  We are slowly getting closer to tracking the actions of the compiler.  This mode will also apply to the PVS-Studio Standalone tool.  All starts of the compiler will be tracked and keys of its start will be collected.  Thus, it will be sufficient to perform the following steps.  Order - "watch."  Build a project using any build system.  Say - "done."  And the analyzer will know how to check the project now.  Of course, if the project structure or parameters change, this process will have to be repeated.  All right, dreaming, and now back to the Boost checkout. <br><br><h2>  Sense of hopelessness </h2><br>  I was ready to not write an article about Boost.  This sad assumption had the following prerequisites. <br><br><h3>  A large number of compilers and tools </h3><br>  Boost is built by a large number of compilers.  Some partially, some completely.  I did not study this issue.  But, as I understand it, Boost is pretty well built using Visual C ++, Intel C ++, Sun Studio, Compaq C ++, GCC, Clang.  Each compiler has its own unique diagnostic capabilities.  And their total use should provide a very high quality code.  One compiler will find error A, second error B, and so on. <br><br>  Moreover, the Boost library is a kind of testing ground for various tools and static code analyzers.  Since Boost actively uses various modern C ++ features, it is always interesting to know if the tool can deal with such code.  As a result, Boost is checked and re-checked by various code analyzers. <br><br>  Looking for errors and typos after so many compilers and other tools is almost hopeless. <br><br><h3>  A large number of users </h3><br>  The Boost library is used in many projects.  At one time, we ourselves used Boost in the PVS-Studio project (then still Viva64).  We used mechanisms for working with regular expressions, with configuration files and a couple of other trifles.  Then we realized that regular expressions are a dead end, and gradually they disappeared from the code.  Dragging Boost only because of the configuration files was doubtful.  Moreover, some unpleasant flaws became clear.  For example, in the file name can not use '#'.  This character is considered to be the beginning of a comment.  In our particular case, Boost did not catch on, however, it is certainly a very useful library. <br><br>  Since the library is widely used, errors should be quickly detected by programmers.  Errors can only remain in rarely used code fragments or in exotic subsystems that have few users. <br><br><h3>  Templates </h3><br>  Boost has many template classes.  They are almost impossible to verify if they are not instantiated.  For example, Visual C ++ does not parse template classes at all if they are not used.  In an unused class, you can write any rubbish and the file is successfully compiled. Enough to observe the number of opening and closing parentheses and quotes (), &lt;&gt;, {}, [], "", ". <br><br>  Analyzing the template class, you have to compromise between the number of false positives and the omission of errors.  Let me explain with a simple example, what is the difficulty. <br><pre><code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">template</span></span> &lt;<span class="hljs-keyword"><span class="hljs-keyword">typename</span></span> T&gt;
@@ -214,7 +214,7 @@ basic_settings&lt; CharT &gt; parse_settings(<span class="hljs-built_in"><span c
  ,       0?<br>
 <br>
 <h2></h2><br>
- ,   PVS-Studio   .   -  Boost   .    !</div><p>Source: <a href="https://habr.com/ru/post/190888/">https://habr.com/ru/post/190888/</a></p>
+ ,   PVS-Studio   .   -  Boost   .    !</div><p>Source: https://habr.com/ru/post/190888/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -223,11 +223,11 @@ basic_settings&lt; CharT &gt; parse_settings(<span class="hljs-built_in"><span c
 <li><a href="../190880/index.html">Import KeePass Password Database into KWallet</a></li>
 <li><a href="../190882/index.html">Caution, radiation!</a></li>
 <li><a href="../190884/index.html">The first site is blocked by the "anti-piracy" law UPD + a full list of sites to block</a></li>
+<li><a href="../19089/index.html">Slide: widgets worth $ 500 million</a></li>
 <li><a href="../190892/index.html">Scientists have created a graphene transistor with a frequency of 427 GHz</a></li>
 <li><a href="../190896/index.html">Android 4.3 for Sony Xperia in detail</a></li>
-<li><a href="../190908/index.html">RWpod. 23 release 01 of the season. Devise 3.1rc2, fluid Proc, video from Backboneconf, mori.js, etc.</a></li>
-<li><a href="../190910/index.html">Understanding of letters</a></li>
-<li><a href="../190912/index.html">Electric Tesla S broke the equipment for the crash tests</a></li>
+<li><a href="../1909/index.html">Firefox 2.0 RC2: list of differences</a></li>
+<li><a href="../19090/index.html">They flew in! ... and we trash.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Installing DataStage Client</h1><div class="post__text post__text-html js-mediator-article">  I think that many have encountered some problems when installing IBM DataStage on client workstations.  Before installation, your system must pass a series of tests for compliance with the requirements that apply to the OS, the user, from which the installation is carried out, to the "hardware".  Not always checking returns adequate results. <br>  Here are some ways to circumvent the crookedly implemented checks of the next IBM installer, trying to install a client to Information Server 8.5, which includes clients for DataStage. <br><a name="habracut"></a><br><h4>  First problem </h4><br>  The first problem that arises is that the installer cannot understand that the user you are working in is part of an administrative group if there are Cyrillic characters in the group name or user name.  For example, if a user is called “Administrator” and belongs to the local group “Administrators”, then it will be overwhelming for the installer to determine that this user is ... ahem ... administrator. <br>  This is solved simply - it is necessary to rename both the user and the group.  Give them names without Cyrillic characters.  I don’t know if other values ​​will work (I won’t be surprised if not), but I tried to give the following names: <br>  Username: Administrator (it can be, in principle, and others. For example, Nick) <br>  Group Name: Administrators <br>  You can change the corresponding parameters in My Computer-&gt; Management-&gt; Local Users and Groups. <br><br><h4>  Second problem </h4><br>  The installer requires that the computer on which the client is installed has at least 2 GB.  random access memory.  If it is less, it will not allow you to continue the installation.  Well, it is necessary, it is necessary, given that I have just 2 GB of memory.  He stubbornly claimed that I had “only 1Gb” ... <br>  Knowing that the installer is a server application that runs from under the lifted Jetty server, I begin to vaguely understand that it is unlikely that it will be able to calculate the amount of RAM without the help of third-party utilities.  Java machine, as far as I remember, does not allow to know the amount of RAM. <br>  We begin to pick open the jar-nicks that the installer uses.  We are interested in the file com.ibm.is.install.atlasinstaller.engine_1.0.0.jar, which is located in% DISTRIB_DIR% \ server \ webapps \ webui \ WEB-INF \ eclipse \ plugins, where% DISTRIB_DIR% is where the distribution is located .  Open this file and look for the class com \ ibm \ is \ install \ core \ util \ SystemSize.class.  That it determines the size of the RAM. <br>  In the Windows branch, we can find the following line: <br><br><pre><code class="java hljs"><span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(Platform.getInstance().isWindows()) { workingDir = (<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> StringBuilder()).append(installerRootDir).append(File.separator). append(<span class="hljs-string"><span class="hljs-string">"tools"</span></span>).toString(); command = (<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> String[] { (<span class="hljs-keyword"><span class="hljs-keyword">new</span></span> StringBuilder()).append(installerRootDir).append(File.separator). append(<span class="hljs-string"><span class="hljs-string">"tools"</span></span>).append(File.separator).append(<span class="hljs-string"><span class="hljs-string">"SystemSize.exe"</span></span>).toString() });</code> </pre> <br>  Those.  To determine the size of the RAM, a separate SystemSize.exe EXE is launched, which is located in% DISTRIB_DIR% \ tools 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      (The amount of RAM in Linux in this script is defined as: / bin / sh "," -c "," free | head -2 | tail -1 | awk {'print $ 2 / (1024 * 1024)'}) <br>  Run this application and see that in my case it gives 1.98.  Those.  The installer "looks" only at the integer part of the return value. <br>  Okay.  We write your application.  In this case, I wrote in C ++: <br><pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">include</span></span></span><span class="hljs-meta"> </span><span class="hljs-meta-string"><span class="hljs-meta"><span class="hljs-meta-string">&lt;cstdlib&gt; #include &lt;iostream&gt; using namespace std; int main(int argc, char *argv[]) { cout&lt;&lt;"2.0"; return EXIT_SUCCESS; }</span></span></span></span></code> </pre><br><br>  Compile, give the name SystemSize.exe and put in% DISTRIB_DIR% \ tools.  Everything, now check passes successfully. </div><p>Source: <a href="https://habr.com/ru/post/129714/">https://habr.com/ru/post/129714/</a></p>
+      (The amount of RAM in Linux in this script is defined as: / bin / sh "," -c "," free | head -2 | tail -1 | awk {'print $ 2 / (1024 * 1024)'}) <br>  Run this application and see that in my case it gives 1.98.  Those.  The installer "looks" only at the integer part of the return value. <br>  Okay.  We write your application.  In this case, I wrote in C ++: <br><pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">include</span></span></span><span class="hljs-meta"> </span><span class="hljs-meta-string"><span class="hljs-meta"><span class="hljs-meta-string">&lt;cstdlib&gt; #include &lt;iostream&gt; using namespace std; int main(int argc, char *argv[]) { cout&lt;&lt;"2.0"; return EXIT_SUCCESS; }</span></span></span></span></code> </pre><br><br>  Compile, give the name SystemSize.exe and put in% DISTRIB_DIR% \ tools.  Everything, now check passes successfully. </div><p>Source: https://habr.com/ru/post/129714/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../129715/index.html">Our projects: DNS hosting with blackjack and buns</a></li>
 <li><a href="../129718/index.html">Payoneer: Your Affiliate Partner</a></li>
 <li><a href="../129719/index.html">On the "Rambler-Maps" corrected errors and added new cities</a></li>
+<li><a href="../12972/index.html">Dell began selling computers with Ubuntu in Europe</a></li>
 <li><a href="../129721/index.html">Robots on guard wallet</a></li>
-<li><a href="../129722/index.html">Code Coverage based on NUnit tests in Visual Studio</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

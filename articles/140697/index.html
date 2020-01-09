@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PHP linux server incoming / outgoing traffic balancer</h1><div class="post__text post__text-html js-mediator-article">  As I found out some time ago on my own experience, there are still providers left to receive an unlimited tariff from which it is required to withstand a certain ratio of incoming and outgoing traffic. <br>  In my case, when hosting a server for colocation in one Moscow data center, the outgoing should have been at least 4 times more than the incoming one (sorry for such a turn).  The ratio is calculated both per day and total per month.  Violation of any of them is a fine. <br><br>  By itself, the ratio was not maintained due to periodic volume uploads of backups to the server.  Manually (gig sent, 4 gig downloaded) - tired. <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Then I remembered that once upon a time a primitive script was seen on some site in a couple of lines on a sh-script that did this balancing itself.  Then I did not save, now I could not find it.  I had to write myself.  Result and expose for everyone to see - maybe someone will come in handy. <br><br>  The script was tested only under Ubuntu, but also under other Linux should work. <br><br>  Unlike the primitive on sh, my script is able to withstand both daily and monthly ratios, logs, and is carefully encrypted from its detection (fake traffic is done by transferring files of random size via SSH, spacing of random length is done between stuffing).  Another difference (but already with a minus sign) is required response node with unlimited traffic, to which you can raise the ssh connection by key.  I use my home channel and router on it. <br><br>  Put your values ​​in the $ interface, $ logfile and $ server variables. <br>  The $ server variable actually specifies the parameters for the ssh command. <br>  That is, in my case, running “ssh my-host.no-ip.org -p 1022 -i /home/user/.ssh/my-key” in the console, I connect without entering a password to my response node (these are conditional , of course). <br>  Calling this script must be done at system startup (for example from /etc/rc.local) or configured as a service. <br><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> $interface=<span class="hljs-string"><span class="hljs-string">"eth0"</span></span>; <span class="hljs-comment"><span class="hljs-comment">//    $server="my-host.no-ip.org -p 1022 -i /home/user/.ssh/my-key"; //    $logfile="/usr/local/logs/trafic-balancer.log"; //       ,   logrotate   $curdate=0; function echolog($str) { global $logfile; file_put_contents($logfile, $str, FILE_APPEND); echo($str); } echolog("\n".date('r')." \t\n"); while(true) { $f=@fopen("/proc/net/dev", "r"); $stat=null; while($str=fgets($f)) { if(strpos($str, $interface)!==false) { $stat=$str; break; } } fclose($f); if($stat) { $stat=preg_replace("/\s+/", " ", $stat); $nums=explode(" ", $stat); //       $rx_g=round($nums[2]/1024/1024); $tx_g=round($nums[10]/1024/1024); $delta_g=$rx_g*4-$tx_g; //   if($curdate!=date('j')) //    { if($curdate) echolog("\n".date('r')." \t  $curdate : RX:$rx_d Mb, TX:$tx_d Mb, : $delta_d Mb\n"); $curdate=date('j'); $rx_d=0; $tx_d=0; $rx_s=$rx_g; $tx_s=$tx_g; } $rx_d=$rx_g-$rx_s; $tx_d=$tx_g-$tx_s; $delta_d=$rx_d*4-$tx_d; $delta=max($delta_g, $delta_d); if(($delta&gt;0)&amp;&amp;(date('G')&gt;8)) { if($delta&gt;1000) //   1,     $size=round(rand(1000, min($delta/2, 5000))); //       ,     else $size=round(rand($delta*2, $delta*3)); //          echolog("\n".date('r')." \t:  : $delta_g Mb,  : $delta_d Mb,  $size Mb\n"); passthru("dd if=/dev/zero bs=1M count=$size | ssh $server 'cat &gt; /dev/null'"); } else echolog('.'); } else echolog("\n".date('r')." \t  !\n"); sleep(round(rand(10, 600))); } </span><span class="hljs-meta"><span class="hljs-comment"><span class="hljs-meta">?&gt;</span></span></span></span></code> </pre> </div><p>Source: <a href="https://habr.com/ru/post/140697/">https://habr.com/ru/post/140697/</a></p>
+      Then I remembered that once upon a time a primitive script was seen on some site in a couple of lines on a sh-script that did this balancing itself.  Then I did not save, now I could not find it.  I had to write myself.  Result and expose for everyone to see - maybe someone will come in handy. <br><br>  The script was tested only under Ubuntu, but also under other Linux should work. <br><br>  Unlike the primitive on sh, my script is able to withstand both daily and monthly ratios, logs, and is carefully encrypted from its detection (fake traffic is done by transferring files of random size via SSH, spacing of random length is done between stuffing).  Another difference (but already with a minus sign) is required response node with unlimited traffic, to which you can raise the ssh connection by key.  I use my home channel and router on it. <br><br>  Put your values ​​in the $ interface, $ logfile and $ server variables. <br>  The $ server variable actually specifies the parameters for the ssh command. <br>  That is, in my case, running “ssh my-host.no-ip.org -p 1022 -i /home/user/.ssh/my-key” in the console, I connect without entering a password to my response node (these are conditional , of course). <br>  Calling this script must be done at system startup (for example from /etc/rc.local) or configured as a service. <br><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> $interface=<span class="hljs-string"><span class="hljs-string">"eth0"</span></span>; <span class="hljs-comment"><span class="hljs-comment">//    $server="my-host.no-ip.org -p 1022 -i /home/user/.ssh/my-key"; //    $logfile="/usr/local/logs/trafic-balancer.log"; //       ,   logrotate   $curdate=0; function echolog($str) { global $logfile; file_put_contents($logfile, $str, FILE_APPEND); echo($str); } echolog("\n".date('r')." \t\n"); while(true) { $f=@fopen("/proc/net/dev", "r"); $stat=null; while($str=fgets($f)) { if(strpos($str, $interface)!==false) { $stat=$str; break; } } fclose($f); if($stat) { $stat=preg_replace("/\s+/", " ", $stat); $nums=explode(" ", $stat); //       $rx_g=round($nums[2]/1024/1024); $tx_g=round($nums[10]/1024/1024); $delta_g=$rx_g*4-$tx_g; //   if($curdate!=date('j')) //    { if($curdate) echolog("\n".date('r')." \t  $curdate : RX:$rx_d Mb, TX:$tx_d Mb, : $delta_d Mb\n"); $curdate=date('j'); $rx_d=0; $tx_d=0; $rx_s=$rx_g; $tx_s=$tx_g; } $rx_d=$rx_g-$rx_s; $tx_d=$tx_g-$tx_s; $delta_d=$rx_d*4-$tx_d; $delta=max($delta_g, $delta_d); if(($delta&gt;0)&amp;&amp;(date('G')&gt;8)) { if($delta&gt;1000) //   1,     $size=round(rand(1000, min($delta/2, 5000))); //       ,     else $size=round(rand($delta*2, $delta*3)); //          echolog("\n".date('r')." \t:  : $delta_g Mb,  : $delta_d Mb,  $size Mb\n"); passthru("dd if=/dev/zero bs=1M count=$size | ssh $server 'cat &gt; /dev/null'"); } else echolog('.'); } else echolog("\n".date('r')." \t  !\n"); sleep(round(rand(10, 600))); } </span><span class="hljs-meta"><span class="hljs-comment"><span class="hljs-meta">?&gt;</span></span></span></span></code> </pre> </div><p>Source: https://habr.com/ru/post/140697/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../140696/index.html">Where do ontologies begin</a></li>
 <li><a href="../140698/index.html">DevConf 2012 - will be held on June 9 (Saturday) in Moscow - 33 applications for reports have already been submitted</a></li>
 <li><a href="../140699/index.html">A note on move semantics with a return statement in C ++ 11</a></li>
+<li><a href="../1407/index.html">IE7 will be able to digest a mix of languages.</a></li>
 <li><a href="../140700/index.html">Review of new features in playframework v2</a></li>
 <li><a href="../140701/index.html">Authorization on the site through Mail.ru (oAuth 2.0)</a></li>
-<li><a href="../140702/index.html">Ruby on Rails I18n: developer - develops, client - fills. The rest will be taken care of by the service.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

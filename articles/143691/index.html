@@ -26,12 +26,12 @@ hg clone AB  mercurial first tries to create hard links for files inside the .hg
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@ hg clone AB  mercurial first tries to create hard links for files inside the .hg
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Hard links for repository cloning in mercurial</h1><div class="post__text post__text-html js-mediator-article">  When cloning a repository using the command <pre><code class="bash hljs">hg <span class="hljs-built_in"><span class="hljs-built_in">clone</span></span> AB</code> </pre>  mercurial first tries to create <a href="http://ru.wikipedia.org/wiki/%25D0%2596%25D1%2591%25D1%2581%25D1%2582%25D0%25BA%25D0%25B0%25D1%258F_%25D1%2581%25D1%2581%25D1%258B%25D0%25BB%25D0%25BA%25D0%25B0">hard links</a> for files inside the .hg folder in the new repository.  This speeds up cloning and saves hard disk space. <br><br>  Hard links are supported by Linux and Windows NTFS file systems.  For file systems that do not support hard links (for example, Windows FAT), as well as when cloning via http / https or ssh from a remote server, mercurial completely copies all files. <br><a name="habracut"></a><br>  In order for mercurial to create an independent repository clone, you can manually specify the --pull parameter: <br><pre> <code class="bash hljs">hg <span class="hljs-built_in"><span class="hljs-built_in">clone</span></span> --pull AB</code> </pre> <br>  When committing or sending changes (push) to the repository, mercurial checks the number of hard links for each file in the .hg folder.  If there are two or more links, before recording a hard link for this file “breaks” (the XXX file with a hard link is copied into a temporary file, the XXX file is deleted, the temporary file is renamed to XXX). <br><br><h5>  Cloning on Windows Shares </h5><br>  On computers running Windows, when you receive the number of hard links to files located on shared resources, 1 is always returned, even if in fact there are more. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,17 +61,17 @@ hg clone AB  mercurial first tries to create hard links for files inside the .hg
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      This means that mercurial when committing to a repository located on shared resources can break other repositories whose files are tightly linked to your repository files.  Moreover, there will be no error message during a commit, because the repository in which the commit occurred will be intact.  You can check the repository with the command <pre> <code class="bash hljs">hg verify</code> </pre> <br>  <a href="http://mercurial.selenic.com/wiki/HardlinkedClones">It</a> says that starting from version 1.6.3 to prevent such situations, mercurial always commits “breaks” hard links when the repository is located on a Windows share. <br><br>  Now I have version 2.2.1, but when I commit to the repository for a shared resource, other repositories tied to it still break.  The problem was solved only after all the repositories were cloned with the --pull parameter. <br><br>  In this default behavior, there is some magic, due to which you can snip off a certain amount of headaches, which I successfully grabbed.  Therefore, I decided to transfer this information here.  I hope someone will save her time and nerves. <br><br>  Original: <a href="http://mercurial.selenic.com/wiki/HardlinkedClones">http://mercurial.selenic.com/wiki/HardlinkedClones</a> <br>  Repair broken repositories: <a href="http://mercurial.selenic.com/wiki/RepositoryCorruption">http://mercurial.selenic.com/wiki/RepositoryCorruption</a> </div><p>Source: <a href="https://habr.com/ru/post/143691/">https://habr.com/ru/post/143691/</a></p>
+      This means that mercurial when committing to a repository located on shared resources can break other repositories whose files are tightly linked to your repository files.  Moreover, there will be no error message during a commit, because the repository in which the commit occurred will be intact.  You can check the repository with the command <pre> <code class="bash hljs">hg verify</code> </pre> <br>  <a href="http://mercurial.selenic.com/wiki/HardlinkedClones">It</a> says that starting from version 1.6.3 to prevent such situations, mercurial always commits “breaks” hard links when the repository is located on a Windows share. <br><br>  Now I have version 2.2.1, but when I commit to the repository for a shared resource, other repositories tied to it still break.  The problem was solved only after all the repositories were cloned with the --pull parameter. <br><br>  In this default behavior, there is some magic, due to which you can snip off a certain amount of headaches, which I successfully grabbed.  Therefore, I decided to transfer this information here.  I hope someone will save her time and nerves. <br><br>  Original: <a href="http://mercurial.selenic.com/wiki/HardlinkedClones">http://mercurial.selenic.com/wiki/HardlinkedClones</a> <br>  Repair broken repositories: <a href="http://mercurial.selenic.com/wiki/RepositoryCorruption">http://mercurial.selenic.com/wiki/RepositoryCorruption</a> </div><p>Source: https://habr.com/ru/post/143691/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../143684/index.html">Skype for Linux. It's too early to bury me</a></li>
 <li><a href="../143685/index.html">Weekly Digest # 3: Simple-Science - Simple Experiments</a></li>
 <li><a href="../143687/index.html">User experience design: how to build a website for customers, not for yourself</a></li>
 <li><a href="../143688/index.html">Indicate a mobile phone or tablet in the Firefox User-Agent header</a></li>
+<li><a href="../14369/index.html">Presentation Trashbox.ru</a></li>
 <li><a href="../143690/index.html">F # Tail recursion. Underwater rake. Part 1</a></li>
 <li><a href="../143692/index.html">Facebook smartphone will be on Windows Phone?</a></li>
 <li><a href="../143694/index.html">XEN: A simple script to quickly open VNC consoles</a></li>

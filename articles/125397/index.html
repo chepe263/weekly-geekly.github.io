@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -59,7 +59,7 @@
  Date: 07/12/2011
  Available balance: 12344.11 RUR </pre><br><br>  What do you think the beautiful handling of such alerts in the personal finance service should look like? <br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -67,7 +67,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h2>  The king is dead </h2><br>  I'll start with the story.  Email processing appeared in <a href="https://zenmoney.ru/%3Fp%3Dhabr">Zen-mani</a> more than a year ago.  But then she had a bunch of flaws: <br><ul><li>  only one bank was supported; </li><li>  each Zen-Mani account had its own email-address and, if you had several accounts in one bank, the payments to the accounts were not shared; </li><li>  if the bank sent any notifications, they did not reach you, because the service intercepted all the letters. </li></ul><br>  The inconvenience of working with email alerts and the success of our overseas counterpart Mint (for which you <i>do</i> n’t need to enter expenses and incomes at all (he gets all the data from a bank card and kindly sorts them into food, gasoline, entertainment ...) prompted us to rewrite the processing email alerts. <br><br>  Let's start small, increase the support of banks to four: VTB24, Citibank, Bank Saint Petersburg and Bank24.ru.  This is done by smart regular expressions and hard testing :) <br><br>  Then the first interesting solution, leave one email address (dropbox).  In general, one for all accounts and all banks (for one user).  The difference in accounts occurs in the last four digits.  The user enters them at the stage of creating an account: <br><br> <a href="https://zenmoney.ru/%3Fp%3Dhabr"><img src="https://habrastorage.org/storage1/f5c47198/504f9662/c7771344/0b664c07.png"></a> <br><br>  The last inconvenience with the loss of information letters, we decided by sending all messages to the user's personal email.  And it was a very difficult decision for us.  Before this function, we did not ask for e-mail in order to preserve the privacy of such sensitive information as personal finances as much as possible.  Now you have a choice to specify the mail or not. <br><br>  These three improvements are not enough for a beautiful solution.  The user still has to determine what each transaction was spent on: gasoline, training, or something else.  <b>I suggest you unravel what we came up with</b> :) The answer is below under the heading “Zest”, but for now some code. <br><br><h2>  Parser mechanism </h2><br>  The message parser works in two stages: <br><ul><li>  definition of letter format; </li><li>  directly parsing. </li></ul><br>  We will parse this letter here: <br><pre>  Dear Customer,
@@ -88,20 +88,20 @@
  51 payee 3 /[^::+:(.*)$/ "33 </pre><br><br>  The number before the regexp means the line number of the letter.  We go through the letter again and get the data we need. <br><br><h2>  Zest: Autodetect categories </h2><br>  So we got to the most interesting - our implementation of automatic comparison of categories of spending on the map. <br><br>  First, another example: <br><pre>  We inform you that on 07/21/2011 at 11:12:05 your bank card VTB24 ... 7780 made a payment transaction in the amount of 1959.00 RUR.
  Available for use: 2274.35 RUR.  Payment details: HITZONA.  Authorization code 222635 </pre><br><br>  And now look, in each payment we have a store code: <br><ul><li>  SHELL AZS OLGINO - Gasoline. </li><li>  HITZONA - entertainment (music, movies, games). </li></ul><br>  That is, it is enough for us to compare store codes to our categories.  But where to get this data?  <b>Crowdsourcing</b> comes to the rescue. <br><br>  Each Zen-mani user contributes to the common cause by comparing a payment on a card of one of the categories.  And we get something like this (users themselves enter the category names). <br><pre>  10 SHELL AZS Petrol
  3 SHELL AZS Cars
- 1 SHELL AZS Sweets </pre><br><br>  When a user receives a notification about a payment in SHELL AZS, we look for the intersection of the base with its categories and select the most popular one.  There is a category “Gasoline” - choose it, if not choose “Cars”. <br><br>  In other words, we in Zen-mani are doing everything to facilitate your home accounting.  Today, it is receiving data from six banks: Alfa-Bank, Raiffeisenbank, VTB24, Citibank, Bank Saint Petersburg, Bank24.ru and Yandex.Money systems. <br><br>  <a href="https://zenmoney.ru/%3Fp%3Dhabr">Try it today :)</a> </div><p>Source: <a href="https://habr.com/ru/post/125397/">https://habr.com/ru/post/125397/</a></p>
+ 1 SHELL AZS Sweets </pre><br><br>  When a user receives a notification about a payment in SHELL AZS, we look for the intersection of the base with its categories and select the most popular one.  There is a category “Gasoline” - choose it, if not choose “Cars”. <br><br>  In other words, we in Zen-mani are doing everything to facilitate your home accounting.  Today, it is receiving data from six banks: Alfa-Bank, Raiffeisenbank, VTB24, Citibank, Bank Saint Petersburg, Bank24.ru and Yandex.Money systems. <br><br>  <a href="https://zenmoney.ru/%3Fp%3Dhabr">Try it today :)</a> </div><p>Source: https://habr.com/ru/post/125397/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../125383/index.html">Biglion and apartment with 90% discount</a></li>
 <li><a href="../125384/index.html">Adobe Edge: HTML5 / JavaScript Animation Editor</a></li>
+<li><a href="../12539/index.html">Opera 9.22</a></li>
 <li><a href="../125394/index.html">On high</a></li>
 <li><a href="../125395/index.html">Salaries and cost of living in Silicon Valley</a></li>
 <li><a href="../125396/index.html">CSS hacks</a></li>
 <li><a href="../125398/index.html">OpenCL: universality and high performance or is it not so simple?</a></li>
 <li><a href="../125399/index.html">Museum of video cards. Mindfulness first</a></li>
+<li><a href="../1254/index.html">Waportal changed its owner</a></li>
+<li><a href="../12540/index.html">iPhone in Russia. Nearly</a></li>
 <li><a href="../125400/index.html">Seismic monitoring systems: overview, installation, configuration</a></li>
-<li><a href="../125401/index.html">What to do with the huge old topics on the forums?</a></li>
-<li><a href="../125402/index.html">ASUS Pro P31 / 41: Everest Testing</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Is there a destructor in C #?</h1><div class="post__text post__text-html js-mediator-article">  So let's start with the fact that there are two types of resources - managed and unmanaged.  As for the former, there’s no need to worry at all - the garbage collector will take care of them.  But with uncontrollable resources, things are much more complicated.  Our garbage man does not know how to free them, so we ourselves have to deal with this issue. <br><a name="habracut"></a><br><h5>  What is the difference between the destructor and the finalizer? <br></h5><br>  A destructor is a method for deinitializing an object.  Here it is important to mention such a thing as deterministic destruction.  That is, we know for sure when the object will be deleted.  Most often this happens when the object's scope ends, or the programmer explicitly frees the memory (in s / s ++). <br><br>  But the definition of the finalizer from Wikipedia. <br><br>  <b>The finalizer</b> is a class method that is automatically called by the runtime between the time when an object of this class is recognized by the garbage collector as unused, and the time the object is deleted (freeing the memory it occupies).  This is the opposite thing - nondeterministic destruction. <br>  That is, the main disadvantage of the finalizer is that we do not know when it will be called.  This can create a huge amount of problems. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      But the destructor and finalizer in .NET is not the same thing as just the destructor and finalizer in the ordinary world. <br><br>  In Visual C #, there is a finalizer that is created using the C ++ creation destructor syntax, and which is even called by some as a destructor, although it is not.  It is executed through the Finalize method, which cannot be redefined (in C # it is not, but in VB it is possible), therefore, you have to use the destructor syntax in tilde (~ ClassName).  And only when compiled into IL, the compiler calls it Finalize.  When executed, this method also calls the finalizer of the parent class. <br><br>  In general, this question is very, very controversial.  Some people think that the destructor and the finalizer in .NET mean exactly the same thing and differ only in name, others think that there is a huge difference, and confusing them is a crime. <br><br>  If you look at the specification of the programming language C # (4.0 at the moment), then there the word "finalizer" never occurs.  Well, it can still be explained.  The finalizer is closely related to the garbage collector, which in turn is part of the runtime environment (CLR in our case), but not the programming language itself. <br><br>  Now let's go even further and climb into the CLI specification (ECMA-335).  Here is what is written. <br><br>  <i>Can be defined as an object type.</i> <i><br></i>  <i>When an instance of the class is no longer reachable.</i> <br><br>  This is undoubtedly a description of the finalizer, although in my opinion a bit inaccurate. <br><br>  Next, go to msdn.  No article contains the word finalizer in its pure form - but the word destructor is almost always used.  A natural question arises - why people call a destructor something that is not.  It turns out that maykrosoftovsky developers deliberately changed the meaning of the word.  And that's why. <br><br>  We know that in Visual C # nondeterministic destruction.  This means that even if the scope of the object is over, and the garbage collector realized that it is possible to free the memory it occupies, it’s not a fact that it will happen immediately.  That is, it is a pure finalizer.  Since it uses the syntax that is used in all languages ​​for the destructor, it can be assumed that in Visual C # there is no way to define a destructor (in a general sense).  This means that it simply does not exist.  Yes, there is no need for it either, but you need to agree that the destructor itself cannot be in Visual C #. <br><br>  Conclusion - either I am an idiot, and I misunderstood everything completely (and the probability of this is quite high), or I need to come to terms with it, and call the destructor something that looks like it (tilde, hello), but in fact is a finalizer.  We must somehow live in this world. </div><p>Source: <a href="https://habr.com/ru/post/122639/">https://habr.com/ru/post/122639/</a></p>
+      But the destructor and finalizer in .NET is not the same thing as just the destructor and finalizer in the ordinary world. <br><br>  In Visual C #, there is a finalizer that is created using the C ++ creation destructor syntax, and which is even called by some as a destructor, although it is not.  It is executed through the Finalize method, which cannot be redefined (in C # it is not, but in VB it is possible), therefore, you have to use the destructor syntax in tilde (~ ClassName).  And only when compiled into IL, the compiler calls it Finalize.  When executed, this method also calls the finalizer of the parent class. <br><br>  In general, this question is very, very controversial.  Some people think that the destructor and the finalizer in .NET mean exactly the same thing and differ only in name, others think that there is a huge difference, and confusing them is a crime. <br><br>  If you look at the specification of the programming language C # (4.0 at the moment), then there the word "finalizer" never occurs.  Well, it can still be explained.  The finalizer is closely related to the garbage collector, which in turn is part of the runtime environment (CLR in our case), but not the programming language itself. <br><br>  Now let's go even further and climb into the CLI specification (ECMA-335).  Here is what is written. <br><br>  <i>Can be defined as an object type.</i> <i><br></i>  <i>When an instance of the class is no longer reachable.</i> <br><br>  This is undoubtedly a description of the finalizer, although in my opinion a bit inaccurate. <br><br>  Next, go to msdn.  No article contains the word finalizer in its pure form - but the word destructor is almost always used.  A natural question arises - why people call a destructor something that is not.  It turns out that maykrosoftovsky developers deliberately changed the meaning of the word.  And that's why. <br><br>  We know that in Visual C # nondeterministic destruction.  This means that even if the scope of the object is over, and the garbage collector realized that it is possible to free the memory it occupies, it’s not a fact that it will happen immediately.  That is, it is a pure finalizer.  Since it uses the syntax that is used in all languages ​​for the destructor, it can be assumed that in Visual C # there is no way to define a destructor (in a general sense).  This means that it simply does not exist.  Yes, there is no need for it either, but you need to agree that the destructor itself cannot be in Visual C #. <br><br>  Conclusion - either I am an idiot, and I misunderstood everything completely (and the probability of this is quite high), or I need to come to terms with it, and call the destructor something that looks like it (tilde, hello), but in fact is a finalizer.  We must somehow live in this world. </div><p>Source: https://habr.com/ru/post/122639/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../122635/index.html">The history of the creation of "Mobile Advertising"</a></li>
 <li><a href="../122636/index.html">Change cloud rates</a></li>
 <li><a href="../122638/index.html">Geek Picnic: Hooray, it happened!</a></li>
+<li><a href="../12264/index.html">Intel accelerates the development of mobile gadgets for Linux</a></li>
 <li><a href="../122642/index.html">Jingle became the base protocol for GTalk</a></li>
 <li><a href="../122644/index.html">Winklevoss twins didn’t think to retreat from Facebook</a></li>
 <li><a href="../122645/index.html">kedDroid - S03E08. Video review software for Android</a></li>
 <li><a href="../122646/index.html">Ax porridge</a></li>
-<li><a href="../122648/index.html">Jon von Techner will leave Opera</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

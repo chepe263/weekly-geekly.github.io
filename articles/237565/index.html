@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A gift from VmWare or how to block your server on hosting</h1><div class="post__text post__text-html js-mediator-article"><table><tbody><tr><td><img src="https://habrastorage.org/files/45a/66c/5c9/45a66c5c99284a65b71730b5454e4074.jpg" alt="jail" width="160" height="160"></td><td>  Returning on Saturday evening from a fun walk for mushrooms, I discovered the strange state of the laptop: <br>  - Internet does not work; <br>  - VPN with server installed and working. <br>  Having disconnected VPN, I immediately received a “letter of happiness” from Hetzner: <br><blockquote>  Dear Sir or Madam <br>  Your server with the above-mentioned IP address. <br>  It has been negatively affected. <br>  Your server has therefore been deactivated as a precautionary measure. <br>  The corresponding log history is this email. </blockquote><br></td></tr></tbody></table><br>  On the robot.your-server.de website, it was stated that only one of the three IPs was blocked, and the main functionality of the server works, which made the task a little easier. <br>  What is it?  Server broke?  Unexpected effect of my <a href="http://habrahabr.ru/post/235197/">open-resolver test</a> ?  Has my laptop picked up malware or botnet? <br><a name="habracut"></a><br>  The attached log file (see below) raised additional questions: <br>  - why the attack goes to a gray IP (in my networks I use other addresses); <br>  - why the netbios protocol is selected. <br><pre><code class="bash hljs">14:47:27.911048 IP 78.XYZ50189 &amp;amp;gt; 172.16.96.1.137: NBT UDP PACKET(137): REFRESH(8); REQUEST; UNICAST 14:47:27.911098 IP 78.XYZ56865 &amp;amp;gt; 172.16.96.1.137: NBT UDP PACKET(137): REFRESH(8); REQUEST; UNICAST 14:47:27.911448 IP 78.XYZ58051 &amp;amp;gt; 172.16.96.1.137: NBT UDP PACKET(137): QUERY; REQUEST; UNICAST 14:47:27.911453 IP 78.XYZ53676 &amp;amp;gt; 172.16.96.1.137: NBT UDP PACKET(137): REFRESH(8); REQUEST; UNICAST 14:47:27.911502 IP 78.XYZ62404 &amp;amp;gt; 172.16.96.1.137: NBT UDP PACKET(137): QUERY; REQUEST; UNICAST 14:47:27.911548 IP 78.XYZ50392 &amp;amp;gt; 172.16.96.1.137: NBT UDP PACKET(137): REFRESH(8); REQUEST; UNICAST 14:47:27.911598 IP 78.XYZ64778 &amp;amp;gt; 172.16.96.1.137: NBT UDP PACKET(137): REFRESH(8); REQUEST; UNICAST 14:47:27.911698 IP 78.XYZ60961 &amp;amp;gt; 172.16.96.1.137: NBT UDP PACKET(137): REFRESH(8); REQUEST; UNICAST</code> </pre> <br>  Since I use virtualization, I first checked the logs and activity on dom0 - I did not find anything suspicious. <br>  Next, the questions were raised by newly deployed virtuals (one of them was with word press), a virtual Windows and a virtual Windows with installed on a laptop. <br>  Checking the Linux servers did not reveal any problems, the remote virtual machine with Windows was turned off, and antivirus was installed on the local Windows (previously it installed software for defragmentation and it caused suspicions), which also did not detect anything. <br>  Additionally, on the dom0 I installed the filtering rules for netbios packets, but they did not work either (as it turned out later, they did not apply them). <br>  The first letter in Hetzner about unlocking with a diagnosis, and not whether it is spoof in your network, remained unanswered. <br>  Just in case, I ran tcpdump (and why didn't I do it right away?), And it showed an amazing result: <br><pre> <code class="bash hljs">21:55:01.985310 IP XYWZnetbios-ns &gt; 172.16.96.1.137.netbios-ns: NBT UDP PACKET(137): QUERY; REQUEST; BROADCAST 21:55:01.985472 IP XYWZnetbios-ns &gt; 172.16.96.1.137.netbios-ns: NBT UDP PACKET(137): QUERY; REQUEST; BROADCAST 21:55:01.985557 IP XYWZnetbios-ns &gt; 172.16.96.1.137.netbios-ns: NBT UDP PACKET(137): RELEASE; REQUEST; BROADCAST 21:55:01.987328 IP XYWZnetbios-ns &gt; 172.16.96.1.137.netbios-ns: NBT UDP PACKET(137): QUERY; REQUEST; BROADCAST</code> </pre><br>  My server receives such requests (more than 200 requests per second), and requests come from my laptop.  Tcpdump (I have a Macbook) running on a laptop confirms this.  To identify the source, I decide to quench the applications one by one, and VmWare Fusion 5.04 comes first.  Miraculously requests disappear.  The subsequent launch of VmWare Fusion and virtualk does not lead to a similar result.  I quickly look for the interconnection between VmWare Fusion and Netbios and stumble upon a wonderful <a href="https://communities.vmware.com/thread/390421%3Fstart%3D15%26tstart%3D0">post</a> in the 2012 VmWare community.  It turns out for 2.5 years VmWare did not fix this bug.  Since this is my working laptop, so I constantly take it to meetings.  Apparently, somewhere he caught the WINS settings for IP 172.16.96.1. <br>  The subsequent correspondence with Hetzner was a bit stupid (I had to confirm 3 times that the problem was solved and I had access to the server), but productive.  IP was unlocked in about an hour. <br>  To prevent such problems in the future, we install an additional iptables rule (this time in the right place): <br><pre> <code class="bash hljs">-A RH-Firewall-1-INPUT -p udp -m multiport --dports 137,138,139 -j DROP</code> </pre> <br>  Good luck in fighting VmWare attacks! </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/237565/">https://habr.com/ru/post/237565/</a></p>
+    <p>Source: https://habr.com/ru/post/237565/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,10 +74,10 @@
 <li><a href="../237561/index.html">Startup Guide, Part 2: When a Venture Investor Says No</a></li>
 <li><a href="../237563/index.html">Supermassive black hole in the center of a small galaxy</a></li>
 <li><a href="../237569/index.html">Cross-browser beautiful input type = "number"</a></li>
+<li><a href="../23757/index.html">Caravania</a></li>
 <li><a href="../237571/index.html">Choosing a name for a new Russian operating system</a></li>
 <li><a href="../237573/index.html">Model S cars can now be given personal names.</a></li>
 <li><a href="../237575/index.html">Patching Linux processes on the fly with GDB</a></li>
-<li><a href="../237577/index.html">The evolution of IT-infrastructure of our retail - consistent "molting"</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

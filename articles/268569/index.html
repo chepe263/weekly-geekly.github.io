@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Patch mysqldump at home</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/c55/5ba/126/c555ba1264e7a39ba30129db92fce36d.png" alt="image"><br>  Backups are good, and even better when they work as they should when they are needed.  On one of the projects, it was necessary to restore a dump of 745 triggers and roll them onto a working MySQL database. <br><br>  MySQL allows you to use any of the names of the triggers, including using dots ( <em>for example</em> : <code>analitica.cron.indeg.y.run.a_insert</code> ).  And when creating a dump, <strong>mysqldump</strong> does not take into account this circumstance and adds a structure for their drop of the following form: <br><br><pre> <code class="sql hljs"><span class="hljs-comment"><span class="hljs-comment">/*!50032 DROP TRIGGER IF EXISTS analitica.cron.indeg.y.run.a_insert */</span></span>;</code> </pre> <br>  The catch awaits when you try to dump these dumps to the base where these triggers are already created.  From the point of view of MySQL, this query will not drop the trigger, because it will not find a trigger with that name.  For proper operation, the trigger name must be enclosed in apostrophes. <br><a name="habracut"></a><br>  In an attempt to find a workaround, he wrote the corresponding report to the Percona <a href="https://bugs.launchpad.net/percona-server/%2Bbug/1504202">bug tracker</a> , and they had already duplicated the same report into the official <a href="http://bugs.mysql.com/bug.php%3Fid%3D78763">MySQL tracker</a> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Since this bug will be fixed for a long time, I need the direct line now.  I decided to solve this problem in the most straightforward way, namely, by self-patching <strong>mysqldump</strong> .  For this, the official repository of the <em>MySQL 5.6</em> perkonovskogo ditributiv from GitHub was inclined. <br><br><pre> <code class="bash hljs">git <span class="hljs-built_in"><span class="hljs-built_in">clone</span></span> --recursive --depth 1 https://github.com/percona/percona-server/</code> </pre> <br>  Opened the <code>client/mysqldump.c</code> file and added apostrophes to the <code>DROP TRIGGER IF EXISTS</code> construct in a couple of places.  If you look <em>diff</em> , it turns out this patch: <br><br><pre> <code class="diff hljs">@@ -3517,7 +3517,7 @@ static void dump_trigger_old(FILE *sql_file, MYSQL_RES *show_triggers_rs, fprintf(sql_file, "/*!50003 SET @OLD_SQL_MODE=@@SQL_MODE*/;\n"); if (opt_drop_trigger) - fprintf(sql_file, "/*!50032 DROP TRIGGER IF EXISTS %s */;\n", (*show_trigger_row)[0]); + fprintf(sql_file, "/*!50032 DROP TRIGGER IF EXISTS `%s` */;\n", (*show_trigger_row)[0]); fprintf(sql_file, "DELIMITER ;;\n" @@ -3604,7 +3604,7 @@ static int dump_trigger(FILE *sql_file, MYSQL_RES *show_create_trigger_rs, switch_sql_mode(sql_file, ";", row[1]); if (opt_drop_trigger) - fprintf(sql_file, "/*!50032 DROP TRIGGER IF EXISTS %s */;\n", row[0]); + fprintf(sql_file, "/*!50032 DROP TRIGGER IF EXISTS `%s` */;\n", row[0]);</code> </pre> <br>  To build the patched version, you need to put a couple of packages on Ubuntu / Debian, run <em>cmake</em> with the parameters from the Percona documentation, and then <em>make</em> 'gather only <strong>mysqldump</strong> . <br><br><pre> <code class="bash hljs">apt-get install build-essential cmake bison libaio-dev libncurses5-dev libreadline-dev cmake . -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_CONFIG=mysql_release -DFEATURE_SET=community -DWITH_EMBEDDED_SERVER=OFF make mysqldump</code> </pre> <br>  After compilation we get the patched version of <strong>mysqldump</strong> , in which the names of the triggers are escaped correctly.  You can dump a new dumper: <br><br><pre> <code class="bash hljs">./percona-server/client/mysqldump \ --socket=/var/run/mysqld/mysqld.sock \ -uroot -p --routines --events --triggers \ --add-drop-trigger --quote-names \ --no-create-info --no-data --no-create-db --skip-opt \ database_name | sed -r <span class="hljs-string"><span class="hljs-string">'s/DEFINER[ ]*=[ ]*[^*]*\*/\*/'</span></span> &gt; dump.sql</code> </pre> </div><p>Source: <a href="https://habr.com/ru/post/268569/">https://habr.com/ru/post/268569/</a></p>
+      Since this bug will be fixed for a long time, I need the direct line now.  I decided to solve this problem in the most straightforward way, namely, by self-patching <strong>mysqldump</strong> .  For this, the official repository of the <em>MySQL 5.6</em> perkonovskogo ditributiv from GitHub was inclined. <br><br><pre> <code class="bash hljs">git <span class="hljs-built_in"><span class="hljs-built_in">clone</span></span> --recursive --depth 1 https://github.com/percona/percona-server/</code> </pre> <br>  Opened the <code>client/mysqldump.c</code> file and added apostrophes to the <code>DROP TRIGGER IF EXISTS</code> construct in a couple of places.  If you look <em>diff</em> , it turns out this patch: <br><br><pre> <code class="diff hljs">@@ -3517,7 +3517,7 @@ static void dump_trigger_old(FILE *sql_file, MYSQL_RES *show_triggers_rs, fprintf(sql_file, "/*!50003 SET @OLD_SQL_MODE=@@SQL_MODE*/;\n"); if (opt_drop_trigger) - fprintf(sql_file, "/*!50032 DROP TRIGGER IF EXISTS %s */;\n", (*show_trigger_row)[0]); + fprintf(sql_file, "/*!50032 DROP TRIGGER IF EXISTS `%s` */;\n", (*show_trigger_row)[0]); fprintf(sql_file, "DELIMITER ;;\n" @@ -3604,7 +3604,7 @@ static int dump_trigger(FILE *sql_file, MYSQL_RES *show_create_trigger_rs, switch_sql_mode(sql_file, ";", row[1]); if (opt_drop_trigger) - fprintf(sql_file, "/*!50032 DROP TRIGGER IF EXISTS %s */;\n", row[0]); + fprintf(sql_file, "/*!50032 DROP TRIGGER IF EXISTS `%s` */;\n", row[0]);</code> </pre> <br>  To build the patched version, you need to put a couple of packages on Ubuntu / Debian, run <em>cmake</em> with the parameters from the Percona documentation, and then <em>make</em> 'gather only <strong>mysqldump</strong> . <br><br><pre> <code class="bash hljs">apt-get install build-essential cmake bison libaio-dev libncurses5-dev libreadline-dev cmake . -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_CONFIG=mysql_release -DFEATURE_SET=community -DWITH_EMBEDDED_SERVER=OFF make mysqldump</code> </pre> <br>  After compilation we get the patched version of <strong>mysqldump</strong> , in which the names of the triggers are escaped correctly.  You can dump a new dumper: <br><br><pre> <code class="bash hljs">./percona-server/client/mysqldump \ --socket=/var/run/mysqld/mysqld.sock \ -uroot -p --routines --events --triggers \ --add-drop-trigger --quote-names \ --no-create-info --no-data --no-create-db --skip-opt \ database_name | sed -r <span class="hljs-string"><span class="hljs-string">'s/DEFINER[ ]*=[ ]*[^*]*\*/\*/'</span></span> &gt; dump.sql</code> </pre> </div><p>Source: https://habr.com/ru/post/268569/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../268551/index.html">UX in messengers: 2005 - 2015. Part I. Background. Years 2005-2007</a></li>
 <li><a href="../268555/index.html">The leak of real full names of users through Kinopoisk.ru</a></li>
 <li><a href="../268559/index.html">Is your programming language unfounded? (or why predictability is important)</a></li>
+<li><a href="../26856/index.html">Exchange a book - save a tree</a></li>
 <li><a href="../268561/index.html">SpecFlow and alternative testing approach</a></li>
 <li><a href="../268567/index.html">New emotions on Facebook. A brief analysis of the functionality and its logic</a></li>
+<li><a href="../26857/index.html">Run to Pepsi)</a></li>
 <li><a href="../268573/index.html">Remote code execution in InterSystems Caché (RCE)</a></li>
 <li><a href="../268575/index.html">Photoshop history</a></li>
 <li><a href="../268577/index.html">Robonoch -2015</a></li>
 <li><a href="../268579/index.html">Review TEKON SCADA</a></li>
-<li><a href="../268581/index.html">Potentially, up to 1 million “live” VK.com accounts have been compromised by attackers.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

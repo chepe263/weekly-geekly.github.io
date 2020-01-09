@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Encapsulation problems</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/883/451/611/8834516110e63b37b1decae04d72fe03.jpeg" align="right">  Recently, an interesting article about the problems in the concept of encapsulation caught my eye - <a href="http://www.johndcook.com/blog/2011/03/02/psychological-encapsulation/">read</a> if you have time. <br>  For those who have no time, I will quickly retell the essence: encapsulation does not perform one of its main tasks (to give a black box with the described inputs and outputs) for a number of reasons: <br><ol><li>  Programmers do not trust other "black boxes". </li><li>  In foreign "black boxes" mistakes happen that have to be fixed, getting into their insides (and breaking this whole idea). </li><li>  Inputs and outputs are not always described clearly.  Sometimes it’s easier to build your bike than to figure out how to ride someone else’s. </li></ol><br>  All this is a despicable reality that programming theorists ignore.  And how to live with it? <br><a name="habracut"></a><br>  No idea.  There is hardly any “silver bullet” here (and where is it?), And in each case you have to decide something of your own.  The story will be about one such case and one of the solutions. <br><br>  I once caught one big project - it was written for many years and many people.  Accordingly, for each task in the spirit of encryption \ parsing \ archiving \ etc.  long ago their modules were written.  It would seem - lafa, take it and use it.  But the trouble is that there were so many of these modules and they were written so long ago that no one remembered either their authors or the details of their implementation.  Classic "black boxes".  Sometimes understandable, sometimes not.  Sometimes working, and sometimes buggy.  Well, how to use it? <br><br>  I thought a bit and decided to make a “wrapper” for each class used, according to something like the following principle: here is a HUGE encryption class that has a lot of options and a monster in general.  (Who has seen serious classes for encryption, he knows what I mean - there are all the initialization vectors, constants, etc.).  I need it for only one purpose - to encrypt and decrypt the file using a symmetric key.  And that's all.  Well, then we take and write a wrapper of two methods: <br><ul><li>  Encrypt File (what, where, key) </li><li>  Decrypt File (what, where, key) </li></ul><br>  Inside the methods we pull complex methods of the base class.  Next on the code we use our wrapper.  What are the advantages? <br><ol><li>  The problem of non-customization of an ALIEN black box has been solved - now everywhere on the code I use MY OWN black box.  I believe him.  It will start vykobenivatsya - change the insides, to use some other means of encryption (without changing the interface). </li><li>  On such a simple wrapper, I now instantly write tests.  What to write them: encrypted - decrypted - checked files.  5 lines of code.  Plus, checking for errors in file operations is another 10. I wouldn’t undertake writing tests on that big and terrible base class — long and difficult (they weren’t even written by its author).  Moreover, my tests will be better than the tests of the author of the class, even if he wrote them.  Because the author of the code always has some idea of ​​how this code will be used.  And this is reflected not only in the code, but also in the tests.  Well, the author would have believed that files for encryption always exist and are readable - and would not check it in tests.  And I know that this is not my case - and I will definitely check these situations.  Well, because I really need it. </li><li>  The inputs and outputs have become much clearer.  Well, at least to me.  Yes, and others, I think so.  And do not care that I created another entity, the old Occam will forgive me. </li></ol><br>  At the end of the article, the idea crept up to me that I unwittingly retold some chapter of the book by Fowler or McConnell, it sounds so simple and banal.  But it seems to be not (correct, if I am mistaken). <br>  <b>Update:</b> I am told from the audience here that I am telling about the Patterns of the Facade and the Adapter from the book of the Gang of Four - it may well be. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,17 +60,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Short moral </h4><br>  If you use someone else’s code that you don’t trust, write a wrapper for it that would be convenient for testing and for real use.  Test this wrapper as it will be used by real code. </div><p>Source: <a href="https://habr.com/ru/post/136392/">https://habr.com/ru/post/136392/</a></p>
+    <h4>  Short moral </h4><br>  If you use someone else’s code that you don’t trust, write a wrapper for it that would be convenient for testing and for real use.  Test this wrapper as it will be used by real code. </div><p>Source: https://habr.com/ru/post/136392/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../136385/index.html">My coworking experience</a></li>
 <li><a href="../136386/index.html">Review budget 7 "tablets: Kindle Fire, Nook Tablet, BB PlayBook</a></li>
 <li><a href="../136388/index.html">Light sensor from the webcam of your laptop</a></li>
 <li><a href="../136389/index.html">1 bit on 12 atoms</a></li>
+<li><a href="../13639/index.html">Network drive from Iomega at the price of a regular external hard drive</a></li>
 <li><a href="../136391/index.html">Open Sesame!</a></li>
 <li><a href="../136394/index.html">Jesus Christ and the free copy ethic</a></li>
 <li><a href="../136395/index.html">Skype pictures</a></li>

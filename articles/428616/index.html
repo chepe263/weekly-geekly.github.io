@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Convert XLS files to Google Spreadsheet using Google Apps Script</h1><div class="post__text post__text-html js-mediator-article">  My name is Alexander and I am a freelancer, my main specialization is Google Apps Script.  One of the customers needed to programmatically convert Microsoft Excel files to Google Spreadsheets.  I had never encountered such a task before, so I called Google for help.  I rummaged through a bunch of forums, but did not find a ready-made solution.  I had to write my bike.  And although the code was short, it took quite a bit of time to find a solution.  Here's what happened: <br><a name="habracut"></a><br><pre><code class="javascript hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">convert</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">folderId</span></span></span><span class="hljs-function">) </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> folderIncoming = DriveApp.getFolderById(folderId); <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> files = folderIncoming.getFilesByType(MimeType.MICROSOFT_EXCEL_LEGACY); <span class="hljs-keyword"><span class="hljs-keyword">while</span></span> (files.hasNext()) { <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> source = files.next(); <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> sourceId = source.getId(); <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> fileName = source.getName().replace(<span class="hljs-string"><span class="hljs-string">'.xls'</span></span>, <span class="hljs-string"><span class="hljs-string">''</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> file = { <span class="hljs-attr"><span class="hljs-attr">title</span></span>: fileName, }; file = Drive.Files.copy(file, sourceId, {<span class="hljs-attr"><span class="hljs-attr">convert</span></span>: <span class="hljs-literal"><span class="hljs-literal">true</span></span>}); } }</code> </pre> <br>  This function takes as a parameter the ID of the folder in which the files that need to be converted are located.  Finds files in this folder that correspond to the MimeType.MICROSOFT_EXCEL_LEGACY type, these are Microsoft Excel XLS documents, and make copies of them in the same folder.  When copying, the format is converted, the convert: true parameter is responsible for this.  If the .xls is in the name of the original file, it is deleted. <br><br>  If you need to process XLSX files, then change the type to MimeType.MICROSOFT_EXCEL and <br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> fileName = source.getName().replace(<span class="hljs-string"><span class="hljs-string">'.xls'</span></span>, <span class="hljs-string"><span class="hljs-string">''</span></span>);  <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> fileName = source.getName().replace(<span class="hljs-string"><span class="hljs-string">'.xlsx'</span></span>, <span class="hljs-string"><span class="hljs-string">''</span></span>);</code> </pre><br>  But if you just copy this code and try to run it, it will give an error "ReferenceError: The“ Drive ”object is not defined." To fix this, you need to select the “Additional Google features ...” item in the Resources menu. In the window that appears, find the “Drive API” and enable it. <br><br><img src="https://habrastorage.org/files/218/242/3a7/2182423a7db945248aa2fdd032a210b9.jpg" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Then, in the “Resources” menu, select the “Developers Console Project ...” item.  In the window that appears, click on the link with the project ID. <br><br><img src="https://habrastorage.org/files/60c/351/1af/60c3511af9864113a40535e22eb36b69.jpg" alt="image"><br><br>  On the page that appears, in the left menu, select "APIs &amp; auth" then "APIs".  A list of API will appear, in which we follow the link “Drive API”. <br><br><img src="https://habrastorage.org/files/a5b/5d1/6f5/a5b5d16f5e2d44b19187ad0a9d2f61ac.jpg" alt="image"><br><br>  Click on the button “Enable API” - that's it.  You can run. <br><br>  Similarly, you can convert files of other formats. <br><br>  I hope that this note will save someone time. </div><p>Source: <a href="https://habr.com/ru/post/428616/">https://habr.com/ru/post/428616/</a></p>
+      Then, in the “Resources” menu, select the “Developers Console Project ...” item.  In the window that appears, click on the link with the project ID. <br><br><img src="https://habrastorage.org/files/60c/351/1af/60c3511af9864113a40535e22eb36b69.jpg" alt="image"><br><br>  On the page that appears, in the left menu, select "APIs &amp; auth" then "APIs".  A list of API will appear, in which we follow the link “Drive API”. <br><br><img src="https://habrastorage.org/files/a5b/5d1/6f5/a5b5d16f5e2d44b19187ad0a9d2f61ac.jpg" alt="image"><br><br>  Click on the button “Enable API” - that's it.  You can run. <br><br>  Similarly, you can convert files of other formats. <br><br>  I hope that this note will save someone time. </div><p>Source: https://habr.com/ru/post/428616/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../428610/index.html">Timeout paradox, or why is my bus always late?</a></li>
 <li><a href="../428612/index.html">Higher order functions in javascript: what is it?</a></li>
 <li><a href="../428614/index.html">Friday. Nonsense programmer 4.2</a></li>
+<li><a href="../42862/index.html">Your "template system" in Ruby on Rails</a></li>
 <li><a href="../428620/index.html">How to create roguelike</a></li>
 <li><a href="../428624/index.html">Jeffrey Richter, Pavel Yosifovich, Greg Young and all-all-all. Hardcore and architecture on DotNext 2018 Moscow</a></li>
 <li><a href="../428626/index.html">How to make an extension for PHP7 harder than "hello, world", and not become a red-eyed. Part 1</a></li>
 <li><a href="../428628/index.html">Work with abstract JavaScript syntax trees</a></li>
-<li><a href="../428630/index.html">No, Bitcoin will not destroy our climate by 2033</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

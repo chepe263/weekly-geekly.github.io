@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>What should be in the c-file, and what should be in the h-file?</h1><div class="post__text post__text-html js-mediator-article">  This kind of question I was recently asked by a colleague who starts programming in C language.  And I thought that this is a good reason to share my understanding of this issue.  Because even experienced programmers do not always have similar points of view on this matter. <br><br>  In part, this is a matter of taste, so who cares how I do it, welcome under the cat. <br><a name="habracut"></a><br>  Despite the fact that “the whole truth” about h-files is contained in the <a href="https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html">corresponding section of the</a> gcc preprocessor description, I will allow myself some explanations and illustrations. <br><br>  So, if literally, the header file (h-file) is a file containing C declarations and macro definitions, intended for use in several source files (c-files).  We illustrate this. <br><img src="https://habrastorage.org/files/69a/49c/942/69a49c942b08413382dddcc2d2887f8c.png" alt="image"><br>  It is easy to see that functions 1 and 2, as well as macro 2, are mentioned in both files.  And since the inclusion of header files produces the same results as copying the contents into each C-file, we can do the following: <br><img src="https://habrastorage.org/files/d95/1f2/d35/d951f2d35b1e4e4f83cf3869c37cb9f5.png" alt="image"><br>  Thus, we simply selected the common part of the two files and placed it in the header file. <br>  But is the header file an interface in this case? <br><ul><li>  If we need to use the functionality that functions 1 and 2 implement somewhere else, then Yes </li><li>  If macro 2 is intended only for use in the files Unit1.c and Unit2.c, then it has no place in the interface file. </li></ul><br>  Moreover, do we really need to have two C files to implement the interface defined in the header file?  Or just one? <br>  The answer to this question depends on the details of the implementation of the interface functions and on their place of implementation.  For example, if you make the diagrams more detailed, you can imagine a variant when the interface functions are implemented in different files: <br><img src="https://habrastorage.org/files/205/361/051/2053610516ef4ef98ae40d9f710f035a.png" alt="image"><br>  Such an embodiment leads to high code connectivity, low testability and the difficulty of reusing such modules. <br>  In order not to have such difficulties, I always consider the C-file and the header file as one module.  Wherein, <br><ul><li>  the header file contains only those declarations of functions, types, macros that are part of the interface of this module. </li><li>  The C-file, in turn, must contain the implementation of all the functions declared in the h-file, as well as private types, macros and functions that are needed to implement the interface. </li></ul><br>  Thus, if I had the chance to implement the code to which the diagram above corresponds, I would try to achieve the following (the endings _c and _h in the file names were added because it was impossible to use a dot in the <a href="http://www.planttext.com/">tool</a> that I used to create diagrams): <br><img src="https://habrastorage.org/files/971/2c1/494/9712c1494349474e830457374f58ec9d.png" alt="image"><br>  The diagram shows that in fact we are dealing with two independent modules, each of which has its own interface in the form of a header file.  This makes it possible to use only the interface that is really needed in this particular case. Moreover, these modules can be tested independently of each other. <br>  The reader probably noticed that macro 2 from the header file was again returned as a copy to both C-files.  Of course, it is not very convenient to maintain.  But to make this macro part of the interface is not correct. <br>  In such cases, I prefer to make a separate header file containing the types and macros needed by several C-files. <br><img src="https://habrastorage.org/files/a72/fd6/4df/a72fd64dfca041839caf8f0fa6a7fd33.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I hope I managed to identify those entities that need to be placed in the header files.  And also show the difference between interfaces and files containing declarations and macros needed by several C-files. <br><br>  Thank you for your attention to the material. </div><p>Source: <a href="https://habr.com/ru/post/280764/">https://habr.com/ru/post/280764/</a></p>
+      I hope I managed to identify those entities that need to be placed in the header files.  And also show the difference between interfaces and files containing declarations and macros needed by several C-files. <br><br>  Thank you for your attention to the material. </div><p>Source: https://habr.com/ru/post/280764/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../280762/index.html">A brief history of Bitcoin Blockchain for dummies. Tale for adults</a></li>
 <li><a href="../280766/index.html">Bayesian neural network is now orange (part 2)</a></li>
 <li><a href="../280768/index.html">StartCOM: Certificate Transparency, Free * EV SSL Certificates</a></li>
+<li><a href="../28077/index.html">Self Interview</a></li>
 <li><a href="../280770/index.html">The digest of interesting materials for the mobile developer # 147 (March 28 - April 3)</a></li>
 <li><a href="../280774/index.html">Behavior Analysis with Apache Spark</a></li>
-<li><a href="../280776/index.html">IBM is working to strengthen information protection of "connected" cars</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

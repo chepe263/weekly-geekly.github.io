@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to make a face out of food</h1><div class="post__text post__text-html js-mediator-article">  Aaron Randall's <a href="https://github.com/AaronRandall/Megabite">Megabite</a> application uses a photo of food, analyzes each individual component of your dish, then changes everything in places to get a funny face on a plate.  Under the cut - video and description of the algorithm. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/51e/152/9cf/51e1529cfdf6324ba450879612f6b536.jpg" width="600" alt="image"><br><a name="habracut"></a><br><iframe width="420" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/yBYbK5aL7kc%3Ffeature%3Doembed&amp;xid=17259,15700022,15700186,15700190,15700248,15700253&amp;usg=ALkJrhjIWK3Tge38FRb6poNz64-Sjaz_ww" frameborder="0" allowfullscreen=""></iframe><br><br><h4>  Image preparation </h4><br>  The user shoots food using the application, the size of the photo is changed to 1000x1000 pixels, and then cropped along the contour of the dish. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img src="https://habrastorage.org/getpro/geektimes/post_images/a03/f57/f16/a03f57f16dab6dfd76cf900fc86ce2f9.jpg" width="600" alt="image"><br><br><h4>  Contour detection </h4><br>  In the next step, the application searches for individual objects, defining their contours.  The application applies the <a href="https://ru.wikipedia.org/wiki/%25D0%259E%25D0%25BF%25D0%25B5%25D1%2580%25D0%25B0%25D1%2582%25D0%25BE%25D1%2580_%25D0%259A%25D1%258D%25D0%25BD%25D0%25BD%25D0%25B8">image detection operator Canny</a> (2), and receives three images for subsequent work (3, 4, 5).  Then the OpenCV findContours function is used to detect the contours of each part.  The outlines in the image below are marked in red.  Then the algorithm filters out the "child" contours - for example, the yolk in the fried eggs. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/041/ea3/4ef/041ea34ef78f88e03e0658fc059dceea.jpg" width="600" alt="image"><br><br><h4>  Outline selection from image </h4><br>  Each application contour turns over to fit into the minimum bounding rectangle - the minimum area that will contain the image in the maximum scale.  The process is repeated for all six parts in the example. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/fd2/e75/c9f/fd2e75c9fc5d978e4c2be944e221e8e4.gif" width="600" alt="image"><br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/1b3/599/c5e/1b3599c5e1a1ebaebe4f5ad66ce16804.jpg" width="600" alt="image"><br><br><h4>  Placing parts on a template </h4><br>  The application has templates that are used to arrange the individual parts.  Below - three examples, with the number of polygons from three to six. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/7e7/876/afd/7e7876afd13a592203bf151cb7fbd5ee.jpg" width="600" alt="image"><br><br>  The application then selects the template by the number of parts.  In this example, there are six details, so the face will come out with ears and a nose.  Then polygons and parts of the image are sorted by size and are selected by pairs. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/113/fb5/a81/113fb5a819edf55229ef8fe286c219b5.jpg" width="600" alt="image"><br><br>  At the next stage, the details are placed on the template so that the food occupies the maximum possible area of ​​each of the polygons. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/5d0/15e/929/5d015e92947da59498c547953a7656e8.gif" width="600" alt="image"><br><br><h4>  Result </h4><br>  This face eventually came from fried eggs with bacon and toast.  <a href="http://aaronrandall.com/blog/megabite/">The author writes</a> that the application so far works only with photos similar to this one and so far has many limitations. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/2e4/005/584/2e4005584515b3712d6e6c39cdbe74ff.jpg" width="600" alt="image"></div><p>Source: <a href="https://habr.com/ru/post/390075/">https://habr.com/ru/post/390075/</a></p>
+    <img src="https://habrastorage.org/getpro/geektimes/post_images/a03/f57/f16/a03f57f16dab6dfd76cf900fc86ce2f9.jpg" width="600" alt="image"><br><br><h4>  Contour detection </h4><br>  In the next step, the application searches for individual objects, defining their contours.  The application applies the <a href="https://ru.wikipedia.org/wiki/%25D0%259E%25D0%25BF%25D0%25B5%25D1%2580%25D0%25B0%25D1%2582%25D0%25BE%25D1%2580_%25D0%259A%25D1%258D%25D0%25BD%25D0%25BD%25D0%25B8">image detection operator Canny</a> (2), and receives three images for subsequent work (3, 4, 5).  Then the OpenCV findContours function is used to detect the contours of each part.  The outlines in the image below are marked in red.  Then the algorithm filters out the "child" contours - for example, the yolk in the fried eggs. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/041/ea3/4ef/041ea34ef78f88e03e0658fc059dceea.jpg" width="600" alt="image"><br><br><h4>  Outline selection from image </h4><br>  Each application contour turns over to fit into the minimum bounding rectangle - the minimum area that will contain the image in the maximum scale.  The process is repeated for all six parts in the example. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/fd2/e75/c9f/fd2e75c9fc5d978e4c2be944e221e8e4.gif" width="600" alt="image"><br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/1b3/599/c5e/1b3599c5e1a1ebaebe4f5ad66ce16804.jpg" width="600" alt="image"><br><br><h4>  Placing parts on a template </h4><br>  The application has templates that are used to arrange the individual parts.  Below - three examples, with the number of polygons from three to six. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/7e7/876/afd/7e7876afd13a592203bf151cb7fbd5ee.jpg" width="600" alt="image"><br><br>  The application then selects the template by the number of parts.  In this example, there are six details, so the face will come out with ears and a nose.  Then polygons and parts of the image are sorted by size and are selected by pairs. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/113/fb5/a81/113fb5a819edf55229ef8fe286c219b5.jpg" width="600" alt="image"><br><br>  At the next stage, the details are placed on the template so that the food occupies the maximum possible area of ​​each of the polygons. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/5d0/15e/929/5d015e92947da59498c547953a7656e8.gif" width="600" alt="image"><br><br><h4>  Result </h4><br>  This face eventually came from fried eggs with bacon and toast.  <a href="http://aaronrandall.com/blog/megabite/">The author writes</a> that the application so far works only with photos similar to this one and so far has many limitations. <br><br><img src="https://habrastorage.org/getpro/geektimes/post_images/2e4/005/584/2e4005584515b3712d6e6c39cdbe74ff.jpg" width="600" alt="image"></div><p>Source: https://habr.com/ru/post/390075/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../390065/index.html">Spiritual conversations at Google Headquarters</a></li>
 <li><a href="../390067/index.html">Prevent cancer: ways to avoid half of the tumors on the example of a single Canadian province</a></li>
 <li><a href="../390069/index.html">Scientists from the UK have the right to edit the human embryo genome</a></li>
+<li><a href="../39007/index.html">Java and IPhone, the story of one unhappy love.</a></li>
 <li><a href="../390071/index.html">Keybase Encrypted File System: First Alpha Version</a></li>
 <li><a href="../390073/index.html">SETI: if aliens visit Earth, they will take control of everything</a></li>
 <li><a href="../390077/index.html">Why do you need a chin</a></li>
 <li><a href="../390079/index.html">UberX taxi earned in Minsk: the first trip is free. Taxi drivers threaten to stop the city</a></li>
+<li><a href="../39008/index.html">Recover barcode on OMS policy</a></li>
 <li><a href="../390081/index.html">Seven current copters up to $ 20, which can be put in your pocket</a></li>
 <li><a href="../390083/index.html">[Announcement] Kingston increases the maximum capacity for DataTraveler Micro 3.1 USB drive and SDXC memory card</a></li>
-<li><a href="../390085/index.html">How Raspberry Pi complain about slow internet helped</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Running service workers using systemd</h1><div class="post__text post__text-html js-mediator-article">  After the release of Ubuntu 16.04 (new LTS release), systemd became a reality of all major Linux distributions used on servers.  This means that you can pledge to systemd advanced features without risking leaving some users of the application "overboard". <br><br>  This post is about how to implement a mnogovdochnoe application using systemd. <br><br>  Abstract: Using service templates and target'ov to run several service instances (implementation of "workers").  PartOf dependency.  A little about the [install] section of units. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h1>  Introduction </h1><br>  Many programming languages ​​with poor or no multithreading (Python, Ruby, PHP, quite often C / C ++) use the concept of "worker".  Instead of building complex relationships between threads within an application, they launch several single-threaded copies of the application, each of which takes on a piece of workload.  Thanks to the <a href="https://lwn.net/Articles/542629/">SO_REUSEPORT option,</a> there is even the possibility to listen “together” on the same port, which covers most of the tasks for which there is a need for workers (in fact, normal server applications that implement the API or serve the website). <br><br>  But such an approach requires the presence of a “supervisor” who is responsible for launching copies, monitors their state, handles errors, completes with all kinds of stop / reload, etc.  With seeming trivialities, this is a completely non-trivial task, full of nuances (for example, if one of the workers got into TASK_UNINTERRUPTIBLE or got SIGSTOP, then problems may arise when the restart of a not very well written parent). <br><br>  There is a launch option without a supervisor, but in this case the reload / restart task is passed on to the administrator.  With the “one process per core” model, restarting the service on a 24-core server becomes a candidate for automation, which in turn requires processing all the same SIGSTOPs and other complex nuances. <br><br>  One solution to this problem is to use systemd service templates along with a dependency on a common target. <br><a name="habracut"></a><br><h1>  Theory </h1><br><h2>  Templates </h2><br>  systemd supports “templates” for running services.  These templates take a parameter, which can then be inserted anywhere in the command line arguments (man systemd.service).  The parameter is passed through the '@' symbol in the service name.  The part after the '@' (but before the dot) is called the 'instance name', encoded by% i or% I.  A complete list of options is <a href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html">www.freedesktop.org/software/systemd/man/systemd.unit.html#Specifiers</a> .  The presence of '@' in the service name (before the dot) indicates that this is a pattern. <br><br>  Let's try to write the simplest template: <br><br>  /etc/systemd/system/foobar-worker@.service <br><pre> [Unit]
@@ -91,20 +91,20 @@
  WantedBy = multi-user.target
 </pre><br><br>  Now, if we do it enable: <br><pre> # systemctl enable foobar.target
  Created symlink /etc/systemd/system/multi-user.target.wants/foobar.target → /etc/systemd/system/foobar.target.
-</pre><br><br>  Everything, our service, made from several workers, is ready to start / restart as a whole, plus it will be launched at the start of our computer / server. </div><p>Source: <a href="https://habr.com/ru/post/161011/">https://habr.com/ru/post/161011/</a></p>
+</pre><br><br>  Everything, our service, made from several workers, is ready to start / restart as a whole, plus it will be launched at the start of our computer / server. </div><p>Source: https://habr.com/ru/post/161011/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../161001/index.html">Humidifier: buy or make? Difficulties of choice</a></li>
 <li><a href="../161003/index.html">Give a piece of code for Christmas</a></li>
 <li><a href="../161005/index.html">HOLO - The Music Amalgamation System</a></li>
 <li><a href="../161007/index.html">Google accused of plagiarism of the game Ingress</a></li>
 <li><a href="../161009/index.html">Git Rebase Usage Guidelines</a></li>
+<li><a href="../16101/index.html">Very interesting Chinese invented!</a></li>
 <li><a href="../161013/index.html">Logic - weekly selection of gaming and IT industry news №3</a></li>
 <li><a href="../161017/index.html">Mobile operators of Spain have launched Joyn for Android: is the industry trying to return Whatsapp and Viber users?</a></li>
+<li><a href="../16102/index.html">VMware Fusion is now compatible with Leopard.</a></li>
 <li><a href="../161021/index.html">Bluetooth sticker helps to find keys, backpack or remote control</a></li>
 <li><a href="../161025/index.html">BitTorrent intends to become a distributor of licensed content.</a></li>
-<li><a href="../161027/index.html">Getting the image of the right size without OutOfMemoryError + auto-rotate according to EXIF ​​orientation</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

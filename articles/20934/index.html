@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Fighting DDOS and DOS at the nginx level</h1><div class="post__text post__text-html js-mediator-article"> FreeBSD, network Intel fxp, port 100 Mbit, polling, http accept-filter <br>  in sysctl: <br><br> <code>sysctl kern.maxfiles=90000 <br> sysctl kern.maxfilesperproc=80000 <br> sysctl net.inet.tcp.blackhole=2 <br> sysctl net.inet.udp.blackhole=1 <br> sysctl kern.polling.burst_max=1000 <br> sysctl kern.polling.each_burst=50 <br> sysctl kern.ipc.somaxconn=32768 <br> sysctl net.inet.tcp.msl=3000 <br> sysctl net.inet.tcp.maxtcptw=40960 <br> sysctl net.inet.tcp.nolocaltimewait=1 <br> sysctl net.inet.ip.portrange.first=1024 <br> sysctl net.inet.ip.portrange.last=65535 <br> sysctl net.inet.ip.portrange.randomized=0 <br></code> <br><a name="habracut"></a><br>  In nginx moments: <br><br> <code>worker_processes 1; <br> worker_rlimit_nofile 80000; <br> events { <br> worker_connections 50000; <br> } <br> <br> server_tokens off; <br> log_format IP '$remote_addr'; <br> reset_timedout_connection on; <br> <br> listen xx.xx.xx.xx:80 default rcvbuf=8192 sndbuf=16384 backlog=32000 accept_filter=httpready;</code> <br> <br>  filtering url for example by the POST criterion of index.php? action = login with an empty referrer can be implemented like this <br> <code><a href="http://127.0.0.1/"></a> set $add 1; <br> location /index.php { <br> limit_except GET POST { <br> deny all; <br> } <br> set $ban “”; <br> if ($http_referer = “” ) {set $ban $ban$add;} <br> if ($request_method = POST ) {set $ban $ban$add;} <br> if ($query_string = “action=login” ){set $ban $ban$add;} <br> if ($ban = 111 ) { <br> access_log /var/log/nginx/ban IP; <br> return 404; <br> } <br> proxy_pass 127.0.0.1:8000; #   <br> } <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,10 +63,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Then they cut at the pf level - they loaded into the IP table from which too many hits came.  PF with tables works very quickly.  Log parser sources are available at <a href="http://www.comsys.com.ua/files">www.comsys.com.ua/files</a> . <br><br>  Well, on the crown, once a minute, add new ip from the log to the ip table: <br><br>  25 Mbps DDoS, predominantly chopping ip, the remnants go to nginx, which by the criterion teaches ip and proxies the rest to Apache - LA 0, the site works. </div><p>Source: <a href="https://habr.com/ru/post/20934/">https://habr.com/ru/post/20934/</a></p>
+      Then they cut at the pf level - they loaded into the IP table from which too many hits came.  PF with tables works very quickly.  Log parser sources are available at <a href="http://www.comsys.com.ua/files">www.comsys.com.ua/files</a> . <br><br>  Well, on the crown, once a minute, add new ip from the log to the ip table: <br><br>  25 Mbps DDoS, predominantly chopping ip, the remnants go to nginx, which by the criterion teaches ip and proxies the rest to Apache - LA 0, the site works. </div><p>Source: https://habr.com/ru/post/20934/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

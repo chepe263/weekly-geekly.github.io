@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Mnesia - change table</h1><div class="post__text post__text-html js-mediator-article"> Mnesia has a lot of useful things: it stores data in Erlang format, replication, transactions, etc.  etc.  But there is one problem - <i>how to change table structures?</i> <br><a name="habracut"></a><br>  When creating a table, you must specify a list of fields.  We will not go deep into recommendations to use record (record) with the same name with the table.  It is important that when changing the list of fields for the proposed documentation using <b>mnesia: transform_table</b> (converting fields and replacing the table definition), it seems you will have to stop the system, convert the table, change the application code to work with the new type and start (test). <br>  If you look at any SQL database, then adding a field is an elementary operation. <br>  For me it is important to make the transition to a new type without stopping the entire system.  At least, the database should function continuously. <br><br>  I researched reading and writing in Mnesia.  And the conclusion is: <br>  Mnesia tightly controls the data while recording.  You can only record what is declared in the table structure, otherwise it is an error.  The name of the record and the number of elements is controlled - i.e.  EVERYTHING. <br>  However, when reading, Mnesia gives away what was written, not referring to the currently configured list of fields and the title of the record.  And the list of fields can be changed without actually transforming the records using the non-recommended mnesia form: transform_table (Tab, <b>ignore</b> , Fildlist). <br>  This form is intended, according to the documentation, for custom transformation of table entries. <br>  Let's see how it all works.  For example, create a table, write the data, and then add new fields and transform with ignore: <br> <code>-module(recordtest). <br> -compile(export_all). <br> -record(r1 ,{f1,f2}). <br> -record(r2 ,{f1,f2,f3,f4}). <br> dbtest()-&gt; <br> mnesia:create_table(r1,[{attributes, record_info(fields, r1)}]). <br> transform()-&gt; <br> mnesia:transform_table(r1,ignore,record_info(fields, r2), r2). <br> <br></code> <br>  Test: <br><br> <code>14&gt; mnesia:create_schema([node()]). <br> 18&gt; mnesia:start(). <br> ok <br> 19&gt; recordtest:dbtest(). <br> {atomic,ok} <br> 20&gt; mnesia:dirty_write(r1, {r1,l1,l2}). <br> ok <br> 21&gt; mnesia:dirty_write(r1, {r1,t1,t2,t3}). <br> ** exception exit: {aborted,{bad_type,{r1,t1,t2,t3}}} <br> in function mnesia:abort/1 <br> 22&gt; mnesia:dirty_write(r1, {r2,l1,l2}). <br> ** exception exit: {aborted,{bad_type,{r2,l1,l2}}} <br> in function mnesia:abort/1 <br> 23&gt; mnesia:dirty_read(r1, l1). <br> [{r1,l1,l2}] <br> 24&gt; mnesia:dirty_read(r1, l1). <br> [{r1,l1,l2}] <br> <br> 38&gt; recordtest:transform(). <br> {atomic,ok} <br> 39&gt; mnesia:dirty_read(r1, l1). <br> [{r1,l1,l2}] <br> 40&gt; mnesia:dirty_write(r1, {r2,l1,l2}). <br> ** exception exit: {aborted,{bad_type,{r2,l1,l2}}} <br> in function mnesia:abort/1 <br> 41&gt; mnesia:dirty_write(r1, {r2,a1,a2,a3,a4}). <br> ok <br> 49&gt; mnesia:dirty_read(r1, l1). <br> [{r1,l1,l2}] <br> 50&gt; mnesia:dirty_read(r1, a1). <br> [{r2,a1,a2,a3,a4}]</code> <br> <br>  Now we have records of both types in the table and we can read them.  But if we now try to create an index on the fourth field of the <code>mnesia:add_table_index(r1,[l4]).</code> <br>  - get a fatal error, stop mnesia.  The next time you run this database, an error will occur again.  Removal of the file r1.dcm will help - after that mnesia will start.  You will still need to remove the table definition from the schema. <br>  Consequently, as long as all the records in the tables do not meet the index specification, in no case can you index them. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Based on the above, it can be argued that the transformation of the mnesia tables is quite a serious problem.  Apparently, it is necessary in advance, at the design stage, to provide for the modes of operation of the system for the transformation of tables. <br>  The possibility of functioning in a transient mode is also demonstrated, when both new type and old type records are placed in the table.  How exactly to complete the transition to a new record type (get rid of the old type of records) depends on the specific system. <br><br>  If anyone is familiar with the problem of changing tables in Mnesia - share.  There is very little information about Mnesia. </div><p>Source: <a href="https://habr.com/ru/post/140811/">https://habr.com/ru/post/140811/</a></p>
+      Based on the above, it can be argued that the transformation of the mnesia tables is quite a serious problem.  Apparently, it is necessary in advance, at the design stage, to provide for the modes of operation of the system for the transformation of tables. <br>  The possibility of functioning in a transient mode is also demonstrated, when both new type and old type records are placed in the table.  How exactly to complete the transition to a new record type (get rid of the old type of records) depends on the specific system. <br><br>  If anyone is familiar with the problem of changing tables in Mnesia - share.  There is very little information about Mnesia. </div><p>Source: https://habr.com/ru/post/140811/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../140806/index.html">BrowserQuest - multiplayer game on canvas</a></li>
 <li><a href="../140807/index.html">WiGig broke the 1-watt barrier, will soon appear in smartphones</a></li>
 <li><a href="../140808/index.html">Innovative ASUS solutions in the learning process</a></li>
 <li><a href="../140809/index.html">Collection of JavaScript Patterns and Antipatterns</a></li>
+<li><a href="../14081/index.html">Apple inside palm</a></li>
 <li><a href="../140810/index.html">Prototype, proto and new operator</a></li>
 <li><a href="../140812/index.html">We refund money for the application in the App Store</a></li>
 <li><a href="../140813/index.html">“Ultrabook. An autopsy showed "or" make your life easier "</a></li>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Design smell: excessive attribute Required</h1><div class="post__text post__text-html js-mediator-article">  This is the fourth post in the <a href="http://habrahabr.ru/post/205086/">Poka-yoke design</a> series - also known as <i>encapsulation</i> . <br><br>  Recently, I read a post written with enthusiasm from a Microsoft technological event: <br><blockquote>  The [Required] attribute in the code automatically creates a record in the database that cannot accept null, and also creates a validation on the web page - simplicity [...] </blockquote><br><a name="habracut"></a><br>  I imagined that it might look something like this: <br><pre><code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">class</span></span> <span class="hljs-title"><span class="hljs-title">Smell</span></span> { [Required] <span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> Id { <span class="hljs-keyword"><span class="hljs-keyword">get</span></span>; <span class="hljs-keyword"><span class="hljs-keyword">set</span></span>; } }</code> </pre> <br>  Every time I see something like this, I get a little closer to death.  If you have already read my previous post, now it should be painfully clear why this breaks the encapsulation.  Despite the presence of the [Required] attribute, <a href="http://blog.ploeh.dk/2011/05/24/DesignSmellTemporalCoupling.aspx">there is no guarantee that the Id property will ever be assigned a value</a> .  An attribute is simply a piece of garbage that proclaims something that cannot be returned. <br>  This code is not fault tolerant. <br>  I understand that the attribute mentioned in the tweet is intended to signal some tool (perhaps the Entity Framework) that the property should be displayed but the database schema does not accept null, but it is still superfluous.  Attributes are the wrong way to declare an invariant statement. <br><br>  <b>Revised design</b> <br>  The [Required] attribute is redundant because there is a better way to declare that part of the data is necessary (required).  This was possible since .NET 1.0.  Here is the Poka-yoke version of the same declaration: <br><pre> <code class="cs hljs"><span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">class</span></span> <span class="hljs-title"><span class="hljs-title">Fragrance</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">private</span></span> <span class="hljs-keyword"><span class="hljs-keyword">readonly</span></span> <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> id; <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">Fragrance</span></span></span><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-params"><span class="hljs-keyword">int</span></span></span></span><span class="hljs-function"><span class="hljs-params"> id</span></span></span><span class="hljs-function">)</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.id = id; } <span class="hljs-keyword"><span class="hljs-keyword">public</span></span> <span class="hljs-keyword"><span class="hljs-keyword">int</span></span> Id { <span class="hljs-keyword"><span class="hljs-keyword">get</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.id; } } }</code> </pre><br>  This simple structural design shows that the field is really necessary (and if the ID field can only be a positive value, then you can add a protective expression).  An instance of the Fragrance class can only be created with an ID.  Since this is a structural design, this requirement is only strengthened, <a href="http://blog.ploeh.dk/2011/04/29/FeedbackMechanismsAndTradeoffs.aspx">thanks to the compiler, which gives us quick feedback.</a> <br>  I understand that the [Required] attribute, mentioned earlier, is designed to solve problems with mapping objects into relational data, but instead of closing a hole for inconsistencies between objects and relational structures, it only expands it. <br>  Instead of adding an extra redundant attribute, the team should force its toolkit to understand simple idioms for encapsulation, such as described above. <br>  It is not so difficult to do.  As an example, DI containers bloom on structural information encoded in constructors (this is called <i>auto-connect</i> ).  The command can do this behind the scenes of the [Required] attribute.  The [Required] attribute is a primitive and poisonous hack. <br>  This is the main reason why I will never use the Entity Framework.  It forces developers to break encapsulation - a principle that I refuse to compromise. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <i>from the translator: forgot to publish the post as a translation.</i>  <i>The original author is Mark Seemann.</i>  <i><a href="http://blog.ploeh.dk/2011/05/27/DesignSmellRedundantRequiredAttribute.aspx">Link to the original.</a></i> </div><p>Source: <a href="https://habr.com/ru/post/205098/">https://habr.com/ru/post/205098/</a></p>
+      <i>from the translator: forgot to publish the post as a translation.</i>  <i>The original author is Mark Seemann.</i>  <i><a href="http://blog.ploeh.dk/2011/05/27/DesignSmellRedundantRequiredAttribute.aspx">Link to the original.</a></i> </div><p>Source: https://habr.com/ru/post/205098/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../205084/index.html">MacroGroovy - working with AST on Groovy has never been easier</a></li>
 <li><a href="../205086/index.html">POKA-YOKE design: from “smell” to fragrance</a></li>
 <li><a href="../205088/index.html">The "smell" of design: an obsession with primitives</a></li>
+<li><a href="../20509/index.html">Opera Mobile 9.0 build 331</a></li>
 <li><a href="../205092/index.html">Friday post: phone case with airbags</a></li>
 <li><a href="../205096/index.html">Code "smell": automatic properties</a></li>
+<li><a href="../2051/index.html">Moscow authorities promise to restore order in cable ducts</a></li>
 <li><a href="../205100/index.html">Record Gain. Part 2</a></li>
 <li><a href="../205102/index.html">Design Smell: Default Designer</a></li>
 <li><a href="../205106/index.html">GCD calculation — an error that is not noticed</a></li>
 <li><a href="../205108/index.html">At the borders, applications are not object-oriented.</a></li>
-<li><a href="../205110/index.html">The rover Curiosity has used a laser cannon spectrometer over 100,000 times</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Let's do it quickly: voice bot on Dialogflow and Voximplant</h1><div class="post__text post__text-html js-mediator-article">  Voice bots have been and remain a useful feature for communicating with customers.  Because if something is possible to automate, then it is urgent to do it.  Confirmation of orders and information about them, record feedback from customers, voice recognition and actions according to what was recognized, etc.  By the way, the last thing is to make the bot with recognition in 2018 even easier: Voximplant perfectly knows how to recognize and transcribe speech, and the Dialogflow tool from the “good corporation” analyzes the text well.  Below I will show how you can quickly assemble a demo bot, which tells about the weather in the named city. <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/vm/td/3c/vmtd3ct33qhx8cdbcxggasgnhyg.png"></div><br><a name="habracut"></a><br><h3>  Why “demo” -bot? </h3><br>  Because the principle.  This article shows the <b>principle of</b> creating bots on Dialogflow + Voximplant.  Therefore, the dialogue with the bot will be simple, for example: <br><br>  <b>Bot:</b> - Hi!  Ask the weather in Moscow or another city. <br>  <b>Subject:</b> - What is the weather in London? <br>  <b>Bot:</b> - Today in the city of London - cloudy. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Voximplant will allow you to rent a phone number, recognize and transcribe your voice, and interact with Dialogflow and openweathermap.org.  We will pass to Dialogflow a string transcribed from the user's response, after which NLP (Natural Language Processing) will return us JSON, in which the city name will be in the nominative case.  We will give the name of the city to openweathermap.org, which, in turn, will tell us what's wrong with the weather in the specified city. <br><br><h3>  Create an NLP secret agent </h3><br>  Dialogflow is a powerful NLP service owned by google.  The service is free, but to use it, you need a Google account.  Go to <a href="https://dialogflow.com/">https://dialogflow.com/</a> and register.  The service operates with the concept of “agent” - in fact, the agent is the bot.  By default, the new account has no agents.  There are prebuild agents in the service, but you can't add them right away.  Therefore, we create a new agent just to get access to the pre-installed agents;  It sounds like a crutch, but believe me, this is it. <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/vb/vc/ki/vbvckigo2fr9axc2vosrlsdh7ca.jpeg"></div><br><br>  Enter a name for the agent, the remaining parameters can be left as default.  The Google project field implies a project in Firebase (if you do not have Firebase projects, a new one will be created).  Click Create and get into the Dialogflow console, this is the name of the main screen of the service.  On the left, the vertical menu, click on Prebuild Agents, find the Weather agent and click Import.  Done, now there is a weather agent in our account! <br><br>  By default, the agent supports only English, so we take the agent for editing (at the same time, you can change his name if you wish), go to the Languages ​​tab, add the Russian language and click “Save”. <br><br>  Now our agent has a choice of language.  Alas, the agent does not know how to communicate in Russian "out of the box", but nothing, we will teach.  Click “ru” to make Russian active and then fall through to “Intents”. <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/8m/b4/dj/8mb4djt_rlt3ng43xjcw1_8uqtc.png"></div><br>  In the Intents list that opens, select the topmost one - weather.  On the new screen, we see the User says section, there should be user replicas: the more variations, the better.  We still get by with the phrase “what is the weather in Moscow?”.  When you enter it, Dialogflow will almost immediately highlight the name of the city and assign it a match in the returned JSON!  Be sure to use this in our code.  Also on this screen you can see the name of the context / topic of conversation - weather. <br><br><div style="text-align:center;"><img src="https://habrastorage.org/webt/jh/iy/gj/jhiygjngvrlpy7jqk3g1tzfyfce.png"></div><br>  Now we can check the work of the agent either in the Dialogflow service (upper right corner, Try it now), or make a request via cURL.  To smoke less documentation, you can see an example of cURL and returned JSON here. <br><br>  Request: <br><br><pre><code class="bash hljs">curl <span class="hljs-string"><span class="hljs-string">'https://api.dialogflow.com/v1/query?v=20170712&amp;query=%D0%BA%D0%B0%D0%BA%D0%B0%D1%8F%20%D0%BF%D0%BE%D0%B3%D0%BE%D0%B4%D0%B0%20%D0%B2%20%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B5%3F&amp;lang=ru&amp;sessionId=e2c9fe05-6219-4317-ae96-2dbb6a429df4&amp;timezone=Europe/Moscow'</span></span> -H <span class="hljs-string"><span class="hljs-string">'Authorization:Bearer d146627e5ef843fc9757028t410faa80'</span></span></code> </pre> <br>  Please note that the query text must be URIencoded and the key must be transferred in the header (the key can be found in the agent settings).  If a context is specified in the request, then it is desirable to set unique session numbers for all subsequent requests in order not to “mix” contexts. <br><br>  Request response: <br><br><div class="spoiler">  <b class="spoiler_title">Dialogflow response</b> <div class="spoiler_text"><div class="oembed"><script type="text/javascript" src="https://gist.github.com/bfc9de1d3c50f31653dc27f9825efaa5.js"></script><link rel="stylesheet" href="https://github.githubassets.com/assets/gist-embed-b3b573358bfc66d89e1e95dbf8319c09.css"><div id="gist86670755" class="gist">
@@ -767,7 +767,7 @@
       </div>
     </div>
 </div>
-</div><br></div></div><br>  It remains only <a href="https://manage.voximplant.com/">to create an “application”</a> in the Voximplant control panel, and then link the created script and the rented number to it (details are on <a href="https://voximplant.com/blog/step-by-step-call-center-tutorial-part-1">our website</a> ). </div><p>Source: <a href="https://habr.com/ru/post/348720/">https://habr.com/ru/post/348720/</a></p>
+</div><br></div></div><br>  It remains only <a href="https://manage.voximplant.com/">to create an “application”</a> in the Voximplant control panel, and then link the created script and the rented number to it (details are on <a href="https://voximplant.com/blog/step-by-step-call-center-tutorial-part-1">our website</a> ). </div><p>Source: https://habr.com/ru/post/348720/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

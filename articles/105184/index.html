@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>CMS NetCat - Sorting objects in the table</h1><div class="post__text post__text-html js-mediator-article"> I propose my solution for sorting the objects of the components presented in the form of a table.  I use it often enough, maybe it will be useful to someone. <br><a name="habracut"></a><br>  1. Change the column header to the function that will substitute the desired link <br><br> <code>".sort_header('Message_ID','ID')." <br></code> <br><br>  here Message_ID is the field by which we will sort, ID is the name of the column <br>  The function sort_header () is described in the default module. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>function sort_header($fild,$header, $wrap=0){ <br> global $sub,$cc,$sort,$order; <br> /* <br> *   URI  sort, order, sid. <br> *   , ..      ,       <br> *    <br> */ <br> $param=""; <br> $separator='?'; <br> foreach ($_GET as $key =&gt; $value) { <br> if($key!='sort' &amp;&amp; $key!='order' &amp;&amp; $key!='sid') <br> { <br> $param .=$separator.$key."=".$value; <br> $separator='&amp;'; <br> } <br> } <br> <br> //  . <br> if($wrap==0) <br> { <br> $out .=""; <br> } <br> <br> $out .="&lt;a href='$param&amp;sort=$fild"; <br> if($sort==$fild &amp;&amp; $order !='ASC') <br> { <br> $out .="&amp;order=ASC"; <br> } <br> $out .="'&gt;$header"; <br> $out .=""; <br> if($sort==$fild &amp;&amp; $order =='ASC') <br> { <br> $out .=" <img src="/images/up.gif"> "; <br> } <br> elseif($sort==$fild) <br> { <br> $out .=" <img src="/images/down.gif"> "; <br> } <br> if($wrap==0) <br> { <br> $out .="</code>  <code>function sort_header($fild,$header, $wrap=0){ <br> global $sub,$cc,$sort,$order; <br> /* <br> *   URI  sort, order, sid. <br> *   , ..      ,       <br> *    <br> */ <br> $param=""; <br> $separator='?'; <br> foreach ($_GET as $key =&gt; $value) { <br> if($key!='sort' &amp;&amp; $key!='order' &amp;&amp; $key!='sid') <br> { <br> $param .=$separator.$key."=".$value; <br> $separator='&amp;'; <br> } <br> } <br> <br> //  . <br> if($wrap==0) <br> { <br> $out .=""; <br> } <br> <br> $out .="&lt;a href='$param&amp;sort=$fild"; <br> if($sort==$fild &amp;&amp; $order !='ASC') <br> { <br> $out .="&amp;order=ASC"; <br> } <br> $out .="'&gt;$header"; <br> $out .=""; <br> if($sort==$fild &amp;&amp; $order =='ASC') <br> { <br> $out .=" <img src="/images/up.gif"> "; <br> } <br> elseif($sort==$fild) <br> { <br> $out .=" <img src="/images/down.gif"> "; <br> } <br> if($wrap==0) <br> { <br> $out .="</code> "; <br>  } <br>  return $ out; <br>  } <br><br><br>  It's simple. <br>  We pass three parameters to the function: the field to be sorted, the name of the column, and the flag, whether or not hyphenation is allowed in the title.  By default, they are prohibited. <br><br>  2. In order for the sorting to work, you need to change the query.  To do this, in the settings of the component we write: <br> <code>$query_order = sort_set(); <br></code> <br><br>  sort_set () is described in the default module <br><br> <code>function sort_set(){ <br> global $inside_admin,$sort,$order,$classID; <br> //        .    ,       <br> $sql = "SHOW COLUMNS FROM Message".$classID." WHERE Field = '".$sort."'"; <br> $result = mysql_query($sql); <br> $num_rows = mysql_num_rows($result); <br> if($num_rows == 1) <br> { <br> if($order=='ASC') <br> { <br> $order = 'ASC'; <br> } <br> else <br> { <br> $order = 'DESC'; <br> } <br> //  ,     $query_order <br> $out="a.".$sort." ".$order; <br> return $out; <br> } <br> else <br> { <br> return; <br> } <br> } <br></code> <br><br>  Everything. <br>  In total, to sort, you need to add two functions to the system, after which the column headers change to call one of them and specify the other in the settings of the component.  It seems not difficult.  I would be glad if anyone come in handy. </div><p>Source: <a href="https://habr.com/ru/post/105184/">https://habr.com/ru/post/105184/</a></p>
+     <code>function sort_header($fild,$header, $wrap=0){ <br> global $sub,$cc,$sort,$order; <br> /* <br> *   URI  sort, order, sid. <br> *   , ..      ,       <br> *    <br> */ <br> $param=""; <br> $separator='?'; <br> foreach ($_GET as $key =&gt; $value) { <br> if($key!='sort' &amp;&amp; $key!='order' &amp;&amp; $key!='sid') <br> { <br> $param .=$separator.$key."=".$value; <br> $separator='&amp;'; <br> } <br> } <br> <br> //  . <br> if($wrap==0) <br> { <br> $out .=""; <br> } <br> <br> $out .="&lt;a href='$param&amp;sort=$fild"; <br> if($sort==$fild &amp;&amp; $order !='ASC') <br> { <br> $out .="&amp;order=ASC"; <br> } <br> $out .="'&gt;$header"; <br> $out .=""; <br> if($sort==$fild &amp;&amp; $order =='ASC') <br> { <br> $out .=" <img src="/images/up.gif"> "; <br> } <br> elseif($sort==$fild) <br> { <br> $out .=" <img src="/images/down.gif"> "; <br> } <br> if($wrap==0) <br> { <br> $out .="</code>  <code>function sort_header($fild,$header, $wrap=0){ <br> global $sub,$cc,$sort,$order; <br> /* <br> *   URI  sort, order, sid. <br> *   , ..      ,       <br> *    <br> */ <br> $param=""; <br> $separator='?'; <br> foreach ($_GET as $key =&gt; $value) { <br> if($key!='sort' &amp;&amp; $key!='order' &amp;&amp; $key!='sid') <br> { <br> $param .=$separator.$key."=".$value; <br> $separator='&amp;'; <br> } <br> } <br> <br> //  . <br> if($wrap==0) <br> { <br> $out .=""; <br> } <br> <br> $out .="&lt;a href='$param&amp;sort=$fild"; <br> if($sort==$fild &amp;&amp; $order !='ASC') <br> { <br> $out .="&amp;order=ASC"; <br> } <br> $out .="'&gt;$header"; <br> $out .=""; <br> if($sort==$fild &amp;&amp; $order =='ASC') <br> { <br> $out .=" <img src="/images/up.gif"> "; <br> } <br> elseif($sort==$fild) <br> { <br> $out .=" <img src="/images/down.gif"> "; <br> } <br> if($wrap==0) <br> { <br> $out .="</code> "; <br>  } <br>  return $ out; <br>  } <br><br><br>  It's simple. <br>  We pass three parameters to the function: the field to be sorted, the name of the column, and the flag, whether or not hyphenation is allowed in the title.  By default, they are prohibited. <br><br>  2. In order for the sorting to work, you need to change the query.  To do this, in the settings of the component we write: <br> <code>$query_order = sort_set(); <br></code> <br><br>  sort_set () is described in the default module <br><br> <code>function sort_set(){ <br> global $inside_admin,$sort,$order,$classID; <br> //        .    ,       <br> $sql = "SHOW COLUMNS FROM Message".$classID." WHERE Field = '".$sort."'"; <br> $result = mysql_query($sql); <br> $num_rows = mysql_num_rows($result); <br> if($num_rows == 1) <br> { <br> if($order=='ASC') <br> { <br> $order = 'ASC'; <br> } <br> else <br> { <br> $order = 'DESC'; <br> } <br> //  ,     $query_order <br> $out="a.".$sort." ".$order; <br> return $out; <br> } <br> else <br> { <br> return; <br> } <br> } <br></code> <br><br>  Everything. <br>  In total, to sort, you need to add two functions to the system, after which the column headers change to call one of them and specify the other in the settings of the component.  It seems not difficult.  I would be glad if anyone come in handy. </div><p>Source: https://habr.com/ru/post/105184/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../105176/index.html">Widgets for third-party sites</a></li>
 <li><a href="../105178/index.html">UI development practice</a></li>
+<li><a href="../10518/index.html">Touch-screen kiosks improve the quality of care in medical institutions.</a></li>
 <li><a href="../105181/index.html">How does the most successful startup incubator in the world work?</a></li>
 <li><a href="../105182/index.html">Twitter has overtaken myspace</a></li>
 <li><a href="../105183/index.html">The simplest backup of FreeBSD configs with sending an archive to mail</a></li>
 <li><a href="../105185/index.html">Lexiconer - vocabulary replenishment program</a></li>
 <li><a href="../105190/index.html">JS1k contest results</a></li>
 <li><a href="../105191/index.html">ORM review for Qt</a></li>
+<li><a href="../105193/index.html">Animation efficiency when representing temporal trends.</a></li>
 <li><a href="../105194/index.html">We are pleased to introduce you to the project "One House"</a></li>
-<li><a href="../105196/index.html">Results of the 13th project session</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Row Locking during the sample in MySQL</h1><div class="post__text post__text-html js-mediator-article">  Yes, all "real boys" are able to build web systems that can withstand monumental loads.  Well, for "nepatsanoff" there is always <a href="http://google.com/">Google</a> and the mass of <a href="http://highscalability.com/">sites dedicated to this subject</a> .  However, the “growth problem” includes not only the question of the correct serving of data to the client and their correct replication / distribution on the cluster.  Often problems arise from the fact that everything is just the opposite - it works too fast.  Consider an example from recent practice: <br><br><a name="habracut"></a><br><br>  Given: <br><ol><li>  Event queue ( <em>events</em> ) </li><li>  The fact that events can be linked in chains </li><li>  The fact that events can generate "new" events </li><li>  The processor ( <em>daemon</em> ) that processes this queue (casts the necessary classes, loads the libraries, does all that needs to be done in the event) and marks each entry in the queue as “processed”, writes a log and runs further. </li><li>  MySQL DBMS (historically) </li></ol>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       So far, everything is pretty clear - there is a table for the queue with fields from the series: id (int), event_id (int fk), event_data (blob), execute_at (datetime), executed_at (datetime).  The demon takes one event at a time, and does his evil work :) <br><br>  But now our project has grown and the users in the system have increased, the machines in the cluster have also increased, well, the number of tasks in the queue has increased accordingly.  Users waiting for “3 seconds” until the demon deigns to process the next step of the chain became broke and they began to beg for support for MORE productivity.  The support was "torn and metal" and in the end decided to launch several more processors. <br><br>  Accordingly, the architecture of the queue has changed - we have "locks".  Simply put, before you start an event to handle, the demon "A" marks this event as "busy", and all other demons "do not see" it.  Correspondingly, the process of sampling and processing began to look like this (pseudocode): <br><br><blockquote><pre> if (event = db.select ("select id from queue where locked = 'false' and execute_at &lt;NOW () LIMIT 1")) {
@@ -71,7 +71,7 @@
  [...]
  }
  db.execute ("COMMIT");
-</pre></blockquote><br><br>  That's all love! <br><br>  <em>ps Warning!</em>  <em>All this works only on tables like InnoDB!</em> </div><p>Source: <a href="https://habr.com/ru/post/15412/">https://habr.com/ru/post/15412/</a></p>
+</pre></blockquote><br><br>  That's all love! <br><br>  <em>ps Warning!</em>  <em>All this works only on tables like InnoDB!</em> </div><p>Source: https://habr.com/ru/post/15412/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -82,9 +82,9 @@
 <li><a href="../154119/index.html">A small item has fallen off from Curiosity!</a></li>
 <li><a href="../154121/index.html">I'm tired</a></li>
 <li><a href="../154123/index.html">CSS Conditional Rules</a></li>
+<li><a href="../154125/index.html">MSL Curiosity Research</a></li>
 <li><a href="../154129/index.html">Firefox 16 is released</a></li>
 <li><a href="../154131/index.html">Like-A-Hug vest integrated with Facebook embraces while getting likes</a></li>
-<li><a href="../154133/index.html">Introduction to working with AppHarbor - a cloud for ASP.NET applications</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

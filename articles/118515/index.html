@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -65,7 +65,7 @@
  }
 </pre><br>  Of course, this code is not safe: if one thread is inside a <code>slow_IsPrime()</code> call, the other thread that calls <code>IsPrime()</code> will find the values ​​of the <code>nLast</code> and <code>fLastIsPrime</code> inappropriate for each other. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -73,7 +73,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       A simple solution is to wrap the code in a critical section;  but simplicity is at the expense of performance: if, say, <code>nLast</code> = 5, <code>fLastIsPrime</code> = TRUE, and two threads simultaneously call <code>IsPrime(5)</code> , then they have absolutely no need to line up: nothing prevents them from simultaneously using the cached value. <br><br>  Let's see how you can implement our cache without a lock. <a name="habracut"></a>  We will use two tricks from the <a href="http://habrahabr.ru/blogs/system_programming/118466/">last post</a> at once: updating the version number with each data change, and the “make, write, (drop)” model to synchronize the write to the cache. <br><br><pre> #define IsLocked (l) ((l) &amp; 1)<font></font>
@@ -167,20 +167,20 @@
   }
   return fIsPrime;
  }
-</pre><br>  But in this implementation, threads reading from the cache can interfere with writing to the cache;  whereas in our first implementation, “without a lock in the spirit”, only simultaneous recording attempts lead to conflict.  If <code>IsPrime()</code> is called several times with one value (for example, 13), and then many times in a row with another value (for example, 17) - then the head of the streams that check if the result is not cached for 17 simply won't let any stream through <i>to cache the</i> result for 17!  It turns out that if the load on the cache is very high (which is exactly why we added it!), Then the implementation based on slim reader-writer locks turns the cache into an almost useless one. </div><p>Source: <a href="https://habr.com/ru/post/118515/">https://habr.com/ru/post/118515/</a></p>
+</pre><br>  But in this implementation, threads reading from the cache can interfere with writing to the cache;  whereas in our first implementation, “without a lock in the spirit”, only simultaneous recording attempts lead to conflict.  If <code>IsPrime()</code> is called several times with one value (for example, 13), and then many times in a row with another value (for example, 17) - then the head of the streams that check if the result is not cached for 17 simply won't let any stream through <i>to cache the</i> result for 17!  It turns out that if the load on the cache is very high (which is exactly why we added it!), Then the implementation based on slim reader-writer locks turns the cache into an almost useless one. </div><p>Source: https://habr.com/ru/post/118515/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../118505/index.html">The SLG 3000 adapter improves the “picture” of old console games on HDTV-TVs</a></li>
-<li><a href="../118506/index.html">Top 25 Russian sites</a></li>
 <li><a href="../118508/index.html">Sony promises step by step recovery of PSN</a></li>
+<li><a href="../118509/index.html">1C for rent - a competitor for cloud solutions?</a></li>
+<li><a href="../11851/index.html">The new DVD-RW will hold 8.5 GB on one side.</a></li>
 <li><a href="../118510/index.html">Time to tie</a></li>
 <li><a href="../118511/index.html">Is there at least one project to which you did not attach, being intoxicated?</a></li>
 <li><a href="../118516/index.html">Large-scale news release ReactOS No. 83</a></li>
 <li><a href="../118518/index.html">VKontakte cancels the rating. Users resent</a></li>
 <li><a href="../118519/index.html">Protection of online project from the "removal"</a></li>
+<li><a href="../11852/index.html">Profitable business</a></li>
 <li><a href="../118520/index.html">New Google Docs Features - Fill in Entire Folders and Drag & Drop</a></li>
-<li><a href="../118522/index.html">Researchers reach data transfer rates of 100 terabits / sec</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

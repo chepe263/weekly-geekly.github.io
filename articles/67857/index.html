@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Automatic status update VKontakte</h1><div class="post__text post__text-html js-mediator-article">  I bring to your attention a small script to automatically update the status on the social network VKontakte.  The script was written in half an hour, nothing complicated in it.  The impetus for writing was the desire to indulge, a couple more interesting ideas arose in the process, which I do not plan to implement, maybe I can bring some thought and I will be glad.  We will not rummage, get down to business. <br><a name="habracut"></a><br>  And yes, I forgot to say, this is Perl.  If there is a desire, you can easily repeat it in your favorite language. <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">#!/usr/bin/perl <br> <br> print <font color="#A31515">"Content-type:text/html\n\n"</font> ; <br> <br> #    <br> require LWP::UserAgent; <br> use HTTP::Cookies; <br> use Encode; <br> <br> #  <br> $email = <font color="#A31515">"name\@server.ru"</font> ; <br> $password = <font color="#A31515">"mypassword"</font> ; <br> $path = <font color="#A31515">"/home/anton/www/site.ru/cgi"</font> ; <br> <br> #  <br> open (FILE, <font color="#A31515">"$path/num.txt"</font> ); <br> $num = &lt;FILE&gt;; <br> close (FILE); <br> <br> my $ua = LWP::UserAgent-&gt; <font color="#0000ff">new</font> ; <br> $ua-&gt;timeout(10); <br> $ua-&gt;agent( <font color="#A31515">'Mozilla/5.0'</font> ); <br> $ua-&gt;env_proxy; <br> <br> #     cookies <br> $cookies= <font color="#0000ff">new</font> HTTP::Cookies(file=&gt; <font color="#A31515">'$path/cookies.dat'</font> ,autosave=&gt;1); <br> $ua-&gt;cookie_jar($cookies); <br> <br> #  <br> $loginpage = <font color="#A31515">"http://vkontakte.ru/login.php?email=$email&amp;pass=$password"</font> ; <br> $response = $ua-&gt; <font color="#0000ff">get</font> ($loginpage); <br> $page = $response-&gt;content; <br> <br> #   activityhash <br> $ah = $1 <font color="#0000ff">if</font> $page =~ m/&lt;input type= <font color="#A31515">'hidden'</font> id= <font color="#A31515">'activityhash'</font> <font color="#0000ff">value</font> = <font color="#A31515">'(.+)'</font> &gt;/; <br> <br> #   <br> $status = <font color="#A31515">"L&amp;M's status -  #$num"</font> ; <br> Encode::from_to($status, <font color="#A31515">'windows-1251'</font> , <font color="#A31515">'utf-8'</font> ); <br> <br> # POST-    <br> $response = $ua-&gt;post <br> ( <font color="#A31515">'http://vkontakte.ru/profile.php'</font> , <br> [ <br> activityhash =&gt; $ah, <br> setactivity =&gt; $status <br> ] <br> ); <br> <br> #  ,     <br> print $response-&gt;content; <br> <br> #    <br> $num++; <br> <br> #     <br> open (FILE, <font color="#A31515">"&gt;$path/num.txt"</font> ); <br> print FILE $num; <br> close (FILE);</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  Then we add the script to the cron's schedule: <br><blockquote> <code><font color="black">*/3 * * * * /home/anton/www/site.ru/cgi/test.pl &gt;/dev/null</font> <br></code> </blockquote><br><br>  And we look at the results: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img src="https://habrastorage.org/getpro/geektimes/post_images/1f7/004/206/1f7004206b67f9883f1f10277999a347.gif"><br><br>  How to apply it?  Here is what came to mind: <br>  - get your friends who don't get out of VKontakte with their statuses :)) <br>  - in the random, choose from the file any quotes, anecdotes, whatever <br>  - make a countdown, for example, “Before my birthday there are 3 days, 15 hours and 42 minutes” <br>  - attract friends to any events, sites, etc. <br>  - well, spammers, of course, can use hacked accounts to collect traffic <br><br>  And of all these ideas, you can make a special service that will perform all these actions.  I wonder if VKontakte has a limit on the number of status updates per day?  I'll find out soon :) <br>  Have a good evening. <br>  <b>Just for fun.</b> </div><p>Source: <a href="https://habr.com/ru/post/67857/">https://habr.com/ru/post/67857/</a></p>
+    <img src="https://habrastorage.org/getpro/geektimes/post_images/1f7/004/206/1f7004206b67f9883f1f10277999a347.gif"><br><br>  How to apply it?  Here is what came to mind: <br>  - get your friends who don't get out of VKontakte with their statuses :)) <br>  - in the random, choose from the file any quotes, anecdotes, whatever <br>  - make a countdown, for example, “Before my birthday there are 3 days, 15 hours and 42 minutes” <br>  - attract friends to any events, sites, etc. <br>  - well, spammers, of course, can use hacked accounts to collect traffic <br><br>  And of all these ideas, you can make a special service that will perform all these actions.  I wonder if VKontakte has a limit on the number of status updates per day?  I'll find out soon :) <br>  Have a good evening. <br>  <b>Just for fun.</b> </div><p>Source: https://habr.com/ru/post/67857/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../67852/index.html">The end of the metro business model?</a></li>
 <li><a href="../67853/index.html">The interaction of domestic companies in the telecommunications industry</a></li>
 <li><a href="../67859/index.html">Spoon for dinner</a></li>
+<li><a href="../6786/index.html">Tips experienced</a></li>
+<li><a href="../67861/index.html">Hosting on Photoshop.com</a></li>
 <li><a href="../67864/index.html">T-900 is around the corner</a></li>
 <li><a href="../67866/index.html">When tired of cool graphics</a></li>
-<li><a href="../67870/index.html">Russian PHP documentation?</a></li>
-<li><a href="../67871/index.html">The Pirate Bay is disabled by the Swedish authorities (Last Update - access restored + press release from TPB)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

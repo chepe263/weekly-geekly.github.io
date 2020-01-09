@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>fwrite / fread in windows can damage your data</h1><div class="post__text post__text-html js-mediator-article">  Today I ran into an <s>interesting behavior</s> error in the functions of the standard C fwrite / fread library in windows xp (msvcrt.dll version 7.0.2600.5512).  I wrote data (structures) using fwrite, and after that I immediately read the following after those written using fread.  As a result, the first read structure in the file was damaged. <br><a name="habracut"></a><br>  The solution was found to force data to be flushed to disk after writing. <br>  Create two files with the same content "12345" and execute the following code: <br><br><blockquote><code><b><font color="#000080">#include</font></b> <font color="#FF0000">&lt;stdio.h&gt;</font> <br> <b><font color="#000080">#include</font></b> <font color="#FF0000">&lt;assert.h&gt;</font> <br> <br> <font color="#009900">int</font> <b><font color="#000000">main</font></b> <font color="#990000">()</font> <br> <font color="#FF0000">{</font> <br> <font color="#009900">char</font> byte1 <font color="#990000">=</font> <font color="#FF0000">'b'</font> <font color="#990000">;</font> <br> <font color="#009900">char</font> byte2 <font color="#990000">=</font> <font color="#FF0000">'b'</font> <font color="#990000">;</font> <br> FILE <font color="#990000">*</font> f1 <font color="#990000">=</font> <b><font color="#000000">fopen</font></b> <font color="#990000">(</font> <font color="#FF0000">"1"</font> <font color="#990000">,</font> <font color="#FF0000">"r+b"</font> <font color="#990000">);</font> <br> FILE <font color="#990000">*</font> f2 <font color="#990000">=</font> <b><font color="#000000">fopen</font></b> <font color="#990000">(</font> <font color="#FF0000">"2"</font> <font color="#990000">,</font> <font color="#FF0000">"r+b"</font> <font color="#990000">);</font> <br> <br> <b><font color="#000000">assert</font></b> <font color="#990000">(</font> f1 <font color="#990000">!=</font> NULL <font color="#990000">);</font> <br> <b><font color="#000000">assert</font></b> <font color="#990000">(</font> f2 <font color="#990000">!=</font> NULL <font color="#990000">);</font> <br> <br> <b><font color="#000000">fseek</font></b> <font color="#990000">(</font> f1 <font color="#990000">,</font> <font color="#993399">1</font> <font color="#990000">,</font> SEEK_SET <font color="#990000">);</font> <br> <b><font color="#000000">fseek</font></b> <font color="#990000">(</font> f2 <font color="#990000">,</font> <font color="#993399">1</font> <font color="#990000">,</font> SEEK_SET <font color="#990000">);</font> <br> <br> <b><font color="#000000">fwrite</font></b> <font color="#990000">(&amp;</font> byte1 <font color="#990000">,</font> <b><font color="#0000FF">sizeof</font></b> <font color="#990000">(</font> <font color="#009900">char</font> <font color="#990000">),</font> <font color="#993399">1</font> <font color="#990000">,</font> f1 <font color="#990000">);</font> <br> <b><font color="#000000">fread</font></b> <font color="#990000">(&amp;</font> byte1 <font color="#990000">,</font> <b><font color="#0000FF">sizeof</font></b> <font color="#990000">(</font> <font color="#009900">char</font> <font color="#990000">),</font> <font color="#993399">1</font> <font color="#990000">,</font> f1 <font color="#990000">);</font> <br> <br> <b><font color="#000000">fwrite</font></b> <font color="#990000">(&amp;</font> byte2 <font color="#990000">,</font> <b><font color="#0000FF">sizeof</font></b> <font color="#990000">(</font> <font color="#009900">char</font> <font color="#990000">),</font> <font color="#993399">1</font> <font color="#990000">,</font> f2 <font color="#990000">);</font> <br> <b><font color="#000000">fflush</font></b> <font color="#990000">(</font> f2 <font color="#990000">);</font> <br> <b><font color="#000000">fread</font></b> <font color="#990000">(&amp;</font> byte2 <font color="#990000">,</font> <b><font color="#0000FF">sizeof</font></b> <font color="#990000">(</font> <font color="#009900">char</font> <font color="#990000">),</font> <font color="#993399">1</font> <font color="#990000">,</font> f2 <font color="#990000">);</font> <br> <br> <b><font color="#000000">fclose</font></b> <font color="#990000">(</font> f1 <font color="#990000">);</font> <br> <b><font color="#000000">fclose</font></b> <font color="#990000">(</font> f2 <font color="#990000">);</font> <br> <b><font color="#0000FF">return</font></b> <font color="#993399">0</font> <font color="#990000">;</font> <br> <font color="#FF0000">}</font></code> </blockquote> <br><br>  As a result, the contents of the first file are “1b? 45” (where “?” Is a random byte, I had 0x01, comrade is 'H'), the second is “1b345”.  As you can see, the first file is damaged.  Therefore, be careful when writing / reading with fwrite / fread. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/76042/">https://habr.com/ru/post/76042/</a></p>
+    <p>Source: https://habr.com/ru/post/76042/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../76030/index.html">Exponator - extension for viewing EXIF ​​data of photos</a></li>
 <li><a href="../76032/index.html">Comparing Agile Methodologies</a></li>
 <li><a href="../76033/index.html">Text at any cost: PPT</a></li>
 <li><a href="../76035/index.html">How to give health?</a></li>
 <li><a href="../76037/index.html">Traumatic and the right of a citizen of Ukraine to self-defense in arms</a></li>
+<li><a href="../7604/index.html">Critical vulnerability found in Photoshop CS3</a></li>
 <li><a href="../76043/index.html">Minesweeper on GWT</a></li>
 <li><a href="../76048/index.html">Opera 10.10 Final</a></li>
 <li><a href="../76051/index.html">NAS i-Stor iS607 Short Review</a></li>

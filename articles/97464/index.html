@@ -28,12 +28,12 @@ public void Foo<T>( IEnumerable <T> items)
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@ public void Foo<T>( IEnumerable <T> items)
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Checks for empty transfers</h1><div class="post__text post__text-html js-mediator-article">  Recently, while parsing the code of one program, I noticed a method that looked like this: <br><br><blockquote><code><font color="black"><font color="#0000ff">public</font> <font color="#0000ff">void</font> Foo&lt;T&gt;( <font color="#2B91AF">IEnumerable</font> &lt;T&gt; items) <br> { <br> <font color="#0000ff">if</font> (items == <font color="#0000ff">null</font> || items.Count() == 0) <br> { <br> <font color="#008000">//    </font> <br> } <br> }</font> <br></code> </blockquote><br><br>  The method takes a generic transfer and checks if it is empty.  Do you see a potential problem here?  I will hint the problem in this line: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,17 +63,17 @@ public void Foo<T>( IEnumerable <T> items)
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre>  items.Count () == 0 </pre><br><br>  And what is the problem here?  The problem is that this line can be very inefficient. <br><a name="habracut"></a><br>  If you call our method, passing it an enumeration that does not implement <em>ICollection &lt;T&gt;</em> (for example, <em>IQueryable</em> result of a query to the Entity Framework or LINQ to SQL), the <em>Count ()</em> method will iterate over the entire collection in order to perform this check. <br><br>  In the case where the enum implements the <em>ICollection &lt;T&gt;</em> , everything is in order.  The <em>Count ()</em> method is optimized for such cases and will check the <em>Count property</em> . <br><br>  Speaking in human language, our line answers the question “ <i>Is the number in the listing equal to zero?</i>  ".  But this is not what interests us.  In fact, we need to answer the question “ <i>Does the listing have at least one element?</i>  ". <br><br>  If we approach the problem in this way, the solution will become obvious: use the <em>Any</em> extension from the <em>System.Linq</em> namespace. <br><br><blockquote> <code><font color="black"><font color="#0000ff">public</font> <font color="#0000ff">void</font> Foo&lt;T&gt;( <font color="#2B91AF">IEnumerable</font> &lt;T&gt; items) <br> { <br> <font color="#0000ff">if</font> (items == <font color="#0000ff">null</font> || !items.Any()) <br> { <br> <font color="#008000">//    </font> <br> } <br> }</font> <br></code> </blockquote><br><br>  The beauty of this method is that it only needs to call the <em>IENumerable</em> interface's <em>MoveNext</em> only once!  You can have an infinitely large enumeration, but <em>Any</em> will return the result immediately. <br><br>  It would be even better, since such a check is used constantly, to think about the implementation of its simple extension method: <br><br><blockquote> <code><font color="black"><font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">bool</font> IsNullOrEmpty&lt;T&gt;( <font color="#0000ff">this</font> <font color="#2B91AF">IEnumerable</font> &lt;T&gt; items) <br> { <br> <font color="#0000ff">return</font> items == <font color="#0000ff">null</font> || !items.Any(); <br> }</font> <br></code> </blockquote><br><br>  Now, with this method, the source code looks even simpler: <br><br><blockquote> <code><font color="black"><font color="#0000ff">public</font> <font color="#0000ff">void</font> Foo&lt;T&gt;( <font color="#2B91AF">IEnumerable</font> &lt;T&gt; items) <br> { <br> <font color="#0000ff">if</font> (items.IsNullOrEmpty()) <br> { <br> <font color="#008000">//    </font> <br> } <br> }</font> <br></code> </blockquote><br><br>  With this extension method in your toolkit, you will never check the enumeration void again inefficiently. </div><p>Source: <a href="https://habr.com/ru/post/97464/">https://habr.com/ru/post/97464/</a></p>
+    <pre>  items.Count () == 0 </pre><br><br>  And what is the problem here?  The problem is that this line can be very inefficient. <br><a name="habracut"></a><br>  If you call our method, passing it an enumeration that does not implement <em>ICollection &lt;T&gt;</em> (for example, <em>IQueryable</em> result of a query to the Entity Framework or LINQ to SQL), the <em>Count ()</em> method will iterate over the entire collection in order to perform this check. <br><br>  In the case where the enum implements the <em>ICollection &lt;T&gt;</em> , everything is in order.  The <em>Count ()</em> method is optimized for such cases and will check the <em>Count property</em> . <br><br>  Speaking in human language, our line answers the question “ <i>Is the number in the listing equal to zero?</i>  ".  But this is not what interests us.  In fact, we need to answer the question “ <i>Does the listing have at least one element?</i>  ". <br><br>  If we approach the problem in this way, the solution will become obvious: use the <em>Any</em> extension from the <em>System.Linq</em> namespace. <br><br><blockquote> <code><font color="black"><font color="#0000ff">public</font> <font color="#0000ff">void</font> Foo&lt;T&gt;( <font color="#2B91AF">IEnumerable</font> &lt;T&gt; items) <br> { <br> <font color="#0000ff">if</font> (items == <font color="#0000ff">null</font> || !items.Any()) <br> { <br> <font color="#008000">//    </font> <br> } <br> }</font> <br></code> </blockquote><br><br>  The beauty of this method is that it only needs to call the <em>IENumerable</em> interface's <em>MoveNext</em> only once!  You can have an infinitely large enumeration, but <em>Any</em> will return the result immediately. <br><br>  It would be even better, since such a check is used constantly, to think about the implementation of its simple extension method: <br><br><blockquote> <code><font color="black"><font color="#0000ff">public</font> <font color="#0000ff">static</font> <font color="#0000ff">bool</font> IsNullOrEmpty&lt;T&gt;( <font color="#0000ff">this</font> <font color="#2B91AF">IEnumerable</font> &lt;T&gt; items) <br> { <br> <font color="#0000ff">return</font> items == <font color="#0000ff">null</font> || !items.Any(); <br> }</font> <br></code> </blockquote><br><br>  Now, with this method, the source code looks even simpler: <br><br><blockquote> <code><font color="black"><font color="#0000ff">public</font> <font color="#0000ff">void</font> Foo&lt;T&gt;( <font color="#2B91AF">IEnumerable</font> &lt;T&gt; items) <br> { <br> <font color="#0000ff">if</font> (items.IsNullOrEmpty()) <br> { <br> <font color="#008000">//    </font> <br> } <br> }</font> <br></code> </blockquote><br><br>  With this extension method in your toolkit, you will never check the enumeration void again inefficiently. </div><p>Source: https://habr.com/ru/post/97464/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../97453/index.html">Java 4-ever movie trailer</a></li>
 <li><a href="../97455/index.html">Chinese characters have penetrated the "root" of the Internet</a></li>
 <li><a href="../97456/index.html">Great words - now in English!</a></li>
 <li><a href="../97459/index.html">Deploy Django under Denwer + mod_python. Personal experience</a></li>
+<li><a href="../9746/index.html">If “She” deals with you</a></li>
 <li><a href="../97462/index.html">How much does Apple really earn on the App Store</a></li>
 <li><a href="../97465/index.html">Civ 5 will be able to import maps from Civ 4</a></li>
 <li><a href="../97467/index.html">Stability, Recycled Fonts and Geolocation for Linux</a></li>

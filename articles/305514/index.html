@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Rclone: ​​rsync for clouds</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/97f/360/a69/97f360a6928bd8c7dae205795211b9fe.png" alt="PR-2358" width="100%" height="100%"><br><br>  In previous publications, we have repeatedly told about useful utilities for working with our cloud storage.  Today we will talk about one more interesting, easy to use and - not afraid of this word - unique tool.  Meet <a href="http://rclone.org/" rel="nofollow">rclone</a> .  The developers describe it with a brief and succinct phrase "rsync for cloud storage." <br><br>  The main function of rclone is to synchronize data in the storage and on the local machine.  The utility will undoubtedly be useful for a wide range of cloud storage users.  It can be used both for backup and for working with static sites ... 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Rclone also has options that no other tool of the same kind has.  More about all this we will discuss below. <br><a name="habracut"></a><br><br><h2>  Installation and initial setup </h2><br><br>  The undoubted advantage and undoubted advantage of rclone over other products of the same plan is the support of many operating systems: Linux, Windows, MacOS, Solaris, FreeBSD, OpenBSD, NetBSD and Plan 9. <br>  Links for downloading packages for all the mentioned operating systems can be found on <a href="http://rclone.org/downloads/" rel="nofollow">the download page</a> . <br><br>  We will describe the features of c rclone on the Linux OS material.  To install, we need to download the required package, and then execute: <br><br><pre><code class="bash hljs">$ unzip rclone-current-linux-amd64.zip $ <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> rclone-current-linux-arm $ sudo cp rclone /usr/sbin/ $ sudo chown root:root /usr/sbin/rclone $ sudo chmod 755 /usr/sbin/rclone $ sudo mkdir -p /usr/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/share/man/man1 $ sudo cp rclone.1 /usr/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/share/man/man1/ $ sudo mandb</code> </pre> <br><br>  After the installation is complete, configure rclone to work with the Selectel cloud storage: <br><br><pre> <code class="bash hljs">$ rclone config</code> </pre><br><br>  The following dialog will appear on the console: <br><br><pre> No remotes found - make a new one
@@ -128,20 +128,20 @@
 </pre><br><br>  Select the answer is "no" (n).  Rclone will generate a link to get the code: <br><br><pre> If your browser doesn't open automatically, go to the following link: https://accounts.google.com/o/oauth2/auth?client_id=202264815644.apps.googleusercontent.com&amp;redirect_uri=urn%3Aietf%3Awg% 3Aoauth% 3A2. 0% 3Aoob &amp; response_type = code &amp; scope = https% 3A% 2F% 2Fwww.googleapis.com% 2Fauth% 2Fdrive &amp; state = ac901aefe97aff8ce65fe593060d0b0c
  Log in and authorize rclone for access
 </pre><br><br>  Open this link in the browser and give rclone permission to access the files. <br><br>  After this, the Google Drive API will return the code to be inserted in response to the question: <br><br><pre> Enter verification code&gt;
-</pre><br>  That's all.  Connection to Google Drive is configured, and you can start copying: <br><br><pre> <code class="bash hljs">$ rclone copy [ ]:[ ] [selectel]:[ ]</code> </pre><br><br>  The task of copying files rclone copes quite quickly: we copied a folder with photos of 1.8 GB in 1 minute 55 seconds. <br><br>  During the experiments, we also found out that rclone also copies GoogleDocs text documents without any problems, converting them into the docx format. <br><br><h2>  Loading large objects </h2><br><br>  Let's check the speed of rclone in one more test: we will try to load a large object into the storage - more than 20 GB.  Files up to 20 GB are uploaded to the storage using standard commands.  The procedure for downloading larger files is different: the file is divided into segments, which are loaded into a separate container. <br><br>  Rclone by default divides such files into segments of 5GB each.  If necessary, the segment size can be changed using the option -swift-chunk-size.  We tried to load a 25 GB file into the storage.  Rclone handled this task in 11 minutes 14 seconds.  The result, as we see, is quite good. <br><br><h2>  Conclusion </h2><br><br>  Rclone is quite an interesting and promising tool that can be recommended for use.  If it seems to you that we have forgotten to tell something, let us know about it, and we will definitely expand our review. <br><br>  And if you are already familiar with rclone - share your experience in the comments. <br>  If for some reason you can not leave comments here - welcome to <a href="https://blog.selectel.ru/rclone-rsync-dlya-oblakov/">our blog</a> . </div><p>Source: <a href="https://habr.com/ru/post/305514/">https://habr.com/ru/post/305514/</a></p>
+</pre><br>  That's all.  Connection to Google Drive is configured, and you can start copying: <br><br><pre> <code class="bash hljs">$ rclone copy [ ]:[ ] [selectel]:[ ]</code> </pre><br><br>  The task of copying files rclone copes quite quickly: we copied a folder with photos of 1.8 GB in 1 minute 55 seconds. <br><br>  During the experiments, we also found out that rclone also copies GoogleDocs text documents without any problems, converting them into the docx format. <br><br><h2>  Loading large objects </h2><br><br>  Let's check the speed of rclone in one more test: we will try to load a large object into the storage - more than 20 GB.  Files up to 20 GB are uploaded to the storage using standard commands.  The procedure for downloading larger files is different: the file is divided into segments, which are loaded into a separate container. <br><br>  Rclone by default divides such files into segments of 5GB each.  If necessary, the segment size can be changed using the option -swift-chunk-size.  We tried to load a 25 GB file into the storage.  Rclone handled this task in 11 minutes 14 seconds.  The result, as we see, is quite good. <br><br><h2>  Conclusion </h2><br><br>  Rclone is quite an interesting and promising tool that can be recommended for use.  If it seems to you that we have forgotten to tell something, let us know about it, and we will definitely expand our review. <br><br>  And if you are already familiar with rclone - share your experience in the comments. <br>  If for some reason you can not leave comments here - welcome to <a href="https://blog.selectel.ru/rclone-rsync-dlya-oblakov/">our blog</a> . </div><p>Source: https://habr.com/ru/post/305514/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../305504/index.html">Applications in the electronic document management system. Part 5: Tasks and document routing in the ERMS applications</a></li>
 <li><a href="../305506/index.html">Mail.Ru Group and Intel IoT Hackath July 30–31: now with 6LoWPAN and LoRa networks</a></li>
 <li><a href="../305508/index.html">FIDO U2F - Universal Two-Factor Authentication. Introduction</a></li>
+<li><a href="../30551/index.html">Usability as a success factor for a startup: how to achieve ease of use of the site</a></li>
 <li><a href="../305510/index.html">Start of development for Sailfish OS</a></li>
 <li><a href="../305512/index.html">Pass a technical interview (level 3)</a></li>
 <li><a href="../305516/index.html">The thorny path of ITSM in Russia</a></li>
+<li><a href="../30552/index.html">The book "Non-design book about design"</a></li>
 <li><a href="../305520/index.html">How artificial restrictions help in work</a></li>
 <li><a href="../305524/index.html">Organization of an international gambling company in Curacao</a></li>
 <li><a href="../305526/index.html">City AD: schoolchildren and students</a></li>
-<li><a href="../305528/index.html">Android development using qt and android studio part two</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

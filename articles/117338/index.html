@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>sasl: overload. Or - “do not put more in the plate than it can accommodate”</h1><div class="post__text post__text-html js-mediator-article">  Erlang is an excellent platform for building servers, and its standard library provides many tools that make life much easier for a developer. <br><br>  One of the typical tasks of the industrial level server developer is to control the load.  That is, our server must behave adequately even if requests come more than the server can handle (on our hardware). <br><br>  This is actually one of the key differences between “knee” solutions and “Enterprise”.  A real, well-designed server is “in the know” that it cannot spend resources without limit, keeps records of resources and controls the load. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       How it's done? <br><a name="habracut"></a><br><br>  One of the controls for loading into erlang programs is the <i>overload</i> module in the <i>sasl</i> application.  His idea is very simple - with a new request from a client, we check the current download, if it is more than N per second, we send a polite refusal to the client.  If the load is less than this threshold, then we transfer this request for the main processing. <br><br>  The idea is simple - but the implementation is rather unpleasant, we must remember the time when the last few requests came, keep in mind that there may be local "peaks" of query intensity, etc. <br><br>  Fortunately, the overload module does all this.  In the program settings, you can specify the required threshold (roughly speaking in <i>sys.config</i> ), and then, when a request comes from the client, simply perform <i>overload: request ()</i> and see the result — accept — continue work, reject — deny service. <br><br>  That is something like <br><pre> handle_call (SomeRequest, State) -&gt;
@@ -73,7 +73,7 @@
 </pre><br><br>  Behind the scenes - sasl counts when and how many times overload was called: request (), and based on this it considers the load using a complex formula (you can see it in the documentation), and decides whether the current request to process it is worth it. <br><br>  How it looks in practice: <br><br>  We configure sasl, approximately such sys.config: <br><br><pre> [
  {sasl, [{overload_max_intensity, 300.0}, {sasl_error_logger, {file, "/ var / log / rcvr.log"}}, {utc_log, false}]}
  ].
-</pre><br><br>  Here we set the maximum intensity to 300 requests per second.  We start, for example <br><br>  erl + K true -sname rcvr -setcookie 123 -config sys.config <br><br>  And follow the download.  A week later, munin shows us this: <br><br><img src="https://habrastorage.org/storage/197795be/237dcf0e/f775eea7/d3519e1d.png"><br><br>  Here you can see that the server accepts and processes only 300 requests per second, which is what we needed. <br><br><h5>  Disadvantages overload </h5><br><ul><li>  Since sasl considers the intensity of overload: request () calls to determine the current load - overload: request () can be used only in one place in the program.  You won’t get lost for a server that accepts (for example) http and rpc requests to configure overload separately for rpc and separately for http. </li><li>  Settings are set in sys.config (well, or in the .app file) and cannot be changed while the program is running.  that is, to reconfigure sasl: overload, you will have to restart the server. </li></ul><br><br><h5>  Morality </h5><br><br>  The overload module is convenient, but not applicable everywhere because of its limitations.  but in any case, to know and remember him is necessary. </div><p>Source: <a href="https://habr.com/ru/post/117338/">https://habr.com/ru/post/117338/</a></p>
+</pre><br><br>  Here we set the maximum intensity to 300 requests per second.  We start, for example <br><br>  erl + K true -sname rcvr -setcookie 123 -config sys.config <br><br>  And follow the download.  A week later, munin shows us this: <br><br><img src="https://habrastorage.org/storage/197795be/237dcf0e/f775eea7/d3519e1d.png"><br><br>  Here you can see that the server accepts and processes only 300 requests per second, which is what we needed. <br><br><h5>  Disadvantages overload </h5><br><ul><li>  Since sasl considers the intensity of overload: request () calls to determine the current load - overload: request () can be used only in one place in the program.  You won’t get lost for a server that accepts (for example) http and rpc requests to configure overload separately for rpc and separately for http. </li><li>  Settings are set in sys.config (well, or in the .app file) and cannot be changed while the program is running.  that is, to reconfigure sasl: overload, you will have to restart the server. </li></ul><br><br><h5>  Morality </h5><br><br>  The overload module is convenient, but not applicable everywhere because of its limitations.  but in any case, to know and remember him is necessary. </div><p>Source: https://habr.com/ru/post/117338/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -83,10 +83,10 @@
 <li><a href="../117335/index.html">Choosing a manager's workplace: iPad, HP Touchscreen, Viewsonic VPAD ...?</a></li>
 <li><a href="../117337/index.html">Mail + SMS notification. Customization experience</a></li>
 <li><a href="../117339/index.html">Use Evernote for the full: 7 reasons to use the desktop version of Evernote</a></li>
+<li><a href="../11734/index.html">Exactly 60 years ago, a UFO fell.</a></li>
 <li><a href="../117343/index.html">Open data as a basis</a></li>
 <li><a href="../117344/index.html">Information Society and Information Reuse</a></li>
 <li><a href="../117345/index.html">First after Habr</a></li>
-<li><a href="../117346/index.html">The kids grew up ... and called their parents.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

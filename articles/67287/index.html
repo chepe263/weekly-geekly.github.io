@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>system migration to RAID + LVM (short summary)</h1><div class="post__text post__text-html js-mediator-article"> A little bit about working with soft RAID (mdadm) and LVM, perhaps with a lot of free time, THIS will turn into some decent article ... for now, just a bunch of commands with brief comments. <br><br>  So, once it took me more space for a virtualbox folder ... <br><a name="habracut"></a><br>  create fs on the LVM partition on top of the raid0 array of 3 disks: <br> <code>root@ws:~# mdadm -C /dev/md0 -l0 -n3 /dev/sd[abc] <br> root@ws:~# mdadm --detail --scan &gt;&gt; /etc/mdadm/mdadm.conf <br> root@ws:~# pvcreate /dev/md0 <br> Physical volume "/dev/md0" successfully created <br> root@ws:~# vgcreate -s 64K raid0 /dev/md0 <br> Volume group "raid0" successfully created <br> root@ws:~# lvcreate -n vbox -L200G raid0 <br> Logical volume "vbox" created <br> root@ws:~# mkfs.ext4 -b 4096 -E stride=16,stripe-width=48 -L vbox /dev/raid0/vbox <br></code> <br>  ================================================= == <br>  Later, I decided to transfer the entire system from the / dev / sdd disk to reyd0: <br><br>  # Transfer the system completely on 3 disks to RAID0 (except for / boot): <br>  # Unmount a partition: <br> <code>umount /dev/raid0/vbox</code> <br> <br>  # Deletes volume group to unlock reed <br> <code>vgremove raid0</code> <br> <br>  # Stop reid <br> <code>mdadm --manage /dev/md0 --stop</code> <br> <br>  # Removing labels (superblocks) from disks: <br> <code>mdadm --zero-superblock /dev/sd[abc]</code> <br> <br>  # Breakdown of the first disk <br> <code>fdisk /dev/sda <br> -     Id  <br> /dev/sda1 1 132 1060258+ 83 Linux <br> /dev/sda2 133 26241 209720542+ fd  Linux raid <br></code> <br>  # Copying the partition table to other disks: <br> <code>sfdisk -d /dev/sda | sfdisk /dev/sdb <br> sfdisk -d /dev/sda | sfdisk /dev/sd <br></code> <br>  # do boot <br> <code>mkfs.ext2 -L boot /dev/sda1 <br></code> <br>  # doing swap <br> <code>mkswap /dev/sdb1 <br> mkswap /dev/sdc1 <br></code> <br>  # I collect an array <br> <code>mdadm -C /dev/md0 -l0 -n 3 /dev/sd[abc]2 <br></code> <br>  # I do that, a group with a fragment size of 64Kb, partitions. <br> <code>pvcreate /dev/md0 <br> vgcreate -s 64K raid0 /dev/md0 <br> lvcreate -n VirtualBox -L100G raid0 <br> lvcreate -n root -L10G raid0 <br> lvcreate -n var -L10G raid0 <br> lvcreate -n usr -L10G raid0 <br> lvcreate -n tmp -L1G raid0 <br> lvcreate -n home -L100G raid0 <br> lvcreate -n media -L100G raid0 <br></code> <br>  I copy data from old partitions to new ones: <br>  # create snapshot section: <br> <code>lvcreate -s /dev/main/root -n snap_root -L10G <br> mount /dev/main/snap_root /mnt/tmp/ <br> mount /dev/raid0/root /mnt/target/</code> <br>  I copy the data: <br> <code>cp -a /mnt/tmp/* /mnt/target/ <br> #     <br> # fstab    <br> #   /boot;  grub  MBR <br> #.       . =)</code> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/67287/">https://habr.com/ru/post/67287/</a></p>
+    <p>Source: https://habr.com/ru/post/67287/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../67279/index.html">Theoretically, car parking in Riga is 5 times cheaper</a></li>
 <li><a href="../67280/index.html">And you say the crisis ...</a></li>
+<li><a href="../67283/index.html">LVM is easy!</a></li>
 <li><a href="../67284/index.html">Xbox Miсro</a></li>
 <li><a href="../67285/index.html">Improving performance: how I got rid of insomnia</a></li>
 <li><a href="../67286/index.html">Haiku plans to release the first alpha version on September 9</a></li>
 <li><a href="../67289/index.html">Couchsurfing.org or hospitality clubs</a></li>
+<li><a href="../6729/index.html">Technorati makes the first serious acquisition</a></li>
 <li><a href="../67290/index.html">How do you call a ship ...</a></li>
 <li><a href="../67291/index.html">Alt - required attribute tag img</a></li>
 <li><a href="../67293/index.html">Razer Megalodon or the pursuit of the perfect sound</a></li>
-<li><a href="../67294/index.html">MySQL and SQLite - regular expressions in the predicate</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

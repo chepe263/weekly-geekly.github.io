@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Using Screenshots for Testing</h1><div class="post__text post__text-html js-mediator-article"><h6>  Written at the request of the next topic - <a href="http://habrahabr.ru/company/yandex/blog/200968/">How do we test the search in Yandex.</a>  <a href="http://habrahabr.ru/company/yandex/blog/200968/">Screenshot-based testing of result blocks</a> </h6><br><img src="https://habrastorage.org/getpro/habr/post_images/70d/583/d78/70d583d78941630b9f4c7d09e2ceb685.png"><br><br><h5>  A story about deep refactoring. </h5><br>  In our application there was one module implemented at the dawn of business.  The module was implemented using patterns different from other modules, exploited global variables in its entirety, consisted of more than hundreds of javascript files that were closely related to each other.  The little-known framework, on the basis of which the module was made, was no longer used anywhere.  As a result, correcting errors or adding new functionality took a team 2-3 times longer compared to other modules.  In connection with future changes in functionality, there is an urgent need to refactor this rather big module. <br><a name="habracut"></a><br>  Unit testing in this case did not fit, because  the module changed slightly less than completely.  <a href="http://phantomjs.org/">Phantomjs</a> was chosen to automate the functional testing of the module <a href="http://phantomjs.org/">.</a> <br>  The visual component is important in the operation of the application - highlighting of all elements, the correct location on the page, the correct display of data.  To track visual changes, it was decided to take screenshots during tests.  Good <b>phantomjs</b> makes it <a href="https://github.com/ariya/phantomjs/wiki/Screen-Capture">easy to do</a> : <br><br><pre><code class="javascript hljs">page.render(<span class="hljs-string"><span class="hljs-string">'test0001-after-login.png'</span></span>);</code> </pre> <br>  It was written a sufficient number of tests, covering the functionality in the known volume.  As it turned out, we did not know deep enough :) These tests generated several hundred screenshots.  Obviously, comparing pictures to each other is a completely ungrateful exercise.  You need to do this automatically.  In one of the previous projects, I implemented a number of scripts with manipulating pictures on Python (cut, glue, find regions, superimpose pictures on each other, etc.) and was ready to charge it for this task. <br>  Everything went without the invention of bicycles.  A powerful cross-platform utility package was used - <a href="http://www.imagemagick.org/">ImageMagick</a> <br>  <a href="http://www.imagemagick.org/script/compare.php">compare</a> can compare two screenshots, highlight the difference and display information on the screen. <br>  Call example: <br><pre> <code class="hljs bash">compare.exe -metric AE shots/<span class="hljs-built_in"><span class="hljs-built_in">test</span></span>-002_opentree.png reference/<span class="hljs-built_in"><span class="hljs-built_in">test</span></span>-002_opentree.png diff-002.png 2&gt;&amp;1</code> </pre><br>  We take a fresh screenshot, compare with the reference, display text information on the screen, and save the graphic to a file for manual viewing of details. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      It is difficult to notice the difference between these two screenshots: <br><img src="https://habrastorage.org/getpro/habr/post_images/63e/399/09e/63e39909e8458ee2cbbf0c9a778a6972.png"><br><img src="https://habrastorage.org/getpro/habr/post_images/dba/1e8/1d0/dba1e81d054bcc26d2586a38fc389338.png"><br><br>  But when the difference is highlighted, everything is quite obvious - one block has a solid border, not a dotted one: <br><img src="https://habrastorage.org/getpro/habr/post_images/cbb/083/3f1/cbb0833f16c963c11e1a6eebde2a1102.png"><br><br>  The first two pictures are made with <b>phatomjs</b> test, and the last one is the result of <b>compare</b> .  Some of the information is blurred because  I do not have official permission to publish the interface of our program, even if it is outdated. <br><br>  The final pen stroke is a poweshell script that compares a folder with fresh screenshots and a folder with reference pictures, and after comparing it kills those that are of no interest.  The script can easily be converted to a more platform independent language. <br>  Do not forget to look into the script before running it from the command line.  Windows by default does not allow running unsigned scripts.  What to do with it is written in the cap. <br>  The script is here - <a href="http://pastebin.com/bqgFYbaD">detectChanges.ps1</a> <br><br>  Shl.  I apologize for the <a href="http://habrahabr.ru/company/yandex/blog/200968/">misinformation</a> about using Python to solve this problem. </div><p>Source: <a href="https://habr.com/ru/post/201374/">https://habr.com/ru/post/201374/</a></p>
+      It is difficult to notice the difference between these two screenshots: <br><img src="https://habrastorage.org/getpro/habr/post_images/63e/399/09e/63e39909e8458ee2cbbf0c9a778a6972.png"><br><img src="https://habrastorage.org/getpro/habr/post_images/dba/1e8/1d0/dba1e81d054bcc26d2586a38fc389338.png"><br><br>  But when the difference is highlighted, everything is quite obvious - one block has a solid border, not a dotted one: <br><img src="https://habrastorage.org/getpro/habr/post_images/cbb/083/3f1/cbb0833f16c963c11e1a6eebde2a1102.png"><br><br>  The first two pictures are made with <b>phatomjs</b> test, and the last one is the result of <b>compare</b> .  Some of the information is blurred because  I do not have official permission to publish the interface of our program, even if it is outdated. <br><br>  The final pen stroke is a poweshell script that compares a folder with fresh screenshots and a folder with reference pictures, and after comparing it kills those that are of no interest.  The script can easily be converted to a more platform independent language. <br>  Do not forget to look into the script before running it from the command line.  Windows by default does not allow running unsigned scripts.  What to do with it is written in the cap. <br>  The script is here - <a href="http://pastebin.com/bqgFYbaD">detectChanges.ps1</a> <br><br>  Shl.  I apologize for the <a href="http://habrahabr.ru/company/yandex/blog/200968/">misinformation</a> about using Python to solve this problem. </div><p>Source: https://habr.com/ru/post/201374/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -76,9 +76,9 @@
 <li><a href="../201372/index.html">Notebook Fujitsu Lifebook T902 - for the "white collar" and not only</a></li>
 <li><a href="../201376/index.html">API for the Russian public initiative. Step 2.2: US experience with electronic petition data - White House API</a></li>
 <li><a href="../201378/index.html">Attempting to make a digest of news from the world of Python</a></li>
+<li><a href="../20138/index.html">Update MacOS 10.5.2 released!</a></li>
 <li><a href="../201380/index.html">PocketBook Color Lux - color E-ink reader</a></li>
 <li><a href="../201382/index.html">Live stream from Hackathon - see November 9 and 10</a></li>
-<li><a href="../201384/index.html">A virtual Bitcoin-bank inputs.io was robbed by a million dollars</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

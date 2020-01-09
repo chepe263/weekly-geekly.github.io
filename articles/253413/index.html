@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Installing gitolite on a Centos server</h1><div class="post__text post__text-html js-mediator-article">  Killed a couple of days to install Gitolite.  It seems like a bunch of instructions on the Internet, and the process is globally not complicated.  But in no article is there a complete order of commands that need to be done in order for the whole business to work without problems. <br><br>  It is understood that the reader understands what git and gitolite is and is able to work with them, only installation is considered. <br><a name="habracut"></a><br>  In the code you need to replace your values: <br>  <b>server_name_or_ip</b> - Server name or IP address <br>  <b>username</b> - The name of the user who will become the gitolite administrator. <br><br>  Operating systems: server - Centos 6.6, computer from which I work - OS X 10.10.2 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Key Access Setup </h4><br>  <b>On the server,</b> create a user git and give it a password: <br><br><pre><code class="bash hljs">useradd git passwd git</code> </pre> <br>  <b>On the local machine,</b> create a key for the current user: <br><br><pre> <code class="bash hljs">ssh-keygen -t rsa -b 2048</code> </pre><br>  For greater safety, replace the 2048 with 4096. <br>  And we send the key to the server (the variant was tested only on the mac - but, it seems, the Linux syntax is no different): <br><br><pre> <code class="bash hljs">cat ~/.ssh/id_rsa.pub | ssh git@server_name_or_ip <span class="hljs-string"><span class="hljs-string">"mkdir ~/.ssh; cat &gt;&gt; ~/.ssh/authorized_keys"</span></span></code> </pre><br>  Let <b>'s set the server</b> rights for the .ssh folder and the key file (without this, key authorization will not work): <br><br><pre> <code class="bash hljs">chmod 700 /home/git/.ssh/ chmod 600 /home/git/.ssh/authorized_keys</code> </pre><br>  Go <b>to the server</b> in the file / etc / ssh / sshd_config (not to be confused with ssh_config) and uncomment the lines: <br><br><pre> <code class="tex hljs">RSAAutentification yes PubkeyAutentification yes AuthorizedKeysFile .ssh/authorized_keys</code> </pre><br>  Restart <b>the</b> sshd daemon <b>on the server</b> : <br><br><pre> <code class="bash hljs">service sshd restart</code> </pre><br>  We check ssh access <b>from a local machine</b> without a password: <br><br><pre> <code class="bash hljs">ssh -i ~/.ssh/id_dsa git@server_name_or_ip</code> </pre><br><h4>  Install gitolite </h4><br>  <b>On the server</b> : <br><br><pre> <code class="bash hljs">su git <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> ~ git <span class="hljs-built_in"><span class="hljs-built_in">clone</span></span> git://github.com/sitaramc/gitolite mkdir -p ~/bin gitolite/install -to ~/bin gl-setup -q ~/username.pub</code> </pre><br>  Then go <b>to the server</b> in the file /home/git/.ssh/authorized_keys and delete the first key that was not created gitolite - this is important, otherwise it will not work (one of the options can also just use 2 different keys - the main thing is to understand that if there is a key that authorizes via SSH, then gitolite will not work with it). <br><br>  Check the operation of the keys ( <b>on the server</b> ): <br><br><pre> <code class="bash hljs">/home/git/gitolite/src/gitolite sshkeys-lint</code> </pre><br>  Path to the gitolite administration repository: <br><br><pre> <code class="tex hljs">git@server_name_or_ip:gitolite-admin</code> </pre><br>  For the sake of security, we close access to the git user via ssh.  We leave only the opportunity to work with git.  To do this, go to the / etc / passwd file and change the line from the git user from / bin / bash to / usr / bin / git-shell <br><br><h4>  If something went wrong </h4><br>  Delete ( <b>on the server</b> ) user git: <br><br><pre> <code class="bash hljs">userdel git</code> </pre><br>  Delete all files from its folder and the home directory itself.  I have this / home / git /. <br><br>  We are trying to do it all over again. </div><p>Source: <a href="https://habr.com/ru/post/253413/">https://habr.com/ru/post/253413/</a></p>
+    <h4>  Key Access Setup </h4><br>  <b>On the server,</b> create a user git and give it a password: <br><br><pre><code class="bash hljs">useradd git passwd git</code> </pre> <br>  <b>On the local machine,</b> create a key for the current user: <br><br><pre> <code class="bash hljs">ssh-keygen -t rsa -b 2048</code> </pre><br>  For greater safety, replace the 2048 with 4096. <br>  And we send the key to the server (the variant was tested only on the mac - but, it seems, the Linux syntax is no different): <br><br><pre> <code class="bash hljs">cat ~/.ssh/id_rsa.pub | ssh git@server_name_or_ip <span class="hljs-string"><span class="hljs-string">"mkdir ~/.ssh; cat &gt;&gt; ~/.ssh/authorized_keys"</span></span></code> </pre><br>  Let <b>'s set the server</b> rights for the .ssh folder and the key file (without this, key authorization will not work): <br><br><pre> <code class="bash hljs">chmod 700 /home/git/.ssh/ chmod 600 /home/git/.ssh/authorized_keys</code> </pre><br>  Go <b>to the server</b> in the file / etc / ssh / sshd_config (not to be confused with ssh_config) and uncomment the lines: <br><br><pre> <code class="tex hljs">RSAAutentification yes PubkeyAutentification yes AuthorizedKeysFile .ssh/authorized_keys</code> </pre><br>  Restart <b>the</b> sshd daemon <b>on the server</b> : <br><br><pre> <code class="bash hljs">service sshd restart</code> </pre><br>  We check ssh access <b>from a local machine</b> without a password: <br><br><pre> <code class="bash hljs">ssh -i ~/.ssh/id_dsa git@server_name_or_ip</code> </pre><br><h4>  Install gitolite </h4><br>  <b>On the server</b> : <br><br><pre> <code class="bash hljs">su git <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> ~ git <span class="hljs-built_in"><span class="hljs-built_in">clone</span></span> git://github.com/sitaramc/gitolite mkdir -p ~/bin gitolite/install -to ~/bin gl-setup -q ~/username.pub</code> </pre><br>  Then go <b>to the server</b> in the file /home/git/.ssh/authorized_keys and delete the first key that was not created gitolite - this is important, otherwise it will not work (one of the options can also just use 2 different keys - the main thing is to understand that if there is a key that authorizes via SSH, then gitolite will not work with it). <br><br>  Check the operation of the keys ( <b>on the server</b> ): <br><br><pre> <code class="bash hljs">/home/git/gitolite/src/gitolite sshkeys-lint</code> </pre><br>  Path to the gitolite administration repository: <br><br><pre> <code class="tex hljs">git@server_name_or_ip:gitolite-admin</code> </pre><br>  For the sake of security, we close access to the git user via ssh.  We leave only the opportunity to work with git.  To do this, go to the / etc / passwd file and change the line from the git user from / bin / bash to / usr / bin / git-shell <br><br><h4>  If something went wrong </h4><br>  Delete ( <b>on the server</b> ) user git: <br><br><pre> <code class="bash hljs">userdel git</code> </pre><br>  Delete all files from its folder and the home directory itself.  I have this / home / git /. <br><br>  We are trying to do it all over again. </div><p>Source: https://habr.com/ru/post/253413/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../253397/index.html">Dagaz: Kicks to common sense (part 4)</a></li>
 <li><a href="../253401/index.html">Analysis of the tasks of the warm-up training round of the Russian Code Cup 2015</a></li>
 <li><a href="../253403/index.html">Semaphore App. Ruby on Rails. Continuous integration / delivery</a></li>
 <li><a href="../253405/index.html">The Golden App mobile application competition has started</a></li>
 <li><a href="../253407/index.html">CNC machine with advanced functionality</a></li>
+<li><a href="../25341/index.html">Calendar Geek</a></li>
 <li><a href="../253419/index.html">Visualization of equipment performance statistics with R - Shiny</a></li>
+<li><a href="../25342/index.html">The terrible story of work in the "YMI-Studio" (St. Petersburg)</a></li>
 <li><a href="../253421/index.html">Making the code cleaner: Recommendations for preparing changes to the Linux kernel</a></li>
 <li><a href="../253423/index.html">We will throw the puck in iOS eight</a></li>
 <li><a href="../253425/index.html">Intel® Graphics Technology. Part III: Efficient Calculations on a Graph</a></li>
-<li><a href="../253427/index.html">There is no time to explain! #FailOverConf, Moscow, April 10</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

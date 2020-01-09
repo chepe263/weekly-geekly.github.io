@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Do you know how much, or mass launch of servers with minimum labor costs</h1><div class="post__text post__text-html js-mediator-article"> <a href="http://badoo.com/"><img src="https://habrastorage.org/storage1/7c701b54/3bbd50f8/586fe987/3c371d85.png" align="left"></a>  In our first article, as previously announced, we are in a hurry to share our experience in such a rarely discussed issue as the rapid deployment of hundreds of servers in a highly loaded project. <br><br>  How to deploy several hundred servers in a geographically remote data center in the absence of physical access to equipment?  How does <a href="http://badoo.com/">Badoo</a> solve this problem? <br>  We will tell you about this with the following example. <br><br>  Below we will talk about the very first stage of configuring server hardware;  how quickly and in time we completed a specific task, and not about writing optimal scripts.  In case this topic seems interesting to you, we will be happy to tell you about installing the OS on the server and setting up the working environment, which also has its subtleties. <a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       So, we were tasked to deploy several hundred new servers that had just arrived at our two data centers. <br><br>  If successful, we should get: <ul><li>  description of the entire "iron" component for each server; </li><li>  correspondence of the ordered equipment to the received one (there are cases that the configuration that was ordered is not the one that was ordered); </li><li>  ready to install OS and server software (with updated versions of RAID, ROM, etc., configured RAID-arrays, no problems with hardware). </li></ul>  Information that we have: <ul><li>  servers are mounted in racks / cabinets and included; </li><li>  known factory logins and passwords; </li><li>  all servers have an <a href="http://ru.wikipedia.org/wiki/IPMI">IPMI interface</a> (management interface); </li><li>  there are no pre-sets from the manufacturer on the servers (in particular, no RAID configuration is configured, power settings are not set); </li><li>  all servers are connected to the network equipment by at least two interfaces, are in a previously known <a href="http://ru.wikipedia.org/wiki/VLAN">VLAN</a> ; </li><li>  New servers receive their IP addresses dynamically, respectively, they are available immediately after switching on; </li><li>  It is known how many server configurations should have been in the delivery. </li></ul>  Of course, it was not without additional difficulties.  First, our engineers did not have physical access to the servers.  Secondly, the “iron” in the delivery had several different configurations.  And thirdly, everything that we knew about our servers is actually only their factory logins and passwords. <br><br>  Most often, this kind of tasks are suggested to be solved with the help of <a href="http://ru.wikipedia.org/wiki/dd">dd</a> , <a href="http://ru.wikipedia.org/wiki/PXE">PXE</a> server and <a href="http://ru.wikipedia.org/wiki/Rsync">rsync</a> , setting tasks, involving data center employees.  But we approached the question differently. <br><br>  The solution we found involves some automation.  Please note that all the scripts below are for informational purposes only and do not claim to be perfect. <br><br>  To complete the task we needed: <ul><li>  several text files that are deleted upon completion; </li><li>  some very simple scripts using expect; </li><li>  configured network boot server (in our case, <a href="http://en.wikipedia.org/wiki/XCAT">xCAT</a> ); </li><li>  a customized and working OS image (no matter what, the main thing is that this image includes all the utilities we need); </li><li>  customized equipment inventory system (in our case, this is a <a href="http://www.glpi-project.org/">glpi project</a> ). </li></ul>  First we needed to know which IP addresses were obtained by our new servers.  To do this, we made a text file nodes with data about logins and passwords in the format <br><br><pre>  ILOHOSTNAME1 ILOPASSWORD1
@@ -114,7 +114,7 @@
                  onlyif =&gt; "[-f / tmp / firmware_raid] &amp;&amp; [` cat / tmp / firmware_raid | wc -l` == '0'] ",
                  path =&gt; "/ usr / bin: / bin",
          }
- } </pre><br>  Thus, we solved the task, using only our own resources.  All our machines were ready to install the combat OS, install the software and start servicing Badoo users. <br><br>  All the above describes only the preparatory stage of setting up the equipment, the issues of installing the OS and configuring the working environment are left out of the article  If you are interested in this topic, we will be happy to prepare material on xCAT and puppet and share our ways of solving specific problems using these tools. <br><br>  You can safely leave your suggestions, questions and comments on the above in the comments - we are always open for dialogue! <br><br>  <i>Badoo Company</i> </div><p>Source: <a href="https://habr.com/ru/post/133387/">https://habr.com/ru/post/133387/</a></p>
+ } </pre><br>  Thus, we solved the task, using only our own resources.  All our machines were ready to install the combat OS, install the software and start servicing Badoo users. <br><br>  All the above describes only the preparatory stage of setting up the equipment, the issues of installing the OS and configuring the working environment are left out of the article  If you are interested in this topic, we will be happy to prepare material on xCAT and puppet and share our ways of solving specific problems using these tools. <br><br>  You can safely leave your suggestions, questions and comments on the above in the comments - we are always open for dialogue! <br><br>  <i>Badoo Company</i> </div><p>Source: https://habr.com/ru/post/133387/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -125,9 +125,9 @@
 <li><a href="../133385/index.html">Tester conferences in Europe or an excuse for poking?</a></li>
 <li><a href="../133388/index.html">Poking around in the SIM-card: processor, memory, file system + I / O</a></li>
 <li><a href="../133389/index.html">Revealed the secret of the power elixir from "Druid Panoraomix" - Gars Telecom Marketing Director</a></li>
+<li><a href="../13339/index.html">Abstracts of the HighLoad-2007 web developers conference</a></li>
 <li><a href="../133391/index.html">A zombie farm</a></li>
 <li><a href="../133392/index.html">IE developers opposed Google Dart</a></li>
-<li><a href="../133393/index.html">New Guide: Publishing Web Projects with Visual Studio 2010</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

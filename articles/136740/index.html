@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>I slowly remove apache from the server</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/797/6a3/04d/7976a304d8416a02b38c31a598a557d0.png" alt="image" align="right"><br>  I have a server (yes, yes, it is a server, it's hard to call it a server).  Old iron (2 gig of RAM, AMD Athlon (tm) 64 Processor 3500+, software RAID).  Adminin him myself, without any special skills and knowledge.  Once upon a time (more than a year ago) I put Debian 5.0 Lenny on it (it was the second linux system installation in my life, before that I installed only Ubuntu on a working laptop) and the ISPConfig3 control panel by manual.  I keep on it several (pieces 40) sites of friends and clients, Redmine, SVN and some more trifles. <br>  Periodically, all this disgrace falls (load average&gt; 20), and you have to reload apache every couple of hours on the server or suck the next optimization attempt out of your finger.  In general, complete strife and devastation.  And so on one beautiful Saturday, I thought - why not solve the issue once and ... And in general. <br>  Under the cut - the story of the dead weekend + prehistory.  First of all, it's interesting to me, so that later it is easy to remember what it was and why I put it.  It may be interesting to newbies in an interesting and difficult (oh, ...) server optimization process by gradual (!) Translation of sites from under Apache from its ModRewrite under Nginx (by the <s>way, this word is correctly read "Enginx"</s> I was corrected, Sysoev didn’t once said that the server name is worth reading, as “engineer-X”, thanks to <a href="http://habrahabr.ru/users/bayandin/" class="user_link">bayandin</a> and <a href="http://habrahabr.ru/users/dorber/" class="user_link">DorBer</a> ).  It may be of interest to more or less experienced comrades who find themselves in the same conditions (Debian Lenny, ISPConfig3, weak iron, some good, not very good, and different sites).  And it might be interesting to go more experienced, leave a couple of comments. <br><a name="habracut"></a><br><br>  Summary of this series: <br>  Instead of the preface - Novice and its server <br>  1. Listen to someone else's advice and waste time on nonsense. <br>  2. Reverse proxy and another admin (set and clumsily configure nginx) <br>  3. Finally, they took up the mind (nginx + php-fpm + eAccelerator) <br><br><h4>  Let's start with the story </h4><br>  The server was <a href="http://www.howtoforge.com/perfect-server-debian-lenny-ispconfig3">installed</a> according <a href="http://www.howtoforge.com/perfect-server-debian-lenny-ispconfig3">to this manual</a> - classic LAMP + Hosting Panel + phpMyAdmin. <br>  Later <a href="http://www.redmine.org/">Redmine was</a> installed on it, which was used for its intended purpose and SVN.  Both are using Apache as the web server.  One through <a href="http://www.modrails.com/">Passenger</a> , the second through mod_dav_svn.  This is important because Apache has become heavier after these installations. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  Optimization first - mpm_worker (extra step) </h4><br>  After a while, the first wave of suspensions began.  Either there are more sites, or their attendance has increased so much, or the active development (and consequently the active use of Redmine + SVN) has become to blame.  But the server went to bed constantly and seriously.  I found it among my acquaintances like a more or less adequate linuxoid, but I didn’t get a sensible answer from him.  (Well, do not take the advice to change the network card as such!) <br>  Another admin spent a 3-day inspection, advised to transfer Apache to worker mode.  Ok, they sat down, sleeves rolled up, websites in ISPConfig on FastCGI were translated (there is a select type field in the admin area :)), they danced around phpMyAdmin with a tambourine, all .htaccess was checked for php_ * directives.  Admin lost.  Well, ok, we rearranged Apache into the worker on our own. <br>  The server is more or less normal (hanging no more than once a week) worked for a couple of months. <br>  I do not give references to manuly, because the step is really superfluous. <br><br><h4>  Optimization second - welcome to nginx (step in the right direction) </h4><br>  They found some admin again, but this time they cheated - first they talked, he didn’t hear about MPM and didn’t hear anything, the Apache didn’t read configs, the level of qualification was considered unsatisfactory. <br>  True, I mentioned a couple of times about nginx.  I googled, read Habr and decided to put nginx as a reverse proxy in front of Apache.  Moving completely to nginx was scary, for some reason I was sure that PHP scripts would feel uncomfortable (some old case was probably remembered when someone else's code on a foreign server without Apache was there, and there were no extensions there, or php itself was old).  This is how children's injuries affect the further fate of servers. <br>  So, we put nginx on Debian (do not forget that we have ISPConfig) for this <a href="http://www.howtoforge.com/nginx-catch-all-host-as-front-end-to-apache-for-ispconfig-3-on-debian-lenny">tutorial</a> .  In principle, everything is standard.  First we translate Apache to port: 82 (port: 8080 is busy - ISPConfig is hanging on it): <br><pre><code class="bash">vi /etc/apache2/ports.conf
@@ -313,15 +313,15 @@ http{
 PS:      Redmine  SVN  nginx,  Node.js,    Nginx  git.       —  .    .<br>
 <br>
 <b>UPD</b>:  <a href="https://habr.com/ru/post/136740/"></a>   <a href="http://habrahabr.ru/users/vbart/" class="user_link">VBart</a>,  .<br>
-<b>UPD</b>:     php-fpm <a href="https://habr.com/ru/post/136740/"></a>  <a href="http://habrahabr.ru/users/nc_soft/" class="user_link">Nc_Soft</a>.</div><p>Source: <a href="https://habr.com/ru/post/136740/">https://habr.com/ru/post/136740/</a></p>
+<b>UPD</b>:     php-fpm <a href="https://habr.com/ru/post/136740/"></a>  <a href="http://habrahabr.ru/users/nc_soft/" class="user_link">Nc_Soft</a>.</div><p>Source: https://habr.com/ru/post/136740/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../136728/index.html">Next generation Wi-Fi - 802.11ac in brief</a></li>
 <li><a href="../136735/index.html">Competent setting of the mail sending server for PHP scripts, setting up the mail () function</a></li>
 <li><a href="../136736/index.html">The principle of domino or XSS on large sites runet</a></li>
 <li><a href="../136737/index.html">Promotion experience in the Russian AppStore</a></li>
 <li><a href="../136738/index.html">JavaScript application for iPad. Couple of tips</a></li>
+<li><a href="../13674/index.html">Sens'o'Clock. Time is in your hands.</a></li>
 <li><a href="../136742/index.html">Prolog - parse and language problems</a></li>
 <li><a href="../136743/index.html">Defeating memory leaks and speeding up Firefox</a></li>
 <li><a href="../136744/index.html">How to invent a name for a new product or project</a></li>

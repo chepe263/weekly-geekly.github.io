@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Initial setup of an APC UPS in Linux from a teapot point of view</h1><div class="post__text post__text-html js-mediator-article"> Having bought an uninterruptible power supply from APC (namely, APC Back-UPS ES 550VA), I was surprised to find that “out of the box” it cannot boast a close friendship with Linux.  Of course, XFCE Power Manager, part of XFCE 4.6, picked up and recognized the UPS, but all he was capable of was displaying the charge level in the tray.  Any settings were missing completely, it was impossible even to set the PC to turn off when a certain charge level was reached. <br><br>  Turning to Google for advice, I learned about the existence of the wonderful demon apcupsd, whose role is to - never believe - the management of the UPS from APC.  But, as it turned out, almost all the guides on its initial configuration were frankly outdated - including, oddly enough, the official manual.  Stumbling had already at the very beginning about "cat / proc / bus / usb / devices".  After talking to Google in a serious and trusting tone, I got him to link to the <a href="https://help.ubuntu.com/community/apcupsd">current manual</a> , whose artistic translation with additions from other sources is this article. <br><a name="habracut"></a><br>  So let's start by installing apcupsd itself: <br><br> <code>sudo apt-get install apcupsd</code> <br> <br>  Of course, this is true for Debian and its derivatives, including Ubuntu.  If apt-get is not used in your distribution, I think you still know how to install the necessary package.  Hope so. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Now we edit the apcupsd configuration file: <br><br> <code>sudo gedit /etc/apcupsd/apcupsd.conf</code> <br> <br>  In this case, we are interested in only three parameters: <br><br>  UPSCABLE - we indicate the type of cable that our UPS is connected to the PC.  The comments indicate the possible types - simple, smart, ether, usb.  The current home models are connected via USB - therefore, it suffices to add usb <br>  UPSTYPE is a type of UPS connected.  The comments list the possible types and the corresponding values ​​of the DEVICE parameter, our choice is the usb type. <br>  DEVICE - we will comment out this line by placing a # sign in front of it - it is not needed for USB devices <br><br>  Save the modified configuration file, open the following: <br><br> <code>sudo gedit /etc/default/apcupsd</code> <br> <br>  Replace ISCONFIGURED = no with ISCONFIGURED = yes, save, close.  From now on, apcupsd will know that we have not forgotten to configure it. <br><br>  Now it’s enough to run apcupsd: <br> <code>sudo /etc/init.d/apcupsd start</code> <br> <br>  If it has already been launched - instead of start, of course, we will need to write restart. <br><br>  Everything, your PC is now connected with the new UPS with strong ties of friendship. <br><br>  And now a little about what we can configure in extensive /etc/apcupsd/apcupsd.conf: <br><br>  ONBATTERYDELAY - the time (in seconds) that determines the delay between the detection of a power failure and the sending of an onbattery event.  Default is 6 <br>  BATTERYLEVEL - the battery charge level (in percent) at which the computer is turned off.  Default is 5 <br>  MINUTES - the estimated time of residual work (in minutes), at which time the computer is turned off.  Default is 3 <br>  TIMEOUT - the parameter is relevant for old UPS, unable to determine its level of charge.  Sets the time (in seconds) between power failure and computer shutdown.  For a modern UPS, the parameter should be left at 0, but setting a different value may be convenient for testing the operation of the UPS.  For example, if you put 30 and pull the cord out of the socket, in half a minute apcupsd will demonstrate his ability to turn off the computer <br><br>  One of the conditions (BATTERYLEVEL, MINUTES or TIMEOUT) is sufficient to turn off the computer.  A finer setting is not described, because its need for a home user is highly questionable. <br><br>  For a long time, a fairy tale affects, but it’s not a long deal: I suppose the user will perform the described actions in a couple of minutes.  I hope this article will help someone to make friends with its APC UPS with Linux, saving time and not getting stuck in outdated manuals. </div><p>Source: <a href="https://habr.com/ru/post/132099/">https://habr.com/ru/post/132099/</a></p>
+      Now we edit the apcupsd configuration file: <br><br> <code>sudo gedit /etc/apcupsd/apcupsd.conf</code> <br> <br>  In this case, we are interested in only three parameters: <br><br>  UPSCABLE - we indicate the type of cable that our UPS is connected to the PC.  The comments indicate the possible types - simple, smart, ether, usb.  The current home models are connected via USB - therefore, it suffices to add usb <br>  UPSTYPE is a type of UPS connected.  The comments list the possible types and the corresponding values ​​of the DEVICE parameter, our choice is the usb type. <br>  DEVICE - we will comment out this line by placing a # sign in front of it - it is not needed for USB devices <br><br>  Save the modified configuration file, open the following: <br><br> <code>sudo gedit /etc/default/apcupsd</code> <br> <br>  Replace ISCONFIGURED = no with ISCONFIGURED = yes, save, close.  From now on, apcupsd will know that we have not forgotten to configure it. <br><br>  Now it’s enough to run apcupsd: <br> <code>sudo /etc/init.d/apcupsd start</code> <br> <br>  If it has already been launched - instead of start, of course, we will need to write restart. <br><br>  Everything, your PC is now connected with the new UPS with strong ties of friendship. <br><br>  And now a little about what we can configure in extensive /etc/apcupsd/apcupsd.conf: <br><br>  ONBATTERYDELAY - the time (in seconds) that determines the delay between the detection of a power failure and the sending of an onbattery event.  Default is 6 <br>  BATTERYLEVEL - the battery charge level (in percent) at which the computer is turned off.  Default is 5 <br>  MINUTES - the estimated time of residual work (in minutes), at which time the computer is turned off.  Default is 3 <br>  TIMEOUT - the parameter is relevant for old UPS, unable to determine its level of charge.  Sets the time (in seconds) between power failure and computer shutdown.  For a modern UPS, the parameter should be left at 0, but setting a different value may be convenient for testing the operation of the UPS.  For example, if you put 30 and pull the cord out of the socket, in half a minute apcupsd will demonstrate his ability to turn off the computer <br><br>  One of the conditions (BATTERYLEVEL, MINUTES or TIMEOUT) is sufficient to turn off the computer.  A finer setting is not described, because its need for a home user is highly questionable. <br><br>  For a long time, a fairy tale affects, but it’s not a long deal: I suppose the user will perform the described actions in a couple of minutes.  I hope this article will help someone to make friends with its APC UPS with Linux, saving time and not getting stuck in outdated manuals. </div><p>Source: https://habr.com/ru/post/132099/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../132094/index.html">Passion vs professionalism</a></li>
 <li><a href="../132095/index.html">How I installed Openmeetings</a></li>
 <li><a href="../132098/index.html">Speedy sync of billion files</a></li>
+<li><a href="../1321/index.html">SAP became interested in the market for medium-sized enterprises</a></li>
+<li><a href="../13210/index.html">progress in wireless technology?</a></li>
 <li><a href="../132102/index.html">PHP Automated Testing</a></li>
 <li><a href="../132103/index.html">Sony Ericsson Xperia active overview</a></li>
 <li><a href="../132106/index.html">Automate the creation of VPN users in PFSense</a></li>
-<li><a href="../132107/index.html">Online redo logs or Checkpoint Event in Oracle</a></li>
-<li><a href="../132108/index.html">"Vkontakte" gives out personal data in the search for documents</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

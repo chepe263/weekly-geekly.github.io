@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Details of the targeted attack using Win32 / Exploit.CVE-2013-3906.A</h1><div class="post__text post__text-html js-mediator-article">  Earlier, we <a href="http://habrahabr.ru/company/eset/blog/201002/">indicated</a> that Microsoft reported exploiting an open-ended RCE vulnerability CVE-2013-3906 by attackers through an exploit that is used to organize targeted attacks and install malicious code on victim systems.  Attackers exploited a vulnerability in exploitable versions of Microsoft Word (2003-2007-2010 [2010 on Windows XP]) through a specially crafted .docx file.  The attack was aimed at systems located in the Middle East and South Asia.  The malicious .docx file was delivered via email, and the email itself contained a phishing message, according to which the user had to open the .docx file. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/c0c/df4/346/c0cdf4346cc2c15590171f37763d2da6.jpg"><br><br>  The vulnerability itself is the incorrect handling of TIFF code by the code that can be inserted into the document via <a href="http://ru.wikipedia.org/wiki/ActiveX">ActiveX</a> .  To bypass the DEP &amp; ASLR mitigation mechanisms on Windows Vista and Server 2008 (the latest versions of Windows 7+ are not exploitable), the exploit uses the familiar heap-spray methods to copy its code to a given address, using large heap memory and ROP backups to transfer control there bypassing the limitations of DEP for inaccessible memory.  The difference in various modifications of exploits used in the attack is that the ActiveX environment itself was used for the heap-spray.  We added this exploit to our databases as <b>Win32 / Exploit.CVE-2013-3906.A</b> .  As in the case of other similar vulnerabilities, CVE-2013-3906 is of memory-corruption type, which indicates that the initial execution vector of the ROP chain will be initiated by passing a special argument to the function, which will lead to an overflow of the memory block and the start of the ROP execution.  Before that, the shellcode itself will be placed in the memory via the spray when using the ActiveX framework. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a><img src="https://habrastorage.org/getpro/habr/post_images/78c/d1d/73b/78cd1d73ba247eec541567cebe350ab4.jpg"><br><br>  In the course of its work, the exploit connects to a remote C &amp; C server to copy the payload from there, which is an archive with a Word document and malware.  This document is used to divert the user's attention while malware is hidden in the system. <br><br>  According <a href="http://www.fireeye.com/blog/technical/cyber-exploits/2013/11/the-dual-use-exploit-cve-2013-3906-used-in-both-targeted-attacks-and-crimeware-campaigns.html">to</a> FireEye <a href="http://www.fireeye.com/blog/technical/cyber-exploits/2013/11/the-dual-use-exploit-cve-2013-3906-used-in-both-targeted-attacks-and-crimeware-campaigns.html">information</a> from one of the C &amp; C servers, most of the victims are located in Pakistan. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/081/572/e49/081572e49e507930668bc548d5844e10.png"><br>  Fig.  Regions to find victims of cyber attacks, according to FireEye. <br><br>  The attackers chose the Citadel banking trojan as a payload for the attack. <br><br>  Please note that the latest versions of Windows 7-8-8.1 are not vulnerable when using the latest versions of Office 2010-2013, which allow you to restrict various attachments of Word documents from executing through special settings that are active by default.  File-&gt; Options-&gt; Trust Center-&gt; Trust Center Settings-&gt; ActiveX Settings. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/f22/0c9/5b7/f220c95b776fddaca6583fe37ea88aee.jpg"><br><br>  In addition, MS Outlook 2013 (Windows 7+) incorporates a sandboxing mechanism for .docx attachments, which isolates the Word viewer process that is launched. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/61e/426/16e/61e42616ed2fe119e136f82834aa4d42.jpg"><br>  Fig.  Isolation of the Word process, which occurs when viewing .docx files in emails via Outlook 2013. The process is assigned a low Integrity Level, groups in the token are denied and privileges are deleted. </div><p>Source: <a href="https://habr.com/ru/post/201304/">https://habr.com/ru/post/201304/</a></p>
+    <a name="habracut"></a><img src="https://habrastorage.org/getpro/habr/post_images/78c/d1d/73b/78cd1d73ba247eec541567cebe350ab4.jpg"><br><br>  In the course of its work, the exploit connects to a remote C &amp; C server to copy the payload from there, which is an archive with a Word document and malware.  This document is used to divert the user's attention while malware is hidden in the system. <br><br>  According <a href="http://www.fireeye.com/blog/technical/cyber-exploits/2013/11/the-dual-use-exploit-cve-2013-3906-used-in-both-targeted-attacks-and-crimeware-campaigns.html">to</a> FireEye <a href="http://www.fireeye.com/blog/technical/cyber-exploits/2013/11/the-dual-use-exploit-cve-2013-3906-used-in-both-targeted-attacks-and-crimeware-campaigns.html">information</a> from one of the C &amp; C servers, most of the victims are located in Pakistan. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/081/572/e49/081572e49e507930668bc548d5844e10.png"><br>  Fig.  Regions to find victims of cyber attacks, according to FireEye. <br><br>  The attackers chose the Citadel banking trojan as a payload for the attack. <br><br>  Please note that the latest versions of Windows 7-8-8.1 are not vulnerable when using the latest versions of Office 2010-2013, which allow you to restrict various attachments of Word documents from executing through special settings that are active by default.  File-&gt; Options-&gt; Trust Center-&gt; Trust Center Settings-&gt; ActiveX Settings. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/f22/0c9/5b7/f220c95b776fddaca6583fe37ea88aee.jpg"><br><br>  In addition, MS Outlook 2013 (Windows 7+) incorporates a sandboxing mechanism for .docx attachments, which isolates the Word viewer process that is launched. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/61e/426/16e/61e42616ed2fe119e136f82834aa4d42.jpg"><br>  Fig.  Isolation of the Word process, which occurs when viewing .docx files in emails via Outlook 2013. The process is assigned a low Integrity Level, groups in the token are denied and privileges are deleted. </div><p>Source: https://habr.com/ru/post/201304/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../201284/index.html">Manageability of complex networks - translation of the article Controllability of complex networks</a></li>
-<li><a href="../201286/index.html">COLT released with TypeScript support</a></li>
-<li><a href="../201292/index.html">Using COLT annotations in front-end development</a></li>
+<li><a href="../201294/index.html">Fighting Tastypie API performance</a></li>
 <li><a href="../201296/index.html">Google Product Ads: Debriefing</a></li>
 <li><a href="../201298/index.html">Tesla and Mpemba Effect</a></li>
+<li><a href="../2013/index.html">Google will index more</a></li>
+<li><a href="../20130/index.html">MySQL-Front is back?</a></li>
 <li><a href="../201306/index.html">Negotiations with clients: 6 techniques from the practice of web-studio</a></li>
 <li><a href="../201308/index.html">Ebay - a coupon for 450 rubles for 90? Hole in the action</a></li>
 <li><a href="../201310/index.html">University timetable on the phone - how to maintain relevance</a></li>

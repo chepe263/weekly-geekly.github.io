@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>ADSL modem loses connection before rebooting? No problem!</h1><div class="post__text post__text-html js-mediator-article">  It all started with the fact that one day I became the owner of the D-Link 2640U ADSL router.  Since I also distribute the Internet to my friends, it is turned on for me around the clock, and then one annoying trouble was revealed - he periodically lost connection with the provider and did not want to connect before rebooting.  Searches and firmware updates did not solve the problem, and since I sometimes don’t have a home, and I need to overload the modem, one day a script was written that does it automatically. <br><a name="habracut"></a><br>  The choice fell on Python purely by chance - began to learn the language and decided to practice.  Here's what came of it: <br><br><blockquote>  <font color="#ff7700">import</font> <font color="#dc143c">os</font> <br>  <font color="#ff7700">import</font> <font color="#dc143c">re</font> <br>  <font color="#ff7700">import</font> <font color="#dc143c">time</font> <br>  <font color="#ff7700">import</font> <font color="#dc143c">sys</font> <br>  <font color="#ff7700">import</font> <font color="#dc143c">telnetlib</font> <br>  <font color="#ff7700">from</font> <font color="#dc143c">threading</font> <font color="#ff7700">import</font> thread <br><br>  <font color="#ff7700">class</font> testit <font>(</font> Thread <font>)</font> : <br>  <font color="#ff7700">def</font> <font color="#0000cd">__init__</font> <font>(</font> <font color="#008000">self</font> , ip <font>)</font> : <br>  Thread.  <font color="#0000cd">__init__</font> <font>(</font> <font color="#008000">self</font> <font>)</font> <br>  <font color="#008000">self</font> .  <font>ip</font> = ip <br>  <font color="#008000">self</font> .  <font>status</font> = - <font color="#ff4500">1</font> <br>  <font color="#ff7700">def</font> run <font>(</font> <font color="#008000">self</font> <font>)</font> : <br>  pingaling = <font color="#dc143c">os</font> .  <font>popen</font> <font>(</font> <font color="#483d8b">"ping -q -c2"</font> + <font color="#008000">self</font> . <font>ip</font> , <font color="#483d8b">"r"</font> <font>)</font> <br>  <font color="#ff7700">while</font> <font color="#ff4500">1</font> : <br>  line = pingaling.  <font color="#dc143c">readline</font> <font>(</font> <font>)</font> <br>  <font color="#ff7700">if</font> <font color="#ff7700">not</font> line: <font color="#ff7700">break</font> <br>  igot = <font color="#dc143c">re</font> .  <font>findall</font> <font>(</font> testit. <font>lifeline</font> , line <font>)</font> <br>  <font color="#ff7700">if</font> igot: <br>  <font color="#008000">self</font> .  <font>status</font> = <font color="#008000">int</font> <font>(</font> igot <font>[</font> <font color="#ff4500">0</font> <font>]</font> <font>)</font> <br>  <font color="#ff7700">if</font> <font color="#008000">self</font> .  <font>status</font> == <font color="#ff4500">0</font> : <br>  tn = <font color="#dc143c">telnetlib</font> .  <font>Telnet</font> <font>(</font> HOST <font>)</font> <br>  tn.  <font>read_until</font> <font>(</font> <font color="#483d8b">"BCM96338 ADSL Router"</font> <font>)</font> <br>  tn.  <font>read_until</font> <font>(</font> <font color="#483d8b">"Login:"</font> <font>)</font> <br>  tn.  <font>write</font> <font>(</font> <font color="#dc143c">user</font> + <font color="#483d8b">" <font color="#000099">\ n</font> "</font> <font>)</font> <br>  tn.  <font>read_until</font> <font>(</font> <font color="#483d8b">"Password:"</font> <font>)</font> <br>  tn.  <font>write</font> <font>(</font> password + <font color="#483d8b">" <font color="#000099">\ n</font> "</font> <font>)</font> <br>  <font color="#dc143c">time</font> .  <font>sleep</font> <font>(</font> <font color="#ff4500">5</font> <font>)</font> <br>  <font color="#808080"># tn.write ("ifconfig ppp_0_1_32_1 \ n")</font> <br>  tn.  <font>write</font> <font>(</font> <font color="#483d8b">"reboot <font color="#000099">\ n</font> "</font> <font>)</font> <br>  <font color="#dc143c">time</font> .  <font>sleep</font> <font>(</font> <font color="#ff4500">5</font> <font>)</font> <br>  tn.  <font>write</font> <font>(</font> <font color="#483d8b">"logout <font color="#000099">\ n</font> "</font> <font>)</font> <br>  <font color="#dc143c">time</font> .  <font>sleep</font> <font>(</font> <font color="#ff4500">60</font> <font>)</font> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      testit.  <font>lifeline</font> = <font color="#dc143c">re</font> .  <font color="#008000">compile</font> <font>(</font> r <font color="#483d8b">"( <font color="#000099">\ d</font> ) received"</font> <font>)</font> <br><br>  ip = <font color="#483d8b">"213.180.204.8"</font> <br>  HOST = <font color="#483d8b">"192.168.168.1"</font> <br>  <font color="#dc143c">user</font> = <font color="#483d8b">'user'</font> <br>  password = <font color="#483d8b">'password'</font> <br><br>  current = testit <font>(</font> ip <font>)</font> <br>  current.  <font>start</font> <font>(</font> <font>)</font> <br></blockquote><br><br>  The script pings the specified ip address and, if it is unavailable, connects via telnet to the modem and gives the command to reboot. <br>  It costs me to run on the crown every 3 minutes (chosen by experience - the best option) <br><br>  ip-address to be checked. <br>  HOST - the modem address. <br>  user, password - the username and password of the user on the modem, respectively. <br>  The BCM96338 ADSL Router line gives me a modem when it comes in via telnet, you can change it to the one that matches your modem. <br><br>  That's all proper.  Corrections and additions are welcome. <br></div><p>Source: <a href="https://habr.com/ru/post/67421/">https://habr.com/ru/post/67421/</a></p>
+      testit.  <font>lifeline</font> = <font color="#dc143c">re</font> .  <font color="#008000">compile</font> <font>(</font> r <font color="#483d8b">"( <font color="#000099">\ d</font> ) received"</font> <font>)</font> <br><br>  ip = <font color="#483d8b">"213.180.204.8"</font> <br>  HOST = <font color="#483d8b">"192.168.168.1"</font> <br>  <font color="#dc143c">user</font> = <font color="#483d8b">'user'</font> <br>  password = <font color="#483d8b">'password'</font> <br><br>  current = testit <font>(</font> ip <font>)</font> <br>  current.  <font>start</font> <font>(</font> <font>)</font> <br></blockquote><br><br>  The script pings the specified ip address and, if it is unavailable, connects via telnet to the modem and gives the command to reboot. <br>  It costs me to run on the crown every 3 minutes (chosen by experience - the best option) <br><br>  ip-address to be checked. <br>  HOST - the modem address. <br>  user, password - the username and password of the user on the modem, respectively. <br>  The BCM96338 ADSL Router line gives me a modem when it comes in via telnet, you can change it to the one that matches your modem. <br><br>  That's all proper.  Corrections and additions are welcome. <br></div><p>Source: https://habr.com/ru/post/67421/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../67414/index.html">Tower Defense (Portable)</a></li>
 <li><a href="../67415/index.html">Choosing a hosting for LiveStreet: on the agenda of TrueVDS.ru</a></li>
 <li><a href="../67416/index.html">Short film "Survive in Joburg" - prelude to the film "District number 9"</a></li>
 <li><a href="../67417/index.html">Video from Linux conference LVEE2009</a></li>
+<li><a href="../6742/index.html">Opera mail client</a></li>
 <li><a href="../67420/index.html">iDeath</a></li>
 <li><a href="../67424/index.html">BBC experiments with HTML5 video</a></li>
 <li><a href="../67428/index.html">Tele2 starts selling modems</a></li>
 <li><a href="../67429/index.html">Corporate Web 2.0 in Russia</a></li>
+<li><a href="../6743/index.html">The car was in deep water. How to behave and stay alive!?</a></li>
 <li><a href="../67430/index.html">How many returns should there be in a function / method?</a></li>
-<li><a href="../67431/index.html">Dynamic code compilation in C #</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

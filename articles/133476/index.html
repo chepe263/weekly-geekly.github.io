@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Speed ​​Limit on DIR-320N / RU</h1><div class="post__text post__text-html js-mediator-article"> It took a shaper on some cheap piece of iron.  The piece of iron was planned to be <b>DIR-320</b> from a famous Chinese manufacturer.  But instead of the good and simple <b>DIR-320</b> , the terrible and incomprehensible <b>DIR-320NRU</b> arrived and problems started. <br><a name="habracut"></a><br><br>  Initially, the idea was simple: we put <b>OpenWRT</b> and rule as we want.  But it is not yet possible to install OpenWRT on the NRU (I will be happy if someone corrects it), the format of the bootloader is incomprehensible, I did not find a quick glance at the squashfs in the firmware.  Yes, and time to look, somehow it was not.  Having chosen the native firmware, it became clear that to complete the task all the necessary tools (read: tc) are in it.  In general, there is something in the native dof firmware, even man-pages have a place to be. <br><br>  By the method of scientific tying and some kind of mother, it was found that all changeable settings are stored in the <b>/ etc / default</b> folder (which is a symlink to / tmp / etc / default, but the essence).  All files in this folder are carefully packed and recorded into the nvram with the command <b>/ usr / sbin / saveconfig</b> , and loaded (including when the system starts), respectively <b>/ usr / sbin / loadconfig</b> , cat is present, chmod too, problems with no scripts.  But there are problems with running scripts at startup. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Having found some more, I found the file <b>/etc/default/config.json</b> and the demon <b>/ bin / resident</b> , which parses the config and executes everything in the config that is written.  It was written, apparently negligently and not even by the Chinese, but by the Hindus, or, more likely, by Indo-rusas, the lines from the file are immediately shoved for execution.  It was then that the engineering idea was replaced by a thread on the script.  The first option available was a <b>DMZ host</b> - changing the contents of the config.json type: <br><br> <code>"dmz": { <br> "enable": true, <br> "ip": "192.168.0.2" <br> },</code> <br> <br>  on <br><br> <code>"dmz": { <br> "enable": true, <br> "ip": "`/etc/default/shaper.sh`" <br> },</code> <br> <br>  <b>resident</b> is all swallowed and instead of <b>-DNAT --to 192.168.0.1</b> , runs our script.  And if the script returns the correct ip-address, then the DMZ host is also registered correctly.  Voila! <br><br>  Well, a little code lastly: <br><br>  <b>/etc/default/shaper.sh</b> <br><br> <code>tc qdisc del dev br0 root <br> tc qdisc add dev br0 root handle 1: htb default 2 <br> tc class add dev br0 parent 1: classid 1:1 htb rate 10mbps <br> tc class add dev br0 parent 1:1 classid 1:2 htb rate 50kbps <br> for ip in `cat /etc/default/ips`;do <br> tc class add dev br0 parent 1:1 classid 1:${ip} htb rate 50kbps <br> tc filter add dev br0 parent 1: protocol ip prio 1 u32 match ip dst 192.168.0.${ip}/32 flowid 1:${ip} <br> done <br> echo cat /etc/default/DMZ.txt <br> led wps progress</code> <br> <br>  The shaper itself, the DMZ host is taken from the DMZ.txt file, <b>/ etc / default / ips</b> - the last bytes of addresses (2 3 4 5..254) <br>  In the last line, we turn on the blinking of the internal neonka, so that it irritates and unnerves, and also informs that all of the above has been loaded and working. <br><br>  Script for substitution <br><br> <code>echo Set DMZ Host to 9.9.9.9 via WebIF and run me again! <br> echo Use /etc/default/DMZ.txt to set DMZ Host IP <br> sed -is/9.9.9.9/"\`\/etc\/default\/shaper.sh\`"/g /etc/default/config.json <br> saveconfig</code> <br> <br>  sed for us is also left, which can not but rejoice. <br><br>  And nothing more is needed.  It works like this: configure everything as it should in the web-interface, set the DMZ-host in 9.9.9.9 (ibid.), Connect telnet and start <b>/etc/default/modify.sh</b> <br>  reboot the router by pulling out and pulling in the cable or using the reboot command. </div><p>Source: <a href="https://habr.com/ru/post/133476/">https://habr.com/ru/post/133476/</a></p>
+      Having found some more, I found the file <b>/etc/default/config.json</b> and the demon <b>/ bin / resident</b> , which parses the config and executes everything in the config that is written.  It was written, apparently negligently and not even by the Chinese, but by the Hindus, or, more likely, by Indo-rusas, the lines from the file are immediately shoved for execution.  It was then that the engineering idea was replaced by a thread on the script.  The first option available was a <b>DMZ host</b> - changing the contents of the config.json type: <br><br> <code>"dmz": { <br> "enable": true, <br> "ip": "192.168.0.2" <br> },</code> <br> <br>  on <br><br> <code>"dmz": { <br> "enable": true, <br> "ip": "`/etc/default/shaper.sh`" <br> },</code> <br> <br>  <b>resident</b> is all swallowed and instead of <b>-DNAT --to 192.168.0.1</b> , runs our script.  And if the script returns the correct ip-address, then the DMZ host is also registered correctly.  Voila! <br><br>  Well, a little code lastly: <br><br>  <b>/etc/default/shaper.sh</b> <br><br> <code>tc qdisc del dev br0 root <br> tc qdisc add dev br0 root handle 1: htb default 2 <br> tc class add dev br0 parent 1: classid 1:1 htb rate 10mbps <br> tc class add dev br0 parent 1:1 classid 1:2 htb rate 50kbps <br> for ip in `cat /etc/default/ips`;do <br> tc class add dev br0 parent 1:1 classid 1:${ip} htb rate 50kbps <br> tc filter add dev br0 parent 1: protocol ip prio 1 u32 match ip dst 192.168.0.${ip}/32 flowid 1:${ip} <br> done <br> echo cat /etc/default/DMZ.txt <br> led wps progress</code> <br> <br>  The shaper itself, the DMZ host is taken from the DMZ.txt file, <b>/ etc / default / ips</b> - the last bytes of addresses (2 3 4 5..254) <br>  In the last line, we turn on the blinking of the internal neonka, so that it irritates and unnerves, and also informs that all of the above has been loaded and working. <br><br>  Script for substitution <br><br> <code>echo Set DMZ Host to 9.9.9.9 via WebIF and run me again! <br> echo Use /etc/default/DMZ.txt to set DMZ Host IP <br> sed -is/9.9.9.9/"\`\/etc\/default\/shaper.sh\`"/g /etc/default/config.json <br> saveconfig</code> <br> <br>  sed for us is also left, which can not but rejoice. <br><br>  And nothing more is needed.  It works like this: configure everything as it should in the web-interface, set the DMZ-host in 9.9.9.9 (ibid.), Connect telnet and start <b>/etc/default/modify.sh</b> <br>  reboot the router by pulling out and pulling in the cable or using the reboot command. </div><p>Source: https://habr.com/ru/post/133476/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../133475/index.html">Acer Aspire One D255 modding or a long way to passive cooling</a></li>
 <li><a href="../133477/index.html">This hacker console</a></li>
 <li><a href="../133479/index.html">Sony PRS-600 Touch Edition - parsing the e-book</a></li>
+<li><a href="../13348/index.html">Mac links - apple social links</a></li>
 <li><a href="../133481/index.html">Two-factor authentication on a home server - fast, cheap, friendly</a></li>
 <li><a href="../133483/index.html">What do you prefer for the implementation of the simplest exclusive access, based on performance</a></li>
-<li><a href="../133484/index.html">Komodo Edit: build deb package</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We make screenshots of sites</h1><div class="post__text post__text-html js-mediator-article">  Wandering through the PHP documentation spaces, I stumbled upon two functions: <a href="http://www.php.net/manual/en/function.imagegrabwindow.php">imagegrabwindow</a> and <a href="http://www.php.net/manual/en/function.imagegrabscreen.php">imagegrabscreen</a> .  They know how to take screenshots in Microsoft Windows. <br>  Interested.  It ended with the fact that the script was written generating a full screenshot of any site. <br>  So we need: <br><ul><li>  Internet Explorer ActiveX component and <a href="http://msdn.microsoft.com/en-us/library/aa752084(VS.85).aspx">documentation</a> . </li><li>  PHP 5.2.2+ </li></ul><br><a name="habracut"></a><br>  The <b>imagegrabwindow</b> function <b>provides</b> a good example for use. <br><blockquote><code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">$browser = <font color="#0000ff">new</font> COM( <font color="#A31515">"InternetExplorer.Application"</font> ); <br> $handle = $browser-&gt;HWND; <br> $browser-&gt;Visible = <font color="#0000ff">true</font> ; <br> $browser-&gt;Navigate( <font color="#A31515">"http://www.libgd.org"</font> ); <br> <br> <font color="#008000">/* Still working? */</font> <br> <font color="#0000ff">while</font> ($browser-&gt;Busy) { <br> com_message_pump(4000); <br> } <br> $im = imagegrabwindow($handle, 0); <br> $browser-&gt;Quit(); <br> imagepng($im, <font color="#A31515">"iesnap.png"</font> ); <br> imagedestroy($im);</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  But it has a big drawback - <b>what size the browser window has opened, so we will get a screenshot</b> . <br>  In order to fix this, I had to write a script that additionally does the following things: <br><ul><li>  Opens the browser window to full screen in full screen mode. </li><li>  Disables the status bar. </li><li>  Overwrites scrolling </li><li>  Makes the required number of screenshots of the page by scrolling the page and combines them </li></ul><br><h4>  Coder </h4><br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php <br> $browser = <font color="#0000ff">new</font> COM( <font color="#A31515">"InternetExplorer.Application"</font> ); <br> $browser-&gt;Visible = <font color="#0000ff">true</font> ; <br> $browser-&gt;Fullscreen = <font color="#0000ff">true</font> ; <br> $browser-&gt;StatusBar = <font color="#0000ff">false</font> ; <br> <br> $browser-&gt;Navigate( <font color="#A31515">"http://www.habrahabr.ru"</font> ); <br> <font color="#0000ff">while</font> ($browser-&gt;Busy) <br> com_message_pump(4000); <br> <br> $handle = $browser-&gt;HWND; <br> $screenWidth = $browser-&gt;Width; <br> $screenHeight = $browser-&gt;Height; <br> $documentHeight = $browser-&gt;Document-&gt;body-&gt;scrollHeight; <br> <br> $scrollWidth = 20; <br> $scrollHeight = 20; <br> $testPartSize = 10*1024; <br> <br> $im = imagecreatetruecolor($screenWidth - $scrollWidth, $documentHeight); <br> <font color="#0000ff">for</font> ($top = 0; $top &lt; $documentHeight; $top += $screenHeight) <br> { <br> $browser-&gt;Document-&gt;documentElement-&gt;scrollTop=$top; <br> <font color="#0000ff">while</font> ($browser-&gt;Busy) <br> com_message_pump(4000); <br> echo $browser-&gt;Document-&gt;documentElement-&gt;scrollTop.PHP_EOL; <br> <br> <font color="#0000ff">for</font> ($i = 0; $i &lt; 5; $i++) <br> { <br> $part = imagegrabwindow($handle, 0); <br> $dark = imagecolorallocate($part, 0, 0, 0); <br> imagefilledrectangle($part, $screenWidth - $scrollWidth, 0, $screenWidth, $screenHeight, $dark); <br> $testFile = sprintf( <font color="#A31515">"screenshot_%05d.png"</font> , $top); <br> imagepng($part, $testFile, 9, PNG_ALL_FILTERS); <br> clearstatcache(); <br> <font color="#0000ff">if</font> (filesize($testFile) &gt; $testPartSize) <br> <font color="#0000ff">break</font> ; <br> <br> echo <font color="#A31515">"Bad part, name: {$testFile}, try to generate again."</font> .PHP_EOL; <br> } <br> <br> imagecopy( <br> $im, $part, <br> 0, $top, <br> 0, (!$top || ($top + $screenHeight) &lt; $documentHeight) ? 0 : $screenHeight - $scrollHeight - $documentHeight % $screenHeight, <br> $screenWidth - $scrollWidth, $screenHeight); <br> imagedestroy($part); <br> } <br> imagepng($im, <font color="#A31515">"screenshot.png"</font> , 9, PNG_ALL_FILTERS); <br> imagedestroy($im); <br> <br> $browser-&gt;Quit(); <br></font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br><h5>  Code Notes </h5><br><ul><li>  Sometimes for unknown reasons, a screenshot is taken, and there is a black screen, in order to eliminate it, the captured piece is recorded in a file with a scrolling erased, and then the file size is checked.  If the file is small, most likely you need to re-shoot. </li><li>  If you want to quickly protest, you can use the following command line: <br><blockquote> <code>php -d extension_dir=c:\php\ext\ -d extension=php_gd2.dll ie.php <br></code> </blockquote>  where ie.php is the script above. </li><li>  You can run from under Apache, but for this you need to change the security settings.  The documentation for these functions says what to do. <br></li></ul>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  And as in other browsers </h4><br>  For FireFox I found the <a href="https://developer.mozilla.org/en/Embedding_Mozilla">Embedded Mozilla</a> section, unfortunately it requires coding, but when writing a full-fledged service it will turn out much more efficient. <br>  <b>UPD:</b> Read komenty, there are many links to how to do it on other engines and other systems. <br><br>  PS It is checked only in virtualka on IE7. <br>  PS IE itself I hate, I use FireFox. </div><p>Source: <a href="https://habr.com/ru/post/62965/">https://habr.com/ru/post/62965/</a></p>
+    <h4>  And as in other browsers </h4><br>  For FireFox I found the <a href="https://developer.mozilla.org/en/Embedding_Mozilla">Embedded Mozilla</a> section, unfortunately it requires coding, but when writing a full-fledged service it will turn out much more efficient. <br>  <b>UPD:</b> Read komenty, there are many links to how to do it on other engines and other systems. <br><br>  PS It is checked only in virtualka on IE7. <br>  PS IE itself I hate, I use FireFox. </div><p>Source: https://habr.com/ru/post/62965/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../62959/index.html">Small client concept</a></li>
+<li><a href="../6296/index.html">Man and computer - full compatibility.</a></li>
 <li><a href="../62960/index.html">A collection of meaningless sites</a></li>
 <li><a href="../62961/index.html">Michael Jackson passed away</a></li>
 <li><a href="../62963/index.html">Installing firefox 3.5 RC 2 or firefox 3.6 in ubuntu 9.04</a></li>

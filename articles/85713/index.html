@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Proper linux kernel booting from EFI to Macbook</h1><div class="post__text post__text-html js-mediator-article"> <i>I propose a somewhat free translation of the Gentoo programmer about the correct way to load on laptops with EFI instead of BIOC on board.</i> <br>  I recently bought a Macbook Pro 13.3 inch and I decided to put Gentoo Linux on it. <br><br>  No sooner said than done.  In general, the installation was successful, not counting small misunderstandings like a broken keyboard from under LiveCD, the kernel sees the console only with <code>vesafb</code> . <br><br>  The only thing that bothered me a bit was the BIOS emulation.  Macs use Intel's EFI for loading, and for the rest of the operating systems Apple added a BIOS emulation level.  This is how Ubuntu is loaded on Macs. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      It seemed to me wrong technically and in principle.  I podnaprygsya a bit and I managed to run the Linux kernel from under EFI <u>without any emulations</u> .  Documentation is not enough, so I want to share my way. <br><a name="habracut"></a><br><ol><li>  EFI starts at boot. </li><li>  Runs <a href="http://refit.sourceforge.net/">rEFIt</a> , a program that extends the capabilities of the default loader by adding a normal boot menu, command line, etc. </li><li>  It scans <code>FAT/HFS</code> partitions (ext * is not supported) looking for a boot that would contain the <code>/efi/</code> directory;  and boot images. </li><li>  Runs a <code>Grub2</code> EFI image with a <code>FAT</code> partition. </li><li>  Boot the Linux kernel with <code>/boot</code> (+ <code>initrd/initramfs</code> if specified). </li><li>  The kernel, as usual, is loaded from the root partition, you can select any file system. </li></ol><br>  You can use <code>elilo</code> , but <code>Grub2</code> (more precisely, <code>Grub 1.97.1</code> ) does better, or rather, this is the only thing that at least works with minor modifications (add the <code>efi</code> flag to ebuild USE via <code>--with-platform=efi</code> ).  I managed to configure the <code>/boot</code> partition on the FAT file system, but this <code>installkernel</code> script to run from the kernel source directory, which creates symbolic links to the new and previous kernel images. <br><br>  Instructions for installing the EFI <code>Grub2</code> image <a href="https://help.ubuntu.com/community/UEFIBooting">here</a> .  Install an EFI image in a directory, something like <code>/efi/grub</code> (there must be a path <code>/efi</code> ).  You can skip the <code>bless</code> commands, they are for OS X. You can create a simple config file with the <code>grub-mkconfig</code> and then modify it.  However, in order to make According to Mind ™ manually edit the files from <code>/etc/grub.d/</code> . <br><br>  Of course, you need to put EFI support in the kernel, but that's all.  Now you realize with some manic-obsessive satisfaction that you don't need to connect an extra link to support another proprietary interface beyond your scope and control. </div><p>Source: <a href="https://habr.com/ru/post/85713/">https://habr.com/ru/post/85713/</a></p>
+      It seemed to me wrong technically and in principle.  I podnaprygsya a bit and I managed to run the Linux kernel from under EFI <u>without any emulations</u> .  Documentation is not enough, so I want to share my way. <br><a name="habracut"></a><br><ol><li>  EFI starts at boot. </li><li>  Runs <a href="http://refit.sourceforge.net/">rEFIt</a> , a program that extends the capabilities of the default loader by adding a normal boot menu, command line, etc. </li><li>  It scans <code>FAT/HFS</code> partitions (ext * is not supported) looking for a boot that would contain the <code>/efi/</code> directory;  and boot images. </li><li>  Runs a <code>Grub2</code> EFI image with a <code>FAT</code> partition. </li><li>  Boot the Linux kernel with <code>/boot</code> (+ <code>initrd/initramfs</code> if specified). </li><li>  The kernel, as usual, is loaded from the root partition, you can select any file system. </li></ol><br>  You can use <code>elilo</code> , but <code>Grub2</code> (more precisely, <code>Grub 1.97.1</code> ) does better, or rather, this is the only thing that at least works with minor modifications (add the <code>efi</code> flag to ebuild USE via <code>--with-platform=efi</code> ).  I managed to configure the <code>/boot</code> partition on the FAT file system, but this <code>installkernel</code> script to run from the kernel source directory, which creates symbolic links to the new and previous kernel images. <br><br>  Instructions for installing the EFI <code>Grub2</code> image <a href="https://help.ubuntu.com/community/UEFIBooting">here</a> .  Install an EFI image in a directory, something like <code>/efi/grub</code> (there must be a path <code>/efi</code> ).  You can skip the <code>bless</code> commands, they are for OS X. You can create a simple config file with the <code>grub-mkconfig</code> and then modify it.  However, in order to make According to Mind ™ manually edit the files from <code>/etc/grub.d/</code> . <br><br>  Of course, you need to put EFI support in the kernel, but that's all.  Now you realize with some manic-obsessive satisfaction that you don't need to connect an extra link to support another proprietary interface beyond your scope and control. </div><p>Source: https://habr.com/ru/post/85713/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../85706/index.html">IM to Evernote Gateway</a></li>
 <li><a href="../85708/index.html">IOgraphica - tracking mouse movements</a></li>
 <li><a href="../85709/index.html">Add gigabytes</a></li>
+<li><a href="../8571/index.html">Java FX from SUN</a></li>
 <li><a href="../85710/index.html">Jetpack for everyone</a></li>
 <li><a href="../85711/index.html">The process of creating processes</a></li>
 <li><a href="../85714/index.html">Outraged: the Microsoft site does not work under IE</a></li>
 <li><a href="../85715/index.html">How to find good keywords and ideas for your articles</a></li>
 <li><a href="../85717/index.html">Free billing service</a></li>
+<li><a href="../85718/index.html">Lazy calculations in c ++ 0x, test new features</a></li>
 <li><a href="../85722/index.html">Internship programs or the course of a young fighter</a></li>
-<li><a href="../85724/index.html">How to upgrade your Samsung Spica to Android 2.1 version. Instruction</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

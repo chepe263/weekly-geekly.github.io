@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Is your programming language unfounded? (or why predictability is important)</h1><div class="post__text post__text-html js-mediator-article">  As it should be obvious, one of the goals of <a href="http://fsharpforfunandprofit.com/">this site</a> is to convince to take F # seriously as a universal development language. <br><br>  But while the functional style is more and more penetrating into the masses, and C # has already received such functional tools as lambdas and LINQ, it seems that C # more and more comes on the heels of F #.  So, oddly enough, but I began to hear more and more how to express such thoughts: <br><br><ul><li>  “C # already has most of the F # toolkit, and why should I strain with the transition?” </li><li>  “There is no need to change anything.  All we have to do is wait a couple of years, and C # will get enough from F #, which will provide almost all the goodies. ” </li><li>  "F # is only slightly better than C #, but not enough to really waste time moving to it." </li><li>  “F # seems to be really nice, although it scares places.  But I can’t find a practical use for it in order to use C # instead. ” </li></ul><br>  I have no doubt that now, when lambdas are also added to Java, similar comments were heard in the JVM ecosystem when discussing “Scala and Closure vs. Java”. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       So in this article I’m going to move away from F # and focus on C # (and on his example in other popular languages) to show that even with the implementation of all conceivable means of functional languages, C # programming will never be the same as on F # . <br><a name="habracut"></a><br>  Before I begin, I want to emphasize that I do not hate C #.  It just so happens that I really like C # and is one of my favorite universal languages.  It evolved into a powerful language, while remaining consistent and backward compatible, which is very difficult to achieve. <br><br>  But C # is not perfect.  As in most major object-oriented languages, it contains design solutions that cannot be compensated for by any LINQ or lambda charms.  In this article, I will show you some of the problems that are caused by such solutions, and suggest ways to improve the language that will help avoid these problems. <br><br>  <i>(Now I put on my fireproof suit. I think I will need it!)</i> <br><br>  ADDITION: It seems that many readers did not understand this article at all.  Let me clarify: <br><br><ul><li>  I'm not saying that languages ​​with static typing are “better” than with dynamic. </li><li>  I'm not saying that functional languages ​​are "better" than object-oriented. </li><li>  I'm not saying that being able to think through code is the most important aspect of a language. </li></ul><br>  I say that: <br><br>  - The inability to think through the code brings costs in which many developers do not give themselves a report. <br>  - moreover, the possibility of “thinking through” should be only one (of many) assessment factor, when a programming language is chosen, you just should not forget about it because of the lack of cautions. <br>  - IF you want to be able to think through your code, then the presence in your language of the properties, which I will discuss, will make it much easier. <br>  - the fundamental concepts of object-oriented programming (the uniqueness of the objects, the focus on behavior) are not compatible with “thinking through,” and therefore it will be difficult to modify the existing OO languages ​​to add this feature. <br><br>  Nothing else.  Thank! <br><hr><br><h3>  Still, what is a "reasonable" programming language? </h3><br>  If you are familiar with functional programmers, you often hear the phrase “think through something,” for example, “we want to think about our programs.” <br><br>  What does it mean?  Why use the word "think through" instead of the usual "understand"?  The use of “thinking through” originates in mathematics and logic, but I'm going to use a simple and practical definition: <br><br><ul><li>  “Thinking through the code” means that you can make inferences using only what you see here and now, without having to dig in other blocks of program code. </li></ul><br>  In other words, you can predict the behavior of a code fragment just by looking at it.  You may need to deal with interfaces to other components, but there is no need to open them and look inside what they do.  Since we, the developers, spend most of the time reading the code, this is quite an important point in programming! <br><br>  Of course, there are a huge number of recommendations on how to do it in general: naming principles, formatting rules, design patterns, etc.  etc.  But can, by itself, your programming language help your code to be more comprehensible, more predictable?  I think the answer will be yes, but still let you solve it for yourself. <br><br>  Next, I will show you some code snippets.  After each fragment I will ask what you think that this code does.  I deliberately do not immediately write my comments so that you can get your own thoughts.  After you decide, scroll down to read my opinion. <br><br><h4>  Example 1 </h4><br>  Let's get to the next code. <br><br><ul><li>  We start with the variable <i><b>x</b></i> , which is assigned an integer value of <i><b>2</b></i> . </li><li>  After this, <i><b>DoSomething</b></i> is called, to which <i><b>x is</b></i> passed as a parameter. </li><li>  And after that, the variable <i><b>y is</b></i> assigned the result of the expression <i><b>x - 1</b></i> . </li></ul><br>  The question I ask is not complicated: what is the value of <i><b>y</b></i> ? <br><br><pre><code class="javascript">var x = 2;
@@ -372,20 +372,20 @@ if (customerOrError.IsError)
 <br>
      F#  Scala/Clojure —           ,          .<br>
 <br>
- ,         .</div><p>Source: <a href="https://habr.com/ru/post/268559/">https://habr.com/ru/post/268559/</a></p>
+ ,         .</div><p>Source: https://habr.com/ru/post/268559/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../268541/index.html">On-line connection without marriage</a></li>
 <li><a href="../268545/index.html">We shared the Internet: a lot of us, but it is not</a></li>
 <li><a href="../268547/index.html">Manage different types of disks on a virtual server</a></li>
+<li><a href="../26855/index.html">Ranking the importance of words and phrases in Internet articles by the user community</a></li>
 <li><a href="../268551/index.html">UX in messengers: 2005 - 2015. Part I. Background. Years 2005-2007</a></li>
 <li><a href="../268555/index.html">The leak of real full names of users through Kinopoisk.ru</a></li>
+<li><a href="../26856/index.html">Exchange a book - save a tree</a></li>
 <li><a href="../268561/index.html">SpecFlow and alternative testing approach</a></li>
 <li><a href="../268567/index.html">New emotions on Facebook. A brief analysis of the functionality and its logic</a></li>
 <li><a href="../268569/index.html">Patch mysqldump at home</a></li>
-<li><a href="../268573/index.html">Remote code execution in InterSystems Caché (RCE)</a></li>
-<li><a href="../268575/index.html">Photoshop history</a></li>
+<li><a href="../26857/index.html">Run to Pepsi)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

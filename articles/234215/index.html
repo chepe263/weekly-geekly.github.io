@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -74,7 +74,7 @@
  Print :: ~ Print ()
  Print :: ~ Print () </pre><br>  Well, it became better, two constructors, two destructors.  But why are there two objects?  About the first object is clear, it is created in our code.  In the second one, it is created even after the entire output is processed.  What for? <br>  Let's look at the description of the for_each function: <br><pre> <code class="cpp hljs"><span class="hljs-function"><span class="hljs-function">Function </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">for_each</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(InputIterator first, InputIterator last, Function fn)</span></span></span></span>;</code> </pre><br>  Here, the function returns a functor that we never used.  Add the result. <br><pre> <code class="cpp hljs">Print p = for_each( mas.begin(), mas.end(), Print() );</code> </pre><br><br>  We start. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -82,7 +82,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <pre>  Print :: Print ()
@@ -123,20 +123,20 @@
  Compare :: ~ Compare ()
  Compare :: ~ Compare ()
  Compare :: ~ Compare ()
- Compare :: ~ Compare () </pre><br>  This is a surprise, five comparisons and six functors! <br>  Well, our one when calling a function, and the rest uses sorting.  Why are they there?  Most likely due to the recursiveness of the sorting algorithm, where each recursive call creates a new copy that must be passed to the function. <br>  And now let's calculate how many such objects will be on average when sorting large arrays.  Add a counter and remove the entire output.  The counter is implemented as a static member of the class, which will be one for all created instances. <br><pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">include</span></span></span><span class="hljs-meta"> </span><span class="hljs-meta-string"><span class="hljs-meta"><span class="hljs-meta-string">&lt;iostream&gt; #include &lt;vector&gt; #include &lt;algorithm&gt; using namespace std; class Compare { public: static int num; Compare() { num++; } Compare(const Compare&amp; compare) { num++; } ~Compare() { } bool operator() (int v1, int v2) { return v1 &lt; v2; } }; int Compare::num = 0; int main() { vector&lt;int&gt; mas; int size = 10000; for( int k = 1; k &lt;= size; k++ ) { mas.push_back( rand() ); } sort( mas.begin(), mas.end(), Compare() ); float rate = (float)Compare::num/(float)size; cout&lt;&lt;"rate="&lt;&lt;rate&lt;&lt;endl; return 0; }</span></span></span></span></code> </pre><br>  The output of the program: <br><br><pre>  rate = 1.4582 </pre><br>  For arrays of a million elements, the value is about the same.  Honestly, for me it was a big surprise.  That is, on average, one and a half of the functor is created for each element of the sorting array!  It’s good that the complexity is linear and it doesn’t affect the total running time of the algorithm so much.  What are the conclusions?  If your functor contains a lot of data and has a complex copy constructor, then this can lead to a loss of performance. <br><br>  Literature: <br>  1. Coat of arms of Sutter, Andrei Alexandrescu.  C ++ Programming Standards: Trans.  from English  - M .: Izd.  Williams House, 2005. <br>  2. <a href="http://www.cplusplus.com/">www.cplusplus.com</a> </div><p>Source: <a href="https://habr.com/ru/post/234215/">https://habr.com/ru/post/234215/</a></p>
+ Compare :: ~ Compare () </pre><br>  This is a surprise, five comparisons and six functors! <br>  Well, our one when calling a function, and the rest uses sorting.  Why are they there?  Most likely due to the recursiveness of the sorting algorithm, where each recursive call creates a new copy that must be passed to the function. <br>  And now let's calculate how many such objects will be on average when sorting large arrays.  Add a counter and remove the entire output.  The counter is implemented as a static member of the class, which will be one for all created instances. <br><pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">include</span></span></span><span class="hljs-meta"> </span><span class="hljs-meta-string"><span class="hljs-meta"><span class="hljs-meta-string">&lt;iostream&gt; #include &lt;vector&gt; #include &lt;algorithm&gt; using namespace std; class Compare { public: static int num; Compare() { num++; } Compare(const Compare&amp; compare) { num++; } ~Compare() { } bool operator() (int v1, int v2) { return v1 &lt; v2; } }; int Compare::num = 0; int main() { vector&lt;int&gt; mas; int size = 10000; for( int k = 1; k &lt;= size; k++ ) { mas.push_back( rand() ); } sort( mas.begin(), mas.end(), Compare() ); float rate = (float)Compare::num/(float)size; cout&lt;&lt;"rate="&lt;&lt;rate&lt;&lt;endl; return 0; }</span></span></span></span></code> </pre><br>  The output of the program: <br><br><pre>  rate = 1.4582 </pre><br>  For arrays of a million elements, the value is about the same.  Honestly, for me it was a big surprise.  That is, on average, one and a half of the functor is created for each element of the sorting array!  It’s good that the complexity is linear and it doesn’t affect the total running time of the algorithm so much.  What are the conclusions?  If your functor contains a lot of data and has a complex copy constructor, then this can lead to a loss of performance. <br><br>  Literature: <br>  1. Coat of arms of Sutter, Andrei Alexandrescu.  C ++ Programming Standards: Trans.  from English  - M .: Izd.  Williams House, 2005. <br>  2. <a href="http://www.cplusplus.com/">www.cplusplus.com</a> </div><p>Source: https://habr.com/ru/post/234215/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../234197/index.html">Microsoft has built Bing search engine in the context menu of Skype</a></li>
 <li><a href="../234201/index.html">Increase disk subsystem performance in the next release of the XenServer hypervisor</a></li>
 <li><a href="../234203/index.html">How does the camera rotate in 3D games or what is a rotation matrix</a></li>
+<li><a href="../234209/index.html">Google will develop children's accounts for Youtube and Gmail</a></li>
 <li><a href="../234211/index.html">Personal cloud on Raspberry Pi and development of uninterruptible power supply for it</a></li>
 <li><a href="../234213/index.html">Acceptance test planning for a cloud site</a></li>
 <li><a href="../234219/index.html">Medical anatomical illustration - the history of the study of the human body in the atlases of 5 centuries. Part 2</a></li>
+<li><a href="../23422/index.html">ruCOworking logo</a></li>
 <li><a href="../234221/index.html">Biased notes about Russian CAD developers</a></li>
 <li><a href="../234223/index.html">Skyforge load testing. One year later</a></li>
 <li><a href="../234225/index.html">Roscosmos plans to build a device for cleaning the orbit of space debris</a></li>
-<li><a href="../234227/index.html">Software Project Management Conference: Why it is important not to miss the main conference on IT project management</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

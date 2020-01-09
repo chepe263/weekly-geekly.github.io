@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Export key SignalCom to OpenSSL</h1><div class="post__text post__text-html js-mediator-article"><p>  <em>Your task is to integrate with a remote service that works according to GOST and "only through CRYPTO-COM", and you want to use OpenSSL with gost?</em>  <em>On the Signal-COM forum, you see heaps of messages that "keys from the CRYPTO-COM format cannot be converted to the OpenSSL-GOST-compatible format"?</em>  <em>Actually conversion is possible.</em> </p><a name="habracut"></a><br><p>  <strong>tl; dr:</strong> <a href="http://gostcrypto.com/demo-sc-keys.html">http://gostcrypto.com/demo-sc-keys.html</a> </p><br><p>  How to convert existing keys from proprietary to orthodox format? </p><br><h2>  I'm not paranoid </h2><br><p>  Go to <a href="http://gostcrypto.com/demo-sc-keys.html">http://gostcrypto.com/demo-sc-keys.html</a> and specify the container files of type "mk.db3", "masks.db3", "kek.opq", "rand.opq" and the private key file by type "Keys \ 00000001.key", click "Export PrivateKey". </p><br><p>  In the current version of gostcrypto.com, the key will not be quite PEM-compatible, since  over 64 characters are used: </p><br><pre><code class="hljs delphi">-----<span class="hljs-keyword"><span class="hljs-keyword">BEGIN</span></span> <span class="hljs-keyword"><span class="hljs-keyword">PRIVATE</span></span> KEY----- MEYCAQAwHQYGKoUDAgITMBMGByqFAwICIwEGCCqFAwcBAQICBCIEIG0GEmE3dhrHzm1KfFDpKBWEmMydwcmP0hNKvXXbEbLO -----<span class="hljs-keyword"><span class="hljs-keyword">END</span></span> <span class="hljs-keyword"><span class="hljs-keyword">PRIVATE</span></span> KEY-----</code> </pre> <br><p>  To make it PEM compliant, just add a new line after 64 characters: </p><br><pre> <code class="hljs delphi">-----<span class="hljs-keyword"><span class="hljs-keyword">BEGIN</span></span> <span class="hljs-keyword"><span class="hljs-keyword">PRIVATE</span></span> KEY----- MEYCAQAwHQYGKoUDAgITMBMGByqFAwICIwEGCCqFAwcBAQICBCIEIG0GEmE3dhrH zm1KfFDpKBWEmMydwcmP0hNKvXXbEbLO -----<span class="hljs-keyword"><span class="hljs-keyword">END</span></span> <span class="hljs-keyword"><span class="hljs-keyword">PRIVATE</span></span> KEY-----</code> </pre> <br><h2>  I'm paranoid or want a cli version </h2><br><p>  At the time of the publication of this article, gostcrypto is not node-ficient and there is an attempt at its node-fication in a pull request.  There's also a cli-utility for exporting to PEM-compatible format. </p><br><p>  Put it and try to export the key: </p><br><pre> <code class="hljs ruby">sudo npm install -g <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/github.com/garex</span></span><span class="hljs-regexp"><span class="hljs-regexp">/nodejs-gost-crypto/archive</span></span><span class="hljs-regexp"><span class="hljs-regexp">/nodefy.tar.gz cd /tmp</span></span> wget <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/www.contact-sys.com/files</span></span><span class="hljs-regexp"><span class="hljs-regexp">/redactor/files</span></span><span class="hljs-regexp"><span class="hljs-regexp">/TestContactKey.zip unzip TestContactKey.zip -d TestContactKey gost-export-signalcom-key --pse TestContactKey --key Keys/</span></span><span class="hljs-number"><span class="hljs-number">00000001</span></span>.key</code> </pre> <br><p>  As a result, we get in STDOUT: </p><br><pre> <code class="hljs delphi">-----<span class="hljs-keyword"><span class="hljs-keyword">BEGIN</span></span> <span class="hljs-keyword"><span class="hljs-keyword">PRIVATE</span></span> KEY----- MEYCAQAwHQYGKoUDAgITMBMGByqFAwICIwEGCCqFAwcBAQICBCIEIG0GEmE3dhrH zm1KfFDpKBWEmMydwcmP0hNKvXXbEbLO -----<span class="hljs-keyword"><span class="hljs-keyword">END</span></span> <span class="hljs-keyword"><span class="hljs-keyword">PRIVATE</span></span> KEY-----</code> </pre> <br><p>  And in STDERR: </p><br><pre> <code class="hljs pgsql">OK: Private SignalCom key successfully exported <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> STDOUT <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> "PEM" <span class="hljs-keyword"><span class="hljs-keyword">format</span></span>.</code> </pre> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/317406/">https://habr.com/ru/post/317406/</a></p>
+    <p>Source: https://habr.com/ru/post/317406/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

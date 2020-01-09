@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>When memory is more critical than time</h1><div class="post__text post__text-html js-mediator-article"><h1>  <b><font color="darkgreen">time: 1h 34 m 13 s</font></b> vs <b><font color="darkred">memory: 10 388 MB</font></b> </h1>  Many problems solved with the help of dynamic programming relate to memory mercilessly.  It is often necessary to store <i>O (n⋅m)</i> values, which becomes a real problem for large <i>n</i> and <i>m</i> .  In this article I will talk about a relatively common way to save memory at the expense of work time. <a name="habracut"></a><br><br><h2>  Definitions and notation </h2><br>  Let there be some task that requires a response in the form <i>&lt;k, path (k)&gt;</i> , where <i>k</i> is the result, and <i>path (k)</i> is one of the possible ways to achieve this result.  At the same time, <i>k</i> depends on two sets <i>A</i> and <i>B</i> with powers <i>n</i> and <i>m</i> , and it can be expressed using <a href="http://www.mgopu.ru/PVU/2.1/Recurs/OOD/TypeRec/line_rec.htm">linear recursion</a> from <i>m</i> and <i>n</i> .  <i><font color="grey">For a better understanding it is worth referring to the example of such a task;</font></i>  <i><font color="grey">say, the task of finding editorial distances and prescriptions.</font></i>  <i><font color="grey">You can <sup><font color="red">read</font></sup> about it on <a href="http://ru.wikipedia.org/wiki/%25D0%25A0%25D0%25B0%25D1%2581%25D1%2581%25D1%2582%25D0%25BE%25D1%258F%25D0%25BD%25D0%25B8%25D0%25B5_%25D0%259B%25D0%25B5%25D0%25B2%25D0%25B5%25D0%25BD%25D1%2588%25D1%2582%25D0%25B5%25D0%25B9%25D0%25BD%25D0%25B0">Wikipedia</a> , and see the visualizer - <a href="http://rain.ifmo.ru/cat/view.php/vis/strings/levenshtein-2009">here</a> <sup>[be <font color="red">careful with the habra effect</font> ]</sup> .</font></i>  <i><font color="grey">Next, I rely on the reader to understand what is happening.</font></i> <br>  Obviously, the time-optimal way to get what you are looking for is an upward <a href="http://ru.wikipedia.org/wiki/%25D0%2594%25D0%25B8%25D0%25BD%25D0%25B0%25D0%25BC%25D0%25B8%25D1%2587%25D0%25B5%25D1%2581%25D0%25BA%25D0%25BE%25D0%25B5_%25D0%25BF%25D1%2580%25D0%25BE%25D0%25B3%25D1%2580%25D0%25B0%25D0%25BC%25D0%25BC%25D0%25B8%25D1%2580%25D0%25BE%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25B8%25D0%25B5">trend</a> in both arguments, storing all <i>n⋅m</i> intermediate values, and working, respectively, in <i>O (n⋅m)</i> time.  To make things easier, we put <i>n = max (m, n)</i> (yes, reassign; otherwise I will be constantly confused), then the operation time and the amount of memory taken can be estimated as <i>O (n <sup>2</sup> )</i> . <br><br><h2>  Occurrence: memory is finite! </h2><br>  To imagine that <i>n</i> can be more than nine thousand, you do not need to have a lot of fantasy;  just as one doesn’t need to be a genius to guess that the idea of ​​“grabbing a few dozen gigabytes of memory” is doomed to failure.  But now, as a rule, we have significantly more time than we are happy to use.  At this point, the reader should understand what is upward dynamics, and with what it is eaten, exactly like to realize what linear recursion is.  Although, lazy people have another option: take my word :) Obviously, to calculate the next value of the function, you need only a constant number (most often equal to two), and this is an obvious hint that you can use <i>O (n)</i> of memory.  But at the same time, if we store only a fixed number of lines, then sooner or later we will have to “forget” the old data in order to calculate new ones.  And since the output of these old data is also needed, you will need to read them again.  It turns out a simple algorithm: <ol><li>  Set <i>iPos = jPos = n</i> ; </li><li>  We calculate the values ​​of the function from <i>(0,0)</i> to <i>(iPos, jPos)</i> , each time you switch to a new line <i>, delete</i> the oldest one (thus, the number of lines will be constant, denote this by <i>k</i> ); </li><li>  When we get to (iPos, jPos), let's remember the steps that are required to get from ( <i>iPos - k</i> , <i>k '</i> ) to <i>(iPos, jPos)</i> , where <i>k'</i> is the point to which the path leads from the already forgotten line </li><li>  Set <i>iPos = iPos - k</i> , <i>jPos = k '</i> ; </li><li>  If iPos and jPos do not turn out to be zeros (or less), go back to step 2 </li><li>  Value and path found </li></ol>  <font color="grey">You can see this algorithm in action using the example of searching for editorial distances and prescriptions using the link given above.</font> <br>  It is easy to see that the algorithm works for <i>O (n <sup>3</sup> )</i> , but consumes only <i>O (n)</i> memory. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h2>  Possible options </h2><br>  Surely many people wondered: “Is it possible to make something average?” Yes, it is possible.  Let's start with <i>O (√n⋅n)</i> memory and <i>O (√n⋅n <sup>2</sup> )</i> time.  Actually, the changes here will be insignificant: instead of storing the last <i>k</i> lines, we will store <i>√n</i> <font color="grey">(for the picky: <i>max (k, √</i> <i>n</i> ) for small <i>n</i> )</font> .  This will increase the memory consumption by <i>√n</i> times, but then and accordingly will reduce the time: <i>n <sup>3</sup> / √n = √n⋅n <sup>2</sup></i> .  After a little thought, you can understand that ∀ε∈ [0,1] can solve the problem by consuming <i>O (n <sup>2 + ε</sup> )</i> time and <i>O (n <sup>2-ε</sup> )</i> memory.  Visualization for <i>ε = 0.5</i> is available in the same visualizer. <br><br><h2>  Afterword </h2><br>  A working example for the task of finding editorial distances and prescriptions can be found next to the visualizer and on the <a href="http://pastie.org/644791">mirror</a> .  Only please, you do not need to tell me about the Java Coding Conventions, because it has nothing to do with business. <br>  Good luck!  :) </div><p>Source: <a href="https://habr.com/ru/post/71704/">https://habr.com/ru/post/71704/</a></p>
+    <h2>  Possible options </h2><br>  Surely many people wondered: “Is it possible to make something average?” Yes, it is possible.  Let's start with <i>O (√n⋅n)</i> memory and <i>O (√n⋅n <sup>2</sup> )</i> time.  Actually, the changes here will be insignificant: instead of storing the last <i>k</i> lines, we will store <i>√n</i> <font color="grey">(for the picky: <i>max (k, √</i> <i>n</i> ) for small <i>n</i> )</font> .  This will increase the memory consumption by <i>√n</i> times, but then and accordingly will reduce the time: <i>n <sup>3</sup> / √n = √n⋅n <sup>2</sup></i> .  After a little thought, you can understand that ∀ε∈ [0,1] can solve the problem by consuming <i>O (n <sup>2 + ε</sup> )</i> time and <i>O (n <sup>2-ε</sup> )</i> memory.  Visualization for <i>ε = 0.5</i> is available in the same visualizer. <br><br><h2>  Afterword </h2><br>  A working example for the task of finding editorial distances and prescriptions can be found next to the visualizer and on the <a href="http://pastie.org/644791">mirror</a> .  Only please, you do not need to tell me about the Java Coding Conventions, because it has nothing to do with business. <br>  Good luck!  :) </div><p>Source: https://habr.com/ru/post/71704/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../71694/index.html">ddos - how to survive from school?</a></li>
 <li><a href="../71695/index.html">Server 2003, error 0x80092026</a></li>
 <li><a href="../71698/index.html">VMware Announces Fusion 3.0 for Mac Virtualization System</a></li>
+<li><a href="../7170/index.html">Identity Contest Results: Best of the Best 2007</a></li>
 <li><a href="../71700/index.html">Vertical block alignment in CSS</a></li>
 <li><a href="../71701/index.html">Google introduces people to browsers</a></li>
 <li><a href="../71705/index.html">Books on programming from the German survey</a></li>
 <li><a href="../71707/index.html">Memcached How to find the keys on the pattern?</a></li>
 <li><a href="../71709/index.html">Installing KVM virtual machines under ubuntu server</a></li>
+<li><a href="../7171/index.html">666 zahabrenny personal habratopikov. Sotona somewhere near</a></li>
 <li><a href="../71711/index.html">Kindle is available in Russia</a></li>
-<li><a href="../71712/index.html">Murphy's Law</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>OAuth2 client for ASP.NET</h1><div class="post__text post__text-html js-mediator-article"> <i>OAuth2 - authorization protocol, a logical development of OAuth 1.0.</i>  <i>Read more about it <a href="http://habrahabr.ru/company/mailru/blog/115163">here</a> .</i> <br><br>  Wandering around the Internet looking for a normal OAuth client library for .net, I didn’t find anything suitable and decided to write it myself, since there’s nothing complicated about it.  The library is required to perform three actions: issue a link to the authorization code request, after returning from the authorizer, redirect the application to the token request page and then make requests using the received token. <br><a name="habracut"></a><br>  For the first two actions, the abstract class OAuthAuthorizer and the classes inherited from it for specific social networks are responsible.  Currently Facebook and Vkontakte are supported, but there is nothing difficult in adding a class for any other provider - you just need to redefine AuthorizeUri and TokenUri, and, for example, for classmates, add the parameter “response_type = code”. <br><br>  Initialization of the authorizer looks like this: <br> <code>public RedirectResult LogOn() <br> { <br> var fbAuth = new FacebookAuthorizer(); <br> fbAuth.ClientId = "2128506"; <br> fbAuth.Scope = "user_work_history,friends_work_history,publish_stream,read_friendlists"; <br> fbAuth.RedirectUri = "http://backtothefuture.com/Account/Return"; <br> return Redirect(fbAuth.CodeRequestUri); <br> } <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The client is redirected to the address from fbAuth.CodeRequestUri, there he decides whether he needs to use our application or not, after which facebook will redirect him back to our website, carefully placing the authorization code in the GET request parameters. <br><br> <code>public ActionResult Return(string code) <br> { <br> var fbAuth = new FacebookAuthorizer(); <br> fbAuth.ClientId = "2128506"; <br> fbAuth.ClientSecret = "top_secret"; <br> fbAuth.RedirectUri = "http://backtothefuture.com/Account/Return"; <br> var response = auth.GetAuthorizationResponse(code); <br></code> <br><br>  The response variable now contains the response from the facebook authorization page, which, if we did everything correctly and the authorization code is correct, contains a token that gives unlimited power (within the limits of what is permitted) over the user's account.  Now you can proceed to the third, most important part of the authorization - the requests for user data from facebook.  To do this, use the classes inherited from the IOAuthClient interface, for example, FacebookClient <br><br> <code>var client = new FacebookClient(); <br> client.Response = response; <br> Dictionary&lt;string,object&gt; me = OAuthClientUtils.JsonToDictionary(client.Me()); <br> return Json(me); <br> } <br></code> <br><br>  The user will be returned a Json object with its data, which is returned by facebook. <br><br>  The source code of the library is available <a href="https://github.com/antimony/OhAuthToo">on github</a> .  I would be grateful for any suggestions for improvement. </div><p>Source: <a href="https://habr.com/ru/post/127039/">https://habr.com/ru/post/127039/</a></p>
+      The client is redirected to the address from fbAuth.CodeRequestUri, there he decides whether he needs to use our application or not, after which facebook will redirect him back to our website, carefully placing the authorization code in the GET request parameters. <br><br> <code>public ActionResult Return(string code) <br> { <br> var fbAuth = new FacebookAuthorizer(); <br> fbAuth.ClientId = "2128506"; <br> fbAuth.ClientSecret = "top_secret"; <br> fbAuth.RedirectUri = "http://backtothefuture.com/Account/Return"; <br> var response = auth.GetAuthorizationResponse(code); <br></code> <br><br>  The response variable now contains the response from the facebook authorization page, which, if we did everything correctly and the authorization code is correct, contains a token that gives unlimited power (within the limits of what is permitted) over the user's account.  Now you can proceed to the third, most important part of the authorization - the requests for user data from facebook.  To do this, use the classes inherited from the IOAuthClient interface, for example, FacebookClient <br><br> <code>var client = new FacebookClient(); <br> client.Response = response; <br> Dictionary&lt;string,object&gt; me = OAuthClientUtils.JsonToDictionary(client.Me()); <br> return Json(me); <br> } <br></code> <br><br>  The user will be returned a Json object with its data, which is returned by facebook. <br><br>  The source code of the library is available <a href="https://github.com/antimony/OhAuthToo">on github</a> .  I would be grateful for any suggestions for improvement. </div><p>Source: https://habr.com/ru/post/127039/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,11 +73,11 @@
 <li><a href="../127033/index.html">Google will have to pay $ 500 million in fines for placing illegal online pharmacies in AdWords</a></li>
 <li><a href="../127036/index.html">LG has built a portable scanner into a regular mouse.</a></li>
 <li><a href="../127037/index.html">Attention to the buyer vs SEO. Be the best without becoming the first</a></li>
+<li><a href="../12704/index.html">The Japanese agree on a standard OS for cars</a></li>
 <li><a href="../127040/index.html">Haskell Sequels</a></li>
 <li><a href="../127041/index.html">Second Moscow JavaScript Meetup</a></li>
 <li><a href="../127043/index.html">ETC Conference Results: Our Acquisitions, Developer Competition Winners, and Twitter Trend</a></li>
 <li><a href="../127045/index.html">Icon Ambulance - First Iconic Assistance</a></li>
-<li><a href="../127047/index.html">Getting Started with Netbeans and Wicket</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

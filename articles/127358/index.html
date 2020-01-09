@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Authorization through Habr</h1><div class="post__text post__text-html js-mediator-article">  I would like Habr to be able to authorize users on third-party services. <br><br><h2>  What for? </h2><br>  First, habrayusers will receive an additional authorization service, they will not get worse from it, on the contrary - additional freedom of choice. <br><br>  Secondly, some habrayusers design services whose target audience is Habr, for example, the well-known hosting of <a href="http://habreffect.ru/goodbye">habreffect.ru</a> pictures, all kinds of karma and rating monitors, and so on.  It goes without saying that for such services habraautorization arises. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Thirdly, with such an authorization, the developer may introduce restrictions, for example, not to allow users with a karma &lt;-100, which, you see, sometimes makes sense. <br><a name="habracut"></a><br><h2>  How? </h2><br>  The scheme described below is very trivial and familiar to all who have at least once integrated their website with services like Loginza. <br><br>  1) The third-party site sends a request to a special API-URL Habr, passing the login of the habrayuser-owner of the site (public key), url of the redirect and signature created on the basis of the password of the habrayuzer (private key).  Thus, only one who knows the username and password of a habrauser can send such a request. <br><br>  2) The token is returned in response.  It has a short lifespan (5-10 minutes), it can be used once.  Based on the token, a link is created for authorization. <br><br>  3) The visitor follows the link to a special Habr page, where he enters his login and password, after which he is redirected to the address that was specified during the initialization of the token.  In this case, the site in the request string will be passed to the visitor’s habralog and the signature obtained by the method indicated above (signed by the application owner's password).  If the signature is correct, then the request is correct and you can authorize the visitor based on his login.  Here you can also request the karma and rating of the newly created user and fulfill some conditions. <br><br>  Would you like to have authorization through Habr? <br><br>  <b>UPD</b> <br><h2>  Example </h2><br>  Since I am registered on Habré, I automatically have a public key (login) and a private key (password).  Suppose that they are respectively equal to "igrishaev" and "pass123".  Now I want to make an entry to my service through Habr.  The procedure is as follows: <br><br>  1) I am sending a request to <a href="http://habrahabr.ru/api/auth/get_token">habrahabr.ru/api/auth/get_token</a> , passing the parameters: <br>  login = igrishaev, <br>  url = http: //mysite.ru/habra_auth <br>  signature = md5 (login + url + md5 ("pass123")) <br><br>  2) In response, I get a token, for example, “334-dfas9fdas30sdf”.  The link for authorization on Habré will be <a href="http://habrahabr.ru/api/auth%3Ftoken%3D334-dfas9fdas30sdf">habrahabr.ru/api/auth?token=334-dfas9fdas30sdf</a> <br><br>  3) By clicking on this link, the sumkin visitor enters his username and password.  Pay attention that he enters them on the Habr page, therefore I cannot receive them in any way. <br><br>  4) Habr redirects the sumkin user to my site using the link <a href="http://mysite.ru/habra_auth">mysite.ru/habra_auth</a> , in the query string parameters: <br>  login = sumkin <br>  name = Fedor <br>  lastname = Sumkin <br>  signature = md5 (login + md5 ("pass123")) <br><br>  5) I check the validity of the signature (it is signed by my password), and if everything is in order, authenticate the user as sumkin. <br>  Everything. </div><p>Source: <a href="https://habr.com/ru/post/127358/">https://habr.com/ru/post/127358/</a></p>
+      Thirdly, with such an authorization, the developer may introduce restrictions, for example, not to allow users with a karma &lt;-100, which, you see, sometimes makes sense. <br><a name="habracut"></a><br><h2>  How? </h2><br>  The scheme described below is very trivial and familiar to all who have at least once integrated their website with services like Loginza. <br><br>  1) The third-party site sends a request to a special API-URL Habr, passing the login of the habrayuser-owner of the site (public key), url of the redirect and signature created on the basis of the password of the habrayuzer (private key).  Thus, only one who knows the username and password of a habrauser can send such a request. <br><br>  2) The token is returned in response.  It has a short lifespan (5-10 minutes), it can be used once.  Based on the token, a link is created for authorization. <br><br>  3) The visitor follows the link to a special Habr page, where he enters his login and password, after which he is redirected to the address that was specified during the initialization of the token.  In this case, the site in the request string will be passed to the visitor’s habralog and the signature obtained by the method indicated above (signed by the application owner's password).  If the signature is correct, then the request is correct and you can authorize the visitor based on his login.  Here you can also request the karma and rating of the newly created user and fulfill some conditions. <br><br>  Would you like to have authorization through Habr? <br><br>  <b>UPD</b> <br><h2>  Example </h2><br>  Since I am registered on Habré, I automatically have a public key (login) and a private key (password).  Suppose that they are respectively equal to "igrishaev" and "pass123".  Now I want to make an entry to my service through Habr.  The procedure is as follows: <br><br>  1) I am sending a request to <a href="http://habrahabr.ru/api/auth/get_token">habrahabr.ru/api/auth/get_token</a> , passing the parameters: <br>  login = igrishaev, <br>  url = http: //mysite.ru/habra_auth <br>  signature = md5 (login + url + md5 ("pass123")) <br><br>  2) In response, I get a token, for example, “334-dfas9fdas30sdf”.  The link for authorization on Habré will be <a href="http://habrahabr.ru/api/auth%3Ftoken%3D334-dfas9fdas30sdf">habrahabr.ru/api/auth?token=334-dfas9fdas30sdf</a> <br><br>  3) By clicking on this link, the sumkin visitor enters his username and password.  Pay attention that he enters them on the Habr page, therefore I cannot receive them in any way. <br><br>  4) Habr redirects the sumkin user to my site using the link <a href="http://mysite.ru/habra_auth">mysite.ru/habra_auth</a> , in the query string parameters: <br>  login = sumkin <br>  name = Fedor <br>  lastname = Sumkin <br>  signature = md5 (login + md5 ("pass123")) <br><br>  5) I check the validity of the signature (it is signed by my password), and if everything is in order, authenticate the user as sumkin. <br>  Everything. </div><p>Source: https://habr.com/ru/post/127358/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,10 +75,10 @@
 <li><a href="../127354/index.html">PHP CodeIgniter Framework - coming soon for CUBRID users</a></li>
 <li><a href="../127356/index.html">Hello, we are looking for teams!</a></li>
 <li><a href="../127359/index.html">Someone decided to remove all references to himself on the network. What to do?</a></li>
+<li><a href="../12736/index.html">Mozilla fixes vulnerabilities in Firefox, SeaMonkey and Thunderbird</a></li>
 <li><a href="../127360/index.html">Overview of the global video analysis market</a></li>
 <li><a href="../127361/index.html">Apache POI 3.8beta4 has been released.</a></li>
 <li><a href="../127362/index.html">Droider Chart. Issue 67, applied</a></li>
-<li><a href="../127363/index.html">Fantasy? No, Wacom!</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -30,12 +30,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -57,7 +57,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Making a table with endless scrolling without event listener</h1><div class="post__text post__text-html js-mediator-article"><p>  <em>Why is it so lag something?</em> </p><br><p></p><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/2ca/fc6/000/2cafc6000dc827f3468d0e17f975a21b.gif"></div><br><p>  If, when rendering a huge table with some kind of transition animation, you do not do anything extra, then the application will lag and the user will suffer. </p><br><a name="habracut"></a><br><p></p><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/064/f0c/386/064f0c3861f05277a5eb2ae62551dd2a.jpg"></div><br><p> In most cases, when we use event listener to create a table with infinite scrolling, we not only need to perform calculations related to the viewport and row height, but also write a lot of logic in the scrolling handler to prevent too frequent redrawing, as each scrollback will be call <code>setState</code> . </p><br><h4>  The code will be something like this: </h4><br><pre> <code class="javascript hljs">componentDidMount() { <span class="hljs-built_in"><span class="hljs-built_in">window</span></span>.addEventListener(<span class="hljs-string"><span class="hljs-string">'scroll'</span></span>, <span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.handleScroll) } handleScroll(e) { <span class="hljs-comment"><span class="hljs-comment">// use window offset and boundingRect const { ...someAttributes } = window; const { ...someBoundingRect } = this.component // some logic prevent re-render if ( ... ) return; // do some math const newIndex = ... // and how many rows should be rendered this.setState({index: newIndex }) }</span></span></code> </pre><br><p>  <strong>But there is another approach to implementing an infinite table scrolling, without knowing anything about the values ​​of a window or boundingRect.</strong> </p><br><p>  This is <a href="https://developers.google.com/web/updates/2016/04/intersectionobserver"><strong>IntersectionObserver</strong></a> .  Definition from <a href="https://w3c.github.io/IntersectionObserver/">w3c</a> : </p><br><blockquote>  This specification describes an API that can be used to find out the visibility and position of DOM elements ("targets") relative to the elements they contain. </blockquote><br><p>  <em>When using this method, you do not need to know the height of the line, the top of the viewport, or any other value at all to do the math.</em> </p><br><p></p><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/36c/374/6ea/36c3746eac352d6b4ae225300bf2b5e2.gif"></div><br><p>  The concept is to place anchors with indexes at each control point and each time the anchor is triggered, get the index value and redraw the table.  Because of this, there is no need to do any mathematical magic with the height of the DOM and the viewport. </p><br><p></p><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/5da/c4a/a43/5dac4aa43ad75b5dcf8ad62ef754a176.png"></div><br><p>  <em>Anchor trigger for index 1</em> </p><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/91a/a10/7e2/91aa107e27c3176c2b0e7ccb7f4d4d09.png"></div><br><p>  <em>Render more lines</em> </p><br><p>  The code with <code>IntersectionObserver</code> will be something like this. </p><br><br><pre> <code class="javascript hljs">handleSentinel = <span class="hljs-function"><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">c</span></span></span><span class="hljs-function">) =&gt;</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(!<span class="hljs-keyword"><span class="hljs-keyword">this</span></span>.observer) { <span class="hljs-comment"><span class="hljs-comment">//  observer this.observer = new IntersectionObserver( entries =&gt; { entries.forEach(e =&gt; { //   ,    if (e.isIntersecting) { this.setState( { cursor: +e.target.getAttribute('index') } ); } }); }, { root: document.querySelector('App'), rootMargin: '-30px', } } if (!c) return; //    this.observer.observe(c) } render() { const blockNum = 5; return( ... &lt;tbody&gt; {MOCK_DATA.slice(0, (cursor+1) * blockNum).map(d =&gt; &lt;Block&gt; { //       // ,   5  d.id % blockNum === 0 ? &lt;span ref={this.handleSentinel} index={d.id / blockNum} /&gt; : null } &lt;/Block&gt;)} &lt;/tbody&gt; ... ) }</span></span></code> </pre></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -65,10 +65,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/456046/">https://habr.com/ru/post/456046/</a></p>
+    <p>Source: https://habr.com/ru/post/456046/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

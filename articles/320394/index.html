@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Cisco WebEx Web Conferencing Extend Vulnerability Allows Arbitrary Code Execution</h1><div class="post__text post__text-html js-mediator-article"><a href="https://habrahabr.ru/company/pt/blog/320394/"><img src="https://habrastorage.org/files/b6a/cb5/f53/b6acb5f537744f6f93cdd3a19834e751.jpg"></a> <br><br>  The expansion of Cisco WebEx is actively used by about 20 million people - it is part of the popular web conferencing software.  Google researcher <a href="https://bugs.chromium.org/p/project-zero/issues/detail%3Fid%3D1096">Tavis Omandi has</a> published information about a vulnerability discovered by him in this component - the nativeMessaging technology used for his work allows any website to which a user is connected to execute arbitrary code. <a name="habracut"></a><br><br>  WebEx extension works for any URL containing a special pattern (magic pattern) <code>cwcsf-nativemsg-iframe-43c85c0d-d633-af5e-c056-32dc7efc570b.html</code> — it is extracted from the extension manifest.  The pattern can appear in the iframe - so the user can not always control the work of the extension.  At the same time, the use of the nativeMessaging component allows any site that the user has logged on to execute arbitrary code. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The extension uses a complex protocol in which CustomEvent () objects are used to transfer JSON messages between the web page, the extension, and the native application code. <br><br>  During the initialization process, the site first needs to request the opening of the port for communications from the application side: <br><br><pre> <code class="bash hljs">document.dispatchEvent(new CustomEvent(<span class="hljs-string"><span class="hljs-string">"connect"</span></span>, { detail: { token: <span class="hljs-string"><span class="hljs-string">"token"</span></span> }})); // token can be any string</code> </pre> <br>  Messages can then be transmitted to the native code via message events.  Several different types of messages are used - “hello”, “disconnect”, etc.  According to Omandi, one of the most interesting is the “launch_meeting” message: <br><br><pre> <code class="xml hljs"> document.dispatchEvent(new CustomEvent("message", { detail: { message: JSON.stringify(msg), message_type: "launch_meeting", timestamp: (new Date()).toUTCString(), token: "token" } }));</code> </pre> <br>  The researcher went through the process of organizing the conference and recorded messages that were sent during the initialization process.  In them, he found a lot of entities that can be used to execute code.  Having deciphered the message strings, he discovered something like a scripting language with which the functions of the native code were called.  As a result, Omandi managed to create an <a href="https://lock.cmpxchg8b.com/ieXohz9t/">exploit</a> that executes arbitrary code on the user's system (to test it, you need <a href="https://www.webex.com/test-meeting.html">to check the</a> presence on the WebEx computer). </div><p>Source: <a href="https://habr.com/ru/post/320394/">https://habr.com/ru/post/320394/</a></p>
+      The extension uses a complex protocol in which CustomEvent () objects are used to transfer JSON messages between the web page, the extension, and the native application code. <br><br>  During the initialization process, the site first needs to request the opening of the port for communications from the application side: <br><br><pre> <code class="bash hljs">document.dispatchEvent(new CustomEvent(<span class="hljs-string"><span class="hljs-string">"connect"</span></span>, { detail: { token: <span class="hljs-string"><span class="hljs-string">"token"</span></span> }})); // token can be any string</code> </pre> <br>  Messages can then be transmitted to the native code via message events.  Several different types of messages are used - “hello”, “disconnect”, etc.  According to Omandi, one of the most interesting is the “launch_meeting” message: <br><br><pre> <code class="xml hljs"> document.dispatchEvent(new CustomEvent("message", { detail: { message: JSON.stringify(msg), message_type: "launch_meeting", timestamp: (new Date()).toUTCString(), token: "token" } }));</code> </pre> <br>  The researcher went through the process of organizing the conference and recorded messages that were sent during the initialization process.  In them, he found a lot of entities that can be used to execute code.  Having deciphered the message strings, he discovered something like a scripting language with which the functions of the native code were called.  As a result, Omandi managed to create an <a href="https://lock.cmpxchg8b.com/ieXohz9t/">exploit</a> that executes arbitrary code on the user's system (to test it, you need <a href="https://www.webex.com/test-meeting.html">to check the</a> presence on the WebEx computer). </div><p>Source: https://habr.com/ru/post/320394/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,9 +73,9 @@
 <li><a href="../320392/index.html">Best reports of Mobius 2016: Rating and videos</a></li>
 <li><a href="../320396/index.html">Introduction to Akka.NET</a></li>
 <li><a href="../320398/index.html">Defect Detection Code Type Expression Issues (CWE-569)</a></li>
+<li><a href="../3204/index.html">How copywriters differ from graphomania</a></li>
 <li><a href="../320400/index.html">Cloud.Mail.Ru + EncFS without local file storage</a></li>
 <li><a href="../320404/index.html">How not to waste time on continuous integration</a></li>
-<li><a href="../320408/index.html">[BugBounty] Partial authentication bypass vk.com</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

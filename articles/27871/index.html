@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -68,7 +68,7 @@
  Falsch
 </pre><br><a name="habracut"></a><br>  And here is its code: <br><blockquote><ol><li>  <font color="#0000ff">Public</font> <font color="#0000ff">Function</font> q ( <font color="#0000ff">Optional</font> strSQL <font color="#0000ff">As</font> <font color="#0000ff">String</font> = <font color="#A31515">""</font> , <font color="#0000ff">Optional</font> intWidth <font color="#0000ff">As</font> <font color="#0000ff">Integer</font> = 10, <font color="#0000ff">Optional</font> intMax <font color="#0000ff">As</font> <font color="#0000ff">Integer</font> = 100) <font color="#0000ff">As</font> <font color="#0000ff">Boolean</font> </li><li></li><li>  <font color="#0000ff">Dim</font> tmpRCDSet <font color="#0000ff">As</font> Recordset, tmpFeld <font color="#0000ff">As</font> Field, tmpString <font color="#0000ff">As</font> <font color="#0000ff">String</font> , I <font color="#0000ff">As</font> <font color="#0000ff">Integer</font> , intTemplen <font color="#0000ff">As</font> <font color="#0000ff">Integer</font> </li><li>  <font color="#0000ff">Dim</font> intNr <font color="#0000ff">As</font> <font color="#0000ff">Integer</font> </li><li></li><li>  <font color="#0000ff">On</font> <font color="#0000ff">Error</font> <font color="#0000ff">GoTo</font> Err_SQL </li><li>  Debug.Print <font color="#A31515">"Running„</font> &amp; strSQL &amp; <font color="#A31515">"..."</font> </li><li>  <font color="#0000ff">Set</font> tmpRCDSet = CurrentDb.OpenRecordset (strSQL) </li><li>  tmpRCDSet.MoveLast </li><li>  Debug.Print <font color="#A31515">"Query returned„</font> &amp; tmpRCDSet.RecordCount &amp; <font color="#A31515">“entries."</font> </li><li>  tmpRCDSet.MoveFirst </li><li>  tmpString = <font color="#A31515">"| Nr |"</font> </li><li>  <font color="#0000ff">For</font> <font color="#0000ff">Each</font> tmpFeld <font color="#0000ff">In</font> tmpRCDSet.Fields </li><li>  tmpString = tmpString &amp; padleft (tmpFeld.Name, intWidth) &amp; <font color="#A31515">"|"</font> </li><li>  <font color="#0000ff">Next</font> </li><li></li><li>  Debug.Print <font color="#0000ff">String</font> (Len (tmpString) - 1, <font color="#A31515">"-"</font> ) </li><li>  Debug.Print tmpString </li><li>  Debug.Print <font color="#0000ff">String</font> (Len (tmpString) - 1, <font color="#A31515">"-"</font> ) </li><li></li><li>  intNr = 1 </li><li>  <font color="#0000ff">While</font> ( <font color="#0000ff">Not</font> (tmpRCDSet.EOF)) <font color="#0000ff">And</font> (intNr &lt;= intMax) </li><li>  tmpString = <font color="#A31515">"|"</font> &amp; padleft (Str (intNr), 4) &amp; <font color="#A31515">"|"</font> </li><li>  <font color="#0000ff">For</font> <font color="#0000ff">Each</font> tmpFeld <font color="#0000ff">In</font> tmpRCDSet.Fields </li><li>  tmpString = tmpString &amp; padleft (Nz (tmpFeld.Value, <font color="#A31515">""</font> ), intWidth) &amp; <font color="#A31515">"|"</font> </li><li>  <font color="#0000ff">Next</font> </li><li>  Debug.Print tmpString </li><li>  intNr = intNr + 1 </li><li>  tmpRCDSet.MoveNext </li><li>  <font color="#0000ff">Wend</font> </li><li>  Debug.Print <font color="#0000ff">String</font> (Len (tmpString) - 1, <font color="#A31515">"-"</font> ) </li><li></li><li>  <font color="#0000ff">Exit</font> <font color="#0000ff">function</font> </li><li></li><li></li><li>  Err_SQL: </li><li>  Debug.Print Err.Number &amp; <font color="#A31515">""</font> &amp; Err.Description </li><li>  Debug.Print <font color="#A31515">"Bad SQL string"</font> </li><li></li><li></li><li>  <font color="#0000ff">End</font> <font color="#0000ff">function</font> </li><li></li><li>  <font color="#0000ff">Function</font> padleft (strLineIn <font color="#0000ff">As</font> <font color="#0000ff">String</font> , intWidth <font color="#0000ff">As</font> <font color="#0000ff">Integer</font> ) <font color="#0000ff">As</font> <font color="#0000ff">String</font> </li><li></li><li>  <font color="#0000ff">If</font> Len (strLineIn) = intWidth <font color="#0000ff">Then</font> </li><li>  padleft = strLineIn </li><li>  <font color="#0000ff">ElseIf</font> Len (strLineIn)&gt; intWidth <font color="#0000ff">Then</font> </li><li>  padleft = Mid (strLineIn, 1, intWidth) </li><li>  <font color="#0000ff">Else</font> </li><li>  padleft = <font color="#0000ff">String</font> (intWidth - Len (strLineIn), <font color="#A31515">""</font> ) &amp; strLineIn </li><li>  <font color="#0000ff">End</font> <font color="#0000ff">if</font> </li><li></li><li>  <font color="#0000ff">End</font> <font color="#0000ff">function</font> </li></ol>  <font color="gray">* This source code was highlighted with <a href="http://poison.qsh.ru/"><font color="gray">Source Code Highlighter</font></a> .</font> </blockquote></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -76,14 +76,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/27871/">https://habr.com/ru/post/27871/</a></p>
+    <p>Source: https://habr.com/ru/post/27871/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../278699/index.html">QA: Conference. We tell about the reports</a></li>
+<li><a href="../2787/index.html">Michael Dell - returned to Dell</a></li>
 <li><a href="../27870/index.html">The love of little cars ...</a></li>
 <li><a href="../278701/index.html">Foreach - from the book PowerShell in depth</a></li>
 <li><a href="../278705/index.html">AMD fixes microprocessor microcode vulnerability</a></li>

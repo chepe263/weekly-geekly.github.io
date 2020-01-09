@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Configuring Authentication in OpenVPN via Active Directory on CentOS 7</h1><div class="post__text post__text-html js-mediator-article"> Imagine that we already have a configured OpenVPN, and we decided to do two-factor authentication, which includes checking the login, password and user membership in the AD group. <br><br>  The traditional openvpn-auth-ldap.so does not exist on CentOS 7, so consider the option using PAM (openvpn-plugin-auth-pam.so). <br><a name="habracut"></a><br>  1. Add a line to the client's config so that the client requests a login and password when connecting: <br><br> <code>auth-user-pass <br></code> <br>  2. Add a line to the server config, which includes authentication in OpenVPN via PAM: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>plugin /usr/lib64/openvpn/plugins/openvpn-plugin-auth-pam.so openvpn <br></code> <br>  3. Add the OpenVPN policy to PAM: <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">'account required pam_ldap.so auth required pam_ldap.so'</span></span> &gt;&gt; /etc/pam.d/openvpn</code> </pre><br>  3. Install and enable nslcd - this module will receive requests from PAM and address them to AD. <br><br><pre> <code class="bash hljs">yum install nss-pam-ldapd -y systemctl <span class="hljs-built_in"><span class="hljs-built_in">enable</span></span> nslcd</code> </pre><br>  5. Now edit the parameters in /etc/nslcd.conf to match the example: <br><br> <code>uri ldap://dc1.contoso.com <br> base dc=contoso,dc=com <br> binddn CN=ldapquery,OU=ServiceAccounts,OU=DomainUsers,DC=contoso,DC=com <br> bindpw P@ssw0rd <br> <br> pagesize 1000 <br> referrals off <br> <br> filter passwd (&amp;(objectClass=user)(!(UserAccountControl:1.2.840.113556.1.4.803:=2))(!(objectClass=computer))(memberOf=CN=VPNUsers,OU=Groups,DC=contoso,DC=com)) <br> <br> map passwd uid sAMAccountName <br></code> <br>  binddn - the path to the account that will connect to AD.  The filter checks whether the user is disconnected and is in the specified group.  In general, <a href="https://technet.microsoft.com/en-us/sysinternals/adexplorer.aspx">AD Explorer</a> will be very helpful at this stage of configuration. <br><br>  6. Run nslcd in console debug mode <br><br><pre> <code class="bash hljs">nslcd -d</code> </pre><br>  and trying to connect via OpenVPN.  If errors occur, they will be immediately visible.  If everything is in order, run the nslcd daemon: <br><br><pre> <code class="bash hljs">systemctl start nslcd</code> </pre><br>  7. Done! </div><p>Source: <a href="https://habr.com/ru/post/276653/">https://habr.com/ru/post/276653/</a></p>
+     <code>plugin /usr/lib64/openvpn/plugins/openvpn-plugin-auth-pam.so openvpn <br></code> <br>  3. Add the OpenVPN policy to PAM: <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">'account required pam_ldap.so auth required pam_ldap.so'</span></span> &gt;&gt; /etc/pam.d/openvpn</code> </pre><br>  3. Install and enable nslcd - this module will receive requests from PAM and address them to AD. <br><br><pre> <code class="bash hljs">yum install nss-pam-ldapd -y systemctl <span class="hljs-built_in"><span class="hljs-built_in">enable</span></span> nslcd</code> </pre><br>  5. Now edit the parameters in /etc/nslcd.conf to match the example: <br><br> <code>uri ldap://dc1.contoso.com <br> base dc=contoso,dc=com <br> binddn CN=ldapquery,OU=ServiceAccounts,OU=DomainUsers,DC=contoso,DC=com <br> bindpw P@ssw0rd <br> <br> pagesize 1000 <br> referrals off <br> <br> filter passwd (&amp;(objectClass=user)(!(UserAccountControl:1.2.840.113556.1.4.803:=2))(!(objectClass=computer))(memberOf=CN=VPNUsers,OU=Groups,DC=contoso,DC=com)) <br> <br> map passwd uid sAMAccountName <br></code> <br>  binddn - the path to the account that will connect to AD.  The filter checks whether the user is disconnected and is in the specified group.  In general, <a href="https://technet.microsoft.com/en-us/sysinternals/adexplorer.aspx">AD Explorer</a> will be very helpful at this stage of configuration. <br><br>  6. Run nslcd in console debug mode <br><br><pre> <code class="bash hljs">nslcd -d</code> </pre><br>  and trying to connect via OpenVPN.  If errors occur, they will be immediately visible.  If everything is in order, run the nslcd daemon: <br><br><pre> <code class="bash hljs">systemctl start nslcd</code> </pre><br>  7. Done! </div><p>Source: https://habr.com/ru/post/276653/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../276641/index.html">nopCommerce CMS on ASP.NET MVC: review of the functionality of the new version</a></li>
 <li><a href="../276643/index.html">Controller for T-SDN</a></li>
 <li><a href="../276645/index.html">Improving education in universities on information security / IT</a></li>
 <li><a href="../276649/index.html">Angular 2 versus Aurelia side by side</a></li>
+<li><a href="../27665/index.html">Message to the Martians ...</a></li>
 <li><a href="../276651/index.html">Google has thrown out an ad blocker from Google Play</a></li>
 <li><a href="../276655/index.html">Extreme Networks Wi-Fi Solutions for Wireless Network Access</a></li>
 <li><a href="../276657/index.html">Undefined behavior is closer than you think.</a></li>
 <li><a href="../276659/index.html">Live webcast of the Make Web conference, Not War from Montreal - February 5, Friday, at 17:00 (Moscow)</a></li>
+<li><a href="../27666/index.html">Correct textarea in XSLT with XML output method</a></li>
 <li><a href="../276661/index.html">Recommendations on stream</a></li>
-<li><a href="../276663/index.html">Load testing from the cloud</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

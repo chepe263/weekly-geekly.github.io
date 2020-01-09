@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A note on ansible. Server reboot</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/37e/550/b72/37e550b7241d03c282fd6b5f5cb0ab07.png" alt="image"><br><br>  Faced with the task: a completely empty server, set up completely via ansible, “so that even a monkey would“ manage ”, - a literal quote from a client. <br>  Initial data: there is a server, with OS SentOS 7, external IP and password root. <br>  Task: install all updates on it, software on the list and never connect to it with the console.  It makes no sense to describe the whole process, but there are two interesting points about which I will tell.  Namely, how to use ansible to configure ansible and how to restart the server, and then continue to run the palybook. <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      From the source data it is clear that the server has only root.  Most of the notes on the ansible start with the fact that you need to generate a key, then add it to the trusted on the slave machines, set permissions in sudoers, and so on.  And if we do not want to do it every time?  You can make a template where it’s already done.  And if this is a physical server and the OS puts a hoster on it?  And here we come to the aid of the magic key: --ask-pass.  This key allows using authorization not by key, but by password.  Well, then the matter of technology - we prescribe through the task all that we need. <br><br>  So, the server is prepared to work with ansible, now we need to put updates on it, and there may be a kernel among them.  And then we need a reboot.  If you just restart it, then ansible, will give an error.  5 minutes of communication gave me a working version.  I was delighted, I brewed myself a cup of aromatic coffee and got ready to enjoy the way everything is set up.  Not here it was!  It turned out that in CentOS 7 reboot is performed using the as soon as posible technology and, as a result, the ansible does not have time to process the result and crashes with an error.  Quickly enough, an obvious solution was found to do shutdown -r 1, which makes a one-minute delay.  Yes, it works and is fine if you need to deploy 1-2 hosts, but if there are 100, then the delay will be 100 minutes + reboot time.  And this ... a lot of time. <br><br>  By trial and error, the following option was found: <br><blockquote>  name: Reboot <br>  shell: nohup bash -c "sleep 2s &amp;&amp; reboot" &amp; <br>  when: kernel_update.changed <br>  async: 0 <br>  poll: 0 <br>  ignore_errors: true <br>  register: reboot <br><br><br><br>  - name: wait for the server to restart <br>  local_action: wait_for host = {{inventory_hostname}} <br>  port = 22 <br>  delay = 10 <br>  timeout = 300 <br>  state = started <br>  sudo: false <br>  when: reboot.changed <br></blockquote><br><br>  The result of the execution is to restart the server and wait until it becomes available after it. <br>  Thanks for attention! <br><br><h6>  Author: <a href="http://habrahabr.ru/users/magvai69/" class="user_link">Magvai69</a> System Administrator </h6></div><p>Source: <a href="https://habr.com/ru/post/265137/">https://habr.com/ru/post/265137/</a></p>
+      From the source data it is clear that the server has only root.  Most of the notes on the ansible start with the fact that you need to generate a key, then add it to the trusted on the slave machines, set permissions in sudoers, and so on.  And if we do not want to do it every time?  You can make a template where it’s already done.  And if this is a physical server and the OS puts a hoster on it?  And here we come to the aid of the magic key: --ask-pass.  This key allows using authorization not by key, but by password.  Well, then the matter of technology - we prescribe through the task all that we need. <br><br>  So, the server is prepared to work with ansible, now we need to put updates on it, and there may be a kernel among them.  And then we need a reboot.  If you just restart it, then ansible, will give an error.  5 minutes of communication gave me a working version.  I was delighted, I brewed myself a cup of aromatic coffee and got ready to enjoy the way everything is set up.  Not here it was!  It turned out that in CentOS 7 reboot is performed using the as soon as posible technology and, as a result, the ansible does not have time to process the result and crashes with an error.  Quickly enough, an obvious solution was found to do shutdown -r 1, which makes a one-minute delay.  Yes, it works and is fine if you need to deploy 1-2 hosts, but if there are 100, then the delay will be 100 minutes + reboot time.  And this ... a lot of time. <br><br>  By trial and error, the following option was found: <br><blockquote>  name: Reboot <br>  shell: nohup bash -c "sleep 2s &amp;&amp; reboot" &amp; <br>  when: kernel_update.changed <br>  async: 0 <br>  poll: 0 <br>  ignore_errors: true <br>  register: reboot <br><br><br><br>  - name: wait for the server to restart <br>  local_action: wait_for host = {{inventory_hostname}} <br>  port = 22 <br>  delay = 10 <br>  timeout = 300 <br>  state = started <br>  sudo: false <br>  when: reboot.changed <br></blockquote><br><br>  The result of the execution is to restart the server and wait until it becomes available after it. <br>  Thanks for attention! <br><br><h6>  Author: <a href="http://habrahabr.ru/users/magvai69/" class="user_link">Magvai69</a> System Administrator </h6></div><p>Source: https://habr.com/ru/post/265137/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../265119/index.html">Introduction to the new CoordinatorLayout</a></li>
 <li><a href="../265129/index.html">WiFi-combine for hotels and workhorse for offices. Overview of access points Ruckus R500 / H500</a></li>
+<li><a href="../26513/index.html">Google.ru PR.</a></li>
 <li><a href="../265131/index.html">Igrodel on subtitles: theory and practice</a></li>
 <li><a href="../265133/index.html">Download video "without a single break"</a></li>
 <li><a href="../265135/index.html">Web panels, extension buttons and other new items in Vivaldi 1.0.249.12 assembly</a></li>
 <li><a href="../265139/index.html">How do we conduct iron test drives with a cast iron bridge</a></li>
+<li><a href="../26514/index.html">Bath / bath dating service</a></li>
 <li><a href="../265141/index.html">Fall semester 2015 courses at the Computer Science Club</a></li>
 <li><a href="../265143/index.html">Testing flash storage. Huawei Dorado 2100 G2</a></li>
 <li><a href="../265149/index.html">Underground carders market. Translation of the book "KingPIN". Chapter 8. “Welcome to America”</a></li>
-<li><a href="../265153/index.html">Preview of the first updates of the Microsoft Edge web platform</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

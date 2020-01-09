@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Text online translation with a large load</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/7a6/24e/fd0/7a624efd0be36167c1609a8b71557a6d.png"><br><br>  A large role in the life of our <a href="http://www.appleinsider.ru/">site is</a> played by the online presentations of Apple presentations.  In addition to the text-graphic broadcast, which make many Russian-language resources, we offer our readers to lead the discussion in the chat, as well as conduct a live audio broadcast with comments on everything that happens.  As in previous times, <a href="https://twitter.com/">Kira Tverskaya</a> (Echo of Moscow) and <a href="https://twitter.com/">Eldar Murtazin</a> helped our regular hosts.  Such a lively format allows us to hear the reaction of the presenters in real time, which you will agree, is quite interesting. <br><br>  Last time, at the presentation of the iPhone 4S, we blundered a little and could not adequately prepare for the influx of visitors (by the way, there were about 3,500 customers).  The main mistake was that the translation page was the output of the Wordpress plug-in, so each time, not only the PHP interpreter itself was twitching, but the entire Wordpress system was twitching.  After the broadcast, it became obvious that such a shameful scheme must be disposed of. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Rumor has it that in March, Apple will present a new version of its iPad 3 tablet. We were lucky, and on January 19 we were able to run in a new broadcast scheme at a much lower load than it would be in March.  For obvious reasons, there were far fewer people interested in Apple’s educational presentation. <br><br>  We had a <a href="http://live.appleinsider.ru/">live broadcast</a> on all fronts - a text broadcast with photos of the event, an audio stream and a chat in which people could discuss what was happening with each other.  Next, I will talk about the technology with which the <i>text translation</i> was organized. <br><a name="habracut"></a><br>  Here is a general distribution scheme for text content. <br><br><img src="https://habrastorage.org/storage2/2dc/743/f6c/2dc743f6c178250a23f00ff5cbc93271.png"><br><br>  The key role in this scheme is played by distribution servers capable of supporting several thousand long-lived HTTP connections and almost instantly distributing new data to connected clients.  Their work is based on the Dklab Realplexor Comet server, about which the developer <a href="http://habrahabr.ru/users/dmitrykoterov/" class="user_link">DmitryKoterov</a> himself <a href="http://habrahabr.ru/blogs/hi/79189/">wrote in</a> <a href="http://habrahabr.ru/users/dmitrykoterov/" class="user_link">Habré</a> . <br><br>  An admin is a simple web interface written in PHP.  Allows you to conduct several broadcasts, and add, delete and edit individual messages of the broadcast tape in them.  The principle of the admin is as follows: <br><ol><li>  admin enters a new message for broadcast stream </li><li>  the message is added to the admin database </li><li>  The first 10 messages are pulled out of the database and the index.htm file is generated. </li><li>  all messages are pulled out of the database and the full.htm file is generated </li><li>  The resulting <a href="http://live.appleinsider.ru/index.htm">index.htm</a> and <a href="http://live.appleinsider.ru/full.htm">full.htm files</a> are uploaded to CDN <a href="http://lib.clodo.ru/cloud-storage/cloudstorage/">CloudStorage</a> using the OpenStack API </li><li>  A new message is sent for distribution to all Comet servers, using approximately such POST requests: <br><blockquote><pre> POST / HTTP / 1.1
@@ -72,20 +72,20 @@
  Apple presentation time: 19: 00-20: 00
  Audio stream listened: a maximum of 750 people
  Text translation read: a maximum of 420 people
- In the chat sat: a maximum of 140 people </pre><br><br><h3>  Text Distributors </h3><br>  Traffic static storage CloudStorage, <a href="http://live.appleinsider.ru/index.htm">live.appleinsider.ru/index.htm</a> <br><img src="https://habrastorage.org/storage2/3e8/498/84f/3e849884f31ca3d9a010362ebfb4c17c.png"><br><br>  Traffic and CPU usage of a dynamic distributor, comet * .live.appleinsider.ru <br><img src="https://habrastorage.org/storage2/210/01f/60a/21001f60a47062e89f644c8586c93d21.png"><br><img src="https://habrastorage.org/storage2/6ae/045/610/6ae04561048cc01df5638d3f03b58e77.png"><br><br><h3>  Radio </h3><br>  Audio stream was heard according to the scheme described <a href="http://habrahabr.ru/blogs/hpodcasts/134246/">in my previous post</a> .  Record can be found <a href="http://www.appleinsider.ru/ipodcast/translyaciya-meropriyatiya-apple-v-nyu-jorke-vmeste-s-appleinsider-ru-i-eldarom-murtazinym.html">here</a> . <br><img src="https://habrastorage.org/storage2/fce/bd6/568/fcebd6568b481e07e3695fb8f9916734.png"><br><img src="https://habrastorage.org/storage2/d85/674/75d/d8567475d2cd36264202279ff379aed5.png"><br><img src="https://habrastorage.org/storage2/dab/6e1/17a/dab6e117a3d74fc96e7ceeb7da4832c0.png"><br><br><h3>  Chat </h3><br>  <a href="http://podcast.appleinsider.ru/">Chat</a> is a highly docile web interface of <a href="http://candy-chat.github.com/candy/">Candy</a> for a Jabber server conference (we have ejabberd). <br><img src="https://habrastorage.org/storage2/210/1c4/f62/2101c4f62b312719f9842b2e6f917bfd.png"><br><img src="https://habrastorage.org/storage2/63f/54c/0c7/63f54c0c7afa0e3f2f8c7852e0eaec55.png"><br><img src="https://habrastorage.org/storage2/139/dec/d3b/139decd3b497d9ccc589acdfbb3e478a.png"><br><br>  As usual, I look forward to criticism in any form. </div><p>Source: <a href="https://habr.com/ru/post/136627/">https://habr.com/ru/post/136627/</a></p>
+ In the chat sat: a maximum of 140 people </pre><br><br><h3>  Text Distributors </h3><br>  Traffic static storage CloudStorage, <a href="http://live.appleinsider.ru/index.htm">live.appleinsider.ru/index.htm</a> <br><img src="https://habrastorage.org/storage2/3e8/498/84f/3e849884f31ca3d9a010362ebfb4c17c.png"><br><br>  Traffic and CPU usage of a dynamic distributor, comet * .live.appleinsider.ru <br><img src="https://habrastorage.org/storage2/210/01f/60a/21001f60a47062e89f644c8586c93d21.png"><br><img src="https://habrastorage.org/storage2/6ae/045/610/6ae04561048cc01df5638d3f03b58e77.png"><br><br><h3>  Radio </h3><br>  Audio stream was heard according to the scheme described <a href="http://habrahabr.ru/blogs/hpodcasts/134246/">in my previous post</a> .  Record can be found <a href="http://www.appleinsider.ru/ipodcast/translyaciya-meropriyatiya-apple-v-nyu-jorke-vmeste-s-appleinsider-ru-i-eldarom-murtazinym.html">here</a> . <br><img src="https://habrastorage.org/storage2/fce/bd6/568/fcebd6568b481e07e3695fb8f9916734.png"><br><img src="https://habrastorage.org/storage2/d85/674/75d/d8567475d2cd36264202279ff379aed5.png"><br><img src="https://habrastorage.org/storage2/dab/6e1/17a/dab6e117a3d74fc96e7ceeb7da4832c0.png"><br><br><h3>  Chat </h3><br>  <a href="http://podcast.appleinsider.ru/">Chat</a> is a highly docile web interface of <a href="http://candy-chat.github.com/candy/">Candy</a> for a Jabber server conference (we have ejabberd). <br><img src="https://habrastorage.org/storage2/210/1c4/f62/2101c4f62b312719f9842b2e6f917bfd.png"><br><img src="https://habrastorage.org/storage2/63f/54c/0c7/63f54c0c7afa0e3f2f8c7852e0eaec55.png"><br><img src="https://habrastorage.org/storage2/139/dec/d3b/139decd3b497d9ccc589acdfbb3e478a.png"><br><br>  As usual, I look forward to criticism in any form. </div><p>Source: https://habr.com/ru/post/136627/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../136617/index.html">MegaUpload.com is closed by the FBI, the founders and several other employees are arrested</a></li>
 <li><a href="../136619/index.html">A look at the final version of the Playstation Vita with CES</a></li>
+<li><a href="../13662/index.html">German universities are switching to Linux</a></li>
 <li><a href="../136621/index.html">Anonymous began to avenge Megaupload</a></li>
 <li><a href="../136625/index.html">Maximite - Nostalgia with a soldering iron on the times of Radio-86RK and Spectrum</a></li>
 <li><a href="../136626/index.html">Collect donations with donateMe (Part II)</a></li>
 <li><a href="../136628/index.html">HTML5 Command and Conquer</a></li>
 <li><a href="../136629/index.html">History: "Snake" - the most popular mobile game on the border of millennia</a></li>
+<li><a href="../13663/index.html">Sleek Audio SA6 - revolutionary, fully customizable headphones</a></li>
 <li><a href="../136632/index.html">XORG 1.11 Critical Vulnerability Found</a></li>
 <li><a href="../136633/index.html">Google+ already has 90 million users</a></li>
-<li><a href="../136634/index.html">Experience acquiring and using the iTwin gadget</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

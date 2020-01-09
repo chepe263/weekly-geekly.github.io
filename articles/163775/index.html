@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Frame-by-frame animations and shaders in iOS</h1><div class="post__text post__text-html js-mediator-article">  When developing 2D games, you often come across frame-by-frame animations, and the higher their quality, the more memory they consume.  We encountered such a problem when rendering a character's hair animation - the artists draw half a hundred frames of remarkable graphics with a bunch of fine details and this very quickly takes up all the available memory.  Collected, measured, it turned out 4 tekstruy on 16 megabytes each.  Graphic detail is worth it, but a bit too much for one animation :) <br><br>  It is necessary to pack it all ... They thought up and came to the aid of an old idea with a partial update of the picture - it is unlikely that the whole area will change during the animation.  So you need to break the picture into nine parts, take eight from the base and replace the central one with the necessary modification.  Like that: <br><br><img src="https://habrastorage.org/storage2/cde/916/ce7/cde916ce7796599d349f0f56078ff812.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a><br><br>  We must now somehow implement it.  Drawing the desired replacement on top disappeared immediately - the animation with transparencies, and translucent elements can not be layered.  The second obvious implementation is with drawing using nine rectangles of roughness at the edges, especially if there is a scaling of the scene. <br><br>  As a result, it turned out to be realized with the help of shaders - we draw one rectangle with two textures and with the help of a pixel shader we decide where to show.  To implement such a shader, we need two samplers, two rectangular areas on the corresponding textures and four values ​​- minX, mixY, maxX, maxY, which will be used for switching textures. <br><br>  I want to note that the coordinates of the rectangles on the textures are calculated under the full picture and will capture adjacent frames for the middle, this is not scary, the shader will cut the extra pixels. <br><br>  Our four parameters can be transferred as one vector of four components according to the following scheme: <br><br><img src="https://habrastorage.org/storage2/0c7/f20/b64/0c7f20b64c578beb0b4dd7a6631e063d.png"><br><br>  Next, following this scheme, we write a pixel shader to switch: <br><br><pre><code class="hljs pgsql"><span class="hljs-type"><span class="hljs-type">precision</span></span> mediump <span class="hljs-type"><span class="hljs-type">float</span></span>; uniform sampler2D u_texture; // base texture uniform sampler2D u_overlay; // overlay texture uniform vec4 u_overlayRect; // <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> texture coordinates (minX, minY, maxX, maxY) <span class="hljs-type"><span class="hljs-type">varying</span></span> vec4 v_fragmentColor; <span class="hljs-type"><span class="hljs-type">varying</span></span> vec2 v_texCoord; // base texture coordinates <span class="hljs-type"><span class="hljs-type">varying</span></span> vec2 v_overlayTexCoord; // extrapolated overlay texture coordinates <span class="hljs-type"><span class="hljs-type">void</span></span> main() { <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (v_overlayTexCoord.x &gt; u_overlayRect.x &amp;&amp; v_overlayTexCoord.y &gt; u_overlayRect.y &amp;&amp; v_overlayTexCoord.x &lt; u_overlayRect.z &amp;&amp; v_overlayTexCoord.y &lt; u_overlayRect.w) { gl_FragColor = v_fragmentColor * texture2D(u_overlay, v_overlayTexCoord); } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> { gl_FragColor = v_fragmentColor * texture2D(u_texture, v_texCoord); } }</code> </pre> <br><br>  After that, we reduce all the frames into one texture (instead of four!) <br><br><img src="http://habrastorage.org/storage2/064/952/c41/064952c41ac92fecfeb75ecc7a8a2ce0.png"><br><br>  And enjoy the animation in response to the movement of a finger across the screen and without low memory warning! <br><br><img src="http://habrastorage.org/storage2/d82/01f/993/d8201f99355f796bb878c0e6e3ab9c5f.gif"></div><p>Source: <a href="https://habr.com/ru/post/163775/">https://habr.com/ru/post/163775/</a></p>
+    <a name="habracut"></a><br><br>  We must now somehow implement it.  Drawing the desired replacement on top disappeared immediately - the animation with transparencies, and translucent elements can not be layered.  The second obvious implementation is with drawing using nine rectangles of roughness at the edges, especially if there is a scaling of the scene. <br><br>  As a result, it turned out to be realized with the help of shaders - we draw one rectangle with two textures and with the help of a pixel shader we decide where to show.  To implement such a shader, we need two samplers, two rectangular areas on the corresponding textures and four values ​​- minX, mixY, maxX, maxY, which will be used for switching textures. <br><br>  I want to note that the coordinates of the rectangles on the textures are calculated under the full picture and will capture adjacent frames for the middle, this is not scary, the shader will cut the extra pixels. <br><br>  Our four parameters can be transferred as one vector of four components according to the following scheme: <br><br><img src="https://habrastorage.org/storage2/0c7/f20/b64/0c7f20b64c578beb0b4dd7a6631e063d.png"><br><br>  Next, following this scheme, we write a pixel shader to switch: <br><br><pre><code class="hljs pgsql"><span class="hljs-type"><span class="hljs-type">precision</span></span> mediump <span class="hljs-type"><span class="hljs-type">float</span></span>; uniform sampler2D u_texture; // base texture uniform sampler2D u_overlay; // overlay texture uniform vec4 u_overlayRect; // <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> texture coordinates (minX, minY, maxX, maxY) <span class="hljs-type"><span class="hljs-type">varying</span></span> vec4 v_fragmentColor; <span class="hljs-type"><span class="hljs-type">varying</span></span> vec2 v_texCoord; // base texture coordinates <span class="hljs-type"><span class="hljs-type">varying</span></span> vec2 v_overlayTexCoord; // extrapolated overlay texture coordinates <span class="hljs-type"><span class="hljs-type">void</span></span> main() { <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (v_overlayTexCoord.x &gt; u_overlayRect.x &amp;&amp; v_overlayTexCoord.y &gt; u_overlayRect.y &amp;&amp; v_overlayTexCoord.x &lt; u_overlayRect.z &amp;&amp; v_overlayTexCoord.y &lt; u_overlayRect.w) { gl_FragColor = v_fragmentColor * texture2D(u_overlay, v_overlayTexCoord); } <span class="hljs-keyword"><span class="hljs-keyword">else</span></span> { gl_FragColor = v_fragmentColor * texture2D(u_texture, v_texCoord); } }</code> </pre> <br><br>  After that, we reduce all the frames into one texture (instead of four!) <br><br><img src="http://habrastorage.org/storage2/064/952/c41/064952c41ac92fecfeb75ecc7a8a2ce0.png"><br><br>  And enjoy the animation in response to the movement of a finger across the screen and without low memory warning! <br><br><img src="http://habrastorage.org/storage2/d82/01f/993/d8201f99355f796bb878c0e6e3ab9c5f.gif"></div><p>Source: https://habr.com/ru/post/163775/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../163761/index.html">Xabber will open under GPLv3 in January</a></li>
 <li><a href="../163767/index.html">Simple in-circuit programmer ARM microcontroller LPC series do it yourself. Circuitry. Part one</a></li>
 <li><a href="../163769/index.html">Something about page weight</a></li>
+<li><a href="../16377/index.html">And what is your bounce rate?</a></li>
 <li><a href="../163771/index.html">Using Webex on Linux</a></li>
 <li><a href="../163773/index.html">The thorny path in the Windows Store</a></li>
 <li><a href="../163777/index.html">EBS Performance Tests</a></li>
+<li><a href="../16378/index.html">Toshnostartap</a></li>
+<li><a href="../163787/index.html">Webshell.io - command line for the Internet</a></li>
+<li><a href="../16379/index.html">Facebook offers $ 85 million for Chinese social network</a></li>
 <li><a href="../163791/index.html">Game Patcher Development</a></li>
-<li><a href="../163793/index.html">Ultrabook Review MicroXperts MXP U400</a></li>
-<li><a href="../163795/index.html">Writing your Xcode plugin</a></li>
-<li><a href="../163797/index.html">Manifesto of free information space</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

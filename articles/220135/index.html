@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Plan-fact, dynamics and profits in one diagram with R</h1><div class="post__text post__text-html js-mediator-article">  Every time when the financial results of the past year are summed up and the corresponding presentation is being prepared, people are puzzled how to fit the main figures on a single diagram.  Whatever the field of activity of the organization, summing up, as a rule, begins with an analysis of the main financial indicators, separately for each of the business areas: <br><ul><li>  turnover in the year ended (actual figures); </li><li>  previously established plans for the past year (for review of implementation); </li><li>  turnover a year earlier (to understand the dynamics); </li><li>  profitability. </li></ul>  A standard bar graph, which can be quickly built in Excel, gives, to put it mildly, not quite an obvious result.  For example, if a business has four directions, then 16 adjacent columns will appear on the diagram, and someone may not like to confuse the best people and those who are lagging behind. <br>  Professionals familiar with R can use ggplot2 to programmatically build the desired diagram, such as here.  For example, the figures for 2012 are taken from the annual report of Unilever.  The targets are not public data, so I had to invent them from the head, setting, for certainty, at the level of "last year + 5%." <br>  The original figures are in Excel and look like this (data in millions of euros): <br><img src="https://habrastorage.org/getpro/habr/post_images/e32/144/cc7/e32144cc7c8c1b8f1c72a57a5b0eaa75.png" alt="image"><br>  The diagram constructed in RStudio looks as follows: <br><img src="https://habrastorage.org/getpro/habr/post_images/97c/474/ff3/97c474ff3aa86a5e45676786b2ea469e.png" alt="image"><br>  Check the diagram for intuitiveness, and without looking at the numbers, suppose which indicator corresponds to which element of the diagram, and the explanations will be further. <br><a name="habracut"></a><br>  The idea is that the main parameter — Turnover — is shown in the form of color-filled columns, last year’s figure (LastYear) —as a contour that is visually behind, planned figures (Forecast) in the form of slats, and profitability (more precisely, the opposite value - costs) - a small mark. <br>  To read data from Excel, use the XLConnect package.  From the Excel file, from the specified sheet, the named table is loaded into R. <br>  The colors for the chart are taken from the Unilever corporate color table. <br>  So code <br><pre><code class="python hljs">require(XLConnect) require(data.table) require(ggplot2) require(scales) indata &lt;- readTable(loadWorkbook(<span class="hljs-string"><span class="hljs-string">"Unilever.xlsx"</span></span>), sheet = <span class="hljs-string"><span class="hljs-string">"FinResults"</span></span>, table = <span class="hljs-string"><span class="hljs-string">"Unilever2012"</span></span>, useCachedValues = TRUE) finreport &lt;- data.table(indata)[, list( Segment = reorder(Segment, -Turnover), Cost = (Turnover - Profit), Forecast, Turnover, LastYear )] turnover_format = function(...){ function(x) paste(<span class="hljs-string"><span class="hljs-string">"€B "</span></span>, format(x/<span class="hljs-number"><span class="hljs-number">1000</span></span>, ..., nsmall = <span class="hljs-number"><span class="hljs-number">1L</span></span>, scientific = FALSE, trim = TRUE)) } chart &lt;- ggplot(finreport, aes(x = Segment)) + geom_bar(aes(y = LastYear), stat = <span class="hljs-string"><span class="hljs-string">"identity"</span></span>, color = <span class="hljs-string"><span class="hljs-string">"#004976"</span></span>, fill = <span class="hljs-string"><span class="hljs-string">"white"</span></span>, width = <span class="hljs-number"><span class="hljs-number">0.9</span></span>) + geom_bar(aes(y = Turnover), stat = <span class="hljs-string"><span class="hljs-string">"identity"</span></span>, color = <span class="hljs-string"><span class="hljs-string">"white"</span></span>, fill = <span class="hljs-string"><span class="hljs-string">"#0085CA"</span></span>, width = <span class="hljs-number"><span class="hljs-number">0.6</span></span>) + geom_crossbar(aes(ymin = Forecast, ymax = Forecast, y = Forecast), color = <span class="hljs-string"><span class="hljs-string">"#ED8800"</span></span>, width = <span class="hljs-number"><span class="hljs-number">0.4</span></span>, size = <span class="hljs-number"><span class="hljs-number">0.7</span></span>) + geom_point(aes(y = Cost), shape = <span class="hljs-number"><span class="hljs-number">25</span></span>, color = <span class="hljs-string"><span class="hljs-string">"#cedc00"</span></span>, fill = <span class="hljs-string"><span class="hljs-string">"white"</span></span>) + scale_y_continuous(breaks = pretty_breaks(<span class="hljs-number"><span class="hljs-number">20</span></span>), labels = turnover_format()) + theme_bw() + theme ( panel.border = element_blank() , axis.line = element_line() , axis.title.x = element_blank() , axis.title.y = element_blank() , axis.text = element_text( size = <span class="hljs-number"><span class="hljs-number">13</span></span>, color = <span class="hljs-string"><span class="hljs-string">"#3C1053"</span></span>) ) print(chart)</code> </pre> <br>  Baseline: Univeler <a href="http://www.unilever.ru/Images/ir_Unilever_AR12_tcm13-348376_tcm63-348639.pdf">Annual Report and Accounts 2012</a> , page 92. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/220135/">https://habr.com/ru/post/220135/</a></p>
+    <p>Source: https://habr.com/ru/post/220135/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../220123/index.html">Internet radio with a host of leading from different cities and calls live</a></li>
 <li><a href="../220125/index.html">Basics of parsing with Python + lxml</a></li>
 <li><a href="../220127/index.html">Discover MODX</a></li>
 <li><a href="../220129/index.html">Jump Start April 22: Data Center Virtualization using Windows Server 2012 R2 and System Center 2012 R2. Ensuring the security and high availability of virtual machines</a></li>
+<li><a href="../22013/index.html">Smart logistics - analyzing the price of freight. The level of demand in the market?</a></li>
 <li><a href="../220131/index.html">EditorConfig - Alone Settings for All Editors / IDE</a></li>
 <li><a href="../220137/index.html">Automate the deployment of applications in 1 click on the platform InfoboxCloud Jelastic with JPS</a></li>
 <li><a href="../220141/index.html">Algorithms for video processing processor TI DM368, continued ...</a></li>

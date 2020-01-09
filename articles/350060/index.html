@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Optimistic UI, CQRS and EventSourcing</h1><div class="post__text post__text-html js-mediator-article"><p> <a href="https://habrahabr.ru/company/devexpress/blog/350060/"><img src="https://habrastorage.org/webt/jo/mn/gh/jomnghhq5i2gcxby5rxrusorepe.png" alt="Optimistic UI, CQRS and EventSourcing"></a> </p><br><p>  When developing high-load web applications, a principle such as CQRS is often used for better scaling.  It states that a method must be either a command that performs some action, or a query that returns data, but not both.  In other words, the question to the system should not change the answer.  More formally, only pure methods that have no side effects can be returned. </p><br><p>  But for good scaling the separation of the API for reading / writing is not enough.  It is necessary to separate the databases with which this API works.  This is where EventSourcing comes to the rescue.  He suggests that we store all system events in one database, let's call it EventStore, and build all the other databases and tables based on it. </p><br><p>  The combination of CQRS and EventSourcing unleashes us a lot in terms of load balancing within the system, the number of its nodes, the number of auxiliary databases, the use of caching and other things, but at the same time complicates the logic of the application and introduces many restrictions. </p><br><p>  In this article, we will consider one of the nuances of designing the client part for such a system - optimistic updates in the UI. </p><a name="habracut"></a><br><p>  For the frontend, take the trendy React and Redux.  By the way, Redux and EventSourcing are very close in spirit technology. </p><br><p>  Optimistic user interface updates are not so easy to implement, and CQRS and EventSourcing make the task even harder. </p><br><p>  How should this work?  Let's look at step by step. </p><br><ol><li><p>  We send the team and, without waiting for an answer, dispute an optimistic event in the Redux Store.  An optimistic event will contain the expected server results.  Also at this step, we remember the current state of the data that the event will change. </p><br></li><li><p>  We are waiting for the result of sending the command.  If the command fails, dispatch the event, rolling back the optimistic update, based on the data that was remembered in the first step.  If everything is good, then we do nothing. </p><br></li><li>  We are waiting for the real event to fly to the client from the bus.  When this happens, we roll back the optimistic update and apply the real event. </li></ol><br><p>  How it will look in practice: </p><br><table><thead><tr><th>  Success </th><th>  Failure </th></tr></thead><tbody><tr><td><img src="https://habrastorage.org/webt/bh/60/kj/bh60kjxi4whgxn8qka4hvplaon8.gif" alt="optimistic-success"></td><td><img src="https://habrastorage.org/webt/ja/43/nw/ja43nwatcbsfotatt6wbvaqxkvs.gif" alt="optimistic-failure"></td></tr><tr><td><img src="https://habrastorage.org/webt/ya/rz/of/yarzofckuwwzdu7q8iryrolnlwu.png" alt="optimistic-success-redux"></td><td><img src="https://habrastorage.org/webt/zv/5l/iz/zv5lizfyw7ivroi8-cg7oo0bbti.png" alt="optimistic-failure-redux"></td></tr></tbody></table><br><p>  The optimistic update code is described as Middleware to the Redux Store: </p><br><pre><code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">const</span></span> optimisticCalculateNextHashMiddleware = <span class="hljs-function"><span class="hljs-function">(</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">store</span></span></span><span class="hljs-function">) =&gt;</span></span> { <span class="hljs-keyword"><span class="hljs-keyword">const</span></span> tempHashes = {}; <span class="hljs-keyword"><span class="hljs-keyword">const</span></span> api = createApi(store); <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> <span class="hljs-function"><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">next</span></span></span><span class="hljs-function"> =&gt;</span></span> action =&gt; { <span class="hljs-keyword"><span class="hljs-keyword">switch</span></span> (action.type) { <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> SEND_COMMAND_UPDATE_HASH_REQUEST: { <span class="hljs-keyword"><span class="hljs-keyword">const</span></span> { aggregateId, hash } = action; <span class="hljs-comment"><span class="hljs-comment">// Save the previous data const { hashes } = store.getState() const prevHash = hashes[aggregateId].hash; tempHashes[aggregateId] = prevHash // Dispatch an optimistic action store.dispatch({ type: OPTIMISTIC_HASH_UPDATED, aggregateId, hash }); // Send a command api.sendCommandCalculateNextHash(aggregateId, hash) .then( () =&gt; store.dispatch({ type: SEND_COMMAND_UPDATE_HASH_SUCCESS, aggregateId, hash }) ) .catch( (err) =&gt; store.dispatch({ type: SEND_COMMAND_UPDATE_HASH_FAILURE, aggregateId, hash }) ); break; } case SEND_COMMAND_UPDATE_HASH_FAILURE: { const { aggregateId } = action; const hash = tempHashes[aggregateId]; delete tempHashes[aggregateId]; store.dispatch({ type: OPTIMISTIC_ROLLBACK_HASH_UPDATED, aggregateId, hash }); break; } case HASH_UPDATED: { const { aggregateId } = action; const hash = tempHashes[aggregateId]; delete tempHashes[aggregateId]; store.dispatch({ type: OPTIMISTIC_ROLLBACK_HASH_UPDATED, aggregateId, hash }); break; } } next(action); } }</span></span></code> </pre> <br><p>  Live how everything works, you can see here: </p><br><iframe width="560" height="315" src="https://www.youtube.com/embed/.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://codepen.io/MrCheater/embed/preview/KZreRo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe><br><h1 id="zaklyuchenie">  Conclusion </h1><br><p>  Optimistic updates in the UI can greatly improve the responsiveness of your application.  Although you need to use them wisely and with great caution.  In some cases, they can lead to data loss and complicate understanding of the user interface.  For example, an optimistic like under a photo is good, and an optimistic form of payment is bad.  So do not break the wood.  Good luck! </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/350060/">https://habr.com/ru/post/350060/</a></p>
+    <p>Source: https://habr.com/ru/post/350060/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../350064/index.html">From a box of matches to 411 stores: the history of the new IKEA museum</a></li>
 <li><a href="../350066/index.html">APTSimulator - testing countering APT threats</a></li>
 <li><a href="../350068/index.html">Dependency injection</a></li>
-<li><a href="../350070/index.html">Book sale</a></li>
+<li><a href="../35007/index.html">Your browser on poppy</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

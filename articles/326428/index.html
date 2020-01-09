@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>node.js beats binary data when working on http because of the default encoding - we treat and hate</h1><div class="post__text post__text-html js-mediator-article">  In short, I write my proxy server on node.js (it still comes in handy, but it’s just a proxy that has been used, I’ve been burning the topic for a long time, I wonder if it is still alive) <br><br>  A proxy based on methods like .pipe () does not suit me - I need to pass complete data through myself, and so they will pass by.  I need to download the data completely, process it and then send it. <br><br>  Wrote a proxy on sockets based on examples - beats pictures (data of a different length than content-length is downloaded, and for smaller pictures the difference is smaller, for larger ones) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Rewrote on the http module - it still hits, the visibility of the problem is the same. <br><br>  *** For a long time, nowhere, there is nothing about such a problem ... <br><br>  The reason is that all the I / O with sockets and with http - has an indication of the encoding, and even if you do not specify it (optional parameter), <b>there is some default encoding inside, and it does something by default!</b> <br><a name="habracut"></a><br>  That is, all the pictures of this encoding are processed somehow and spoil.  And this is a separate question, what kind of crap is one encoding?  Then there should be two - encoding before and after. <br><br><h3>  How to treat the problem with the encoding node.js </h3><br>  Put the encoding 'binary' - if you download, then before receiving the data you need to write something like <br><br><pre><code class="hljs actionscript"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> req = http.request(options, <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(res)</span></span></span><span class="hljs-function"> </span></span>{ res.setEncoding(<span class="hljs-string"><span class="hljs-string">'binary'</span></span>);</code> </pre> <br>  And when you send a picture, you need to add the second parameter, like <br><br><pre> <code class="hljs pgsql">response.<span class="hljs-keyword"><span class="hljs-keyword">write</span></span>(data,<span class="hljs-string"><span class="hljs-string">'binary'</span></span>);</code> </pre> <br>  And it will cease to climb into the data, and it also beats the html encoding, I just didn’t immediately notice, I saw it in the pictures first. <br><br>  And nowhere, never on tips, examples of everybody on stackoverflow.com and documentation is there no, that this work with encoding is enabled by default and it spoils all data. <br><br>  How is it at all?  English, okay, don't care about the encoding, but the pictures?  they calmly give such code examples that take the broken data and send ... <br><br>  I'm not a pro programmer, inventing bicycles.  Surely you will now find tons of open source proxies (satisfying the conditions above), you just had to <a href="https://trofimenko.ru/urrodybl/2017-node-js-binary-data-problems-setencoding/">look at it</a> ... </div><p>Source: <a href="https://habr.com/ru/post/326428/">https://habr.com/ru/post/326428/</a></p>
+      Rewrote on the http module - it still hits, the visibility of the problem is the same. <br><br>  *** For a long time, nowhere, there is nothing about such a problem ... <br><br>  The reason is that all the I / O with sockets and with http - has an indication of the encoding, and even if you do not specify it (optional parameter), <b>there is some default encoding inside, and it does something by default!</b> <br><a name="habracut"></a><br>  That is, all the pictures of this encoding are processed somehow and spoil.  And this is a separate question, what kind of crap is one encoding?  Then there should be two - encoding before and after. <br><br><h3>  How to treat the problem with the encoding node.js </h3><br>  Put the encoding 'binary' - if you download, then before receiving the data you need to write something like <br><br><pre><code class="hljs actionscript"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> req = http.request(options, <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(res)</span></span></span><span class="hljs-function"> </span></span>{ res.setEncoding(<span class="hljs-string"><span class="hljs-string">'binary'</span></span>);</code> </pre> <br>  And when you send a picture, you need to add the second parameter, like <br><br><pre> <code class="hljs pgsql">response.<span class="hljs-keyword"><span class="hljs-keyword">write</span></span>(data,<span class="hljs-string"><span class="hljs-string">'binary'</span></span>);</code> </pre> <br>  And it will cease to climb into the data, and it also beats the html encoding, I just didn’t immediately notice, I saw it in the pictures first. <br><br>  And nowhere, never on tips, examples of everybody on stackoverflow.com and documentation is there no, that this work with encoding is enabled by default and it spoils all data. <br><br>  How is it at all?  English, okay, don't care about the encoding, but the pictures?  they calmly give such code examples that take the broken data and send ... <br><br>  I'm not a pro programmer, inventing bicycles.  Surely you will now find tons of open source proxies (satisfying the conditions above), you just had to <a href="https://trofimenko.ru/urrodybl/2017-node-js-binary-data-problems-setencoding/">look at it</a> ... </div><p>Source: https://habr.com/ru/post/326428/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

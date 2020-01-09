@@ -31,12 +31,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -58,7 +58,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Control I SPY TANK via computer</h1><div class="post__text post__text-html js-mediator-article">  I got such a toy in my hands <br><img src="https://habrastorage.org/getpro/habr/post_images/f57/0d4/266/f570d426623fd294bc54588a04a98bed.jpg" alt="image"><br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/YX8yDMpq2y0%3Ffeature%3Doembed&amp;xid=17259,15700002,15700022,15700186,15700191,15700253,15700259&amp;usg=ALkJrhi5XM9_-o7qgdBdY7QIeasw_kAOXw" frameborder="0" allowfullscreen=""></iframe><br>  Having played them a little from the phone, I decided to make control from the computer. <br><a name="habracut"></a><br><br><h4>  Reengineering </h4><br>  Armed with a laptop with WiFi, connected with it to the tank.  It turned out that he had IP 10.10.1.1.  First of all I decided to contact him via http via a browser at <a href="http://10.10.1.1/">10.10.1.1</a> : 80, but it was not there, the web-server on the tank was raised, but it was locked with a password, which upset me a little.  Then I connect via FTP - it is also up and running, access is open, but only in read mode.  Again disappointment. <br>  The next step was a port scan.  Among the list of open ports, two of them ( <code>8150</code> and <code>8196</code> ) seemed to me the most suspicious. <br>  Checked them in the browser.  Port <code>8150</code> did not answer me, but the MJPG stream was transmitted via port <code>8196</code> . <br><br>  Further it turned out to be more difficult - to determine the management teams. <br>  To do this, I sketched a simple little program that listens to port <code>8150</code> , installed the laptop's IP <code>10.10.1.1</code> and turned its WiFi into access point mode.  Having connected to it from the phone, I tried to start the tank control program.  As I expected, she connected to the port, which I listened to, but immediately flew out, it turned out she could not connect to the video transmission port.  Having added the imitation of video transmission in my program, the program still started.  After analyzing the data obtained from the management program, the management teams revealed that there were not so many. <br>  All commands consist of two bytes. <br>  The first byte is responsible for selecting the device to which the command is addressed: <br><ul><li>  49 ( <code>0x31</code> ) - left caterpillar </li><li>  50 ( <code>0x32</code> ) - right track </li><li>  51 ( <code>0x33</code> ) - tower (raise / lower the camera) </li></ul><br>  The second byte is the direction of travel: <br><ul><li>  48 ( <code>0x30</code> ) - stop (stop motion) </li><li>  49 ( <code>0x31</code> ) - forward / up (for camera) </li><li>  50 ( <code>0x32</code> ) - back / down </li></ul><br>  By combining these commands, you can easily control the tank, for example, to go ahead you need to send 4 bytes <code>0x31 0x31 0x32 0x31</code> . <br>  The execution of a command, if no other command is sent, automatically ends in about 1s. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -66,23 +66,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Connection </h4><br>  Constantly connecting directly to the tank, I did not want to, and I decided to use TP-LINK MR3020 router that had been lying around for a long time. <br>  Having filled the OpenWrt firmware into it, I configured it as a client to connect to the tank's router.  Next, I configured port forwarding <code>8150</code> and <code>8196</code> from the local interface to WiFi and connected it to the home router.  Now it was possible to connect to the tank from the local network. <br><br><h4>  Control </h4><br>  Below is a simple C # code that controls a tank. <br><pre> <code class="cs hljs">Socket socket = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); <span class="hljs-comment"><span class="hljs-comment">//      socket.Connect(IPAddress.Parse("192.168.10.15"), 8150); //    3  /    //     socket.Send( new byte[] { 49, 49, 50, 49, 51, 48 }); // 1  Thread.Sleep(1000); // socket.Send( new byte[] { 49, 50, 50, 50, 51, 48 }); Thread.Sleep(1000); // socket.Send( new byte[] { 49, 50, 50, 49, 51, 48 }); Thread.Sleep(1000); // socket.Send( new byte[] { 49, 49, 50, 50, 51, 48 }); Thread.Sleep(1000); //  socket.Send( new byte[] { 49, 48, 50, 48, 51, 49 }); Thread.Sleep(1000); // socket.Send( new byte[] {49, 48, 50, 48, 51, 48}); socket.Disconnect();</span></span></code> </pre><br><br>  I hope someone will come in handy. </div><p>Source: <a href="https://habr.com/ru/post/178003/">https://habr.com/ru/post/178003/</a></p>
+    <h4>  Connection </h4><br>  Constantly connecting directly to the tank, I did not want to, and I decided to use TP-LINK MR3020 router that had been lying around for a long time. <br>  Having filled the OpenWrt firmware into it, I configured it as a client to connect to the tank's router.  Next, I configured port forwarding <code>8150</code> and <code>8196</code> from the local interface to WiFi and connected it to the home router.  Now it was possible to connect to the tank from the local network. <br><br><h4>  Control </h4><br>  Below is a simple C # code that controls a tank. <br><pre> <code class="cs hljs">Socket socket = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); <span class="hljs-comment"><span class="hljs-comment">//      socket.Connect(IPAddress.Parse("192.168.10.15"), 8150); //    3  /    //     socket.Send( new byte[] { 49, 49, 50, 49, 51, 48 }); // 1  Thread.Sleep(1000); // socket.Send( new byte[] { 49, 50, 50, 50, 51, 48 }); Thread.Sleep(1000); // socket.Send( new byte[] { 49, 50, 50, 49, 51, 48 }); Thread.Sleep(1000); // socket.Send( new byte[] { 49, 49, 50, 50, 51, 48 }); Thread.Sleep(1000); //  socket.Send( new byte[] { 49, 48, 50, 48, 51, 49 }); Thread.Sleep(1000); // socket.Send( new byte[] {49, 48, 50, 48, 51, 48}); socket.Disconnect();</span></span></code> </pre><br><br>  I hope someone will come in handy. </div><p>Source: https://habr.com/ru/post/178003/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../177985/index.html">Withdraw from Payoneer account to WebMoney system</a></li>
-<li><a href="../177987/index.html">Time history</a></li>
-<li><a href="../177989/index.html">Aerobia - cool continuation</a></li>
 <li><a href="../177991/index.html">Image hosting for half an hour</a></li>
 <li><a href="../177995/index.html">New 3D water simulation algorithm</a></li>
+<li><a href="../178/index.html">Electronic system that duplicates the notes in the diaries of students on mobile phones</a></li>
+<li><a href="../1780/index.html">"Expert" released "Expert Online 2.0"</a></li>
+<li><a href="../17800/index.html">Word invented Stirlitz? Information for consideration</a></li>
 <li><a href="../178005/index.html">Pixtr: automatic portrait enhancement</a></li>
 <li><a href="../178007/index.html">We study the debugger, part one</a></li>
 <li><a href="../178009/index.html">Prism Developer Guide - Part 8, Navigation</a></li>
+<li><a href="../17801/index.html">Peering database :-)</a></li>
 <li><a href="../178011/index.html">"Tax on discs" may cancel</a></li>
-<li><a href="../178013/index.html">Shoemaker without boots, or accounting equipment in the IT department. Part I</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

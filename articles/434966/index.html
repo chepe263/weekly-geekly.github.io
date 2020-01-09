@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>New Mash programming language</h1><div class="post__text post__text-html js-mediator-article">  For several years, I tried my hand at designing my own programming language.  I wanted to create in my opinion the most simple, full-featured and convenient language. <br><br>  In this article I want to highlight the main stages of my work and first describe the created concept of the language and its first implementation that I am working on now. <br><a name="habracut"></a><br>  I will say in advance that I wrote the whole project on Free Pascal, because  programs on it can be assembled under a huge number of platforms, and the compiler itself produces very optimized binaries (I collect all the components of a project with the O2 flag). <br><br><h3>  Language runtime </h3><br>  The first thing is to talk about the virtual machine, which I had to write to perform future applications in my language.  I decided to implement the stack architecture, perhaps because it was the easiest way.  I did not find a single normal article on how to do this in Russian, so after becoming familiar with English-language material I sat down to design and write my bicycle.  Next, I will bring my "advanced" ideas and developments in this matter. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  Stack implementation </h4><br>  Obviously, the VM is headed by the stack.  In my implementation, it works in blocks.  In essence, this is a simple array of pointers and a variable to store the index of the top of the stack. <br>  When it is initialized, an array of 256 elements is created.  If more pointers are thrown onto the stack, then its size increases by the next 256 items.  Accordingly, when removing items from the stack - its size is adjustable. <br><br>  The VM uses several stacks: <br><br><ol><li>  Main stack </li><li>  Stack to store return points. </li><li>  Stack garbage collector. </li><li>  A stack of a try / catch / finally block handler. </li></ol><br><h4>  Constants and variables </h4><br>  It's all simple.  Constants are processed by a separate small piece of code and are available in applications in the future at static addresses.  Variables are an array of pointers of a certain size, access to its cells is carried out by index - i.e.  static address.  Variables can be placed at the top of the stack or read it from there.  Actually, because  Since our variables essentially store pointers to values ​​in the VM memory, then work with implicit pointers prevails in the language. <br><br><h4>  Garbage collector </h4><br>  In my VM it is semi-automatic.  Those.  the developer himself decides when to call the garbage collector.  It does not work on the usual pointer count, as in the same Python, Perl, Ruby, Lua, etc.  It is implemented through a system of markers.  Those.  when it is assumed that a variable is assigned a temporary value - a pointer to this value is added to the stack of the garbage collector.  In the future, the collector quickly goes over the already prepared list of pointers. <br><br><h4>  Handling try / catch / finally blocks </h4><br>  As with any modern language, exception handling is an important component.  The VM kernel is wrapped in a try..catch block, which can return to code execution, after catching an exception, by putting some information about it on the stack.  In the application code, you can set try / catch / finally blocks of code, indicating entry points to catch (exception handler) and finally / end (end of block). <br><br><h4>  Multithreading </h4><br>  It is maintained at the VM level.  It is easy and convenient to use.  It works without an interrupt system, so the code should be executed in several threads several times faster, respectively. <br><br><h4>  External Libraries for VMs </h4><br>  Without this can not do.  VM supports import, just as it is implemented in other languages.  You can write part of the code in Mash and part of the code in native languages, then linking them together. <br><br><h3>  Translator from high-level language Mash to Baytkod for VM </h3><br><h4>  Intermediate language </h4><br>  To quickly write a translator from a complex language to a code for a VM, I first developed an intermediate language.  It turned out assembler-like scary sight, which does not have much to consider here.  Let me just say that at this level, the translator processes most constants, variables, calculates their static addresses and addresses of entry points. <br><br><h4>  Translator Architecture </h4><br>  I chose not the best architecture for implementation.  The translator does not build a code tree, as befits other translators.  He looks at the beginning of the design.  Those.  if the piece of code being parsed is of the form “while &lt;condition&gt;:”, then it is obvious that this is a while construct of a loop and should be processed as a while construct of a loop.  Something like a complex switch-case. <br><br>  Thanks to this architectural solution, the translator was not very fast.  However, the simplicity of its refinement has increased significantly.  I added the necessary constructions faster than my coffee could cool.  Full support for the PLO was implemented at all in less than a week. <br><br><h4>  Code optimization </h4><br>  Here, of course, it was possible to realize better (and it will be realized, but later, how the hands will reach).  So far, the optimizer only knows how to cut off unused code, constants, and imports from an assembly.  Also, several constants with the same value are replaced by one.  That's all. <br><br><h3>  Language mash </h3><br><h4>  Basic language concept </h4><br>  The main idea was to develop the most functional and simple language.  I believe that the development of the task copes with a bang. <br><br><h4>  Blocks of code, procedures and functions </h4><br>  All constructions in the language are opened with a colon <b>:</b> and closed with the operator <b>end</b> . <br><br>  Procedures and functions are declared as proc and func, respectively.  Arguments are listed in parentheses.  Just like most other languages. <br><br>  The <b>return statement</b> can return a value from a function, the <b>break</b> statement allows you to exit a procedure / function (if it is out of cycles). <br><br>  Code example: <br><br><pre><code class="ruby">...
@@ -286,7 +286,7 @@ end
 <a href="http://mash-lang.tech/"></a><br>
 <a href="http://github.com/RoPi0n/mash-lang">  GitHub</a><br>
 <br>
-,    ,    .</div><p>Source: <a href="https://habr.com/ru/post/434966/">https://habr.com/ru/post/434966/</a></p>
+,    ,    .</div><p>Source: https://habr.com/ru/post/434966/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -296,10 +296,10 @@ end
 <li><a href="../434962/index.html">No, you do not need Express in your REST API on Node.js</a></li>
 <li><a href="../434964/index.html">Enough paranoia or why you do not shine 100 points in Page Speed</a></li>
 <li><a href="../434968/index.html">Something about namespace</a></li>
+<li><a href="../43497/index.html">Skyfire Beta - now for everyone</a></li>
 <li><a href="../434970/index.html">About IT business and not only</a></li>
 <li><a href="../434972/index.html">How to write unit tests if you don’t feel like</a></li>
 <li><a href="../434974/index.html">Work with the 1C: Enterprise configuration format</a></li>
-<li><a href="../434976/index.html">FabLab University ITMO: DIY-co-working for creative people - show what's inside</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

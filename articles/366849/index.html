@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -59,7 +59,7 @@
  FLASH: Winbond W25Q128 (16 MB)
  CLOCKS: 400/400/200/33 MHz (CPU / RAM / AHB / SPI) </pre></blockquote><br>  If within 1 second the user does not send any symbol to the UART, then the OS is loaded based on OpenWrt.  If the user has time to send a character to the loader, then the loader command line becomes available.  From this line it is possible to give the command to load data into RAM (via UART via Y-Modem or via Ethernet via tftp) and transfer control to any address;  there are even commands for reprogramming the ROM. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -67,7 +67,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       At first glance, Black Swift for the developer of embedded software has a lot of advantages over the MR3020: <br><ul><li>  connecting to almost any AR9331 interface (including JTAG) has become much easier; </li><li>  the loader is quite friendly (in the MR3020, the possibilities for loading user codes into RAM were severely limited); </li><li>  if you don’t touch anything, the GPIO11 / JS AR9331 input on the Black Swift is connected to the VDD25, which corresponds to the permission to use the EJTAG (recall that on the MR3020 you had to specifically press the SW1 button); </li><li>  In the Black Swift Pro version, it became possible to connect a boot ROM to the programmer (see below for AR9331 features). </li></ul><br>  But, as they say, <i>believe me, everything is not so simple here ...</i> <br><br><h4>  Nothing foreshadowed trouble </h4><br>  It turned out that the firmware on the basis of u-boot_mod, although it allows you to load the code into RAM and execute it, but, like the firmware MR3020, it is hostile to EJTAG lovers and tries to disable EJTAG programmatically shortly after the start. <br>  Using the MR3020 experience associated with disabling the SPI Flash boot ROM due to the breaking of the CS circuit is rather difficult. <br>  in spite of the fact that there are microswitches on the Black Swift <b>Pro</b> , which ensure disconnection of the boot ROM from the AR9331 (which, according to the authors, allows the use of an external programmer).  Access to these microswitches on the board installed on the standard adapter, to put it mildly, is difficult.  In order to accurately switch the switches to the desired position, the board will have to be removed from the adapter.  There are no microswitches on the Black Swift board (not Pro!).  It is theoretically possible to solder a pair of wires to a microswitch or a ROM chip for closing / opening the CS circuit from the outside, but such a refinement requires the ability to solder well (I think the photo below gives an idea of ​​the complexity of the modification). <br><img src="https://habrastorage.org/files/030/a87/ea5/030a87ea581949729485784e46653737.jpg"><br><div class="spoiler">  <b class="spoiler_title">Why do you need micro switches on Black Swift Pro?</b> <div class="spoiler_text">  The fact is that without a detach from the AR9331, attempts to reprogram (or even just read) the SPI Flash boot ROM chip are doomed to failure - the AR9331 persistently drives the SPI line even with an active RESET line.  On Black Swift Pro, four microswitches allow you to solve this problem by completely disconnecting the boot ROM from the AR9331, which allows you to successfully use an external programmer. <br></div></div><br>  Thus, it will be difficult to use the JTAG revitalization technique, which works successfully on the MR3020. <br>  <i>We will go another way.</i> <br><br><h4>  “A dirty hack will allow JTAG poyuzat” </h4><br>  So the problem is that the u-boot_mod loader disables JTAG. <br>  Let's see what u-boot_mod does when it starts (let me remind you that after removing the signal, any processor with MIPS architecture starts to <code>0xbfc00000</code> instructions from address <code>0xbfc00000</code> ): <br><blockquote><pre>     bfc00000: 100000ff b 0xbfc00400
@@ -238,11 +238,11 @@
  init
  halt
  resume 0xbfc00400
- shutdown </pre></blockquote><br><blockquote>  Note: the <code>run-u-boot_mod.cfg</code> will not work immediately after powering up the board, since u-boot_mod to deal with mysterious errors AR9331 performs an additional reset.  In order for the script to work, you must give a reset signal before launching it on the board.  Another option: run the script <code>run-u-boot_mod.cfg</code> twice. <br></blockquote><br><br>  To permanently restore the original firmware, it is enough to follow the procedure described above for modifying the first branch instruction of the u-boot_mod bootloader with the only difference that instead of replacing <code>0x100000ff</code> with <code>0x1000ffff</code> , you need to replace <code>0x1000ffff</code> back with <code>0x100000ff</code> . <br><br><h4>  Results </h4><br>  As demonstrated above, working on an EJTAG with Black Swift is quite possible.  The 400 KB / s bandwidth allows you to comfortably load not only the barebox, but also the linux kernel;  this is all the more relevant because when using a standard unpretentious adapter, the Ethernet interface is not derived. <br><br><h4>  Thanks </h4><br>  The author is grateful to the people, without whose participation this publication would hardly have been possible: <br><ul><li>  Pavel Fertser for valuable comments and suggestions; </li><li>  Alexey Rempel for adding <a href="http://openocd.zylin.com/">support for the TP-Link MR3020 board in openocd</a> ; </li><li>  Dmitry Zherebkov for Black Swift Pro. </li></ul></div><p>Source: <a href="https://habr.com/ru/post/366849/">https://habr.com/ru/post/366849/</a></p>
+ shutdown </pre></blockquote><br><blockquote>  Note: the <code>run-u-boot_mod.cfg</code> will not work immediately after powering up the board, since u-boot_mod to deal with mysterious errors AR9331 performs an additional reset.  In order for the script to work, you must give a reset signal before launching it on the board.  Another option: run the script <code>run-u-boot_mod.cfg</code> twice. <br></blockquote><br><br>  To permanently restore the original firmware, it is enough to follow the procedure described above for modifying the first branch instruction of the u-boot_mod bootloader with the only difference that instead of replacing <code>0x100000ff</code> with <code>0x1000ffff</code> , you need to replace <code>0x1000ffff</code> back with <code>0x100000ff</code> . <br><br><h4>  Results </h4><br>  As demonstrated above, working on an EJTAG with Black Swift is quite possible.  The 400 KB / s bandwidth allows you to comfortably load not only the barebox, but also the linux kernel;  this is all the more relevant because when using a standard unpretentious adapter, the Ethernet interface is not derived. <br><br><h4>  Thanks </h4><br>  The author is grateful to the people, without whose participation this publication would hardly have been possible: <br><ul><li>  Pavel Fertser for valuable comments and suggestions; </li><li>  Alexey Rempel for adding <a href="http://openocd.zylin.com/">support for the TP-Link MR3020 board in openocd</a> ; </li><li>  Dmitry Zherebkov for Black Swift Pro. </li></ul></div><p>Source: https://habr.com/ru/post/366849/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../366837/index.html">Scientists connected the brain of a paralyzed patient to the Nexus tablet</a></li>
+<li><a href="../36684/index.html">Administration Questions</a></li>
 <li><a href="../366841/index.html">The MESSENGER interplanetary station will be smashed on the surface of Mercury at a speed of more than 14 thousand km / h</a></li>
 <li><a href="../366843/index.html">46 years ago the first message was sent on the ARPANET network</a></li>
 <li><a href="../366845/index.html">Breezer TION O2: operating experience</a></li>
@@ -251,7 +251,7 @@
 <li><a href="../366853/index.html">Racing quadcopter with FPV for non-rubber budget - Robocat 270</a></li>
 <li><a href="../366855/index.html">Homemade computer from 1967</a></li>
 <li><a href="../366859/index.html">Norway will refuse FM broadcast until 2017</a></li>
-<li><a href="../366861/index.html">There is no exceptional evidence of a Dyson Sphere in orbit KIC 8462852</a></li>
+<li><a href="../36686/index.html">Ubisoft is greedy. "Clear Sky" waiting</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

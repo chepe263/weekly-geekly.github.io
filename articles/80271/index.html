@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Shorewall: firewall for everyone</h1><div class="post__text post__text-html js-mediator-article">  Suddenly it turned out that the <a href="http://www.shorewall.net/">Shoreline firewall</a> is not at all illuminated on Habre, despite the fact that it is an extremely convenient tool (and a powerful argument against <a href="http://www.openbsd.org/faq/pf/">pf</a> in holivars) for setting up a firewall under Linux. <br><br>  Please do not cholivarit on the topic “Linux is shit, we are better at OpenBSD”, “And I have Kerio WinRoute, and you are all losers” and the like. <br>  An article for those who chose Linux for some reason and does not want to spend a lot of time learning iptables (and there is where to get confused). <br><br>  Therefore, under the cut sheet <br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       For starters, what is it - Shorewall? <br>  Shorewall - binding to the <s>good old</s> iptables, the standard firewall configuration tool in Linux.  The current version uses <s>something</s> Perl to read and parse a <s>whole pile of</s> several configuration files, generate a file that is compatible with iptables-restore and feed it to the last one.  It is notable for its simplicity of configuration, added levels of abstraction during configuration, active development, making it stable for Debian highly outdated, as well as very tasty things like supporting several uplinks. <br><br>  Now the current version of Shorewall 4.4, in Lenny - 4.0, in Karmic - 4.2.  Since the machine closest to me works under Ubuntu Server 9.10, basically I will talk about version 4.2, and since the main set of features appeared in Shorewall right away, everything or almost everything should work with any version of Shorewall. <br><br>  Up to version 4.2 inclusive, Shorewall could use both Perl and Shell for processing configs.  In version 4.4, Shell support was thrown away (for there is nothing to produce buggy entities), so we will only talk about the Perl version. <br><br>  So <b>Installation</b> <br>  Since the whole shorewall is a collection of perl-scripts and stubs for configs, it’s silly to talk about dependencies.  Perl and iptables needed.  If there is a shorewall-perl version in the repositories of your distribution, install it, if not, take deb or rpm from another distribution, there’s nothing to break. <br><br>  <b>Start and stop</b> <br>  Since we are all impatient, I want to immediately launch a new softphone.  This can be done not only with an init script, but also with commands <pre>  shorewall {start, stop, restart} </pre>  that during debugging is even preferable - errors will be written directly to the console. <br><br>  <b>Configuration note</b> <br>  All standard configs should be taken from those that come in the box.  They contain not only meaningful comments about the purpose of the file, but also markers for the parser, the performance of the system without which is not guaranteed.  In ubunt they ended up in / usr / share / doc / shorewall-common / default-config. <br>  The configuration of the firewall itself lies in / etc / shorewall, then all configuration files without paths should be located there. <br><br>  <b>Typical home router configuration</b> <br>  <b>1. Zones.</b> <br>  The rules of packet walking in Shorewall use zone abstraction - all networks that you want to process must be somehow called.  First you need to decide on the names of the zones.  In my case there will be 4 of them: a necessary zone containing the firewall itself, a home network with DHCP, a provider LAN, and the Internet via PPPoE.  <b>Do not forget to copy the blank from your package!</b>  Config turned out like this: <br><pre>  # cat zones | tail -7
@@ -100,7 +100,7 @@
  #ACTION SOURCE DEST PROTO DEST SOURCE ORIGINAL RATE USER / MARK CONNLIMIT TIME
  DNAT all mork: navoff: 31840 udp 31840
  DNAT nbn mork: navoff: 7777 udp 7777
- DNAT nbn mork: navoff: 7777 tcp 7777 </pre><br><br>  <b>8. Profit!</b> <br>  At this point, you should have a fully configured home router with NAT from the home grid in all directions and with port forwarding.  Only ICMP and SSH are allowed outside.  All configuration files (5 new, 1 corrected) contain lines that are difficult to make a mistake, the configuration is easily transferred to machines with a different name of network cards, other addresses of connected networks.  You are not soaring about the TCP packet flags, about the origin of incoming UDP packets (oh, how I debugged the DNS with simple iptables and the “all inbound to deny” policy).  In Debian and Ubunt, you should also correct / etc / default / shorewall, so that the init script can work out normally, in some places you need to add shorewall to your favorite runner. <br><br>  <b>9. PostScriptum</b> <br>  At this opportunity Shorewall is not limited.  It has built-in support for shaping (via tc from iproute2), several uplinks (deserves a separate article), IPv6, and more.  It is possible to configure it using <a href="http://www.webmin.com/">Webmin</a> .  The volume of <a href="http://www.shorewall.net/Documentation_Index.html">documentation</a> , <a href="http://www.shorewall.net/FAQ.htm">FAQ</a> and details of manov are able to impress.  I hope many Linuxers, both beginners and experienced administrators, will find something useful in this binding to iptables. </div><p>Source: <a href="https://habr.com/ru/post/80271/">https://habr.com/ru/post/80271/</a></p>
+ DNAT nbn mork: navoff: 7777 tcp 7777 </pre><br><br>  <b>8. Profit!</b> <br>  At this point, you should have a fully configured home router with NAT from the home grid in all directions and with port forwarding.  Only ICMP and SSH are allowed outside.  All configuration files (5 new, 1 corrected) contain lines that are difficult to make a mistake, the configuration is easily transferred to machines with a different name of network cards, other addresses of connected networks.  You are not soaring about the TCP packet flags, about the origin of incoming UDP packets (oh, how I debugged the DNS with simple iptables and the “all inbound to deny” policy).  In Debian and Ubunt, you should also correct / etc / default / shorewall, so that the init script can work out normally, in some places you need to add shorewall to your favorite runner. <br><br>  <b>9. PostScriptum</b> <br>  At this opportunity Shorewall is not limited.  It has built-in support for shaping (via tc from iproute2), several uplinks (deserves a separate article), IPv6, and more.  It is possible to configure it using <a href="http://www.webmin.com/">Webmin</a> .  The volume of <a href="http://www.shorewall.net/Documentation_Index.html">documentation</a> , <a href="http://www.shorewall.net/FAQ.htm">FAQ</a> and details of manov are able to impress.  I hope many Linuxers, both beginners and experienced administrators, will find something useful in this binding to iptables. </div><p>Source: https://habr.com/ru/post/80271/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

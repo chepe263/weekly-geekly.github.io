@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A vulnerability was found in EMET</h1><div class="post__text post__text-html js-mediator-article">  FireEye specialists <a href="http://www.fireeye.com/blog/threat-research/2016/02/using_emet_to_disabl.html">discovered a</a> serious security flaw in the EMET tool [ <a href="https://habrahabr.ru/company/eset/blog/276311/">1</a> , <a href="http://habrahabr.ru/company/eset/blog/184428/">2</a> , <a href="http://habrahabr.ru/company/eset/blog/221129/">3</a> , <a href="http://habrahabr.ru/company/eset/blog/231823/">4</a> , <a href="http://habrahabr.ru/company/eset/blog/242889/">5</a> , <a href="http://habrahabr.ru/company/eset/blog/252959/">6</a> , <a href="http://habrahabr.ru/company/eset/blog/268165/">7</a> ], which allows you to simply disable its process protection mechanisms using its built-in functions.  Vulnerability is present in previous versions of EMET, i.e. in versions prior to current 5.5.  Users of these versions are encouraged to update EMET to the latest version. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/f1c/317/064/f1c3170644a18be60161ed0b987b6b74.jpg"><br><br>  EMET itself supports an internal mechanism for removing hooks from system library API functions in protected processes.  This function is used in the case when you need to quickly disable the process protection, for the implementation of which the dynamic library emet.dll is responsible.  A complete protection disable is implemented by the <i>DllMain</i> handler with the DLL_PROCESS_DETACH unloading code.  Due to the fact that emet.dll does not intercept the <i>kernel32! GetModuleHandleW function</i> and does not control its behavior, the shell code only needs to call <i>GetModuleHandleW</i> to get the DLL loading address in memory and call <i>DllMain</i> , passing the function this constant and unloading constant. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,16 +59,16 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a>  In fact, the next call is enough to exploit the vulnerability. <br><br>  <i>BOOL WINAPI DllMain (GetModuleHandleW ("EMET.dll"), DLL_PROCESS_DETACH, NULL);</i> <br><br>  The <i>DllMain</i> function is the entry point to the library and, like any DLL entry point, handles various events when loading it into a process and unloading it.  The first argument is the base address of the library load, the second is the event, and the third is not used. <br><br>  As a demonstration of the vulnerability, FireEye specialists took an outdated RCE-exploit for CVE-2012-1876 vulnerability and added a shell code to it to disable process protection using the above-mentioned call.  To bypass DEP, the exploit uses ROP techniques.  After disabling EMET, the exploit can safely perform its functions. <br><br><blockquote>  US-CERT is aware of the Microsoft Enhanced Mitigation Experience Toolkit (EMET) prior to 5.5.  If you want to be able to control it <br><br>  Microsoft Security TechCenter (link is external) recommends users and administrators to upgrade to EMET version 5.5.  For additional information, please review the FireEye threat research blog (link is external) </blockquote><br>  <a href="https://www.us-cert.gov/ncas/current-activity/2016/02/23/Microsoft-Releases-Update-EMET">www.us-cert.gov/ncas/current-activity/2016/02/23/Microsoft-Releases-Update-EMET</a> </div><p>Source: <a href="https://habr.com/ru/post/277785/">https://habr.com/ru/post/277785/</a></p>
+    <a name="habracut"></a>  In fact, the next call is enough to exploit the vulnerability. <br><br>  <i>BOOL WINAPI DllMain (GetModuleHandleW ("EMET.dll"), DLL_PROCESS_DETACH, NULL);</i> <br><br>  The <i>DllMain</i> function is the entry point to the library and, like any DLL entry point, handles various events when loading it into a process and unloading it.  The first argument is the base address of the library load, the second is the event, and the third is not used. <br><br>  As a demonstration of the vulnerability, FireEye specialists took an outdated RCE-exploit for CVE-2012-1876 vulnerability and added a shell code to it to disable process protection using the above-mentioned call.  To bypass DEP, the exploit uses ROP techniques.  After disabling EMET, the exploit can safely perform its functions. <br><br><blockquote>  US-CERT is aware of the Microsoft Enhanced Mitigation Experience Toolkit (EMET) prior to 5.5.  If you want to be able to control it <br><br>  Microsoft Security TechCenter (link is external) recommends users and administrators to upgrade to EMET version 5.5.  For additional information, please review the FireEye threat research blog (link is external) </blockquote><br>  <a href="https://www.us-cert.gov/ncas/current-activity/2016/02/23/Microsoft-Releases-Update-EMET">www.us-cert.gov/ncas/current-activity/2016/02/23/Microsoft-Releases-Update-EMET</a> </div><p>Source: https://habr.com/ru/post/277785/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../277775/index.html">IntelliJ IDEA 16 Public Preview Review</a></li>
 <li><a href="../277777/index.html">Azure Stack Technical Preview 1 features overview</a></li>
 <li><a href="../277779/index.html">The unexpected behavior of openssl_random_pseudo_bytes () leads to a fatal loss of robustness</a></li>
+<li><a href="../27778/index.html">Spyware Terminator - Spies Thunderstorm</a></li>
 <li><a href="../277781/index.html">Using convolutional networks for searching, highlighting, and classifying</a></li>
 <li><a href="../277783/index.html">LTSP: Terminal Server on Linux</a></li>
 <li><a href="../277787/index.html">Festive social project: share a solution - save your colleagues health</a></li>

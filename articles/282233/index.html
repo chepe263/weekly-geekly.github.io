@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Setup of VLAN on Mikrotik together with Cisco</h1><div class="post__text post__text-html js-mediator-article">  It so happened that neither the official documentation nor the active googling gave an understanding and result on the configuration of the VLAN, and especially in conjunction with the Cisco SG200. <br><br><h4>  Need to configure: </h4><br>  Two separate subnets within the device, each of which looks into its own VLAN (51 or 66) and can go online.  One separate network for telephony, where VLAN (16) is already explicitly set on the phones. <br>  Firewall configuration will not be considered in detail. <br><a name="habracut"></a><br><br><h4>  Given: </h4><br>  <b>Model:</b> Mikrotik 951G-2HnD <br>  <b>Port1:</b> Cable from CiscoSG200, with 40U, 16T, 51T, 66T VLANs <br>  <b>Port2:</b> Connected directly to the outlet for the first subnet <br>  <b>Port3:</b> Connected directly to the outlet for the first subnet <br>  <b>Port 4,5:</b> Empty <br>  <b>WifiAP1:</b> Must look into the first subnet <br>  <b>WifiAP2:</b> Must look into the second subnet <br><h4>  Work Logic: </h4><br>  The presence of a VLAN on a port is determined by the creation of a vlan-type interface with an indication of the master port.  The traffic that goes through the main port will be considered UNTAGGED, the traffic that goes through the “vlan” interface is TAGGED.  In accordance with this, bridges will be created. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Setup: </h4><br>  1. For <b>Port1,</b> we create 3 “vlan” type interfaces with VLAN ID 16, 51, 66. We call them <b>Port1-VLAN16 (51.66), respectively</b> . <br>  2. We send the route 0.0.0.0/0 to <b>Port1</b> , it will be Internet access. <br>  3. Since, in parallel with computers, phones for <b>Port2</b> , 3 will be connected to unmanaged switches, we create vlan interfaces with VLAN ID 16 for these ports. We call them <b>Port2, 3-VLAN16, respectively.</b> <br>  4. Create the <b>Bridge-VLAN16 bridge</b> .  <b>We integrate Port1,2,3-VLAN16</b> interfaces into it.  Telephony earned. <br>  5. Set up a wifi point.  <b>Call</b> it <b>Wifi0</b> .  In its parameters we <u><i><b>do not</b></i></u> specify vlan id. <br>  6. Add a new interface like “Virtual AP”.  <b>Call</b> it <b>Wifi1</b> .  We <u><i><b>do not</b></i></u> specify vlan id in the parameters. <br>  7. Create the <b>Bridge-VLAN66 bridge</b> .  <b>We integrate</b> into it interfaces <b>Port1-VLAN66, Port2, Port3 and Wifi0</b> .  Since  in this subnet, the devices do not know about vlan, then the packets will come to the “bare” port, and automatically be tagged if they fall into VLAN66 and become unprocessed, coming from it.  On this bridge we hang DCHP, NAT, Internet, etc. <br>  8. Create the <b>Bridge-VLAN51 bridge</b> .  We combine the interfaces <b>Port1-VLAN51 and Wifi1 into it</b> .  The package situation will be similar.  Spice up the DHCP and firewall rules to taste. <br><br>  Enjoying. <br><img src="https://habrastorage.org/getpro/habr/post_images/288/762/332/288762332595383bf243dad56c0a4fef.png" alt="image"></div><p>Source: <a href="https://habr.com/ru/post/282233/">https://habr.com/ru/post/282233/</a></p>
+    <h4>  Setup: </h4><br>  1. For <b>Port1,</b> we create 3 “vlan” type interfaces with VLAN ID 16, 51, 66. We call them <b>Port1-VLAN16 (51.66), respectively</b> . <br>  2. We send the route 0.0.0.0/0 to <b>Port1</b> , it will be Internet access. <br>  3. Since, in parallel with computers, phones for <b>Port2</b> , 3 will be connected to unmanaged switches, we create vlan interfaces with VLAN ID 16 for these ports. We call them <b>Port2, 3-VLAN16, respectively.</b> <br>  4. Create the <b>Bridge-VLAN16 bridge</b> .  <b>We integrate Port1,2,3-VLAN16</b> interfaces into it.  Telephony earned. <br>  5. Set up a wifi point.  <b>Call</b> it <b>Wifi0</b> .  In its parameters we <u><i><b>do not</b></i></u> specify vlan id. <br>  6. Add a new interface like “Virtual AP”.  <b>Call</b> it <b>Wifi1</b> .  We <u><i><b>do not</b></i></u> specify vlan id in the parameters. <br>  7. Create the <b>Bridge-VLAN66 bridge</b> .  <b>We integrate</b> into it interfaces <b>Port1-VLAN66, Port2, Port3 and Wifi0</b> .  Since  in this subnet, the devices do not know about vlan, then the packets will come to the “bare” port, and automatically be tagged if they fall into VLAN66 and become unprocessed, coming from it.  On this bridge we hang DCHP, NAT, Internet, etc. <br>  8. Create the <b>Bridge-VLAN51 bridge</b> .  We combine the interfaces <b>Port1-VLAN51 and Wifi1 into it</b> .  The package situation will be similar.  Spice up the DHCP and firewall rules to taste. <br><br>  Enjoying. <br><img src="https://habrastorage.org/getpro/habr/post_images/288/762/332/288762332595383bf243dad56c0a4fef.png" alt="image"></div><p>Source: https://habr.com/ru/post/282233/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

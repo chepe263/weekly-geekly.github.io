@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Under the hood JobIntentService</h1><div class="post__text post__text-html js-mediator-article"><p>  In this article, we will discuss one problem with the JobIntentService, about which there are many questions on the relevant resources and reports in the Google tracker bug.  And also about the reason for which, judging by everything, Google does not consider it a bug and will close these reports. </p><a name="habracut"></a><br><h2 id="vvedenie">  Introduction </h2><br><p>  JobIntentServices were created for background work.  They are widely used in Android 8 and above, when the ability to use services in the background has disappeared. <br>  In essence, they replace services in the background, as well as being managed by a task scheduler (JobScheduler). </p><br><p>  Thus, the system has the ability to control the progress of tasks in the background as well as manage wakelockes, which allowed optimizing the device’s battery consumption and avoiding incorrect use of wakelock developers.  These steps allowed to minimize the situation when the device cannot plunge into sleep mode (Doze Mode), which again affects the battery saving. </p><br><h2 id="korotko-o-jobintentservice">  JobIntentService in brief </h2><br><p>  In essence, a JobIntentService is the same IntentService under the control of a task scheduler (JobScheduler). </p><br><p>  It is executed in the AsyncTask background thread. </p><br><p>  In versions of Android 4.4 and below, the usual IntentService is used. </p><br><p>  <a href="https://developer.android.com/reference/android/support/v4/app/JobIntentService">A detailed description can be found in the documentation.</a> </p><br><h2 id="zhiznennyy-cikl-i-podvodnye-kamni">  Life cycle and pitfalls </h2><br><p>  Both types of tasks have the same life cycle.  Tasks are controlled by Handler and have states. </p><br><p>  Although these states are not accessible from the outside, under certain circumstances, the system throws exceptions in which the application “crashes”.  These behaviors are a problem and a headache for many developers and unfortunately do not have a simple solution.  To begin with, we will study the states and the life cycle of tasks, and then we will look at possible solutions. </p><br><h4 id="posledovatelnost-sostoyaniy-zadach">  Sequence of task states </h4><br><p><img src="https://habrastorage.org/webt/ix/nu/if/ixnuifwlnlnsdr6m9ong9riwdd0.png" alt="image"><br>  <em>BINDING</em> - task creation status (service binding) timeout 18 seconds. <br>  <em>STARTING</em> - task start status, timeout 8 seconds. <br>  <em>EXECUTING</em> - task execution status, timeout 10 minutes. <br>  <em>STOPPING</em> - the task stop state (for example, after calling cancel ()), timeout 8 seconds. <br>  <em>FINISHED</em> - the final state of the completed task, the last state in the life cycle of the task. </p><br><h4 id="uproschennaya-shema-zhiznennogo-cikla-zadach">  Simplified task life cycle diagram </h4><br><p><img src="https://habrastorage.org/webt/ys/rm/t3/ysrmt3elk_ymztwmtymubn94ea0.png" alt="image"><br>  Each task state has its own timeout.  When the timeout expires, the task is interrupted regardless of its state.  Actually, this is a timeout mechanism and is a pitfall.  after the timeout expires, the system throws an exception of type <code>java.lang.SecurityException</code> and the application “crashes” with the following message <code>Caller no longer running, last stopped +1s600ms because: timed out while starting</code> when the exception is thrown, and “reason” ( <code>because: timed out while starting</code> ) indicates the state of the task when the timeout has expired. </p><br><h2 id="vyvody">  findings </h2><br><p>  Experience shows that these exceptions are found in pretty loaded applications. </p><br><p>  In confirmation of this problem, one can observe both on weak and on top devices.  This problem is also indicated by thrown exceptions with messages about timeouts.  Accordingly, the decision about unloading the application and optimizing the use of JobIntentService, for example, to avoid situations when several JobIntentService are launched in parallel, suggests itself.  The second solution, in some cases more trivial, and sometimes more difficult the first option - is to use the JobService. </p><br><p>  Also, if you google this problem, you can stumble upon other "dubious" solutions to this problem, for example, you can see the following links: </p><br><p>  <a href="https://issuetracker.google.com/issues/63622293">Option 1</a> <br>  <a href="https://github.com/evernote/android-job/issues/255">Option 2</a> <br>  <a href="https://stackoverflow.com/a/50750543/1289285">Option 3</a> </p><br><h2 id="p-s">  PS </h2><br><p>  At the moment, Google is preparing a good replacement for JobService and JobIntentService - this is Worker and WorkManger from the androidx.work package. </p><br><p>  Unfortunately, these tools are not yet ready for production and have a number of bugs, but already now, as tests have shown, they solve the problem described above. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/432576/">https://habr.com/ru/post/432576/</a></p>
+    <p>Source: https://habr.com/ru/post/432576/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../432572/index.html">Metal-air transistor will extend Moore's law - how technology works</a></li>
 <li><a href="../432574/index.html">Difficult development of simple devices</a></li>
 <li><a href="../432578/index.html">China confirms leadership in the Asian lunar race</a></li>
+<li><a href="../43258/index.html">Ubuntu 8.10 on eee 901</a></li>
 <li><a href="../432580/index.html">What is the AI ​​pierced when generating human faces?</a></li>
 <li><a href="../432584/index.html">China leads the way in the development of quantum cryptography systems</a></li>
 <li><a href="../432586/index.html">Atomic CSS - order and cleanliness</a></li>
-<li><a href="../432590/index.html">How Emelya went on Ludum Dare</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Interface for Yandex.Disk in Ubuntu 14.04</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/45e/899/97f/45e89997fa5e4eeeb84cb9adac3adb36.png" alt="image"><br><br>  As you know, Yandex.Disk on Ubuntu exists only as a console client.  Today I decided to “endure it enough” and wrote for myself a simple script that greatly simplifies working with it (the sources at the bottom of the article). <br><a name="habracut"></a><br>  It is necessary to clarify that this script was written for personal use, but a friend persuaded to put it here, so things like absolute file addresses will not be absolute and you should correct them for your own system. <br><br>  To work, we need only three files: <br><ol><li>  Startup file for user interaction </li><li>  Bash script to interact with the client </li><li>  Yandex.Disk service icon </li></ol>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Let's start with BASH.  Create a file <b>ya-disk.sh</b> in any convenient place: <br><br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash case $1 in start) #   deamon=`yandex-disk start` notify-send -i "$HOME//yandex-disk/icon.png" "$deamon" ;; stop) #   deamon=`yandex-disk stop` notify-send -i "$HOME//yandex-disk/icon.png" "$deamon" ;; *) #    deamon=`yandex-disk status` if [[ "$deamon" == ":   " ]] #         - . then deamon=`yandex-disk start` notify-send -i "$HOME//yandex-disk/icon.png" "$deamon" else #         status=`yandex-disk status | grep -o '^  : .*$' | grep -o ': .*$'` all=`yandex-disk status | grep -o ':.*'` nfree=`yandex-disk status | grep -o ':.*'` free=`yandex-disk status | grep -o ':.*'` maxfile=`yandex-disk status | grep -o '  :.*'` trash=`yandex-disk status | grep -o ' :.*'` if [[ "$status" == ": " ]] #      then SUNC=`yandex-disk status | grep -o ' : .*' | grep -o '[^:]*$'` notify-send -i "$HOME//yandex-disk/icon.png" "" ":$SUNC\n$all\n$nfree\n$free\n$maxfile\n$trash" elif [[ "$status" == ":  " ]]; then #      notify-send -i "$HOME//yandex-disk/icon.png" "$status" else #    notify-send -i "$HOME//yandex-disk/icon.png" "$status" "$all\n$nfree\n$free\n$maxfile\n$trash" fi fi ;; esac #  case. exit 0</span></span></code> </pre> <br><br>  Now create the startup file. <br><br>  Go to the address where all our application shortcuts are: <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /usr/share/applications/</code> </pre><br>  Now create a shortcut to our new application with the command: <br><br><pre> <code class="bash hljs">sudo gedit ya-disk.desktop</code> </pre><br>  With the following content: <br><br><pre> <code class="bash hljs">[Desktop Entry] Version=1.0 Type=Application Name=. Comment= ,        . Exec=/home/alex//yandex-disk/ya-disk.sh Terminal=<span class="hljs-literal"><span class="hljs-literal">false</span></span> Icon=/home/alex//yandex-disk/icon.png StartupNotify=<span class="hljs-literal"><span class="hljs-literal">true</span></span> Actions=Window;Document; [Desktop Action Window] Name= Exec=/home/alex//yandex-disk/ya-disk.sh start OnlyShowIn=Unity; [Desktop Action Document] Name= Exec=/home/alex//yandex-disk/ya-disk.sh stop OnlyShowIn=Unity;</code> </pre><br>  Do not forget to change the value of the <b>Exec</b> and <b>Icon</b> parameters.  They should lead to the appropriate files on your. <br><br>  And the final touch.  Download and place the icon at the address specified in the <b>Icon</b> parameter. <br>  For me it: <br><br><pre> <code class="bash hljs">/home/alex//yandex-disk/icon.png</code> </pre><br>  That's all. <br><br>  The Yandex.Disk icon will appear in the Dash.  If you put it on the Unity panel, then with the right button you can stop and start the daemon. <br><br>  Promised <a href="https://yadi.sk/d/iZav63aceLGpP">source code</a> . </div><p>Source: <a href="https://habr.com/ru/post/249267/">https://habr.com/ru/post/249267/</a></p>
+      Let's start with BASH.  Create a file <b>ya-disk.sh</b> in any convenient place: <br><br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash case $1 in start) #   deamon=`yandex-disk start` notify-send -i "$HOME//yandex-disk/icon.png" "$deamon" ;; stop) #   deamon=`yandex-disk stop` notify-send -i "$HOME//yandex-disk/icon.png" "$deamon" ;; *) #    deamon=`yandex-disk status` if [[ "$deamon" == ":   " ]] #         - . then deamon=`yandex-disk start` notify-send -i "$HOME//yandex-disk/icon.png" "$deamon" else #         status=`yandex-disk status | grep -o '^  : .*$' | grep -o ': .*$'` all=`yandex-disk status | grep -o ':.*'` nfree=`yandex-disk status | grep -o ':.*'` free=`yandex-disk status | grep -o ':.*'` maxfile=`yandex-disk status | grep -o '  :.*'` trash=`yandex-disk status | grep -o ' :.*'` if [[ "$status" == ": " ]] #      then SUNC=`yandex-disk status | grep -o ' : .*' | grep -o '[^:]*$'` notify-send -i "$HOME//yandex-disk/icon.png" "" ":$SUNC\n$all\n$nfree\n$free\n$maxfile\n$trash" elif [[ "$status" == ":  " ]]; then #      notify-send -i "$HOME//yandex-disk/icon.png" "$status" else #    notify-send -i "$HOME//yandex-disk/icon.png" "$status" "$all\n$nfree\n$free\n$maxfile\n$trash" fi fi ;; esac #  case. exit 0</span></span></code> </pre> <br><br>  Now create the startup file. <br><br>  Go to the address where all our application shortcuts are: <br><br><pre> <code class="bash hljs"><span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> /usr/share/applications/</code> </pre><br>  Now create a shortcut to our new application with the command: <br><br><pre> <code class="bash hljs">sudo gedit ya-disk.desktop</code> </pre><br>  With the following content: <br><br><pre> <code class="bash hljs">[Desktop Entry] Version=1.0 Type=Application Name=. Comment= ,        . Exec=/home/alex//yandex-disk/ya-disk.sh Terminal=<span class="hljs-literal"><span class="hljs-literal">false</span></span> Icon=/home/alex//yandex-disk/icon.png StartupNotify=<span class="hljs-literal"><span class="hljs-literal">true</span></span> Actions=Window;Document; [Desktop Action Window] Name= Exec=/home/alex//yandex-disk/ya-disk.sh start OnlyShowIn=Unity; [Desktop Action Document] Name= Exec=/home/alex//yandex-disk/ya-disk.sh stop OnlyShowIn=Unity;</code> </pre><br>  Do not forget to change the value of the <b>Exec</b> and <b>Icon</b> parameters.  They should lead to the appropriate files on your. <br><br>  And the final touch.  Download and place the icon at the address specified in the <b>Icon</b> parameter. <br>  For me it: <br><br><pre> <code class="bash hljs">/home/alex//yandex-disk/icon.png</code> </pre><br>  That's all. <br><br>  The Yandex.Disk icon will appear in the Dash.  If you put it on the Unity panel, then with the right button you can stop and start the daemon. <br><br>  Promised <a href="https://yadi.sk/d/iZav63aceLGpP">source code</a> . </div><p>Source: https://habr.com/ru/post/249267/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../249263/index.html">Model View Controller (MVC) usage experience, conclusions</a></li>
 <li><a href="../249265/index.html">Raspberry and Telegram: prerequisites for creating a smart home</a></li>
 <li><a href="../249269/index.html">Linguistic aspects of what3words and technical analysis of dictionaries</a></li>
+<li><a href="../24927/index.html">What does Ro start from ..., and no, not the way to start an online store!</a></li>
 <li><a href="../249271/index.html">How we “married” cloud PBX, GSM and realtors (part 1)</a></li>
 <li><a href="../249273/index.html">STM32 and FreeRTOS. 1. Fun with streams</a></li>
 <li><a href="../249275/index.html">Update cloud platform Jelastic 2.5 - scaling on the fly</a></li>
-<li><a href="../249279/index.html">Flux for stupid people</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

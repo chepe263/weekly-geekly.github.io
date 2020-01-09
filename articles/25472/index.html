@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>jQuery + AJAX + (Google Search API || Yahoo Search API)</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/olpictures/a79/647/5e2/a796475e2fe19f87953bccc32f7b6e11.gif" width="168" height="146" hspace="10" vspace="10"><br><br>  As is clear from the title - this post will be devoted to working with the Google Search API and the Yahoo Search API through jQuery JavaScript library. <br><a name="habracut"></a><br><br><h2>  Yahoo Search AJAX API </h2><br>  I'll start by using the <strong>Yahoo Search API</strong> .  And for that there are 2 reasons: <br><ol><li>  Google service is more <a href="http://code.google.com/p/google-ajax-apis/issues/list">buggy</a> than Yahoo (it’s still green) </li><li>  Yahoo does not pay attention to the ref = "nofollow" attribute, due to which its issue is more complete </li></ol>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       So let's get started, first we need to register a Yahoo account and get an " <a href="http://developer.yahoo.com/wsregapp/index.php">Application Id</a> ". <br><br>  Your favorite bookmark for a while will be <a href="http://developer.yahoo.com/search/">http://developer.yahoo.com/search/</a> . <br><br>  Next, we decide for ourselves what search interests us (all links to the relevant sections of the documentation for the Yahoo API): <br><ul><li>  <a href="http://developer.yahoo.com/search/audio/index.html">Audio Search</a> <br><ul><li>  <a href="http://developer.yahoo.com/search/audio/V1/albumSearch.html">Album Search</a> <br>  <a href="http://developer.yahoo.com/search/audio/V1/artistSearch.html">Artist Search</a> <br>  <a href="http://developer.yahoo.com/search/audio/V1/songDownloadLocation.html">Download Location</a> <br>  <a href="http://developer.yahoo.com/search/audio/V1/songSearch.html">Song search</a> <br><br><br>  <a href="http://developer.yahoo.com/search/autos/autoinstall.html">Autos custom</a> <br>  <a href="http://developer.yahoo.com/search/content/V1/termExtraction.html">Content analysis</a> <br>  <a href="http://developer.yahoo.com/search/image/V1/imageSearch.html">Image Search</a> <br>  <a href="http://developer.yahoo.com/search/local/">Local Search</a> <br><ul><li>  <a href="http://developer.yahoo.com/search/local/V3/localSearch.html">Local Search V3</a> </li></ul><br><br>  <a href="http://developer.yahoo.com/search/myweb/index.html">MyWeb 2.0</a> <br><ul><li>  <a href="http://developer.yahoo.com/search/myweb/V1/relatedTags.html">Related Tags</a> <br>  <a href="http://developer.yahoo.com/search/myweb/V1/tagSearch.html">Tag Search</a> <br>  <a href="http://developer.yahoo.com/search/myweb/V1/urlSearch.html">URL Search</a> <br><br><br>  <a href="http://developer.yahoo.com/search/news/V1/newsSearch.html">News Search</a> <br>  <a href="http://developer.yahoo.com/search/siteexplorer/index.html">Site explorer</a> <br><ul><li>  <a href="http://developer.yahoo.com/search/siteexplorer/V1/pageData.html">Pages</a> <br>  <a href="http://developer.yahoo.com/search/siteexplorer/V1/inlinkData.html">Inlinks</a> <br>  <a href="http://developer.yahoo.com/search/siteexplorer/V1/updateNotification.html">Update Notification</a> <br><br><br>  <a href="http://developer.yahoo.com/search/video/V1/videoSearch.html">Video Search</a> <br>  <a href="http://developer.yahoo.com/search/web/">Web search</a> <br><ul><li>  <a href="http://developer.yahoo.com/search/web/V1/webSearch.html">Web search</a> <br>  <a href="http://developer.yahoo.com/search/web/V1/contextSearch.html">Context search</a> <br>  <a href="http://developer.yahoo.com/search/web/V1/relatedSuggestion.html">Related Queries</a> <br>  <a href="http://developer.yahoo.com/search/web/V1/spellingSuggestion.html">Spelling Suggest</a> <br></li></ul><br><br><br>  There are many of them, but we will choose one - Web Search, and we will continue to experiment on it. <br><br><h3>  We make a REST request </h3><br><br>  Using the links above, we get the base of our URL, for Web Search these are: <br>  <em><a href="http://search.yahooapis.com/WebSearchService/V1/webSearch">search.yahooapis.com/WebSearchService/V1/webSearch</a></em> <br><br>  Add your API ID <em>appid = YahooDemo</em> and <i>query = PHP itself</i> (before adding a query, you must prepare it using the <a href="http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:encodeURIComponent">encodeURIComponent</a> function) <br><br>  As a result, we get the following URL: <br><br><blockquote>  <a href="http://search.yahooapis.com/WebSearchService/V1/webSearch%3Fappid%3DYahooDemo%26query%3DPHP">http://search.yahooapis.com/WebSearchService/V1/webSearch?appid=YahooDemo&amp;query=PHP</a> </blockquote><br><br>  This is our necessary minimum, but XML is not the most digestible format for JavaScript, we prefer JSON, and even better than <a href="http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/">JSONP</a> .  To do this, we need to specify the output format using the <i>output</i> parameter.  To use the charms of JSONP, we also need to specify the name of the callback function, and now our URL will look like this: <br><br><blockquote>  <a href="http://search.yahooapis.com/WebSearchService/V1/webSearch%3Fappid%3DYahooDemo%26output%3Djson%26callback%3Dfoo%26query%3DPHP">http://search.yahooapis.com/WebSearchService/V1/webSearch?appid=YahooDemo&amp;output=json&amp;callback=foo&amp;query=PHP</a> </blockquote><br><br><h3>  Javascript </h3><br><br>  Now take jQuery and get the following construction: <br><blockquote><pre> $ .getJSON ("http://search.yahooapis.com/WebSearchService/V1/webSearch?appid=YahooDemo&amp;output=json&amp;query=PHP&amp;callback=?",
@@ -101,7 +101,7 @@
      });
      $ ('body'). html (ul);
  });
-</pre></blockquote><br><br>  <u>Note</u> : each type of results has its own properties, more information can be found in the <a href="http://code.google.com/apis/ajaxsearch/documentation/reference.html">documentation</a> . <br><br>  As you can see, now we are not limited by the “capabilities” of Google’s JavaScript library, and we are free to use the data at our discretion, which is what we really wanted ... <br><br>  PS: Using a similar approach - we remove the restriction on the presentation of data, and what is important - we transfer the load from the server to the client (this is how the search is organized on the website <a href="http://analyser.hohli.com/people">analyzer.hohli.com</a> ). <br><br>  Crossposting: <a href="http://anton.shevchuk.name/javascript/jquery-and-google-search-api-or-yahoo-search-api-yahoo-search-api/">http://anton.shevchuk.name/</a> </li></ul></li></ul></li></ul></li></ul></div><p>Source: <a href="https://habr.com/ru/post/25472/">https://habr.com/ru/post/25472/</a></p>
+</pre></blockquote><br><br>  <u>Note</u> : each type of results has its own properties, more information can be found in the <a href="http://code.google.com/apis/ajaxsearch/documentation/reference.html">documentation</a> . <br><br>  As you can see, now we are not limited by the “capabilities” of Google’s JavaScript library, and we are free to use the data at our discretion, which is what we really wanted ... <br><br>  PS: Using a similar approach - we remove the restriction on the presentation of data, and what is important - we transfer the load from the server to the client (this is how the search is organized on the website <a href="http://analyser.hohli.com/people">analyzer.hohli.com</a> ). <br><br>  Crossposting: <a href="http://anton.shevchuk.name/javascript/jquery-and-google-search-api-or-yahoo-search-api-yahoo-search-api/">http://anton.shevchuk.name/</a> </li></ul></li></ul></li></ul></li></ul></div><p>Source: https://habr.com/ru/post/25472/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -111,10 +111,10 @@
 <li><a href="../254717/index.html">On middleware</a></li>
 <li><a href="../254719/index.html">The Bresenham algorithm in a soldering furnace - theory</a></li>
 <li><a href="../254721/index.html">Practical use of a small vocabulary</a></li>
+<li><a href="../254723/index.html">Off Button for Raspberry Pi</a></li>
 <li><a href="../254727/index.html">Asynchronous work with Tarantool on Python</a></li>
 <li><a href="../25473/index.html">The first release of the project Moonlight</a></li>
 <li><a href="../254731/index.html">Improving xaml: Bindable Converters, Switch Converter, Sets</a></li>
-<li><a href="../254733/index.html">Using Asterisk to receive data from security systems</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

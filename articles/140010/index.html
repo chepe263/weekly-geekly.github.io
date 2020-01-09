@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Convenience of observation, atop</h1><div class="post__text post__text-html js-mediator-article">  Good day, community, <br>  On Habré, it was already mentioned about all sorts of TOP-based utilities, this time, I want to try to look closer at the <b>atop</b> utility.  I will try to compare it a little with existing performance monitoring utilities and learn how to read the findings of this command. <br>  System administrators have the task of monitoring performance almost every day, and of course I would like to do all this within the framework of one utility and without any special dances with a tambourine, it seems to me the most convenient way to use the atop command. <br><a name="habracut"></a><br>  Let's arrange a brief overview on the functionality of the most popular performance viewing utilities.  In Linux, there is a rich set of utilities to monitor the system, but each of them has certain limitations and their inherent flaws.  Let's try to describe the main parameters that the administrator wants to read from his system: <br><ul><li>  The utility must necessarily show the situation “on-line”, but since problems rarely occur at the time of observation, it should include the state viewing functionality for a certain past period. </li><li>  must demonstrate the performance of 4 core resources: CPU, memory, disk I / O and network. </li><li>  since the loading of each of the four resources is definitely the merit of a process, the utility should show the dependence of the resource load on the process. </li><li>  should be able to take snapshots of the system, with a certain interval. </li></ul><br>  If we carefully examine these requirements, and try to impose them on all known monitoring systems, we will see the following: <br>  sar - shows more than enough information about the four system resources we need, knows how to “return to the past”, but does not know how to focus on processes. <br>  vmstat and iostat - can monitor the CPU, memory and disk usage only at the system level, but not at the process level, they also do not know how to “return to the past”. <br>  top - as certainly the most popular utility, monitors the CPU and memory at the system level and at the process level.  But like many others, it shows only the current situation, the main drawback in my opinion is that its readings are not always accurate, using the top utility, we can encounter such a problem: the system will tell us what to occupy 90% of the CPU, and in fact the amount of CPU load at the process level will be 40% (a difference of 50% percent indicates that the system shows us the information between the previous and the current snapshot, although the system is already free in principle).  Ie the reliability and informational content is a bit lame <br>  Below is a table comparing these systems by characteristics. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/470/c9c/c0c/470c9cc0cfa0ddb0b3836c63ccea6e0b.png" alt="image"><br><br>  The atop utility by default can show downloads on the processor, memory, disks, and the network.  Also available is a patch that will show network usage by process.  By default, the standard output of the command is the following information: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,11 +60,11 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <img src="https://habrastorage.org/getpro/habr/post_images/3a9/6c5/194/3a96c5194c348047aa14abf58c0bc243.png" alt="image"><br><br>  As in the standard top output, the screen is divided into two halves, in the first of them the data on the system are indicated, and in the second data on the processes. <br>  In the upper half, you can see not only the information on the processor and the memory as in the standard top output, but also information on the network and disks.  If we pay attention to the 2nd line of this output, summing up the values ​​(3 + 2 + 0 + 195 + 0) we get 200% - this means that the system is 2 processors, and each of them has 100%, the division by each processor, how much this or that busy.  Below after these lines are the RAM, information on disks, and network interfaces. <br>  A more detailed description of each column can be found in the man page for this utility, by the way an extremely detailed description. <br>  Naturally, we can change its appearance as we want using hot keys, below I indicated the most interesting of them, <br>  <i>m - builds processes on occupied memory</i> <i><br></i>  <i>d - build processes on disk usage</i> <i><br></i>  <i>n - builds up processes for using the network (available only with the patch installed)</i> <i><br></i>  <i>v - shows more detailed information about the processes (user, date and time of the process start)</i> <i><br></i>  <i>u - will build a table for the most voracious users</i> <i><br></i>  <i>Using shift + (d, m, n) will build the current list with the above parameters.</i> <i><br></i>  <i>i - change the scan time, the default is 10 seconds.</i> <i><br></i>  <i>g - returns everything to the default output.</i> <br>  Now let's see how to use the “return to the past” function, the atop utility with a standard installation has such a useful “feature” that includes night logging of the system performance.  The utility defaults to readings every 10 minutes, and dumps them into the log / var / log / atop-YYYYMMDD.  I have this case disabled by default, the server is not so important: <br><br><pre>  [root @ OracleLinux ~] # chkconfig --list |  grep atop
- atop 0: off 1: off 2: off 3: off 4: off 5: off 6: off </pre><br><br>  In the future, you can use atop itself with the -r key to analyze or view the log, or if you like reports like sar, you can use the atopsar utility.  By the way, it is important to clarify that data is collected in a binary format. <br>  So we can say that at the moment the best utility than atop?  which was able to combine in itself almost all the necessary functionality for the system administrator is not.  Well, at least this is my personal opinion. <br>  Disclaimers in the comments are welcome! </div><p>Source: <a href="https://habr.com/ru/post/140010/">https://habr.com/ru/post/140010/</a></p>
+ atop 0: off 1: off 2: off 3: off 4: off 5: off 6: off </pre><br><br>  In the future, you can use atop itself with the -r key to analyze or view the log, or if you like reports like sar, you can use the atopsar utility.  By the way, it is important to clarify that data is collected in a binary format. <br>  So we can say that at the moment the best utility than atop?  which was able to combine in itself almost all the necessary functionality for the system administrator is not.  Well, at least this is my personal opinion. <br>  Disclaimers in the comments are welcome! </div><p>Source: https://habr.com/ru/post/140010/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -76,8 +76,8 @@
 <li><a href="../140012/index.html">Fair generation of DOCX files in PHP. Part 2</a></li>
 <li><a href="../140014/index.html">Commentary of the day: Everyone's irish on March 17th!</a></li>
 <li><a href="../140016/index.html">A series of meetings with Dmitry Grishin students</a></li>
+<li><a href="../140018/index.html">As we celebrated March 8</a></li>
 <li><a href="../140019/index.html">Changes on Habré eyes of the developer from</a></li>
-<li><a href="../140020/index.html">From Tomsk to Silicon Valley and Back</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>CodeSniffer and PhpEd</h1><div class="post__text post__text-html js-mediator-article"> On Habré, the description of the PHP_CodeSniffer tool, which is used to check the compliance of the written code with the coding standards, has already been met.  The tool is very convenient and useful, I think, no one will argue.  There are articles on the Internet that describe how to integrate it with the version control system to check before the next commit, but I wanted to tie it to my IDE to check the code while it was being written. <br><br>  Historically, I use Nusphere IDE - PhpEd in my work.  PhpEd allows you to connect to your php scripts, which can perform arbitrary operations on the code in the editor.  The script can also launch an external program and return data from the standard output stream directly to the code editor. <br><a name="habracut"></a><br>  The Nusphere forum has a whole section on <a href="http://forum.nusphere.com/phped-integration-scripts-f18.html">automation scripts.</a> <br><br>  I have long known about this feature, but it is not quite suitable for using CodeSniffer.  I will explain why.  We can redirect all the data obtained as a result of the analysis of our code to the debug window of the editor, but this will be just a static text.  Line numbers with errors are also plain text and it will not be possible to navigate through the code.  You’ll have to watch with your eyes the line number with an error, move your hands to this line and edit it.  Of course, I didn’t like this case at all. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      In the editor's log window, I noticed the location column.  Most likely this is what I needed, but I did not know how to display the data in this column. <br>  Breaking the entire developer forum, I found several topics dedicated to this problem, but everywhere there were no answers or recipes.  I was already desperate, as I came across the following message. <br><br> <code>File location regexp: ^([^ ]+) (\([0-9]*\)) .*$ <br> (or say Output location regexp) <br> by applying this regexp on each line in the output, IDE will get array of two elements (when matched, of course). And one of the elements will be file name and the other is line number.</code> <br> <br>  In other words, if we form the output line in accordance with the given regular expression, the IDE will understand that we give it information about the file and the line number in it.  The task was to run CodeSniffer, retrieve data from it, reformat the output a bit and send the editor to the logs window, which is a trifle. <br><br>  Now everything is in steps: <br><br>  0. Set pear for php, which comes as part of PhpEd <br> <code>c:\Program Files\NuSphere\PhpED\php5&gt; go-pear.bat</code> <br> <br>  and php_sniffer package <br> <code>c:\Program Files\NuSphere\PhpED\php5&gt; pear install php_sniffer</code> <br> <br>  1. Swing <a href="https://docs.google.com/leaf%3Fid%3D0B8Vto3h5b_NOM2M2ZWRhZDAtOGZiNS00MGZjLTlkMjItNjJkNDBmMDYxZjA1%26hl%3Dru">my little wrapper class</a> over CodeSniffer.  We put it, let's say, in <br> <code>c:\Program Files\NuSphere\PhpED\scripts\</code> <br> <br>  2. Open PhpEd. <br><br>  Settings&gt; Tools&gt; Integration <br>  Create a new menu "Scripts" <br>  Create a new submenu "CodeSniffer" <br><br>  3. Edit the created item: <br><br>  - Execute with "Shell" <br>  - Command line: <br> <code>"c:\Program Files\NuSphere\PhpED\php5\php.exe" "c:\Program Files\NuSphere\PhpED\scripts\codesnifferwrapper.php" "@Fname@"</code> <br>  - Shortcut: CTL-ALT-0 (or any convenient) <br>  - Put the crosses in the following paragraphs: <br> <code>Show this command in Workspace popup – for files <br> Show this command in Explorer popup – for files <br> Show this command in File Bar popup <br> <b>Redirect Output Stream to log window</b></code> <br> <br>  Save the result, open any php file, click the assigned key combination and admire. <br><br><img src="https://habrastorage.org/storage1/17bbe0b0/0c56d9c1/85194edc/aeb537ac.png"></div><p>Source: <a href="https://habr.com/ru/post/130831/">https://habr.com/ru/post/130831/</a></p>
+      In the editor's log window, I noticed the location column.  Most likely this is what I needed, but I did not know how to display the data in this column. <br>  Breaking the entire developer forum, I found several topics dedicated to this problem, but everywhere there were no answers or recipes.  I was already desperate, as I came across the following message. <br><br> <code>File location regexp: ^([^ ]+) (\([0-9]*\)) .*$ <br> (or say Output location regexp) <br> by applying this regexp on each line in the output, IDE will get array of two elements (when matched, of course). And one of the elements will be file name and the other is line number.</code> <br> <br>  In other words, if we form the output line in accordance with the given regular expression, the IDE will understand that we give it information about the file and the line number in it.  The task was to run CodeSniffer, retrieve data from it, reformat the output a bit and send the editor to the logs window, which is a trifle. <br><br>  Now everything is in steps: <br><br>  0. Set pear for php, which comes as part of PhpEd <br> <code>c:\Program Files\NuSphere\PhpED\php5&gt; go-pear.bat</code> <br> <br>  and php_sniffer package <br> <code>c:\Program Files\NuSphere\PhpED\php5&gt; pear install php_sniffer</code> <br> <br>  1. Swing <a href="https://docs.google.com/leaf%3Fid%3D0B8Vto3h5b_NOM2M2ZWRhZDAtOGZiNS00MGZjLTlkMjItNjJkNDBmMDYxZjA1%26hl%3Dru">my little wrapper class</a> over CodeSniffer.  We put it, let's say, in <br> <code>c:\Program Files\NuSphere\PhpED\scripts\</code> <br> <br>  2. Open PhpEd. <br><br>  Settings&gt; Tools&gt; Integration <br>  Create a new menu "Scripts" <br>  Create a new submenu "CodeSniffer" <br><br>  3. Edit the created item: <br><br>  - Execute with "Shell" <br>  - Command line: <br> <code>"c:\Program Files\NuSphere\PhpED\php5\php.exe" "c:\Program Files\NuSphere\PhpED\scripts\codesnifferwrapper.php" "@Fname@"</code> <br>  - Shortcut: CTL-ALT-0 (or any convenient) <br>  - Put the crosses in the following paragraphs: <br> <code>Show this command in Workspace popup – for files <br> Show this command in Explorer popup – for files <br> Show this command in File Bar popup <br> <b>Redirect Output Stream to log window</b></code> <br> <br>  Save the result, open any php file, click the assigned key combination and admire. <br><br><img src="https://habrastorage.org/storage1/17bbe0b0/0c56d9c1/85194edc/aeb537ac.png"></div><p>Source: https://habr.com/ru/post/130831/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../130825/index.html">iPhone 4S, Galaxy Nexus - the choice is obvious?</a></li>
 <li><a href="../130826/index.html">SQL injection. Check, hacking, protection</a></li>
 <li><a href="../130827/index.html">Whitelisting: about technology, its market prospects and utility for the company</a></li>
 <li><a href="../130829/index.html">Basics of email targeting and segmentation</a></li>
+<li><a href="../13083/index.html">GMail increases volume up to 9000 MB</a></li>
 <li><a href="../130830/index.html">Functional thinking: Thinking functionally, Part 2</a></li>
 <li><a href="../130832/index.html">Fifth habrae</a></li>
 <li><a href="../130833/index.html">Microsoft and Skolkovo Open University announce a set for the course “Technological entrepreneurship in IT: From idea creation to product realization”</a></li>

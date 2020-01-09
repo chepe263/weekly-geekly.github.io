@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Docker and detection of available resources inside the container</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/48a/1b8/cec/48a1b8cec90c446f907336dd62a58ca5.png"><br><p>  How to explain to the docker container how much resources does it have? </p><br><p>  Writing a translation of <a href="https://habrahabr.ru/company/ruvds/blog/324756/" title="https://habrahabr.ru/company/ruvds/blog/324756/">Java and Docker</a> pushed me toward writing this small note <a href="https://habrahabr.ru/company/ruvds/blog/324756/" title="https://habrahabr.ru/company/ruvds/blog/324756/">: everyone</a> and the lean on the search for information on the subject <a href="https://habrahabr.ru/company/ruvds/blog/324756/" title="https://habrahabr.ru/company/ruvds/blog/324756/">should know this</a> .  I have been using LXC for a long time, which also limits the resources of containers with cgroup tools, and this problem has already been solved there. </p><br><a name="habracut"></a><br><p> Docker provides usage statistics and limits in the container using cgroup tools that are accessible along the path (in Debian) <code>/sys/fs/cgroup/</code> , but not all applications can work with it, including system utilities <code>top, free, ps</code> and so on.  The <a href="https://linuxcontainers.org/ru/" title="https://linuxcontainers.org/ru/">Linux Containers</a> project circumvented this problem with <a href="https://linuxcontainers.org/ru/lxcfs/introduction/" title="https://linuxcontainers.org/ru/lxcfs/introduction/">LXCFS</a> , which provides the following files in the user environment: </p><br><ul><li>  / proc / cpuinfo <br>  CPU list </li><li>  / proc / diskstats <br>  I / O statistics in a container </li><li>  / proc / meminfo <br>  container-accessible memory and usage statistics </li><li>  / proc / stat <br>  available CPU statistics </li><li>  / proc / swaps <br>  swap statistics </li><li>  / proc / uptime <br>  uptime container. </li></ul><br><p>  If for <b>LXC 2.x</b> everything works out of the box, then <b>docker</b> needs to be taught this. <br>  We will have a test subject: </p><br><pre> <code class="bash hljs">Debian jessie 4.6.0-0.bpo.1-amd64 docker Server Version: 1.12.2 lxcfs: 2.0.6-1~bpo8+1</code> </pre> <br><p>  First of all, the Debian kernel needs to be allowed to regulate memory using cgroup, adding to the boot parameters: </p><br><pre> <code class="bash hljs">cgroup_enable=memory swapaccount=1</code> </pre> <br><p>  And put <code>lxcfs</code> , which will start the corresponding service: </p><br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># systemctl status lxcfs.service ● lxcfs.service - FUSE filesystem for LXC</span></span></code> </pre> <br><p>  As a result, the desired proc files will appear along the path <code>/var/lib/lxcfs/</code> . <br>  It remains to forward them inside the docker-container one by one.  In the docker-compose format, the container file will look like this: </p><br><pre> <code class="bash hljs">CT_name: container_name: CT_name hostname: CT_name image: debian:stable mem_limit: 512m volumes: - /var/lib/lxcfs/proc/meminfo:/proc/meminfo - /var/lib/lxcfs/proc/uptime:/proc/uptime - /var/lib/lxcfs/proc/swaps:/proc/swaps - /var/lib/lxcfs/proc/cpuinfo:/proc/cpuinfo - /var/lib/lxcfs/proc/<span class="hljs-built_in"><span class="hljs-built_in">stat</span></span>:/proc/<span class="hljs-built_in"><span class="hljs-built_in">stat</span></span> - /var/lib/lxcfs/proc/diskstats:/proc/diskstats</code> </pre> <br><p>  And check the result: </p><br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># docker exec CT_name cat /proc/uptime 247.0 247.0 # docker exec CT_name free -m total used free shared buffers cached Mem: 512 11 500 4322 0 0 -/+ buffers/cache: 11 500 Swap: 512 0 512</span></span></code> </pre> <br><p>  Let's run the test mentioned in the article "Java and Docker: Everybody Should Know" with the container parameters: </p><br><pre> <code class="bash hljs">CT_name: container_name: CT_name hostname: CT_name image: rafabene/java-container:openjdk mem_limit: 150m volumes: - /var/lib/lxcfs/proc/meminfo:/proc/meminfo</code> </pre> <br><pre> <code class="bash hljs">curl http://172.17.0.33:8080/api/memory Allocated more than 80% (73.5 MiB) of the Max allowed JVM memory size (73.5 MiB)</code> </pre> <br><p>  where <code>172.17.0.33</code> is the ip issued to the container. <br>  As you can see, the application has realized the issued memory limit. </p><br><p>  Thanks for attention. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,10 +62,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/324918/">https://habr.com/ru/post/324918/</a></p>
+    <p>Source: https://habr.com/ru/post/324918/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

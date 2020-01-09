@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>AWS Insight: RDS Read Replica</h1><div class="post__text post__text-html js-mediator-article">  Hello community! <img src="https://habrastorage.org/storage2/e0e/7a2/359/e0e7a2359b135440816eab8d730c629d.png" alt="image" align="right"><br><br>  Today I would like to tell and show the creation of a <b>copy of the RDS instance</b> read-only.  For many, it is no secret that when working with <i>high-loaded projects</i> , solutions are created when information is written only in one place, and you can read it from many sources. <br><br>  <b>AWS RDS MySQL</b> offers this solution, so to speak, out of the box.  In the console or through the CLI (API) you are invited to create a replica.  What happens under the hood? <br><ol><li>  An image of an existing server is created.  This operation can affect I / O, as you can imagine.  Do not make an image in a loaded clock. </li><li>  From the image, a new instance starts, which is configured and becomes a replica in read-only mode - RO. </li></ol><a name="habracut"></a><br>  Allowed to create <b>up to 5 replicas</b> from one server.  Replicas, as well as the main instance, can be created using <b>MultiAZ deployments</b> to increase resiliency.  In this case, if the replica fails, the RDS Endpoint automatically switches to an instance clone in another zone. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      It turns out that we can store <b>up to 12 copies of</b> data <i>within one region</i> , but use 1 server for read / write operations and up to 5 read-only.  Why I noted that data can be stored within the region?  Because replicas can not be created in other regions. <br><br>  Replicas can be of <b>different types</b> with the main server.  It is worth noting that the <i>stack for the database is to keep the same size</i> , so that there are no problems with disk overflow.  If you have increased the disk on the main, it is worth doing the same steps on the replicas. <br><br>  So how can we create a cue from the <b>CLI</b> ?  Everything is very simple: <br><pre><code class="bash hljs">$ aws rds create-db-instance-read-replica --availability-zone us-east-1d --<span class="hljs-built_in"><span class="hljs-built_in">source</span></span>-db-instance-identifier main --db-instance-identifier second</code> </pre> <br>  Here we create a new replica in the <b>US-EAST-1D</b> zone from the <b>main</b> server.  The replica name will be <b>second</b> . <br><br>  Everything looks simple on the <b>web console</b> too: <br><img src="https://habrastorage.org/storage2/5b1/3a6/d9f/5b13a6d9f0d383e55ca408b8e35b885b.png" alt="image"><br><br>  Click Create Read Replica and see: <br><img src="https://habrastorage.org/storage2/b92/b25/c7d/b92b25c7d1b10be640aaefedb633b66f.png" alt="image"><br><br>  Later we will have 3 servers in different availability areas: <br><img src="https://habrastorage.org/storage2/487/fb0/0aa/487fb00aa850c94fab602313b5e63fa8.png" alt="image"><br><br>  Additional materials about Read Replica: <br>  <a href="http://aws.amazon.com/rds/">aws.amazon.com/rds</a> <br>  <a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html">docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html</a> <br>  <a href="http://www.mysqlperformanceblog.com/2012/12/20/how-to-stop-slave-on-amazon-rds-read-replica/">www.mysqlperformanceblog.com/2012/12/20/how-to-stop-slave-on-amazon-rds-read-replica</a> </div><p>Source: <a href="https://habr.com/ru/post/180329/">https://habr.com/ru/post/180329/</a></p>
+      It turns out that we can store <b>up to 12 copies of</b> data <i>within one region</i> , but use 1 server for read / write operations and up to 5 read-only.  Why I noted that data can be stored within the region?  Because replicas can not be created in other regions. <br><br>  Replicas can be of <b>different types</b> with the main server.  It is worth noting that the <i>stack for the database is to keep the same size</i> , so that there are no problems with disk overflow.  If you have increased the disk on the main, it is worth doing the same steps on the replicas. <br><br>  So how can we create a cue from the <b>CLI</b> ?  Everything is very simple: <br><pre><code class="bash hljs">$ aws rds create-db-instance-read-replica --availability-zone us-east-1d --<span class="hljs-built_in"><span class="hljs-built_in">source</span></span>-db-instance-identifier main --db-instance-identifier second</code> </pre> <br>  Here we create a new replica in the <b>US-EAST-1D</b> zone from the <b>main</b> server.  The replica name will be <b>second</b> . <br><br>  Everything looks simple on the <b>web console</b> too: <br><img src="https://habrastorage.org/storage2/5b1/3a6/d9f/5b13a6d9f0d383e55ca408b8e35b885b.png" alt="image"><br><br>  Click Create Read Replica and see: <br><img src="https://habrastorage.org/storage2/b92/b25/c7d/b92b25c7d1b10be640aaefedb633b66f.png" alt="image"><br><br>  Later we will have 3 servers in different availability areas: <br><img src="https://habrastorage.org/storage2/487/fb0/0aa/487fb00aa850c94fab602313b5e63fa8.png" alt="image"><br><br>  Additional materials about Read Replica: <br>  <a href="http://aws.amazon.com/rds/">aws.amazon.com/rds</a> <br>  <a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html">docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html</a> <br>  <a href="http://www.mysqlperformanceblog.com/2012/12/20/how-to-stop-slave-on-amazon-rds-read-replica/">www.mysqlperformanceblog.com/2012/12/20/how-to-stop-slave-on-amazon-rds-read-replica</a> </div><p>Source: https://habr.com/ru/post/180329/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../180317/index.html">Crowdsourcing in the development of state standards</a></li>
 <li><a href="../180319/index.html">Quickpong - development of a network game based on the Twisted framework</a></li>
+<li><a href="../18032/index.html">Universal spelling dictionary for Firefox</a></li>
 <li><a href="../180321/index.html">The beginning of Windows Phone 8 Development: lesson 2. Access to the local storage application</a></li>
 <li><a href="../180323/index.html">Happy Farm selected 17 start-up projects for the second cycle of the acceleration program and new additional classes</a></li>
 <li><a href="../180327/index.html">What is the situation with study leave in your company?</a></li>
+<li><a href="../18033/index.html">For fans of Super Mario</a></li>
+<li><a href="../180331/index.html">New Memory on Demand setting for cloud servers in Selecto</a></li>
 <li><a href="../180333/index.html">Types and anonymous functions in PHP. Quack quack!</a></li>
 <li><a href="../180335/index.html">The beginning of Windows Phone 8 Development: lesson 3. Navigating through pages and passing parameters</a></li>
 <li><a href="../180337/index.html">"Star Trek" at the atomic level</a></li>
-<li><a href="../180341/index.html">The beginning of Windows Phone 8 Development: lesson 4. Communication with services and data binding</a></li>
-<li><a href="../180347/index.html">AvePoint DocAve for SharePoint</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

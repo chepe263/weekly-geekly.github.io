@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Managing ISC DHCPd 4.x from scripts</h1><div class="post__text post__text-html js-mediator-article">  It was necessary to implement the management of IP issuance in the network of one provider, linking it with the accounting system and other "chips".  As a DHCP server, ISC DHCP 4.x was installed on the 9th Ubuntu Server. <br><br>  For DHCPd, you had to implement: <br><ol><li>  adding a new static reservation (per Mac or switch port - option 82), </li><li>  “Binding” of a user with IP issued dynamically (that is, from a pool of free IP) to a static reservation </li><li>  removing static reservation </li><li>  removal of dynamic lease before reservation expires </li><li>  Various reports on subnets, mac addresses, free and busy addresses </li></ol><br>  I want to share the information collected in the implementation process, on what pitfalls I stumbled upon, as I went around, which I didn’t get around.  Maybe someone will save a few hours of time. <a name="habracut"></a><br>  Immediately make a reservation: this post is by no means the ultimate truth, an indication of the only right decision, and indeed any instruction.  This is just some kind of working information.  Use it or not, believe it or not, as well as solve a particular task - let everyone decide for himself in the context of his situation.  My solutions were convenient for me in my case, but no more than that.  So: <br><ol><li>  ISC DHCPd does not support and in the foreseeable future will not support updating the config via SIGHUP or some other signal.  According to their assurances, this “requires too serious work for which they do not have and do not foresee time” </li><li>  All static configuration is stored in dhcpd.conf, all dynamic dhcpd.leases.  What is first written lease, flush is done on the disk, and only after that the answer is sent to the client.  Together, these two files contain all the necessary information so that when restarted, the server returns to exactly the same state as it was before. </li><li>  If dhcpd does something that is written in the config and does not imply any variations, conflicts (for example, static IP reservations on the MAC), nothing is written to dhcpd.leases. </li><li>  As a result, the only way to trace when the last time a certain IP was statically linked to MAC was log analysis: dhcpd.leases does not contain this information, the server also does not write anything to the config. </li><li>  dhcpd has its own API through which it is theoretically possible to manage the server in real-time.  As well as the omshell command-line utility using this API.  Through it, it is theoretically possible to control the server without down-time.  In addition, it supports the ability to submit a sequence of commands to STDIN, which makes it a fairly convenient tool for many tasks.  All data is written in dhcp.leases, do not touch the config. </li><li>  There is no way to get lists of something in omshell.  All work goes with one unique object.  To get the lists, you will have to parse the config files / leases. </li><li>  omshell does not support the removal of the existing lease, says “not implemented”.  In addition, during one of the tests, the dhcp.leases file broke (some strange garbage appeared inside) and dhcpd because of this did not restart.  It was not possible to reproduce the situation, but decided not to risk it and left omshell alone. </li><li>  In the 4th version there is no possibility to control the order of dynamic issuance of addresses from several shared-network subnetworks.  The type option to issue public addresses for all clients from the main network and private ones with NAT from another one only if there are no more free addresses in the main network at the moment.  It will be issued from both in the order convenient dhcpd. </li><li>  The ip-mac binding only means that this IP will be issued to this IP if it asks for it and the IP will be free.  But at the same time, this IP can be issued to someone else, if at the moment it is free, it is located in the pool where it is allowed to issue IP to not statically registered clients and there are not enough free addresses. </li><li>  I did not manage to find any ready clearly working tool capable of managing isc dhcd 4.x from under the web and a little bit extensible.  All that is less workable - made under the 3rd version. </li><li>  I did not find any fully implemented SQL connection project as a backend for storing dhcpd.conf and dhcpd.leases.  All projects I have seen re-create a config, read and write dhcpd.leases and restart dhcpd </li></ol><br>  Further, as I solved some subtasks in my case: <br><ul><li>  Deleting an already issued lease was decided by adding a copy of the required leasing to the end of dhcpd.leases, replacing the “binding state active” with “bindng state free” and restarting dhcpd.  The server reads dhcpd.leases in order and records occurring later overrun previous ones. </li><li>  The data is stored in MySQL, with changes I re-generated the config and restarted dhcpd. </li><li>  The addresses that were currently occupied were received by reading dhcpd.leases (as mentioned above, its contents are always up to date, the file can be easily disassembled by retexp) + from the database: everything that is not in the file in 'active' status or in the database is considered free. </li><li> Binding the IP to the switch port with a combination of class and pool as in this example: <br> <code>...    IP c    ... <br> class "172.16.16.227:4" { <br> match if concat( <br> binary-to-ascii(10,8,".",packet(24,4)),":",binary-to-ascii(10,8,"",suffix(option agent.circuit-id,1))) = "172.16.16.227:4"; <br> } <br> ... <br> subnet 192.168.1.0 netmask 255.255.255.0 { <br> option routers 192.168.1.1; <br> ...  ... <br> pool { range 192.168.1.3; allow members of "172.16.16.227:4"; } # bind ip to port <br> pool { #static bindings <br> range 192.168.1.2; range 192.168.1.4; range 192.168.1.5; <br> ....        IP   ,       ... <br> deny unknown-clients; <br> } <br> pool { #free IPs <br> range 192.168.1.6; range 192.168.1.8; range 192.168.1.15; <br> ....    c IP    ... <br> allow unknown-clients; <br> } <br> } <br></code> <br></li></ul></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/91002/">https://habr.com/ru/post/91002/</a></p>
+    <p>Source: https://habr.com/ru/post/91002/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../90990/index.html">Backdoor in active directory do it yourself</a></li>
-<li><a href="../90993/index.html">Chobi Mini Digital Camera - the world's smallest camera</a></li>
 <li><a href="../90994/index.html">About morals and games</a></li>
 <li><a href="../90997/index.html">Launch of Visual Studio 2010 in St. Petersburg</a></li>
+<li><a href="../91/index.html">The idea for the site</a></li>
+<li><a href="../910/index.html">Highway Advertising</a></li>
 <li><a href="../91001/index.html">Using video to attract new Wikipedia editors</a></li>
 <li><a href="../91003/index.html">Parable about automatic widget management</a></li>
 <li><a href="../91004/index.html">Library of Congress acquires Twitter archive</a></li>

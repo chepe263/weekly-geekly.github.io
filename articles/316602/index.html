@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>View globals in the Caché Database Management Portal</h1><div class="post__text post__text-html js-mediator-article"><p> <a href="https://habrahabr.ru/company/intersystems/blog/316602/"><img src="https://habrastorage.org/files/c20/a8e/42b/c20a8e42b9ee4f76b2b2b1be45c23b22.jpg" align="left" width="264" height="350" title="El Lissitzky - Proun 99"></a>  <em>Causes antires and such isho cut</em> <br>  <em>(The king of "Pro Fedot Archer")</em> </p><br><p>  Everything in Caché is stored in globals.  Data, metadata, classes, programs.  There is a handy tool for viewing globals in the Management Portal — the Global Data View page.  We will consider it today. </p><br><p>  An example of a global we will serve <em>^ DeepSee.Cubes</em> .  This is a global where the list of DeepSee cubes is stored.  You do not need to know DeepSee to read this article. </p><br><p>  To get to the “View global data” page, open the Management Portal, select “System Explorer” → “Globals” (Globals).  Then to the left of the desired area, and click "View" next to the desired global. </p><a name="habracut"></a><br><p>  In our case, select the <em>SAMPLES</em> area and the global <em>DeepSee.Cubes</em> . </p><br><p>  On my installation, this page looks like this: </p><br><p><img src="https://habrastorage.org/files/0fa/a46/fdb/0faa46fdb96349e8bfe7b33e9cb1af81.png" alt="image"></p><br><p>  There are a lot of data in serious globala (millions of nodes).  By default, the Preview page shows only the first 100. You can increase this number, but the more nodes you will specify for output, the longer the page will load. </p><br><p>  The most interesting input field on this page is the Global Search Mask.  Consideration of various masks, and we dedicate the rest of the article. </p><br><p>  So, let the mask contain </p><br><ol><li>  The name of the node.  View will display only this node.  Without descendants, even if they are. </li></ol><br><p><img src="https://habrastorage.org/files/56a/f0d/4bc/56af0d4bc95c427c8b6aa16492bb4770.png" alt="image"><br>  If there is no value in the node itself, but there are descendants, the View will show the value “~ pointer”. </p><br><p><img src="https://habrastorage.org/files/55e/638/ce8/55e638ce8b8f4d179e05d84ad6d01728.png" alt="image"></p><br><ol><li>  The name of the node without the last closing bracket.  View will display the node and all its descendants: </li></ol><br><p><img src="https://habrastorage.org/files/174/bb3/27d/174bb327d8c0486b8434d2e61bc369ce.png" alt="image"></p><br><ol><li>  Empty indexes in the global name.  A view will display all the nodes that are matched. <br>  In this example, the View displays all nodes that have three indexes, the third of which is “bucketSize”, and the first two are any: </li></ol><br><p><img src="https://habrastorage.org/files/c55/d75/def/c55d75defdbe4ae8b97ddd7bbe3da653.png" alt="image"></p><br><p>  You can specify all indices to be empty.  Then the review will display all nodes whose indexes have the specified number. </p><br><p>  For example, three: </p><br><p><img src="https://habrastorage.org/files/f9e/7fc/06a/f9e7fc06a94249d4bc4a32d04fb7d32f.png" alt="image"></p><br><p>  Two: </p><br><p><img src="https://habrastorage.org/files/1ea/9a5/4be/1ea9a54be90c43ed8049ba74b2c0dc13.png" alt="image"></p><br><p>  Or one: </p><br><p><img src="https://habrastorage.org/files/d41/fc9/631/d41fc9631aac4098851cc9254175692b.png" alt="image"></p><br><ol><li>  Intervals  Index value can be recorded at the <em>beginning</em> : <em>end</em> .  View will show only those nodes, indexes, which fall into a given interval. </li></ol><br><p><img src="https://habrastorage.org/files/077/603/980/077603980e0d46878745939574b56dc9.png" alt="image"></p><br><p>  Description of the masks in English is given in the <a href="">documentation</a> .  I hope the use of masks will make your daily communication with the globals even more pleasant! </p><br><h3 id="bonus">  Bonus </h3><br><p>  The View page uses a public API <a href="">Get request in the class% Library.Global</a> : </p><br><pre><code class="hljs pgsql">SAMPLES&gt;<span class="hljs-keyword"><span class="hljs-keyword">do</span></span> ##<span class="hljs-keyword"><span class="hljs-keyword">class</span></span>(%ResultSet).RunQuery("%Global","Get",$namespace,"^DeepSee.Cubes()") <span class="hljs-keyword"><span class="hljs-keyword">Global</span></span> <span class="hljs-type"><span class="hljs-type">Name</span></span>:<span class="hljs-keyword"><span class="hljs-keyword">Value</span></span>:<span class="hljs-type"><span class="hljs-type">Name</span></span> <span class="hljs-keyword"><span class="hljs-keyword">Format</span></span>:<span class="hljs-keyword"><span class="hljs-keyword">Value</span></span> <span class="hljs-keyword"><span class="hljs-keyword">Format</span></span>:Permissions: ^DeepSee.Cubes("classes"):~pointer:<span class="hljs-number"><span class="hljs-number">1</span></span>:<span class="hljs-number"><span class="hljs-number">1</span></span>:: ^DeepSee.Cubes("cubes"):~pointer:<span class="hljs-number"><span class="hljs-number">1</span></span>:<span class="hljs-number"><span class="hljs-number">1</span></span>:: ^DeepSee.Cubes("kpis"):~pointer:<span class="hljs-number"><span class="hljs-number">1</span></span>:<span class="hljs-number"><span class="hljs-number">1</span></span>:: ^DeepSee.Cubes("prior"):~pointer:<span class="hljs-number"><span class="hljs-number">1</span></span>:<span class="hljs-number"><span class="hljs-number">1</span></span>:: ^DeepSee.Cubes("sharesIndex"):~pointer:<span class="hljs-number"><span class="hljs-number">1</span></span>:<span class="hljs-number"><span class="hljs-number">1</span></span>::```</code> </pre> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,18 +63,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/316602/">https://habr.com/ru/post/316602/</a></p>
+    <p>Source: https://habr.com/ru/post/316602/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../316588/index.html">From rock painting to the cloud: what's next?</a></li>
-<li><a href="../316590/index.html">Web hosting: useful tips</a></li>
 <li><a href="../316592/index.html">Connecting the clouds: free integration of PBX and CRM</a></li>
 <li><a href="../316596/index.html">Typical backup errors and how to avoid them. Part two</a></li>
 <li><a href="../316598/index.html">Since December 7, Google transfers all G Suite accounts (formerly Google Apps) in Russia to commercial status.</a></li>
+<li><a href="../3166/index.html">Read Habra on mobile devices</a></li>
+<li><a href="../31660/index.html">Microsoft looks at Apple</a></li>
 <li><a href="../316604/index.html">The important thing is inside: about procedural generation of organs</a></li>
 <li><a href="../316606/index.html">Front-end JavaScript framework Evolution beta</a></li>
 <li><a href="../316608/index.html">Mozilla and Tor closed a critical vulnerability that was actively used to de-anonymize Tor users.</a></li>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>This mysterious while ...</h1><div class="post__text post__text-html js-mediator-article">  <sup>“All the needs are incorporated in it, which only happen in the world.</sup>  <sup>And it can satisfy all these needs.</sup>  <sup>With the help of our science, of course. "</sup> <sup><br></sup>  <sup><em>A. and B. Strugatsky</em></sup> <br><br>  I think many of the Perl programmers are familiar with the following construction of line-by-line reading of the file contents: <br><blockquote><code><font color="blue">while</font> (&lt;FILE&gt;) { <br> <font color="green"># do something</font> <br> } <br></code> </blockquote>  This code has become so familiar that many do not even think about it, but how does it actually work?  In this article I will describe one feature, which is very useful to remember. <br><a name="habracut"></a><br>  As you know, a <code><strong>while</strong></code> is executed while its condition is true.  However, in our case, the condition is a string that gives a boolean truth only if it is not: <br>  a) <code><strong>undef</strong></code> ; <br>  b) empty line; <br>  c) a string containing a single character <code><strong>"0"</strong></code> . <br>  What happens when a blank line suddenly appears in a file?  Does the cycle really stop working?  By no means.  The read lines include the end-of-line marker, which means that the empty string is not actually empty, but <code><strong>"\n"</strong></code> , and therefore will be regarded in the boolean context as true.  The same applies to the case when the file contains a line with only one character <code><strong>"0"</strong></code> .  But there is a case when this rule does not work: if the <strong>last</strong> line of the file contains only the character <code><strong>"0"</strong></code> and does not end with a new line character.  As a result, when reading this last line, we get the string <code><strong>"0"</strong></code> , which for <code><strong>while</strong></code> should be considered false, and, therefore, this line will not be processed.  Right?  It would seem that everything is correct, and now we must urgently grab either a favorite text editor, or validol, or both at the same time, depending on the degree of importance of the project where this code was used. <br><br>  You can take your time: the code is absolutely correct and will work correctly, and this is due to the tricky feature of the <code><strong>while</strong></code> operator.  I <a href="http://perldoc.perl.org/perlop.html">quote perlop</a> ( <a href="http://perldoc.perl.org/perlop.html">loosely</a> translated): <br><blockquote>  The following lines are equivalent: <br><blockquote> <code><font color="blue">while</font> ( <font color="red">defined</font> ($_ = &lt;STDIN&gt;)) { <font color="red">print</font> ; } <br> <font color="blue">while</font> ($_ = &lt;STDIN&gt;) { <font color="red">print</font> ; } <br> <font color="blue">while</font> (&lt;STDIN&gt;) { <font color="red">print</font> ; } <br> <font color="blue">for</font> (;&lt;STDIN&gt;;) { <font color="red">print</font> ; } <br> <font color="red">print</font> <font color="blue">while</font> <font color="red">defined</font> ($_ = &lt;STDIN&gt;); <br> <font color="red">print</font> <font color="blue">while</font> ($_ = &lt;STDIN&gt;); <br> <font color="red">print</font> <font color="blue">while</font> &lt;STDIN&gt;; <br></code> </blockquote>  And this line of code works in a similar way, but without using $ _: <br><blockquote> <code><font color="blue">while</font> ( <font color="blue">my</font> $line = &lt;STDIN&gt;) { <font color="red">print</font> $line }</code> </blockquote>  In all of these constructs, the assigned value (regardless of whether the assignment was explicit or not) checks whether the value is determined.  This avoids the problem when the string value is false in a boolean context, for example, "" or "0" without the terminating newline character.  If you intentionally want to use these values ​​to complete a loop, you need to check them explicitly: <br><blockquote> <code><font color="blue">while</font> (($_ = &lt;STDIN&gt;) ne '0') { ... } <br> <font color="blue">while</font> (&lt;STDIN&gt;) { <font color="red">last</font> <font color="blue">unless</font> $_; ... }</code> </blockquote>  In other expressions with a boolean context, a warning will be displayed using the <code><strong>&lt;filehandle&gt;</strong></code> if there is no explicit call to the <code><strong>defined</strong></code> function or a comparison operation, provided that the <code><strong>use warnings</strong></code> pragma is <code><strong>use warnings</strong></code> or the <code><strong>-w</strong></code> command line parameter (or <code><strong>$^W</strong></code> variable) is used. </blockquote>  Thus, inside a <code><strong>while</strong></code> reading from a file automatically turns into a check on the <code><strong>defined</strong></code> .  However, you should replace <code><strong>while</strong></code> with <code><strong>if</strong></code> or even just complicate the loop condition by adding a sub expression through <code><strong>and</strong></code> or <code><strong>or</strong></code> like <del>  the carriage turns into a pumpkin </del>  the operator loses all his magical qualities and begins to check the conditions strictly in accordance with the rules of type conversion.  What the Perl compiler will tell us immediately, unless, of course, you forget to ask it with the <code><strong>-w</strong></code> . </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/84762/">https://habr.com/ru/post/84762/</a></p>
+    <p>Source: https://habr.com/ru/post/84762/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../84750/index.html">Distributed fonts for texts in sixteen languages</a></li>
 <li><a href="../84752/index.html">Are new Windows 7 new</a></li>
 <li><a href="../84756/index.html">Tale of how I finished Popcorn</a></li>
+<li><a href="../8476/index.html">Motorola introduced Razr2</a></li>
 <li><a href="../84760/index.html">Innovation in the protection of games or Ubisoft and everything, everything, everything ...</a></li>
 <li><a href="../84761/index.html">habrahabr at NOKIA</a></li>
 <li><a href="../84764/index.html">Leave your name on the site</a></li>
 <li><a href="../84765/index.html">Restaurant site :)</a></li>
 <li><a href="../84766/index.html">Start-up tournament Harvest - experts will help startups</a></li>
 <li><a href="../84768/index.html">Replacing the touch screen on the HTC Touch P3450 (HTC Elf)</a></li>
-<li><a href="../84773/index.html">Honeycomb Chandelier Get Hexy</a></li>
+<li><a href="../8477/index.html">Created programming language for children</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

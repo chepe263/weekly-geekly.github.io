@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Ruby on your server may be 2 times slower due to RVM</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/91f/a2e/ed1/91fa2eed1b870afa520836bdf0bf9a9e.jpg"><br>  Looking at Ruby Inside today, I stumbled upon the article Justin Kulesza. <a href="http://spin.atomicobject.com/2012/11/06/is-your-application-running-with-ruby-slow/">Is Your Application Running with Ruby - Slow?</a>  .  Article from November 6, but on Habré about this situation not a word.  And the essence of the article is this: the guys transferred their application from the server to Solaris to the server from Ubuntu and used RVM to compile Ruby.  However, after the transfer, they noticed that the application became as if slower.  At first they made mistakes on iron, but quickly found out that the matter was in RVM, namely, that RVM does not use optimization at all when compiling. <br><a name="habracut"></a><br>  Diagnosing a problem is very simple: <br><pre><code class="bash hljs">$ time ruby -e <span class="hljs-string"><span class="hljs-string">"count = 0; while(count &lt; 100000000); count = count + 1; end; puts count"</span></span> 100000000 real 0m9.019s user 0m8.933s sys 0m0.016s</code> </pre> <br>  The “normal” execution time should be no higher than ~ 4 seconds. <br><br>  Plus the lack of optimization flags in <b>~ / .rvm / log / your.ruby.version / make.log</b> : <br><pre> <code class="bash hljs">CC = gcc LD = ld LDSHARED = gcc -shared CFLAGS = -I/home/user/.rvm/usr/include -fPIC XCFLAGS = -include ruby/config.h -include ruby/missing.h -fvisibility=hidden -DRUBY_EXPORT CPPFLAGS = -I. -I.ext/include/x86_64-linux -I./include -I. DLDFLAGS = -Wl,-soname,libruby.so.1.9 SOLIBS = -lpthread -lrt -ldl -lcrypt -lm</code> </pre><br>  CFLAGS must contain -O3. <br><br>  I checked on my server - and the truth is, the problem is taking place. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The article provides the following solution: <br><pre> <code class="bash hljs">$ <span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"rvm_configure_env=(CFLAGS=-O3)"</span></span> &gt; ~/.rvmrc</code> </pre><br>  An alternative from <a href="http://alisnic.net/blog/making-your-ruby-fly/">this article</a> : <br><pre> <code class="bash hljs">$ <span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">'rvm_configure_env=(CFLAGS="-march=native -O2")'</span></span> &gt; ~/.rvmrc</code> </pre><br>  And then: <br><pre> <code class="bash hljs">$ rvm reinstall your.ruby.version</code> </pre><br>  However, currently it is still easier: <br><pre> <code class="bash hljs">$ rvm get head &amp;&amp; rvm reinstall your.ruby.version</code> </pre><br>  And besides, in the 'head'-version of RVM, there is a bad <a href="https://gist.github.com/4136373">patch</a> from <a href="https://github.com/funny-falcon">funny-falcon available</a> for the latest version of Ruby - 1.9.3-p327, which makes Ruby even faster (especially when downloading an application).  Installation is also simple: <br><pre> <code class="bash hljs">$ rvm install 1.9.3 -n perf --patch falcon $ rvm use 1.9.3-perf --default</code> </pre><br>  After reinstallation, the server showed a speed increase of more than 2 times: <br><pre> <code class="bash hljs">$ time ruby -e <span class="hljs-string"><span class="hljs-string">"count = 0; while(count &lt; 100000000); count = count + 1; end; puts count"</span></span> 100000000 real 0m4.117s user 0m4.032s sys 0m0.012s</code> </pre><br>  So check your servers, speed up your applications. </div><p>Source: <a href="https://habr.com/ru/post/160371/">https://habr.com/ru/post/160371/</a></p>
+      The article provides the following solution: <br><pre> <code class="bash hljs">$ <span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">"rvm_configure_env=(CFLAGS=-O3)"</span></span> &gt; ~/.rvmrc</code> </pre><br>  An alternative from <a href="http://alisnic.net/blog/making-your-ruby-fly/">this article</a> : <br><pre> <code class="bash hljs">$ <span class="hljs-built_in"><span class="hljs-built_in">echo</span></span> <span class="hljs-string"><span class="hljs-string">'rvm_configure_env=(CFLAGS="-march=native -O2")'</span></span> &gt; ~/.rvmrc</code> </pre><br>  And then: <br><pre> <code class="bash hljs">$ rvm reinstall your.ruby.version</code> </pre><br>  However, currently it is still easier: <br><pre> <code class="bash hljs">$ rvm get head &amp;&amp; rvm reinstall your.ruby.version</code> </pre><br>  And besides, in the 'head'-version of RVM, there is a bad <a href="https://gist.github.com/4136373">patch</a> from <a href="https://github.com/funny-falcon">funny-falcon available</a> for the latest version of Ruby - 1.9.3-p327, which makes Ruby even faster (especially when downloading an application).  Installation is also simple: <br><pre> <code class="bash hljs">$ rvm install 1.9.3 -n perf --patch falcon $ rvm use 1.9.3-perf --default</code> </pre><br>  After reinstallation, the server showed a speed increase of more than 2 times: <br><pre> <code class="bash hljs">$ time ruby -e <span class="hljs-string"><span class="hljs-string">"count = 0; while(count &lt; 100000000); count = count + 1; end; puts count"</span></span> 100000000 real 0m4.117s user 0m4.032s sys 0m0.012s</code> </pre><br>  So check your servers, speed up your applications. </div><p>Source: https://habr.com/ru/post/160371/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../160361/index.html">TechEd Russia 2012 - Microsoft's largest online conference!</a></li>
 <li><a href="../160363/index.html">And which task tracker do you use in a small team?</a></li>
 <li><a href="../160365/index.html">EventMachine ⇒ collection of information from various sources with subsequent processing</a></li>
 <li><a href="../160367/index.html">IBM launched an initiative to develop future power systems</a></li>
 <li><a href="../160369/index.html">nanoCAD Heating 1.0 Beta - a new solution in the product line based on nanoCAD</a></li>
+<li><a href="../16037/index.html">Kaspersky's back doors 6/7</a></li>
 <li><a href="../160373/index.html">Introduction to R-project</a></li>
 <li><a href="../160375/index.html">Mobile home transformers</a></li>
 <li><a href="../160377/index.html">Firefox 18 beta</a></li>

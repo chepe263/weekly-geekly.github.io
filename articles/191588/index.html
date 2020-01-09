@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>We refuse sample template parameters.</h1><div class="post__text post__text-html js-mediator-article">  Using the template template C ++ parameters is quite difficult.  I want to demonstrate the power of boost :: mpl and show a trick that allows you to describe templates, completely abandoning the template template parameters. <br>  I will demonstrate the problem.  There is a class that accepts an object type and a container type for this object. <br><pre><code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">template</span></span> &lt;<span class="hljs-keyword"><span class="hljs-keyword">typename</span></span> T, <span class="hljs-keyword"><span class="hljs-keyword">typename</span></span> Container&gt; <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">struct</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">A</span></span></span><span class="hljs-class"> {</span></span> <span class="hljs-keyword"><span class="hljs-keyword">typedef</span></span> Container&lt;T&gt; type; };</code> </pre> <br>  You cannot write this way; you must use the template template parameters to indicate that the <code>Container</code> itself is a template. <br><a name="habracut"></a><br>  Correctly write like this: <br><pre> <code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">template</span></span> &lt;<span class="hljs-keyword"><span class="hljs-keyword">typename</span></span> T, <span class="hljs-keyword"><span class="hljs-keyword">template</span></span>&lt;<span class="hljs-keyword"><span class="hljs-keyword">typename</span></span>&gt; <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Container</span></span></span><span class="hljs-class">&gt; </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">struct</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">A</span></span></span><span class="hljs-class"> {</span></span> <span class="hljs-keyword"><span class="hljs-keyword">typedef</span></span> Container&lt;T&gt; type; };</code> </pre><br>  Use this: <br><pre> <code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">typedef</span></span> A&lt;<span class="hljs-keyword"><span class="hljs-keyword">int</span></span>, <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::<span class="hljs-built_in"><span class="hljs-built_in">vector</span></span>&gt;::type type;</code> </pre><br>  When first used, we get a compile error.  We forgot that std :: vector takes two parameters, one of which is usually the default.  Ok, rewrite: <br><pre> <code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">template</span></span> &lt;<span class="hljs-keyword"><span class="hljs-keyword">typename</span></span> T, <span class="hljs-keyword"><span class="hljs-keyword">template</span></span>&lt;<span class="hljs-keyword"><span class="hljs-keyword">typename</span></span>, <span class="hljs-keyword"><span class="hljs-keyword">typename</span></span>&gt; <span class="hljs-class"><span class="hljs-keyword"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">Container</span></span></span><span class="hljs-class">&gt; </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">struct</span></span></span><span class="hljs-class"> </span><span class="hljs-title"><span class="hljs-class"><span class="hljs-title">A</span></span></span><span class="hljs-class"> {</span></span> <span class="hljs-keyword"><span class="hljs-keyword">typedef</span></span> Container&lt;T, <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::allocator&lt;T&gt; &gt; type; };</code> </pre><br>  There are two obvious problems: <br><ol><li>  We need to look into the implementation of std :: vector, find out what type of default is used, and then use it. </li><li>  The template we have written is not suitable if the container has more than one default template parameter. </li></ol><br>  I would like to avoid explicitly specifying the default types and the complex syntax of the template template parameters.  It comes to the aid of a reception based on the use of placeholders from boost :: mpl, which are used to create lambda meta-functions. <br><br>  Externally, the only difference is that it is not the container template itself that is to be transferred to our template, but the container template instantiated by the placeholder, that is, instead of <br><pre> <code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">typedef</span></span> A&lt;<span class="hljs-keyword"><span class="hljs-keyword">int</span></span>, <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::<span class="hljs-built_in"><span class="hljs-built_in">vector</span></span>&gt;::type type;</code> </pre>  write <br><pre> <code class="cpp hljs"><span class="hljs-keyword"><span class="hljs-keyword">typedef</span></span> A&lt;<span class="hljs-keyword"><span class="hljs-keyword">int</span></span>, <span class="hljs-built_in"><span class="hljs-built_in">std</span></span>::<span class="hljs-built_in"><span class="hljs-built_in">vector</span></span>&lt;boost::mpl::_1&gt; &gt;::type type;</code> </pre><br>  To instantiate a container holder-instantiated container of the required type, use boost :: mpl :: apply: <br><pre> <code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">include</span></span></span><span class="hljs-meta"> </span><span class="hljs-meta-string"><span class="hljs-meta"><span class="hljs-meta-string">&lt;boost/mpl/apply.hpp&gt; template &lt;typename T, typename Container&gt; struct A { typedef typename boost::mpl::apply&lt;Container, T&gt;::type type; };</span></span></span></span></code> </pre><br>  Using this trick in real programming will help simplify some of your tangled patterns. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/191588/">https://habr.com/ru/post/191588/</a></p>
+    <p>Source: https://habr.com/ru/post/191588/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../191574/index.html">Metric # 20 - Podcast on technologies and design of interfaces and services</a></li>
 <li><a href="../191576/index.html">PDB files are available for download in DXperience and Universal subscriptions.</a></li>
+<li><a href="../19158/index.html">Dangerous Tag Attributes</a></li>
 <li><a href="../191580/index.html">Core Data for iOS. Chapter number 2. Theoretical part</a></li>
 <li><a href="../191584/index.html">Dream office: what is it?</a></li>
 <li><a href="../191586/index.html">Custom layout. Pop-up panel + parallax scrolling</a></li>
+<li><a href="../19159/index.html">Future classmates.</a></li>
 <li><a href="../191590/index.html">ROI Initiative Digest</a></li>
 <li><a href="../191592/index.html">VKontakte Node JS SDK</a></li>
 <li><a href="../191594/index.html">Sonar principles and underwater acoustics: how, why and why</a></li>
 <li><a href="../191596/index.html">Solving the transport problem with a genetic algorithm as part of SOA</a></li>
-<li><a href="../191598/index.html">How to make such an ERP system so that users do not run IT in reports</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

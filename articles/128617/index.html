@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Rsync backup script</h1><div class="post__text post__text-html js-mediator-article">  There was a need somehow and somewhere backed up.  And so that the processors are not loaded and the place is not occupied, but the backups are rotated and conveniently got.  I used to always use <a href="http://www.opennet.ru/dev/fsbackup/">fsbackup</a> , but I wanted to abandon archiving.  To solve the problem, rsync and the <a href="http://ru.wikipedia.org/wiki/%25D0%2596%25D1%2591%25D1%2581%25D1%2582%25D0%25BA%25D0%25B0%25D1%258F_%25D1%2581%25D1%2581%25D1%258B%25D0%25BB%25D0%25BA%25D0%25B0">hard links</a> mechanism (so-called hardlinks) of the file system were used. <br><br>  <b>Architecture:</b> there is a standalone server with a large screw - the script works on it.  There are many different servers with ssh access, on which the user's public key has been added to ~ / .ssh / authorized_keys, under which the backup script runs. <br><a name="habracut"></a><br>  <b>Work logic:</b> at a certain time, the ssh script synchronizes the contents of the folder on the remote server with the domain.com/latest folder, and then copies it to the folder with today's date, creating hard links to the files, then deletes the folders that are older than 7 days  Because  only the contents of the directory are synchronized, you need to dump the crown database on the client machine before rsync takes the files. <br><br>  <b>Pros:</b> <br>  - uses less space than differential backups and no more space than incremental ones <br>  - loads the processor less, because  does not use archivers (you can perform compression on the fly when transferring over the network) <br>  - has a fairly detailed log format, error notifications by email <br>  - resistant to hacking or total destruction of the client machine - backups will not damage the attacker 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Question: <br>  - because  The script was originally published in <a href="http://farmal.in/2011/01/skript-rezervnogo-kopirovaniya-cherez-rsync/">Blozhik</a> , and you did not manage to hear an authoritative opinion on the effectiveness of this approach - I would be glad if you shared your thoughts ... <br><br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh # simple rsync backup script written by farmal.in 2011-01-21 # # latest backup is always in $SDIR/domains/$domain/latest folder # all backups which are older than 7 days would be deleted # backup.ini file can't contain comments, empty lines and spaces in domain names # # example of a GOOD backup.ini: # mydomain.com user@mydomain.com:/path/to/public_html # SDIR="/usr/local/backup" SKEY="$SDIR/.ssh/id_rsa" SLOG="$SDIR/backup.log" PID_FILE="$SDIR/backup.pid" ADMIN_EMAIL="email@domain.com" if [ -e $PID_FILE ]; then echo "this task is already running or previous run was completed with errors on `hostname`" | mail -s "Some mess with backups on `hostname`..." $ADMIN_EMAIL exit fi touch $PID_FILE # redirecting all output to logfile exec &gt;&gt; $SLOG 2&gt;&amp;1 # parsing backup.ini file into $domain and $from variables cat backup.ini | while read domain from ; do destination="$SDIR/domains/$domain" # downloading a fresh copy in 'latest' directory echo -e "`date` *** $domain backup started"&gt;&gt;$SLOG # start counting rsync worktime start=$(date +%s) rsync --archive --one-file-system --delete -e "ssh -i $SKEY" "$from" "$destination/latest" || (echo -e "Error when rsyncing $domain. \n\n For more information see $SLOG:\n\n `tail $SLOG`" | mail -s "rsync error" $ADMIN_EMAIL &amp; continue) finish=$(date +%s) echo -e "`date` *** RSYNC worked for $((finish - start)) seconds"&gt;&gt;$SLOG # cloning the fresh copy by hardlinking cp --archive --link "$destination/latest" "$destination/`date +%F`" # deleting all previous copies which are older than 7 days by creation date, but not 'latest' find "$destination" -maxdepth 1 -ctime +7 -type d -path "$destination/????-??-??" -exec rm -r -f {} \; echo "`date` *** The size of $domain/latest is now `du -sh $destination/latest | awk '{print $1}'` "&gt;&gt;$SLOG echo -e "`date` *** $domain backup ended"&gt;&gt;$SLOG echo -e "`date` *** Total allocated `du -sh $destination | awk '{print $1}'`"&gt;&gt;$SLOG echo -e "------------------------------------------------------------------"&gt;&gt;$SLOG done rm $PID_FILE</span></span></code> </pre> </div><p>Source: <a href="https://habr.com/ru/post/128617/">https://habr.com/ru/post/128617/</a></p>
+      Question: <br>  - because  The script was originally published in <a href="http://farmal.in/2011/01/skript-rezervnogo-kopirovaniya-cherez-rsync/">Blozhik</a> , and you did not manage to hear an authoritative opinion on the effectiveness of this approach - I would be glad if you shared your thoughts ... <br><br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh # simple rsync backup script written by farmal.in 2011-01-21 # # latest backup is always in $SDIR/domains/$domain/latest folder # all backups which are older than 7 days would be deleted # backup.ini file can't contain comments, empty lines and spaces in domain names # # example of a GOOD backup.ini: # mydomain.com user@mydomain.com:/path/to/public_html # SDIR="/usr/local/backup" SKEY="$SDIR/.ssh/id_rsa" SLOG="$SDIR/backup.log" PID_FILE="$SDIR/backup.pid" ADMIN_EMAIL="email@domain.com" if [ -e $PID_FILE ]; then echo "this task is already running or previous run was completed with errors on `hostname`" | mail -s "Some mess with backups on `hostname`..." $ADMIN_EMAIL exit fi touch $PID_FILE # redirecting all output to logfile exec &gt;&gt; $SLOG 2&gt;&amp;1 # parsing backup.ini file into $domain and $from variables cat backup.ini | while read domain from ; do destination="$SDIR/domains/$domain" # downloading a fresh copy in 'latest' directory echo -e "`date` *** $domain backup started"&gt;&gt;$SLOG # start counting rsync worktime start=$(date +%s) rsync --archive --one-file-system --delete -e "ssh -i $SKEY" "$from" "$destination/latest" || (echo -e "Error when rsyncing $domain. \n\n For more information see $SLOG:\n\n `tail $SLOG`" | mail -s "rsync error" $ADMIN_EMAIL &amp; continue) finish=$(date +%s) echo -e "`date` *** RSYNC worked for $((finish - start)) seconds"&gt;&gt;$SLOG # cloning the fresh copy by hardlinking cp --archive --link "$destination/latest" "$destination/`date +%F`" # deleting all previous copies which are older than 7 days by creation date, but not 'latest' find "$destination" -maxdepth 1 -ctime +7 -type d -path "$destination/????-??-??" -exec rm -r -f {} \; echo "`date` *** The size of $domain/latest is now `du -sh $destination/latest | awk '{print $1}'` "&gt;&gt;$SLOG echo -e "`date` *** $domain backup ended"&gt;&gt;$SLOG echo -e "`date` *** Total allocated `du -sh $destination | awk '{print $1}'`"&gt;&gt;$SLOG echo -e "------------------------------------------------------------------"&gt;&gt;$SLOG done rm $PID_FILE</span></span></code> </pre> </div><p>Source: https://habr.com/ru/post/128617/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../128614/index.html">Future SMART Phones = antimagocchi</a></li>
 <li><a href="../128615/index.html">Short Review: "Russian" Mozart</a></li>
 <li><a href="../128616/index.html">50 icons (for self-respecting) web designer</a></li>
+<li><a href="../12862/index.html">VPS - help choose</a></li>
 <li><a href="../128620/index.html">Algorithm to eliminate traffic jams for the automotive Internet</a></li>
 <li><a href="../128624/index.html">The introduction of LTE in Russia raised the barrier, but at the same time crushed WiMAX and otterli Tele2</a></li>
 <li><a href="../128628/index.html">* .Txt files are dangerous in Windows</a></li>
-<li><a href="../128631/index.html">What mobile Internet operators do you use?</a></li>
-<li><a href="../128634/index.html">Creating a push notification service based on WCF REST</a></li>
+<li><a href="../12863/index.html">As in that joke ...</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

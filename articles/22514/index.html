@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Dynamic programming in practice.</h1><div class="post__text post__text-html js-mediator-article">  <em>This is my first article on a similar subject, so please treat with understanding.</em>  <em>I will welcome any comments and observations.</em> <br><br>  I think many of you have heard, and many have even encountered this method of solving certain problems, like the dynamic programming method.  For those who do not know, here is the definition of Wikipedia: <br><blockquote>  <em>The idea of ​​dynamic programming is to partition the problem into several independent subtasks, solve each of them, and then calculate the original result.</em>  <em>To solve subtasks the same algorithm is applied recursively.</em>  <em>In this case, for each subtask the calculated answer is remembered, and if at some step the subtask is encountered a second time, then calculations are not performed for it.</em> <br>  <a href="http://ru.wikipedia.org/wiki/%25D0%2594%25D0%25B8%25D0%25BD%25D0%25B0%25D0%25BC%25D0%25B8%25D1%2587%25D0%25B5%25D1%2581%25D0%25BA%25D0%25BE%25D0%25B5_%25D0%25BF%25D1%2580%25D0%25BE%25D0%25B3%25D1%2580%25D0%25B0%25D0%25BC%25D0%25BC%25D0%25B8%25D1%2580%25D0%25BE%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25B8%25D0%25B5">http://ru.wikipedia.org/wiki/Dynamic_programming</a> </blockquote><br><a name="habracut"></a>  Pretty good and clear explanation, but let's take an example.  I think the simplest thing that comes to mind is the Fibonacci numbers.  Some initial data are given for it - A [1] = 1, A [2] = 1, in after the element A [i] = A [i-1] + A [i-2].  In this case, A [i] is often referred to as a <em>state</em> , and some relation with respect to the pre-calculated data is referred to as a <em>transition</em> .  In this case, there are 2 transitions from A [i] - to A [i-1] and to A [i-2].  The number of transitions may vary depending on the task. <br>  But dynamic programming is not just used.  Namely, because it sometimes allows a very significant reduction in the time it takes to solve a task, which sometimes, with large amounts of input data, is very critical.  And I want to show one such task that I met at the School Olympics Zonal this year.  Literally, I do not remember the condition, but here’s a general meaning: <br><blockquote>  <em>There is a matrix of numbers A of size NxM and number K. Its first row is given - A [1,1] .. A [1, M].</em>  <em>After that, for each element below the first row, the value is defined as the sum of all elements in a triangle above it modulo K. It is required to output the last row of this matrix A [N, 1] .. A [N, M].</em>  <em>Limitations: 1 ≤ N, M ≤ 2000;</em>  <em>2 ≤ K ≤ 10 <sup>9</sup> .</em> <br><img src="https://habrastorage.org/getpro/habr/olpictures/59c/add/e36/59cadde36c742d4705efb213718cf35e.jpg" width="400" height="280" hspace="10" vspace="10"></blockquote><br>  So, to find out the value of elements in a string, we need to know the values ​​of the elements in all the lines above it.  The simplest solution that comes to mind is for each element to simply take and go through all the elements in the triangle above it, counting the sum.  Yes, this can be done when time is not critical or when the restrictions on N and M are small, because  such an algorithm works for the asymptotics of order O (N <sup>4</sup> ) (if we take N = M).  Those.  even if N = M = 100, this will work for about 5-10 seconds (depending on the computer), I am already silent about N = M = 2000.  So, we need to accelerate this matter somehow.  And let's do this.  We have a triangle to calculate.  And we have pre-calculated triangles for all the elements above it.  So let's make a new triangle, using the already calculated!  See the picture: <br><img src="https://habrastorage.org/getpro/habr/olpictures/873/a50/9e1/873a509e190f1c2d92ca7bb71afe445e.jpg" width="400" height="280" hspace="10" vspace="10"><br>  Those.  if we need to calculate a triangle starting at A [i, j], then it will be calculated by the formula: <br>  A [i, j] = (A [i-1, j] + 2 * A [i-1, j-1] + 2 * A [i-1, j + 1] -2 * A [i-2 , j]) mod K. <em>(where mod K is to take modulo K)</em> <br>  We subtract the triangle A [i-2, j] because  this is the intersection of two triangles A [i-1, j-1] and A [i-1, j + 1] and otherwise we would count it 2 times.  By the way, think for yourself why we multiply some values ​​by 2. <br>  The general idea of ​​this problem is this.  Try to write your own solution (there are several nuances in it, which I suggest you find yourself) and test it with the help of the usual re-selection algorithm on different tests.  If anything is unclear - contact me, I will try to help, although, I must admit, I myself am far from a pro in this business and I can solve not all tasks, but I can do something ;-) <br></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/22514/">https://habr.com/ru/post/22514/</a></p>
+    <p>Source: https://habr.com/ru/post/22514/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

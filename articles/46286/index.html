@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Apache + PHP4 + PHP5 + Mysql for Windows</h1><div class="post__text post__text-html js-mediator-article">  Not so long ago there was a need to simultaneously run Apache with support for php4, php5 and mysql.  I know that there are several ready-made solutions, but after all they have to be filed with pens for their own needs, so it was decided to assemble such a kit by hand. <br><a name="habracut"></a><br><br><h5>  Distributions </h5><br>  The following software distributions were used: <br>  <a href="httpd.apache.org/download.cgi">Apache: 2.2.9</a> <br>  <a href="http://www.php.net/downloads.php">PHP4: 4.4.9</a> <br>  <a href="http://www.php.net/downloads.php">PHP5: 5.2.6</a> <br>  <a href="http://dev.mysql.com/downloads/mysql/5.1.html">MySQL: 5.0.67</a> <br><br>  All distributions were downloaded in .zip archives in order to avoid unnecessary registrations in the system.  The distribution kit becomes attached to a specific drive and folder (that is, if you initially do everything in the C: \ WebServer folder, then on other computers where you will install it, you will also need to use this folder). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  File allocation </h5><br>  First, unpack all distributions. <br><ul><li>  Apache: C: \ WebServer \ apache </li><li>  php4: C: \ Webserver \ php \ php4 </li><li>  php5: C: \ WebServer \ php \ php5 </li><li>  mysql: C: \ WebServer \ mysql </li></ul><br>  the common directory for * php files will be C: \ WebServer \ www <br><br><h5>  Apache setup </h5><br>  PHP4 and PHP5 will hang on different ports.  Let it be 80 (for php5) and 81 (for php4).  To do this, make 2 configuration files for Apache and make a trace in them.  changes: <br>  httpd-php4.conf: <br> <code>ServerRoot "C:/WebServer/apache" <br> Listen 81 <br> LoadFile "c:\WebServer\php\php4\php4ts.dll" <br> DocumentRoot "C:\WebServer\www\htdocs <br> &lt;Directory "C:\WebServer\www\htdocs"&gt; <br> Options Indexes FollowSymLinks <br> AllowOverride None <br> Order allow,deny <br> Allow from all <br></code> <br>  &lt;IfModule dir_module&gt; <br>  DirectoryIndex index.html index.php index.htm <br><br><br>  Etc.  depending on what exactly we need from Apache. <br>  The file php4ts.dll must be placed in the folder php \ php4 \.  You can download it here: <br>  <a href="http://www.dll-files.ru/dll/p/Php4ts.dll.html">www.dll-files.ru/dll/p/Php4ts.dll.html</a> <br><br>  Next, do the php5 configuration, httpd-php5.conf file: <br> <code>ServerRoot "C:/WebServer/apache" <br> Listen 80 <br> LoadModule php5_module "c:/WebServer/php/php5/php5apache2_2.dll" <br> AddType application/x-httpd-php .php <br> PHPIniDir "c:/WebServer/php/php5" <br> DocumentRoot "C:\WebServer\www\htdocs <br> &lt;Directory "C:\WebServer\www\htdocs"&gt; <br> Options Indexes FollowSymLinks <br> AllowOverride None <br> Order allow,deny <br> Allow from all <br></code> <br>  &lt;IfModule dir_module&gt; <br>  DirectoryIndex index.html index.php index.htm <br><br><br>  We put MySQL: <br>  No special settings are needed, unless you specify the port and password in the my.cnf file.  So we will skip this, but we will describe the integration with php: <br><h6>  PHP4, PHP5 setup </h6><br><br>  Php file \ php4 \ php.ini <br> <code>engine = On <br> extension=php_mysql <br></code> <br>  The remaining extensions are optional.  Similarly, we connect php_mysql to php \ php5 \ php.ini <br><br><h5>  Startup files </h5><br>  Create a folder bin \ for startup files <br>  create an apache-php4.cmd file in it with the contents: <br><br> <code>@echo OFF <br> echo Apache + PHP4 started <br> C:\WebServer\apache\bin\httpd.exe -f C:\WebServer\apache\conf\httpd-php4.conf &amp;</code> <br>  and the apache-php5.cmd file: <br> <code>@echo OFF <br> echo Apache + PHP4 started <br> C:\WebServer\apache\bin\httpd.exe -f C:\WebServer\apache\conf\httpd-php4.conf &amp;</code> <br> <br>  Now, using these two files, we can run Apache with different versions of PHP.  Mysql is started by mysql / bin / mysqld-nt.exe <br>  If the article seems useful to someone, next I will tell you how to make it possible to run them as services. </div><p>Source: <a href="https://habr.com/ru/post/46286/">https://habr.com/ru/post/46286/</a></p>
+    <h5>  File allocation </h5><br>  First, unpack all distributions. <br><ul><li>  Apache: C: \ WebServer \ apache </li><li>  php4: C: \ Webserver \ php \ php4 </li><li>  php5: C: \ WebServer \ php \ php5 </li><li>  mysql: C: \ WebServer \ mysql </li></ul><br>  the common directory for * php files will be C: \ WebServer \ www <br><br><h5>  Apache setup </h5><br>  PHP4 and PHP5 will hang on different ports.  Let it be 80 (for php5) and 81 (for php4).  To do this, make 2 configuration files for Apache and make a trace in them.  changes: <br>  httpd-php4.conf: <br> <code>ServerRoot "C:/WebServer/apache" <br> Listen 81 <br> LoadFile "c:\WebServer\php\php4\php4ts.dll" <br> DocumentRoot "C:\WebServer\www\htdocs <br> &lt;Directory "C:\WebServer\www\htdocs"&gt; <br> Options Indexes FollowSymLinks <br> AllowOverride None <br> Order allow,deny <br> Allow from all <br></code> <br>  &lt;IfModule dir_module&gt; <br>  DirectoryIndex index.html index.php index.htm <br><br><br>  Etc.  depending on what exactly we need from Apache. <br>  The file php4ts.dll must be placed in the folder php \ php4 \.  You can download it here: <br>  <a href="http://www.dll-files.ru/dll/p/Php4ts.dll.html">www.dll-files.ru/dll/p/Php4ts.dll.html</a> <br><br>  Next, do the php5 configuration, httpd-php5.conf file: <br> <code>ServerRoot "C:/WebServer/apache" <br> Listen 80 <br> LoadModule php5_module "c:/WebServer/php/php5/php5apache2_2.dll" <br> AddType application/x-httpd-php .php <br> PHPIniDir "c:/WebServer/php/php5" <br> DocumentRoot "C:\WebServer\www\htdocs <br> &lt;Directory "C:\WebServer\www\htdocs"&gt; <br> Options Indexes FollowSymLinks <br> AllowOverride None <br> Order allow,deny <br> Allow from all <br></code> <br>  &lt;IfModule dir_module&gt; <br>  DirectoryIndex index.html index.php index.htm <br><br><br>  We put MySQL: <br>  No special settings are needed, unless you specify the port and password in the my.cnf file.  So we will skip this, but we will describe the integration with php: <br><h6>  PHP4, PHP5 setup </h6><br><br>  Php file \ php4 \ php.ini <br> <code>engine = On <br> extension=php_mysql <br></code> <br>  The remaining extensions are optional.  Similarly, we connect php_mysql to php \ php5 \ php.ini <br><br><h5>  Startup files </h5><br>  Create a folder bin \ for startup files <br>  create an apache-php4.cmd file in it with the contents: <br><br> <code>@echo OFF <br> echo Apache + PHP4 started <br> C:\WebServer\apache\bin\httpd.exe -f C:\WebServer\apache\conf\httpd-php4.conf &amp;</code> <br>  and the apache-php5.cmd file: <br> <code>@echo OFF <br> echo Apache + PHP4 started <br> C:\WebServer\apache\bin\httpd.exe -f C:\WebServer\apache\conf\httpd-php4.conf &amp;</code> <br> <br>  Now, using these two files, we can run Apache with different versions of PHP.  Mysql is started by mysql / bin / mysqld-nt.exe <br>  If the article seems useful to someone, next I will tell you how to make it possible to run them as services. </div><p>Source: https://habr.com/ru/post/46286/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../46278/index.html">Firefox extension adds torrents on Amazon.com</a></li>
+<li><a href="../4628/index.html">Microsoft will make a portal on the purchased content</a></li>
 <li><a href="../46280/index.html">Open lecture "Building corporate portals based on MOSS 2007"</a></li>
 <li><a href="../46283/index.html">Do good</a></li>
 <li><a href="../46284/index.html">Laser-guided tools</a></li>
 <li><a href="../46285/index.html">Lectures on the benefits of open source in business for students of St. Petersburg</a></li>
 <li><a href="../46288/index.html">HTC puts on design, buys One & Co</a></li>
+<li><a href="../4629/index.html">"System" will give "daughter" for a piece of German telecom</a></li>
 <li><a href="../46290/index.html">Silvio Berlusconi plans to "regulate the Internet"</a></li>
 <li><a href="../46293/index.html">Qt program overview</a></li>
 <li><a href="../46294/index.html">Adobe AIR 1.5 is a major upgrade to a serious platform.</a></li>
-<li><a href="../46295/index.html">sPult</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

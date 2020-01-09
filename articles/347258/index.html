@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Why salt HTTP callbacks</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/webt/fg/lr/c8/fglrc8fb-kytna81oek25zizivo.jpeg"></div><br>  Some cloud services want two-way communication for notifications: tell your backend about the completion of a long operation, show the errors that have occurred, warn about the low balance of paid services - the whole story.  And if we are accustomed to using HTTP requests to communicate with services, then there are many options in the opposite direction: from status checks every ten minutes to permanent WebSocket or HTTP / 2 connections with real-time notifications.  The easiest way is HTTP callbacks.  You specify the URL of your backend in the admin panel, and the cloud service in case of interesting events makes an HTTP request to this URL with additional information in the request body.  The flip side of simplicity is security.  How to make sure that the request was made exactly by the cloud service, and not by the malicious hacker Vasya?  Several ways under the cut. <br><a name="habracut"></a><br><h4>  Token transfer and verification </h4><br>  The easiest way is inside the easiest way: in the admin panel you set or generate a token (for example, a GUID) that the cloud service transmits in each request.  And on the side of your backend just check this token. <br><br>  The obvious disadvantage is that if an attacker overhears traffic between your services, he will recognize the token and be able to make requests on behalf of the service.  HTTPS is well protected from this, but there are nuances.  For example, traffic between servers may not be encrypted to speed up the work.  Or you can debug your backend on a local machine, sitting in Starbucks without VPN.  It sounds crazy, but anything can happen in life. <br><br><h4>  HTTP authorization on the side of your backend </h4><br>  It differs from a token only in that the verification is transferred from your code to the level of the web server that you use for processing requests.  You specify a login plus a password in nginx / expressjs / Django / Rails / whatever, in the admin service of the cloud service, after which all checks are done automatically.  But it is possible to overhear a login with a password in the same way, and HTTPS has an unpleasant feature of disconnecting "for a moment I can only debug locally." 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,14 +59,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  IP filtering </h4><br>  If requests for the URL for the http callback are allowed only from a specific IP address, then the hacker will have big problems organizing such a request.  Not that this was impossible (if the answer is not required, then the necessary sequence of TCP packets can be organized), but it is technically difficult.  The ambush is different here - a cloud service can have many IP addresses from which it sends requests, which makes such protection too unreliable in a simple implementation and too complicated if reliability is needed. <br><br><h4>  MD5-signature with salt </h4><br>  A good balanced way with the shared secret that we use in Voximplant.  An arbitrary text string is set in the admin panel (“cryptographic salt”, in the role of which the GUID is well suited), after which for each request the Voximplant cloud counts the MD5 hash from the account, request and salt data.  On the side of the backend, knowing the salt, you can also calculate the hash and compare it with the one specified in the request.  If it coincided, then everything is fine.  And if not, then you can accept congratulations in the creation of a truly popular service, which even hackers visit. <br><br><img src="https://habrastorage.org/webt/c5/ze/sy/c5zesy9_i_kqfog_ec0rlxrxsfm.png"><br><br><h4>  More ways? </h4><br>  I told only a few simple ways to protect, which are used in practice in the HTTP API of large projects.  Have you seen something else interesting?  Share in the comments, I will be grateful! </div><p>Source: <a href="https://habr.com/ru/post/347258/">https://habr.com/ru/post/347258/</a></p>
+    <h4>  IP filtering </h4><br>  If requests for the URL for the http callback are allowed only from a specific IP address, then the hacker will have big problems organizing such a request.  Not that this was impossible (if the answer is not required, then the necessary sequence of TCP packets can be organized), but it is technically difficult.  The ambush is different here - a cloud service can have many IP addresses from which it sends requests, which makes such protection too unreliable in a simple implementation and too complicated if reliability is needed. <br><br><h4>  MD5-signature with salt </h4><br>  A good balanced way with the shared secret that we use in Voximplant.  An arbitrary text string is set in the admin panel (“cryptographic salt”, in the role of which the GUID is well suited), after which for each request the Voximplant cloud counts the MD5 hash from the account, request and salt data.  On the side of the backend, knowing the salt, you can also calculate the hash and compare it with the one specified in the request.  If it coincided, then everything is fine.  And if not, then you can accept congratulations in the creation of a truly popular service, which even hackers visit. <br><br><img src="https://habrastorage.org/webt/c5/ze/sy/c5zesy9_i_kqfog_ec0rlxrxsfm.png"><br><br><h4>  More ways? </h4><br>  I told only a few simple ways to protect, which are used in practice in the HTTP API of large projects.  Have you seen something else interesting?  Share in the comments, I will be grateful! </div><p>Source: https://habr.com/ru/post/347258/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../347246/index.html">An honest approach to managing people, or why I never do counteroffers</a></li>
+<li><a href="../34725/index.html">Profitable open source is that right?</a></li>
 <li><a href="../347250/index.html">Is javascript a solution to an asynchronous problem?</a></li>
 <li><a href="../347252/index.html">How neural networks help in e-learning</a></li>
 <li><a href="../347254/index.html">Understanding Meltdown and Specter: What you need to know about new vulnerabilities found in almost all CPUs</a></li>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Drupal PostInstall - a module that allows other modules to "be configured" after installation</h1><div class="post__text post__text-html js-mediator-article">  As you know, some modules (such as Google Analytics, for example) need some initial configuration before they can at least function.  In addition, sometimes you have to deal with a situation where even when installing a module you need to know some information from the user.  Of course, Drupal allows you to do it all on a case-by-case basis using a hook mechanism.  However, I decided that it would be better to have a unified way, an interface for solving this problem.  For these purposes, and was written by a small service module called PostInstall. <br><a name="habracut"></a><br><h4>  What? </h4><br>  The essence of the module is as follows.  It allows other modules to display their configuration pages immediately after installation.  The module copes with the installation of several modules at once and displays the configuration pages strictly in accordance with the dependencies (the dependent module is configured before the dependent one).  In addition, the module works correctly even if it installs itself with modules that require configuration.  If at some step the post-configuration was interrupted, the user will be returned to it the next time they visit the modules page (admin / modules).  Setup to proceed from the moment of completion. <br><br><h4>  How does it work? </h4><br>  It works to disgrace simply.  After installing the modules, PostInstall checks if there are modules in the list of installed modules that require post-configuration.  If there are any, after the installation is completed, the user is transferred to the setup wizard.  The configuration form for each module represents a separate stage of the wizard.  The user is shown at what stage he is now (which module is being configured at the moment) and how many stages are total.  After the configuration is completed, the user returns to the admin / modules page. <br><br><h4>  How to implement? </h4><br>  In order to allow your module to be configured after installation, you must: <br><ol><li>  Add it to the postinstall module (add the line “dependencies [] = postinstall” to the modulename.info file). </li><li>  Implement in the hook_postinstall () module. </li></ol><br>  Below is a Russified version of the postinstall.api.php file with a Russified description and an example of how to implement hook_postinstall (). <br><pre><code class="php hljs"><span class="hljs-comment"><span class="hljs-comment">/** *        *     . * * </span><span class="hljs-doctag"><span class="hljs-comment"><span class="hljs-doctag">@param</span></span></span><span class="hljs-comment"> $action *     : * - form:         drupal_get_form(). *          submit.  *     . * - validate:         $values *      $error_messages,   . * $error_messages -      : * - name:    (  form_set_error()). * - message:   ,    . * - submit: Submit callback  .     -  $values. * </span><span class="hljs-doctag"><span class="hljs-comment"><span class="hljs-doctag">@param</span></span></span><span class="hljs-comment"> $values *      ( $action == 'validate')   * ( $action == 'submit'). */</span></span> <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">hook_postinstall</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">($action, $values = array</span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params"><span class="hljs-params">()</span></span></span></span><span class="hljs-function"><span class="hljs-params">)</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">switch</span></span> ($action) { <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> <span class="hljs-string"><span class="hljs-string">'form'</span></span>: $form = <span class="hljs-keyword"><span class="hljs-keyword">array</span></span>(); $form[<span class="hljs-string"><span class="hljs-string">'test'</span></span>] = <span class="hljs-keyword"><span class="hljs-keyword">array</span></span>( <span class="hljs-string"><span class="hljs-string">'#type'</span></span> =&gt; <span class="hljs-string"><span class="hljs-string">'textfield'</span></span>, <span class="hljs-string"><span class="hljs-string">'#title'</span></span> =&gt; <span class="hljs-string"><span class="hljs-string">'Test textfield'</span></span> ); <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> $form; <span class="hljs-keyword"><span class="hljs-keyword">break</span></span>; <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> <span class="hljs-string"><span class="hljs-string">'validate'</span></span>: $error_messages = <span class="hljs-keyword"><span class="hljs-keyword">array</span></span>(); <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (!is_numeric($values[<span class="hljs-string"><span class="hljs-string">'test'</span></span>])) { $error_messages[] = <span class="hljs-keyword"><span class="hljs-keyword">array</span></span>( <span class="hljs-string"><span class="hljs-string">'name'</span></span> =&gt; <span class="hljs-string"><span class="hljs-string">'test'</span></span>, <span class="hljs-string"><span class="hljs-string">'message'</span></span> =&gt; t(<span class="hljs-string"><span class="hljs-string">'   '</span></span>) ); } <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> $error_messages; <span class="hljs-keyword"><span class="hljs-keyword">break</span></span>; <span class="hljs-keyword"><span class="hljs-keyword">case</span></span> <span class="hljs-string"><span class="hljs-string">'submit'</span></span>: drupal_set_message($values[<span class="hljs-string"><span class="hljs-string">'test'</span></span>]); <span class="hljs-keyword"><span class="hljs-keyword">break</span></span>; } }</code> </pre> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The official project page on Drupal.Org: <a href="http://drupal.org/project/postinstall">drupal.org/project/postinstall</a> <br>  GitHub repository: <a href="https://github.com/numesmat/drupal-postinstall">github.com/numesmat/drupal-postinstall</a> (I can suddenly start forgetting to update) </div><p>Source: <a href="https://habr.com/ru/post/143864/">https://habr.com/ru/post/143864/</a></p>
+      The official project page on Drupal.Org: <a href="http://drupal.org/project/postinstall">drupal.org/project/postinstall</a> <br>  GitHub repository: <a href="https://github.com/numesmat/drupal-postinstall">github.com/numesmat/drupal-postinstall</a> (I can suddenly start forgetting to update) </div><p>Source: https://habr.com/ru/post/143864/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../143858/index.html">Webinar Announcement: Step-by-step BCS Configuration in SharePoint Online</a></li>
 <li><a href="../143859/index.html">The updated FXI Cotton Candy mini-computer will go on sale this summer.</a></li>
+<li><a href="../14386/index.html">CMS "Energine" - public exit</a></li>
 <li><a href="../143860/index.html">Backing up vkontakte music with Python</a></li>
 <li><a href="../143861/index.html">MonoDevelop 3.0 released</a></li>
 <li><a href="../143862/index.html">Using Private API in App Store Applications</a></li>
 <li><a href="../143866/index.html">Want to get a closer look at Dell?</a></li>
 <li><a href="../143868/index.html">10 reasons to attend the DUMP Developer Conference in Yekaterinburg</a></li>
+<li><a href="../14387/index.html">Management carpet "Strict"</a></li>
 <li><a href="../143870/index.html">CanvGauge - measuring device using canvas for HTML5</a></li>
 <li><a href="../143872/index.html">Is the end of Tele2 close in Russia?</a></li>
-<li><a href="../143874/index.html">The way to the Syndicate is through Startup Weekend</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

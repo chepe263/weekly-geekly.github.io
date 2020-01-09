@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Landscaping Twisted</h1><div class="post__text post__text-html js-mediator-article"> As usual, on holidays, in my spare time, from tiling and tacking other skirting boards, I was seized by another idea from the “try” cycle.  On Habré slipped article about <a href="http://habrahabr.ru/blogs/python/80062/">Pyrant</a> .  The first iteration I took and redid the main part of the protocol on Twisted - <a href="http://github.com/Deepwalker/tx-tokyo">github.com/Deepwalker/tx-tokyo</a> .  And everything was fine, the offensive went on all fronts, but then I went to the pythonous part of the pyrant, and realized that it was impossible to make a yield a [megakey] = 'mega data string'.  It was very sad, because in the article I was hooked precisely by the easy handling of the data in the pythonous form.  What to do, Pooh, I asked myself?  And remembered the <a href="http://codespeak.net/py/0.9.2/greenlet.html">greenlet-ah</a> . <br><br><a name="habracut"></a><br><br>  After tormenting some time, I rewrote defer.inlineCallbacks to use greenlet-s and was able to write such code: <br><pre> <code class="hljs python"><span class="hljs-keyword"><span class="hljs-keyword">from</span></span> twisted.internet <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> defer, protocol, reactor <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> tx_green <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> inlineCallbacks <span class="hljs-keyword"><span class="hljs-keyword">from</span></span> greentokyo <span class="hljs-keyword"><span class="hljs-keyword">import</span></span> Tyrant @inlineCallbacks <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">test_proto</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span><span class="hljs-function">:</span></span> t = Tyrant() <span class="hljs-keyword"><span class="hljs-keyword">print</span></span> t.get_stats() t[<span class="hljs-string"><span class="hljs-string">'kuku'</span></span>] = <span class="hljs-string"><span class="hljs-string">'Green Tyrant!'</span></span> <span class="hljs-keyword"><span class="hljs-keyword">print</span></span> t[<span class="hljs-string"><span class="hljs-string">'kuku'</span></span>] reactor.stop() <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> __name__==<span class="hljs-string"><span class="hljs-string">'__main__'</span></span>: test_proto() reactor.run()</code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Convenience is that greenlets have an important difference from generators - they are not limited to one function.  That is, when t ['kuku'] is called, t .__ getitem__ is actually called, inside which we make a switch () call to return control of the main loop for as long as we are waiting for data from the server.  If we tried to do inside t .__ getitem__ yield, then we would simply make a generator out of it without getting any benefit. <br><br>  As you can see, it is enough to wrap one function, and everything inside it will start working in non-blocking mode.  And if some modules will use the already modified versions of the underlying modules, their syntax will not change.  That is all.  Example - I will add my pyrant fork to twisted using greenlet, and I can use models without changes. <br><br>  The disadvantage is that you need to remember all this stuffing - it will be bad if you wait for the data, and instead you just drop Deferred.  And it will be even worse if you forget to return control to the main thread — stop the entire application.  And in this version, “not twist your brain” does not shine, because you have to remember and use the features of Twisted. <br><br>  It should be noted that there is nothing in the above code that clearly indicates a return of control - calls to greenlet.switch () are hidden in the implementation of the pythonous Tyrant.  That is, it is sharpened by this implementation.  If this were not the case, then we would have to explicitly call the wait function from tx_green.  It is this moment that bothers me - you can create almost junga, and calls to the database via ORM will also work secretly causing wait, but if you forget, you can potentially generate a subtle error, or a newcomer, as usual without really reading the documentation, will start requesting Any server page through urllib and will long wonder why the server slows down. <br><br>  The implementation is located in my <a href="http://github.com/Deepwalker/deepwalker_sandbox">sandbox</a> . <br><br>  Here is a small post.  As always, I expect a pleasant discussion, and I hope that there will be good suggestions on the code, as was the case in our last meeting, with me in the postwriter role.  Thanks for attention. </div><p>Source: <a href="https://habr.com/ru/post/80339/">https://habr.com/ru/post/80339/</a></p>
+      Convenience is that greenlets have an important difference from generators - they are not limited to one function.  That is, when t ['kuku'] is called, t .__ getitem__ is actually called, inside which we make a switch () call to return control of the main loop for as long as we are waiting for data from the server.  If we tried to do inside t .__ getitem__ yield, then we would simply make a generator out of it without getting any benefit. <br><br>  As you can see, it is enough to wrap one function, and everything inside it will start working in non-blocking mode.  And if some modules will use the already modified versions of the underlying modules, their syntax will not change.  That is all.  Example - I will add my pyrant fork to twisted using greenlet, and I can use models without changes. <br><br>  The disadvantage is that you need to remember all this stuffing - it will be bad if you wait for the data, and instead you just drop Deferred.  And it will be even worse if you forget to return control to the main thread — stop the entire application.  And in this version, “not twist your brain” does not shine, because you have to remember and use the features of Twisted. <br><br>  It should be noted that there is nothing in the above code that clearly indicates a return of control - calls to greenlet.switch () are hidden in the implementation of the pythonous Tyrant.  That is, it is sharpened by this implementation.  If this were not the case, then we would have to explicitly call the wait function from tx_green.  It is this moment that bothers me - you can create almost junga, and calls to the database via ORM will also work secretly causing wait, but if you forget, you can potentially generate a subtle error, or a newcomer, as usual without really reading the documentation, will start requesting Any server page through urllib and will long wonder why the server slows down. <br><br>  The implementation is located in my <a href="http://github.com/Deepwalker/deepwalker_sandbox">sandbox</a> . <br><br>  Here is a small post.  As always, I expect a pleasant discussion, and I hope that there will be good suggestions on the code, as was the case in our last meeting, with me in the postwriter role.  Thanks for attention. </div><p>Source: https://habr.com/ru/post/80339/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../80333/index.html">The shortest record by IE is broken</a></li>
 <li><a href="../80334/index.html">Babbage analytical machine. Part one - who is Babbage and why do we need counting machines?</a></li>
 <li><a href="../80335/index.html">Plastic Logic Introduces Que E-Reader New Ebook</a></li>
+<li><a href="../8034/index.html">Mail.Ru engaged in "Auto Business"</a></li>
 <li><a href="../80340/index.html">Chinese singularity</a></li>
 <li><a href="../80341/index.html">Disable autocomplete</a></li>
 <li><a href="../80342/index.html">Acquaintance with the levels of parallelization</a></li>
 <li><a href="../80343/index.html">CES 2010: ioSafe Solo NAS under the tracks of the bulldozer</a></li>
-<li><a href="../80345/index.html">The Third & The Seventh</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

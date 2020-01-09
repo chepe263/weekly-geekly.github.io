@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Continuous Deployment to Windows Instance</h1><div class="post__text post__text-html js-mediator-article">  What is the Continuous Delivery, many have probably heard repeatedly.  One of the key points of this process is the build of the Build Pipeline (“pipeline” from the contractor to the customer).  And for this you need to automate such processes as building the project, its deployment on the infrastructure, testing, etc.  Jenkins is a great tool for such tasks. <img src="https://habrastorage.org/storage2/a20/7b9/702/a207b970246fb8d073cdf0670bb1d955.png" align="right"><br><br>  To automate application deployment, the easiest option is to run Jenkins scripts on infrastructure hosts via ssh.  But what if there was one (or several) Windows in the park from Linux instances?  How to deploy to the "enemy" host - look under the cut. <br><a name="habracut"></a><br><br>  To deploy on Windows as well as on Linux (well, almost), you need to install FreeSSHd and run it as a service.  Next, you need to configure it through the "freeSSHd settings" window (called from the system tray).  All the settings / features I will not describe, only the main ones, those that we need for remote execution of commands.  On the “Users” tab, add the user “jenkins” and set the following settings: <br><img src="https://habrastorage.org/storage2/a18/23c/d6e/a1823cd6efecb8b34b1b1b357349c8e5.png">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      On the “SSH” tab: <br><img src="https://habrastorage.org/storage2/633/2af/d64/6332afd64d5a3749d719d5000d5de537.png"><br><br>  And on the “Authentication” tab you need to specify the path where the public keys will be stored: <br><img src="https://habrastorage.org/storage2/7e0/08b/4cf/7e008b4cf2df941519f4b838aa72278a.png"><br><br>  Host for Deploy ready! <br><br>  Now you need to generate a pair of keys on the Jenkins host and put the public part of the key in the directory on the Windows instance specified in the freeSSHd settings. <br>  Check if we set everything up correctly (on Jenkins): <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># su jenkins - $ ssh jenkins@10.1.1.160 'cmd /c dir'</span></span></code> </pre> <br>  If you received a list of files, then everything is OK. <br><br>  Go directly to Deploy.  Create a new job in Jenkins (click on “New Job”).  Then set the name and select “Build a free-style software project”.  In the edit page in the “Build” section, click on “Add build step” and select “Execute shell”. <br>  Here we will write a bash script that will take artifacts (in our case from the git repository), copy them from the Jenkins host to the Windows instance and run cmd scripts on it: <br><br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash -x REPO=/path/to/local/repo/ cd $REPO git checkout git pull origin master #copy files: lftp -u jenkins,pl sftp://10.1.1.160 &lt;&lt;EOF mirror -R ./ bye EOF #start daemons: ssh jenkins@10.1.1.160 'cmd /c cd \DIRECTORY &amp;&amp; script.cmd'</span></span></code> </pre><br><br>  Everything is simple: the script downloads the artifacts, copies them to the Windows instance, runs the necessary cmd-scripts. <br><br>  After all these actions, we have a job, which, when you click on “Build Now”, will deploy the application. <br><br>  Thanks for attention!  Good luck! </div><p>Source: <a href="https://habr.com/ru/post/175007/">https://habr.com/ru/post/175007/</a></p>
+      On the “SSH” tab: <br><img src="https://habrastorage.org/storage2/633/2af/d64/6332afd64d5a3749d719d5000d5de537.png"><br><br>  And on the “Authentication” tab you need to specify the path where the public keys will be stored: <br><img src="https://habrastorage.org/storage2/7e0/08b/4cf/7e008b4cf2df941519f4b838aa72278a.png"><br><br>  Host for Deploy ready! <br><br>  Now you need to generate a pair of keys on the Jenkins host and put the public part of the key in the directory on the Windows instance specified in the freeSSHd settings. <br>  Check if we set everything up correctly (on Jenkins): <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># su jenkins - $ ssh jenkins@10.1.1.160 'cmd /c dir'</span></span></code> </pre> <br>  If you received a list of files, then everything is OK. <br><br>  Go directly to Deploy.  Create a new job in Jenkins (click on “New Job”).  Then set the name and select “Build a free-style software project”.  In the edit page in the “Build” section, click on “Add build step” and select “Execute shell”. <br>  Here we will write a bash script that will take artifacts (in our case from the git repository), copy them from the Jenkins host to the Windows instance and run cmd scripts on it: <br><br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash -x REPO=/path/to/local/repo/ cd $REPO git checkout git pull origin master #copy files: lftp -u jenkins,pl sftp://10.1.1.160 &lt;&lt;EOF mirror -R ./ bye EOF #start daemons: ssh jenkins@10.1.1.160 'cmd /c cd \DIRECTORY &amp;&amp; script.cmd'</span></span></code> </pre><br><br>  Everything is simple: the script downloads the artifacts, copies them to the Windows instance, runs the necessary cmd-scripts. <br><br>  After all these actions, we have a job, which, when you click on “Build Now”, will deploy the application. <br><br>  Thanks for attention!  Good luck! </div><p>Source: https://habr.com/ru/post/175007/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../174991/index.html">Bitcoin: now for $ 100 each (not April 1st), and Avalon</a></li>
-<li><a href="../174993/index.html">In continuation of the topic about driving Virtual Virtku</a></li>
-<li><a href="../174997/index.html">Overview of Cisco Integrated Management Controller: Remote Server Management</a></li>
+<li><a href="../1750/index.html">Online gaming market will exceed $ 4.4 billion by 2010</a></li>
+<li><a href="../17500/index.html">Yahoo became the "platinum" sponsor of the Apache project</a></li>
+<li><a href="../175001/index.html">As futurologists in 1988 represented the 2013th</a></li>
 <li><a href="../175003/index.html">Nokia Maps API on the example of Maps Explorer</a></li>
 <li><a href="../175005/index.html">Real aircraft, controlled from the tablet</a></li>
+<li><a href="../17501/index.html">Microsoft is experimenting with touchscreens</a></li>
 <li><a href="../175011/index.html">Human digitization: we are not ready</a></li>
 <li><a href="../175013/index.html">BitTorrent alpha version of SyncApp will be available for public use by the end of April.</a></li>
 <li><a href="../175017/index.html">Lun hovercraft</a></li>
 <li><a href="../175023/index.html">About Amazon Clouds and MPLS Transport</a></li>
-<li><a href="../175025/index.html">Time back ...</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

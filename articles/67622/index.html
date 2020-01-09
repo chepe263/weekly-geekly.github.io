@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A simple way to queue up from AJAX requests</h1><div class="post__text post__text-html js-mediator-article">  <b>Formulation of the problem</b> <br><br>  Asynchronous requests are a convenient way to unload users of the site from an excess of information that is “dumped” on them after the page is displayed.  Consider a classic example - a list of products in the online store.  The user executes any search query, as a result of which a compact list of found products is displayed.  For example, it can be <i>only one name</i> .  Under each of the names there is a link “more details”, after clicking on which an additional block will open under the name, already with detailed information about the product.  The user friendliness is obvious - having quickly looked through the entire list, he “clicks” only the goods that interest him, and will quickly go to the next pages.  It is also beneficial from the server side - less load, less outgoing traffic. <br><br>  However, the following point inevitably arises in such a system: a user can quickly click on several “more” links in a row, while the server will process incoming requests for a long time.  If only one XMLHttpRequest object is used in AJAX (usually it is), then all requests will fall into it “in a heap”, and the result of the request will be displayed not where it is needed.  Thus, there is a <i>task to organize a queue of similar asynchronous requests to the server, so that the next one is executed only after the previous one is completed</i> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,18 +61,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <a name="habracut"></a><br><br>  <b>Solution</b> <br><br>  The first and most obvious way is to disable asynchrony in the browser itself - set the last parameter to false: <br>  request.open (“GET”, url, <b><i>false</i></b> ); <br><br>  Unfortunately, although it is true, it only works in the part of browsers, and, for example, the last firefox 3.5 just does not execute such a request. <br><br>  The second option is to create an array of XMLHttpRequest objects, and execute each request to the server through its own object.  Suboptimal and inconvenient. <br><br>  Therefore, we make javascript <i>standard queue</i> (array).  The general algorithm looks like this: <br>  - initialize an empty array <br>  - in an asynchronous request, we check if any other request is already being executed.  If executed, put the request parameter in the queue and do nothing (do not execute the request to the server) <br>  - when the page is updated, we look at the size of our queue.  If it is not empty, we again initialize the request (as if on behalf of the user) <br>  - repeat the cycle until the queue is empty <br><br>  Thus, adding and removing elements from the array, as well as waiting until the result of the request comes from the server, you can easily implement a queue of asynchronous requests. <br><br>  A working example of scripts can be viewed, for example, here: <br>  <a href="http://moiknigi.com/user_598/books/">http://moiknigi.com/user_598/books/</a> <br><br>  The scripts successfully work in any variants: <br>  - discovery of one description of the goods <br>  - quick “clicking” of several products with further waiting <br>  - a mixed version: "clicking" on some products at the time when others open <br>  - the opening of all the goods in one click (in this case, a queue of 20 items is formed immediately, which is then gradually cleared) <br><br>  <b>findings</b> <br><br>  I suppose such a simple approach can be used on many sites that display different lists of the same type (goods, news, etc.).  The scripts themselves are easy to understand and occupy an extremely small volume. </div><p>Source: <a href="https://habr.com/ru/post/67622/">https://habr.com/ru/post/67622/</a></p>
+    <a name="habracut"></a><br><br>  <b>Solution</b> <br><br>  The first and most obvious way is to disable asynchrony in the browser itself - set the last parameter to false: <br>  request.open (“GET”, url, <b><i>false</i></b> ); <br><br>  Unfortunately, although it is true, it only works in the part of browsers, and, for example, the last firefox 3.5 just does not execute such a request. <br><br>  The second option is to create an array of XMLHttpRequest objects, and execute each request to the server through its own object.  Suboptimal and inconvenient. <br><br>  Therefore, we make javascript <i>standard queue</i> (array).  The general algorithm looks like this: <br>  - initialize an empty array <br>  - in an asynchronous request, we check if any other request is already being executed.  If executed, put the request parameter in the queue and do nothing (do not execute the request to the server) <br>  - when the page is updated, we look at the size of our queue.  If it is not empty, we again initialize the request (as if on behalf of the user) <br>  - repeat the cycle until the queue is empty <br><br>  Thus, adding and removing elements from the array, as well as waiting until the result of the request comes from the server, you can easily implement a queue of asynchronous requests. <br><br>  A working example of scripts can be viewed, for example, here: <br>  <a href="http://moiknigi.com/user_598/books/">http://moiknigi.com/user_598/books/</a> <br><br>  The scripts successfully work in any variants: <br>  - discovery of one description of the goods <br>  - quick “clicking” of several products with further waiting <br>  - a mixed version: "clicking" on some products at the time when others open <br>  - the opening of all the goods in one click (in this case, a queue of 20 items is formed immediately, which is then gradually cleared) <br><br>  <b>findings</b> <br><br>  I suppose such a simple approach can be used on many sites that display different lists of the same type (goods, news, etc.).  The scripts themselves are easy to understand and occupy an extremely small volume. </div><p>Source: https://habr.com/ru/post/67622/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../67611/index.html">Lenses are good</a></li>
 <li><a href="../67613/index.html">Capifony. Or deploy symfony project through Capistrano</a></li>
 <li><a href="../67615/index.html">Obvious next</a></li>
 <li><a href="../67616/index.html">New trailer for Mass Effect 2</a></li>
 <li><a href="../67617/index.html">Installing PHP on ubuntu</a></li>
+<li><a href="../6762/index.html">Graphic manipulator</a></li>
 <li><a href="../67627/index.html">Literature 2.0</a></li>
 <li><a href="../67629/index.html">Shoot or read?</a></li>
 <li><a href="../67630/index.html">The Evolution of Writing - Part I: Manuscript</a></li>

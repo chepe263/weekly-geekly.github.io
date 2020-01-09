@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to start making the engine control unit from scratch</h1><div class="post__text post__text-html js-mediator-article">  About a year ago, I started developing a car engine control unit from scratch. <br>  Let me tell you why this idea still seems realistic to me. <br><a name="habracut"></a><br><br>  So, an old Kia Pride.  Under the hood, she has such a thing, which is suitable for a dozen wires - this is the ignition distributor, in the case of which the camshaft position sensors and the ignition coil are integrated. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/aed/1e1/f8b/aed1e1f8b17bbfbfa933d4291e765e66.jpg">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,7 +63,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       For a start, we are interested in shaft position sensors.  If we start this dispenser a little to disassemble, inside we will see: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/730/797/17d/73079717d3c5e162f488ff04311ead43.jpg"><br><br>  If we go a little further, we will see both the inner wheel and the sensors themselves. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/d64/415/226/d644152262f7d4a95efcbefcaf294867.jpg"><br><br>  These two tin wheels sit on the shaft, rotate with it - and, oh, a miracle, they form a very simple signal in two wires sticking to the outside: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/d1e/df6/d87/d1edf6d87b895f9d21cfb9a453a04a17.jpg"><br><br>  Our luck does not end there: although we know that a battery in a car is usually twelve volts - the signal electronics usually work at five volts!  And this means that this signal can be absolutely connected as it is to stm32f4discovery for example - this is a board with a microcontroller, in which the price of less than a thousand rubles is combined with a 32-bit 168 MHz processor and even an arithmetic coprocessor. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/ae5/073/0dd/ae50730dd66677c5a71ae4b9efdaa1c7.jpg"><br><br>  If you decide to program this miracle using ChibiOS / RT, at least to simplify the interfaces for working with peripherals, then with such a simple code we will get a working tachometer into the console. <br><br><table border="1"><tbody><tr><td><pre>  volatile int rpm = 0;
@@ -126,7 +126,7 @@
          chThdSleep (100);<font></font>
 <font></font>
      return 0;
- } </pre><br></td></tr></tbody></table><br><br>  The fuel injection nozzles are controlled by grounding the wire coming to them from the control unit.  To interpret such a signal from a block lying on the table, we need one diode and one resistor: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/419/78d/0e2/41978d0e2e293eaf9c066b7d3198c526.gif"><br><br>  We collect it all and run.  And, again, a miracle!  The standard control unit believed us, and based on just one emulated sensor - the camshaft position sensor - began trying to control the injectors! <br><br><img src="https://habrastorage.org/getpro/habr/post_images/64f/c66/173/64fc66173cebef26e856dcf913c396b9.jpg"><br><br>  In fact, to get a meaningful fuel supply table, we will need to start emulating another air flow sensor.  When we start managing these nozzles, we don’t have enough for a simple transistor to ground this roughly one-amp solenoid - but all of this is details.  The main thing - to make the engine control unit from scratch seems real - so I continue to do it. <br><br>  <a href="http://www.youtube.com/watch%3Fv%3DGcxLY697WwM">www.youtube.com/watch?v=GcxLY697WwM</a> <br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/GcxLY697WwM%3Ffeature%3Doembed&amp;xid=17259,15700021,15700186,15700190,15700253&amp;usg=ALkJrhgVbkBKOhX2oIrNbd6Dgxqasa3OGA" frameborder="0" allowfullscreen=""></iframe><br><br>  update: once a question has arisen in the comments and since I have already given a link in the comments - I will add here too: <br>  <a href="http://rusefi.com/">rusefi.com</a> <br>  <a href="http://rusefi.com/forum/">rusefi.com/forum</a> <br>  <a href="https://sourceforge.net/projects/rusefi/">sourceforge.net/projects/rusefi</a> </div><p>Source: <a href="https://habr.com/ru/post/198672/">https://habr.com/ru/post/198672/</a></p>
+ } </pre><br></td></tr></tbody></table><br><br>  The fuel injection nozzles are controlled by grounding the wire coming to them from the control unit.  To interpret such a signal from a block lying on the table, we need one diode and one resistor: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/419/78d/0e2/41978d0e2e293eaf9c066b7d3198c526.gif"><br><br>  We collect it all and run.  And, again, a miracle!  The standard control unit believed us, and based on just one emulated sensor - the camshaft position sensor - began trying to control the injectors! <br><br><img src="https://habrastorage.org/getpro/habr/post_images/64f/c66/173/64fc66173cebef26e856dcf913c396b9.jpg"><br><br>  In fact, to get a meaningful fuel supply table, we will need to start emulating another air flow sensor.  When we start managing these nozzles, we don’t have enough for a simple transistor to ground this roughly one-amp solenoid - but all of this is details.  The main thing - to make the engine control unit from scratch seems real - so I continue to do it. <br><br>  <a href="http://www.youtube.com/watch%3Fv%3DGcxLY697WwM">www.youtube.com/watch?v=GcxLY697WwM</a> <br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/GcxLY697WwM%3Ffeature%3Doembed&amp;xid=17259,15700021,15700186,15700190,15700253&amp;usg=ALkJrhgVbkBKOhX2oIrNbd6Dgxqasa3OGA" frameborder="0" allowfullscreen=""></iframe><br><br>  update: once a question has arisen in the comments and since I have already given a link in the comments - I will add here too: <br>  <a href="http://rusefi.com/">rusefi.com</a> <br>  <a href="http://rusefi.com/forum/">rusefi.com/forum</a> <br>  <a href="https://sourceforge.net/projects/rusefi/">sourceforge.net/projects/rusefi</a> </div><p>Source: https://habr.com/ru/post/198672/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -136,10 +136,10 @@
 <li><a href="../198666/index.html">IndexedDB - unlimited data storage</a></li>
 <li><a href="../198668/index.html">QIWI and the new REST protocol in the examples</a></li>
 <li><a href="../198674/index.html">Budget TimeLapse Slider do it yourself</a></li>
+<li><a href="../19868/index.html">embarrassment with agave</a></li>
 <li><a href="../198680/index.html">Pavel Durov's speech at the GMIC conference in San Francisco - the first public appearance of the VK founder and Telegram in Silicon Valley</a></li>
 <li><a href="../198682/index.html">Aho-Korasik Algorithm</a></li>
 <li><a href="../198684/index.html">Step-by-step guide on binding SIP-numbers to Elastix (FreePBX, Asterisk) on the example of the provider Megaline iDPhone</a></li>
-<li><a href="../198688/index.html">New concept of using VoIP on the example of Wi-Fi IP-phone Escene WS220-N</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Adaptation programs for the ZX Spectrum to TR-DOS with modern tools. Part 2</h1><div class="post__text post__text-html js-mediator-article"><p>  In the <a href="https://habr.com/ru/post/451174/">first part of the article,</a> we disassembled the original version downloader and found out where the game code is loaded and how it is launched.  Now you need to transfer files to disk. </p><br><p><img src="https://habrastorage.org/webt/jv/tm/ti/jvtmtiduxnsmps-skthb1oxwclq.jpeg" alt="Floppy 5.25 &quot;"></p><br><p>  This is usually done by simply copying files, but there is one problem.  The fact is that the original file contains a picture and a game code in a whole piece and, therefore, overwrites the area of ​​basic and system variables that are immediately behind the screen area.  Such a file can be loaded from a tape, but cannot be loaded from a floppy.  TR-DOS reserves a certain memory area for your needs, and if you load data there, during the boot process everything will break. </p><a name="habracut"></a><br><p>  Fortunately, we have enough memory, not busy playing.  Therefore, the game can be downloaded to another place, and after the download is complete, move where you need to and start it.  In this case, I would like to show the picture before the end of the download - for that it is bootable.  To do this, we cut the monolithic file into two - the data of the screen area and the game data: </p><br><pre><code class="plaintext hljs">$ head -c 6912 headless.bin &gt; screen.bin $ tail -c +6913 headless.bin &gt; data.bin</code> </pre> <br><p>  The file with the game data immediately translate hobeta format.  Later we need it to write to the final image.  To convert formats, we will use <a href="https://sourceforge.net/projects/zxspectrumutils/">zxspectrum-utils</a> and <a href="http://xagon.webz.cz/convert.html"><code>trd2hob</code></a> : </p><br><pre> <code class="plaintext hljs">$ binto0 data.bin 3 $ 0tohob data.000 #   data.$C</code> </pre> <br><p><img src="https://habrastorage.org/webt/n1/s7/ui/n1s7uic_xqwh_4u1wsneecdqb28.png" alt="Loading screen"></p><br><p>  As for the boot screen, spend 6.75 kb on such a simple picture - waste.  It can be compressed with a screen compressor, for example, <a href="http://www.worldofspectrum.org/infoseekid.cgi%3Fid%3D0021446">Laser Compact 5.2</a> .  To do this, you first need to write the image file to a temporary floppy image: </p><br><pre> <code class="plaintext hljs">$ binto0 screen.bin 3 $ 0tohob screen.000 $ createtrd tmp.trd $ hobeta2trd screen.\$C tmp.trd</code> </pre> <br><p>  After that, run the Laser Compact in the emulator and save the compressed image to the same diskette (Pack screen → Save with depacker).  When saving, specify the file name <code>screenz.C</code> .  Next, you need to copy the compressed image from the floppy image back to the disk.  Unfortunately, I could not find the <code>trd2hob</code> source code anywhere, so I have to run the DOS binary from under DosBox: </p><br><pre> <code class="plaintext hljs">$ dosbox -c "mount C $PWD" -c "C:" -c "trd2hob.exe screen.trd" -c exit</code> </pre> <br><p>  As a result, we obtain a hobeta file of the form <code>screenz.$</code> with a compressed picture. </p><br><p>  In addition to native Spectrum utilities for compressing screens, there are utilities for PCs, for example, <a href="https://github.com/antoniovillena/zx7b"><code>zx7b</code></a> and <code>zxsc</code> .  Although it is more convenient to automate work with them, both of them have laser drawbacks before the Laser Compact: </p><br><ol><li>  Both lose on the quality of compression. </li><li>  When unpacking a picture, certain artifacts are visible, while the Laser Compact fills the screen attribute area almost instantly. </li><li>  <code>zx7b</code> does not support the creation of self-extracting archives - you have to additionally compile the decompressor. </li></ol><br><p>  Finally, find out the size of the compressed file.  We will need it later to write the bootloader. </p><br><pre> <code class="plaintext hljs">$ lstrd tmp.trd 80 Tracks, Double Side, capacity 640kB Number of files/deleted: 2/0 Free sectors/bytes: 2509/642304 First free sector/track: 3/3 FILENAME TYPE SECTORS ADDRESS LENGTH TRACK SECTOR -------------------------------------------------------------- screen &lt;C&gt; CODE (BYTES) 27 16384 6912 1 0 screenz &lt;C&gt; CODE (BYTES) 8 40000 1812 2 11</code> </pre> <br><p>  As you can see, the file shrank more than three times and takes 8 sectors on the disk. </p><br><p>  In the next part, we proceed directly to the bootloader. </p><br><h3 id="ssylki-po-teme">  Related Links: </h3><br><ol><li>  <a href="https://zxpress.ru/book.php%3Fid%3D104">“Adaptation of programs to the TR-DOS system” by</a> Nikolay Rodionov. </li></ol></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/452542/">https://habr.com/ru/post/452542/</a></p>
+    <p>Source: https://habr.com/ru/post/452542/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Compile a DNS query manually</h1><div class="post__text post__text-html js-mediator-article">  <i>About the author.</i>  <i>James Ruthley is a backend developer at Monzo.</i> <br><br>  In this article, we will examine the domain name Domain Name Service (DNS) message format and write one message manually.  This is more than what you need to use DNS, but I thought that for fun and educational purposes, it’s interesting to see what is under the hood. <br><br>  We will learn how to: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <ul><li>  Write DNS queries in binary format </li><li>  Send a message in the body of a UDP datagram using Python </li><li>  Read the answer from the DNS server </li></ul><br>  Writing in binary format seems complicated, but in reality I found it to be quite accessible.  DNS documentation is well written and understandable, and we will write a small message - only 29 bytes. <br><a name="habracut"></a><br><h1>  DNS overview </h1><br>  DNS is used to translate human-readable domain names (such as <code>example.com</code> ) into machine-readable IP addresses (such as 93.184.216.34).  To use DNS, you need to send a request to the DNS server.  This request contains the domain name we are looking for.  The DNS server is trying to find the IP address of this domain in its internal data storage.  If found, then returns it.  If it cannot find it, it redirects the request to another DNS server, and the process repeats until an IP address is found.  DNS messages <a href="https://stackoverflow.com/a/40063433">are usually sent</a> via the UDP protocol. <br><br>  The DNS standard is described in <a href="https://tools.ietf.org/html/rfc1035">RFC 1035</a> .  All diagrams and most of the information for this article are taken in this RFC.  I would recommend contacting him if something is not clear. <br><br>  In this article, we use a hexadecimal format to simplify working with a binary.  Below I have added a brief explanation of how they are translated into each other <a href="https://habr.com/ru/post/346098/"><sup>[1]</sup></a> <a name="1_1"></a>  . <br><br><h1>  Request format </h1><br>  All DNS messages have the same format: <br><br><pre>  + --------------------- +
@@ -151,7 +151,7 @@
  D8 22 - RDDATA </pre><br><ul><li>  <code>NAME</code> : This URL whose IP address is contained in this response.  It is listed in a compressed format: <br><br><pre>  0 1 2 3 4 5 6 7 8 9 ABCDEF
  + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +
  |  1 1 |  OFFSET |
- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + </pre><br>  The first two bits are set to 1, and the next 14 contain an unsigned integer that corresponds to the byte offset from the beginning of the message to the first mention of that name. <br><br>  In this case, the offset is c0 0c or binary format: <br><br><pre>  1100 0000 0000 1100 </pre><br>  That is, the byte offset is 12. If we count the bytes in the message, we can find that it indicates the value 07 at the beginning of the name example.com. </li><li>  <code>TYPE</code> and <code>CLASS</code> : The same name scheme is used here as in the <code>QTYPE</code> and <code>QCLASS</code> above, and the same values. </li><li>  <code>TTL</code> : A 32-bit unsigned integer that specifies the lifetime of this packet with an answer, in seconds.  Before the expiration of this interval, the result can be cached.  After the expiration of it should be rejected. </li><li>  <code>RDLENGTH</code> : The length in bytes of the subsequent <code>RDDATA</code> section.  In this case, its length is 4. </li><li>  <code>RDDATA</code> : The data we were looking for!  These four bytes contain four segments of our IP address: 93.184.216.34. </li></ul><br><h1>  Extensions </h1><br>  We saw how to create a DNS query.  Now you can try the following: <br><br><ul><li>  Make a request for an arbitrary domain name </li><li>  Request for a different <a href="https://en.wikipedia.org/wiki/List_of_DNS_record_types">record type</a> </li><li>  Send request with recursion disabled </li><li>  Send a request with a domain name that is not registered </li></ul><br><hr><br><a name="1"></a>  1. <a href="https://en.wikipedia.org/wiki/Hexadecimal">Hexadecimal</a> numbers (base 16) are often used as a convenient shortcut for 4 bits of binary data.  You can convert data between these formats according to the following table: <br><br><table><thead><tr><th>  Decimal </th><th>  Hex </th><th>  Binary </th><th>  Decimal </th><th>  Hex </th><th>  Binary </th></tr></thead><tbody><tr><td>  0 </td><td>  0 </td><td>  0000 </td><td>  eight </td><td>  eight </td><td>  1000 </td></tr><tr><td>  one </td><td>  one </td><td>  0001 </td><td>  9 </td><td>  9 </td><td>  1001 </td></tr><tr><td>  2 </td><td>  2 </td><td>  0010 </td><td>  ten </td><td>  A </td><td>  1010 </td></tr><tr><td>  3 </td><td>  3 </td><td>  0011 </td><td>  eleven </td><td>  B </td><td>  1011 </td></tr><tr><td>  four </td><td>  four </td><td>  0100 </td><td>  12 </td><td>  C </td><td>  1100 </td></tr><tr><td>  five </td><td>  five </td><td>  0101 </td><td>  13 </td><td>  D </td><td>  1101 </td></tr><tr><td>  6 </td><td>  6 </td><td>  0110 </td><td>  14 </td><td>  E </td><td>  1110 </td></tr><tr><td>  7 </td><td>  7 </td><td>  0111 </td><td>  15 </td><td>  F </td><td>  1111 </td></tr></tbody></table><br>  As you can see, you can represent any byte (8 bits) with two hexadecimal characters.  <a href="https://habr.com/ru/post/346098/">↑</a> </div><p>Source: <a href="https://habr.com/ru/post/346098/">https://habr.com/ru/post/346098/</a></p>
+ + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + </pre><br>  The first two bits are set to 1, and the next 14 contain an unsigned integer that corresponds to the byte offset from the beginning of the message to the first mention of that name. <br><br>  In this case, the offset is c0 0c or binary format: <br><br><pre>  1100 0000 0000 1100 </pre><br>  That is, the byte offset is 12. If we count the bytes in the message, we can find that it indicates the value 07 at the beginning of the name example.com. </li><li>  <code>TYPE</code> and <code>CLASS</code> : The same name scheme is used here as in the <code>QTYPE</code> and <code>QCLASS</code> above, and the same values. </li><li>  <code>TTL</code> : A 32-bit unsigned integer that specifies the lifetime of this packet with an answer, in seconds.  Before the expiration of this interval, the result can be cached.  After the expiration of it should be rejected. </li><li>  <code>RDLENGTH</code> : The length in bytes of the subsequent <code>RDDATA</code> section.  In this case, its length is 4. </li><li>  <code>RDDATA</code> : The data we were looking for!  These four bytes contain four segments of our IP address: 93.184.216.34. </li></ul><br><h1>  Extensions </h1><br>  We saw how to create a DNS query.  Now you can try the following: <br><br><ul><li>  Make a request for an arbitrary domain name </li><li>  Request for a different <a href="https://en.wikipedia.org/wiki/List_of_DNS_record_types">record type</a> </li><li>  Send request with recursion disabled </li><li>  Send a request with a domain name that is not registered </li></ul><br><hr><br><a name="1"></a>  1. <a href="https://en.wikipedia.org/wiki/Hexadecimal">Hexadecimal</a> numbers (base 16) are often used as a convenient shortcut for 4 bits of binary data.  You can convert data between these formats according to the following table: <br><br><table><thead><tr><th>  Decimal </th><th>  Hex </th><th>  Binary </th><th>  Decimal </th><th>  Hex </th><th>  Binary </th></tr></thead><tbody><tr><td>  0 </td><td>  0 </td><td>  0000 </td><td>  eight </td><td>  eight </td><td>  1000 </td></tr><tr><td>  one </td><td>  one </td><td>  0001 </td><td>  9 </td><td>  9 </td><td>  1001 </td></tr><tr><td>  2 </td><td>  2 </td><td>  0010 </td><td>  ten </td><td>  A </td><td>  1010 </td></tr><tr><td>  3 </td><td>  3 </td><td>  0011 </td><td>  eleven </td><td>  B </td><td>  1011 </td></tr><tr><td>  four </td><td>  four </td><td>  0100 </td><td>  12 </td><td>  C </td><td>  1100 </td></tr><tr><td>  five </td><td>  five </td><td>  0101 </td><td>  13 </td><td>  D </td><td>  1101 </td></tr><tr><td>  6 </td><td>  6 </td><td>  0110 </td><td>  14 </td><td>  E </td><td>  1110 </td></tr><tr><td>  7 </td><td>  7 </td><td>  0111 </td><td>  15 </td><td>  F </td><td>  1111 </td></tr></tbody></table><br>  As you can see, you can represent any byte (8 bits) with two hexadecimal characters.  <a href="https://habr.com/ru/post/346098/">↑</a> </div><p>Source: https://habr.com/ru/post/346098/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -160,11 +160,11 @@
 <li><a href="../346080/index.html">Alan Kay: How are things for all mankind, the view "from space"</a></li>
 <li><a href="../346086/index.html">Docker-compose: the perfect working environment</a></li>
 <li><a href="../346090/index.html">11 libraries (sets of components) for React, which are worth knowing in 2018</a></li>
+<li><a href="../3461/index.html">Indulge in goodies</a></li>
 <li><a href="../346102/index.html">Fresh utilities, plugins and productivity tools for the designer. Issue number 4</a></li>
 <li><a href="../346106/index.html">Release Rust 1.23</a></li>
 <li><a href="../346108/index.html">Weapon system through components in Unreal Engine 4</a></li>
 <li><a href="../346110/index.html">How to build a geographic dashboard with real-time data</a></li>
-<li><a href="../346112/index.html">Telegram-bot as a gift</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Simple task server with queue in MySQL (no problems with locks)</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/6a2/94b/292/6a294b2927a24300cfe49f7e2b74417c.jpg" align="left">  Almost in every more or less dynamic project there is a need to execute task queues in the background (sending email, cache updates, search re-indexing, etc.).  Job servers (Gearman, etc.) are good, but for most simple tasks they are redundant.  The classic implementation of queues in MySQL (using SELECT ... LOCK FOR UPDATE) as the load grows with time begins to lead to problems with locking.  Therefore, as is usually the case, I had to write my own “bicycle” to work with background tasks, which would “work exactly” and be extremely simple. <br><a name="habracut"></a><br>  Basis: Cron, PHP 5.3 (mysqli), MySQL&gt; 5.1 - it is easy to stick to almost any hosting. <br>  The operation of obtaining (capturing) a task is atomic (one UPDATE request).  No problems with locking and RC. <br>  The possibility of assigning tasks to groups among workers and groups of priorities, transferring an array of data to an executable method (function). <br>  Three modes of processing completed tasks: move the record to a separate table, delete the record, leave a record and mark as successfully processed. <br>  Processing unfinished tasks or tasks processed with an error is on the developer’s conscience. <br>  All about all 400 lines of code (with full PHPDOC). <br>  Restrictions: The current implementation is not suitable for persistent connections, but if someone needs it, it's easy to finish.  Even if you want to rewrite to another language :) <br><br>  The possibility of non-blocking work with the queue is realized through the use of user variables in the UPDATE request with their subsequent selection.  To devote a whole article to this technique is silly.  Much nicer is the final implementation that can be applied to the business (We are practicing with you, aren't we?).  In all other respects, an exclusively classic lineup with groups and priorities. <br><br>  Example of use (client): <br><pre><code class="php hljs">$task_server = \DBTaskServer::create(<span class="hljs-string"><span class="hljs-string">'localhost'</span></span>, <span class="hljs-string"><span class="hljs-string">'root'</span></span>, <span class="hljs-string"><span class="hljs-string">''</span></span>, <span class="hljs-string"><span class="hljs-string">'testDB'</span></span>, <span class="hljs-string"><span class="hljs-string">'jobs_queue'</span></span>); $task_server-&gt;addTask(<span class="hljs-string"><span class="hljs-string">'mywork'</span></span>, $data);</code> </pre> <br>  <i>mywork</i> is a function that should be available to a worker.  An array of <i>$ data</i> will be passed to it.  It is also possible to specify a call to the static methods of the class. <br><pre> <code class="php hljs">$task_server-&gt;addTask(<span class="hljs-string"><span class="hljs-string">'MyWork::doWork'</span></span>, $data);</code> </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Example worker: <br><pre> <code class="php hljs">\DBTaskServer::create(<span class="hljs-string"><span class="hljs-string">'localhost'</span></span>, <span class="hljs-string"><span class="hljs-string">'root'</span></span>, <span class="hljs-string"><span class="hljs-string">''</span></span>, <span class="hljs-string"><span class="hljs-string">'testDB'</span></span>, <span class="hljs-string"><span class="hljs-string">'jobs_queue'</span></span>) <span class="hljs-comment"><span class="hljs-comment">//  . -&gt;setByCLIAgruments($argv) //     . -&gt;setMode(\DBTaskServer::MODE_MARK_AS_COMPLETED) //   . -&gt;run(); //  .</span></span></code> </pre><br><br>  Run the worker from the console with parameters: <br><pre> <code class="bash hljs">/path/to/script/worker.php [max_tasks_per_lifecycle] [comma_separated_group_ids]</code> </pre><br>  As the name implies, the first option tells how many tasks a worker can perform before completing work (if of course those are available for him), the second option is the group_id values ​​of tasks that this worker must process.  If no groups are specified, the worker will process any groups. <br><br>  For example: <br><pre> <code class="bash hljs">/path/to/script/worker.php 100 3,5,6</code> </pre><br>  Complete 100 tasks from groups 3, 5 and 6. <br>  If no task is found, the worker will immediately complete his work. <br><br>  Add a worker to the cron: <br><pre> <code class="bash hljs">0-59/5 * * * * /path/to/script/worker.php 5 3 &gt;/dev/null 2&gt;&amp;1</code> </pre><br>  Every 5 minutes, process 5 tasks with group_id = 3. <br><br>  In the archive, examples of the client, the worker, the server class itself (documented), the sql file with the task table. <br>  <a href="http://narod.ru/disk/56519460001.e15ef6d7d6e42b3b7361bafbcd5f5f62/DBTaskServer.zip.html">Download here (as much as 5kB).</a> <br><br>  Enjoy your code. </div><p>Source: <a href="https://habr.com/ru/post/147844/">https://habr.com/ru/post/147844/</a></p>
+      Example worker: <br><pre> <code class="php hljs">\DBTaskServer::create(<span class="hljs-string"><span class="hljs-string">'localhost'</span></span>, <span class="hljs-string"><span class="hljs-string">'root'</span></span>, <span class="hljs-string"><span class="hljs-string">''</span></span>, <span class="hljs-string"><span class="hljs-string">'testDB'</span></span>, <span class="hljs-string"><span class="hljs-string">'jobs_queue'</span></span>) <span class="hljs-comment"><span class="hljs-comment">//  . -&gt;setByCLIAgruments($argv) //     . -&gt;setMode(\DBTaskServer::MODE_MARK_AS_COMPLETED) //   . -&gt;run(); //  .</span></span></code> </pre><br><br>  Run the worker from the console with parameters: <br><pre> <code class="bash hljs">/path/to/script/worker.php [max_tasks_per_lifecycle] [comma_separated_group_ids]</code> </pre><br>  As the name implies, the first option tells how many tasks a worker can perform before completing work (if of course those are available for him), the second option is the group_id values ​​of tasks that this worker must process.  If no groups are specified, the worker will process any groups. <br><br>  For example: <br><pre> <code class="bash hljs">/path/to/script/worker.php 100 3,5,6</code> </pre><br>  Complete 100 tasks from groups 3, 5 and 6. <br>  If no task is found, the worker will immediately complete his work. <br><br>  Add a worker to the cron: <br><pre> <code class="bash hljs">0-59/5 * * * * /path/to/script/worker.php 5 3 &gt;/dev/null 2&gt;&amp;1</code> </pre><br>  Every 5 minutes, process 5 tasks with group_id = 3. <br><br>  In the archive, examples of the client, the worker, the server class itself (documented), the sql file with the task table. <br>  <a href="http://narod.ru/disk/56519460001.e15ef6d7d6e42b3b7361bafbcd5f5f62/DBTaskServer.zip.html">Download here (as much as 5kB).</a> <br><br>  Enjoy your code. </div><p>Source: https://habr.com/ru/post/147844/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,7 +75,7 @@
 <li><a href="../147846/index.html">Manned flights to Mars found it inappropriate</a></li>
 <li><a href="../147847/index.html">Photojournalism as hard work</a></li>
 <li><a href="../147848/index.html">LINQ for PHP. Part 2. If the mountain does not go to Mohammed, Mohammed goes to the mountain</a></li>
-<li><a href="../147851/index.html">Google added five US National Parks to Street View</a></li>
+<li><a href="../14785/index.html">stixy</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

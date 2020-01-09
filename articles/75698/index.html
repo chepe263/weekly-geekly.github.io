@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>HabraWars: Graphical debug</h1><div class="post__text post__text-html js-mediator-article"> You are probably familiar with the idea of ​​HabraWars, the <a href="http://habrahabr.ru/blogs/sport_programming/75334/">last topic</a> announces the first tournament.  Which happen today.  <b>Registration of new participants will be after November 20.</b> <br><br>  The rules and the sample robot code are enough to start writing your pedestal conqueror.  But debugging using only the FireBug console may not be very intuitive.  It is much more convenient to receive information and thoughts of the robot directly to the arena. <br><a name="habracut"></a><br>  And for this it is enough just to clear the field at the beginning of the tick and to transfer the Canvas function to the function of the thinking process: <br><br> <code>... <br> this.culc_frame = function() { <br> // Mutex <br> if (mutex) <br> return; <br> else <br> mutex = true; <br> <br> <b>// clear Area is now separated from draw <br> var padding = 10; <br> this.canvas.fillStyle = 'black'; <br> this.canvas.fillRect(0, 0, this.canvas_width - 1, this.canvas_height - 1); <br> this.canvas.strokeStyle = 'white'; <br> this.canvas.lineWidth = 1; <br> this.canvas.strokeRect(padding, padding, this.arena_width, this.arena_height); <br></b> <br> ... <br> control = this.shells[i].action(robot_info[i], robot_info.filter(exclude_myself), shot_info, {arena_width: this.arena_width, arena_height: this.arena_height, robot_radius: this.robot_radius, shot_speed: 12}, <b>engine.canvas</b> ); <br> ... <br> // Draws current frame on canvas from string <br> // Using string params useful for battle replays <br> this.draw = function(situation) { <br> <s><br> // Clear Background <br> var padding = 10; <br> this.canvas.fillStyle = 'black'; <br> this.canvas.fillRect(0, 0, this.canvas_width - 1, this.canvas_height - 1); <br> this.canvas.strokeStyle = 'white'; <br> this.canvas.lineWidth = 1; <br> this.canvas.strokeRect(padding, padding, this.arena_width, this.arena_height); <br></s> <br> // Draw robots <br> current_index = 0; <br> ... <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      And in the robot code, add a parameter: <br> <code>this.action = function(my_state, enemies, shots, params, <b>this_canvas</b> )</code> <br>  Now in the body of the mental function, you can draw debugging: <br> <code>//   ,      <br> for (var i = 0; i &lt; shots.length; i++) <br> { <br> var shot_dest = get_shot_destination(shots[i]); <br> this_canvas.globalAlpha = 0.3; <br> this_canvas.beginPath(); <br> this_canvas.arc(10 + shot_dest.x, 10 + shot_dest.y, 20, 0, Math.PI * 2, true); <br> this_canvas.closePath(); <br> this_canvas.fillStyle = 'red'; <br> this_canvas.fill(); <br> this_canvas.globalAlpha = 1; <br> } <br></code> <br>  And then the convenience and clarity will come: <br><img src="http://lh3.ggpht.com/_HhUVb4n2o_s/SwLrUIpwMuI/AAAAAAAAABc/T06NZSPDvXk/s800/Screenshot.png" alt="image"><br>  Or else it is convenient to show the forecast of the position of the enemy robot: <br><img src="http://lh5.ggpht.com/_HhUVb4n2o_s/SwT6t3txLDI/AAAAAAAAACY/6nqma0rRae4/Untitled.png" alt="image"><br><br>  PS: Unfortunately, until these changes appear in the main engine of battles, you will have to develop your robot offline.  And of course, before transferring code to online, it is necessary to remove references to this_canvas from the robot code. </div><p>Source: <a href="https://habr.com/ru/post/75698/">https://habr.com/ru/post/75698/</a></p>
+      And in the robot code, add a parameter: <br> <code>this.action = function(my_state, enemies, shots, params, <b>this_canvas</b> )</code> <br>  Now in the body of the mental function, you can draw debugging: <br> <code>//   ,      <br> for (var i = 0; i &lt; shots.length; i++) <br> { <br> var shot_dest = get_shot_destination(shots[i]); <br> this_canvas.globalAlpha = 0.3; <br> this_canvas.beginPath(); <br> this_canvas.arc(10 + shot_dest.x, 10 + shot_dest.y, 20, 0, Math.PI * 2, true); <br> this_canvas.closePath(); <br> this_canvas.fillStyle = 'red'; <br> this_canvas.fill(); <br> this_canvas.globalAlpha = 1; <br> } <br></code> <br>  And then the convenience and clarity will come: <br><img src="http://lh3.ggpht.com/_HhUVb4n2o_s/SwLrUIpwMuI/AAAAAAAAABc/T06NZSPDvXk/s800/Screenshot.png" alt="image"><br>  Or else it is convenient to show the forecast of the position of the enemy robot: <br><img src="http://lh5.ggpht.com/_HhUVb4n2o_s/SwT6t3txLDI/AAAAAAAAACY/6nqma0rRae4/Untitled.png" alt="image"><br><br>  PS: Unfortunately, until these changes appear in the main engine of battles, you will have to develop your robot offline.  And of course, before transferring code to online, it is necessary to remove references to this_canvas from the robot code. </div><p>Source: https://habr.com/ru/post/75698/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../75694/index.html">Hooray! Full Skype now for Android !: Fring is out!</a></li>
 <li><a href="../75695/index.html">Internet Explorer 9: First Details</a></li>
 <li><a href="../75696/index.html">PHP Extension: subtleties</a></li>
+<li><a href="../757/index.html">Hi =) Let's get acquainted =)</a></li>
 <li><a href="../75701/index.html">Changing content improves search engine rankings.</a></li>
 <li><a href="../75702/index.html">Typical ExtJS based applications</a></li>
 <li><a href="../75703/index.html">A clean keyboard is a guarantee of comfort.</a></li>
 <li><a href="../75704/index.html">I worry! And I like it!</a></li>
-<li><a href="../75705/index.html">Client application architecture on ExtJS. Part 1</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

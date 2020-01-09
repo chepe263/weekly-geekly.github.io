@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Unambiguous tty for USB devices on FreeBSD</h1><div class="post__text post__text-html js-mediator-article">  A few years ago I had to solve the following problem.  Several similar USB devices are connected to the host running FreeBSD.  Host software works with them through character device files.  It is clear that when randomly switching USB laces or when restarting a host, the character device files are numbered (in general) not in the same order as when they were first connected.  In my case, USB devices are interface converters on which RS-485 buses with devices hang.  There are no opportunities to automatically determine from the devices in the tire which tires are hung on which port there is not.  Thus, it is not clear which character device files to which physical devices correspond at the moment.  Who is interested in the decision, please under the cat.  Despite the specificity of the task, the method is universal. <br><a name="habracut"></a><br><br>  <b>Idea.</b>  When connecting a USB device, determine the file name of the character device that was issued by the system (type ttyUx), manufacturer, type, s / n device and create a link in / dev with a predefined name for this s / n pointing to the already known ttyUx.  So  Our software will always work with well-known character device file names — predefined links that correspond to a specific device. <br><br>  <b>Implementation.</b> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      In order to find out more about the USB device: <br><pre><code class="bash hljs">usbconfig dump_device_desc ... ugen1.2: &lt;USB-Serial Controller Prolific Technology Inc.&gt; at usbus1, cfg=0 md=HOST spd=FULL (12Mbps) pwr=ON bLength = 0x0012 bDescriptorType = 0x0001 bcdUSB = 0x0110 bDeviceClass = 0x0000 bDeviceSubClass = 0x0000 bDeviceProtocol = 0x0000 bMaxPacketSize0 = 0x0040 idVendor = 0x067b idProduct = 0x2303 bcdDevice = 0xa7d4 iManufacturer = 0x0001 &lt;Prolific Technology Inc.&gt; iProduct = 0x0002 &lt;USB-Serial Controller&gt; iSerialNumber = 0x0003 &lt;0000A7D4&gt; bNumConfigurations = 0x0001 ...</code> </pre> <br><br>  Editing /etc/devd.conf.  We write something like: <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># When the ICPCON USB Converter appear... attach 100 { match "device-name" "uplcom[0-9]"; match "vendor" "0x067b"; match "product" "0x2303"; match "release" "0xa7d4"; action "/usr/local/bin/uplcom2ttyU $device-name /dev/icpcon1"; }; detach 100 { match "device-name" "ugen+"; match "vendor" "0x067b"; match "product" "0x2303"; match "release" "0xa7d4"; action "rm /dev/icpcon1"; };</span></span></code> </pre><br><br>  I think the meaning of this record is clear.  It remains to “draw” uplcom2ttyU, which will create that very single link, in the example - / dev / icpcon1.  For each device, you need to make a corresponding entry in devd.conf.  Do not forget to change the name of the link (I have / dev / icpcon1) in two places: attach, detach - we want the link to disappear with the device disconnected. <br><br><pre> <code class="bash hljs">cat /usr/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/bin/uplcom2ttyU <span class="hljs-comment"><span class="hljs-comment">#!/bin/sh # arg #1 - $device-name from devd.conf - uplcomX; arg #2 - new link to ttyUX - /dev/..... ln -s $(echo /dev/$1 | sed 's/uplcom/ttyU/g') $2</span></span></code> </pre><br>  It can be seen that the uplcom entry is changed to ttyU, since in / dev the system creates exactly ttyUx, where x is the same as the uplcom number. <br><br>  That's all.  However, until now, a holistic description of the solution to a similar problem is not found on the Internet.  Is it only my posts on the forum of one well-known resource. </div><p>Source: <a href="https://habr.com/ru/post/200330/">https://habr.com/ru/post/200330/</a></p>
+      In order to find out more about the USB device: <br><pre><code class="bash hljs">usbconfig dump_device_desc ... ugen1.2: &lt;USB-Serial Controller Prolific Technology Inc.&gt; at usbus1, cfg=0 md=HOST spd=FULL (12Mbps) pwr=ON bLength = 0x0012 bDescriptorType = 0x0001 bcdUSB = 0x0110 bDeviceClass = 0x0000 bDeviceSubClass = 0x0000 bDeviceProtocol = 0x0000 bMaxPacketSize0 = 0x0040 idVendor = 0x067b idProduct = 0x2303 bcdDevice = 0xa7d4 iManufacturer = 0x0001 &lt;Prolific Technology Inc.&gt; iProduct = 0x0002 &lt;USB-Serial Controller&gt; iSerialNumber = 0x0003 &lt;0000A7D4&gt; bNumConfigurations = 0x0001 ...</code> </pre> <br><br>  Editing /etc/devd.conf.  We write something like: <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment"># When the ICPCON USB Converter appear... attach 100 { match "device-name" "uplcom[0-9]"; match "vendor" "0x067b"; match "product" "0x2303"; match "release" "0xa7d4"; action "/usr/local/bin/uplcom2ttyU $device-name /dev/icpcon1"; }; detach 100 { match "device-name" "ugen+"; match "vendor" "0x067b"; match "product" "0x2303"; match "release" "0xa7d4"; action "rm /dev/icpcon1"; };</span></span></code> </pre><br><br>  I think the meaning of this record is clear.  It remains to “draw” uplcom2ttyU, which will create that very single link, in the example - / dev / icpcon1.  For each device, you need to make a corresponding entry in devd.conf.  Do not forget to change the name of the link (I have / dev / icpcon1) in two places: attach, detach - we want the link to disappear with the device disconnected. <br><br><pre> <code class="bash hljs">cat /usr/<span class="hljs-built_in"><span class="hljs-built_in">local</span></span>/bin/uplcom2ttyU <span class="hljs-comment"><span class="hljs-comment">#!/bin/sh # arg #1 - $device-name from devd.conf - uplcomX; arg #2 - new link to ttyUX - /dev/..... ln -s $(echo /dev/$1 | sed 's/uplcom/ttyU/g') $2</span></span></code> </pre><br>  It can be seen that the uplcom entry is changed to ttyU, since in / dev the system creates exactly ttyUx, where x is the same as the uplcom number. <br><br>  That's all.  However, until now, a holistic description of the solution to a similar problem is not found on the Internet.  Is it only my posts on the forum of one well-known resource. </div><p>Source: https://habr.com/ru/post/200330/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../200280/index.html">Hello and welcome</a></li>
 <li><a href="../200316/index.html">Post good: Samsung continues to develop solar energy to create an autonomous "Digital Village" in Africa</a></li>
 <li><a href="../200318/index.html">Barnes & Noble introduced an updated reader model - Nook Glowlight</a></li>
+<li><a href="../20032/index.html">Evolotsiya logos</a></li>
 <li><a href="../200326/index.html">Creating your own cloud system in an hour</a></li>
 <li><a href="../200328/index.html">Automation of reset of a router of CISCO RVS4000</a></li>
 <li><a href="../200332/index.html">Project self-organizing company</a></li>
+<li><a href="../200334/index.html">Problems of degradation of modern higher education</a></li>
 <li><a href="../200336/index.html">Let's build an autonomous drone!</a></li>
 <li><a href="../200338/index.html">The Principles of Reactive Programming course at coursera.org</a></li>
 <li><a href="../200340/index.html">Creating a module for Drupal 7. Part 1</a></li>
-<li><a href="../200344/index.html">The reasons and advantages of the third baihuist way of using SQLite in Node.js</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

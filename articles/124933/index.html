@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Namespaces + PHPUnit = 100% test coverage</h1><div class="post__text post__text-html js-mediator-article">  I have long wanted to share with the public a way to test code that uses functions for working with the external environment: sockets, databases, files, and anything else.  Today, after seeing the article <a href="http://habrahabr.ru/blogs/php/124915/">Runkit + PHPUnit = 100% test coverage</a> , I decided that now is the time. <br>  The solution with Runkit is beautiful, but there is one problem - Runkit does not spread along with PHP, it must be installed separately.  I want to suggest an approach that works in the usual delivery of PHP 5.3+, on one condition - the project must use namespaces. <a name="habracut"></a><br><br><h4>  Idea </h4><br><br>  The idea is very simple and is based on <a href="http://www.php.net/manual/en/language.namespaces.rules.php">the name resolution rules in PHP</a> : the called function is first searched in the current namespace, and only then the built-in PHP function is called.  For example, in the following piece of code: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>namespace A; <br> foo(); <br></code> <br><br>  PHP will first try to call A \ foo () and only then foo ().  So, if we declare a function with the name, say, “fsockopen” in the namespace of the project, then it will be the first to be called. <br><br><h4>  Application </h4><br><br>  Suppose we have this class: <br><br>  <b>src / MyClass.php</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php <br> <font color="#0000ff">namespace</font> MyNS; <br> <br> <font color="#0000ff">class</font> MyClass <br> { <br> <font color="#0000ff">public</font> function someMethod() <br> { <br> $fp = fsockopen( <font color="#A31515">'example.org'</font> , 123); <br> } <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  To override the fsockopen function, create the following file in the tests: <br><br>  <b>tests / helpers.php</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php <br> <font color="#0000ff">namespace</font> MyNS; <br> <br> function fsockopen($hostname, $port) <br> { <br> $GLOBALS[ <font color="#A31515">'fsockopen'</font> ] = array($hostname, $port); <br> } <br></font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  Now you can write this test: <br><br>  <b>tests / MyClass_Test.php</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php <br> <font color="#0000ff">namespace</font> MyNS\Tests; <br> use PHPUnit_Framework_TestCase; <br> use MyNS\MyClass; <br> <br> require <font color="#A31515">'helpers.php'</font> ; <br> require <font color="#A31515">'../src/MyClass.php'</font> ; <br> <br> <font color="#0000ff">class</font> MyClass_Test extends PHPUnit_Framework_TestCase <br> { <br> <font color="#0000ff">public</font> function test_someMethod() <br> { <br> $test = <font color="#0000ff">new</font> MyClass(); <br> $test-&gt;someMethod(); <br> $ <font color="#0000ff">this</font> -&gt;assertEquals(array( <font color="#A31515">'example.org'</font> , 123), $GLOBALS[ <font color="#A31515">'fsockopen'</font> ]); <br> } <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  In this test, not the built-in fsockopen will be called, but declared in helpers.php. <br><br>  Of course, the $ GLOBALS option is not the only one possible, and is shown here only for simplicity.  What I propose is not a ready-made solution, but only an approach that everyone can adapt to their needs. </div><p>Source: <a href="https://habr.com/ru/post/124933/">https://habr.com/ru/post/124933/</a></p>
+     <code>namespace A; <br> foo(); <br></code> <br><br>  PHP will first try to call A \ foo () and only then foo ().  So, if we declare a function with the name, say, “fsockopen” in the namespace of the project, then it will be the first to be called. <br><br><h4>  Application </h4><br><br>  Suppose we have this class: <br><br>  <b>src / MyClass.php</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php <br> <font color="#0000ff">namespace</font> MyNS; <br> <br> <font color="#0000ff">class</font> MyClass <br> { <br> <font color="#0000ff">public</font> function someMethod() <br> { <br> $fp = fsockopen( <font color="#A31515">'example.org'</font> , 123); <br> } <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  To override the fsockopen function, create the following file in the tests: <br><br>  <b>tests / helpers.php</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php <br> <font color="#0000ff">namespace</font> MyNS; <br> <br> function fsockopen($hostname, $port) <br> { <br> $GLOBALS[ <font color="#A31515">'fsockopen'</font> ] = array($hostname, $port); <br> } <br></font> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  Now you can write this test: <br><br>  <b>tests / MyClass_Test.php</b> <br><blockquote> <code><a href="http://virtser.net/blog/post/source-code-highlighter.aspx"></a> <font color="black">&lt;?php <br> <font color="#0000ff">namespace</font> MyNS\Tests; <br> use PHPUnit_Framework_TestCase; <br> use MyNS\MyClass; <br> <br> require <font color="#A31515">'helpers.php'</font> ; <br> require <font color="#A31515">'../src/MyClass.php'</font> ; <br> <br> <font color="#0000ff">class</font> MyClass_Test extends PHPUnit_Framework_TestCase <br> { <br> <font color="#0000ff">public</font> function test_someMethod() <br> { <br> $test = <font color="#0000ff">new</font> MyClass(); <br> $test-&gt;someMethod(); <br> $ <font color="#0000ff">this</font> -&gt;assertEquals(array( <font color="#A31515">'example.org'</font> , 123), $GLOBALS[ <font color="#A31515">'fsockopen'</font> ]); <br> } <br> }</font> <br> <br> <font color="gray">* This source code was highlighted with <font color="gray">Source Code Highlighter</font> .</font></code> </blockquote> <br><br>  In this test, not the built-in fsockopen will be called, but declared in helpers.php. <br><br>  Of course, the $ GLOBALS option is not the only one possible, and is shown here only for simplicity.  What I propose is not a ready-made solution, but only an approach that everyone can adapt to their needs. </div><p>Source: https://habr.com/ru/post/124933/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../124926/index.html">Mozilla announced its intention to create its own mobile web OS</a></li>
 <li><a href="../124927/index.html">Video infographics and typography</a></li>
 <li><a href="../124928/index.html">Network security experts find Macbook battery firmware vulnerable to cracking</a></li>
 <li><a href="../124929/index.html">How much do online stores earn us by selling us a product for $ 1000?</a></li>
+<li><a href="../12493/index.html">AOL acquires Tacoda advertising company</a></li>
 <li><a href="../124931/index.html">KnockoutJS: Filtering listings on the fly</a></li>
 <li><a href="../124934/index.html">Change iPad-2 to programmer</a></li>
 <li><a href="../124939/index.html">Droider Chart 62. Heroic hit parade of Android applications</a></li>
+<li><a href="../12494/index.html">Enabling the debug menu in Safari for Windows</a></li>
 <li><a href="../124940/index.html">Payweb.com is a convenient and profitable tool for remunerating freelancers</a></li>
 <li><a href="../124941/index.html">Microsoft proposes to heat servers at home</a></li>
-<li><a href="../124942/index.html">Museum of video cards in Kharkov. History of creation</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

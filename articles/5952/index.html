@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>On the root directory</h1><div class="post__text post__text-html js-mediator-article">  In spite of all my tricks and attempts to make the site on janga katalogo-independent, I nevertheless came across a rake buried in the jang itself. <br><br>  Let me remind you that all the fuss is due to the fact that the customer (and me) the root directory of the site is not always the root directory of the domain.  Those.  The first page of the site is often located at <a href="http://site/dj">site / dj</a> , for various technical reasons.  The most common one is that the customer has some PHP modules that are on the same server and are also needed. <br><br>  The ambush at the same time lies in the fact that in templates and httpredirect it is necessary to specify the full paths to the pages.  And if within the junga itself this path is still understandable (although I consider the need to indicate the full path to the page with httpredirect to be the full path to the page to be ugly), then the root directory may change.  And then shovel all the code to fix it will be sad. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I found the following output: the variable ROOT = '' is written in settings.py and a small templatetag is written: <br><br>  root.py: <br><blockquote>  from django.template import Library <br><br>  register = Library () <br><br>  <a href="http://geektimes.ru/users/register/" class="user_link">register</a> .simple_tag <br>  def root (): <br>  "" " <br>  Returns the string contained in the setting ROOT. <br>  "" " <br>  try: <br>  import settings <br>  except ImportError: <br>  return '' <br>  return settings.ROOT <br></blockquote><br><br>  and all  Now in the templates after {% load root%} we write at the beginning of each path {% root%} and we get what we wanted.  In viewax, respectively, use for the same purposes settings.ROOT <br><br>  The trouble came from no waiting.  It turned out that in the depths of the auth of Jhang there is a path '/ accounts / login' nailed with nails, to which requests are redirected if authorization is necessary.  At the moment I see two ways out: either not to use standard decorators to check if the user is logged in (which is inconvenient), or to hack the jung itself.  While I went the second way, but this is wrong. <br><br>  I added a line to django / contrib / auth / __ init__.py <br><blockquote>  if hasattr (settings, 'LOGIN_URL'): LOGIN_URL = settings.LOGIN_URL <br></blockquote><br><br>  and added in settings.py <br><blockquote>  LOGIN_URL = '% s / login /'% ROOT <br></blockquote></div><p>Source: <a href="https://habr.com/ru/post/5952/">https://habr.com/ru/post/5952/</a></p>
+      I found the following output: the variable ROOT = '' is written in settings.py and a small templatetag is written: <br><br>  root.py: <br><blockquote>  from django.template import Library <br><br>  register = Library () <br><br>  <a href="http://geektimes.ru/users/register/" class="user_link">register</a> .simple_tag <br>  def root (): <br>  "" " <br>  Returns the string contained in the setting ROOT. <br>  "" " <br>  try: <br>  import settings <br>  except ImportError: <br>  return '' <br>  return settings.ROOT <br></blockquote><br><br>  and all  Now in the templates after {% load root%} we write at the beginning of each path {% root%} and we get what we wanted.  In viewax, respectively, use for the same purposes settings.ROOT <br><br>  The trouble came from no waiting.  It turned out that in the depths of the auth of Jhang there is a path '/ accounts / login' nailed with nails, to which requests are redirected if authorization is necessary.  At the moment I see two ways out: either not to use standard decorators to check if the user is logged in (which is inconvenient), or to hack the jung itself.  While I went the second way, but this is wrong. <br><br>  I added a line to django / contrib / auth / __ init__.py <br><blockquote>  if hasattr (settings, 'LOGIN_URL'): LOGIN_URL = settings.LOGIN_URL <br></blockquote><br><br>  and added in settings.py <br><blockquote>  LOGIN_URL = '% s / login /'% ROOT <br></blockquote></div><p>Source: https://habr.com/ru/post/5952/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

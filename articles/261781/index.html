@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>About the intricacies of privacy in the Telegram Bots API: “this is not a bug, this is a feature”</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/384/4fb/8da/3844fb8dac50dd7c1a2c98626d397f2f.gif" alt="image" align="left" width="270">  A week ago <a href="http://geektimes.ru/post/252518/">, the</a> Bots API, a platform for creating bots, <a href="http://geektimes.ru/post/252518/">was launched</a> in Telegram Messenger.  Let the platform be slightly damp, slightly crutch, but nonetheless interesting - both for users and developers, who immediately rushed to write (and port) <a href="http://storebot.me/">various bots</a> .  But, as it turned out, the API has at least one feature that may seem rather unexpected (and even unpleasant) for end users. <br><br>  Immediately make a reservation: this note is not another attack on the security of the Telegram.  Moreover, given the friendly relations with some of the developers of the messenger, I did not particularly want to write an article.  But it seemed important to warn those who are planning to create and, most importantly, use bots in Telegram.  "Plato is my friend but the truth is dearer". <br><br>  First, in brief for ordinary users.  <b>If you send a photo to a bot in Telegram</b> (hoping that the bot will send the photo to another person later), <b>remember that the final recipient of the photo (if desired) can easily find out your name / photo / username</b> (and can contact you directly ).  Even if the bot involves privacy and anonymity.  This interesting aspect is extremely unobvious, even for the creators of the bots themselves.  And they (so far!) Can do nothing about it.  Strictly speaking, this applies not only to photos (and almost all types of attachments), but to see your profile in other cases is somewhat more difficult. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      This includes the example given in the description of the <a href="http://telegram.me/HotOrBot"><b>@HotOrBot</b></a> platform.  In this “analogue of Tinder,” you can easily peek at the accounts of those whose photos you are offered to evaluate (and, in fact, write to them - even if they have not yet reciprocated to you). <br><img src="https://habrastorage.org/files/1b7/754/6c4/1b77546c4c00469bab4de98b3748260f.png" width="300"><img src="https://habrastorage.org/files/e0d/5f4/955/e0d5f495562041e0821eb5089cdb603b.jpg" width="300"><img src="https://habrastorage.org/files/ede/364/b2a/ede364b2a029493f9ab54d970e65e04a.jpg" width="300"><a name="habracut"></a><br>  <i>(as seen in the illustrations, it is enough to open a photo, for example, in the <a href="http://web.telegram.org/">web version of Telegram</a> )</i> <br><br>  In the <a href="http://telegram.me/TalkBot"><b>@TalkBot</b></a> I <a href="http://telegram.me/TalkBot"><b>created</b></a> (it allows you to communicate anonymously in “rooms” in the spirit of IRC or tête- <a href="http://telegram.me/TalkBot"><b>à</b></a> -tête, acting as an intermediary) the same problem: do not send photos to the chat room if you don’t want to be deanonymized.  But my bot even warns everyone about it. <br><img src="https://habrastorage.org/files/113/fcf/f9f/113fcff9f40140ada3cde0b87d83f0be.png" width="300"><br><br>  The technical background and why this problem cannot be solved without the participation of Telegram.  Now the bot can only do one thing with the bot file sent: take it ( <b>file_id</b> ) and send it to someone else (this is not the message itself, but just the attached picture / video / audio / document, <a href="https://core.telegram.org/bots/api">in the documentation</a> it looks just like a trick to save resources).  Unfortunately, it is impossible to get the file body at the moment (obviously, this will be implemented in the near future, since the feature is very important).  Otherwise, you could not use the same file_id, but upload the photo again (at least some workaround would be).  Now there is no other solution than to warn users (or limit functionality at all). <br><br>  Why is this not a bug in the platform?  Formally, this behavior is <a href="https://core.telegram.org/type/InputMedia">more or less documented</a> ( <i>InputMediaPhoto</i> vs <i>InputMediaUploadedPhoto constructors</i> , as well as the returned <a href="https://core.telegram.org/constructor/photo"><i>photo</i></a> object) in the usual API, so it cannot be considered a bug.  And in general, bots are created by third parties - how much privacy is here.  Given the positioning of Telegram as a messenger, which emphasizes privacy, it is possible that client applications should be made more explicit to understand that all data sent to bots is completely open to bot authors (no matter how commonplace it sounds). </div><p>Source: <a href="https://habr.com/ru/post/261781/">https://habr.com/ru/post/261781/</a></p>
+      This includes the example given in the description of the <a href="http://telegram.me/HotOrBot"><b>@HotOrBot</b></a> platform.  In this “analogue of Tinder,” you can easily peek at the accounts of those whose photos you are offered to evaluate (and, in fact, write to them - even if they have not yet reciprocated to you). <br><img src="https://habrastorage.org/files/1b7/754/6c4/1b77546c4c00469bab4de98b3748260f.png" width="300"><img src="https://habrastorage.org/files/e0d/5f4/955/e0d5f495562041e0821eb5089cdb603b.jpg" width="300"><img src="https://habrastorage.org/files/ede/364/b2a/ede364b2a029493f9ab54d970e65e04a.jpg" width="300"><a name="habracut"></a><br>  <i>(as seen in the illustrations, it is enough to open a photo, for example, in the <a href="http://web.telegram.org/">web version of Telegram</a> )</i> <br><br>  In the <a href="http://telegram.me/TalkBot"><b>@TalkBot</b></a> I <a href="http://telegram.me/TalkBot"><b>created</b></a> (it allows you to communicate anonymously in “rooms” in the spirit of IRC or tête- <a href="http://telegram.me/TalkBot"><b>à</b></a> -tête, acting as an intermediary) the same problem: do not send photos to the chat room if you don’t want to be deanonymized.  But my bot even warns everyone about it. <br><img src="https://habrastorage.org/files/113/fcf/f9f/113fcff9f40140ada3cde0b87d83f0be.png" width="300"><br><br>  The technical background and why this problem cannot be solved without the participation of Telegram.  Now the bot can only do one thing with the bot file sent: take it ( <b>file_id</b> ) and send it to someone else (this is not the message itself, but just the attached picture / video / audio / document, <a href="https://core.telegram.org/bots/api">in the documentation</a> it looks just like a trick to save resources).  Unfortunately, it is impossible to get the file body at the moment (obviously, this will be implemented in the near future, since the feature is very important).  Otherwise, you could not use the same file_id, but upload the photo again (at least some workaround would be).  Now there is no other solution than to warn users (or limit functionality at all). <br><br>  Why is this not a bug in the platform?  Formally, this behavior is <a href="https://core.telegram.org/type/InputMedia">more or less documented</a> ( <i>InputMediaPhoto</i> vs <i>InputMediaUploadedPhoto constructors</i> , as well as the returned <a href="https://core.telegram.org/constructor/photo"><i>photo</i></a> object) in the usual API, so it cannot be considered a bug.  And in general, bots are created by third parties - how much privacy is here.  Given the positioning of Telegram as a messenger, which emphasizes privacy, it is possible that client applications should be made more explicit to understand that all data sent to bots is completely open to bot authors (no matter how commonplace it sounds). </div><p>Source: https://habr.com/ru/post/261781/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../261769/index.html">Puns on css</a></li>
 <li><a href="../261773/index.html">The formula for calculating the number of days in the month</a></li>
 <li><a href="../261775/index.html">Getting Started with Junos PyEZ</a></li>
 <li><a href="../261777/index.html">Batcher's even-odd merge sort</a></li>
 <li><a href="../261779/index.html">Express analysis of suspicious activity in the web server log</a></li>
+<li><a href="../26178/index.html">Fly Robot first flight</a></li>
 <li><a href="../261783/index.html">Vim in full: Working with Git</a></li>
 <li><a href="../261785/index.html">Seven amazing "features" Javascript</a></li>
 <li><a href="../261787/index.html">Remote injection of Wi-Fi frames</a></li>
 <li><a href="../261789/index.html">And do not you go to the clouds?</a></li>
-<li><a href="../261799/index.html">Receive notifications from external services, or why Hooksler was made</a></li>
+<li><a href="../26179/index.html">GPU-accelerated Photoshop</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

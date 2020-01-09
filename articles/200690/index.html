@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Auto reconnect to Battlefield 4 server</h1><div class="post__text post__text-html js-mediator-article">  At the weekend you need to rest.  It is a fact. <br>  But there is a wonderful phrase "Not a day without a line of code." <br>  So this weekend I decided to arrange a brain warm-up :-) <br><br>  I love the Battlefield series.  Well, she likes me! <br><br>  In Battlelog for Battlefield 3 there were wonderful queues at the server.  Pressed and wait. <br>  What was my disappointment when I discovered that in the fourth part you have to sit and press the button to play with friends. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,14 +61,14 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The first thing that came to mind was a simple timer: <br><a name="habracut"></a><br><pre><code class="javascript hljs">setInterval(<span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"></span><span class="hljs-function"><span class="hljs-params"></span>)</span></span>{<span class="hljs-keyword"><span class="hljs-keyword">var</span></span> button=<span class="hljs-built_in"><span class="hljs-built_in">document</span></span>.getElementById(<span class="hljs-string"><span class="hljs-string">'ugm-reconnect'</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(button != <span class="hljs-literal"><span class="hljs-literal">null</span></span>) button.click();},<span class="hljs-number"><span class="hljs-number">1000</span></span>);</code> </pre> <br>  Press the Reconnect button once a second. <br><br>  But!  First of all, this is not correct, because it loads the browser and the processor with “idle” taps when we have already connected to the server. <br>  Secondly, what if DICE will track such clickers? <br><br>  Having rummaged in DICE'ovskom code, and they have a fairly advanced front-end framework, I found there “native” handlers. <br>  Specifically: there is a launcher object with the registerForEvent () method. <br>  I looked at how they use it themselves, and wrote this simple code like this: <br><br><pre> <code class="javascript hljs"><span class="hljs-comment"><span class="hljs-comment">//     generic launcher.registerForEvent("error.generic", function(event, game, personaId, errorType, errorCode, errorString) { //     " " if(errorType == "ERR_SERVERCONNECT_SERVERFULL") { var button = jQuery("#ugm-reconnect"); if(button.length &gt; 0){ //        setTimeout(function(){ button.click(); },Math.floor((Math.random()*1000)+1000)); } } });</span></span></code> </pre> <br><br>  Well, in order not to write to the console every time, I made extensions for <a href="https://chrome.google.com/webstore/detail/bf4-server-reconnect/llijhhghffmanhekpabcgnldpipejpje%3Fhl%3Dru">Chrome</a> and <a href="https://addons.mozilla.org/ru/firefox/addon/bf4-server-reconnect/">Firefox</a> . </div><p>Source: <a href="https://habr.com/ru/post/200690/">https://habr.com/ru/post/200690/</a></p>
+      The first thing that came to mind was a simple timer: <br><a name="habracut"></a><br><pre><code class="javascript hljs">setInterval(<span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function">(</span><span class="hljs-params"></span><span class="hljs-function"><span class="hljs-params"></span>)</span></span>{<span class="hljs-keyword"><span class="hljs-keyword">var</span></span> button=<span class="hljs-built_in"><span class="hljs-built_in">document</span></span>.getElementById(<span class="hljs-string"><span class="hljs-string">'ugm-reconnect'</span></span>); <span class="hljs-keyword"><span class="hljs-keyword">if</span></span>(button != <span class="hljs-literal"><span class="hljs-literal">null</span></span>) button.click();},<span class="hljs-number"><span class="hljs-number">1000</span></span>);</code> </pre> <br>  Press the Reconnect button once a second. <br><br>  But!  First of all, this is not correct, because it loads the browser and the processor with “idle” taps when we have already connected to the server. <br>  Secondly, what if DICE will track such clickers? <br><br>  Having rummaged in DICE'ovskom code, and they have a fairly advanced front-end framework, I found there “native” handlers. <br>  Specifically: there is a launcher object with the registerForEvent () method. <br>  I looked at how they use it themselves, and wrote this simple code like this: <br><br><pre> <code class="javascript hljs"><span class="hljs-comment"><span class="hljs-comment">//     generic launcher.registerForEvent("error.generic", function(event, game, personaId, errorType, errorCode, errorString) { //     " " if(errorType == "ERR_SERVERCONNECT_SERVERFULL") { var button = jQuery("#ugm-reconnect"); if(button.length &gt; 0){ //        setTimeout(function(){ button.click(); },Math.floor((Math.random()*1000)+1000)); } } });</span></span></code> </pre> <br><br>  Well, in order not to write to the console every time, I made extensions for <a href="https://chrome.google.com/webstore/detail/bf4-server-reconnect/llijhhghffmanhekpabcgnldpipejpje%3Fhl%3Dru">Chrome</a> and <a href="https://addons.mozilla.org/ru/firefox/addon/bf4-server-reconnect/">Firefox</a> . </div><p>Source: https://habr.com/ru/post/200690/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../200676/index.html">Google webmaster - Statistics for the author</a></li>
+<li><a href="../20068/index.html">Why is the first page not available?</a></li>
 <li><a href="../200680/index.html">We buy Nexus 5 through Google Play</a></li>
 <li><a href="../200682/index.html">API for the Russian public initiative. Step 1: data collection and analysis</a></li>
 <li><a href="../200684/index.html">Motorola RAZR V3 - status symbol. How did one clamshell conquer the world</a></li>
@@ -76,8 +76,8 @@
 <li><a href="../200692/index.html">X.Scaffolding Library</a></li>
 <li><a href="../200694/index.html">The digest of news from the world of mobile development for the last week №31 (October 28 — November 3, 2013)</a></li>
 <li><a href="../200698/index.html">APK Downloader v 2.0</a></li>
-<li><a href="../200704/index.html">The series Doctor Who turned 50 years old</a></li>
-<li><a href="../200708/index.html">November 6 the launch of the spacecraft on the ISS will be broadcast on Times Square in New York</a></li>
+<li><a href="../2007/index.html">Amazon.com net profit declined by almost 60%.</a></li>
+<li><a href="../20070/index.html">Although already a hackneyed topic</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

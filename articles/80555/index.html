@@ -28,12 +28,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -55,7 +55,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>At the request of workers: Dual ISP on cisco routers without BGP</h1><div class="post__text post__text-html js-mediator-article">  A typical task, which nevertheless continues to raise a lot of questions. <br><br>  I will try to briefly describe the essence of technology and pitfalls. <br><br>  So, let us have one cisco border router with one internal port (g0 / 0) and two external (f0 / 0, f0 / 1) ports.  There is a connection to two providers, each of which has its own pool of addresses Pool (ISP1) and Pool (ISP2) (these are some networks belonging to a particular provider).  Let, for simplicity, the addresses of the f0 / 0 and f0 / 1 interfaces from the same pools.  And the addresses of the gateways from the same pools (Gate (ISP1) and Gate (ISP2), respectively). <br>  Since we do not have the opportunity to raise BGP, then we must prescribe a default route for each of the providers.  And here comes the first question: what problem do we want to solve?  Redundancy or simultaneous work with two providers? <br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -63,7 +63,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       <b>Reservation.</b> <br><br>  In this topology, only one provider is working at a time.  That is, we must organize the ISP1 provider check and if it is alive, walk through it, and if it is “dead”, then switch to the ISP2 backup provider.  There is a pitfall: NAT.  We can write several translation rules, but we need to somehow indicate that when we exit through ISP1 we use Pool (ISP1), and when we exit through ISP2, we use Pool (ISP2), otherwise the router will always use the translation that was first written in the configuration.  It is clear that if you go through ISP2, and the source addresses are from Pool (ISP1), then at best we will get asymmetric routing, at worst, the packages will not get anywhere, for example, because providers fulfill the requirement to use RFC2827 filtering, which means Receive packets with source addresses from outside your network. <br>  So, we have 2 subtasks: checking the provider (route) for "liveliness" and address translation with regard to the output interface. <br><br><h5>  Check for "liveliness." </h5><br>  Cisco routers have a great technology called SLA.  With it, you can not only ping a certain address, but also check the liveliness of certain services (ftp-connect, tcp-connect) or a parameter of the communication channel (icmp-jitter, udp-jitter).  Here we consider the easiest and most common way - ping a specific host.  For simplicity, we will ping the Gateway Provider Gateway (ISPX) address.  If you need to ping another address, you must explicitly register the route to this address through a specific provider, which we check. <br><br><pre> !  Set the parameters of "pingalis"
@@ -130,20 +130,20 @@
  ip nat inside source route-map ISP2 POOL2 overload
  ip nat inside source static Srv (LAN) Srv (ISP1) route-map ISP1
  ip nat inside source static Srv (LAN) Srv (ISP2) route-map ISP2
-</pre><br><br>  <b>Simultaneous use of two providers</b> <br><br>  If in the first case everything is clear and unambiguous, then in the case of simultaneous use of two providers, problems arise. <br><br>  Is this topic interesting?  What thoughts and problems are there? <br>  Write: compile with your thoughts and post if you want. </div><p>Source: <a href="https://habr.com/ru/post/80555/">https://habr.com/ru/post/80555/</a></p>
+</pre><br><br>  <b>Simultaneous use of two providers</b> <br><br>  If in the first case everything is clear and unambiguous, then in the case of simultaneous use of two providers, problems arise. <br><br>  Is this topic interesting?  What thoughts and problems are there? <br>  Write: compile with your thoughts and post if you want. </div><p>Source: https://habr.com/ru/post/80555/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../80546/index.html">MVC 2: Strongly Typed Html Helper</a></li>
 <li><a href="../80549/index.html">Online and helpful quotes</a></li>
+<li><a href="../8055/index.html">Attack of advertising widgets</a></li>
 <li><a href="../80550/index.html">MTS-Ukraine and the quality of communication</a></li>
 <li><a href="../80553/index.html">"Pokatushki on the dirt" - video review Colin McRae Dirt 2</a></li>
 <li><a href="../80554/index.html">Cairo shell is now open source</a></li>
 <li><a href="../80556/index.html">Moving to Agave</a></li>
 <li><a href="../80559/index.html">Give smart advice!</a></li>
+<li><a href="../8056/index.html">The first test advertising on YouTube</a></li>
 <li><a href="../80560/index.html">Babushkofony without warranty</a></li>
 <li><a href="../80561/index.html">CES 2010: Intel has opened a store for atom-based devices</a></li>
-<li><a href="../80562/index.html">CES 2010: Sanyo Unveils Eneloop Hybrid Electric Bike</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Cisco Call Manager and Skype connect</h1><div class="post__text post__text-html js-mediator-article">  For one project, it was decided to test Skype Connect for coexistence with Call Manager.  At the same time, figure out how this works and whether it is possible to use this entire bundle in production to reduce telephony bills. <br><a name="habracut"></a><br>  Version used CCM 6.1.X <br>  First you need to register in Skype Manager and correspondingly put money into the account.  All this is detailed on the Skype site and I will not focus on this.  In addition to one moment, the money must be added to the account in the Skype manager itself, otherwise they will fall directly on the Skype account and will not be available in Skype Manager.  To use credit cards, account must be authenticated.  I requested $ 10 from pay pall for test needs. <br><br>  After the money appeared on the account go to Skype Connect and create a SIP Profile. <br>  We choose the Name, the number of channels we need (here we need money in the account) and get the data for authentication. <br><br>  To make outgoing calls, you must also put money on the created SIP Profile. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Now we have everything (SIP User, Password and money in the account) for making calls using the Skype network. <br><br>  We are starting to configure CCM.  In the process of setting, I had to communicate with skype, which said that for skype connect it is necessary to purchase CUCM and there are also such rumors on the Internet, I didn’t believe them and pulled the main thing out of them that the alarm goes through UDP, not TCP.  This was a revelation to me. <br><br>  By crawling through the menus and questions to the experts, it turned out where to change the Outgoing Transport Type and then a working configuration was created in a couple of hours with tcpdump. <br><br>  Create a new SIP Security Profile.  As in the screenshot.  In place of the X.509 Subject Name, I entered the username obtained in Skype Connect, but probably it is not necessary. <br><img src="https://habrastorage.org/storage2/1a2/828/684/1a2828684048f3aa24f05f276d12f8cb.png" alt="image"><br><br>  Create a SIP Realm.  I myself saw Realm tcpdump and this is an internal IP CCM.  User and Digest Credentials which we received in Skype Connect. <br><img src="https://habrastorage.org/storage2/183/8e6/0f5/1838e60f5847f7478d7c56792e405ff8.png" alt="image"><br><br>  Next, create a SIP trunk.  Caller ID DN - User received in Skype Connect. <br><img src="https://habrastorage.org/storage2/fa7/5e1/41c/fa75e141c1334f258e2c4279c847e2b9.png" alt="image"><br><br>  Create a Route Pattern and call.  The number should be e.164. <br><br>  Results <br>  1) It works <br>  2) MTP is not needed <br>  3) in order to reduce bills you can use <br>  4) It was not possible to make calls to the business account work, but as part of my research, this did not have to be done, respectively, and Online Numbers do not work. </div><p>Source: <a href="https://habr.com/ru/post/146098/">https://habr.com/ru/post/146098/</a></p>
+      Now we have everything (SIP User, Password and money in the account) for making calls using the Skype network. <br><br>  We are starting to configure CCM.  In the process of setting, I had to communicate with skype, which said that for skype connect it is necessary to purchase CUCM and there are also such rumors on the Internet, I didn’t believe them and pulled the main thing out of them that the alarm goes through UDP, not TCP.  This was a revelation to me. <br><br>  By crawling through the menus and questions to the experts, it turned out where to change the Outgoing Transport Type and then a working configuration was created in a couple of hours with tcpdump. <br><br>  Create a new SIP Security Profile.  As in the screenshot.  In place of the X.509 Subject Name, I entered the username obtained in Skype Connect, but probably it is not necessary. <br><img src="https://habrastorage.org/storage2/1a2/828/684/1a2828684048f3aa24f05f276d12f8cb.png" alt="image"><br><br>  Create a SIP Realm.  I myself saw Realm tcpdump and this is an internal IP CCM.  User and Digest Credentials which we received in Skype Connect. <br><img src="https://habrastorage.org/storage2/183/8e6/0f5/1838e60f5847f7478d7c56792e405ff8.png" alt="image"><br><br>  Next, create a SIP trunk.  Caller ID DN - User received in Skype Connect. <br><img src="https://habrastorage.org/storage2/fa7/5e1/41c/fa75e141c1334f258e2c4279c847e2b9.png" alt="image"><br><br>  Create a Route Pattern and call.  The number should be e.164. <br><br>  Results <br>  1) It works <br>  2) MTP is not needed <br>  3) in order to reduce bills you can use <br>  4) It was not possible to make calls to the business account work, but as part of my research, this did not have to be done, respectively, and Online Numbers do not work. </div><p>Source: https://habr.com/ru/post/146098/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../146093/index.html">IBM Sequoia supercomputer has become the fastest in the world, having overtaken Fujitsu K by a factor of 1.5</a></li>
 <li><a href="../146094/index.html">Stay alive. SCADA Security</a></li>
 <li><a href="../146096/index.html">Blade Switching in a Dell PowerEdge M1000e Chassis</a></li>
+<li><a href="../1461/index.html">Mail.Ru launches the project Learning@Mail.Ru</a></li>
+<li><a href="../14610/index.html">Shower for RSS lovers</a></li>
 <li><a href="../146101/index.html">Create Splash Screen on Delphi</a></li>
 <li><a href="../146102/index.html">Microsoft Cloudball Challenge - football AI competition</a></li>
 <li><a href="../146103/index.html">Mysterious UMTS-900</a></li>
-<li><a href="../146105/index.html">Codecademy launched the Russian version</a></li>
-<li><a href="../146106/index.html">dotCover 2.0 - compatible with VS2012 RC and integrated unit test launcher</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

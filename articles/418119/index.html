@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Epic fail of the month: rsync as a "vector" to pull data</h1><div class="post__text post__text-html js-mediator-article"><p>  <em>Initially, I just wanted to throw a <a href="https://www.upguard.com/breaches/short-circuit-how-a-robotics-vendor-exposed-confidential-data-for-major-manufacturing-companies">link</a> to some comments for the <a href="https://habr.com/company/qrator/blog/350074/">first branch of this article</a> , as an example why pushing ports outside (for good reason) is not good.</em> <em><br></em>  <em>Well, the answer has grown</em> <del>  in the sheet </del>  in this article, and the comment will see one or two people (and so maybe someone will come in handy). </p><br><p>  It is not about vulnerability in the literal sense of the word, but about how, by negligence (negligence or laziness), shoot a long line at once in the leg. </p><br><h3 id="chto-sobstvenno-sluchiloshttpswwwupguardcombreachesshort-circuit-how-a-robotics-vendor-exposed-confidential-data-for-major-manufacturing-companies">  What actually <a href="https://www.upguard.com/breaches/short-circuit-how-a-robotics-vendor-exposed-confidential-data-for-major-manufacturing-companies">happened</a> </h3><br><p>  The UpGuard Cyber ​​Risk team found a "hole" where many documents, including secret ones, were littered (I won't find another word) in direct public access. <br>  To assess the seriousness - among the companies covered by that "hole" divisions of VW, Chrysler, Ford, Toyota, GM, Tesla and ThyssenKrupp. </p><br><p>  Data for all different types, degree of confidentiality and "neck" of secrecy, but ... </p><br><p> <a href="https://www.upguard.com/breaches/short-circuit-how-a-robotics-vendor-exposed-confidential-data-for-major-manufacturing-companies" title="click to the description page of UpGuard (in English)"><img src="https://habrastorage.org/getpro/habr/post_images/423/1cf/7fd/4231cf7fd45868c22661403692f3b8e2.png" height="300"><img src="https://habrastorage.org/getpro/habr/post_images/3d4/a2c/2d3/3d4a2c2d3c97c249afdc984f0cb8ce39.png" height="300"></a> </p><a name="habracut"></a><br><h3 id="gde-utaschili-nashli">  Where <del>  dragged off </del>  found </h3><br><p>  On publicly available servers belonging to the Level One Robotics group, "an engineering services provider specializing in automation and assembly for OEMs" ... <br>  The list of actually affected manufacturing companies, see above. </p><br><h3 id="chto-utaschili-nashli">  what <del>  dragged off </del>  found </h3><br><p>  About 157GB of good, including assembly lines (for more than 10 years), location plans for factory premises, robotic configuration and documentation, request forms with employee IDs, VPN access access forms, non-disclosure agreements (laugh here), and t .d  etc.  This is what concerns almost all the above mentioned companies.  In addition, personal data of employees (Level One and others), including scans of driver's licenses and passports, Level One business data (invoices, contracts and bank account details).  But so for warm-up. </p><br><p>  And finally <del>  probably to finish off </del>  the access level (permissions set) installed on the server at the time of opening the "hole" suddenly showed up as <abbr title="means that the server was publicly available for recording">writable</abbr> , i.e.  anyone could potentially change the documents lying there, for example, by changing the bank account number in the accountant’s instruction for a direct transfer, could enlist a loved one in the staff, could plug in a malicious program, etc.  joy </p><br><h3 id="kak-utaschili-zashli">  how <del>  dragged off </del>  logged in </h3><br><p>  And here (as I have already hinted above) everything is very simple - the server was (or suddenly once became) accessible via <abbr title="common file transfer protocol used for mirrors or for backing up large data sets">rsync</abbr> .  The rsync server was not limited by IP (not at the level of users, keys, etc.), i.e.  All data could be written off by any rsync client connected to the rsync port. </p><br><p>  Once again - rsync stupidly stuck open port out, without any additional verification. </p><br><p> Probably just the wrong setting (the effect of several cooks in the same kitchen, etc.). <br>  I do not know (and UpGuard is silent) what was there specifically - whether ssh is open (which is unlikely), legacy rsh as the transport layer, direct unison or what other socket method, rdiff or csync over HTTP, etc.  There are many options, but - the point is that in any case, the “attack vector” would be nullified by the simplest firewall rule that allows connections to only strictly defined ports from <code>127.0.0.1</code> , <code>[::1]</code> and another pair of “friends” addresses, aka white list. </p><br><h3 id="chto-imeem">  What we have </h3><br><p>  Automation of production has changed the industry, but it has also created many new areas for risk, where the weakest link (including the human factor, by malicious intent, due to oversight, misconfiguration or stupidity) negates the entire corporate security system, which means that enterprises need to take more serious care of all the links involved in the organization’s digital ecosystem. </p><br><p>  And on your VPS-ke (and maybe where else, where traffic can be forwarded with a tunnel tomorrow or somehow turned to "outside") close everything out of harm's place with a whitelisting, so that tomorrow some service will suddenly get access outside ( or a new attack vector that appeared) did not drop your safety below the baseboard. </p><br><p>  Well, incite a familiar auditor to your "provider of engineering and other services" ... </p><br><p>  Suddenly there too <del>  rsync ports sticking out </del>  - stigma in the cannon. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/418119/">https://habr.com/ru/post/418119/</a></p>
+    <p>Source: https://habr.com/ru/post/418119/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../418107/index.html">Setting the prefix for the MINDEO CS2190 scanner to work with 1C in keyboard break mode</a></li>
+<li><a href="../41811/index.html">Opera 9.60 Final released</a></li>
 <li><a href="../418111/index.html">Modern online learning: problems and trends</a></li>
 <li><a href="../418113/index.html">Data Science in Russia: languages, technology and more</a></li>
 <li><a href="../418115/index.html">Set geek on the road</a></li>
 <li><a href="../418117/index.html">Introduction to the Micronaut Framework</a></li>
+<li><a href="../41812/index.html">About programming style</a></li>
 <li><a href="../418121/index.html">Piu-bang-vzhuh: a satellite to detect lightning also notices meteors</a></li>
 <li><a href="../418123/index.html">Atomic memory: 8-bit alphabet and 192-bit tune from the game Mario</a></li>
 <li><a href="../418125/index.html">Adventure operator pipeline in babel @ 7</a></li>
 <li><a href="../418127/index.html">True and False Face Recognition Systems</a></li>
-<li><a href="../418131/index.html">Cross-Cloud Programming with Go Cloud</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

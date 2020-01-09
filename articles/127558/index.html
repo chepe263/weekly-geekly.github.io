@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Launch Skype without the annoying Main Page</h1><div class="post__text post__text-html js-mediator-article">  The reason for writing this was a <a href="http://habrahabr.ru/qa/10944/">recent question</a> .  I am also very annoyed by the Skype Home window that appears every time I start it, but with the help of a simple C program I managed to get rid of it.  It turned out something like Hello World Tutorial on use of Windows API.  The program can be downloaded <a href="">here</a> , and the source code with the description will be found under the cut. <br><a name="habracut"></a><br><br><h5>  Algorithm in words </h5><ol><li>  We learn from the registry the path where Skype is installed. <br>  It is registered in HKEY_CURRENT_USER \ Software \ Skype \ Phone \ SkypePath. </li><li>  Run Skype.exe in the new process. </li><li>  Since the launch of Skype, we will search for a window with the title “Skype Home” or “Skype Home Page” for 30 seconds.  Get the window handle and wait for it to become visible. </li><li>  Send this window a WM_CLOSE message to automatically close it. </li></ol><br><h5>  Text runskype.c </h5><br><pre><code class="cpp hljs"><span class="hljs-meta"><span class="hljs-meta">#</span><span class="hljs-meta-keyword"><span class="hljs-meta"><span class="hljs-meta-keyword">include</span></span></span><span class="hljs-meta"> </span><span class="hljs-meta-string"><span class="hljs-meta"><span class="hljs-meta-string">&lt;windows.h&gt; BOOL RunSkype() { STARTUPINFO si; PROCESS_INFORMATION pi; HKEY key; BYTE appPath[512]; DWORD pathSize = sizeof(appPath); BOOL result = FALSE; //     HKEY_CURRENT_USER\Software\Skype\Phone\SkypePath     Skype if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Skype\\Phone", 0, KEY_READ, &amp;key)==ERROR_SUCCESS) { if (RegQueryValueEx(key, "SkypePath", NULL, NULL, appPath, &amp;pathSize)==ERROR_SUCCESS) { //      Skype.exe    ZeroMemory(&amp;si, sizeof(si)); si.cb = sizeof(si); result = CreateProcess(appPath, NULL, NULL, NULL, FALSE, 0, NULL, NULL, &amp;si, &amp;pi); CloseHandle(pi.hProcess); CloseHandle(pi.hThread); } RegCloseKey(key); } return result; } int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) { if (RunSkype()) { //   30     Skype      Skype Home int i; for (i = 0; i &lt; 3000; i++) { //   THomeForm     Inspect Objects  Windows SDK //    "Skype Home",    "  Skype" HWND wnd = FindWindow("THomeForm", "Skype Home"); if (!wnd) { wnd = FindWindow("THomeForm", "  Skype"); } //     ,       if (wnd &amp;&amp; IsWindowVisible(wnd)) { SendMessage(wnd, WM_CLOSE, 0, 0); return 0; } //    ,    10  Sleep(10); } } return 1; }</span></span></span></span></code> </pre> <br><br><h5>  Compilation </h5><br>  Using Visual Studio: <br> <code>cl user32.lib advapi32.lib runskype.c</code> <br> <br>  Using GCC (MinGW): <br> <code>gcc -o runskype.exe runskype.c</code> <br> <br>  <i>Note:</i> <br>  In Skype, the Compact View should be selected. <br>  Tested on Windows 7 and Skype 5.5.0. <br>  Of course, the described mechanism is applicable to other programs. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/127558/">https://habr.com/ru/post/127558/</a></p>
+    <p>Source: https://habr.com/ru/post/127558/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../127555/index.html">Qt Creator 2.3.0 Release</a></li>
 <li><a href="../127556/index.html">Another Monad Guide (part 1: basics)</a></li>
 <li><a href="../127557/index.html">Helios Kernel (convenient include in Javascript)</a></li>
+<li><a href="../12756/index.html">Trampling the crowd will give the country electricity</a></li>
 <li><a href="../127560/index.html">IFA 2011, day 2: Samsung Galaxy Note, NX200, MV800 and Lenovo U300s</a></li>
 <li><a href="../127561/index.html">Jquery 1.6.3 released</a></li>
 <li><a href="../127562/index.html">phpBB Constructor - its own phpBB build for everyone</a></li>
 <li><a href="../127564/index.html">IBM bought Algorithmics</a></li>
-<li><a href="../127566/index.html">Interception of user accounts in Wi-Fi networks with Android</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

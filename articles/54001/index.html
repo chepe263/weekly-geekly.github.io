@@ -29,12 +29,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -60,7 +60,7 @@
                 connection |  connection
                              + - secure tunnel </pre>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -68,22 +68,22 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  IRL </h4><br>  One wonderful morning, suddenly, I needed to see the desktop server (Win 2k3), which was very far from me, in the internal subnet, behind the gateway (FreeBSD).  Immediately make a reservation: I know about the existence of VPN, SSH tunnels, VNC, etc, but for some reason I used exactly what will be discussed below.  Therefore, the above scheme has acquired the form: <br><br><pre>  [my laptop] &lt;===&gt; [zebedee client @ WinXP] &lt;=====&gt; [zebedee server @ FreeBSD] &lt;===&gt; [Win 2k3]
                   |  |  |
                   + - insecure |  + insecure
                       connection |  connection
-                                               + - secure tunnel </pre><br><br><h4>  Server part </h4><br>  In my case for FreeBSD - <a href="http://www.winton.org.uk/zebedee/download.html">source</a> : <br>  <b>zebedee-2.4.1A</b> <b><br></b>  <b>blowfish-0.9.5a</b> <b><br></b>  <b>zlib-1.2.3</b> <b><br></b>  <b>bzip2-1.0.3</b> <br><br>  we collect libraries: <br> <code>$cd ./blowfish-0.9.5a/ <br> $make optimize <br> $cd .. <br> $cd ./zlib-1.2.3/ <br> $./configure; make <br> $cd .. <br> $cd ./bzip2-1.0.3/ <br> $make <br> $cd .. <br></code> <br>  and actually zebedee: <br> <code>$cd ./zebedee-2.4.1A/ <br> $make OS=freebsd <br> $make install <br></code> <br>  All of the above, you can also install from the ports: <br> <code>$cd /usr/ports/security/zebedee <br> $make install <br></code> <br>  create the server configuration /usr/local/etc/zebedee.conf: <br> <code>server true #     <br> serverport 10488 #   <br> ipmode both #    TCP    UDP <br> logfile 'var/log/zebedee.log' #   <br> compression zlib:9 #  zlib  <br> detached true #  ,    <br> verbosity 2 <br> target 192.168.1.5:3389 #    RDP <br></code> <br>  run: <br> <code>zebedee -f /usr/local/etc/zebedee.conf</code> <br>  and get a working server waiting for incoming connections from the client <br><br><h4>  Customer </h4><br>  Take zebedee for Windows and install: C: \ Program Files \ Zebedee. <br>  To create a connection to the server, make the 2k3_rdp file with the following contents: <br> <code>verbosity 1 <br> detached false #    <br> server false #     <br> compression zlib:9 #   zlib <br> serverhost ip.address.server.zebedee #  ,      FreeBSD <br> serverport 10488 <br> tunnel 3389:192.168.1.5:3389 #       RDP   2k3 (192.168.1.5) <br></code> <br>  For convenience, create a shortcut, indicating in its properties: <br> <code>"C:\program files\Zebedee\zebedee.exe" -f 2k3_rdp</code> <br>  and run it. <br>  You can also customize the launch as a service, more details <a href="http://www.winton.org.uk/zebedee/manual.html">here.</a> <br><br>  It remains to run the Remote Desktop Connection Client, specifying the server address 127.0.0.  <b>2</b> (in XP SP2 it fails at 127.0.0.1): <br> <code>mstsc /v 127.0.0.2</code> <br>  and see the long-awaited result - the desktop of the server itself. <br><br><h4>  Not the end </h4><br>  Of course, we should not forget about security, for example, keys for <a href="http://www.winton.org.uk/zebedee/manual.html">identifying customers</a> , or <a href="http://www.winton.org.uk/zebedee/manual.html">checking addresses</a> . <br>  You can use zebedee not only for tasks like the one shown above.  With the help of the tunnel, you can easily organize access to the database, the X-server, to virtually any resources that use TCP / IP. </div><p>Source: <a href="https://habr.com/ru/post/54001/">https://habr.com/ru/post/54001/</a></p>
+                                               + - secure tunnel </pre><br><br><h4>  Server part </h4><br>  In my case for FreeBSD - <a href="http://www.winton.org.uk/zebedee/download.html">source</a> : <br>  <b>zebedee-2.4.1A</b> <b><br></b>  <b>blowfish-0.9.5a</b> <b><br></b>  <b>zlib-1.2.3</b> <b><br></b>  <b>bzip2-1.0.3</b> <br><br>  we collect libraries: <br> <code>$cd ./blowfish-0.9.5a/ <br> $make optimize <br> $cd .. <br> $cd ./zlib-1.2.3/ <br> $./configure; make <br> $cd .. <br> $cd ./bzip2-1.0.3/ <br> $make <br> $cd .. <br></code> <br>  and actually zebedee: <br> <code>$cd ./zebedee-2.4.1A/ <br> $make OS=freebsd <br> $make install <br></code> <br>  All of the above, you can also install from the ports: <br> <code>$cd /usr/ports/security/zebedee <br> $make install <br></code> <br>  create the server configuration /usr/local/etc/zebedee.conf: <br> <code>server true #     <br> serverport 10488 #   <br> ipmode both #    TCP    UDP <br> logfile 'var/log/zebedee.log' #   <br> compression zlib:9 #  zlib  <br> detached true #  ,    <br> verbosity 2 <br> target 192.168.1.5:3389 #    RDP <br></code> <br>  run: <br> <code>zebedee -f /usr/local/etc/zebedee.conf</code> <br>  and get a working server waiting for incoming connections from the client <br><br><h4>  Customer </h4><br>  Take zebedee for Windows and install: C: \ Program Files \ Zebedee. <br>  To create a connection to the server, make the 2k3_rdp file with the following contents: <br> <code>verbosity 1 <br> detached false #    <br> server false #     <br> compression zlib:9 #   zlib <br> serverhost ip.address.server.zebedee #  ,      FreeBSD <br> serverport 10488 <br> tunnel 3389:192.168.1.5:3389 #       RDP   2k3 (192.168.1.5) <br></code> <br>  For convenience, create a shortcut, indicating in its properties: <br> <code>"C:\program files\Zebedee\zebedee.exe" -f 2k3_rdp</code> <br>  and run it. <br>  You can also customize the launch as a service, more details <a href="http://www.winton.org.uk/zebedee/manual.html">here.</a> <br><br>  It remains to run the Remote Desktop Connection Client, specifying the server address 127.0.0.  <b>2</b> (in XP SP2 it fails at 127.0.0.1): <br> <code>mstsc /v 127.0.0.2</code> <br>  and see the long-awaited result - the desktop of the server itself. <br><br><h4>  Not the end </h4><br>  Of course, we should not forget about security, for example, keys for <a href="http://www.winton.org.uk/zebedee/manual.html">identifying customers</a> , or <a href="http://www.winton.org.uk/zebedee/manual.html">checking addresses</a> . <br>  You can use zebedee not only for tasks like the one shown above.  With the help of the tunnel, you can easily organize access to the database, the X-server, to virtually any resources that use TCP / IP. </div><p>Source: https://habr.com/ru/post/54001/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../53991/index.html">Adobe Flash in cartography: the Kuzbass in the palm project</a></li>
-<li><a href="../53995/index.html">(When) registration is open on Demonoid.com</a></li>
-<li><a href="../53997/index.html">Infrastructure modern office - 1</a></li>
 <li><a href="../53998/index.html">Fundamentals of the basics of satellite reception</a></li>
 <li><a href="../53999/index.html">Features of the impact of learning multiple programming languages</a></li>
+<li><a href="../54/index.html">flaw in the address bar</a></li>
+<li><a href="../540/index.html">Habrahabr about Habrahabr</a></li>
+<li><a href="../5400/index.html">Increase productivity.</a></li>
 <li><a href="../54004/index.html">fasTun is a free service for compressing traffic</a></li>
 <li><a href="../54005/index.html">Big Music will give up, but not before 2011</a></li>
 <li><a href="../54006/index.html">On the use of links to run functions.</a></li>

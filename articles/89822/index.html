@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Reversi on TCL in 64 lines</h1><div class="post__text post__text-html js-mediator-article">  On Habré already have topics about writing the game Reversi (Othello) in <a href="http://habrahabr.ru/blogs/python/87009/">Python</a> , <a href="http://habrahabr.ru/blogs/silverlight/87426/">Silverlight</a> . <br>  Let's invent a bike on Tcl / Tk.  Cross platform (works even on Windows Mobile with a small modification), just 64 lines. <br><br><img src="http://img408.imageshack.us/img408/4840/reversi.png" alt="image"><br><br>  The code, a small description and screen with WinMobile under habrakatom. <br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Source (reversi.tcl): <br><pre> package require Tk 8.5
@@ -129,7 +129,7 @@
    if {[llength $ flips]} {pieceset $ x $ y $ p;  return 1} else {return 0}}
 </pre><br><br>  To make it easier to work with coordinates, create a list of icells (0 0 0 1 ... 1 1 1 2 ..). <br>  In the future, instead of a nested loop, we can use <i>foreach {xy} $ icells</i> . <br><br>  Next is the creation of the interface, work with the canvas and event binding (evuser) when you click on the cell. <br><br>  Global Variables: <br>  vs - hash array, identifies opponents ID, color of chips.  <i>vs (1) = 2;</i>  <i>vs (2) = 1</i> . <br>  score - score (number of black and white chips) <br>  player - player configuration (1 - person, 2 - computer) <br>  board - playing field <br>  cur - current player id <br>  waituser - flag waiting user progress <br><br>  Consider the declared functions. <br>  <i>newgame {p1 p2}</i> <br>  Start a new game.  Arguments determine the type of player: <br>  1 person <br>  2 - Computer <br><br>  In other matters, AI is absolutely not here, but you can see how they will play <i>Random vs Random by</i> passing {2 2} <br><br>  <i>pieceset {xyp}</i> <br>  Sets the player's chip p, in the cell x, y <br>  Recalculates current account.  Here is a little magic <br><pre> incr :: score ($ p) [expr {+ ($ :: board ($ x, $ y)! = $ p)}]]
  incr :: score ($ :: vs (p)) [expr {- ($ :: board ($ x, $ y) == $ :: vs ($ p))}].
-</pre><br><br>  We are increasing the current player's account p, and his opponent $ vs ($ p) <br>  For the current player, if his chip is not yet in the cell, then +1 otherwise +0 <br>  If the opponent's chip cost, then we reduce the score to -1. <br><br>  <i>getflips {xyp}</i> <br>  Returns a list of all possible chips that a player ( <i>p</i> ) can capture by going to <i>xy</i> <br><br>  <i>waitturn {}</i> <br>  Waiting for a move. <br>  Determines the number of all possible moves for each player.  Decides when the game is over and who should make the move now. <br><br>  <i>evuser {xy}</i> <br>  The procedure is called every time a person clicks on one of the cells. <br>  If the global variable :: waituser is set and there is an opportunity to go to the current user, then we transfer control to the opponent: <br>  <i>set :: cur $ :: vs ($ :: cur);</i>  <i>after idle waitturn}}</i> <br><br>  <i>turn {xyp}</i> <br>  Make a move in x y.  Turn over the captured opponent's chips, if it works, returns 1, otherwise 0. <br><br>  References: <br>  <a href="http://ru.wikipedia.org/wiki/%25D0%25A0%25D0%25B5%25D0%25B2%25D0%25B5%25D1%2580%25D1%2581%25D0%25B8">Reversi on Wikipedia</a> <br>  <a href="http://www.activestate.com/activetcl/">ActiveTcl (Tcl distribution for Windows / OSX / Linux)</a> <br>  <a href="http://www.evolane.com/software/etcl/index.html">eTcl (Windows Mobile)</a> <a href="http://www.evolane.com/software/etcl/index.html"><br></a> <br><br>  And finally, the screen with Windows Mobile <br><img src="http://img340.imageshack.us/img340/9220/revwm.png" alt="image"><br><br>  <b>UPD:</b> <br>  <a href="">Screenshot from Ubuntu</a> .  True, to bring to normal appearance, I connected the <a href="http://www.ellogon.org/petasis/tcltk-projects-mainmenu-38/tilegtk-mainmenu-45">tile-gtk</a> module. <br><br>  <a href="http://code.google.com/p/ureversi/">Google code</a> <br>  <a href="http://code.google.com/p/ureversi/downloads/list">Starkit and build under windows (1.2 mb)</a> <br></div><p>Source: <a href="https://habr.com/ru/post/89822/">https://habr.com/ru/post/89822/</a></p>
+</pre><br><br>  We are increasing the current player's account p, and his opponent $ vs ($ p) <br>  For the current player, if his chip is not yet in the cell, then +1 otherwise +0 <br>  If the opponent's chip cost, then we reduce the score to -1. <br><br>  <i>getflips {xyp}</i> <br>  Returns a list of all possible chips that a player ( <i>p</i> ) can capture by going to <i>xy</i> <br><br>  <i>waitturn {}</i> <br>  Waiting for a move. <br>  Determines the number of all possible moves for each player.  Decides when the game is over and who should make the move now. <br><br>  <i>evuser {xy}</i> <br>  The procedure is called every time a person clicks on one of the cells. <br>  If the global variable :: waituser is set and there is an opportunity to go to the current user, then we transfer control to the opponent: <br>  <i>set :: cur $ :: vs ($ :: cur);</i>  <i>after idle waitturn}}</i> <br><br>  <i>turn {xyp}</i> <br>  Make a move in x y.  Turn over the captured opponent's chips, if it works, returns 1, otherwise 0. <br><br>  References: <br>  <a href="http://ru.wikipedia.org/wiki/%25D0%25A0%25D0%25B5%25D0%25B2%25D0%25B5%25D1%2580%25D1%2581%25D0%25B8">Reversi on Wikipedia</a> <br>  <a href="http://www.activestate.com/activetcl/">ActiveTcl (Tcl distribution for Windows / OSX / Linux)</a> <br>  <a href="http://www.evolane.com/software/etcl/index.html">eTcl (Windows Mobile)</a> <a href="http://www.evolane.com/software/etcl/index.html"><br></a> <br><br>  And finally, the screen with Windows Mobile <br><img src="http://img340.imageshack.us/img340/9220/revwm.png" alt="image"><br><br>  <b>UPD:</b> <br>  <a href="">Screenshot from Ubuntu</a> .  True, to bring to normal appearance, I connected the <a href="http://www.ellogon.org/petasis/tcltk-projects-mainmenu-38/tilegtk-mainmenu-45">tile-gtk</a> module. <br><br>  <a href="http://code.google.com/p/ureversi/">Google code</a> <br>  <a href="http://code.google.com/p/ureversi/downloads/list">Starkit and build under windows (1.2 mb)</a> <br></div><p>Source: https://habr.com/ru/post/89822/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

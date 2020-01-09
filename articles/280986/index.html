@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Fast transit traffic analysis</h1><div class="post__text post__text-html js-mediator-article">  Before any system administrator, sooner or later there is a problem of quantitative analysis of the traffic (from / to, through which protocols / ports, in what volumes, etc.) passing through its network.  It is especially unpleasant when this task arises spontaneously, as a side effect of DDoS, and, as usual, there is no money for serious solutions from Cisco or Arbor.  And it's good if the gateway for the network is a server on which you can run tcpdump or wireshark, but what to do if: <br><br><ul><li>  the gateway is the provider's device, and the network has only a file server; </li><li>  traffic data is not always needed, but from time to time; </li><li>  the device does not support the ability to run third-party programs on it; </li><li>  there is so much traffic that the server after running tcpdump “glues flippers”; </li><li>  or, on the contrary, is it so small that its level is comparable to the share (albeit significant) of normal traffic? </li></ul><a name="habracut"></a><br>  An additional spoon of tar in this “barrel of honey” of the task is also added by the absence of both the tcpdump and tshark miraculous keys “group, sum up / average and sort”. <br><br>  So, with all the reluctance to reinvent the wheel, I had to roll up our sleeves and write a tool that meets the following requirements: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <ul><li>  data source is a router or switch that supports sFlow protocol; </li><li>  collector (tcpdump, tshark or sflowtool) data in PCAP format either writes to a file or sends to STDOUT; </li><li>  accordingly, the source data can be read by the tool either from the file or from STDIN; </li><li>  The base unit for analysis is the packet, not the compound; </li><li>  the result should include information about the direction of traffic, the number of past packets, the amount of traffic and the average packet size; </li><li>  the possibility of basic grouping and sorting of the result should be provided; </li><li>  well, and various passing trivia; </li><li>  and with all this, this tool <b>should not</b> duplicate the functionality of existing well-known tools. </li></ul><br>  It was on this basis that PCAParse was written - as simple as possible tool for obtaining generalized information about traffic passing through the network.  To use it, in the simplest case, a D-Link DGS-3XXX switch or equivalent from other manufacturers is enough and running on the aforementioned sflowtool or tcpdump file server on the office gateway.  As practice shows, these devices have long ago lost their exotic status and can be found even in small offices. <br><br>  In order to make it clear what is at stake, I will give a small example: <br><br><div class="spoiler">  <b class="spoiler_title">Sample script output</b> <div class="spoiler_text"><pre> $ tshark -c 100 -w - |  pcaparse
@@ -121,13 +121,13 @@
  212.XX.XX.XX udp: 32302 279 91644 328
  212.XX.XX.XX icmp 0 0 0
  212.XX.XX.XX other 0 0 0
-</pre></div></div><br>  The script is written in perl-e using the Net :: PCAP and NetPacket :: * modules, which provides sufficient performance and cross-platform functionality.  At least, on fresh linux and FreeBSD, there were no problems with startup and operation. <br><br>  Of the known cons: <br><br><ul><li>  lack of support for IPv6 (hopefully for now - work is underway on this); </li><li>  checking IP ranges using Data :: Validate :: IP (again, hopefully, temporarily); </li><li>  the lack of the “do well” option for tcpdump or tshark (but I hope in the future it may appear there if the script is liked by the authors and contributors of the mentioned tools and its functionality will be sorted there). </li></ul><br>  PS after the fact it turned out that there is a similar tool - Fastnetmon, but, nevertheless, it is focused on "stationary" use, because it implies the use of a data collector, with which the client part interacts. <br><br>  References: <br><br><ul><li>  PCAParse - <a href="https://github.com/kornix/pcaparse">github.com/kornix/pcaparse</a> ; </li><li>  Fastnetmon - <a href="https://n0where.net/high-performance-dos-analyzer-fastnetmon/">n0where.net/high-performance-dos-analyzer-fastnetmon</a> ; </li><li>  DDS - <a href="http://gul-tech.livejournal.com/5959.html">gul-tech.livejournal.com/5959.html</a> ; </li><li>  NFDUMP - <a href="http://nfdump.sourceforge.net/">nfdump.sourceforge.net</a> ; </li><li>  NfSen - <a href="http://nfsen.sourceforge.net/">nfsen.sourceforge.net</a> </li></ul></div><p>Source: <a href="https://habr.com/ru/post/280986/">https://habr.com/ru/post/280986/</a></p>
+</pre></div></div><br>  The script is written in perl-e using the Net :: PCAP and NetPacket :: * modules, which provides sufficient performance and cross-platform functionality.  At least, on fresh linux and FreeBSD, there were no problems with startup and operation. <br><br>  Of the known cons: <br><br><ul><li>  lack of support for IPv6 (hopefully for now - work is underway on this); </li><li>  checking IP ranges using Data :: Validate :: IP (again, hopefully, temporarily); </li><li>  the lack of the “do well” option for tcpdump or tshark (but I hope in the future it may appear there if the script is liked by the authors and contributors of the mentioned tools and its functionality will be sorted there). </li></ul><br>  PS after the fact it turned out that there is a similar tool - Fastnetmon, but, nevertheless, it is focused on "stationary" use, because it implies the use of a data collector, with which the client part interacts. <br><br>  References: <br><br><ul><li>  PCAParse - <a href="https://github.com/kornix/pcaparse">github.com/kornix/pcaparse</a> ; </li><li>  Fastnetmon - <a href="https://n0where.net/high-performance-dos-analyzer-fastnetmon/">n0where.net/high-performance-dos-analyzer-fastnetmon</a> ; </li><li>  DDS - <a href="http://gul-tech.livejournal.com/5959.html">gul-tech.livejournal.com/5959.html</a> ; </li><li>  NFDUMP - <a href="http://nfdump.sourceforge.net/">nfdump.sourceforge.net</a> ; </li><li>  NfSen - <a href="http://nfsen.sourceforge.net/">nfsen.sourceforge.net</a> </li></ul></div><p>Source: https://habr.com/ru/post/280986/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../280974/index.html">Creating an expert system in Wi! Mi 1.1</a></li>
 <li><a href="../280976/index.html">About the Perforce Helix version control system</a></li>
 <li><a href="../280978/index.html">Innovations C # 7</a></li>
+<li><a href="../28098/index.html">Information Organization - Emacs Org Mode</a></li>
 <li><a href="../280980/index.html">How big operators make big money on big data?</a></li>
 <li><a href="../280984/index.html">Testing GUI Applications Using OCR</a></li>
 <li><a href="../280988/index.html">4 PostCSS Myths</a></li>

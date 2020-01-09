@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Run the music player in the emulator</h1><div class="post__text post__text-html js-mediator-article"><img align="left" src="https://habrastorage.org/files/631/a4d/f32/631a4df32b4045c894508daba844c521.png"><br>  In this small article I want to share with you one trick when creating an iOS application that plays music. <br><br>  If you are an iOS developer, then most likely you know that you can access the library with music ( <b>iPod Library</b> ) only on a real device, but not on an emulator ( <b>iPhone Simulator</b> ) [ <a href="https://developer.apple.com/library/ios/documentation/Audio/Conceptual/iPodLibraryAccess_Guide/Introduction/Introduction.html">link</a> to documentation]: <br><br><blockquote>  Note: iPod Simulator.  This is because the Simulator has an iPod library.  To develop applications using this technology, you need a provisioned iOS device. </blockquote><br>  However, it is not always necessary to access files with music, sometimes <b>only information about tracks (title, artist, cover, etc.) is</b> sufficient <b>.</b> For this situation, you can create the illusion of working with the iPod Library. <br><a name="habracut"></a><br>  When can this situation arise?  Suppose you are writing a music player, testing it on a real device (for example, you have two of them: iPhone 4 and iPhone 5).  The time is coming for publishing in the App Store: screenshots are needed.  You take screenshots from your devices.  There are devices (for example, iPhone 6, iPhone 6 Plus) that you do not have.  You only need screenshots for the missing devices: here the launch of the emulator is most welcome. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      So, first you need to copy the database with information about the tracks from the real device.  For these purposes, install <a href="http://i-funbox.com/ifunboxmac/">iFunBox</a> (note that for iOS versions&gt; = <b>8.3,</b> access to the file system was denied).  It is enough to copy the following 3 files and a folder (entirely): <br><br><pre><code class="bash hljs"><span class="hljs-string"><span class="hljs-string">'Raw File System'</span></span>/iTunes_Control/iTunes/MediaLibrary.sqlitedb <span class="hljs-string"><span class="hljs-string">'Raw File System'</span></span>/iTunes_Control/iTunes/MediaLibrary.sqlitedb-shm <span class="hljs-string"><span class="hljs-string">'Raw File System'</span></span>/iTunes_Control/iTunes/MediaLibrary.sqlitedb-wal <span class="hljs-string"><span class="hljs-string">'Raw File System'</span></span>/iTunes_Control/iTunes/Artwork</code> </pre> <br><br><div style="text-align:center;"><img src="https://habrastorage.org/files/837/983/02b/83798302b7c846e28b3a0d55ddbcddd3.png"></div><br><br>  The copied files should be put in the folder: <br><br><pre> <code class="bash hljs">~/Library/Developer/CoreSimulator/Devices/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/data/Media/iTunes_Control/iTunes</code> </pre><br>  where xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx - for each type of device has its own folder, the device name can be found in the file <b>device.plist</b> located in this folder <br><br>  For previous versions of Xcode, files need to be put in a folder: <br><br><pre> <code class="bash hljs">~/Library/Application Support/iPhone Simulator/7.1/Media/iTunes_Control/iTunes/</code> </pre><br><br>  Everything!  Now you can get information about the tracks, for example: <br><br><pre> <code class="objectivec hljs"><span class="hljs-built_in"><span class="hljs-built_in">MPMediaQuery</span></span> *myAllSongsQuery = [<span class="hljs-built_in"><span class="hljs-built_in">MPMediaQuery</span></span> songsQuery]; <span class="hljs-built_in"><span class="hljs-built_in">NSArray</span></span> *allSongs = [myAllSongsQuery items]; <span class="hljs-comment"><span class="hljs-comment">//... cell.songTitleLabel.text = [allSongs[indexPath.row] valueForProperty: MPMediaItemPropertyTitle]; cell.atristLabel.text = [allSongs[indexPath.row] valueForProperty: MPMediaItemPropertyArtist]; cell.coverImage.image = [[allSongs[indexPath.row] valueForProperty: MPMediaItemPropertyArtwork] imageWithSize:cell.coverImage.frame.size];</span></span></code> </pre><br><br>  An example of an application running in an emulator: <br><br><div style="text-align:center;"><img src="https://habrastorage.org/files/b35/710/518/b35710518ed54135bf057fef5261c5fd.png"></div></div><p>Source: <a href="https://habr.com/ru/post/256097/">https://habr.com/ru/post/256097/</a></p>
+      So, first you need to copy the database with information about the tracks from the real device.  For these purposes, install <a href="http://i-funbox.com/ifunboxmac/">iFunBox</a> (note that for iOS versions&gt; = <b>8.3,</b> access to the file system was denied).  It is enough to copy the following 3 files and a folder (entirely): <br><br><pre><code class="bash hljs"><span class="hljs-string"><span class="hljs-string">'Raw File System'</span></span>/iTunes_Control/iTunes/MediaLibrary.sqlitedb <span class="hljs-string"><span class="hljs-string">'Raw File System'</span></span>/iTunes_Control/iTunes/MediaLibrary.sqlitedb-shm <span class="hljs-string"><span class="hljs-string">'Raw File System'</span></span>/iTunes_Control/iTunes/MediaLibrary.sqlitedb-wal <span class="hljs-string"><span class="hljs-string">'Raw File System'</span></span>/iTunes_Control/iTunes/Artwork</code> </pre> <br><br><div style="text-align:center;"><img src="https://habrastorage.org/files/837/983/02b/83798302b7c846e28b3a0d55ddbcddd3.png"></div><br><br>  The copied files should be put in the folder: <br><br><pre> <code class="bash hljs">~/Library/Developer/CoreSimulator/Devices/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/data/Media/iTunes_Control/iTunes</code> </pre><br>  where xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx - for each type of device has its own folder, the device name can be found in the file <b>device.plist</b> located in this folder <br><br>  For previous versions of Xcode, files need to be put in a folder: <br><br><pre> <code class="bash hljs">~/Library/Application Support/iPhone Simulator/7.1/Media/iTunes_Control/iTunes/</code> </pre><br><br>  Everything!  Now you can get information about the tracks, for example: <br><br><pre> <code class="objectivec hljs"><span class="hljs-built_in"><span class="hljs-built_in">MPMediaQuery</span></span> *myAllSongsQuery = [<span class="hljs-built_in"><span class="hljs-built_in">MPMediaQuery</span></span> songsQuery]; <span class="hljs-built_in"><span class="hljs-built_in">NSArray</span></span> *allSongs = [myAllSongsQuery items]; <span class="hljs-comment"><span class="hljs-comment">//... cell.songTitleLabel.text = [allSongs[indexPath.row] valueForProperty: MPMediaItemPropertyTitle]; cell.atristLabel.text = [allSongs[indexPath.row] valueForProperty: MPMediaItemPropertyArtist]; cell.coverImage.image = [[allSongs[indexPath.row] valueForProperty: MPMediaItemPropertyArtwork] imageWithSize:cell.coverImage.frame.size];</span></span></code> </pre><br><br>  An example of an application running in an emulator: <br><br><div style="text-align:center;"><img src="https://habrastorage.org/files/b35/710/518/b35710518ed54135bf057fef5261c5fd.png"></div></div><p>Source: https://habr.com/ru/post/256097/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,11 +73,11 @@
 <li><a href="../256089/index.html">Intel Edison. First start</a></li>
 <li><a href="../256091/index.html">We are switching from STM32 to the Russian K1986BE92QI microcontroller. Practical application: Generate and reproduce sound. Part two: generate a sinusoidal signal. Mastering DMA</a></li>
 <li><a href="../256095/index.html">jspm - browser package manager</a></li>
+<li><a href="../2561/index.html">"Vesti" can be found on the mobile phone</a></li>
+<li><a href="../25610/index.html">Karma</a></li>
 <li><a href="../256101/index.html">Homemade NAS from a netbook with a reworked PCI express SATA controller for ExpressCard / 34</a></li>
 <li><a href="../256103/index.html">Firmware for electronics 3D scanner</a></li>
 <li><a href="../256105/index.html">The digest of interesting materials from the world of web development and IT for the last week №156 (April 13 - 19, 2015)</a></li>
-<li><a href="../256107/index.html">We deployed our own in the cloud. Install CoreOS</a></li>
-<li><a href="../256109/index.html">Ways to organize CSS-code</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

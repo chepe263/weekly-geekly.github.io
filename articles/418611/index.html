@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Calculation of pizzerias: Papa Jones, who does not care about security</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/webt/u8/hi/hc/u8hihc2vt3kt9qtcsqkv5sjg70e.jpeg" alt="image"></div><br>  <i>Picture to attract attention is taken <a href="http://www.nashgorod.ru/otdih/news/news102209.html">here.</a></i> <br><br>  Pizzeria Papa Jones is open in many countries, the engine of sites is almost everywhere different.  However, the engine, which was developed somewhere in Russia, is also used on sites for Poland, Kyrgyzstan and Belarus.  We will consider it. <br><a name="habracut"></a><br>  You can see the engine itself on a <a href="https://m.papajohns.ru/">mobile site for Russia</a> , for example.  Why mobile?  Because the <a href="https://papajohns.ru/">desktop</a> does not even have a registration form, although this is explained by the fact that registration is automatic when ordering.  I decided to check once on how things are with vulnerabilities. <br><br>  Since picking in applications is the easiest, I took it.  To my surprise, I found out that the application is just a strange wrapper for the site, although the server can clearly distinguish who the request came from when requesting it.  It turned out to be possible to test with equal success both the application and the mobile version.  The only difference is that the platform field - mobSite is transmitted for the mobile site, and the applications report the system and version. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I succeeded immediately because I started with password recovery.  I propose to look at how this happens. <br><br>  First you need to get the code itself in SMS.  Ask for the link with JSON in the body: <br><br><pre><code class="hljs pgsql">POST https://www.papajohns.ru/api/auth/recovery/requestCode { "username": "+79", "transport": "sms", "lang": "ru", "version": "1.0.34", "platform": "Android" }</code> </pre> <br>  The server responds: <br><br><pre> <code class="hljs json">{ <span class="hljs-attr"><span class="hljs-attr">"status"</span></span>: <span class="hljs-literal"><span class="hljs-literal">true</span></span> }</code> </pre><br>  Strange data is not enough.  Identifier or session at least, but look further. <br><br>  In SMS comes a four-digit code (only numbers).  We will not send it, because changing the password leads to blocking of points for two weeks, and I had plans for them.  Let's try to send random: <br><br><pre> <code class="hljs pgsql">POST https://www.papajohns.ru/api/auth/recovery/updatePassword { "code": "1234", "password": "123456qwe", "transport": "sms", "version": "1.0.34", "platform": "Android" }</code> </pre><br>  I was very impressed.  It turned out that when requesting SMS, a pair of phone number + code is written to the database, and when requesting recovery by code, the server checks for the presence of the code in the database and, if found, sets the received password to the database. <br><br>  The situation gets worse from the fact that there is no restriction on code search.  Experimentally, I found out that over a 10 minute search the script is guaranteed to set a password.  And if you request recovery for all 10,000 codes from 0000 to 9999? <br><br>  On May 12, I communicated all the details directly to the developer of the site (well, at least he introduced himself to them).  June 19, I wondered how things were going to close the vulnerability.  The script sent about three hundred requests and stood up.  Having specified the developer status, I found out that the server is now blocking by IP, if it receives 5 incorrect requests.  Today I again checked whether the logic has changed, and I am ready to inform you: it has not changed.  The server is now also indifferent: I sent 3000 requests without too much difficulty, so that all 10,000, I suppose, will go away without any problems. <br><br>  The risk of disclosing all stored addresses only by the presence of a mobile phone number remains significant.  Bank cards are deleted when the password is reset.  They gave me 1000 points and pizza.  The pizza is delicious, but the address I will not store there. </div><p>Source: <a href="https://habr.com/ru/post/418611/">https://habr.com/ru/post/418611/</a></p>
+      I succeeded immediately because I started with password recovery.  I propose to look at how this happens. <br><br>  First you need to get the code itself in SMS.  Ask for the link with JSON in the body: <br><br><pre><code class="hljs pgsql">POST https://www.papajohns.ru/api/auth/recovery/requestCode { "username": "+79", "transport": "sms", "lang": "ru", "version": "1.0.34", "platform": "Android" }</code> </pre> <br>  The server responds: <br><br><pre> <code class="hljs json">{ <span class="hljs-attr"><span class="hljs-attr">"status"</span></span>: <span class="hljs-literal"><span class="hljs-literal">true</span></span> }</code> </pre><br>  Strange data is not enough.  Identifier or session at least, but look further. <br><br>  In SMS comes a four-digit code (only numbers).  We will not send it, because changing the password leads to blocking of points for two weeks, and I had plans for them.  Let's try to send random: <br><br><pre> <code class="hljs pgsql">POST https://www.papajohns.ru/api/auth/recovery/updatePassword { "code": "1234", "password": "123456qwe", "transport": "sms", "version": "1.0.34", "platform": "Android" }</code> </pre><br>  I was very impressed.  It turned out that when requesting SMS, a pair of phone number + code is written to the database, and when requesting recovery by code, the server checks for the presence of the code in the database and, if found, sets the received password to the database. <br><br>  The situation gets worse from the fact that there is no restriction on code search.  Experimentally, I found out that over a 10 minute search the script is guaranteed to set a password.  And if you request recovery for all 10,000 codes from 0000 to 9999? <br><br>  On May 12, I communicated all the details directly to the developer of the site (well, at least he introduced himself to them).  June 19, I wondered how things were going to close the vulnerability.  The script sent about three hundred requests and stood up.  Having specified the developer status, I found out that the server is now blocking by IP, if it receives 5 incorrect requests.  Today I again checked whether the logic has changed, and I am ready to inform you: it has not changed.  The server is now also indifferent: I sent 3000 requests without too much difficulty, so that all 10,000, I suppose, will go away without any problems. <br><br>  The risk of disclosing all stored addresses only by the presence of a mobile phone number remains significant.  Bank cards are deleted when the password is reset.  They gave me 1000 points and pizza.  The pizza is delicious, but the address I will not store there. </div><p>Source: https://habr.com/ru/post/418611/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -76,8 +76,8 @@
 <li><a href="../418615/index.html">Zyxel Nebula and company growth</a></li>
 <li><a href="../418617/index.html">Lenovo DS6200 storage system overview</a></li>
 <li><a href="../418619/index.html">React and SEO: how to make friends?</a></li>
+<li><a href="../41862/index.html">Improving the browser. Print version page</a></li>
 <li><a href="../418621/index.html">Why engineer soft skills</a></li>
-<li><a href="../418625/index.html">Andy Grove's Secret Call That Helped Apple Buy NeXT</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

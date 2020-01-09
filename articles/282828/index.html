@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>HDD is dedicated to: pacify the application, voracious on disk time</h1><div class="post__text post__text-html js-mediator-article"><h1>  Root of all evil </h1><br>  For a long time I had a problem - the system was very slow after the start.  I have a laptop with a hard disk (HDD) and <b>Ubuntu 14.04</b> . <br>  As it turned out, the reason lay in the program alone - the Dropbox daemon.  Dropbox is an online file storage, and its daemon is a program that synchronizes files located in a specific folder with online storage.  At the start, the daemon starts to read its cache.  It takes me not one hundred megabytes, and you should not delete it manually - there is a chance to lose data.  Considering that I have a hard disk — a device with mechanical parts — the demon started consuming the time to access it so much that it became unrealistic to use a computer and run applications until it was loaded.  Remove it from startup and run manually?  An unpleasant solution, I already have things that I have to start at the start myself (for example, iotop, it does not start without root privileges).  It was necessary to find a way to make the application less voracious <i>on the disk</i> . <br><a name="habracut"></a><br><h1>  ionice to help us.  Or not? </h1><br>  The first thing I heard about this topic was the <b>ionice</b> utility.  It allows you to change the priority of disk access for a given process.  According to the <a href="http://xgu.ru/wiki/man:ionice">manual</a> , there are three classes of I / O priority.  I was interested in <b>idle</b> , because, as I understood from the description, it neutralizes the gluttony of the application, always skipping forward processes of other priority classes.  It seemed to be a hat, and all that had to be done was: <blockquote>  ionice -c3 -p $ (pgrep dropbox) </blockquote><br>  Made by  The effect is zero.  How so?  Okay, dig further. <br><br><h1>  Schedulers, or “I didn't understand anything, but it sounds cool.” </h1><br>  As <a href="http://serverfault.com/a/602384/173515">it turned out</a> , the default ionice on my system does not function at all, since the <a href="https://en.wikipedia.org/wiki/CFQ">CFQ</a> scheduler must be enabled.  And by default, the <a href="https://en.wikipedia.org/wiki/Deadline_scheduler">deadline</a> scheduler is enabled in new Ubuntas.  I will not go into details of how they differ, for he himself did not drive to the end.  In general, I read a <a href="https://stackoverflow.com/questions/1009577/selecting-a-linux-i-o-scheduler">brief explanation of this case</a> , and then I change the scheduler with the team (or rather, I added this command to <i>/etc/rc.local</i> so that the GFQ scheduler would automatically be exposed at the start): <blockquote>  echo cfq&gt; / sys / block / sda / queue / scheduler </blockquote><br><div class="spoiler">  <b class="spoiler_title">The note</b> <div class="spoiler_text">  By the way, in the “comments” section of the <a href="http://xgu.ru/wiki/man:ionice">manual</a> , it is noted that support for classes and priorities works on CFQ.  <s>But since no one reads up to it anyway ... XD</s> <br></div></div><br>  Something in the system has slightly changed.  The load indicator at the start of the system began to rise above 11, and the processor load began to consist mostly of wait.  I'm not sure that this means everything in the long term, but the problem remains - switching to CFQ and the subsequent application of ionice to the dropbox process on system performance at the start did not produce any noticeable effect: neither positive nor negative. <br><br><h1>  Well, who launches so many threads ?!  About the specifics of the Dropbox daemon. </h1><br>  I was already disappointed, but then I noticed that only one dropbox process is shown in the <b>top</b> , and <b>iotop</b> shows several.  And by the way, why is the process ID column called PID in the top, and the TID in the iotop?  What is the difference between them?  <a href="http://stackoverflow.com/a/8787888/2052138">The answer quickly found</a> .  In my case, the most important discovery: the Dropbox daemon runs several threads for its business.  <b>Lots of</b> threads.  It turned out that more than a dozen.  And sometimes they start reading the disc several times at a time.  So where are these brakes!  And ionice did not work because, by assigning a priority class to the main process, it does not pass this priority class to the child threads.  Therefore, as they were with the standard priority class, they stayed with it. <br>  Well, as the British say, we will use <a href="https://www.youtube.com/watch%3Fv%3DlIFE7h3m40U">bodging</a> .  In our opinion, "crutches".  Make a script that will detect the dropbox process and all its child threads, take their identifiers (PID or TID, in this case, ionice is <s>isofull</s> <s>until the light bulb</s> <s>does</s> n’t make much difference), and assign idle class to everyone from time to time (in case dropbox kills part of child threads and / or creates new ones). <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/bash while true do #    TIDS=( $(ps -L --pid $(pgrep -x dropbox) -o tid=) ) for i in "${TIDS[@]}" do echo $i #  idle ionice -c3 -p $i done sleep 5 done</span></span></code> </pre> <br>  Add to autorun, reboot. <br>  And it all worked almost as if there was no Dropbox daemon at all.  Eureka! 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,23 +60,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <b>Results</b> <br>  Thus, you can work with any process that consumes a lot of disk time.  It is enough to set the priority with the help of ionice and not to forget about the pitfalls, in particular: <br><br><ul><li>  see if the process is running voracious child threads </li><li>  Keep in mind that on some systems the default I / O scheduler is not CFQ (which supports classes and priorities) </li></ul><br><br>  What other things to consider?  Tell us about your experience in the comments. </div><p>Source: <a href="https://habr.com/ru/post/282828/">https://habr.com/ru/post/282828/</a></p>
+      <b>Results</b> <br>  Thus, you can work with any process that consumes a lot of disk time.  It is enough to set the priority with the help of ionice and not to forget about the pitfalls, in particular: <br><br><ul><li>  see if the process is running voracious child threads </li><li>  Keep in mind that on some systems the default I / O scheduler is not CFQ (which supports classes and priorities) </li></ul><br><br>  What other things to consider?  Tell us about your experience in the comments. </div><p>Source: https://habr.com/ru/post/282828/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../282810/index.html">JPoint 2016 Java Conference Overview</a></li>
+<li><a href="../28282/index.html">Open Source Netgear Router</a></li>
 <li><a href="../282820/index.html">Google, along with Rackspace, is developing a new type of server on the IBM Power architecture for data centers</a></li>
 <li><a href="../282822/index.html">Failover cluster of Windows Server in Microsoft Azure. Data store</a></li>
 <li><a href="../282824/index.html">QA: Conference. Siberia</a></li>
 <li><a href="../282826/index.html">Notes with MBC Symposium: trying to figure out why deep learning works</a></li>
+<li><a href="../28283/index.html">WPF Datagrid by XcEEED</a></li>
 <li><a href="../282832/index.html">LinkedIn opens mega-data center in Singapore</a></li>
 <li><a href="../282836/index.html">The digest of interesting materials from the world of web development and IT for the last week №209 (April 25 - May 1, 2016)</a></li>
 <li><a href="../282838/index.html">What happened to google maps?</a></li>
 <li><a href="../282844/index.html">Entity “framework” for PHP from one class</a></li>
-<li><a href="../282846/index.html">Analysis of tasks with Google CTF 2016: Mobile</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

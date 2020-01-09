@@ -30,12 +30,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -57,7 +57,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Backup server</h1><div class="post__text post__text-html js-mediator-article"> This is often a task, but it is done quite simply! <br><br>  Let's start: <br><br>  <b>1) muscle backup</b> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -65,23 +65,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      For this there is a very good utility “mysqldump”, it is part of the muscle.  (if you use lampp then it is in “/ opt / lampp / bin / mysqldump”) <br><br>  In general, we fill in the console about the following: <br> <code>mysqldump –all-databases &gt; /mysql.12.12.2008.dump <br></code> <br><br>  This command will save all databases to the “mysql.12.12.12.2008.dump” file at the root!  actually write any convenient way!  If you are not root, you need to specify a login / password with <i>–user login –password password</i> <br><br>  Get ready, it can take a serious amount of time if the database is of a decent size. <br><br>  A chip may not work if there are errors in any of the databases ... <br><br>  By the way, you can approach the problem a little bit differently and don’t backup all the databases, but each separately, plus if there are errors in some of them, we will know which one is done like this: <br><a name="habracut"></a><br> <code>databases=”$(mysql -Bse 'show databases')” <br> <br> for db in $databases <br> do <br> mysqldump $db &gt; $db.sql <br> done <br></code> <br><br>  <b>2) backup files</b> <br><br>  It's all easier, just archive the files, like this: <br><br> <code>tar -czf some.tar.gz -C /home some <br></code> <br><br>  But again, it is much more convenient to pack the folder of each site into a separate archive, therefore: <br><br> <code>names=`dir /home` <br> for i in $names <br> do <br> tar -czf $i.tar.gz -C /home $i <br> done <br></code> <br><br>  <b>Well, in the end I got the following script:</b> <br> <code>#!/bin/bash <br> <br> date=`date +%d.%m.%Y_%H-%M` <br> <br> mkdir /home/BACKUPS/$date <br> mkdir /home/BACKUPS/$date/DB <br> mkdir /home/BACKUPS/$date/DATA <br> <br> databases=”$(mysql -Bse 'show databases')” <br> <br> for db in $databases <br> do <br> if [ "$db" != "" ]; <br> then <br> echo '——————' <br> echo 'START DUMPING “'$db'” DATABASE' <br> mysqldump $db &gt; /home/BACKUPS/$date/DB/$db.sql <br> echo 'DB “'$db'” WAS SUCCESSFULLY DUMPED' <br> fi <br> done <br> <br> names=`dir /home` <br> for name in $names <br> do <br> if [ "$name" != "BACKUPS" -a "$name" != "" ]; <br> then <br> echo '——————' <br> echo 'START ARCHIVE “'$name'” FOLDER' <br> tar -czf /home/BACKUPS/$date/DATA/$name.tar.gz -C /home $name <br> echo 'FOLDER “'$name'” WAS SUCCESSFULLY ARCHIVED' <br> fi <br> done <br></code> <br>  All databases and site files are backed up in / home / BACKUPS / current date and time / DB for dumps and / home / BACKUPS / current date and time / DATA for archives </div><p>Source: <a href="https://habr.com/ru/post/47191/">https://habr.com/ru/post/47191/</a></p>
+      For this there is a very good utility “mysqldump”, it is part of the muscle.  (if you use lampp then it is in “/ opt / lampp / bin / mysqldump”) <br><br>  In general, we fill in the console about the following: <br> <code>mysqldump –all-databases &gt; /mysql.12.12.2008.dump <br></code> <br><br>  This command will save all databases to the “mysql.12.12.12.2008.dump” file at the root!  actually write any convenient way!  If you are not root, you need to specify a login / password with <i>–user login –password password</i> <br><br>  Get ready, it can take a serious amount of time if the database is of a decent size. <br><br>  A chip may not work if there are errors in any of the databases ... <br><br>  By the way, you can approach the problem a little bit differently and don’t backup all the databases, but each separately, plus if there are errors in some of them, we will know which one is done like this: <br><a name="habracut"></a><br> <code>databases=”$(mysql -Bse 'show databases')” <br> <br> for db in $databases <br> do <br> mysqldump $db &gt; $db.sql <br> done <br></code> <br><br>  <b>2) backup files</b> <br><br>  It's all easier, just archive the files, like this: <br><br> <code>tar -czf some.tar.gz -C /home some <br></code> <br><br>  But again, it is much more convenient to pack the folder of each site into a separate archive, therefore: <br><br> <code>names=`dir /home` <br> for i in $names <br> do <br> tar -czf $i.tar.gz -C /home $i <br> done <br></code> <br><br>  <b>Well, in the end I got the following script:</b> <br> <code>#!/bin/bash <br> <br> date=`date +%d.%m.%Y_%H-%M` <br> <br> mkdir /home/BACKUPS/$date <br> mkdir /home/BACKUPS/$date/DB <br> mkdir /home/BACKUPS/$date/DATA <br> <br> databases=”$(mysql -Bse 'show databases')” <br> <br> for db in $databases <br> do <br> if [ "$db" != "" ]; <br> then <br> echo '——————' <br> echo 'START DUMPING “'$db'” DATABASE' <br> mysqldump $db &gt; /home/BACKUPS/$date/DB/$db.sql <br> echo 'DB “'$db'” WAS SUCCESSFULLY DUMPED' <br> fi <br> done <br> <br> names=`dir /home` <br> for name in $names <br> do <br> if [ "$name" != "BACKUPS" -a "$name" != "" ]; <br> then <br> echo '——————' <br> echo 'START ARCHIVE “'$name'” FOLDER' <br> tar -czf /home/BACKUPS/$date/DATA/$name.tar.gz -C /home $name <br> echo 'FOLDER “'$name'” WAS SUCCESSFULLY ARCHIVED' <br> fi <br> done <br></code> <br>  All databases and site files are backed up in / home / BACKUPS / current date and time / DB for dumps and / home / BACKUPS / current date and time / DATA for archives </div><p>Source: https://habr.com/ru/post/47191/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../47183/index.html">I will give Golden Telecom (ROL) payment cards for free in good hands</a></li>
 <li><a href="../47185/index.html">Broadcast Habrahabra on Twitter</a></li>
 <li><a href="../47186/index.html">Say for a poor bot</a></li>
 <li><a href="../47188/index.html">Best file manager?</a></li>
 <li><a href="../47189/index.html">Family Internet</a></li>
+<li><a href="../4719/index.html">Mark Shuttleworth, founder of Ubuntu Linux</a></li>
 <li><a href="../47195/index.html">Yandex.Tapki</a></li>
 <li><a href="../47198/index.html">PSP2 on the way?</a></li>
+<li><a href="../472/index.html">Few words about ICQ</a></li>
+<li><a href="../4720/index.html">Sun's press conference in the world of Second Life (2)</a></li>
 <li><a href="../47200/index.html">Inline Code Finder - a new Firefox extension for web developers.</a></li>
-<li><a href="../47201/index.html">Reality show “Startup for the week”</a></li>
-<li><a href="../47204/index.html">Fascinating hyphology</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

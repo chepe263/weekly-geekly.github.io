@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Forbidding to change browser settings</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/ca5/db6/401/ca5db64012d92276e19138e5573402a4.png"><br>  Yesterday at work, I needed to configure Firefox browsers on thin clients of our Internet account in such a way that users could not change some settings in the browser and surf the Internet bypassing the proxy.  Searching the Internet and further customization led me to write this article.  Here I will tell you how you can block some of the browser settings from changing users with playful handles. <br><a name="habracut"></a><br>  Create a <b>mozilla.txt</b> file with something like this: <br><br> <code>// <br> lockPref("browser.startup.homepage", "http://habrahabr.ru"); <br> lockPref("network.proxy.type", 1); <br> lockPref("network.proxy.http", "192.168.1.1"); <br> lockPref("network.proxy.http_port", 3128); <br> lockPref("network.proxy.no_proxies_on", "localhost, 127.0.0.1");</code> <br> <br>  The first line must be two slashes (//).  The names of the necessary parameters and their values ​​can be viewed by typing <b>about: config</b> in the browser.  For this example, I forbade users to change the settings of our proxy and home page. <br><br>  Now you need to shift all the characters of this file by 13 positions in the ASCII table and get the encrypted file mozilla.cfg. <br>  To do this, use the online service <a href="http://www.alain.knaff.lu/~aknaff/howto/MozillaCustomization/cgi/byteshf.cgi">Automatic Mozilla Configurator</a> . <br>  Under Windows, you can use the program <a href="http://home.comcast.net/~dabbink/dabbink/ByteShifter.htm">ByteShifter</a> , there is also a version under Linux, but it did not work for me.  It is better to create such a perl script: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>#!/usr/bin/perl <br> # Byteshifting program for mozilla's netscape.cfg files <br> # Old netscape 4.x uses a bytechift of 7 <br> # To decode: moz-byteshift.pl -s -7 &lt;netscape.cfg &gt;netscape.cfg.txt <br> # To encode: moz-byteshift.pl -s 7 &lt;netscape.cfg.txt &gt;netscape.cfg <br> # Mozilla uses a byteshift of 13 <br> # To decode: moz-byteshift.pl -s -13 &lt;mozilla.cfg &gt;mozilla.txt <br> # To encode: moz-byteshift.pl -s 13 &lt;mozilla.txt &gt;mozilla.cfg <br> <br> use strict; <br> use Getopt::Std; <br> use vars qw/$opt_s/; <br> getopts("s:"); <br> die "Missing shift\n" if (!defined $opt_s); <br> my $buffer; <br> while(1) { <br> my $n=sysread STDIN, $buffer, 1; <br> last if ($n eq 0); <br> my $byte = unpack("c", $buffer); <br> $byte += 512 + $opt_s; <br> $buffer = pack("c", $byte); <br> syswrite STDOUT, $buffer, 1; <br> }</code> <br> <br>  Save the file as <b>mozilla_byteshift.pl</b> , make it executable: <br> <code>$ chmod +x mozilla_byteshift.pl</code> <br> <br>  Put our <b>mozilla.txt</b> file in the folder with the script and execute it in the terminal: <br> <code>$ ./mozilla_byteshift.pl -s 13 &lt;mozilla.txt &gt;mozilla.cfg</code> <br> <br>  The resulting <b>mozilla.cfg</b> file should be put in the folder with the executable file Firefox: <br>  For Linux, usually: <b>/ usr / lib / firefox /</b> <br>  For Windows, usually: <b>C: \ Program Files \ Mozilla Firefox \</b> <br><br>  Now open the <b>./greprefs</b> subdirectory along this path and find the file <b>all.js there</b> .  Open this file in a text editor and add the following line to the end: <br> <code>pref("general.config.filename", "mozilla.cfg");</code> <br>  Save the changes. <br><br>  Launch Firefox and see: <br><img src="https://habrastorage.org/getpro/habr/post_images/f3a/684/9bb/f3a6849bb3b730a7135d29f56b1bca4a.png"><br><img src="http://img527.imageshack.us/img527/3650/screenshot2gh3dl7.png"><br>  All our forbidden settings are now unavailable for change! </div><p>Source: <a href="https://habr.com/ru/post/40098/">https://habr.com/ru/post/40098/</a></p>
+     <code>#!/usr/bin/perl <br> # Byteshifting program for mozilla's netscape.cfg files <br> # Old netscape 4.x uses a bytechift of 7 <br> # To decode: moz-byteshift.pl -s -7 &lt;netscape.cfg &gt;netscape.cfg.txt <br> # To encode: moz-byteshift.pl -s 7 &lt;netscape.cfg.txt &gt;netscape.cfg <br> # Mozilla uses a byteshift of 13 <br> # To decode: moz-byteshift.pl -s -13 &lt;mozilla.cfg &gt;mozilla.txt <br> # To encode: moz-byteshift.pl -s 13 &lt;mozilla.txt &gt;mozilla.cfg <br> <br> use strict; <br> use Getopt::Std; <br> use vars qw/$opt_s/; <br> getopts("s:"); <br> die "Missing shift\n" if (!defined $opt_s); <br> my $buffer; <br> while(1) { <br> my $n=sysread STDIN, $buffer, 1; <br> last if ($n eq 0); <br> my $byte = unpack("c", $buffer); <br> $byte += 512 + $opt_s; <br> $buffer = pack("c", $byte); <br> syswrite STDOUT, $buffer, 1; <br> }</code> <br> <br>  Save the file as <b>mozilla_byteshift.pl</b> , make it executable: <br> <code>$ chmod +x mozilla_byteshift.pl</code> <br> <br>  Put our <b>mozilla.txt</b> file in the folder with the script and execute it in the terminal: <br> <code>$ ./mozilla_byteshift.pl -s 13 &lt;mozilla.txt &gt;mozilla.cfg</code> <br> <br>  The resulting <b>mozilla.cfg</b> file should be put in the folder with the executable file Firefox: <br>  For Linux, usually: <b>/ usr / lib / firefox /</b> <br>  For Windows, usually: <b>C: \ Program Files \ Mozilla Firefox \</b> <br><br>  Now open the <b>./greprefs</b> subdirectory along this path and find the file <b>all.js there</b> .  Open this file in a text editor and add the following line to the end: <br> <code>pref("general.config.filename", "mozilla.cfg");</code> <br>  Save the changes. <br><br>  Launch Firefox and see: <br><img src="https://habrastorage.org/getpro/habr/post_images/f3a/684/9bb/f3a6849bb3b730a7135d29f56b1bca4a.png"><br><img src="http://img527.imageshack.us/img527/3650/screenshot2gh3dl7.png"><br>  All our forbidden settings are now unavailable for change! </div><p>Source: https://habr.com/ru/post/40098/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

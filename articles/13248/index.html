@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PHP: first introduction to the garbage collection</h1><div class="post__text post__text-html js-mediator-article">  I recently faced a small problem: the data from the session randomly disappeared during a simple session for more than 24 minutes (as it turned out later). <br><br>  Here is what the manual told me: <br><blockquote>  Overdue sessions are not actually destroyed immediately after 24 minutes.  Here's how it happens: at the beginning of each request that uses the session (due to a prior call of the <strong>session_start ()</strong> function or setting <strong>session / auto_start</strong> to <strong>on</strong> ), there is a 1% chance that the PHP interpreter will scan all the sessions on the server and remove any of the expired ones.  “1% of opportunity” for a computer program sounds completely unpredictable.  The way it is.  But such unpredictability improves overall performance.  An intensively working site, busy at the start of each request, searching for expired sessions to remove them, will use up too much server resources. </blockquote><br>  This explains the “randomness” of the data being deleted. <br>  But how to solve this problem, since in my project idle time can easily be more than 24 minutes. <br><a name="habracut"></a><br>  Again, refer to the manual: <br><blockquote>  The <strong>session.gc_maxlifetime</strong> configuration directive controls the setting of the maximum idle time between requests, during which session activity is maintained.  Its default value is 1440 - just as many seconds in 24 minutes.  It is possible to change the value of <strong>session.gc_maxlifetime</strong> either by setting the server configuration, or by calling the <strong>ini_set ()</strong> function directly from the program.  The call to this function must take place before the call to the <strong>session_start ()</strong> function. </blockquote><br>  Ok, now everything is clear with this, but I still want to learn more about this unfortunate 1% probability.  Is it possible to somehow change this value if the project requires different logic regarding the session data? <br><blockquote>  Do not rely on the 1% probability if you wish to delete an overdue session for sure.  The configuration directive <strong>session.gc_probability</strong> sets the percentage of the probability of launching the subroutine “delete obsolete sessions” at the beginning of processing a request.  To start this process at the beginning of processing each request, the directive value is set to 100. Also, as in the case of <strong>session.gc_maxlifetime</strong> , the call to <strong>ini_set ()</strong> to change the value of <strong>session.gc_probability</strong> must occur before the call to the <strong>session_start ()</strong> function. </blockquote><br>  But, we remember that if you set the probability value to 100, then each request will be searched for outdated sessions, which can greatly affect the speed and bend the server. <br><br>  In my case, I only need to increase the idle time before deleting these sessions, so that the data I need is not erased.  Perhaps, if in your project you need to work more strictly with session data, you will have to find the perfect balance between probability values ​​and downtime. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I hope this information will be useful for someone ... <br><br>  Link to the manual mentioned above: <a href="http://physics.grsu.by/seti/doc/PHP/PHP5/g8_4.html">physics.grsu.by/seti/doc/PHP/PHP5/g8_4.html</a> <br><br><h2>  UPDATE </h2>  From myself I would like to add more about the <strong>session.gc_divisor</strong> directive, which was not considered in this manual.  By default, it is equal to 100, and it turns out that the value of <strong>session.gc_probability</strong> really coincides with% probability.  In fact, the probability is calculated as: <strong>gc_probability / gc_divisor</strong> .  Those.  at values: <blockquote>  gc_probability = 1 <br>  gc_divisor = 1000 </blockquote>  The probability is already <strong>not 1%, but 0.1%</strong> . <br><br>  It should be noted that most hosting providers in Russia (in order to reduce the load on their servers) put this ratio: 1/1000, which gives a very small chance that after 24 minutes (by default), the data will still be deleted.  Take note if you need to configure your application to work harder with these sessions. </div><p>Source: <a href="https://habr.com/ru/post/13248/">https://habr.com/ru/post/13248/</a></p>
+      I hope this information will be useful for someone ... <br><br>  Link to the manual mentioned above: <a href="http://physics.grsu.by/seti/doc/PHP/PHP5/g8_4.html">physics.grsu.by/seti/doc/PHP/PHP5/g8_4.html</a> <br><br><h2>  UPDATE </h2>  From myself I would like to add more about the <strong>session.gc_divisor</strong> directive, which was not considered in this manual.  By default, it is equal to 100, and it turns out that the value of <strong>session.gc_probability</strong> really coincides with% probability.  In fact, the probability is calculated as: <strong>gc_probability / gc_divisor</strong> .  Those.  at values: <blockquote>  gc_probability = 1 <br>  gc_divisor = 1000 </blockquote>  The probability is already <strong>not 1%, but 0.1%</strong> . <br><br>  It should be noted that most hosting providers in Russia (in order to reduce the load on their servers) put this ratio: 1/1000, which gives a very small chance that after 24 minutes (by default), the data will still be deleted.  Take note if you need to configure your application to work harder with these sessions. </div><p>Source: https://habr.com/ru/post/13248/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

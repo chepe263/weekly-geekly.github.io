@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Patch from Meltdown led to a more critical vulnerability Windows 7x64 / 2008R2</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/webt/dx/lg/fp/dxlgfpeogux1r0olo9rj9c_ycrg.jpeg"><br><br>  The patch closing the Meltdown vulnerability has led to a more critical vulnerability of Windows 7X64 and Windows 2008R2.  Vulnerabilities are affected by systems updated with patches 2018-01 or 2018-02.  Vulnerabilities are not affected by systems that have not been patched since December 2017, or if they have a cumulative patch 2018-03 installed. <br><a name="habracut"></a><br>  The Microsoft Meltdown patch has opened an even bigger security hole in Windows 7/2008, allowing any user application to read content from the operating system kernel and even write data to the kernel memory. <br><br>  Swedish IT security expert Ulf Frisk discovered this vulnerability while working on a <a href="https://github.com/ufrisk/pcileech">PCILeech</a> device designed for Direct Memory Access (DMA) attacks and an operating system protected memory dump. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img src="https://habrastorage.org/getpro/habr/post_images/deb/d88/d6a/debd88d6abe7ac8ba234d01fd73c1aea.png" alt="image"><br><br>  According to the expert, the Meltdown fix from Microsoft (for CVE-2017-5754), accidentally turned the bit, which controls access rights to the kernel memory. <br><br>  The user / kernel rights bit was set to the user in PML4 (a fourth-level page map).  This made the page tables accessible to the user mode code in each process.  In normal mode, page tables should be accessible only to the kernel itself.  In Windows 7, the state of PML4 is fixed at position 0x1ED, the offset is 0xF68 (in Windows 10, this value is random).  This means that PML4 will always be displayed at: 0xFFFFF6FB7DBED000 in virtual memory. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/6ce/848/74e/6ce84874e3045db0d62e781c84819c0e.png" alt="image"><br><br>  The value in PML4e 0x0000000062100867 (from the example above) indicates that bits 0, 1, 2 are set, which means that it is available for reading and writing. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/67c/952/6aa/67c9526aa7e7b21929eb39b5386c671b.png" alt="image"><br><br>  PML4 is the base of a 4-level hierarchy of page tables in memory used by the processor’s memory management module (MMU) to convert virtual process addresses to physical memory addresses in RAM. <br><br>  This issue only affected 64-bit versions of Windows 7 and Windows Server 2008 R2.  Microsoft fixed the error by redefining the PML4 enable bit back to its original value in patch 2018-3. <br><br>  To test your system, you can use the <a href="https://github.com/ufrisk/pcileech">pcileech</a> utility, unloading memory into a file: <br><br><pre><code class="bash hljs">pcileech.exe dump -out memorydump.raw -device totalmeltdown -v -force</code> </pre> <br>  For convenience, you can use <a href="https://github.com/dokan-dev/dokany/releases">Dokany,</a> - mount running processes and virtual kernel memory as files and folders.  To mount processes, run the following command: <br><br><pre> <code class="bash hljs">pcileech.exe mount -device totalmeltdown</code> </pre> <br><br><img src="https://habrastorage.org/getpro/habr/post_images/9f3/983/170/9f3983170d5b7b42061f284337457be1.png" alt="image"><br><br><hr><br>  <b>UPD:</b> <a href="https://news.ycombinator.com/item%3Fid%3D16693599">PoC exploit</a> to check for vulnerabilities. </div><p>Source: <a href="https://habr.com/ru/post/352180/">https://habr.com/ru/post/352180/</a></p>
+    <img src="https://habrastorage.org/getpro/habr/post_images/deb/d88/d6a/debd88d6abe7ac8ba234d01fd73c1aea.png" alt="image"><br><br>  According to the expert, the Meltdown fix from Microsoft (for CVE-2017-5754), accidentally turned the bit, which controls access rights to the kernel memory. <br><br>  The user / kernel rights bit was set to the user in PML4 (a fourth-level page map).  This made the page tables accessible to the user mode code in each process.  In normal mode, page tables should be accessible only to the kernel itself.  In Windows 7, the state of PML4 is fixed at position 0x1ED, the offset is 0xF68 (in Windows 10, this value is random).  This means that PML4 will always be displayed at: 0xFFFFF6FB7DBED000 in virtual memory. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/6ce/848/74e/6ce84874e3045db0d62e781c84819c0e.png" alt="image"><br><br>  The value in PML4e 0x0000000062100867 (from the example above) indicates that bits 0, 1, 2 are set, which means that it is available for reading and writing. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/67c/952/6aa/67c9526aa7e7b21929eb39b5386c671b.png" alt="image"><br><br>  PML4 is the base of a 4-level hierarchy of page tables in memory used by the processor’s memory management module (MMU) to convert virtual process addresses to physical memory addresses in RAM. <br><br>  This issue only affected 64-bit versions of Windows 7 and Windows Server 2008 R2.  Microsoft fixed the error by redefining the PML4 enable bit back to its original value in patch 2018-3. <br><br>  To test your system, you can use the <a href="https://github.com/ufrisk/pcileech">pcileech</a> utility, unloading memory into a file: <br><br><pre><code class="bash hljs">pcileech.exe dump -out memorydump.raw -device totalmeltdown -v -force</code> </pre> <br>  For convenience, you can use <a href="https://github.com/dokan-dev/dokany/releases">Dokany,</a> - mount running processes and virtual kernel memory as files and folders.  To mount processes, run the following command: <br><br><pre> <code class="bash hljs">pcileech.exe mount -device totalmeltdown</code> </pre> <br><br><img src="https://habrastorage.org/getpro/habr/post_images/9f3/983/170/9f3983170d5b7b42061f284337457be1.png" alt="image"><br><br><hr><br>  <b>UPD:</b> <a href="https://news.ycombinator.com/item%3Fid%3D16693599">PoC exploit</a> to check for vulnerabilities. </div><p>Source: https://habr.com/ru/post/352180/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../352170/index.html">OpenStreetMap News Digest</a></li>
 <li><a href="../352172/index.html">Link Building for Bing - Unlike Google and Important Nuances</a></li>
 <li><a href="../352174/index.html">FPGA accelerators go to the clouds</a></li>
 <li><a href="../352176/index.html">When the actor framework turns into a “black box” and what can we do about it?</a></li>
 <li><a href="../352178/index.html">All according to GOST. Information security when using virtualization technologies</a></li>
+<li><a href="../35218/index.html">Who should write JS code while working on a project?</a></li>
 <li><a href="../352182/index.html">Validation of email addresses to protect against spam bots on the site</a></li>
 <li><a href="../352184/index.html">From the installation of AWX to the launch of the first playbook - setting up centralized control Ansible</a></li>
 <li><a href="../352186/index.html">Cache problems and solutions</a></li>
 <li><a href="../352188/index.html">Camel in questions and answers</a></li>
-<li><a href="../352190/index.html">Divide and conquer: demarcation of access to the records of conversations</a></li>
+<li><a href="../35219/index.html">And how much do you relax in the New Year holidays?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

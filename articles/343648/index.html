@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The battlefield is augmented reality. Part II: how to recognize the object and show the 3D model</h1><div class="post__text post__text-html js-mediator-article">  In the previous article we learned the basics of the process.  Now you can begin to consider the case.  If you missed the beginning - it does not matter, click on the <a href="https://habrahabr.ru/post/342950/">link</a> and catch up. <br><br>  Case is taken from real life, so it is important to say about the conditions that the customer has set before us.  Individually, these conditions do not seem so impossible, but together they complicate the task. <br><br><ul><li>  Tasks must be performed within a single multiplatform solution.  (iOS / Android). </li><li>  Images and objects for recognition can be changed with one click. </li><li>  3D models and animation should be loaded simply without dancing with vertices and polygons. </li><li>  3D models must respond to a click. </li></ul><br><h3>  We divided the work process into the following steps: </h3><br><ul><li>  Recognize an image or object.  After recognition on this place to display the model with a 3D object. </li><li>  Display a 3D object on the screen, similar to “pokemon go”, without being tied to a specific place.  When clicked, the animation is played. </li><li>  Show a 3D object at the given coordinates as a POI (point of interest). </li></ul><br>  Let's analyze the first part, namely, learn to recognize the image and display in its place a 3D object. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <a name="habracut"></a><h2>  Platform Selection </h2><br>  While working on the case, I went into the ARKit beta and we managed to dig a little in it.  This is quite a powerful tool, but even such a cool SDK like ARKit does not have an object recognition system.  It contains the so-called "plane detection" - it recognizes the floor or another horizontal plane. <br><br>  If you prefer, you can use ARKit as the basis for solving the task, but we need to add OpenCV here for object recognition, and most likely Unity, for loading GUI components.  The funny thing is that go and find a multiplatform solution that can recognize the floor, because even ARKit is not doing so well with it. <br><br>  It became clear to us that the native solution is not suitable due to the complexity and diversity of the case.  The solution would be to break the project into two parts and do everything for each platform. <br>  There was still a whole breakthrough ahead of us and I wanted to reduce the amount of our work so that the framework for working with add.  made all the dirty work for us. <br><br>  Knowing how much work the project ultimately resulted in, I’ll say that I don’t regret it one iota about the chosen solution. <br><br><cut></cut><h2>  What we worked with </h2><br>  There are a lot of technologies for AR, we stopped at the Wikitude SDK and SLAM. <br><br>  Why?  Everything is very simple: <br><br>  SLAM (simultaneous localization &amp; mapping), in contrast to the marker-based, allows you not to bind the displayed 3D object to a specific image.  These two distinct approaches influence the position of the object’s coordinates relative to the world.  Also, before starting work, I recommend to get acquainted with the Wikitude SDK framework on the <a href="https://www.wikitude.com/">official website</a> . <br><br>  Table comparing frameworks for working with AR: <br><img src="https://habrastorage.org/getpro/habr/post_images/97b/38a/6dd/97b38a6dd6ff5b7606f9f16ceb888fae.png" alt="image"><br><br><h3>  Implementation </h3><br>  Even the simplest explanations always take a lot of time, so further only the code and strictly on implementation. <br><br>  First of all, I highly recommend reading the <a href="http://www.wikitude.com/external/doc/documentation/latest/ios/">documentation</a> . <br><br>  We have a multiplatform solution, so we use JS.  You can take as a basis a finished application with examples, the whole basis for calling modules with JS code has been prepared there. <br><br>  The example has already added the Examples.plist file.  Let's take a look inside, edit for our needs and find out what it is for: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/3a2/c0f/951/3a2c0f95187bc9b044acefb662ebbb92.png" alt="image"><br><br>  Accordingly, we will get a folder with a module under JS with the same path: <br><br><img src="https://habrastorage.org/getpro/habr/post_images/d45/aba/1aa/d45aba1aa796ce51d098d7b4bb6a6d08.png" alt="image"><br><br><cut></cut><h3>  We get the key </h3><br>  In addition to start you should get a key and use it in the code.  Without a key will work, but on the whole screen there will be an inscription "trial". <br><br><div class="oembed"><script type="text/javascript" src="https://gist.github.com/ed59b4150c368ffdfe18578fefaaaae5.js"></script><link rel="stylesheet" href="https://github.githubassets.com/assets/gist-embed-b3b573358bfc66d89e1e95dbf8319c09.css"><div id="gist83505206" class="gist">
@@ -437,7 +437,7 @@
       </div>
     </div>
 </div>
-</div><br><br>  And that's all about recognition.  Now when you hover on the image machine appears. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/7b7/ee0/e66/7b7ee0e660f8d9ec11776662915dfd53.png" alt="image"><br><br>  In this case, we cheated a little bit and used the 3D model already loaded into the project. <br><br>  And that's all for today.  Next time we will examine in more detail the loading of 3D models and animations for them, and also consider how to bind an object to a point of interest and show the model using the SLAM technology. <br><br>  See you again! <br><br><img src="https://habrastorage.org/getpro/habr/post_images/8a8/005/b3d/8a8005b3d6a6e0a1f823e0829aed26df.jpg" alt="image"></div><p>Source: <a href="https://habr.com/ru/post/343648/">https://habr.com/ru/post/343648/</a></p>
+</div><br><br>  And that's all about recognition.  Now when you hover on the image machine appears. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/7b7/ee0/e66/7b7ee0e660f8d9ec11776662915dfd53.png" alt="image"><br><br>  In this case, we cheated a little bit and used the 3D model already loaded into the project. <br><br>  And that's all for today.  Next time we will examine in more detail the loading of 3D models and animations for them, and also consider how to bind an object to a point of interest and show the model using the SLAM technology. <br><br>  See you again! <br><br><img src="https://habrastorage.org/getpro/habr/post_images/8a8/005/b3d/8a8005b3d6a6e0a1f823e0829aed26df.jpg" alt="image"></div><p>Source: https://habr.com/ru/post/343648/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

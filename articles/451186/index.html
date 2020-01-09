@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -62,7 +62,7 @@
  |  node2 |  myres |  data |  0 |  1084 |  / dev / drbd1084 |  52 KiB |  Unused |  UpToDate |
  + ------------------------------------------------- -------------------------------------------------- --- + </pre><br><p>  Fine!  - we see that the resource was created on the first two nodes, we can also try to create a diskless resource on the third: </p><br><pre> <code class="bash hljs">linstor resource create --diskless node3 myres</code> </pre> <br><p>  On the nodes, you will always find this device as <code>/dev/drbd1084</code> or <code>/dev/drbd/by-res/myres/0</code> </p><br><p>  This is how Linstor works, you can get more information from the <a href="https://docs.linbit.com/docs/users-guide-9.0/">official documentation</a> . </p><br><p>  Now I will talk about how to integrate it with OpenNebula </p><br><h2 id="nastroyka-opennebula">  Configuring OpenNebula </h2><br><p>  I will not go deep into the process of setting up OpenNebula, because  All steps are described in detail in the <a href="https://docs.opennebula.org/stable/deployment/opennebula_installation/index.html">official documentation</a> , to which I recommend you to refer, I will tell only about the integration of OpenNebula with Linstor. </p><br><h5 id="linstor_un">  linstor_un </h5><br><p>  To solve this problem, I wrote my own driver - <a href="https://github.com/OpenNebula/addon-linstor_un">linstor_un</a> , at the moment it is available as a plugin and must be installed separately. </p><br><p>  The entire installation is done on the frontend OpenNebula nodes, and does not require additional actions on the compute nodes. </p><br><p>  First we need to make sure that we have <strong>jq</strong> and <strong>linstor-client</strong> : </p><br><pre> <code class="plaintext hljs">apt-get install jq linstor-client</code> </pre> <br><p>  The <code>linstor node list</code> command should list the nodes.  All OpenNebula compute nodes must be added to the Linstor cluster. </p><br><p>  Download and install the plugin: </p><br><pre> <code class="bash hljs">curl -L https://github.com/OpenNebula/addon-linstor_un/archive/master.tar.gz | tar -xzvf - -C /tmp mv /tmp/addon-linstor_un-master/vmm/kvm/* /var/lib/one/remotes/vmm/kvm/ mkdir -p /var/lib/one/remotes/etc/datastore/linstor_un mv /tmp/addon-linstor_un-master/datastore/linstor_un/linstor_un.conf /var/lib/one/remotes/etc/datastore/linstor_un/linstor_un.conf mv /tmp/addon-linstor_un-master/datastore/linstor_un /var/lib/one/remotes/datastore/linstor_un mv /tmp/addon-linstor_un-master/tm/linstor_un /var/lib/one/remotes/tm/linstor_un rm -rf /tmp/addon-linstor_un-master</code> </pre> <br><p>  Now we need to add it to the OpenNebula config, for this we perform the simple steps described <strong><a href="https://github.com/OpenNebula/addon-linstor_un">here</a></strong> . </p><br><p>  Then restart OpenNebula: </p><br><pre> <code class="bash hljs">systemctl restart opennebula</code> </pre> <br><p>  And add our datastores, system: </p><br><pre> <code class="bash hljs">cat &gt; system-ds.conf &lt;&lt;EOT NAME=<span class="hljs-string"><span class="hljs-string">"linstor-system"</span></span> TYPE=<span class="hljs-string"><span class="hljs-string">"SYSTEM_DS"</span></span> STORAGE_POOL=<span class="hljs-string"><span class="hljs-string">"data"</span></span> AUTO_PLACE=<span class="hljs-string"><span class="hljs-string">"2"</span></span> CLONE_MODE=<span class="hljs-string"><span class="hljs-string">"snapshot"</span></span> CHECKPOINT_AUTO_PLACE=<span class="hljs-string"><span class="hljs-string">"1"</span></span> BRIDGE_LIST=<span class="hljs-string"><span class="hljs-string">"node1 node2 node3"</span></span> TM_MAD=<span class="hljs-string"><span class="hljs-string">"linstor_un"</span></span> EOT onedatastore create system-ds.conf</code> </pre> <br><p>  And the image repository: </p><br><pre> <code class="bash hljs">cat &gt; images-ds.conf &lt;&lt;EOT NAME=<span class="hljs-string"><span class="hljs-string">"linstor-images"</span></span> TYPE=<span class="hljs-string"><span class="hljs-string">"IMAGE_DS"</span></span> STORAGE_POOL=<span class="hljs-string"><span class="hljs-string">"data"</span></span> AUTO_PLACE=<span class="hljs-string"><span class="hljs-string">"2"</span></span> BRIDGE_LIST=<span class="hljs-string"><span class="hljs-string">"node1 node2 node3"</span></span> DISK_TYPE=<span class="hljs-string"><span class="hljs-string">"BLOCK"</span></span> DS_MAD=<span class="hljs-string"><span class="hljs-string">"linstor_un"</span></span> TM_MAD=<span class="hljs-string"><span class="hljs-string">"linstor_un"</span></span> EOT onedatastore create images-ds.conf</code> </pre> <br><ul><li>  The <code>AUTO_PLACE</code> parameter displays the number of data points that will be created for each new image in OpenNebula. </li><li>  The <code>CLONE_MODE</code> parameter specifies exactly how the images will be cloned when creating new virtual machines, <code>snapshot</code> will create a snapshot of the image and deploy a virtual machine from snapshot, <code>copy</code> will make a full copy of the image for each virtual machine. </li><li>  In <code>BRIDGE_LIST</code> it is recommended to specify all nodes that will be used to perform image cloning operations. </li></ul><br><p>  A complete list of supported parameters is provided in the project's <a href="https://github.com/OpenNebula/addon-linstor_un">README</a> . </p><br><p>  This completes the configuration, now you can download any appliance from the official <a href="https://marketplace.opennebula.systems/appliance">OpenNebula Marketplace</a> and create virtual machines from it. </p><br><p>  <a href="https://github.com/OpenNebula/addon-linstor_un">Link to the project</a> </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -70,23 +70,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/451186/">https://habr.com/ru/post/451186/</a></p>
+    <p>Source: https://habr.com/ru/post/451186/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../451166/index.html">What will the new storages for AI and MO systems offer?</a></li>
-<li><a href="../451170/index.html">Jeff Bezos announced plans to conquer the moon</a></li>
-<li><a href="../451174/index.html">Adaptation programs for the ZX Spectrum to TR-DOS with modern tools. Part 1</a></li>
 <li><a href="../451176/index.html">News from the world of OpenStreetMap №458 (04/23/2019-29.04.2019)</a></li>
 <li><a href="../451178/index.html">Accident when testing the Crew Dragon parachute landing system</a></li>
+<li><a href="../451180/index.html">PCB replaces two linear motors</a></li>
+<li><a href="../451182/index.html">How the dimensions of C arrays became part of the library's binary interface</a></li>
+<li><a href="../451184/index.html">Blue Origin Blue Origin Project: People on the Moon by 2024</a></li>
+<li><a href="../451188/index.html">Sberbank or round trip</a></li>
 <li><a href="../451196/index.html">Separation of customer profiles and freelancer</a></li>
 <li><a href="../4512/index.html">Google is interested in weddings</a></li>
 <li><a href="../451204/index.html">Free text editors for collaboration</a></li>
 <li><a href="../451206/index.html">What is happening with RDF repositories?</a></li>
-<li><a href="../451208/index.html">"Topological" sorting graph with cycles</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>HTML5 canvas karaoke</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/c21/568/a32/c21568a32e1b42ae820c54cdc48ba308.png"><br><br>  I decided to try to make a web-karaoke, but that the text was beautifully displayed - not literally, but smoothly.  The solution was simpler than I thought. <br><a name="habracut"></a><br>  The literal version is quite simple - just get by with CSS, see the <a href="http://jsfiddle.net/and7ey/qojmrwfc/">example on JSFiddle</a> . <br><br>  A more beautiful option is to use canvas and text coloring using the gradient style: <br><pre><code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> gradient = ctx.createLinearGradient(<span class="hljs-number"><span class="hljs-number">0</span></span>, <span class="hljs-number"><span class="hljs-number">0</span></span>, <span class="hljs-number"><span class="hljs-number">30</span></span>, <span class="hljs-number"><span class="hljs-number">0</span></span>); gradient.addColorStop(<span class="hljs-number"><span class="hljs-number">0.00</span></span>, <span class="hljs-string"><span class="hljs-string">'yellow'</span></span>); gradient.addColorStop(<span class="hljs-number"><span class="hljs-number">0.01</span></span>, <span class="hljs-string"><span class="hljs-string">'black'</span></span>); gradient.addColorStop(<span class="hljs-number"><span class="hljs-number">1.00</span></span>, <span class="hljs-string"><span class="hljs-string">'black'</span></span>); ctx.fillStyle = gradient;</code> </pre> <br>  <a href="http://www.w3schools.com/tags/canvas_createlineargradient.asp">The gradient</a> itself (as a transition from one color to another - see below figure on the left) is not needed to display karaoke, because an additional point is used - 0.01, so that the main part of the “gradient” (0.01-1.00) remains black and a small part ( 0.00-1.00) - yellow (see the figure below on the right): <br><img src="https://habrastorage.org/files/02b/754/8a0/02b7548a01494dbdbf1236c32fbaae02.png" width="682"><br>  (alternatively, set a small value for the third parameter - x1 (gradient ends) - in <i>createLinearGradient</i> ). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      However, if you just draw the text: <br><pre> <code class="javascript hljs">ctx.fillText(text, <span class="hljs-number"><span class="hljs-number">0</span></span>, <span class="hljs-number"><span class="hljs-number">0</span></span>);</code> </pre><br>  then it will be displayed in only one color - black: <br><img src="https://habrastorage.org/files/0e6/fea/b75/0e6feab754f04acd82c68b3fb75ed426.png" width="682"><br><br>  The fact is that the gradient is applied relative to the origin of the coordinate system.  In the figure above, point <i>0</i> along the <i>x</i> axis is indicated by a black vertical line (shifted along the x axis to the middle of the canvas using the <a href="http://www.w3schools.com/tags/canvas_translate.asp">translate</a> method).  To apply a gradient, it is enough to draw text with an offset.  The part that will be to the left of the origin of coordinates along the <i>x</i> axis will be colored yellow, and the one that to the right will be black: <br><pre> <code class="javascript hljs">ctx.fillText(text, <span class="hljs-number"><span class="hljs-number">-190</span></span>, <span class="hljs-number"><span class="hljs-number">0</span></span>);</code> </pre><br><img src="https://habrastorage.org/files/c47/441/ca9/c47441ca947e4d8183aa00027e58d7e1.png" width="682"><br><br>  To display karaoke, it is now enough to just shift the origin of the coordinate system along the <i>x</i> axis (for example, in a loop, by one pixel) - the text will gradually turn yellow.  You can <a href="http://jsfiddle.net/and7ey/f6cez802/">try JSFiddle</a> (the grid and design are taken from <a href="http://habrahabr.ru/post/104718/">this</a> article). You can <a href="http://jsfiddle.net/and7ey/f6cez802/">try</a> text coloring with offset of the text position (without offset of the origin).  In the final project, you can see what happened <a href="http://vkkar.ru/">here</a> (you need a VK account). </div><p>Source: <a href="https://habr.com/ru/post/248783/">https://habr.com/ru/post/248783/</a></p>
+      However, if you just draw the text: <br><pre> <code class="javascript hljs">ctx.fillText(text, <span class="hljs-number"><span class="hljs-number">0</span></span>, <span class="hljs-number"><span class="hljs-number">0</span></span>);</code> </pre><br>  then it will be displayed in only one color - black: <br><img src="https://habrastorage.org/files/0e6/fea/b75/0e6feab754f04acd82c68b3fb75ed426.png" width="682"><br><br>  The fact is that the gradient is applied relative to the origin of the coordinate system.  In the figure above, point <i>0</i> along the <i>x</i> axis is indicated by a black vertical line (shifted along the x axis to the middle of the canvas using the <a href="http://www.w3schools.com/tags/canvas_translate.asp">translate</a> method).  To apply a gradient, it is enough to draw text with an offset.  The part that will be to the left of the origin of coordinates along the <i>x</i> axis will be colored yellow, and the one that to the right will be black: <br><pre> <code class="javascript hljs">ctx.fillText(text, <span class="hljs-number"><span class="hljs-number">-190</span></span>, <span class="hljs-number"><span class="hljs-number">0</span></span>);</code> </pre><br><img src="https://habrastorage.org/files/c47/441/ca9/c47441ca947e4d8183aa00027e58d7e1.png" width="682"><br><br>  To display karaoke, it is now enough to just shift the origin of the coordinate system along the <i>x</i> axis (for example, in a loop, by one pixel) - the text will gradually turn yellow.  You can <a href="http://jsfiddle.net/and7ey/f6cez802/">try JSFiddle</a> (the grid and design are taken from <a href="http://habrahabr.ru/post/104718/">this</a> article). You can <a href="http://jsfiddle.net/and7ey/f6cez802/">try</a> text coloring with offset of the text position (without offset of the origin).  In the final project, you can see what happened <a href="http://vkkar.ru/">here</a> (you need a VK account). </div><p>Source: https://habr.com/ru/post/248783/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../248767/index.html">The digest of interesting materials for the mobile developer # 87 (on January 19-25)</a></li>
-<li><a href="../248769/index.html">Wordpress</a></li>
+<li><a href="../24877/index.html">Rss-icons for distribution | The continuation of the action</a></li>
 <li><a href="../248775/index.html">Age of JIT compiling. Part I. Genesis</a></li>
 <li><a href="../248777/index.html">Patent Wars. Episode 1. Hidden threat</a></li>
 <li><a href="../248779/index.html">When data is really a lot: Vowpal Wabbit</a></li>
+<li><a href="../24878/index.html">Alisher Usmanov Launches ProNovosti Video Portal</a></li>
 <li><a href="../248785/index.html">Fundamentals of graphics programming on Apple Metal: Getting started</a></li>
 <li><a href="../248787/index.html">WRL and BindableAttribute</a></li>
 <li><a href="../248789/index.html">Developer Stories: Microblink PhotoMath</a></li>
+<li><a href="../24879/index.html">Net keyboard and mouse</a></li>
 <li><a href="../248793/index.html">Review of the most interesting materials on data analysis and machine learning №32 (January 19 - 25, 2015)</a></li>
-<li><a href="../248797/index.html">When ID is not ID or Mongolian vowel separator attacks</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

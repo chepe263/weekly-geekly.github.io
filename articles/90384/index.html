@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>HTML 5 in Internet Explorer</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/178/048/909/178048909aba488b53ccc4d469d4be70.jpg" alt="image"><br><br>  <b>In short:</b> how to get new tags from HTML 5 to work in Internet Explorer. <br><br>  Any web developer looking at HTML 5 is crying with happiness, which finally came to our house.  For most functions (such as WebGL, multithreading and web sockets), you will have to wait for support from browsers (and in the most correct these possibilities already exist), but we can use new convenient tags now. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       However, Internet Explorer (even the latest, 8th version) has managed to stumble over here - it simply does not notice new tags outside of HTML 4 - you cannot hang styles on them. <br><br>  There are even two problems in IE - you need to separately include support for HTML 5 tags in a regular document, and separately in content that is added dynamically (for example, via AJAX). <br><a name="habracut"></a><br><h4>  Benefits </h4><br>  Why use new tags: <br><ul><li> <b>A short DOCTYPE</b> - finally, the HTML document template will not need to be copied, but you can just drive in from memory: <code>&lt;!DOCTYPE html&gt;</code> </li><li>  <b>In short, the record</b> - instead of <code>&lt;div class="header"&gt;</code> you can simply write <code>&lt;header&gt;</code> . </li><li>  <b>More semantics</b> - search engines and browsers will know where the menu ( <code>&lt;nav&gt;</code> ) is, and where the content of the page itself ( <code>&lt;article&gt;</code> ) is and when it has been updated ( <code>&lt;time pubdate datetime="…"&gt;</code> ). </li></ul><br><h4>  New HTML 5 tags </h4><br>  Which tags with a new meaning can be used without expecting support from the browser: <br><ul><li>  <code>&lt;header&gt;</code> is a block with navigation or introduction.  For example, the top of the site. </li><li>  <code>&lt;nav&gt;</code> - navigation.  For example, the site menu. </li><li>  <code>&lt;aside&gt;</code> is secondary information that is often placed in side panels. </li><li>  <code>&lt;article&gt;</code> is an independent piece of content.  For example, the text of the article or a separate comment. </li><li>  <code>&lt;section&gt;</code> - the document section. </li><li>  <code>&lt;footer&gt;</code> - “basement”, where copyright is often written, etc. </li><li>  <code>&lt;figure&gt;</code> - caption to the picture or video. </li><li>  <code>&lt;hgroup&gt;</code> is a header block, for example, when a heading consists of a main heading and a subtitle. </li><li>  <code>&lt;mark&gt;</code> - the selection of a word, for example, matching the search query. </li><li>  <code>&lt;output&gt;</code> - output of the program or the results of calculations. </li><li>  <code>&lt;time datetime="…" pubdate&gt;</code> - time.  The <code>datetime</code> specified in a format that is convenient for the machine.  If the pubdate property is set (SGML enemies can write <code>pubdate="pubdate"</code> ), then the specified time is the time the document was created or the nearest <code>&lt;article&gt;</code> . </li></ul><br>  HTML 5 adds many more properties, <code>rel</code> values, and <code>&lt;input&gt;</code> types that can be used today, but this is better read <a href="http://www.w3.org/TR/html5-diff/">on the W3C website</a> or in other articles. <br><br><h4>  IE as a problem </h4><br>  It is difficult to say whether this is a problem or a feature of Internet Explorer, but he simply does not notice tags that he does not know.  Of course, we can say that they violate the HTML 4 standard, which is supported in IE, but nevertheless, there are problems - even in the most recent version of IE, the new tags from HTML 5 just don’t hang CSS styles.  This will be fixed in IE 9, but it has not even released a beta version yet. <br><br>  And as always under IE you have to write using hacks :).  If you create an element in the JavaScript <code>document.createElement('article')</code> , then IE starts to see the new tag. <br><br>  However, a little later, we encounter another problem.  This hack does not work with the content that is added via <code>innerHTML</code> that jQuery likes to use.  But this problem is managed with the help of JS-manipulations. <br><br><h4>  Decision </h4><br>  First, let's deal with normal browsers.  Of course, the new tags will not have any special built-in styles (such as for <code>&lt;strong&gt;</code> ).  We don’t really need them, but it doesn’t hurt to make the necessary elements block in CSS: <br> <code>aside, nav, footer, header, section { display: block }</code> <br> <br>  The code for including HTML 5 tags in IE has already been written and laid out, so that without reinventing the wheel, we insert it into <code>&lt;head&gt;</code> (before any new tags): <br><pre> &lt;! - [if IE]&gt;
@@ -75,20 +75,20 @@
      window. $ 5 = function (html5) {
          return jQuery (html5)
      }
- } </pre><br>  And I write: <br> <code>$5(html5).appendTo('#example')</code> <br> <br>  Long live the new web!  :) </div><p>Source: <a href="https://habr.com/ru/post/90384/">https://habr.com/ru/post/90384/</a></p>
+ } </pre><br>  And I write: <br> <code>$5(html5).appendTo('#example')</code> <br> <br>  Long live the new web!  :) </div><p>Source: https://habr.com/ru/post/90384/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../90373/index.html">Crossbrowser HTML Inclusion \ (^ _ ^) /</a></li>
 <li><a href="../90376/index.html">How to open a studio without start-up capital</a></li>
 <li><a href="../90377/index.html">Interception of API function calls</a></li>
 <li><a href="../90378/index.html">New textbooks "Informatics and ICT" are already in schools</a></li>
+<li><a href="../9038/index.html">Facebook launches Facebook Platform - now it's the exact opposite of MySpace</a></li>
 <li><a href="../90381/index.html">Wanted to volunteer to rewrite the man2hlp utility included in Midnight Commander</a></li>
 <li><a href="../90386/index.html">Heavy and unsightly life of an IT specialist</a></li>
 <li><a href="../90388/index.html">Is Viruss-scanner.com closed? Only for the naive!</a></li>
+<li><a href="../9039/index.html">Browsers on the Gecko engine</a></li>
 <li><a href="../90392/index.html">How secret prototypes are masked (camouflage and contour hiding)</a></li>
 <li><a href="../90393/index.html">Drupal 6. Fast organization of simple caching.</a></li>
-<li><a href="../90394/index.html">Calculate Linux 10.4 released</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

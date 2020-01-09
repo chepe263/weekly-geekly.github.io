@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>On the "obvious" and useful, or the creation and destruction of Delphi objects</h1><div class="post__text post__text-html js-mediator-article">  When you read about a particular implementation of OOP mechanisms, it is very funny to see how one or another specific feature of a particular language or library is called “obvious”.  The description of OOP in C ++ is particularly notable in this respect, in which, in fact, the implementation is one of the most opaque and confusing. <br>  So, I will not write anything about the obvious, but tell you about a way to make life easier at critical points in the life cycle of objects, using not “obvious”, but very useful features of the implementation of OOP in Delphi. <br><br><a name="habracut"></a><br><h4>  Handling inability to complete object creation in constructor </h4><br>  If the constructor stores its data only in the fields of the object, then the solution is elementary - it is enough to raise an exception.  RTL Delphi will intercept it itself, call the destructor, release the occupied memory, and throw an exception again. <br>  Accordingly, if part of the data for construction is stored in global variables, then it is enough to use the usual try..except block with re-raising the exception. <br>  From here, two requirements for destructors are derived: not to provoke exceptions, which means not to try to do anything other than freeing up resources (for example, saving settings) and be sure to support ... <br><br><h4>  Deleting a partially initialized object </h4><br>  In Delphi, this presents no difficulties, since any object, even before transferring control to the constructor, is initialized with zeros.  Accordingly, in the destructor it is enough to correctly handle null values, in which the FreeAndNil procedure, which frees an object, only helps if the reference to it is no longer nil. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  Order call constructors </h4><br>  In Delphi, it doesn't matter.  You can call ancestor constructors, other constructors of the same class in the same way as usual methods or do not call anything - so if you need to use ancestor initialization, then it is not recommended to forget to call it, but you should do something before or instead of calling a constructor there is no ancestor. <br><br><h4>  Calling virtual methods in the constructor </h4><br>  Since in Delphi the object is immediately initialized by the final reference to VMT, there is no difference between the other virtual method calls from the constructor from the other options. <br><br><h4>  Virtual constructors and class references </h4><br>  In Delphi, constructors can be virtual.  The point of such a feature is the ability to create objects with an unknown class at the compilation stage without the need to implement a factory.  For this purpose, variables are used with reference to a class (and not an object!), For which the virtual constructor can be called by obtaining an instance of the corresponding class or its descendant, depending on the value of the reference. <br><br><h4>  Automatic control of object lifetime </h4><br>  If an object implements this or that explicitly specified interface, then it can be cast to a reference to this interface using an assignment or an operation as.  In this case, Delphi itself will generate calls to IUnknown methods, which allows you not to query interfaces and not explicitly delete objects. <br><br><h4>  Results </h4><br>  On the one hand, all of the above should be known to every developer;  on the other hand, I have met not so many programmers with experience, inventing bicycles only from not knowing the features of implementing my working tool.  Hope this article helps a bit.  Of the useful features of OOP implementation in Delphi, support for delegating the implementation of interfaces has not been considered, but this is a topic for a separate article. <br></div><p>Source: <a href="https://habr.com/ru/post/72959/">https://habr.com/ru/post/72959/</a></p>
+    <h4>  Order call constructors </h4><br>  In Delphi, it doesn't matter.  You can call ancestor constructors, other constructors of the same class in the same way as usual methods or do not call anything - so if you need to use ancestor initialization, then it is not recommended to forget to call it, but you should do something before or instead of calling a constructor there is no ancestor. <br><br><h4>  Calling virtual methods in the constructor </h4><br>  Since in Delphi the object is immediately initialized by the final reference to VMT, there is no difference between the other virtual method calls from the constructor from the other options. <br><br><h4>  Virtual constructors and class references </h4><br>  In Delphi, constructors can be virtual.  The point of such a feature is the ability to create objects with an unknown class at the compilation stage without the need to implement a factory.  For this purpose, variables are used with reference to a class (and not an object!), For which the virtual constructor can be called by obtaining an instance of the corresponding class or its descendant, depending on the value of the reference. <br><br><h4>  Automatic control of object lifetime </h4><br>  If an object implements this or that explicitly specified interface, then it can be cast to a reference to this interface using an assignment or an operation as.  In this case, Delphi itself will generate calls to IUnknown methods, which allows you not to query interfaces and not explicitly delete objects. <br><br><h4>  Results </h4><br>  On the one hand, all of the above should be known to every developer;  on the other hand, I have met not so many programmers with experience, inventing bicycles only from not knowing the features of implementing my working tool.  Hope this article helps a bit.  Of the useful features of OOP implementation in Delphi, support for delegating the implementation of interfaces has not been considered, but this is a topic for a separate article. <br></div><p>Source: https://habr.com/ru/post/72959/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../72946/index.html">CIA wisely fit</a></li>
+<li><a href="../7295/index.html">Radio interception on laptop screen</a></li>
 <li><a href="../72951/index.html">Listen filed</a></li>
 <li><a href="../72953/index.html">Blue Chip Quarterly Reports</a></li>
 <li><a href="../72956/index.html">Pro piracy and ease of purchase</a></li>
 <li><a href="../72957/index.html">VS 2010 and .NET 4.0 training materials are available.</a></li>
+<li><a href="../7296/index.html">Open Fallout 3 official forum</a></li>
 <li><a href="../72964/index.html">Canon 1D Mark IV is catching up</a></li>
+<li><a href="../72965/index.html">ITrack has completed a new collection of CMS data on sites in the .ru zone</a></li>
 <li><a href="../72966/index.html">Looking for people</a></li>
 <li><a href="../72967/index.html">Magic computer mouse</a></li>
-<li><a href="../72968/index.html">New portion of answers to questions on "Truckers 3"</a></li>
-<li><a href="../72969/index.html">Twitter has crossed the mark of 5,000,000,000 tweets</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

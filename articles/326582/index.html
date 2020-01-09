@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The story of how the parser turned into a full-fledged IRCO bot for Telegrams</h1><div class="post__text post__text-html js-mediator-article"><p>  Greetings, Habrovchane!  Recently, I wrote <a href="https://habrahabr.ru/post/323856/">an article</a> about how to write the IDCO diary parser, and in the end I promised to write about integration with the Telegram bot, <del>  I am very sorry </del>  .  Now the <a href="https://t.me/mrkorobot">bot</a> is ready and fully functioning.  I want to tell you what I used and what difficulties I encountered in this work. </p><a name="habracut"></a><br><h1 id="python-i-telegram">  Python and Telegram </h1><br><p>  To create <a href="https://t.me/mrkorobot">my bot</a> (@mrkorobot), I decided to use the <a href="https://github.com/eternnoir/pytelegrambotapi">pyTelegramBotAPI</a> library.  It is easy to install, easy to use, and even a good <a href="https://www.gitbook.com/book/groosha/telegram-bot-lessons/details">book was</a> written for it.  In the bot, I use the following libraries: </p><br><ul><li>  <a href="http://www.tornadoweb.org/en/stable/">Tornado</a> for webhook </li><li>  <a href="http://docs.python-requests.org/en/master/">Requests</a> for working with the web </li><li>  <a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">BeautifulSoup</a> to extract data from the diary </li><li>  <a href="https://redislabs.com/lp/python-redis/">Redis</a> for working with DB Redis </li><li>  <a href="https://github.com/eternnoir/pytelegrambotapi">pyTelegramBotAPI</a> for interaction with Telegram </li><li>  crontab for daily notifications </li></ul><br><p>  To access the diary you need a login and password.  The first step is to request them from the user and put them in the database.  Once the username and password are needed every time the user accesses the bot, it was necessary to select a fast database.  My choice fell on <a href="https://redis.io/">Redis</a> , and to work with her in Python, it was decided to use <a href="https://redislabs.com/lp/python-redis/">the library of the same name</a> .  <em>Having previously</em> encrypted the password in <a href="https://ru.wikipedia.org/wiki/MD5">md5</a> using the <em>hashlib</em> library built into Python, I put them in a turnkey database, whose name is simply the user id in Telegram.  Here is a visual representation: </p><br><pre><code class="hljs json">{ <span class="hljs-attr"><span class="hljs-attr">"id_"</span></span>: [<span class="hljs-string"><span class="hljs-string">""</span></span>, <span class="hljs-string"><span class="hljs-string">"__MD5"</span></span>] }</code> </pre> <br><p>  When using such a scheme, you can immediately check if a cell with such an id exists, then the user is authorized, if not - no. </p><br><p>  The result is a bot that can show the schedule of lessons by day, homework, grade for subjects and even attached files, if any. </p><br><h1 id="ezhednevnye-uvedomleniya">  Daily notifications </h1><br><p>  In principle, at the moment the implementation of homework viewing ends, but I wanted to go even further and make daily notifications of grades.  Thinking, I managed to write a simple script that I added to cron, generating an expression <a href="https://crontab.guru/">here</a> .  The logic is extremely simple: first, we retrieve a list of all authorized users (who provided the bot with a username and password) and check if the user has turned on daily notifications, if yes - send estimates in this format: </p><br><p><img src="https://habrastorage.org/files/a0a/ac5/b32/a0aac5b322a84ef7a0f0d183d80dabc8.PNG" alt="Diary. Bot"></p><br><p>  The diary check has never been easier! </p><br><h1 id="lichnye-soobscheniya">  Private messages </h1><br><p>  I also wanted to implement the function of viewing personal messages.  "Why not?"  - I thought and wrote a method that allows you to view incoming messages.  Surprisingly, there was nothing difficult here.  It was just not necessary to <em>contact mrko.mos.ru/dnevnik/services/dnevnik.php?r=1&amp;first=1</em> , but to <em>mrko.mos.ru/dnevnik/services/mail.php?r=0</em> .  Then the usual parsing and now everything is ready: </p><br><p><img src="https://habrastorage.org/files/a83/896/0c5/a838960c5db2438e8e97e996b495b555.PNG" alt="Diary. Bot"></p><br><p><img src="https://habrastorage.org/files/a03/55c/123/a0355c123b9c408faaa6b8c0a1499607.PNG" alt="Diary. Bot"></p><br><p>  By the way, there were problems with hosting: from the server on the Google Cloud Platform the domain <em>mrko.mos.ru</em> was unavailable for some reason I <em>did not understand</em> , so I had to place a bot with a friend for a while. </p><br><p>  It is very important for me that you try <a href="https://t.me/mrkorobot">Diary. Bot</a> <br>  (@mrkorobot) in the work and gave their views.  All ideas are considered very carefully.  Happy programming! </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/326582/">https://habr.com/ru/post/326582/</a></p>
+    <p>Source: https://habr.com/ru/post/326582/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

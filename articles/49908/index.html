@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>HOWTO: How to determine the letter of a CD / DVD in WinPE</h1><div class="post__text post__text-html js-mediator-article">  Using <a href="http://www.microsoft.com/downloads/details.aspx%3Fdisplaylang%3Dru%26FamilyID%3Dc7d4bc6d-15f3-4284-9123-679830d629f2">WAIK, I</a> encountered the following task - to determine the letter of the CD / DVD from which, in fact, <i>Win PE</i> booted.  The few recommendations on blogs and forums boiled down to creating a short C program and then analyzing its completion code — a sensible, proven method. <br><br>  One “but”: in administrative tasks I prefer to use scripting solutions - so I am not tied to the compiler, I can adapt the script to other tasks literally on my knees, without having additional tools at hand.  Therefore, having spent some time on experiments, as a result, I obtained the necessary result with built-in tools: <a name="habracut"></a><br><ol><li>  obtain data on volumes in the system from the utility <i>diskpart</i> </li><li>  filter out too much clearance </li><li>  find the required volume in the list by the tag or file system feature </li></ol>  Despite the apparent complexity, the code is short and universal: it adapts easily, say, to determine the drive letter of a flash drive. <br><br>  <i>Diskpart</i> is essentially a command interpreter; to transfer a sequence of commands from a file to it, you must use the / s switch.  And in a real project I had created separate command files for partitioning the disk;  get the letters of the local HDD and, in fact, get the letters for a bootable DVD.  But a separate command can be executed without additional files: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       <font>echo list volume |</font>  <font>diskpart</font> <br><br>  The output will be something like: <pre>
@@ -75,20 +75,20 @@
       Volume 2 C NTFS Section 373 GB Good   
       Volume 3 D Data NTFS Section 373 GB Good
  DISKPART&gt;
-</pre><br><br>  At first glance, the “Type” fields are quite enough for us, but in reality there may be several drives - it is better to focus on the file system or on a disk label.  The label is more straightforward, but the script is less versatile.  Because  In the label, I usually use the build number or date, it turned out to be easier to focus on the file system.  Minus - forgotten in the second disk drive can lead to unpredictable results. <br><br>  Please note: the output format depends on how the command is transmitted to the interpreter — when using an external command file, strings <br>  <font>DISKPART&gt;</font> <br>  no extradition. <br><br>  To filter the list of volumes from unnecessary formatting and superfluous data, apply the extended syntax of the <i>for</i> command.  Here we also have a choice: to transfer the result through the file, or by complicating the command syntax.  Using additional files will give relatively easy-to-read code: <br><br>  <font>diskpart / s getvolumes.dp&gt; volumes.txt</font> <font><br></font>  <font>for / F "skip = <font color="red">7</font> tokens = 3.5" %% i in (volumes.txt) do if %% j == UDF SET CDDRIVE = %% i</font> <br><br>  We just need to take care that the current directory allows the entry, perhaps specify the full paths for the files.  But the complication of the syntax allows you to avoid the hassle of ways and write access: <br><br>  <font>for / F "skip = <font color="red">8</font> tokens = 3.5" %% i in ( <font color="red">'</font> echo list volume <font color="red">^</font> | diskpart <font color="red">'</font> ) do if %% j == UDF SET CDDRIVE = %% i</font> <br><br>  Actually, that's it - the only line of code will give us the letter of our boot disk.  Just do not neglect the error handling, before using the variable it is worth checking: <br><br>  <font>if <font color="red">-</font> % CDDRIVE% == <font color="red">-</font> goto error</font> </div><p>Source: <a href="https://habr.com/ru/post/49908/">https://habr.com/ru/post/49908/</a></p>
+</pre><br><br>  At first glance, the “Type” fields are quite enough for us, but in reality there may be several drives - it is better to focus on the file system or on a disk label.  The label is more straightforward, but the script is less versatile.  Because  In the label, I usually use the build number or date, it turned out to be easier to focus on the file system.  Minus - forgotten in the second disk drive can lead to unpredictable results. <br><br>  Please note: the output format depends on how the command is transmitted to the interpreter — when using an external command file, strings <br>  <font>DISKPART&gt;</font> <br>  no extradition. <br><br>  To filter the list of volumes from unnecessary formatting and superfluous data, apply the extended syntax of the <i>for</i> command.  Here we also have a choice: to transfer the result through the file, or by complicating the command syntax.  Using additional files will give relatively easy-to-read code: <br><br>  <font>diskpart / s getvolumes.dp&gt; volumes.txt</font> <font><br></font>  <font>for / F "skip = <font color="red">7</font> tokens = 3.5" %% i in (volumes.txt) do if %% j == UDF SET CDDRIVE = %% i</font> <br><br>  We just need to take care that the current directory allows the entry, perhaps specify the full paths for the files.  But the complication of the syntax allows you to avoid the hassle of ways and write access: <br><br>  <font>for / F "skip = <font color="red">8</font> tokens = 3.5" %% i in ( <font color="red">'</font> echo list volume <font color="red">^</font> | diskpart <font color="red">'</font> ) do if %% j == UDF SET CDDRIVE = %% i</font> <br><br>  Actually, that's it - the only line of code will give us the letter of our boot disk.  Just do not neglect the error handling, before using the variable it is worth checking: <br><br>  <font>if <font color="red">-</font> % CDDRIVE% == <font color="red">-</font> goto error</font> </div><p>Source: https://habr.com/ru/post/49908/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../49898/index.html">Mediawiki DB Schema (Wikipedia)</a></li>
+<li><a href="../4990/index.html">Google: ambiguous video</a></li>
 <li><a href="../49900/index.html">Do not be a slave! Change the world, and do not bend over him.</a></li>
 <li><a href="../49901/index.html">PageRank predicts Nobel laureates</a></li>
 <li><a href="../49905/index.html">Universal admin</a></li>
 <li><a href="../49907/index.html">Self-identification</a></li>
+<li><a href="../4991/index.html">Wordpress 2.1 Ella</a></li>
 <li><a href="../49910/index.html">HPC: nVidia, AMD, Sony Cell, x86</a></li>
 <li><a href="../49911/index.html">Flexible methodologies. Retrospective</a></li>
 <li><a href="../49913/index.html">Other morals</a></li>
 <li><a href="../49916/index.html">[Task] Where did 10 rubles go?</a></li>
-<li><a href="../49922/index.html">Perl CMS: Development Experience</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

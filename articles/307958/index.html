@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>SysV, Upstart, systemd as a Debian / Ubuntu rake assortment</h1><div class="post__text post__text-html js-mediator-article">  Do you know what I'm doing now?  I write start scripts for systemd, and it pisses me off. <br><br>  It seems to be how we take the operating system in order to save time on such things.  It seems like the packages should have made our lives easier.  It’s quite possible that my choice of operating system was bad, but until today I was comfortable in the Debian / Ubuntu area. <br><br>  On the other hand, “was” is a convention.  All of us are often in relative ignorance as to how our operating system is structured.  And once having seen the / usr / sbin / service code, you can no longer read it.  Just like using this tool. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       Probably need to go back.  To understand how we found ourselves in such an ass with a mixture of SysV and systemd flavored with Upstart. <br><br>  <b>Tl;</b>  <b>DR</b> : <i>author whines about the zoo from SysV, Upstart and systemd in modern Debian / Ubuntu distributions.</i> <br><a name="habracut"></a><br><h3>  Sysv </h3><br>  It would seem, what could be easier?  In the /etc/init.d/ directory there is a file with the name of the service, it is responsible for starting and stopping.  We do /etc/init.d/service stop or /etc/init.d/service start and everything works fine. <br><br>  The operating system does the same thing, only depending on runlevel, two - so two, I will consistently execute symlinks from /etc/rc2.d, which in essence lead to /etc/init.d, life is simple and beautiful.  To manage the sequence, it is enough to change the sorting of the files using a number.  There are utilities to automate the creation of these symlinks. <br><br>  Why couldn't we stay in that place?  Because the systems have changed.  They became, um, complicated. <br><br>  Firstly, the state of the system was previously almost monolithic, and today it can be changeable.  Bach - and connected via USB network adapter.  When Thompson was not like this!  It is necessary to react, i.e.  notify the service of this, restart someone, start someone, redeem someone. <br><br>  Secondly, SysV did not care about the intimate life of programs.  He started them at the start, but if something didn’t work for you, then it was your personal problems.  To debug such things, by the way, is almost impossible.  Segmentation fault  Real men write programs that run the first time and are not weak, weak. <br><br>  Third, the dependency structure in SysV was fairly simple, which was not always enough. <br><br>  Fourth, the start of the system could not be parallel.  Script launch was strictly sequential.  This is easy to see if you look at the start time of openSUSE, for example, the shaggy 12 version. <br><br>  True, the main feature of SysV was not only simplicity.  There were problems with simplicity.  For example, if I have each launch of a start or stop script separate, then how do I know if the program is running or not?  After all, she needs to send a kill signal, and there is no place to send it without PID. <br><br>  A fresh idea was to keep this figure in the .pid file, right, well, seriously, fresh for their distant years.  However, what if the program crashes with a segmentation fault?  In short: nothing, the PID must be checked before using. <br><br><h3>  Upstart </h3><br>  It seems to me that the problems started right here.  That is, with how the community took upstart.  This set a further tone.  But in order. <br><br>  Upstart supported events.  He could follow and restart programs.  He knew how to build dependencies.  Well, with parallelism, he, too, was all right. <br><br>  Except for one, a huge barrel of tar, which I will talk about further, I don’t remember any complaints about Upstart.  But the barrel was that the developers of software in general ignored it. <br><br>  Why?  I dont know.  Most likely because compatibility with SysV was a priority for Upstart.  Therefore, the developers did not need to change anything. <br><br>  As a result, despite the fact that Upstart reigned in Ubuntu for 5 years during the period from 2009 to 2014, a huge amount of software never passed to it! <br><br>  On the one hand, I can not blame only the developers.  They, after all, write programs.  How best to run these programs on the system is none of their business.  However, they write scripts for SysV.  Want examples?  See what the postfix script in Debian looks like.  This code is monstrous, it's terrible, it's just scary. <br><br>  However, even worse is that many administrators do not see and do not understand the difference.  They write: <br><br><pre><code class="hljs pgsql">sudo service apache2 <span class="hljs-keyword"><span class="hljs-keyword">start</span></span></code></pre><br>
@@ -109,20 +109,20 @@ service     Upstart.    ,  -     .    ,     /etc/init.d   Upstart.  ,          U
   ,  systemd —  .       .<br>
 <br>
 <h3>  </h3><br>
-, ,   . Keep calm and systemd.</div><p>Source: <a href="https://habr.com/ru/post/307958/">https://habr.com/ru/post/307958/</a></p>
+, ,   . Keep calm and systemd.</div><p>Source: https://habr.com/ru/post/307958/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../307944/index.html">How static analysis can complement unit testing with the example of NUnit</a></li>
 <li><a href="../307946/index.html">Overview: SAP F & R today and tomorrow is the future of sales forecasting</a></li>
 <li><a href="../307948/index.html">Published data from the elite cyber grouping Equation Group were not a joke</a></li>
+<li><a href="../30795/index.html">Gmail hacked?</a></li>
 <li><a href="../307950/index.html">We invite you to email show September 9-11</a></li>
 <li><a href="../307952/index.html">The best game engine according to users of Habr</a></li>
 <li><a href="../307962/index.html">One day programmer ambedder. To write a driver for the humidity sensor HTS221 from STM - is it very simple?</a></li>
 <li><a href="../307964/index.html">Founder of Group-IB: “There are only two limited resources left in the world - time and health”</a></li>
 <li><a href="../307966/index.html">Asterisk Conference on August 27th. In Moscow and Online</a></li>
 <li><a href="../307968/index.html">The most used hypervisor? Xen</a></li>
-<li><a href="../307972/index.html">HolyJS in Moscow: first reports and CallForPapers</a></li>
+<li><a href="../30797/index.html">Video from the first international conference PM Days - for WEB-project managers</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

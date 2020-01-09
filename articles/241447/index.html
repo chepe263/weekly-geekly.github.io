@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Translation of hours in Russia on October 26 and icu4c</h1><div class="post__text post__text-html js-mediator-article">  Many have already installed the tzdata update on their favorite distros and are looking forward to the <s>end of the world</s> on October 26, 2014, when you can feel yourself at all 3 at 2 am <br><br>  But is everything OK if you write in PHP and use symfony Forms, or just php-intl ?! <br>  My answer is no. <br><a name="habracut"></a><br>  You can check yourself simply: <br><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> $dateIn = <span class="hljs-string"><span class="hljs-string">'27.10.2014'</span></span>; $tz = <span class="hljs-string"><span class="hljs-string">'Europe/Moscow'</span></span>; date_default_timezone_set($tz); $intlDateFormatter = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> \IntlDateFormatter(<span class="hljs-string"><span class="hljs-string">'ru_RU'</span></span>, <span class="hljs-number"><span class="hljs-number">2</span></span>, <span class="hljs-number"><span class="hljs-number">-1</span></span>, $tz, <span class="hljs-number"><span class="hljs-number">1</span></span>, <span class="hljs-string"><span class="hljs-string">'dd.MM.yyyy'</span></span>); $timestamp = $intlDateFormatter-&gt;parse($dateIn); var_dump($intlDateFormatter-&gt;format($timestamp)); var_dump(date(<span class="hljs-string"><span class="hljs-string">'dmY'</span></span>, $timestamp));</code> </pre> <br>  On Debian Wheezy, CentOS 6 after updating tzdata, this code will output: <br><pre> <code class="bash hljs">string(16) <span class="hljs-string"><span class="hljs-string">"27.10.2014"</span></span> string(16) <span class="hljs-string"><span class="hljs-string">"26.10.2014"</span></span></code> </pre><br>  This is because the <abbr title="International Components for Unicode">icu</abbr> library has its own time zone database (this is a popular activity, for example, it also does php, java, chrome and a wagon of other software) and when recalculating the date in the unix timestamp it takes 4 hours, and the date php adds only 3, and if you only have a field for entering a date, then after dropping the time you will receive a day less from the entered date. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The situation is further aggravated by the fact that this data is stored as a library of libicudata, so be prepared to collect icu from source. <br><br>  All actions are then performed on a separate VM running CentOS 6.5 + remi + libicu-last. <br><br>  According to the version of the package, we determine the version of icu - 50.1.2 ( <a href="http://apps.icu-project.org/icu-jsp/downloadPage.jsp%3Fver%3D50.1.2%26base%3Dcs%26svn%3Drelease-50-1-2">source code on the icu website</a> ), also <a href="http://source.icu-project.org/repos/icu/data/trunk/tzdata/icunew/2014i/44/le/">from here we</a> download all * .res files, where (in the link) <br>  2014i - tzdata version; <br>  44 - libicu version (44 and all that is more); <br>  le - little endian (dada if you have mips arm, etc. you may need a different set of resources). <br><br><pre> <code class="bash hljs">tar -zxf icu4c-50_1_2-src.tgz <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> icu/<span class="hljs-built_in"><span class="hljs-built_in">source</span></span> mkdir bin ./configure <span class="hljs-comment"><span class="hljs-comment">#   icupkg cd tools/icupkg/ make cd ../../ #     cd data/in/ #              ../../bin/icupkg -a zoneinfo64.res icudt50l.dat ../../bin/icupkg -a metaZones.res icudt50l.dat ../../bin/icupkg -a timezoneTypes.res icudt50l.dat ../../bin/icupkg -a windowsZones.res icudt50l.dat #     cd ../../ make</span></span></code> </pre><br>  In principle, this can be stopped and after the assembly, in the system, replace the library from / usr / lib64 / with the new version ./lib/libicudata.so.50.1.2. <br><br>  I collected the package: <br><br><pre> <code class="bash hljs">yum install rpmrebuild rpmrebuild -e -p --notest-install libicu-last-50.1.2-10.el6.remi.x86_64.rpm</code> </pre><br>  According to the line of the form <pre> <code class="bash hljs">BuildRoot: /root/.tmp/rpmrebuild.42406/work/root</code> </pre>  determine where the unpacked package files are located and replace libicudata with the latest version, the resulting package (rpmbuild will write the full path after the build) can be installed with the --force key, since we did not change its version. <br><br>  Thanks for attention! <br><br>  <b>UPD:</b> Ubuntu users (Trusty | Precise) can take ready-made packages in <a href="https://launchpad.net/~rzz/%2Barchive/ubuntu/icu"><abbr title="Personal Package Archives">ppa</abbr></a> habrau <a href="https://habrahabr.ru/users/ranzhe/" class="user_link">users ranzhe</a> </div><p>Source: <a href="https://habr.com/ru/post/241447/">https://habr.com/ru/post/241447/</a></p>
+      The situation is further aggravated by the fact that this data is stored as a library of libicudata, so be prepared to collect icu from source. <br><br>  All actions are then performed on a separate VM running CentOS 6.5 + remi + libicu-last. <br><br>  According to the version of the package, we determine the version of icu - 50.1.2 ( <a href="http://apps.icu-project.org/icu-jsp/downloadPage.jsp%3Fver%3D50.1.2%26base%3Dcs%26svn%3Drelease-50-1-2">source code on the icu website</a> ), also <a href="http://source.icu-project.org/repos/icu/data/trunk/tzdata/icunew/2014i/44/le/">from here we</a> download all * .res files, where (in the link) <br>  2014i - tzdata version; <br>  44 - libicu version (44 and all that is more); <br>  le - little endian (dada if you have mips arm, etc. you may need a different set of resources). <br><br><pre> <code class="bash hljs">tar -zxf icu4c-50_1_2-src.tgz <span class="hljs-built_in"><span class="hljs-built_in">cd</span></span> icu/<span class="hljs-built_in"><span class="hljs-built_in">source</span></span> mkdir bin ./configure <span class="hljs-comment"><span class="hljs-comment">#   icupkg cd tools/icupkg/ make cd ../../ #     cd data/in/ #              ../../bin/icupkg -a zoneinfo64.res icudt50l.dat ../../bin/icupkg -a metaZones.res icudt50l.dat ../../bin/icupkg -a timezoneTypes.res icudt50l.dat ../../bin/icupkg -a windowsZones.res icudt50l.dat #     cd ../../ make</span></span></code> </pre><br>  In principle, this can be stopped and after the assembly, in the system, replace the library from / usr / lib64 / with the new version ./lib/libicudata.so.50.1.2. <br><br>  I collected the package: <br><br><pre> <code class="bash hljs">yum install rpmrebuild rpmrebuild -e -p --notest-install libicu-last-50.1.2-10.el6.remi.x86_64.rpm</code> </pre><br>  According to the line of the form <pre> <code class="bash hljs">BuildRoot: /root/.tmp/rpmrebuild.42406/work/root</code> </pre>  determine where the unpacked package files are located and replace libicudata with the latest version, the resulting package (rpmbuild will write the full path after the build) can be installed with the --force key, since we did not change its version. <br><br>  Thanks for attention! <br><br>  <b>UPD:</b> Ubuntu users (Trusty | Precise) can take ready-made packages in <a href="https://launchpad.net/~rzz/%2Barchive/ubuntu/icu"><abbr title="Personal Package Archives">ppa</abbr></a> habrau <a href="https://habrahabr.ru/users/ranzhe/" class="user_link">users ranzhe</a> </div><p>Source: https://habr.com/ru/post/241447/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../241433/index.html">Upgrade the rack solutions OCP and OCS</a></li>
 <li><a href="../241437/index.html">Raspberry Pi - what can be done on the basis of “raspberry”?</a></li>
+<li><a href="../24144/index.html">Why do people win cyborgs</a></li>
 <li><a href="../241441/index.html">IBM and AairLight Energy are working to create an integrated technology HCPVT, which is a desalination plant, solar battery and cooler</a></li>
 <li><a href="../241443/index.html">Dnipropetrovsk Ciklum Speakers' Corner “Intro to WebGL with THREE.js (based on Source's“ Leaderboard in Reception ”)”, October 30</a></li>
 <li><a href="../241445/index.html">Kharkiv Ciklum Speakers' Corner "Showcase: Manage Project with 100+ Engineers - Practices and Implementations" with Oleg Kupin, October 29</a></li>
 <li><a href="../241449/index.html">Mathematical drawings</a></li>
+<li><a href="../24145/index.html">Freelance and coworking under palm trees</a></li>
 <li><a href="../241453/index.html">Simple OneDrive client - it's not that simple</a></li>
 <li><a href="../241455/index.html">How recommender systems work. Lecture in Yandex</a></li>
 <li><a href="../241457/index.html">In which countries does the Internet “sleep” at night?</a></li>
-<li><a href="../241459/index.html">Statistics of Russian IT-specialists on stackoverflow.com and github.com</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

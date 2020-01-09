@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Development of a productive game server on Netty + Java</h1><div class="post__text post__text-html js-mediator-article"> <a href="http://piccy.info/view3/2516552/e19c99af98797b47098f29d75821d4bb/"><img src="https://habrastorage.org/getpro/habr/post_images/a23/296/482/a232964828e360b7f7f2a26be5fb8fec.jpg" alt="Piccy.info - Free Image Hosting"></a> <br><br>  As promised, I provide a description of a productive game server on Netty, which I use in my projects. <br>  Everything described below is not true in the last resort, but only the experience of using technologies in real projects. <br><br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  Start over. </h4><br><br>  Our task is to make a game server. <br><br>  What are the main tasks of the game server? <br>  In short, then: <br><ul><li>  Receive package from client </li><li>  Process this packet (decryption, deserialization, etc.) </li><li>  Calculate the game situation </li><li>  To send customers changes to the game situation. </li></ul><br>  ... <br><br>  We will not consider working with the database and other things now.  Focusing on the network part. <br><br><h5>  How can Netty help us in this? </h5><br><br>  Netty is a network library that will take over the direct work of sockets.  Connect, disconnect clients.  Reception, sending and fragmentation of packets.  Those.  netty will take care of all the low-level work with sockets. <br><br><h5>  How will netty help us? </h5><br><br>  Netty implements a very convenient architecture.  For example, it allows you to connect multiple input data handlers.  Those.  in the first handler, we divide the incoming data stream into packets, and in the second we are already processing these packets.  At the same time, you can flexibly manage the settings of the library itself, allocate the required number of threads or memory to it, etc ... <br>  A common architecture with Netty might look like this: <br><br> <a href="http://piccy.info/"><img src="https://habrastorage.org/getpro/habr/post_images/fbf/90b/4b1/fbf90b4b171791a62fb11e048483b6aa.png" alt="Piccy.info - Free Image Hosting"></a> <br><br>  We get 3 handlers: <br>  1. <b>Connection handler</b> is a handler that is responsible for connecting / disconnecting clients.  There will be checking the connectivity of clients (black, white lists, IP filters, etc.) as well as the correct disconnection of clients with the closure of all resources used. <br><br>  2. <b>Frame handler</b> is a handler that divides the data stream into separate packets. <br>  For convenience, we assume that the package consists of two parts.  1-header, which describes the length of the packet, and 2-directly data packet. <br><br>  3. <b>Packet handler</b> is a game message handler.  Here we will receive data from the packet and further process it. <br><br>  Let's sort each part in the code. <br><br><h6>  Connection handler </h6><br><pre><code class="java">public class ConnectionHandler extends SimpleChannelHandler
@@ -225,7 +225,7 @@
 <br>
   ,    AMD 1.4  (lenovo edge 13),   18-20   .    .<br>
 <br>
-P.S.   — .</div><p>Source: <a href="https://habr.com/ru/post/136765/">https://habr.com/ru/post/136765/</a></p>
+P.S.   — .</div><p>Source: https://habr.com/ru/post/136765/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

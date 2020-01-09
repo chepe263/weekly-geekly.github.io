@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -67,7 +67,7 @@
  ip route del 192.0.2.0/24 dev eth0.101
  ip route add 192.0.2.101/32 dev eth0.101 </pre><br>  All these options work, you can choose the one in which the interfaces are displayed in the most convenient way.  In all cases, the subscriber IP is 192.0.2.101/24. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -75,7 +75,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  Proxy_arp </h4><br>  Another problem you may encounter is that there is no connection between subscribers in different VLANs and with IP from the same subnet.  Indeed, the subscriber system sees that the destination IP address is on the same subnet as it, and sends ARP requests to determine the MAC, but nothing comes of this, since  they are in different vlans.  The <strong>proxy_arp</strong> technology serves to solve this problem.  Its essence is that the router, when receiving ARP requests from the interface, will check whether it has the requested IP on other interfaces.  If there is, then in response to an ARP request, it will issue its MAC.  Thus, the packets will be sent to the router, which will take care of their delivery.  The proxy_arp for a specific interface is enabled as follows: <br><pre>  sysctl net.ipv4.conf.eth0 / 101.proxy_arp = 1 </pre><br>  or <br><pre>  echo 1&gt; /proc/sys/net/ipv4/conf/eth0.101/proxy_arp </pre><br><br><h4>  DHCP Option 82 </h4><br>  When using IPoE, DHCP simplifies network configuration on the subscriber side to zero.  Stuck patchkord and you're online.  Only the question arises: how does DHCP know to whom to issue which address?  You can identify by MAC, especially if you are already using IP-MAC bindings.  But MAC bindings are fraught with frequent support calls, since  Subscribers sometimes change equipment.  The extension of the protocol DHCP - <strong>Option 82</strong> will help to cope with this problem.  Option 82 contains two fields: <br><ul><li>  Agent Circuit ID — The DHCP Relay port number on which the DHCP request arrived. </li><li>  Agent Remote ID is a certain identifier of DHCP Relay itself. </li></ul><br>  At the same time, access switches to which subscribers are directly connected act as DHCP relays.  The Agent Remote ID is usually used as a switch MAC (by default in D-Link).  Option 82 is supported by a wide range of equipment, including those typical for the Russian providers D-Link DES-3526/3028/3200. <br>  There are two DHCP Relay modes on <strong>D-Link</strong> switches: dhcp_relay and dhcp_local_relay.  dhcp_relay works globally, for all ports and VLANs, option 82 is added and the request is no longer transmitted by Broadcast, but directly to the DHCP server, i.e.  This is a full DHCP Relay.  dhcp_local_relay works for specific VLANs, but the query is not actually relaits, and option 82 is simply added to it. <br>  Basic dhcp_relay settings on D-Link: <br><pre>  enable dhcp_relay
@@ -129,7 +129,7 @@
  subnet 192.168.0.0 netmask 255.255.255.0 {
  }<font></font>
 <font></font>
- } </pre></div><p>Source: <a href="https://habr.com/ru/post/108453/">https://habr.com/ru/post/108453/</a></p>
+ } </pre></div><p>Source: https://habr.com/ru/post/108453/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

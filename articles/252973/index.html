@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Proper increase in disk size in a virtual machine</h1><div class="post__text post__text-html js-mediator-article">  Without pretending to be complete, I still think that this can be useful for system administrators. <br><br>  Increasing the size of the disk in the virtual machine occurred with the following introductory: qcow2 virtual file format, the virtual machine uses lvm and ext4, the root partition is located in the extended partition.  The action usually occurs at night, when the load is minimal and the downtime does not put much pressure on the nerves.  Although when working with highload projects, adrenaline still stands out enough to think 10 times before doing something.  Therefore, before starting the process, it is better to turn off the SMS alert system so as not to scare your colleagues with messages like “Server down” in the middle of the night. <br><a name="habracut"></a><br>  <b>1. Shut down the virtual machine</b> <br>  I did this through the GUI by clicking on the red power button in the virt-manager.  If there is no virt-manager, this can be done by giving the shutdown command in the virtual machine command line. <br>  <b>2. On the hypervisor, we increase the file size</b> (in my case, 200 gigabytes) <br><pre><code class="bash hljs">qemu-img resize /path/to/vm-disk.qcow2 +200G</code> </pre> <br>  <b>3. We cling the disk to another (service) virtual machine</b> through the control machine with virt-manager, an alternative option is to boot from a CD with lvm support. <br>  Cooperatively, when booting from the LiveCD, vdb will change to vda <br>  <b>4. Start the service machine</b> (it should also have lvm on it) through virt-manager. <br>  <b>5. Next on the service (or LVM liveCD)</b> machine: <br><pre> <code class="bash hljs">parted /dev/vdb</code> </pre> <br>  get disk size: <br><pre> <code class="bash hljs">(parted) <span class="hljs-built_in"><span class="hljs-built_in">print</span></span> Model: Virtio Block Device (virtblk) Disk /dev/vdb: 1288GB Sector size (logical/physical): 512B/512B Partition Table: msdos Number Start End Size Type File system Flags 1 1049kB 256MB 255MB primary ext2 boot 2 257MB 1000GB 1000GB extended 5 257MB 1000GB 1000GB logical lvm</code> </pre> <br>  Increase the extended partition, if you do not get it, we get Error: Can't have overlapping partitions.  ubuntu parted -gparted <br><pre> <code class="bash hljs">(parted) resizepart 2 End? [1000GB]? 1288Gb</code> </pre> <br>  increase logical root partition <br><pre> <code class="bash hljs">(parted) resizepart 5 End? [1000GB]? 1288Gb (parted) q</code> </pre> <br>  now you need to increase the size of the physical disk in lvm <br><pre> <code class="bash hljs">pvresize /dev/vdb5</code> </pre> <br>  increase the size of the logical drive in lvm <br><pre> <code class="bash hljs">root@vm-service:/etc<span class="hljs-comment"><span class="hljs-comment"># lvextend /dev/vm-db-0-vg/root -l +100%FREE lvextend /dev/vm-db-0-vg/root -l +100%FREE File descriptor 7 (pipe:[7918]) leaked on lvextend invocation. Parent PID 1378: bash (     ) Extending logical volume root to 1.12 TiB Logical volume root successfully resized root@vm-service:/etc# resize2fs /dev/vm-db-0-vg/root</span></span></code> </pre><br>  The output of resize2fs should be this: <br><pre> <code class="bash hljs">The filesystem on /dev/vm-db-0-vg/root is now 231278592 blocks long.</code> </pre> <br>  Now check and fix the file system: <br><pre> <code class="bash hljs">fsck -f /dev/mapper/vm--db--0--vg-root</code> </pre><br>  the disk is ready <br>  <b>6. turn off the service machine</b> , disable the virt-manager disk from it <br>  from the command line, without using the GUI to manage virtual machines, you can do this with virsh, the use of which is well described here: <a href="http://docs.fedoraproject.org/ru-RU/Fedora/12/html/Virtualization_Guide/chap-Virtualization_Guide-Managing_guests_with_virsh.html">managing virtual machines from the command line</a> <br>  <b>7. Start the server</b> <br>  <b>An increase with minimal downtime, almost on the fly, tested for lvm2 / ext4 can be done like this:</b> <br>  1. Increasing the file size by 200 gigabytes is performed on the hypervisor <br><pre> <code class="bash hljs">qemu-img resize /path/to/vm-disk.qcow2 +200G</code> </pre> <br>  2. Reboot the virtual machine <br>  3. On the virtual machine <br><pre> <code class="bash hljs">parted /dev/vda</code> </pre> <br>  Let's see the size of the physical disk and all logical partitions. <br><pre> <code class="bash hljs">(parted) <span class="hljs-built_in"><span class="hljs-built_in">print</span></span> Model: Virtio Block Device (virtblk) Disk /dev/vda: 1288GB Sector size (logical/physical): 512B/512B Partition Table: msdos Number Start End Size Type File system Flags 1 1049kB 256MB 255MB primary ext2 boot 2 257MB 1000GB 1000GB extended 5 257MB 1000GB 1000GB logical lvm</code> </pre> <br>  increase the extended partition <br><pre> <code class="bash hljs">(parted) resizepart 2 End? [1000GB]? 1288Gb</code> </pre> <br>  increase logical root partition <br><pre> <code class="bash hljs">(parted) resizepart 5 End? [1000GB]? 1288Gb (parted) q</code> </pre> <br>  now you need to increase the size of the physical disk in lvm <br><pre> <code class="bash hljs">pvresize /dev/vda5</code> </pre> <br>  increase the size of the logical drive in lvm <br><pre> <code class="bash hljs">root@vm-db-0:/etc<span class="hljs-comment"><span class="hljs-comment"># lvextend /dev/vm-db-0-vg/root -l +100%FREE lvextend /dev/vm-db-0-vg/root -l +100%FREE File descriptor 7 (pipe:[7918]) leaked on lvextend invocation. Parent PID 1378: bash Extending logical volume root to 1.12 TiB Logical volume root successfully resized root@vm-db-0:/etc# resize2fs /dev/vm-db-0-vg/root</span></span></code> </pre> <br>  In this case, you cannot check and correct the file system, fsck -f / dev / mapper / vm - db - 0 - vg-root will kill the file system <br>  Check what happened: <br><pre> <code class="bash hljs">df -h</code> </pre> <br>  <a href="http://habrahabr.ru/post/261755/">Continuing the theme</a> </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/252973/">https://habr.com/ru/post/252973/</a></p>
+    <p>Source: https://habr.com/ru/post/252973/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -76,8 +76,8 @@
 <li><a href="../252975/index.html">Create your Amazon-like navigation menu</a></li>
 <li><a href="../252977/index.html">Time is money =?</a></li>
 <li><a href="../252979/index.html">Watching new lease addresses on a DHCP server using PowerShell</a></li>
-<li><a href="../252983/index.html">We show the work process of a continuous task on the server using one connection.</a></li>
-<li><a href="../252985/index.html">Visual linear approximation with Gnuplot</a></li>
+<li><a href="../25298/index.html">Sviaz-Expocomm 2008</a></li>
+<li><a href="../252981/index.html">SummaryJS Release 5</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

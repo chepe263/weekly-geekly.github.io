@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Sitemap.xml or “There was nothing to do ...”</h1><div class="post__text post__text-html js-mediator-article">  New Year's holidays 666 + 666 + 666 + 6 + 6 + of the 6th year are in full swing.  For serious things do not want to take.  But you can do all sorts of little things that usually do not reach the hands.  The little thing for me was the generation of Sitemap.xml files. <br>  Sitemap.xml is a file that contains in a special format links to website pages that should be indexed by search engines.  Comprehensive format information can be found at <a href="http://www.sitemaps.org/">Sitemaps.org</a> . <br>  I have long wanted to have a convenient tool for generating these files. <br><br><img width="100%" src="https://habrastorage.org/files/1df/49b/fb1/1df49bfb1d5047e3aae93ffe43d3b787.png" alt="Sitemap.xml generation"><br><a name="habracut"></a><br>  Searches in the network gave a lot of “convenient online services” for manual creation of a site map and a few simple scripts that are also unsuitable for creating a site map with a large number of links. <br><br><h4>  What we want?.. </h4><br>  To generate sitemap.xml for a small site does not need much effort.  For large resources there are features. <br>  There are restrictions on the size of sitemap.xml files in 10MB, as well as restrictions on 50,000 links to one file.  Automatic data processing restrictions and became my goal. <br>  Thus, the following requirements were formed: <br><ol><li>  The script should monitor the size of the received files and the number of added url.  If necessary, create several files in accordance with the format; </li><li>  Do not store intermediate data in memory; </li><li>  Create compressed versions of files as needed, for sharing with nginx; </li><li>  Automatically perform simple data checks. </li></ol><br>  No sooner said than done.  The final version of the scripts can be found at the link at the end of the article. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h4>  What does the script not do? </h4><br>  To warn further questions I will say that the script is not a universal solution, which in one way generates a map for an arbitrary site. <br>  This is just a tool, and the list of links that will be added to the file must be formed independently, possibly in several visits. <br>  In addition, the script does not correct or encode the url passed to it.  Therefore, take care that the links comply with the <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC-3986</a> standard for URIs, <a href="http://www.ietf.org/rfc/rfc3987.txt">RFC-3987</a> standard for IRI, and the <a href="http://www.w3.org/TR/REC-xml/">XML standard</a> . <br><br><h4>  Example </h4><br>  Using this tool you can create a site map like this: <br><div class="spoiler">  <b class="spoiler_title">Sample script generating sitemap</b> <div class="spoiler_text"><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-keyword"><span class="hljs-keyword">require_once</span></span>(dirname(<span class="hljs-keyword"><span class="hljs-keyword">__FILE__</span></span>).<span class="hljs-string"><span class="hljs-string">"/../common.inc.php"</span></span>); set_time_limit(<span class="hljs-number"><span class="hljs-number">0</span></span>); ini_set(<span class="hljs-string"><span class="hljs-string">'memory_limit'</span></span>, <span class="hljs-string"><span class="hljs-string">'128M'</span></span>); $dir = dirname(<span class="hljs-keyword"><span class="hljs-keyword">__FILE__</span></span>);<span class="hljs-comment"><span class="hljs-comment">//document root path $tmp_dir = dirname(__FILE__);//temp path $base_url = 'http://mysite.ru/';//url with sitemaps (http://mysite.ru/sitemap.xml) $gzip = true; $config = array('path' =&gt; $dir , 'tmp_dir'=&gt;$tmp_dir,'base_url'=&gt;$base_url,'gzip'=&gt;$gzip, 'gzip_level'=&gt;9); $builder = new SitemapBuilder($config); $time = time(); $builder-&gt;start(); $builder-&gt;addUrl($base_url,$time,1.0); $builder-&gt;addUrl($base_url."news",$time,1.0); /* //this is example adding url $documents = News::find(array('criteria'=&gt;'is_published=1')); foreach($documents as $document) $builder-&gt;addUrl($document-&gt;getUrl(),$document-&gt;getUtime(),0.8); */ $builder-&gt;commit();</span></span></code> </pre> <br></div></div><br><br><h4>  Links </h4><br><ol><li>  <a href="http://www.sitemaps.org/">Sitemaps.org</a> </li><li>  <a href="http://a-develop.ru/catalog/product/5">Sources of scripts for generating Sitemap.xml</a> </li><li>  <a href="">Repository on github.com</a> </li></ol></div><p>Source: <a href="https://habr.com/ru/post/274557/">https://habr.com/ru/post/274557/</a></p>
+    <h4>  What does the script not do? </h4><br>  To warn further questions I will say that the script is not a universal solution, which in one way generates a map for an arbitrary site. <br>  This is just a tool, and the list of links that will be added to the file must be formed independently, possibly in several visits. <br>  In addition, the script does not correct or encode the url passed to it.  Therefore, take care that the links comply with the <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC-3986</a> standard for URIs, <a href="http://www.ietf.org/rfc/rfc3987.txt">RFC-3987</a> standard for IRI, and the <a href="http://www.w3.org/TR/REC-xml/">XML standard</a> . <br><br><h4>  Example </h4><br>  Using this tool you can create a site map like this: <br><div class="spoiler">  <b class="spoiler_title">Sample script generating sitemap</b> <div class="spoiler_text"><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> <span class="hljs-keyword"><span class="hljs-keyword">require_once</span></span>(dirname(<span class="hljs-keyword"><span class="hljs-keyword">__FILE__</span></span>).<span class="hljs-string"><span class="hljs-string">"/../common.inc.php"</span></span>); set_time_limit(<span class="hljs-number"><span class="hljs-number">0</span></span>); ini_set(<span class="hljs-string"><span class="hljs-string">'memory_limit'</span></span>, <span class="hljs-string"><span class="hljs-string">'128M'</span></span>); $dir = dirname(<span class="hljs-keyword"><span class="hljs-keyword">__FILE__</span></span>);<span class="hljs-comment"><span class="hljs-comment">//document root path $tmp_dir = dirname(__FILE__);//temp path $base_url = 'http://mysite.ru/';//url with sitemaps (http://mysite.ru/sitemap.xml) $gzip = true; $config = array('path' =&gt; $dir , 'tmp_dir'=&gt;$tmp_dir,'base_url'=&gt;$base_url,'gzip'=&gt;$gzip, 'gzip_level'=&gt;9); $builder = new SitemapBuilder($config); $time = time(); $builder-&gt;start(); $builder-&gt;addUrl($base_url,$time,1.0); $builder-&gt;addUrl($base_url."news",$time,1.0); /* //this is example adding url $documents = News::find(array('criteria'=&gt;'is_published=1')); foreach($documents as $document) $builder-&gt;addUrl($document-&gt;getUrl(),$document-&gt;getUtime(),0.8); */ $builder-&gt;commit();</span></span></code> </pre> <br></div></div><br><br><h4>  Links </h4><br><ol><li>  <a href="http://www.sitemaps.org/">Sitemaps.org</a> </li><li>  <a href="http://a-develop.ru/catalog/product/5">Sources of scripts for generating Sitemap.xml</a> </li><li>  <a href="">Repository on github.com</a> </li></ol></div><p>Source: https://habr.com/ru/post/274557/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../274539/index.html">Configure logrotate + access to collect logs via SFTP</a></li>
+<li><a href="../27454/index.html">Drupal is limited only by the capabilities of the developer!</a></li>
 <li><a href="../274545/index.html">Method Swizzling and Swift: but there is a nuance</a></li>
 <li><a href="../274547/index.html">IBM has released more than 100 business applications with Apple</a></li>
 <li><a href="../274549/index.html">Results of 2015 for C ++</a></li>
 <li><a href="../274555/index.html">PayPal API Go Client</a></li>
 <li><a href="../274559/index.html">Google fixed Android vulnerabilities</a></li>
+<li><a href="../27456/index.html">Potyomkin's nanoderevni</a></li>
 <li><a href="../274561/index.html">New from Google. Is authentication safe without entering a password?</a></li>
 <li><a href="../274563/index.html">Firefox will support non-standard CSS for compatibility with WebKit</a></li>
 <li><a href="../274565/index.html">Creating a function on Rust that returns a String or & str</a></li>
-<li><a href="../274567/index.html">Why is functional programming mainstream?</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

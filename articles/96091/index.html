@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Some aspects of the development of payment systems. Part I. Three-link without three-link</h1><div class="post__text post__text-html js-mediator-article"><h4>  Peace to you,%% username! </h4><br>  In this series of posts, I want to talk about some aspects of the implementation of the payment system (and if there are two lucky ones) that have actually had the honor of working since the mid-2000s in one of the cities of our vast country. <br>  What is PS in general, and by what principles should it work?  I, like the customer, had an idea about this only as a user of WebMoney and payment terminals.  However, the desire + money did its job and the development began. <br><br>  For a start, what was generally understood by the payment system and how the development began. <br>  <b>UPD:</b> <br>  <a href="http://scratch.habrahabr.ru/blog/96116/">The second</a> part! <br><a name="habracut"></a><br>  The customer wanted a site.  No more no less a site with <s>blackjack and whores with</s> viral wallets, from which one could pay for various services, as well as transfer money to each other.  It was planned to cover on a scale of one separately taken city, no significant loads were planned, therefore, we did not bother with particularly high performance and megastability like clustering.  And without this there were many interesting things. <br><br>  The web server was FreeBSD with Apache, the database server on Windows with MySQL. <br>  Unfortunately, Postgre at that time was (and still is) a dense forest for me, and we couldn’t connect directly to MS SQL Server directly from under FreeBSD.  In addition, it was planned to write an external module for a DBMS that is responsible for the cryptographic part, which put an end to the choice of OS for it. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,17 +60,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      The key questions for me in the development were safety issues, because  The system worked with no money, but all the same. <br>  Almost immediately, the following simple scheme of the WEB server &lt;-&gt; DB server was born: <br><ul><li>  A web server has access only to authorized stored procedures in one single database.  No SELECT \ INSERT \ DELETE.  Just call a few things and that's <b>it</b> . </li><li>  All storages available to the web server, except Auth (login, pass), take the session ID as the first parameter (and first of all check its survivability), which is returned to Auth as hash (random ()) and lives only a few minutes after inactivity. </li></ul><br><br>  In this way <br><ul><li>  We are 100% protected from SQL inject </li><li>  99% defended against an attacker in the event of a complete compromise of the web server (1% leave for holes in MySQL and the firewall).  You can make the login account \ password for the web / qwerty database for the web server account and sleep well.  Hacker loser will see only empty results </li><li>  All the logic of the system is implemented in storage, in fact, the web server only calls them and shows the decorated result to the user. </li></ul><br>  From the user's side, the traffic was protected by SSL with the certificate purchased from VeriSign. <br><br>  In the first approximation, a safe “three-door” without a “three-door” was obtained, which was quite convenient to steer and which answered good, in my opinion, safety criteria.  The problems were only when a new store was added and I forgot to set the rights for the web server account for it) <br><br>  It was necessary to think over the structure of the database (uninteresting) and the system of protection of virtual wallets. <br><br>  If it is interesting to the community, in the following sections I will talk about: <br><ul><li>  Protect the client, in particular, about the EDS system using elliptic curves and screwing this whole miracle to MySQL. </li><li>  The prototype of the "farm payment modules". </li><li>  Development from scratch of the payment system for self-service terminals. </li></ul></div><p>Source: <a href="https://habr.com/ru/post/96091/">https://habr.com/ru/post/96091/</a></p>
+      The key questions for me in the development were safety issues, because  The system worked with no money, but all the same. <br>  Almost immediately, the following simple scheme of the WEB server &lt;-&gt; DB server was born: <br><ul><li>  A web server has access only to authorized stored procedures in one single database.  No SELECT \ INSERT \ DELETE.  Just call a few things and that's <b>it</b> . </li><li>  All storages available to the web server, except Auth (login, pass), take the session ID as the first parameter (and first of all check its survivability), which is returned to Auth as hash (random ()) and lives only a few minutes after inactivity. </li></ul><br><br>  In this way <br><ul><li>  We are 100% protected from SQL inject </li><li>  99% defended against an attacker in the event of a complete compromise of the web server (1% leave for holes in MySQL and the firewall).  You can make the login account \ password for the web / qwerty database for the web server account and sleep well.  Hacker loser will see only empty results </li><li>  All the logic of the system is implemented in storage, in fact, the web server only calls them and shows the decorated result to the user. </li></ul><br>  From the user's side, the traffic was protected by SSL with the certificate purchased from VeriSign. <br><br>  In the first approximation, a safe “three-door” without a “three-door” was obtained, which was quite convenient to steer and which answered good, in my opinion, safety criteria.  The problems were only when a new store was added and I forgot to set the rights for the web server account for it) <br><br>  It was necessary to think over the structure of the database (uninteresting) and the system of protection of virtual wallets. <br><br>  If it is interesting to the community, in the following sections I will talk about: <br><ul><li>  Protect the client, in particular, about the EDS system using elliptic curves and screwing this whole miracle to MySQL. </li><li>  The prototype of the "farm payment modules". </li><li>  Development from scratch of the payment system for self-service terminals. </li></ul></div><p>Source: https://habr.com/ru/post/96091/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../96084/index.html">What should be the leader? Part 2. Examples</a></li>
 <li><a href="../96085/index.html">Online reports on Silverlight 4 in Russian</a></li>
 <li><a href="../96087/index.html">Shmoonqee os</a></li>
 <li><a href="../96088/index.html">Top 10 stop-motion videos on YouTube</a></li>
+<li><a href="../9609/index.html">Studio "Sugar". Tale of a startup.</a></li>
 <li><a href="../96090/index.html">Tom York: "The Music Industry on the Verge of Collapse"</a></li>
 <li><a href="../96092/index.html">Akopov was marked in VKontakte</a></li>
 <li><a href="../96095/index.html">Configuring Mercurial and Visual Studio interaction</a></li>

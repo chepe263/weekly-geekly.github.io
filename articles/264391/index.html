@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Build USB HID under BeagleBone</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/246/2ab/abc/2462ababc9d346aaa870f991f2aec34a.jpg"><br><br>  In one of the publications we wrote about setting up a Chinese <a href="http://embeddedsoft.ru/index.php%3Fpage%3D38%26f%3D0%26id%3D113%26place%3D1%26page_id%3D3">USB-WiFi for Beagledone.</a> Today we want to give a way to build your own device management class via the HID protocol.  The <a href="http://www.signal11.us/oss/hidapi/">hidapi</a> library was taken as a <a href="http://www.signal11.us/oss/hidapi/">basis</a> , and then a method of cross-compiling under beaglebone and building a test program for working with a USB device was made. <br><br>  One of the easiest and most reliable ways to make USB control over Linux is to use the libusb-1.0 library.  Hidapi is a “add-on” above libusb, and is used to easily connect hid devices to a programmable device.  If you build on a “clean” hidapi system, you will have to compile libusb separately and only then build hidapi.  In this article we will consider the assembly exactly hidapi.  Looking ahead, let's say that android ndk refused to collect hidapi without intervention. <br><a name="habracut"></a><br>  To get started, we downloaded the library and unpacked it into the working directory; we used the Linux Mint distribution for building and testing.  In the unpacked folder (in our case it is hidapi-0.7.0), read the instructions readme.txt.  Since BeagleBone uses Linux, we go to the hidapi-0.7.0 / linux folder and see there another readme.txt file with instructions for building under Linux.  In short, the library offers us two options for building: using hid-libusb.c or with hid.c.  In the first case, the library libusb is used, which must be installed in the system.  In the second case, hidraw is used, requiring libudev-devel. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      We note right away that we tried to collect both options;  only hid-libusb.c was successfully assembled, and hid.c produced various kinds of errors.  Next, the developers offer us to put the package libusb-1.0-0-dev or libudev-devel.  After installing the packages, you can build the project in the linux folder.  We execute make, the hidapi-0.7.0 / hidtest / project is being built, and it is being built in our hidapi-0.7.0 / linux folder.  At the command prompt, you can see the compiler commands.  Further, the essence of the assembly under BeagleBone is to substitute the cross-compiler instead of the regular gcc and g ++, respectively.  But there is one subtlety, if you look inside the makefile, then you can see there <br><div class="spoiler">  <b class="spoiler_title">lines</b> <div class="spoiler_text">  LIBS = `pkg-config libusb-1.0 libudev --libs` -lpthread <br>  INCLUDES? = -I ../ hidapi `pkg-config libusb-1.0 --cflags` </div></div><br>  These lines add the paths to the libraries (includes), and set the library assembly keys (libs) dynamically.  To understand what loads the script into the assembly, you can run it in the console: `pkg-config libusb-1.0 libudev --libs` and` pkg-config libusb-1.0 --cflags`.  When building software under BeagleBone, we did not change the path to include (there are only header files .h, and cross-platform ones), and either we wrote it directly without pkg-config.  Perhaps this is not the best solution, but still working. <br><br>  In general, it looks like <div class="spoiler">  <b class="spoiler_title">in the following way</b> <div class="spoiler_text">  INCLUDEPATH + = / usr / include / libusb-1.0 <br>  Libs + = -lusb-1.0 -ludev -g <br>  hidapi.h add to the source folder. <br>  gcc -Wall -g -c -I / usr / include / libusb-1.0 hid-libusb.c -o hid-libusb.o` </div></div><br>  We fix the filefile by directly turning on the libraries, prescribe the cross-compiler and build the program under BeagleBone.  That's all, the program for working with USB HID device is ready. </div><p>Source: <a href="https://habr.com/ru/post/264391/">https://habr.com/ru/post/264391/</a></p>
+      We note right away that we tried to collect both options;  only hid-libusb.c was successfully assembled, and hid.c produced various kinds of errors.  Next, the developers offer us to put the package libusb-1.0-0-dev or libudev-devel.  After installing the packages, you can build the project in the linux folder.  We execute make, the hidapi-0.7.0 / hidtest / project is being built, and it is being built in our hidapi-0.7.0 / linux folder.  At the command prompt, you can see the compiler commands.  Further, the essence of the assembly under BeagleBone is to substitute the cross-compiler instead of the regular gcc and g ++, respectively.  But there is one subtlety, if you look inside the makefile, then you can see there <br><div class="spoiler">  <b class="spoiler_title">lines</b> <div class="spoiler_text">  LIBS = `pkg-config libusb-1.0 libudev --libs` -lpthread <br>  INCLUDES? = -I ../ hidapi `pkg-config libusb-1.0 --cflags` </div></div><br>  These lines add the paths to the libraries (includes), and set the library assembly keys (libs) dynamically.  To understand what loads the script into the assembly, you can run it in the console: `pkg-config libusb-1.0 libudev --libs` and` pkg-config libusb-1.0 --cflags`.  When building software under BeagleBone, we did not change the path to include (there are only header files .h, and cross-platform ones), and either we wrote it directly without pkg-config.  Perhaps this is not the best solution, but still working. <br><br>  In general, it looks like <div class="spoiler">  <b class="spoiler_title">in the following way</b> <div class="spoiler_text">  INCLUDEPATH + = / usr / include / libusb-1.0 <br>  Libs + = -lusb-1.0 -ludev -g <br>  hidapi.h add to the source folder. <br>  gcc -Wall -g -c -I / usr / include / libusb-1.0 hid-libusb.c -o hid-libusb.o` </div></div><br>  We fix the filefile by directly turning on the libraries, prescribe the cross-compiler and build the program under BeagleBone.  That's all, the program for working with USB HID device is ready. </div><p>Source: https://habr.com/ru/post/264391/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -74,8 +74,8 @@
 <li><a href="../264395/index.html">Debugging the rules of RewriteRule, or a little about the intimate life of mod_rewrite</a></li>
 <li><a href="../264397/index.html">Pipeline with spark.ml</a></li>
 <li><a href="../264399/index.html">The digest of interesting materials for the mobile # 115 developer (August 2-9)</a></li>
-<li><a href="../264401/index.html">IBM Launches 50 Projects for the Open Source Developer Community</a></li>
-<li><a href="../264405/index.html">Ministry of Defense accused of sending sensitive information through public postal services</a></li>
+<li><a href="../2644/index.html">Need wood for Vista? So take it!</a></li>
+<li><a href="../26440/index.html">Generate random numbers based on events from the future</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>What is the "git push problem: non fast forward"</h1><div class="post__text post__text-html js-mediator-article">  This mini-note in the first place is the answer to the <a href="http://habrahabr.ru/qa/15555/">question</a> .  <s>Since my account is read-only, this is the answer.</s>  <i>“And life is getting better!” ©</i> <br><br>  The first conclusion after reading the question and answers - do not do it as suggested by <a href="https://habrahabr.ru/users/defuz/" class="user_link">defuz</a> .  He does not understand the essence of the problem, and if you do as they are asked, most likely you will lose data. <br>  Second: <a href="https://habrahabr.ru/users/alekciy/" class="user_link">alekciy is</a> also not quite right, but there are much less chances for data loss.  Almost none. <br>  And the third: damn, well, when will people realize that it is really necessary to own a used tool?  Read the documentation! <br><br><a name="habracut"></a><br>  I will say right away that many of the details and “insides” of the work of git are omitted or simplified, but not to the detriment of understanding.  It is the emergence of understanding and the purpose of the article, and if you already have it, and you are sure that it is correct :) - then nothing new for you will be here.  If there is no understanding yet, then let's go! 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,7 +60,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       First, you need to figure out what fast-forward is.  This is just one of the options (methods, strategies) for performing the operation merge.  It is possible only if the current commit (the one to which the merge will take place, we denote it A), is the ancestor of the “merged” commit (the one with which the merge will take place, we denote it B).  Graphically, it looks like this (x - just other commits that are not important to us): <br><br><pre> ......- xxxxAxxx-B
@@ -73,7 +73,7 @@
 </pre><br><br>  Option Two: rebase.  Rebase is the operation of “transferring” a part of a story in such a way as to change the “root” of a branch, but not to change the branch itself.  For clarity - again the picture.  The initial state is the same as Figure 2, and the state after rebase will be like this: <br><pre> ......- B-xxxA
                  \ &lt;- rebase operation: git rebase origin / master
                   xxx-b
-</pre><br>  In the resulting result, the role of commit X is performed by B - but this is another B, let's say, B '.  You can easily verify this by looking at the commit-id before and after rebase.  But as already mentioned, the branch itself (that is, the contents of commits, its components) will not change - only the commit-id will change.  But the goal is achieved - you can push. <br><br>  Which option to choose is up to you.  In the network already not one pack of dogs eaten about this.  My recommendation for newbies is the first option, as it is simpler and less susceptible to bugs. <br><br>  There is a third solution, and it was suggested by <a href="https://habrahabr.ru/users/defuz/" class="user_link">defuz</a> - forced push, like this: <br> <code>git push origin +master <br></code> <br>  It will cause the server to accept your commits, and will <b>unconditionally</b> change its HEAD so that it points to the last of your commits — B. So all “your” commits that you do not have (from B to A) are server "Forget."  This is the very data loss that I mentioned at the beginning.  However, sometimes there are times when this is the operation you need.  But if you have such a case, and you understand it, then you probably no longer need this article. <br><br>  Well, in order to completely dot everything and - regarding the answer <a href="https://habrahabr.ru/users/alekciy/" class="user_link">alekciy</a> .  Since its version does not use forced push, there will be no data loss.  But it is quite obvious that after the merge, firstly, there will be nothing to put in the stash (except for new files that are not under the supervision of git), and secondly, the rebase is no longer needed (and if there are new files, it will break off) . <br><br>  I hope this material has clarified what is happening and will help solve the problem. <br><br>  PS1: It is very convenient to use “gitk -a” (linux) to view the history <br>  UPD: <a href="https://habrahabr.ru/users/terentich/" class="user_link">Terentich</a> In Windows also works great. <br>  UPD: <a href="https://habrahabr.ru/users/eyeofhell/" class="user_link">eyeofhell</a> And it works in OSX too :) <br>  PS2: Stash (as well as many other operations) is a topic for another conversation. </div><p>Source: <a href="https://habr.com/ru/post/136847/">https://habr.com/ru/post/136847/</a></p>
+</pre><br>  In the resulting result, the role of commit X is performed by B - but this is another B, let's say, B '.  You can easily verify this by looking at the commit-id before and after rebase.  But as already mentioned, the branch itself (that is, the contents of commits, its components) will not change - only the commit-id will change.  But the goal is achieved - you can push. <br><br>  Which option to choose is up to you.  In the network already not one pack of dogs eaten about this.  My recommendation for newbies is the first option, as it is simpler and less susceptible to bugs. <br><br>  There is a third solution, and it was suggested by <a href="https://habrahabr.ru/users/defuz/" class="user_link">defuz</a> - forced push, like this: <br> <code>git push origin +master <br></code> <br>  It will cause the server to accept your commits, and will <b>unconditionally</b> change its HEAD so that it points to the last of your commits — B. So all “your” commits that you do not have (from B to A) are server "Forget."  This is the very data loss that I mentioned at the beginning.  However, sometimes there are times when this is the operation you need.  But if you have such a case, and you understand it, then you probably no longer need this article. <br><br>  Well, in order to completely dot everything and - regarding the answer <a href="https://habrahabr.ru/users/alekciy/" class="user_link">alekciy</a> .  Since its version does not use forced push, there will be no data loss.  But it is quite obvious that after the merge, firstly, there will be nothing to put in the stash (except for new files that are not under the supervision of git), and secondly, the rebase is no longer needed (and if there are new files, it will break off) . <br><br>  I hope this material has clarified what is happening and will help solve the problem. <br><br>  PS1: It is very convenient to use “gitk -a” (linux) to view the history <br>  UPD: <a href="https://habrahabr.ru/users/terentich/" class="user_link">Terentich</a> In Windows also works great. <br>  UPD: <a href="https://habrahabr.ru/users/eyeofhell/" class="user_link">eyeofhell</a> And it works in OSX too :) <br>  PS2: Stash (as well as many other operations) is a topic for another conversation. </div><p>Source: https://habr.com/ru/post/136847/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -84,9 +84,9 @@
 <li><a href="../136846/index.html">Writing system utilities in PHP CLI</a></li>
 <li><a href="../136848/index.html">Where Apple iCloud Stores Your Files</a></li>
 <li><a href="../136849/index.html">Small life hacking with clipboard editing</a></li>
+<li><a href="../13685/index.html">About Runet Money</a></li>
 <li><a href="../136850/index.html">Welcome to our office</a></li>
 <li><a href="../136851/index.html">Root on Lenovo ThinkPad Tablet</a></li>
-<li><a href="../136852/index.html">PostgreSQL: Unique keys for a distributed database. Practice</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

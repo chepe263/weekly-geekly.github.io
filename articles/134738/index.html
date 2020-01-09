@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Run jQuery on the Node.js engine instead of the browser</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/5f5/8e3/4fb/5f58e34fb7987279718522152805a106.png" align="right">  The jQuery library is a generally recognized means of manipulating several data formats at once (XML, HTML, DOM objects, ordinary objects), and, moreover, it works by means of a convenient (chain) method call with convenient (short) names.  Therefore, it is not surprising to try to adapt jQuery not only to one client, but also to server javascript, in particular, to Node.js. <br><br>  I admit honestly that when jQuery developers overcame <a href="http://bugs.jquery.com/ticket/7102">problem 7102</a> , its name (“Register jQuery as a CommonJS async module”) <nobr>for some</nobr> time even made me deceive: I thought at first that in Node.js (because Node.js and ommonJS modules have a lot in common) from now on jQuery will work smoothly.  <nobr>But</nobr> no, it was <nobr>not there</nobr> .  A close look <nobr>at the</nobr> <a href="https://github.com/jquery/jquery/commit/bba3d610c7e3b611fe1eb89178c91106a156a5dc">commit</a> <nobr>and</nobr> <a href="https://github.com/jquery/jquery/pull/331">the merge request</a> allows you to realize that jQuery, in essence, has only been able to register <nobr>as an</nobr> <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD</a> module and even checks the properties of <b>define.amd</b> <nobr>and</nobr> <b>define.amd.jQuery</b> before self-registration. <br><br><img src="http://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Nodejs_logo_light.png/250px-Nodejs_logo_light.png" align="right">  As a matter of fact, the jQuery architecture is “designed” for use in the browser-based DOM: jQuery code relies on the existence of a <b>window</b> object, which serves as the main closure argument surrounding the entire jQuery code.  Before, there were even more such implicit assumptions, and only with the elimination of <a href="http://bugs.jquery.com/ticket/6690">problem No. 6,690,</a> the jQuery library no longer relied on the existence of global <b>navigator</b> <nobr>and</nobr> <b>location</b> objects, instead starting to receive them as properties of the <b>window</b> object.  (It is clear that such an assumption did not fit for Node.js, where global objects serve as properties of the <b>global</b> object, and not a <b>window</b> at all; and equally did not apply to many other CommonJS implementations.) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Therefore, to run jQuery <nobr>in Node.js,</nobr> ready-made implementations of the <nobr>browser-based DOM are used,</nobr> such as the <a href="https://github.com/tmpvar/jsdom/">jsdom</a> package, on the basis of which, for example, this is the code that is offered as an example: <br><br><a name="habracut"></a><pre><code class="javascript hljs"><span class="hljs-comment"><span class="hljs-comment">// Print all of the news items on hackernews var jsdom = require('jsdom'); var fs = require('fs'); var jquery = fs.readFileSync("./jquery-1.6.2.min.js").toString(); jsdom.env({ html: 'http://news.ycombinator.com/', src: [ jquery ], done: function(errors, window) { var $ = window.$; console.log('HN Links'); $('td.title:not(:last) a').each(function() { console.log(' -', $(this).text()); }); } });</span></span></code> </pre> <br>  And jsdom, in turn, is based on the <nobr><a href="https://github.com/coolaj86/node-jquery">node-jQuery</a></nobr> package <nobr>,</nobr> which is notable for additional wrappers of syntactic sugar. <br><br>  There is no other method, no other approach to this problem, but so far there can not be. </div><p>Source: <a href="https://habr.com/ru/post/134738/">https://habr.com/ru/post/134738/</a></p>
+      Therefore, to run jQuery <nobr>in Node.js,</nobr> ready-made implementations of the <nobr>browser-based DOM are used,</nobr> such as the <a href="https://github.com/tmpvar/jsdom/">jsdom</a> package, on the basis of which, for example, this is the code that is offered as an example: <br><br><a name="habracut"></a><pre><code class="javascript hljs"><span class="hljs-comment"><span class="hljs-comment">// Print all of the news items on hackernews var jsdom = require('jsdom'); var fs = require('fs'); var jquery = fs.readFileSync("./jquery-1.6.2.min.js").toString(); jsdom.env({ html: 'http://news.ycombinator.com/', src: [ jquery ], done: function(errors, window) { var $ = window.$; console.log('HN Links'); $('td.title:not(:last) a').each(function() { console.log(' -', $(this).text()); }); } });</span></span></code> </pre> <br>  And jsdom, in turn, is based on the <nobr><a href="https://github.com/coolaj86/node-jquery">node-jQuery</a></nobr> package <nobr>,</nobr> which is notable for additional wrappers of syntactic sugar. <br><br>  There is no other method, no other approach to this problem, but so far there can not be. </div><p>Source: https://habr.com/ru/post/134738/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../134734/index.html">Google patented robots</a></li>
 <li><a href="../134735/index.html">Smart home appliances - LG THINQ technology</a></li>
 <li><a href="../134736/index.html">Telepresence Robots Appear at Boston Children's Hospital</a></li>
+<li><a href="../13474/index.html">Small rebranding of Apple products</a></li>
 <li><a href="../134740/index.html">PHP MongoDB ORM</a></li>
 <li><a href="../134741/index.html">Prevent reloading libraries or remake jQuery.html ()</a></li>
 <li><a href="../134742/index.html">Debian and Ubuntu remove the jvm oracle and sun implementations from the distros</a></li>
 <li><a href="../134743/index.html">Mozilla invites developers to test an experimental version of an app store.</a></li>
-<li><a href="../134744/index.html">HTML.next or ideas for HTML6</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

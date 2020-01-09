@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Zoo communication protocols for GPS trackers (part 2)</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/677/5d7/ca8/6775d7ca875c411c8e8b7c8b91246ea8.jpg"><br><br>  This is a continuation of the article about network protocols used with GPS trackers.  If in the first part we discussed frame decoders, then in the second part we will look at the options for coding various types of payloads.  Many manufacturers of devices for GPS monitoring develop their own application-level protocols for transferring data from the device to the server, and sometimes developers resort to various sophisticated and not always understandable solutions for data coding. <br><a name="habracut"></a><br>  For those who have not read or forgotten the first part, I remind you that there are two main groups into which all protocols can be divided: text and binary.  In text protocols, information is transmitted in the form of ASCII codes, and in binary, respectively, all data is encoded in big-endian or, more rarely, in little-endian binary form. <br><br><h3>  Byte order (endianness) </h3><br>  The order from high to low (big-endian) is standard for TCP and UDP protocols, it is used in data packet headers and in many higher level protocols.  Therefore, the byte order from high to low is often called network byte order (network byte order), and it is the de facto standard for coding binary data in network protocols. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <pre>  short i = 1;  // 0x00 0x01 - big-endian (network byte order)
@@ -75,14 +75,14 @@
  020000.000 ... 261014 // time accurate to milliseconds
  141026 ... 020000 // date and time without separators
  20141026020000
- 10/14/26 2:00 // date and time, accurate to minutes </pre><br>  An important point that is worth noting is that usually time is transferred around GMT (UTC or GMT time zones).  This is important because the server and the tracker can be in different time zones.  Some GPS trackers allow you to configure the time zone.  In this case, some of them report the selected time zone to the server, and some - not.  For those that do not report, you must manually set the zone on the server. <br><br>  One interesting example of a problem with time zones is a nameless protocol used in many cheap Chinese-made trackers.  The tracker sends the local date (year, month, day) and time (hours, minutes, seconds), as well as the time with an accuracy of milliseconds GMT.  Interesting in this case is that having this data, you can calculate the GMT date for the time zones from GMT-12 to GMT + 12.  For example, if at the entrance we have 2016-01-01 01:00:00 (local time) and 59: 00: 00.000 (GMT), then the result at the output will be 2015-12-31 59: 00: 00.000 (GMT).  Unfortunately, this method does not work for time zones with a deviation from Greenwich more than 12 hours. <br><br>  Another remarkable time representation is used in the standard TAIP protocol.  The time is presented in the form of weeks, days and seconds from January 6, 1980.  The significance of this date is not entirely clear, but it is standard for many GPS receivers. <br><br>  Some protocols transfer to the server only the current time of day.  In this case, the only thing that can be done is to substitute the current date for the server version.  Accordingly, this can lead to problems if the server and device time is different or any delay in data transfer.  For example, a device can transmit a time of 11:59:59 PM, and upon receiving this message, the server will already have the beginning of the next day.  One way around this problem is to compare the received timestamp with the current server time, and if the difference is more than an hour or several hours, then you need to add or subtract one day from the received date. <br><br>  In binary protocols, the date and time are either split into separate components in the same way as in text protocols, or they are stored as a UNIX timestamp (number of seconds or milliseconds since midnight (00:00:00 GMT) on January 1, 1970). <br><br><h3>  Conclusion </h3><br>  All the information presented in this article was accumulated in the course of work on the GPS monitoring server.  The project is completely Open Source, and if anyone is interested, then the source code with the implementation of all the above protocols can be found on <a href="https://github.com/tananaev/traccar">GitHub</a> . <br><br>  Also, someone may be interested in the <a href="https://www.traccar.org/protocols/">documentation on the protocols for GPS-trackers</a> .  Unfortunately, I cannot publish all the available documents in the public domain, as some of them are confidential. </div><p>Source: <a href="https://habr.com/ru/post/273127/">https://habr.com/ru/post/273127/</a></p>
+ 10/14/26 2:00 // date and time, accurate to minutes </pre><br>  An important point that is worth noting is that usually time is transferred around GMT (UTC or GMT time zones).  This is important because the server and the tracker can be in different time zones.  Some GPS trackers allow you to configure the time zone.  In this case, some of them report the selected time zone to the server, and some - not.  For those that do not report, you must manually set the zone on the server. <br><br>  One interesting example of a problem with time zones is a nameless protocol used in many cheap Chinese-made trackers.  The tracker sends the local date (year, month, day) and time (hours, minutes, seconds), as well as the time with an accuracy of milliseconds GMT.  Interesting in this case is that having this data, you can calculate the GMT date for the time zones from GMT-12 to GMT + 12.  For example, if at the entrance we have 2016-01-01 01:00:00 (local time) and 59: 00: 00.000 (GMT), then the result at the output will be 2015-12-31 59: 00: 00.000 (GMT).  Unfortunately, this method does not work for time zones with a deviation from Greenwich more than 12 hours. <br><br>  Another remarkable time representation is used in the standard TAIP protocol.  The time is presented in the form of weeks, days and seconds from January 6, 1980.  The significance of this date is not entirely clear, but it is standard for many GPS receivers. <br><br>  Some protocols transfer to the server only the current time of day.  In this case, the only thing that can be done is to substitute the current date for the server version.  Accordingly, this can lead to problems if the server and device time is different or any delay in data transfer.  For example, a device can transmit a time of 11:59:59 PM, and upon receiving this message, the server will already have the beginning of the next day.  One way around this problem is to compare the received timestamp with the current server time, and if the difference is more than an hour or several hours, then you need to add or subtract one day from the received date. <br><br>  In binary protocols, the date and time are either split into separate components in the same way as in text protocols, or they are stored as a UNIX timestamp (number of seconds or milliseconds since midnight (00:00:00 GMT) on January 1, 1970). <br><br><h3>  Conclusion </h3><br>  All the information presented in this article was accumulated in the course of work on the GPS monitoring server.  The project is completely Open Source, and if anyone is interested, then the source code with the implementation of all the above protocols can be found on <a href="https://github.com/tananaev/traccar">GitHub</a> . <br><br>  Also, someone may be interested in the <a href="https://www.traccar.org/protocols/">documentation on the protocols for GPS-trackers</a> .  Unfortunately, I cannot publish all the available documents in the public domain, as some of them are confidential. </div><p>Source: https://habr.com/ru/post/273127/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../273111/index.html">Checking Microsoft Code Contracts</a></li>
 <li><a href="../273113/index.html">Using Google Analytics in games</a></li>
 <li><a href="../273115/index.html">Selenium for Python. Chapter 6. Page Objects</a></li>
 <li><a href="../273117/index.html">Data Festival in the Museum of Moscow, or how Big Data helps to live and work</a></li>
+<li><a href="../27312/index.html">Data storm</a></li>
 <li><a href="../273125/index.html">DB hacking or excursion into the world of DBMS</a></li>
 <li><a href="../273129/index.html">Export two or more directories from Bitrix to 1C on request</a></li>
 <li><a href="../273131/index.html">PyOOCalc - Library for generating reports, Libre / Open Office Calc accounts in Python</a></li>

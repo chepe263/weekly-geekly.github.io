@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Nginx + PHP-FPM vs. Apache2 Prefork + mod_php</h1><div class="post__text post__text-html js-mediator-article"> It all started with <a href="http://forum.searchengines.ru/showthread.php%3Ft%3D438004">this topic on the forum</a> , when many seriously began to argue, they say, nginx is not at all faster than Apache, and even the translation of documentation from the official site was not convincing.  As you know, there is nothing more enjoyable than testing and displaying a graph to attract attention.  For example, the graph for the total load on the server, try to guess where is the Nginx testing stage, and where is Apache. <br><img src="http://pix.org.ua/userimages/registered/1_1261689194_313_localhost.localdomain-load-day.png" alt="image"><br>  Well, before you find out the right answer - a little about the server and the testing mechanism. <br>  In order to eliminate any suspicion of “spinning up” their VDS, the test was conducted on a third-party server, which was kindly provided to me by one of the forum participants for this test in this configuration: <br>  <b>AMD Athlon X2 5600+ 4 GB DDR2 2 × 400 GB HDD</b> with Linux Debian in minimal install.  All software was installed in a standard way - via apt-get.  Both PHP and Apache were set in minimal mode. <br>  For the test object, I set up a very light blog, Moscquito, which works without MySQL, writing a couple of posts and comments there. <br><a name="habracut"></a><br>  First of all I want to say that before starting the benchmark Nginx and Apache, I restarted the server.  The network subsystem was a little twisted up for faster work: <br> <code>sysctl -w net.core.rmem_max=16777216 <br> sysctl -w net.core.wmem_max=16777216 <br> sysctl -w net.ipv4.tcp_rmem="4096 87380 16777216" <br> sysctl -w net.ipv4.tcp_wmem="4096 65536 16777216" <br> sysctl -w sysctl net.ipv4.tcp_window_scaling=1 <br> sysctl -w sysctl net.ipv4.tcp_timestamps=1 <br> sysctl -w sysctl net.ipv4.tcp_sack=1 <br> sysctl -w net.ipv4.tcp_no_metrics_save=1 <br> sysctl -w net.ipv4.tcp_moderate_rcvbuf=1 <br> sysctl -w net.core.netdev_max_backlog=1000 <br> sysctl -w net.ipv4.tcp_congestion_control=htcp <br> sysctl -w net.core.somaxconn=1000 <br> ifconfig eth0 txqueuelen 1000 <br></code> <br>  And the limits were raised for the correct operation of the tested and benchmarks themselves: <br> <code>ulimit -s unlimited <br> ulimit -n 1024000 <br></code> <br>  For both web servers, the timeout was set to 300 seconds (standard for Apache, it is less in Nginx). <br><br><h5>  PHP-FPM </h5><br>  The processes were tied to a TCP socket, two pools were created with 4 processes each in a static mode. <br><br><h5>  nginx </h5><br>  Two workers on 10240 connections each, php is connected as upstream: <br> <code>upstream php { <br> server 127.0.0.1:9000 max_fails=1 fail_timeout=60s; <br> server 127.0.0.1:9001 max_fails=1 fail_timeout=60s; <br> } <br></code> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h5>  Apache </h5><br>  Keepalive is disabled, and MaxClients and ServerLimit are set to 10240 <br><br><h4>  Now about the benchmark </h4><br>  I tried to create a site situation under a DDOS attack, when 20k bots were hammering into the main page, and 5,000 legal users walk through the site. <br>  An improvised DDOS attack can be easily done with ab.  But for users it was necessary to generate <a href="http://www.xml-sitemaps.com/download/213.239.211.15/urllist.txt">a site map</a> and set siege on it. <br><br>  Testing took an hour and the site availability record was logged using ab.  Here are the two commands that I launched in parallel in the screen: <br> <code><a href="http://213.239.211.15/"></a> while true; do ab -r -t 300 -n 20000 -c 20000 213.239.211.15 &gt;&gt; nginx.log; sleep 5; done <br> <br> while true; do siege -i -f urllist.txt -c 5000 -b -t1M ; sleep 5; done</code> <br> <br>  Naturally, for a benchmark with an apache, the log was written in apache.log <br><br><h5>  Go to the charts </h5><br><br><img src="http://pix.org.ua/userimages/registered/1_1261689194_50_localhost.localdomain-processes-day.png" alt="image"><br>  As you can see, the number of processes changed only while Apache was running, well, it was not for nothing that MPM was called Prefork.  Nginx and PHP-FPM are static, which is a big plus. <br><br><img src="http://pix.org.ua/userimages/registered/1_1261689194_680_localhost.localdomain-memory-day.png" alt="image"><br>  Unfortunately, the memory graph turned out to be not very beautiful, but if you look closely, Apache consumes more memory. <br><br><img src="http://pix.org.ua/userimages/registered/1_1261689194_714_localhost.localdomain-interrupts-day.png" alt="image"><br><img src="http://pix.org.ua/userimages/registered/1_1261689194_30_localhost.localdomain-forks-day.png" alt="image"><br>  The graphs of switching between processes and their forks correlate very interestingly among themselves. <br><br><img src="http://pix.org.ua/userimages/registered/1_1261689194_677_localhost.localdomain-cpu-day.png" alt="image"><br>  The layout for recycling CPU is also clearly not in favor of Apache. <br><br><h4>  Break through the logs </h4><br><h5>  Nginx: </h5><br><pre> # grep -c Failed nginx.log 
@@ -84,20 +84,20 @@
  Failed requests: 10248
  Failed requests: 684
  Failed requests: 7968
-</pre><br><br>  But with Apache everything is bad - even if we cross out 2 “successful” siege hits, there are still errors + in the allotted time fewer requests were made. <br><br>  Thus, according to the test results, the Nginx + PHP-FPM bundle defeats Apache with a score of 38:23 </div><p>Source: <a href="https://habr.com/ru/post/79225/">https://habr.com/ru/post/79225/</a></p>
+</pre><br><br>  But with Apache everything is bad - even if we cross out 2 “successful” siege hits, there are still errors + in the allotted time fewer requests were made. <br><br>  Thus, according to the test results, the Nginx + PHP-FPM bundle defeats Apache with a score of 38:23 </div><p>Source: https://habr.com/ru/post/79225/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../79217/index.html">byfly lowered the price for unlimited internet</a></li>
 <li><a href="../79218/index.html">pka̶vl̶in̶y̶ DHL, speak?</a></li>
 <li><a href="../79219/index.html">Secret experiences of Wasserman-2 or Again advertising</a></li>
+<li><a href="../7922/index.html">Microsoft really wants to buy Yahoo</a></li>
 <li><a href="../79220/index.html">Application for reading habr offline</a></li>
 <li><a href="../79222/index.html">Your dream computer</a></li>
 <li><a href="../79227/index.html">Smashing book</a></li>
 <li><a href="../79228/index.html">Install and configure Perl on IIS 7.x</a></li>
+<li><a href="../7923/index.html">In the UK, mobile phones are no longer used for calls</a></li>
 <li><a href="../79231/index.html">Using the capabilities of the Windows platform in PHP</a></li>
 <li><a href="../79232/index.html">Unusual videos-Chariot Skates</a></li>
-<li><a href="../79233/index.html">Compiling a 64-bit version of Qt for windows</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

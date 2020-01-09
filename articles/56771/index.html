@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Hot-swap disk replacement in gmirror under FreeBSD</h1><div class="post__text post__text-html js-mediator-article">  Situation: There is a RAID array of two SATA drives in a mirror created using gmirror under FreeBSD. <br><br>  It is necessary to replace one disk, without stopping the server. <br><br><h2>  Drop theory </h2><br>  There are many <a href="http://www.opennet.ru/base/sys/freebsd_gmirror_raid1.txt.html">articles</a> on the subject of creating a mirror on GEOM. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       When creating a mirror, gmirror synchronizes all data, including the MBR, says <a href="http://people.freebsd.org/~rse/mirror/">http://people.freebsd.org/~rse/mirror/</a> (section Summary -&gt; GEOM mirror on whole disk).  If the server died during a disk failure, you can boot from the remaining disk, regardless of which disk is out of order.  It is important only when loading to choose the right disk from which to boot. <br><br>  When the array is working, the command <br><br><pre>  # gmirror list </pre><br>  almost always shows Flags: DIRTY.  <a href="http://freebsd.monkey.org/freebsd-geom/200610/msg00025.html">This is normal</a> : the flag is set when information is written to the disk, and at this moment the state of the data on the disks of the array does not match.  If the disk is constantly being recorded, the DIRTY flag will be permanently set. <br><br><h2>  Replacement procedure </h2><br>  Suppose there are two disks in the gm0 array: da0 and da1.  Replace need da0. <br><br>  In this situation, camcontrol was used.  Depending on the controller through which the screws are connected, atacontrol may be needed instead. <br><ol><li>  We deduced a disk from a mirror: <br><br><pre> # gmirror remove gm0 da0
@@ -69,20 +69,20 @@
  # gmirror list </pre><br>  help you find that there is no single disk. </li><li>  If point 1 has not been fulfilled, we ask gmirror to forget about all the disks that are currently inactive in the mirror: <br><br><pre>  # gmirror forget gm0 </pre><br>  gmirror detects that da0 is not and forgets about it. <br></li><li>  <strong>We insert a new disk</strong> (preferably identical to the one with which it will work in pairs, up to the model). </li><li>  Scan the bus so that the system detects a new disk attached: <br><br><pre> # camcontrol devlist # what we have now?
  # camcontrol rescan all # scan
  # camcontrol devlist # what happened?
-</pre><br></li><li>  <strong>Add a</strong> new da0 <strong>to the array</strong> : <br><br><pre>  # gmirror insert gm0 da0 </pre><br></li><li>  gmirror will detect the new disk and start <strong>data synchronization</strong> .  We look at the composition of the array: <br><br><pre>  # gmirror list </pre><br></li><li>  Do not get scared if it seems to us that the synchronization is going in the wrong direction :) If it was replaced by da0, then now it is in the list <strong>AFTER</strong> da1, and not before, as it was before. </li><li>  We are experiencing happiness. </li></ol></div><p>Source: <a href="https://habr.com/ru/post/56771/">https://habr.com/ru/post/56771/</a></p>
+</pre><br></li><li>  <strong>Add a</strong> new da0 <strong>to the array</strong> : <br><br><pre>  # gmirror insert gm0 da0 </pre><br></li><li>  gmirror will detect the new disk and start <strong>data synchronization</strong> .  We look at the composition of the array: <br><br><pre>  # gmirror list </pre><br></li><li>  Do not get scared if it seems to us that the synchronization is going in the wrong direction :) If it was replaced by da0, then now it is in the list <strong>AFTER</strong> da1, and not before, as it was before. </li><li>  We are experiencing happiness. </li></ol></div><p>Source: https://habr.com/ru/post/56771/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../56764/index.html">10 best startups of March (Habrahabr version)</a></li>
 <li><a href="../56765/index.html">Atomic grouping, or Not a step back!</a></li>
 <li><a href="../56766/index.html">Visual explanation of the financial crisis (now in Russian!)</a></li>
 <li><a href="../56767/index.html">Testing "Blonde.ru"</a></li>
 <li><a href="../56769/index.html">Parcels from China: Wireless Remote Shutter.</a></li>
+<li><a href="../5677/index.html">Burning safari</a></li>
 <li><a href="../56776/index.html">JuffEd 0.6.0 release</a></li>
 <li><a href="../56777/index.html">Trying to invent something exclusive for a T-shirt</a></li>
 <li><a href="../56778/index.html">Testing VDS. Act II.</a></li>
 <li><a href="../56779/index.html">Independent testing of various AntiSpam solutions (commercial and free products)</a></li>
-<li><a href="../56782/index.html">The last step to release is Mandriva Linux 2009 Spring RC2</a></li>
+<li><a href="../5678/index.html">W3C resumes HTML development</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>LXML - problems with encoding when parsing HTML</h1><div class="post__text post__text-html js-mediator-article"> This post is devoted to the perennial problem of all pythonists - encodings.  Recently, I received a letter in which my friend complained that his program produced lines of the form: <br><br> <code>u'\xd0\x9a\xd1\x83\xd1\x80\xd1\x83\xd0\xbc\xd0\xbe\xd1\x87'</code> <br> <br>  Have you noticed that something is wrong?  And here I am.  The lines are like unicode, but inside them encoded utf-8 bytes.  Something is wrong here.  Understanding further and demanding the script that this generates, it becomes clear that the data is taken from the web.  Quite the usual way through <code>urllib</code> and then fed to <code>lxml.html</code> for parsing.  Since <code>urllib</code> operates with only byte strings, it could not turn them into a unicode in this way, which means <code>lxml</code> is to blame for <code>lxml</code> . <br><a name="habracut"></a><br>  In general, <code>lxml</code> very cool library - and fast, and functional, and can mimic the interface under the <code>ElementTree</code> , and interact with <code>BeatifulSoup</code> .  It has long been popular with pythonists, when it is necessary to somehow conveniently work with <code>xml</code> . <br><br>  But here is a slightly different case.  It uses the html parser.  And it is in it that these unpleasant metamorphoses with strings occur. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,17 +59,17 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I decided to understand what was the matter and how to overcome this behavior. <br><br>  For a start, I went to <a href="http://yandex.ru/">yandex.ru</a> and looked at what html is being sent there.  The content encoding is utf8.  The first thing that caught my eye was the absence of a coding declaration. It is not mandatory, but it is still used quite often.  Making a similar html: <br><br> <code>data = """&lt;html&gt; <br> &lt;head&gt; <br> &lt;/head&gt; <br> &lt;body&gt; &lt;/body&gt; <br> &lt;/html&gt;""" <br> html = lxml.html.document_fromstring(data) <br></code> <br><br>  and <code>lxml.html</code> it in <code>lxml.html</code> , got, alas, the expected result: <br><br> <code>&gt;&gt;&gt; s <br> u'\xd0\x9f\xd1\x80\xd0\xb8\xd0\xb2\xd0\xb5\xd1\x82 \xd0\xbc\xd0\xb8\xd1\x80' <br> &gt;&gt;&gt; print s <br> ÐŸÑ€Ð¸Ð²ÐµÑ‚ Ð¼</code> <br> <br>  s - this is exactly the line "Hello world", torn through xpath.  As you can see, it is not decoded.  By and large, this problem can be solved on the spot.  There is such a special codec raw-unicode-escape, which from such a line will make a byte but also without conversion: <br><br> <code>&gt;&gt;&gt; print s.encode('raw-unicode-escape') <br>  </code> <br> <br>  But this decision is bad.  We need to somehow force <code>lxml.html</code> not to mock non-ASCII characters. <br><br>  What will happen if you specify the encoding in my unloved meta header html? <br><br> <code>&lt;html&gt; <br> &lt;head&gt; <br> &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt; <br> &lt;/head&gt; <br> <br> &lt;body&gt; &lt;/body&gt; <br> &lt;/html&gt; <br></code> <br><br>  Everything immediately falls into place: <br><br> <code>&gt;&gt;&gt; print s <br>  </code> <br> <br>  Of course, it would be more logical to take information about the encoding from the http headers, but for lxml.html, the protocol by which the mystery data came and it cannot rely on it. <br><br>  Another solution is to input a unicode, not a byte line, at the input of lxml.html (unless of course you know the encoding yourself): <br><br> <code>&gt;&gt;&gt; html = lxml.html.document_fromstring(data.decode('utf-8')) <br> ... <br> &gt;&gt;&gt; print s <br>  </code> <br> <br>  In my opinion, it would be better if <code>lxml.html</code> did not try to “survive at any cost” and spoil the content, but explicitly report that the encoding is not specified - as by the way, it also comes in when parsing xml.  But in any case, there are workarounds. <br><br>  Be carefull. </div><p>Source: <a href="https://habr.com/ru/post/128381/">https://habr.com/ru/post/128381/</a></p>
+      I decided to understand what was the matter and how to overcome this behavior. <br><br>  For a start, I went to <a href="http://yandex.ru/">yandex.ru</a> and looked at what html is being sent there.  The content encoding is utf8.  The first thing that caught my eye was the absence of a coding declaration. It is not mandatory, but it is still used quite often.  Making a similar html: <br><br> <code>data = """&lt;html&gt; <br> &lt;head&gt; <br> &lt;/head&gt; <br> &lt;body&gt; &lt;/body&gt; <br> &lt;/html&gt;""" <br> html = lxml.html.document_fromstring(data) <br></code> <br><br>  and <code>lxml.html</code> it in <code>lxml.html</code> , got, alas, the expected result: <br><br> <code>&gt;&gt;&gt; s <br> u'\xd0\x9f\xd1\x80\xd0\xb8\xd0\xb2\xd0\xb5\xd1\x82 \xd0\xbc\xd0\xb8\xd1\x80' <br> &gt;&gt;&gt; print s <br> ÐŸÑ€Ð¸Ð²ÐµÑ‚ Ð¼</code> <br> <br>  s - this is exactly the line "Hello world", torn through xpath.  As you can see, it is not decoded.  By and large, this problem can be solved on the spot.  There is such a special codec raw-unicode-escape, which from such a line will make a byte but also without conversion: <br><br> <code>&gt;&gt;&gt; print s.encode('raw-unicode-escape') <br>  </code> <br> <br>  But this decision is bad.  We need to somehow force <code>lxml.html</code> not to mock non-ASCII characters. <br><br>  What will happen if you specify the encoding in my unloved meta header html? <br><br> <code>&lt;html&gt; <br> &lt;head&gt; <br> &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt; <br> &lt;/head&gt; <br> <br> &lt;body&gt; &lt;/body&gt; <br> &lt;/html&gt; <br></code> <br><br>  Everything immediately falls into place: <br><br> <code>&gt;&gt;&gt; print s <br>  </code> <br> <br>  Of course, it would be more logical to take information about the encoding from the http headers, but for lxml.html, the protocol by which the mystery data came and it cannot rely on it. <br><br>  Another solution is to input a unicode, not a byte line, at the input of lxml.html (unless of course you know the encoding yourself): <br><br> <code>&gt;&gt;&gt; html = lxml.html.document_fromstring(data.decode('utf-8')) <br> ... <br> &gt;&gt;&gt; print s <br>  </code> <br> <br>  In my opinion, it would be better if <code>lxml.html</code> did not try to “survive at any cost” and spoil the content, but explicitly report that the encoding is not specified - as by the way, it also comes in when parsing xml.  But in any case, there are workarounds. <br><br>  Be carefull. </div><p>Source: https://habr.com/ru/post/128381/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../128376/index.html">Results of the recommendation contest or victory over the personnel crisis</a></li>
 <li><a href="../128377/index.html">Realistic landscape in Ogre 3D</a></li>
 <li><a href="../128378/index.html">We write your first gem</a></li>
 <li><a href="../128379/index.html">BookMyBest - hotel search and price comparison service</a></li>
+<li><a href="../12838/index.html">Protect your gadget!</a></li>
 <li><a href="../128380/index.html">WebSocket: Implementing a web application using Jetty Web Socket. Part 1</a></li>
 <li><a href="../128382/index.html">Development of a virtual system "Multimeter" based on National Instruments</a></li>
 <li><a href="../128383/index.html">Update 0x4553-Intercepter</a></li>

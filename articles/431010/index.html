@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>The memory of your computer lag every 7,8 ms</h1><div class="post__text post__text-html js-mediator-article"><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/dc7/f53/c6e/dc7f53c6eb17bfa58db7c138915bce84.jpg"></div><br>  <i><font color="gray">Modern DDR3 SDRAM.</font></i>  <i><font color="gray">Source: <a href="https://en.wikipedia.org/wiki/DDR3_SDRAM">BY-SA / 4.0 by Kjerish</a></font></i> <br><br>  During a recent visit to <a href="http://www.computerhistory.org/">the Computer</a> View <a href="http://www.computerhistory.org/">Museum</a> in Mountain View, my attention was drawn to an ancient sample of <a href="https://en.wikipedia.org/wiki/Magnetic-core_memory">ferrite memory</a> . <br><br><div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/2b2/d31/5c6/2b2d315c67b80adcd5f0b5bf4dd23e7a.jpg"></div><br>  <i><font color="gray">Source: <a href="https://en.wikipedia.org/wiki/File:KL_CoreMemory.jpg">BY-SA / 3.0 by Konstantin Lanzet</a></font></i> <br><a name="habracut"></a><br>  I quickly came to the conclusion that I have no idea how such things work.  Do the rings rotate (no), and why three wires pass through each ring (I still don’t understand how they work).  More importantly, I realized that I very poorly understand the principle of operation of modern dynamic RAM! 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <div style="text-align:center;"><img src="https://habrastorage.org/getpro/habr/post_images/7fc/cb6/f41/7fccb6f418a426c7829b7e9bb1b5d3c3.png"></div><br>  <i><font color="gray">Source: <a href="https://en.wikipedia.org/wiki/File:KL_CoreMemory.jpg">Ulrich Drepper's Memory Cycle</a></font></i> <br><br>  I was particularly interested in one of the consequences of how dynamic RAM works.  It turns out that every bit of data is stored by charge (or its absence) on a tiny capacitor in the RAM chip.  But these capacitors gradually lose charge over time.  To avoid losing stored data, they must be regularly updated to restore charge (if any) to the original level.  This <a href="https://en.wikipedia.org/wiki/Memory_refresh">update process</a> involves reading each bit, and then writing it back.  In the process of such an "update", the memory is occupied and cannot perform normal operations, such as writing or storing bits. <br><br>  It worried me for a long time, and I wondered ... can I notice a delay in updating at the program level? <br><br><h1>  Dynamic RAM Upgrade Training Base </h1><br>  Each DIMM consists of “cells” and “rows”, “columns”, “sides” and / or “ranks”.  <a href="https://pubweb.eng.utah.edu/~cs7810/pres/11-7810-12.pdf">This presentation</a> from the University of Utah explains the nomenclature.  The configuration of the computer's memory can be checked with the <code>decode-dimms</code> .  Here is an example: <br><br><pre>  $ decode-dimms
@@ -105,15 +105,15 @@
  127906Hz 7716
  255813Hz 7947
  383720Hz 7460
- 511626Hz 7141 </pre><br>  I have to admit, the code is not quite stable.  In case of problems, it is recommended to disable Turbo Boost, CPU frequency scaling and performance optimization. <br><br><h1>  Conclusion </h1><br>  From this work there are two main conclusions. <br><br>  We have seen that low-level data is rather difficult to analyze and seems rather noisy.  Instead of evaluating with the naked eye, you can always use the good old FFT.  In preparing the data, it is necessary in some sense to take what was desired. <br><br>  Most importantly, we have shown that it is often possible to measure subtle hardware behavior from a simple process in user space.  This kind of thinking led to the discovery of the <a href="https://googleprojectzero.blogspot.com/2015/03/exploiting-dram-rowhammer-bug-to-gain.html">original vulnerability of Rowhammer</a> , it is implemented in the Meltdown / Specter attacks and again shown in the recent <a href="https://arstechnica.com/information-technology/2018/11/potentially-disastrous-rowhammer-bitflips-can-bypass-ecc-protections/">reincarnation of Rowhammer for ECC memory</a> . <br><br>  Much remains beyond the scope of this article.  We barely touched the internal workings of the memory subsystem.  For further reading, I recommend: <br><br><ul><li>  <a href="http://lackingrhoticity.blogspot.com/2015/04/l3-cache-mapping-on-sandy-bridge-cpus.html">L3 cache mapping on Sandy Bridge processors</a> </li><li>  <a href="https://habr.com/post/431102/">How a physical address is matched with strings and banks in DRAM</a> </li><li>  <a href="https://habr.com/post/431128/">Hanna Hartikainen cracked DDR3 SO-DIMM and made him work ... slower</a> </li></ul><br>  Finally, here is a good description of old ferrite memory: <br><br><ul><li>  <a href="http://www.psych.usyd.edu.au/pdp-11/core.html">Explanation of ferrite memory PDP-11 from the University of Sydney</a> </li></ul></div><p>Source: <a href="https://habr.com/ru/post/431010/">https://habr.com/ru/post/431010/</a></p>
+ 511626Hz 7141 </pre><br>  I have to admit, the code is not quite stable.  In case of problems, it is recommended to disable Turbo Boost, CPU frequency scaling and performance optimization. <br><br><h1>  Conclusion </h1><br>  From this work there are two main conclusions. <br><br>  We have seen that low-level data is rather difficult to analyze and seems rather noisy.  Instead of evaluating with the naked eye, you can always use the good old FFT.  In preparing the data, it is necessary in some sense to take what was desired. <br><br>  Most importantly, we have shown that it is often possible to measure subtle hardware behavior from a simple process in user space.  This kind of thinking led to the discovery of the <a href="https://googleprojectzero.blogspot.com/2015/03/exploiting-dram-rowhammer-bug-to-gain.html">original vulnerability of Rowhammer</a> , it is implemented in the Meltdown / Specter attacks and again shown in the recent <a href="https://arstechnica.com/information-technology/2018/11/potentially-disastrous-rowhammer-bitflips-can-bypass-ecc-protections/">reincarnation of Rowhammer for ECC memory</a> . <br><br>  Much remains beyond the scope of this article.  We barely touched the internal workings of the memory subsystem.  For further reading, I recommend: <br><br><ul><li>  <a href="http://lackingrhoticity.blogspot.com/2015/04/l3-cache-mapping-on-sandy-bridge-cpus.html">L3 cache mapping on Sandy Bridge processors</a> </li><li>  <a href="https://habr.com/post/431102/">How a physical address is matched with strings and banks in DRAM</a> </li><li>  <a href="https://habr.com/post/431128/">Hanna Hartikainen cracked DDR3 SO-DIMM and made him work ... slower</a> </li></ul><br>  Finally, here is a good description of old ferrite memory: <br><br><ul><li>  <a href="http://www.psych.usyd.edu.au/pdp-11/core.html">Explanation of ferrite memory PDP-11 from the University of Sydney</a> </li></ul></div><p>Source: https://habr.com/ru/post/431010/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../430990/index.html">Weekend repair or how to fix Saitek Rhino X55 / X56 throttl controller</a></li>
-<li><a href="../430996/index.html">Elusive littleBigPlanet bug</a></li>
-<li><a href="../430998/index.html">Release XMPP (Jabber) server Prosody 0.11.0</a></li>
+<li><a href="../4310/index.html">Steve Rubel calls for blocking financial sources of spammers</a></li>
+<li><a href="../43100/index.html">coworking without center</a></li>
 <li><a href="../431004/index.html">The Chinese facial recognition system considered the image of a person on the bus as a traffic offender.</a></li>
 <li><a href="../431006/index.html">InSight prepares to land on Mars</a></li>
+<li><a href="../43101/index.html">Ubuntu 8.10 rc1</a></li>
 <li><a href="../431012/index.html">Create an eBook reader with PDFKit on Swift</a></li>
 <li><a href="../431014/index.html">Flexbox. Technology infographics</a></li>
 <li><a href="../431016/index.html">US is asking partners to abandon the use of Huawei equipment</a></li>

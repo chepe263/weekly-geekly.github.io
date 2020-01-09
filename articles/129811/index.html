@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>FreeSWITCH + mod_unimrcp + VoiceNavigator. Synthesis and recognition of Russian speech in FreeSWITCH</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage1/d4048c23/cf914a43/54dba5c2/817e0185.png" alt="VoiceNavigator"><img src="https://habrastorage.org/storage2/4a6/959/c6a/4a6959c6a01b1dbe64b97e3b8e5cc193.png" alt="FreeSWITCH"><img src="https://habrastorage.org/getpro/habr/post_images/3aa/7ce/eeb/3aa7ceeebc73704cfea552d78f040e33.png" alt="UniMRCP"><br><br>  In the continuation of a <a href="http://habrahabr.ru/blogs/voip/124946/">series of articles</a> on the integration of Asterisk and VoiceNavigator I will describe the integration of <a href="http://speechpro.ru/product/recognition/platform/vn">VoiceNavigator</a> with <a href="http://www.freeswitch.org/">FreeSWITCH</a> . <br><br>  On Habré there are several articles and mentions of FS, but it’s not as popular with Asterisk)) 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       FreeSWITCH, being a continuation and development of ideas embedded in Asterisk, has a truly modular architecture, where all the basic functionality, as far as possible, is rendered into separate modules.  This allows for greater flexibility in creating solutions scalable from softphone to softswitch.  FreeSWITCH can be used as a switch, PBX, media gateway or media server for IVR applications that use XML files to control the call processing algorithm. <br><br>  For FreeSWITCH, unlike Asterisk, there is no need to separately compile UniMRCP.  UniMRCP support has already been added and works out of the box as a module asr_tts / mod_unimrcp. <br><br>  The following describes installing FreeSWITCH, connecting VoiceNavigator to it, and creating a test voice application. <br><a name="habracut"></a><br><h5>  Install FreeSWITCH </h5><br>  The installation of FS was described both on Habré and in other sources, therefore I’ll dwell on it briefly.  Fortunately, everything is simple and affordable.  The following describes the installation on CentOS. <br><br>  Download the distribution from <a href="http://www.freeswitch.org/">www.freeswitch.org</a> .  At the time of writing, the latest version of the distribution is 1.0.6. <br><br>  Before compiling, we install the necessary packages for FreeSWITCH and its modules: <br> <code>yum install autoconf automake libtool gcc-c++ ncurses-devel make expat-devel zlib zlib-devel libjpeg-devel unixODBC-devel openssl-devel gnutls-devel libogg-devel libvorbis-devel curl-devel gdbm gdbm-devel</code> <br> <br>  To add a UniMRCP module in the modules.conf file, uncomment the line asr_tts / mod_unimrcp. <br>  You also need to uncomment languages ​​/ mod_perl for the ability to work with a dialplan from Perl. <br><br>  Next, the standard compilation procedure: <br><pre>  ./configure
@@ -124,14 +124,14 @@
        &lt;condition field = "destination_number" expression = "^ 777 $"&gt;
          &lt;action application = "transfer" data = "777 XML context_vn" /&gt;
        &lt;/ condition&gt;
- &lt;/ extension&gt; </pre><br><br>  FreeSWITCH is configured and ready to test the operation of the synthesis and recognition functions. <br>  Restart FS to apply the changes. <br><br>  Now you can call on number 777 to check the work of synthesis and recognition.  The system asks for a number from one to ten and displays the recognition result in the console. <br><br>  But then the most interesting.  How to get this result and process?  If in Asterisk it was enough to parse the $ {RECOG_RESULT} variable, then FreeSWITCH uses the more complex Event Socket mechanism for this.  Or rather the event DETECTED_SPEECH with Speech-Type: detected-speech. <br>  The topic of working with sockets FreeSWITCH is beyond the scope of this article and deserves a separate large description. <br>  For those interested, you can see the details <a href="http://wiki.freeswitch.org/wiki/Misc._Dialplan_Tools_detect_speech">here</a> and <a href="http://wiki.freeswitch.org/wiki/ESL">here</a> . </div><p>Source: <a href="https://habr.com/ru/post/129811/">https://habr.com/ru/post/129811/</a></p>
+ &lt;/ extension&gt; </pre><br><br>  FreeSWITCH is configured and ready to test the operation of the synthesis and recognition functions. <br>  Restart FS to apply the changes. <br><br>  Now you can call on number 777 to check the work of synthesis and recognition.  The system asks for a number from one to ten and displays the recognition result in the console. <br><br>  But then the most interesting.  How to get this result and process?  If in Asterisk it was enough to parse the $ {RECOG_RESULT} variable, then FreeSWITCH uses the more complex Event Socket mechanism for this.  Or rather the event DETECTED_SPEECH with Speech-Type: detected-speech. <br>  The topic of working with sockets FreeSWITCH is beyond the scope of this article and deserves a separate large description. <br>  For those interested, you can see the details <a href="http://wiki.freeswitch.org/wiki/Misc._Dialplan_Tools_detect_speech">here</a> and <a href="http://wiki.freeswitch.org/wiki/ESL">here</a> . </div><p>Source: https://habr.com/ru/post/129811/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../129804/index.html">Single user authorization with support for multiple services</a></li>
 <li><a href="../129805/index.html">XTreamer Ultra Review</a></li>
 <li><a href="../129806/index.html">Video recording Apple Special Event, October 2011</a></li>
 <li><a href="../129807/index.html">HackDay. Moscow. October 22-23</a></li>
+<li><a href="../12981/index.html">The online alternative to Microsoft Project is released under a free license.</a></li>
 <li><a href="../129810/index.html">Chinese t-shirt web service</a></li>
 <li><a href="../129813/index.html">Live discussion. Artemy Lebedev. Megan Donahoe. Design, Metro, Windows Phone</a></li>
 <li><a href="../129814/index.html">Embedding Spring Security in the ZK + Spring Framework + Hibernate: Part Three</a></li>

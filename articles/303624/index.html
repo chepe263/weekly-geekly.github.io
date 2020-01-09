@@ -31,12 +31,12 @@ var name; ...">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -58,7 +58,7 @@ var name; ...">
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Jsqry - a library for querying JS objects and arrays</h1><div class="post__text post__text-html js-mediator-article"><p>  I present to your attention a small js-library <a href="https://github.com/xonixx/jsqry">Jsqry</a> . <br>  The easiest way to illustrate its purpose is the following example. </p><br><p>  Before: </p><br><pre><code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> name; <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> (<span class="hljs-keyword"><span class="hljs-keyword">var</span></span> i = <span class="hljs-number"><span class="hljs-number">0</span></span>; i &lt; users.length; i++) { <span class="hljs-keyword"><span class="hljs-keyword">if</span></span> (users[i].id == <span class="hljs-number"><span class="hljs-number">123</span></span>) { name = users[i].name; <span class="hljs-keyword"><span class="hljs-keyword">break</span></span>; } }</code> </pre> <br><p>  After: </p><br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> name = one(users, <span class="hljs-string"><span class="hljs-string">'[_.id==?].name'</span></span>, <span class="hljs-number"><span class="hljs-number">123</span></span>);</code> </pre> <br><p>  The library allows you to extract information from objects / arrays in one line, using simple query language, instead of writing cycles (sometimes nested). </p><a name="habracut"></a><br><p>  In fact, it implements only two functions: </p><br><ul><li>  <strong>query</strong> - to return a list of results and </li><li>  <strong>one</strong> to return the first result found. </li></ul><br><p>  The list of features includes: </p><br><ol><li>  Filtering </li><li>  Transformation </li><li>  Python style indexes / slices </li></ol><br><p>  The library appeared spontaneously in a single project built on the current <a href="https://en.wikipedia.org/wiki/Single-page_application">one-page application</a> approach.  We load one big JSON, parts of which are then used to render different views of the site on the client.  And for the tearing of these very parts, and wanted a more convenient way.  Then, however, the library was in demand in other cases. </p><br><p>  I will explain a little on the functional.  The request can generally be </p><br><pre> <code class="html hljs xml">field1.field2[ condition or index or slice ].field3{ transformation }.field4</code> </pre> <br><p>  Here: </p><br><ul><li>  <strong>field1.field2.field3 ...</strong> - normal access to fields of objects, as in js </li><li>  <strong>[condition]</strong> - filtering </li><li>  <strong>[index]</strong> - access by index, also in js </li><li>  <strong>[from: to: step]</strong> - <a href="https://habrahabr.ru/post/89456/">Python style slices</a> </li><li>  <strong>{transformation}</strong> - transformation of objects </li></ul><br><p>  The <strong>condition</strong> and <strong>transformation</strong> should be discussed in more detail. <br>  In fact, everything is very simple.  It is enough to understand that each expression inside square / curly brackets when executed is replaced with a function according to this principle: </p><br><p>  <strong>condition_or_transformation</strong> ⟶ function (_, i) {return <strong>condition_or_transformation</strong> } </p><br><p>  (here <strong>_</strong> is the value of the element being transmitted, <strong>i</strong> is its index). </p><br><p>  Example: </p><br><pre> <code class="javascript hljs">query([<span class="hljs-number"><span class="hljs-number">1</span></span>,<span class="hljs-number"><span class="hljs-number">2</span></span>,<span class="hljs-number"><span class="hljs-number">3</span></span>,<span class="hljs-number"><span class="hljs-number">4</span></span>,<span class="hljs-number"><span class="hljs-number">5</span></span>],<span class="hljs-string"><span class="hljs-string">'[_&gt;2]{_+10}'</span></span>) <span class="hljs-comment"><span class="hljs-comment">// [13, 14, 15]</span></span></code> </pre> <br><p>  Also parameterization of the query is supported: </p><br><pre> <code class="javascript hljs">query([<span class="hljs-number"><span class="hljs-number">1</span></span>,<span class="hljs-number"><span class="hljs-number">2</span></span>,<span class="hljs-number"><span class="hljs-number">3</span></span>,<span class="hljs-number"><span class="hljs-number">4</span></span>,<span class="hljs-number"><span class="hljs-number">5</span></span>],<span class="hljs-string"><span class="hljs-string">'[_&gt;?]{_+?}'</span></span>, <span class="hljs-number"><span class="hljs-number">2</span></span>, <span class="hljs-number"><span class="hljs-number">10</span></span>) <span class="hljs-comment"><span class="hljs-comment">// [13, 14, 15]</span></span></code> </pre> <br><p>  By combining these capabilities, you can build highly complex and flexible queries.  More examples of use <a href="">can be found here</a> . </p><br><p>  From interesting in implementation - <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a> query tree is cached, which gives the library speed. </p><br><p>  Of course, my library is not unique in its kind.  It is necessary to give a "small" list of analogues: </p><br><ul><li>  SpahQL - <a href="http://danski.github.io/spahql/">http://danski.github.io/spahql/</a> </li><li>  Objectpath - <a href="http://objectpath.org/">http://objectpath.org/</a> </li><li>  Sift.js - <a href="">https://github.com/crcn/sift.js</a> </li><li>  DefiantJS - <a href="http://defiantjs.com/">http://defiantjs.com/</a> </li><li>  <a href="http://orangevolt.blogspot.com/2012/12/8-ways-to-query-json-structures.html">and so on...</a> </li></ul><br><p>  Why another library?  In fact, it does not support the entire possible range of request types, but only what was needed in our project in most cases.  Due to this simplicity and speed.  Also, an extremely simple API, inspired by the jQuery approach. </p><br><p>  I will be glad to hear criticism and suggestions for improvement. </p></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -66,10 +66,10 @@ var name; ...">
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/303624/">https://habr.com/ru/post/303624/</a></p>
+    <p>Source: https://habr.com/ru/post/303624/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -80,9 +80,9 @@ var name; ...">
 <li><a href="../303620/index.html">The digest of fresh materials from the world of the frontend for the last week №216 (June 13 - 19, 2016)</a></li>
 <li><a href="../303626/index.html">Progressive Web Apps: WhoAmI</a></li>
 <li><a href="../303628/index.html">Perl plugin version 2.1 released for IntelliJ IDEA</a></li>
+<li><a href="../30363/index.html">Cloud Computing is the 21st Century Electrification</a></li>
 <li><a href="../303630/index.html">Preparing Xamarin.Forms: Setting Up the Environment and First Steps</a></li>
 <li><a href="../303632/index.html">Let's talk about piracy and free information.</a></li>
-<li><a href="../303638/index.html">Joker 2016 Java Conference: Peter, October 14-15</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

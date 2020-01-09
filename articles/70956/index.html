@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>A small error in the Pure-FTPd configuration file that caused me to lose an hour</h1><div class="post__text post__text-html js-mediator-article">  So, I, like many, use the excellent <a href="http://www.pureftpd.org/project/pure-ftpd">Pure-FTPd</a> ftp server.  However, today I ran into some trouble ... <br><a name="habracut"></a><br><br>  In general, it was like that.  Put on the machine Pure-FTPd, got virtual users.  Checked, everything worked perfectly.  Raise, firewall in which opened 21 ports.  It stopped working at all ... Well, of course, you still have to open PassivePortRange in the firewall for data transfer.  Open the Pure-FTPd configuration file and see the following. <br><blockquote><ol><li> <code><font color="black"><font color="#666666"><i># Port range for passive connections replies. - for firewalling. <font color="#666666"><i># PassivePortRange 30000 50000</i></font></i></font></font></code> </li> <li> <code><font color="black"><font color="#666666"><i><font color="#666666"><i># Port range for passive connections replies. - for firewalling.</i></font> # PassivePortRange 30000 50000</i></font></font></code> </li> </ol></blockquote><br>  Looked carefully?  Well, respectively, uncomment and get. <br><blockquote><ol><li>  <font color="#666666"><i>#Port range for passive connections replies.</i></font>  <font color="#666666"><i>- for firewalling.</i></font> </li><li>  PassivePortRange <font color="#000000">30000</font> <font color="#000000">50,000</font> </li></ol></blockquote><br>  Restart Pure-FTPd, add to the firewall rules to pass data for these ports.  Trying ... does not work!  Hmm, that is, it works, you can connect, but the data goes through time ... Strange. <br>  Turn on the head.  We understand that the firewall passes through time.  But how can this be?  We open the log and see that for some reason we have data not only on ports 30,000: 50,000, but also on some others.  How can this be?  We set them in the configuration file! <br>  Run the excellent utility <strong>pure-config-args</strong> . <br><blockquote><ol><li>  request: <font color="#000000"><b>/</b></font> etc <font color="#000000"><b>/</b></font> pure-ftpd pure-config-args pure-ftpd.conf </li><li>  <font color="#660033">-A</font> <font color="#660033">-c10</font> <font color="#660033">-B</font> <font color="#660033">-C3</font> <font color="#660033">-z</font> <font color="#660033">-D</font> <font color="#660033">-e</font> <font color="#660033">-fftp</font> <font color="#660033">-H</font> <font color="#660033">-I15</font> <font color="#660033">-lpam</font> -L2000: <font color="#000000">8</font> -m4 <font color="#660033">-s</font> -U177: 077 <font color="#660033">-u40</font> <font color="#660033">-x</font> <font color="#660033">-r</font> <font color="#660033">-i</font> <font color="#660033">-k99</font> <font color="#660033">-G</font> <font color="#660033">-Z</font> </li></ol></blockquote><br>  Well, where are our ports?  BUT?  Open the config again and write. <br><blockquote><ol><li>  <font color="#666666"><i>#Port range for passive connections replies.</i></font>  <font color="#666666"><i>- for firewalling.</i></font> </li><li>  <font color="#666666"><i>PassivePortRange 30000: 50,000</i></font> </li></ol></blockquote><br>  Everyone noticed that there appeared ":".  And now everything is fine with us.  And the ports in the config appeared, and of course it worked all at once.  Of course, according to the mind, the range is always written in ":", well, not through a space.  But, when you see that in a clean, I would even say a space in the virgin configuration file, then you write a space. <br>  <strong>Conclusion: do not believe the virgin configs and rtfm!</strong> <br><br>  PS I have <strong>Pure-FTPd 1.0.21–182.32.1</strong> , the system is <strong>OpenSuse 11.1</strong> <br>  PPS Transferred to Open Source.  Made a bug report. <br>  PPPS Frank just wrote to me (the main developer of Pure-FTPd), said that this is a cant in the entire version, and not only in OpenSuse, will be eliminated in the next build. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,23 +62,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/70956/">https://habr.com/ru/post/70956/</a></p>
+    <p>Source: https://habr.com/ru/post/70956/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../70944/index.html">Yota Egg enters the market</a></li>
 <li><a href="../70945/index.html">20 Fantastic Latest jQuery Plugins</a></li>
 <li><a href="../70946/index.html">Let's talk?</a></li>
 <li><a href="../70948/index.html">Let's talk?</a></li>
+<li><a href="../7095/index.html">Ya.ru</a></li>
 <li><a href="../70951/index.html">The final release of antivirus Microsoft Security Essentials</a></li>
 <li><a href="../70957/index.html">Review Jolicloud</a></li>
 <li><a href="../70958/index.html">Memory training</a></li>
+<li><a href="../7096/index.html">Yahoo earns 7 times less than Google</a></li>
 <li><a href="../70962/index.html">Website optimization for IE6 - good or evil?</a></li>
 <li><a href="../70963/index.html">Script to reduce images and a couple more useful features.</a></li>
-<li><a href="../70968/index.html">Intel will offer new dual-core for ultra-thin notebooks</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

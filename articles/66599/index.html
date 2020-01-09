@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Simplicity in design. Episode 2. DHT and PEX</h1><div class="post__text post__text-html js-mediator-article">  Peer-to-peer BitTorrent network is very popular.  And the more offensive is that such a network is based on a website, a tracker, which is absolutely not pythonic and potentially dangerous.  Accordingly, since BitTorrent is alive, various attempts have been made to decentralize and the rest - getting a list of peers. <br><br>  Computer science students have a popular thinking pattern: “Decentralize?  DHT! ”  <a href="http://en.wikipedia.org/wiki/Distributed_hash_table">DHT, Distributed Hash Tables</a> - a speculatively simple idea: the key ranges of the hash tables are scattered across peers, reciprocal links and cheers are lined up.  Hooray - in the ass hole.  Because when confronted with a real network, unlike a simulator or a cluster, an enormous number of problems begin.  More than half of the peers, for example, are hidden behind NATs and fairwalls, so they respond to DHT requests from one peers, but not from others, and in an unpredictable way.  Peers constantly come and go, some peers are buggy, there are malicious peers, someone is connected via dial-up.  In order to provide for all this and tighten up the corresponding plugs, we had to work hard.  And the resulting code still raises censure.  The root problem is that DHT has to build its own separate P2P network according to its own rules.  What is bad for complexity, efficiency, safety. <br><br>  Another attempt in the same direction is <a href="http://en.wikipedia.org/wiki/Peer_exchange">PEX (Peer EXchange) *</a> , a gossip protocol in which <i>already</i> connected peers simply exchange the addresses of those to whom they are <i>already</i> attached.  The protocol had a difficult fate, because initially Bram Cohen (the author of BitTorrent) was confident that PEX would lead to a swarm disintegration.  He did some kind of simulator quickly and saw a complete breakdown.  Some time ago it seemed to me that I understood why his swarms also fell apart.  I also made a simulator, but with reasonable disintegration parameters the swarm could not be achieved.  Apparently, he had some kind of mistake. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      And PEX works fine.  It was originally implemented in unofficial clients, it seems Azureus and µTorrent (the second has not yet been purchased by BitTorrent Inc).  Gradually, the implementation of µTorrent, called ut_pex, became generally accepted.  The protocol is very effective: from my laptop, with my special BitTorrent spider, in a couple of minutes I copied all the peers in the 100 thousandth swarm.  The logic of work is simple, exponential.  Having received twenty peers from the tracker and successfully joining two, we immediately get two hundred more by ut_pex.  Well, and so on.  The protocol itself is extremely simple and consists of one (!) Message.  Another popular pattern of thinking: everyone thinks there should be two messages: request and response.  No, there is no request.  Just the messages are so small that there is no point in saving.  And with a lot of trouble requests.  Therefore, if the peer sees that you understand ut_pex, it simply periodically sends you IP addresses.  The implementation of ut_pex in libtorrent-rasterbar takes up 7 times less space than a fairly compact implementation of DHT in the same place **. <br><br>  <sub>* And what is <a href="http://en.wikipedia.org/wiki/Peer_exchange">now written about PEX</a> on Wikipedia is original research or simply crap.</sub> <br><br>  <sub>** The attentive reader will probably notice the juggling - ut_pex does not provide <i>complete</i> decentralization of tracking, because he needs starting peers.</sub>  <sub>I will share a secret.</sub>  <sub>DHT does not provide this either.</sub>  <sub>Firstly, users still go to the site, because otherwise they are difficult to assemble.</sub>  <sub>Secondly, from what I know, DHT is in practice bootstrapped from root servers (only this is a big secret! :))</sub> <br><br>  <i>The computer system are those.</i>  <i>- G. Bell</i> </div><p>Source: <a href="https://habr.com/ru/post/66599/">https://habr.com/ru/post/66599/</a></p>
+      And PEX works fine.  It was originally implemented in unofficial clients, it seems Azureus and µTorrent (the second has not yet been purchased by BitTorrent Inc).  Gradually, the implementation of µTorrent, called ut_pex, became generally accepted.  The protocol is very effective: from my laptop, with my special BitTorrent spider, in a couple of minutes I copied all the peers in the 100 thousandth swarm.  The logic of work is simple, exponential.  Having received twenty peers from the tracker and successfully joining two, we immediately get two hundred more by ut_pex.  Well, and so on.  The protocol itself is extremely simple and consists of one (!) Message.  Another popular pattern of thinking: everyone thinks there should be two messages: request and response.  No, there is no request.  Just the messages are so small that there is no point in saving.  And with a lot of trouble requests.  Therefore, if the peer sees that you understand ut_pex, it simply periodically sends you IP addresses.  The implementation of ut_pex in libtorrent-rasterbar takes up 7 times less space than a fairly compact implementation of DHT in the same place **. <br><br>  <sub>* And what is <a href="http://en.wikipedia.org/wiki/Peer_exchange">now written about PEX</a> on Wikipedia is original research or simply crap.</sub> <br><br>  <sub>** The attentive reader will probably notice the juggling - ut_pex does not provide <i>complete</i> decentralization of tracking, because he needs starting peers.</sub>  <sub>I will share a secret.</sub>  <sub>DHT does not provide this either.</sub>  <sub>Firstly, users still go to the site, because otherwise they are difficult to assemble.</sub>  <sub>Secondly, from what I know, DHT is in practice bootstrapped from root servers (only this is a big secret! :))</sub> <br><br>  <i>The computer system are those.</i>  <i>- G. Bell</i> </div><p>Source: https://habr.com/ru/post/66599/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -71,11 +71,11 @@
 <li><a href="../66593/index.html">Recognize the Generic Class Parameter in Java</a></li>
 <li><a href="../66594/index.html">Targeting Promotional Campaigns</a></li>
 <li><a href="../66595/index.html">zi.byudzhet or SSS.R (How much is Site.Rub)</a></li>
+<li><a href="../666/index.html">Tips in Allowed html tags</a></li>
+<li><a href="../6660/index.html">Yandex bought Google or one of the two</a></li>
 <li><a href="../66601/index.html">Is it really the case with the display for MacBook Pro?</a></li>
 <li><a href="../66602/index.html">Lighttpd cacti statistics</a></li>
 <li><a href="../66605/index.html">Nginx statistics in cacti</a></li>
-<li><a href="../66607/index.html">Subqueries with Zend_Db_Select</a></li>
-<li><a href="../66612/index.html">Wii Sports Resort - my first impressions</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

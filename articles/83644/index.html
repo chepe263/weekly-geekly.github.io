@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Peculiarities of national expressions</h1><div class="post__text post__text-html js-mediator-article">  I wanted to share with the habravchana-perlovodami one interesting case that occurred in our work.  In the process of revising the old code, some mysterious construction was discovered (hereinafter the real code is somewhat abbreviated and smoothed): <br><blockquote><code><font color="red">sort</font> { my ($x, $y) = ($a, $b); ($x =~ s{/}g) &lt;=&gt; ($y =~ s{/}g); } @array;</code> </blockquote>  It would Seem, usual sorting with redefined function of comparing.  According to the original idea of ​​the author, the array of strings should be sorted by the number of direct slashes in these lines (it is known that the replacement expression returns the number of substitutions as a value), but something is not right in this function.  It seems that the “substitute” part of the expression <strong>s / pattern / replace / g was</strong> never optional, but this is what we see in the expressions <code>$a =~ s{/}g</code> .  How does it work?  Here we will deal with it now. <br><a name="habracut"></a><br>  So, the first thing that comes to mind is just to try an expression on a simple example.  Ok, run and get the result: <br><blockquote> <code><strong>$ perl -we 'my $a = "a/b/c"; $a =~ s{/}g; print "$a\n";'</strong> <br> Substitution replacement not terminated at -e line 1.</code> </blockquote>  That is, our suspicions were true, the expression is not valid.  How then does the original example work?  After unsuccessful attempts to sort things out on our own, we called the Deparse module for help. <br><blockquote> <code><strong>$ cat test.pl</strong> <br> my ($a, $b); <br> sub f { <br> return (($a =~ s{/}g) &lt;=&gt; ($b =~ s{/}g)); <br> } <br> <strong>$ perl -MO=Deparse -w test.pl</strong> <br> BEGIN { $^W = 1; } <br> my($a, $b); <br> sub f { <br> return $a =~ s <font color="blue"><strong>[</strong></font> / <font color="blue"><strong>][</strong></font> ) &lt;=&gt; ($b =~ s{/} <font color="blue"><strong>]</strong></font> ; <br> } <br> /home/tester/test.pl syntax OK</code> </blockquote>  After a brief creak of brains, finally managed to figure out what Pearl does.  In the above log, I highlighted the blue brackets on which you need to pay attention.  The behavior turned out to be quite logical and documented, although somewhat unexpected.  As many of the Pearl programmers should know, in the <strong>s ///</strong> operator, other symbols can be used as brackets instead of slashes (as Deparse has very clearly demonstrated using square brackets).  But until that moment, it simply did not occur to me that, in the same way, the most common letter “ <strong>g</strong> ” could be used as brackets!  Thus, as an expression for the search in the <strong>$ a</strong> variable, it takes what is supposed to be - one forward slash, but the text between the letters " <strong>g</strong> ", which were supposed to be modifiers of the operation, is taken as a replacement expression. <br><br>  For clarity, I’ll now write the source code line again, this time highlighting the search expression in red, replacing green with brackets and marking it with the same color, but with a darker tone: <br><blockquote> <code><font color="#a0a0a0">(($a =~ s</font> <strong><font color="#a00000">{</font> <font color="#ff0000">/</font> <font color="#a00000">}</font> <font color="#00a000">g</font> <font color="#00ff00">) &lt;=&gt; ($b =~ s{/}</font> <font color="#00a000">g</font></strong> <font color="#a0a0a0">))</font></code> </blockquote>  As a result, we have <strong>one</strong> replacement expression, not two, and our comparison function actually didn’t compare anything, but simply always gave only the number of slashes in the first argument, and instead of sorting, we got just an array mixing (and we didn’t notice this before the reason that sorting was a purely cosmetic improvement, and when using the program, no one paid particular attention to the output order of the sorted lines). <br><br>  So, what is the moral?  Yes, probably no.  Once again, the already well-known truth was confirmed: not everything is right that compiles. </div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/83644/">https://habr.com/ru/post/83644/</a></p>
+    <p>Source: https://habr.com/ru/post/83644/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../83635/index.html">Count the votes yourself</a></li>
 <li><a href="../83636/index.html">Solyanka from widgets</a></li>
 <li><a href="../83637/index.html">Avtonavigator for the slogan</a></li>
 <li><a href="../83638/index.html">Google doesn't want to translate</a></li>
+<li><a href="../8364/index.html">How do we remember Runet?</a></li>
 <li><a href="../83642/index.html">Microsoft Locus operating system concept</a></li>
 <li><a href="../83645/index.html">Journey to Mars One Way</a></li>
 <li><a href="../83646/index.html">KDE 4.4 released</a></li>
 <li><a href="../83647/index.html">Who designs the sites?</a></li>
+<li><a href="../8365/index.html">Impressions of the owner of all E-ink devices. Now you can read Habr on E-ink.</a></li>
 <li><a href="../83652/index.html">How many languages ​​do you speak? (Details can be specified in the comments)</a></li>
-<li><a href="../83653/index.html">Anatomy of .click () or history of one problem</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

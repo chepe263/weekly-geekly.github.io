@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Microcomputer Module MB 77.07 - Russian Answer Raspberry Pi</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/8ea/96b/092/8ea96b092d9bee6c0de5dd59f8f1455d.jpg"><br><br>  Reading the news about the ban on the supply of electronic component base from the United States for individual manufacturers in the Russian Federation, we decided to talk about the Module MB 77.07 single-board microcomputer, which was developed at the Russian scientific and technical center “Module” based on one of the most productive Russian ARM architecture processors.  We will also look at installing a Debian Linux distribution on this microcomputer. <br><a name="habracut"></a><br>  MW 77.07 is built on the basis of a system based on a K1879HB1YA crystal, which is also developed by the SEC “Module”.  Although the K1879HB1Y scheme is primarily intended for use as a video decoder in various set-top boxes, video surveillance devices and smart home systems, the MB 77.07 microcomputer itself is positioned as an enthusiastic system with this processor programmers and student board.  Thus, we can say that this is the Russian equivalent of the Raspberry Pi.  Let's briefly review the main characteristics of the K1879HB1Y processor, and then the board itself. <br><br>  The system on a K1879HB1YA chip is built on the basis of two processor cores - ARM11 (ARM1176JZF-S) and an additional DSP processor of the original NeuroMatrix architecture, which is included in the audio decoding unit. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <img src="https://habrastorage.org/getpro/habr/post_images/fc5/94e/7a5/fc594e7a5fe61b8dbad00cde424f769e.jpg"><br><br>  The operating frequency of the ARM processor is 324 MHz (and DSP is also), not the largest by modern standards, however, we were able to see from our own experience that it allows you to comfortably run Linux and use the processor’s sufficiently rich peripherals: hardware H.264 video decoders, MPEG-2, VC-1;  2D video accelerator;  8-channel DSP-based audio processor;  TS flow demultiplexing unit;  crypto processor with support for AES and 3DES algorithms. <br><br>  K1879HB1YA is equipped with the following interfaces: <br><ul><li>  DDR2 SDRAM </li><li>  NAND and SPI Flash, </li><li>  HS USB 2.0 host </li><li>  10M / 100M Ethernet, </li><li>  HDMI 1.2, </li><li>  I2S, </li><li>  S / PDIF </li><li>  UART, </li><li>  SPI, </li><li>  I2C, </li><li>  JTAG, </li><li>  TS, </li><li>  GPIO. </li></ul><br><br><img src="https://habrastorage.org/getpro/habr/post_images/2f1/45e/c74/2f145ec74ca5b8a160562c67652b3632.png"><br>  Functional diagram of SoC K1879HB1Y <br><br>  Let's proceed to the description of the MB 77.07 itself: its size is 80x80 mm, in addition to the processor itself, the board has 128 MB of system memory and 128 MB of video memory (both are DDR2-667 SDRAM) and 1 GB of NAND memory.  The board has the following interface connectors: <br><ul><li>  10M / 100M Ethernet, </li><li>  two USB 2.0 ports </li><li>  HDMI 1.2. </li></ul><br>  In addition, the following interfaces are displayed on the “comb”: <br><ul><li>  I2S, </li><li>  SPI Flash, </li><li>  TS (transport stream interface), </li><li>  8 GPIO, </li><li>  on separate connectors UART, JTAG and two USB-ports. </li></ul><br>  Board power - 5 V, estimated cost - within 30 dollars. <br><br><img src="https://habrastorage.org/getpro/habr/post_images/207/748/6ab/2077486ab989fbbd42c6a1dbb3b295be.jpg"><br><br>  Currently, the U-Boot bootloader and the Linux 2.6.33 kernel are ported for the card, drivers for all peripheral devices have been developed, and the process of porting drivers for Linux 3.10 is also being completed.  A number of elements of the gstreamer conveyor with the support of various peripheral devices (in particular, video decoder and video controller) has been developed.  For the development of a DSP processor, there is the NeuroMatrix SDK.  Source codes for U-Boot, Linux, as well as the Buildroot build system can be obtained from the SEC “Module” upon request. <br><br><h4>  1. Deploy the base Debian system </h4><br>  To deploy the Debian root filesystem, we use the debootstrap utility, which is “recognized as the official way to install the base Debian system” (see the debian.org manual and wiki.debian.org). <br><br>  Deploying the target file system using debootstrap takes place in two stages: the first is performed in the environment of the host system (at this stage, the necessary packages are downloaded and unpacked, but not installed);  The second stage is performed on the target system (configuration and installation of packages takes place here). <br><br>  We will install Debian 7.0 Wheezy for the armel architecture, the system will be deployed in the debrootfs directory. <br><br>  The first stage of debootstrap is performed by the command <br><br><pre><code class="cs">sudo debootstrap --verbose --foreign --arch=armel wheezy debrootfs ftp://ftp.ru.debian.org/debian</code></pre><br>
@@ -339,20 +339,20 @@ root@shost:~#
 <br>
   .    .<br>
 <br>
-<b>P.S.</b>            — <a href="http://promwad.ru/platformy/odnoplatnyy-kompyuter-am1808">AM1808    TI</a>    .</div><p>Source: <a href="https://habr.com/ru/post/217893/">https://habr.com/ru/post/217893/</a></p>
+<b>P.S.</b>            — <a href="http://promwad.ru/platformy/odnoplatnyy-kompyuter-am1808">AM1808    TI</a>    .</div><p>Source: https://habr.com/ru/post/217893/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../217881/index.html">Video review laptop Lenovo IdeaPad G510</a></li>
 <li><a href="../217883/index.html">hlpme.ru - service of gratuitous services</a></li>
 <li><a href="../217885/index.html">Books on information security. Get acquainted closer with IB</a></li>
 <li><a href="../217889/index.html">Video review tablet Samsung Galaxy Tab Pro 10.1</a></li>
+<li><a href="../21789/index.html">Yandex.Direct 10 years</a></li>
 <li><a href="../217891/index.html">Connect the elliptical trainer and pygame</a></li>
 <li><a href="../217895/index.html">Simple Science - Experiment Digest # 30</a></li>
 <li><a href="../217897/index.html">The final version of Microsoft SQL Server 2014 has been released</a></li>
 <li><a href="../217899/index.html">Introduction to Actors Based on Java / GPars, Part I</a></li>
-<li><a href="../217901/index.html">Node.js, Require and Exports</a></li>
-<li><a href="../217903/index.html">Cybathlon 2016: Cyborg Competitions</a></li>
+<li><a href="../2179/index.html">Blogus will lead Feedburner to Russia</a></li>
+<li><a href="../21790/index.html">Magno Wooden Radios</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

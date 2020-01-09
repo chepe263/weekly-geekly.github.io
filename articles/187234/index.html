@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Trove Library. Java primitive type collections</h1><div class="post__text post__text-html js-mediator-article">  In the standard Java library, it is not possible to operate with <a href="http://docs.oracle.com/javase/7/docs/api/java/util/Collection.html">collections of</a> primitive types, such as int, long, etc.  Standard output - use objects of classes Integer, Long, etc. <br><br>  This approach works well on a small number of elements, because, firstly, during any operation, <a href="http://docs.oracle.com/javase/tutorial/java/data/autoboxing.html">autoboxing / autounboxing occurs</a> and, secondly, the collection stores references to objects in the heap.  The objects in the heap not only add extra <a href="http://btoddb-java-sizing.blogspot.ru/">overhead</a> in memory, but also put a strain on the <abbr title="Garbage collector">GC</abbr> . <br><br>  There is one more unobvious minus of objects in heap - caching in modern processors.  The processor loads data into the cache in blocks.  In the case of sequential processing of the array, several elements are loaded into the cache at once.  In the case of objects scattered in heap, cache hits will be less.  Read more about caching and memory hierarchy <a href="http://en.wikipedia.org/wiki/Memory_hierarchy">here</a> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The <a href="http://trove.starlight-systems.com/">Trove</a> library provides a standard collection interface for working with primitive types.  For most applications, Trove collections run faster and consume less memory. <br><a name="habracut"></a><br>  The collection includes: <br><ul><li>  <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/list/package-summary.html">List</a> - <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/list/array/package-summary.html">ArrayList</a> and <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/list/linked/package-summary.html">LinkedList</a> </li><li>  <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/map/package-summary.html">Map</a> - <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/map/hash/package-summary.html">HashMap</a> </li><li>  <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/set/package-summary.html">Set</a> - <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/set/hash/package-summary.html">HashSet</a> </li><li>  <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/stack/package-summary.html">Stack</a> - <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/stack/array/package-summary.html">ArrayStack</a> </li></ul><br>  Unlike jdk, Trove's Hash uses the <a href="http://en.wikipedia.org/wiki/Open_addressing">Open addressing</a> method for resolving collisions. <br><br>  The naming principle is T &lt;Type&gt; &lt;CollectionType&gt;. <br>  For example: <br>  Interface TIntList - List of int, implementation of TIntArrayList: <br><pre><code class="java hljs">TIntList l = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> TIntArrayList();</code> </pre> <br>  Interface TLongLongMap - Map with long keys and long values, implementation of TLongLongHashMap: <br><pre> <code class="java hljs">TLongLongMap m = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> TLongLongHashMap();</code> </pre><br>  In jdk collections, if the item is not found, null is returned.  In Trove, “NoEntryValue” is returned, the default is 0. To learn <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/TIntCollection.html">NoEntryValue</a> , you can specify NoEntryValue when creating a collection. <br><br>  A plus of the Trove collections are the processing methods - forEach, <br><pre> <code class="java hljs"> <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">public</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">static</span></span></span><span class="hljs-function"> </span><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">long</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">troveEach</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">()</span></span></span><span class="hljs-function"> </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">final</span></span> <span class="hljs-keyword"><span class="hljs-keyword">long</span></span> [] rvalue = {<span class="hljs-number"><span class="hljs-number">0</span></span>}; <span class="hljs-comment"><span class="hljs-comment">// troveMap - TLongLongHashMap // TLongProcedure      , //    false //     troveMap.forEachValue(new TLongProcedure() { @Override public boolean execute(long value) { rvalue[0] += value; return true; } }); return rvalue[0]; }</span></span></code> </pre><br>  <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/list/TLongList.html">grep</a> , <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/list/TLongList.html">inverseGrep</a> - list <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/list/TLongList.html">creation</a> by condition (for TList ...) and <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/list/TLongList.html">transformValues</a> - inplace of a change operation on elements of a collection. <br><br>  A useful feature is that in the case of a HashMap / HashSet with an object (an Object heir) as a key, you can use your <a href="http://trove4j.sourceforge.net/javadocs/gnu/trove/strategy/HashingStrategy.html">Interface HashingStrategy &lt;T&gt;</a> hash function. <br><br>  For benchmarking, an excellent benchmark tool <a href="http://openjdk.java.net/projects/code-tools/jmh/">jmh was used</a> . <br>  <i>It would be great if the developers published it in the maven repository.</i> <br><br>  The conclusion had to be slightly edited to preserve the formatting, one operation - <b>1 million</b> elements ( <a href="https://github.com/scanban/basecoll/blob/master/report.txt">full report here</a> ): <br><pre> <code class="bash hljs">$ java -version java version <span class="hljs-string"><span class="hljs-string">"1.7.0_21"</span></span> Java(TM) SE Runtime Environment (build 1.7.0_21-b11) Java HotSpot(TM) 64-Bit Server VM (build 23.21-b01, mixed mode) $ java -server -XX:+AggressiveOpts -Xms2048m \ -Xmx2048m -jar microbenchmarks.jar <span class="hljs-string"><span class="hljs-string">".*Trove.*"</span></span> -prof gc -i 3 -r 5s</code> </pre><br><pre> Benchmark Mode Thr Cnt Sec Mean Mean Error Units
@@ -100,7 +100,7 @@
  LongHashMapTroveInsert thrpt 1 3 5 33078.583 119.127 ops / sec
  LongHashMapTroveSearch thrpt 1 3 5 148311.567 267.613 ops / sec
  LongHashMapTroveTraverse thrpt 1 3 5 351955.550 901.902 ops / sec
-</pre><br>  It can be seen that when reducing the number of items in the collection, the performance gap is falling. <br><br>  It can be concluded that if the collections are small and are used infrequently, then there is little point in including an additional relationship in the project. <br>  But if the project is massively used large collections of primitive types, the use of Trove may be justified. <br><br>  The project code is available on <a href="https://github.com/scanban/basecoll">GitHub</a> . <br><br>  <b>Ps.</b>  The values ​​of the number of elements when creating collections were not set intentionally. <br></div><p>Source: <a href="https://habr.com/ru/post/187234/">https://habr.com/ru/post/187234/</a></p>
+</pre><br>  It can be seen that when reducing the number of items in the collection, the performance gap is falling. <br><br>  It can be concluded that if the collections are small and are used infrequently, then there is little point in including an additional relationship in the project. <br>  But if the project is massively used large collections of primitive types, the use of Trove may be justified. <br><br>  The project code is available on <a href="https://github.com/scanban/basecoll">GitHub</a> . <br><br>  <b>Ps.</b>  The values ​​of the number of elements when creating collections were not set intentionally. <br></div><p>Source: https://habr.com/ru/post/187234/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -110,10 +110,10 @@
 <li><a href="../187230/index.html">Samsung introduced terabyte SSD "for all"</a></li>
 <li><a href="../187232/index.html">Kinect taught to recognize and translate sign language</a></li>
 <li><a href="../187236/index.html">Replacing Dropbox with BitTorrent Sync + Raspberry Pi</a></li>
+<li><a href="../18724/index.html">Russia on the Internet begins the second "cold war"</a></li>
 <li><a href="../187240/index.html">SaveFrom.net + crutch, or download PLS playlists</a></li>
 <li><a href="../187242/index.html">OS / 2 a quarter of a century later: why IBM lost, and Microsoft won</a></li>
-<li><a href="../187250/index.html">Adobe has released PhoneGap 3.0 with a new modular architecture and new APIs.</a></li>
-<li><a href="../187256/index.html">Why is QA still not stackoverflow?</a></li>
+<li><a href="../18725/index.html">The secret of educating smart children (part 1)</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

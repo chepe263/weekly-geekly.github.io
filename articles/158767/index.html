@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Microsoft Mail app and smtp mail not working</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/storage2/bed/a30/f54/beda30f54923503fd5470bd1ae92f1c3.png" alt="image" align="left"><br>  The other day, my director asked me to figure out why his brand new Microsoft Surface RT tablet doesn't want to send mail. <br>  Google only confirmed the fact that the Mail App does not work with smtp both in “adult” Windows 8 and on tablets.  No solution was found.  Chatting with support through a chat with a Microsoft employee led to the fact that I received links to topics on Microsoft forums that I had previously found as Google. <br><a name="habracut"></a><br><br>  The problem manifested itself in the following way: when I tried to send a letter from the mail app, the message “user@mydomain.com is unavailable” appeared in the upper right corner of the screen. <br>  In the logs of the Postfix mail server, I saw the following: <br><br><blockquote>  Nov 15 15:05:11 nanoweb postfix / smtpd [96503]: connect from user.host.ru [ip.ip.ip.ip] <br>  Nov 15 15:05:11 nanoweb postfix / smtpd [96503]: Anonymous TLS connection established from user.host.ru [ip.ip.ip.ip]: TLSv1 with cipher AES128-SHA (128/128 bits) <br>  Nov 15 15:05:11 nanoweb postfix / smtpd [96503]: disconnect from user.host.ru [ip.ip.ip.ip] </blockquote>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,10 +60,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      After reading the MS forums, I found a message from a sapper who confessed that there was a problem with smtp and TLS, and it only remains to wait for the software update.  The fact is that if you uncheck the "use TLS" checkbox, the Mail app first tries to connect via TLS, as it sees the declared TLS support in the server's banner, but for some reason, it cannot connect to the TLS server with a self-signed certificate.  When working with SSL, it seems like the same thing happens. <br><br>  And then I thought, “what if I get a separate port in Postfix with TLS disabled?”. <br><br>  After digging in the manual, the following lines appeared in master.cf: <br><br><blockquote>  2567 inet n - n - - smtpd <br>  -o smtpd_sasl_auth_enable = yes <br>  -o smtp_use_tls = no <br>  -o smtpd_use_tls = no </blockquote><br><br>  In the Mail app on the tablet, I sent 2567 port for sending, removed the "use SSL" checkbox and it all worked! <br><br><hr><br>  <i>This solution is offered as a temporary solution and is intended for mail server administrators.</i> <br>  <i>The problem exists for at least two weeks and is still not fixed.</i> </div><p>Source: <a href="https://habr.com/ru/post/158767/">https://habr.com/ru/post/158767/</a></p>
+      After reading the MS forums, I found a message from a sapper who confessed that there was a problem with smtp and TLS, and it only remains to wait for the software update.  The fact is that if you uncheck the "use TLS" checkbox, the Mail app first tries to connect via TLS, as it sees the declared TLS support in the server's banner, but for some reason, it cannot connect to the TLS server with a self-signed certificate.  When working with SSL, it seems like the same thing happens. <br><br>  And then I thought, “what if I get a separate port in Postfix with TLS disabled?”. <br><br>  After digging in the manual, the following lines appeared in master.cf: <br><br><blockquote>  2567 inet n - n - - smtpd <br>  -o smtpd_sasl_auth_enable = yes <br>  -o smtp_use_tls = no <br>  -o smtpd_use_tls = no </blockquote><br><br>  In the Mail app on the tablet, I sent 2567 port for sending, removed the "use SSL" checkbox and it all worked! <br><br><hr><br>  <i>This solution is offered as a temporary solution and is intended for mail server administrators.</i> <br>  <i>The problem exists for at least two weeks and is still not fixed.</i> </div><p>Source: https://habr.com/ru/post/158767/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -73,10 +73,10 @@
 <li><a href="../158763/index.html">ImageCMS 4.0b Release - New Interface and Functional Flexibility</a></li>
 <li><a href="../158765/index.html">TechCrunch Moscow 2012</a></li>
 <li><a href="../158769/index.html">+1 to the evolution of a freelancer</a></li>
+<li><a href="../15877/index.html">Opera-toolbar. Simple embedding of tools in the browser.</a></li>
 <li><a href="../158771/index.html">Dell Solutions Forum 2015: how it was</a></li>
 <li><a href="../158773/index.html">New search operators in gmail</a></li>
 <li><a href="../158779/index.html">Ubuntu Linux "taught" to work Rockchip RK3066 (for example, ug802)</a></li>
-<li><a href="../158781/index.html">Find out the login-password installed on the PPPoE router</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

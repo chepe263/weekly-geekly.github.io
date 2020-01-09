@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Removing an object reference from a closure</h1><div class="post__text post__text-html js-mediator-article"><pre><code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> singleton = (<span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> (</span><span class="hljs-params"></span><span class="hljs-function"><span class="hljs-params"></span>) </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> data, method_args; data = []; method_args = []; <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">add</span></span></span><span class="hljs-function"> (</span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">items</span></span></span><span class="hljs-function">) </span></span>{ <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> i; data.push(items); method_args.push(<span class="hljs-built_in"><span class="hljs-built_in">arguments</span></span>); } <span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">function</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">remove</span></span></span><span class="hljs-function"> (</span><span class="hljs-params"></span><span class="hljs-function"><span class="hljs-params"></span>) </span></span>{ data.pop(); method_args.push(<span class="hljs-built_in"><span class="hljs-built_in">arguments</span></span>); } <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> { <span class="hljs-attr"><span class="hljs-attr">add</span></span> : add, <span class="hljs-attr"><span class="hljs-attr">remove</span></span> : remove } }());</code> </pre> <br>  There is access to the <i>singleton</i> object. <a name="habracut"></a><br><br>  Singleton's public methods (it is given as an example, and the value created by the closure created during its initialization) calls the array methods that one would like to get.  In these methods, <i>this</i> refers to the desired array.  So you can get to it through <i>this</i> . <br><br>  If it were not for <i>method_args.push</i> , then it would be possible to get by redefining <i>Array.prototype.push</i> (with mandatory returning everything to its place after the object is “stolen”). 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> original_push, data; <span class="hljs-comment"><span class="hljs-comment">//    original_push = Array.prototype.push; //    Array.prototype.push = function () { //   data = this; }; //    singleton.add(); //      Array.prototype.push = original_push; //     console.log(data);</span></span></code> </pre><br>  However, <i>push is</i> used more than once.  A single failure to comply with the method may lead to a breakdown.  And this does not want.  I want a link to the array.  So rewrite the code above, while maintaining the standard logic of work.  We create a new push method that is smart enough to take <i>this</i> reference only on the first call, and can mimic the default behavior. <br><br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> original_push, fake_method_calls, data; <span class="hljs-comment"><span class="hljs-comment">//    original_push = Array.prototype.push; //  fake_method_calls = 0; //    Array.prototype.push = function () { //  this     if (fake_method_calls === 0) { data = this; } fake_method_calls += 1; //   return original_push.apply(this, arguments); } //    singleton.add(); //      Array.prototype.push = original_push; //     console.log(data);</span></span></code> </pre><br>  Voila: the sheep are intact (the standard logic is not broken) and the wolves are fed (reference in the hands). </div><p>Source: <a href="https://habr.com/ru/post/143288/">https://habr.com/ru/post/143288/</a></p>
+    <pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> original_push, data; <span class="hljs-comment"><span class="hljs-comment">//    original_push = Array.prototype.push; //    Array.prototype.push = function () { //   data = this; }; //    singleton.add(); //      Array.prototype.push = original_push; //     console.log(data);</span></span></code> </pre><br>  However, <i>push is</i> used more than once.  A single failure to comply with the method may lead to a breakdown.  And this does not want.  I want a link to the array.  So rewrite the code above, while maintaining the standard logic of work.  We create a new push method that is smart enough to take <i>this</i> reference only on the first call, and can mimic the default behavior. <br><br><pre> <code class="javascript hljs"><span class="hljs-keyword"><span class="hljs-keyword">var</span></span> original_push, fake_method_calls, data; <span class="hljs-comment"><span class="hljs-comment">//    original_push = Array.prototype.push; //  fake_method_calls = 0; //    Array.prototype.push = function () { //  this     if (fake_method_calls === 0) { data = this; } fake_method_calls += 1; //   return original_push.apply(this, arguments); } //    singleton.add(); //      Array.prototype.push = original_push; //     console.log(data);</span></span></code> </pre><br>  Voila: the sheep are intact (the standard logic is not broken) and the wolves are fed (reference in the hands). </div><p>Source: https://habr.com/ru/post/143288/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../143280/index.html">Startup preparation</a></li>
+<li><a href="../143281/index.html">Automate the migration of the DocsVision database</a></li>
 <li><a href="../143283/index.html">QML and QtQuick Webinars: Lists. Models and representations</a></li>
 <li><a href="../143284/index.html">Platform for online tutoring in Russia: a view from the inside</a></li>
 <li><a href="../143285/index.html">Secret Guild of the Silicon Valley</a></li>
 <li><a href="../143286/index.html">Google books knows the whole truth about testing and istqb</a></li>
 <li><a href="../143289/index.html">Opera Mini 7 Next Survey</a></li>
+<li><a href="../14329/index.html">A new idea to promote the resource - an invitation to offline guests.</a></li>
 <li><a href="../143290/index.html">Errors of technology transfer №2 / "Disclosure errors"</a></li>
 <li><a href="../143291/index.html">Dirty hands on google title page</a></li>
 <li><a href="../143292/index.html">Automatic database migration to the Entity Framework</a></li>
-<li><a href="../143293/index.html">Access to the Guitar Hero store from "forbidden" countries</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

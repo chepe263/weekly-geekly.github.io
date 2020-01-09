@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>64-bit integers in MongoDB</h1><div class="post__text post__text-html js-mediator-article">  <i>In my PHP project I had to face the need to store 64-bit integer data in the database.</i>  <i>Found only one article on the topic, but very detailed (in some places too) and explaining all the subtleties.</i>  <i>I decided to publish the translation on Habré, in case someone faces a similar problem.</i> <br><br><a name="habracut"></a><br><br>  The current project I'm working on is based on <a href="http://mongodb.org/">MongoDB</a> , the bridge between key-value storages and traditional RDBMS.  Users in this project are identified by their Facebook <a href="http://wiki.developers.facebook.com/index.php/User_ID">UserID</a> , which is a 64-bit integer.  Unfortunately, the <a href="http://github.com/mongodb/mongo-php-driver">MongoDB driver for PHP</a> only had support for 32-bit integers, which caused problems with new Facebook users.  The new cool long UserID has been truncated to 32 bits, which is why the application did not work correctly. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       For internal document storage, MongoDB uses something called <a href="http://bsonspec.org/">BSON</a> (Binary <a href="http://www.json.org/">JSON</a> ).  In BSON, there are two integer numeric types: a 32-bit signed integer called <b>INT</b> and a 64-bit signed integer called <b>LONG</b> .  The MongoDB driver documentation for PHP says (or it was said, depending on when you read this) that only 32-bit integer types are supported, since  "PHP does not support 8-byte integers."  This is not quite true.  The type integer in PHP supports 64-bit values ​​on platforms where the <b>long</b> type in C is 64-bit.  This is any 64-bit platform (if PHP is compiled for a 64-bit architecture), except for Windows, where the <b>long</b> type in C is always 32-bit. <br><br>  Each time an integer was transferred from PHP to MongoDB, the driver used only the least significant 32 bits to store the number in the document.  The example below shows what was happening (on a 64-bit platform): <br><br><pre><code class="php hljs"><span class="hljs-meta"><span class="hljs-meta">&lt;?php</span></span> $m = <span class="hljs-keyword"><span class="hljs-keyword">new</span></span> Mongo(); $c = $m-&gt;selectCollection(<span class="hljs-string"><span class="hljs-string">'test'</span></span>, <span class="hljs-string"><span class="hljs-string">'inttest'</span></span>); $c-&gt;remove(<span class="hljs-keyword"><span class="hljs-keyword">array</span></span>()); $c-&gt;insert(<span class="hljs-keyword"><span class="hljs-keyword">array</span></span>(<span class="hljs-string"><span class="hljs-string">'number'</span></span> =&gt; <span class="hljs-number"><span class="hljs-number">1234567890123456</span></span>)); $r = $c-&gt;findOne(); <span class="hljs-keyword"><span class="hljs-keyword">echo</span></span> $r[<span class="hljs-string"><span class="hljs-string">'number'</span></span>], <span class="hljs-string"><span class="hljs-string">"\n"</span></span>; <span class="hljs-meta"><span class="hljs-meta">?&gt;</span></span></code> </pre> <br><br>  Showed: <br><br><pre>  int (1015724736) </pre><br><br>  In binary form: <br><br><pre>  1234567890123456 = 10001100010110101010011110010001010101010110010000
@@ -81,20 +81,20 @@
  {"_id": ObjectId ("4c5ea6d59a14ce1319000000"), "int64": {"floatApprox": 123456789012345680, "top": 28744523, "bottom": 2788225870}} </pre><br><br>  Of course, when reading data through a driver that supports 64-bit integers, you will get the correct result: <br><br><pre> <code class="php hljs">ini_set(<span class="hljs-string"><span class="hljs-string">'mongo.long_as_object'</span></span>, <span class="hljs-number"><span class="hljs-number">1</span></span>); $r = $c-&gt;findOne(); var_dump($r[<span class="hljs-string"><span class="hljs-string">'int64'</span></span>]); <span class="hljs-meta"><span class="hljs-meta">?&gt;</span></span></code> </pre> <br><br>  will show: <br><br><pre>  object (MongoInt64) # 7 (1) {
    ["value"] =&gt;
    string (18) "123456789012345678"
- } </pre><br><br>  The new functionality described in this article is part of the <a href="http://pecl.php.net/package-info.php%3Fpackage%3Dmongo%26version%3D1.0.9">release of mongo 1.0.9</a> , which is available through PECL using the <b>pecl install mongo command</b> . <br>  Good luck with your 64-bit integers! <br><br>  <i>PS This is my first translation, please do not kick your feet strongly :)</i> </div><p>Source: <a href="https://habr.com/ru/post/117155/">https://habr.com/ru/post/117155/</a></p>
+ } </pre><br><br>  The new functionality described in this article is part of the <a href="http://pecl.php.net/package-info.php%3Fpackage%3Dmongo%26version%3D1.0.9">release of mongo 1.0.9</a> , which is available through PECL using the <b>pecl install mongo command</b> . <br>  Good luck with your 64-bit integers! <br><br>  <i>PS This is my first translation, please do not kick your feet strongly :)</i> </div><p>Source: https://habr.com/ru/post/117155/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../117147/index.html">What is the price of your maximum purchase on ebay?</a></li>
 <li><a href="../117148/index.html">Amazon collected a super cluster on the cloud</a></li>
 <li><a href="../117149/index.html">MonoDevelop on the Nokia N900. Where is your God now?</a></li>
+<li><a href="../11715/index.html">One tip for gogo.ru</a></li>
 <li><a href="../117151/index.html">Now you can track up to 690 meters.</a></li>
 <li><a href="../117153/index.html">Aspia 0.2.1</a></li>
+<li><a href="../11716/index.html">The dollar is being ousted</a></li>
 <li><a href="../117160/index.html">The principle of cicada and why it is important for web designers</a></li>
 <li><a href="../117162/index.html">How not to offend a person if he made a mistake?</a></li>
 <li><a href="../117165/index.html">Online consultants</a></li>
-<li><a href="../117173/index.html">We write the three-address code interpreter</a></li>
-<li><a href="../117174/index.html">Firefox 5 will appear in June of this year</a></li>
+<li><a href="../11717/index.html">Mirror online store in the affiliate program</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

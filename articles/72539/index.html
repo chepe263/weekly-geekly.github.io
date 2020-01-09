@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Pitfalls when using caching in nginx</h1><div class="post__text post__text-html js-mediator-article">  Nginx’s web server and reverse-proxy have very powerful HTTP response caching capabilities.  However, in some cases there is not enough documentation and examples, as a result, not everything works as easily and simply as we would like.  For example, my nginx configs are written in places in blood.  This article I will try to improve the situation a little. <br><br>  <b>In this article: a) reefs with full-page caching;</b>  <b>b) rotational caching;</b>  <b>c) the creation of a dynamic "window" in the cached page.</b> <br><br>  <i>I will assume that you are using the nginx + fastcgi_php bundle.</i>  <i>If you use nginx + apache + mod_php, simply replace the directive names with fastcgi_cache * with proxy_cache *</i> 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       If I choose whether to cache the page on the PHP side or on the nginx side, I choose nginx.  First, it allows you to give 5-10 thousand requests per second without any difficulties and without clever talk about "high load".  Secondly, nginx independently monitors the size of the cache and cleans it both when it becomes obsolete and when it overwrites infrequently used data. <br><br><h4>  Cache the entire page </h4><br>  If the main page on your site is dynamically generated, but rarely changes, you can greatly reduce the server load by caching it in nginx.  With high attendance, even caching for a short time (5 minutes or less) already gives a huge performance boost, because the cache works very quickly.  Even after caching the page for just 30 seconds, you will still achieve significant server unloading, while maintaining the dynamism of updating the data (in many cases, updating every 30 seconds is enough). <a name="habracut"></a><br><br>  For example, you can cache the main page like this: <br><br><pre> fastcgi_cache_path / var / cache / nginx levels = keys_zone = wholepage: 50m;
@@ -119,7 +119,7 @@
  add_header Last-Modified $ sent_http_Expires;
 </pre><br>  One more trick: we have to set Last-Modified equal to the current time.  Unfortunately, in nginx there is no variable storing the current time, but it magically appears if you specify the directive expires -1. <br><br>  <i>Although this is now (October 2009) not documented, nginx creates variables of the form $ sent_http_XXX for each XXX response header sent to the client.</i>  <i>One of them we use.</i> <br><br>  Why is it so important to set this title as the current time?  It's pretty simple. <ol><li>  Let's imagine that PHP has issued the header “Last-Modified: some_date”. </li><li>  This header will be written to the nginx cache file (you can check: in our example, the files are stored in / var / cache / nginx), and then sent to the browser by the client. </li><li>  The browser will remember the page and the date of its modification ... </li><li>  ... therefore, the next time the user logs on to the site, the HTTP request will have the header question “If-Modified-Since: some_date”. </li><li>  What will nginx do?  It will take a page from its cache, sort its headers and compare Last-Modified with If-Modified-Since.  If the values ​​match (or the first is less than the second), then nginx will return a “304 Not Modified” response with an empty body.  And the user will not see any rotation: he will receive what he has seen before. </li></ol>  <i>In fact, the big question is how the browser behaves if both Last-Modified and Cache-Control no-cache are present.</i>  <i>Will he make an If-Modified-Since request?</i>  <i>It seems that different browsers behave differently here.</i>  <i>Experiment.</i> <br><br>  There is one more reason to set Last-Modified manually.  The fact is that the PHP function session_start () forcibly issues the Last-Modified header, but indicates in it ... the time when the PHP file that first got control was modified.  Therefore, if all requests on your site go to the same script (Front Controller), then your Last-Modified will almost always be equal to the change time of this single script, which is absolutely not true. <br><br><h4>  Dynamic "window" in the cached page </h4><br>  And finally, I will mention one technique that can be useful in the light of caching.  If you want to cache the main (or any other) page of the site, but one small block, which must be dynamic, interferes, use the module for working with SSI. <br><br>  In the part of the page that should be dynamic, insert this “HTML comment”: <br><br><pre> &lt;! - # include virtual = "/ get_user_info /" -&gt;
 </pre><br>  From the point of view of the nginx cache, this comment is plain text.  It will be saved in the cache file as a comment.  However, later, when reading the cache, the nginx SSI module will work, which will turn to a dynamic URL.  Of course, at the address / get_user_info / there must be a PHP handler that returns the contents of this block.  <a href="http://habrahabr.ru/blogs/nginx/65809/">This method is described in more detail in this article from Habr.</a> <br><br>  And, of course, do not forget to enable SSI for this page or even for the entire server: <br><br><pre> ssi on;
-</pre><br>  <i>The SSI include directive has another very important feature.</i>  <i>When there are several such directives on a page, they all begin to be processed simultaneously, in parallel mode.</i>  <i>So, if you have 4 blocks on page, each of which loads 200 ms, the page will be received by the user in 200 ms, and not in 800.</i> <br><br>  The original text of this article can be read here: <a href="http://dklab.ru/chicken/nablas/56.html">http://dklab.ru/chicken/nablas/56.html</a> </div><p>Source: <a href="https://habr.com/ru/post/72539/">https://habr.com/ru/post/72539/</a></p>
+</pre><br>  <i>The SSI include directive has another very important feature.</i>  <i>When there are several such directives on a page, they all begin to be processed simultaneously, in parallel mode.</i>  <i>So, if you have 4 blocks on page, each of which loads 200 ms, the page will be received by the user in 200 ms, and not in 800.</i> <br><br>  The original text of this article can be read here: <a href="http://dklab.ru/chicken/nablas/56.html">http://dklab.ru/chicken/nablas/56.html</a> </div><p>Source: https://habr.com/ru/post/72539/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -131,8 +131,8 @@
 <li><a href="../72541/index.html">Gmail - preview google.documents</a></li>
 <li><a href="../72542/index.html">3 ways to improve communication with customers</a></li>
 <li><a href="../72549/index.html">Fix Python Imaging (PIL) in Snow Leopard</a></li>
+<li><a href="../7255/index.html">Estonia proceeds to practical actions to transfer the mass grave of Soviet soldiers and dismantle the monument to the Soldier-Liberator.</a></li>
 <li><a href="../72550/index.html">Where do mediocre sites come from?</a></li>
-<li><a href="../72553/index.html">Google will open an online store</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

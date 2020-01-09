@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>C #, Talk with a computer or System.Speech</h1><div class="post__text post__text-html js-mediator-article">  Recently, I, a C # programmer, found in my control panel a feature like Speech Recognition.  I changed the language to English, turned it on, and talked all night with the computer.  In the morning I decided to write a calculator, of course speaking.  Having poked into the .Net libraries, I found System.Speech.  Sounded promising. <br><a name="habracut"></a><br>  The library had 3 namespaces: <img align="right" src="http://glavak.ucoz.ru/SR1.png" alt="image"><br>  For speech recognition and synthesis, and for something else <s>not</s> important. <br><br><h4>  Synthesis </h4><br>  First, let's deal with Synthesis, write the simplest notebook with the speak button: <br>  Add textBoxText, and buttonSpeak to the form.  In the code we connect System.Speech.Synthesis, and in the form we create an object <br><br> <code>SpeechSynthesizer ss = new SpeechSynthesizer();</code> <br> <br>  We hang up the handler on the button, in it the code for reading the phrase: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>ss.Volume = 100;//  0  100 <br> ss.Rate = 0;// -10  10 <br> ss.SpeakAsync(textBoxText.Text);</code> <br> <br>  By the way, during asynchronous reading, you can change the speed and volume.  You can write just Speak (), but then the whole program will hang itself for the time of reading.  Now add another button to the form, saveToWav.  Here we also adjust the speed and speed, but before Speak () we write ss.SetOutputToWaveFile (/ * file path * /); <br>  Now the most interesting: <br><br><h4>  Recognition </h4><br><h6>  To use this feature you need to have Windows 7 / Vista in English </h6><br>  Let's connect System.Speech.Recognition, and declare variables in the form: <br><br> <code>private SpeechRecognitionEngine sr;</code> <br> <br>  Now we’ll copy a couple more incomprehensible lines of code into the form constructor: <br><br> <code>sr.SetInputToDefaultAudioDevice();// <br> GrammarBuilder grammarBuilder = new GrammarBuilder(); <br> grammarBuilder.Append(new Choices("left", "right", "up", "down"));//   <br> sr.UnloadAllGrammars(); <br> sr.LoadGrammar(Grammar(grammarBuilder));// "" <br> sr.SpeechRecognized += new EventHandler&lt;SpeechRecognizedEventArgs&gt;(SpeechRecognized);//   <br> sr.RecognizeAsync(RecognizeMode.Multiple);// </code> <br> <br>  in the event SpeechRecognized we write: <br><br> <code>MessageBox.Show("Recognized phrase: " + e.Result.Text);</code> <br> <br>  Now, when pronouncing the phrases “left”, “right”, “up”, “down”, without a huge Russian accent, the corresponding message will be displayed. <br>  But if you say with great emphasis, our program recognizes several options.  For this there is a SpeechHypothesized event.  Add its handler: <br><br> <code>sr.SpeechHypothesized += new EventHandler&lt;SpeechHypothesizedEventArgs&gt;(recognizer_SpeechHypothesized);</code> <br> <br>  We will also display the message in it: <br><br> <code>MessageBox.Show("Hypothesized phrase: " + e.Result.Text);</code> <br> <br>  Now our program is able to recognize the specified commands, this is not bad, but sometimes there are many such commands, or for example they can change (for example, “open tab number five”), or we want to make a notepad with voice control ... <br>  In general, you need to create another object: <br><br> <code>private DictationGrammar dictationGrammar;</code> <br> <br>  and in the constructor: <br><br> <code>dictationGrammar = new DictationGrammar(); <br> sr.LoadGrammar(dictationGrammar);</code> <br> <br>  Now our program can recognize any <b>English</b> text.  This feature is also available for French, Spanish, German, Japanese, and Chinese.  But unfortunately I don’t speak about them ( <br><br>  <b>PS</b> Let me remind you that you need to make the English interface language, otherwise the grammar dictionary will not be created! </div><p>Source: <a href="https://habr.com/ru/post/125432/">https://habr.com/ru/post/125432/</a></p>
+     <code>ss.Volume = 100;//  0  100 <br> ss.Rate = 0;// -10  10 <br> ss.SpeakAsync(textBoxText.Text);</code> <br> <br>  By the way, during asynchronous reading, you can change the speed and volume.  You can write just Speak (), but then the whole program will hang itself for the time of reading.  Now add another button to the form, saveToWav.  Here we also adjust the speed and speed, but before Speak () we write ss.SetOutputToWaveFile (/ * file path * /); <br>  Now the most interesting: <br><br><h4>  Recognition </h4><br><h6>  To use this feature you need to have Windows 7 / Vista in English </h6><br>  Let's connect System.Speech.Recognition, and declare variables in the form: <br><br> <code>private SpeechRecognitionEngine sr;</code> <br> <br>  Now we’ll copy a couple more incomprehensible lines of code into the form constructor: <br><br> <code>sr.SetInputToDefaultAudioDevice();// <br> GrammarBuilder grammarBuilder = new GrammarBuilder(); <br> grammarBuilder.Append(new Choices("left", "right", "up", "down"));//   <br> sr.UnloadAllGrammars(); <br> sr.LoadGrammar(Grammar(grammarBuilder));// "" <br> sr.SpeechRecognized += new EventHandler&lt;SpeechRecognizedEventArgs&gt;(SpeechRecognized);//   <br> sr.RecognizeAsync(RecognizeMode.Multiple);// </code> <br> <br>  in the event SpeechRecognized we write: <br><br> <code>MessageBox.Show("Recognized phrase: " + e.Result.Text);</code> <br> <br>  Now, when pronouncing the phrases “left”, “right”, “up”, “down”, without a huge Russian accent, the corresponding message will be displayed. <br>  But if you say with great emphasis, our program recognizes several options.  For this there is a SpeechHypothesized event.  Add its handler: <br><br> <code>sr.SpeechHypothesized += new EventHandler&lt;SpeechHypothesizedEventArgs&gt;(recognizer_SpeechHypothesized);</code> <br> <br>  We will also display the message in it: <br><br> <code>MessageBox.Show("Hypothesized phrase: " + e.Result.Text);</code> <br> <br>  Now our program is able to recognize the specified commands, this is not bad, but sometimes there are many such commands, or for example they can change (for example, “open tab number five”), or we want to make a notepad with voice control ... <br>  In general, you need to create another object: <br><br> <code>private DictationGrammar dictationGrammar;</code> <br> <br>  and in the constructor: <br><br> <code>dictationGrammar = new DictationGrammar(); <br> sr.LoadGrammar(dictationGrammar);</code> <br> <br>  Now our program can recognize any <b>English</b> text.  This feature is also available for French, Spanish, German, Japanese, and Chinese.  But unfortunately I don’t speak about them ( <br><br>  <b>PS</b> Let me remind you that you need to make the English interface language, otherwise the grammar dictionary will not be created! </div><p>Source: https://habr.com/ru/post/125432/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../125423/index.html">VMware revised volume of vRAM entitlement in vSphere 5</a></li>
 <li><a href="../125424/index.html">HTML5 Drag and Drop file upload</a></li>
 <li><a href="../125427/index.html">Published preliminary sketches of the future interface Firefox</a></li>
 <li><a href="../125428/index.html">How MySQL Optimizes ORDER BY, LIMIT, and DISTINCT</a></li>
+<li><a href="../12543/index.html">New type of spam?</a></li>
 <li><a href="../125431/index.html">The world of open-source in your pocket</a></li>
 <li><a href="../125433/index.html">PhoneGap 1.0 allows you to write applications for seven platforms</a></li>
 <li><a href="../125436/index.html">Linux Doctor Workplace</a></li>
 <li><a href="../125437/index.html">"System Administrator 2011". Results</a></li>
 <li><a href="../125438/index.html">5 habits of successful people</a></li>
-<li><a href="../125443/index.html">Windows 7 based tablet in China</a></li>
+<li><a href="../12544/index.html">Social hosting sites.</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

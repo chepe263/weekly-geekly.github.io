@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Wardriving with HTC Hero</h1><div class="post__text post__text-html js-mediator-article">  Not long ago, I decided to find out where are the open wifi points in my area.  For this, I needed a laptop and a GPS receiver.  The laptop benefit was found pretty quickly.  But with the GPS had to torment. <br><br>  From the arsenal of my gadgets, there was only one able to determine the location, and it was the HTC Hero.  I didn’t find working programs that allow turning my PDA into a receiver, and they all wanted the phone to connect via Bluetooth, which would eat up the charge of the mobile in a few minutes. <br><br><h4>  Idea </h4>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      Unfortunately, Android does not allow phones with official firmware to work with USB, but it allows sending logs via cable to a debugger.  I decided to take advantage of this. <br><br><h4>  Implementation </h4><br><br>  First of all, I screwed logs (Log.i ("DroidGPS", (NMEA + "\ n")) to my already written Droid program);), it was important to send logs in the NMEA string.  For its formation, I pulled a class from a non-working program found on the Internet. <br><a name="habracut"></a><br>  The next step was to get the logs on the computer, the benefit of the Google SDK is under Linux.  We get them thanks to the adb program from the tools folder: <br> <code>spin@~$ ./androidSDK/tools/adb -s MYSERIALNUMBER -v raw DroidGPS:I *:S</code> <br> <br>  The <i>raw</i> parameter allows you to get only the log line without unnecessary information such as a PID process.  We also set to receive only logs with the DroidGPS tag. <br><br><h4>  Connection </h4><br><br>  Unfortunately, GPSD can only receive coordinates from devices like / dev / rfcomm0, etc., so you need to set up an exchange using fifo: <br> <code>spin@~$ mkfifo /tmp/fifo</code> <br> <br>  All logs are thrown there: <br> <code>spin@~$ ./androidSDK/tools/adb -s MYSERIALNUMBER -v raw DroidGPS:I *:S &amp;&gt; /tmp/fifo</code> <br> <br>  Finally, turn on GPSD: <br> <code>spin@~$ gpsd /tmp/fifo</code> <br> <br><h4>  Result </h4><br><br>  Thanks to all this dance with tambourines, my demon began to receive coordinates, which I was not slow to use. <br><br>  PS I put the application for my phone here: <a href="">7ion.ru/uploads/GPSlog.apk</a> , and the SDK can be downloaded from the <a href="http://developer.android.com/sdk/index.html">official Android site</a> . </div><p>Source: <a href="https://habr.com/ru/post/97767/">https://habr.com/ru/post/97767/</a></p>
+      Unfortunately, Android does not allow phones with official firmware to work with USB, but it allows sending logs via cable to a debugger.  I decided to take advantage of this. <br><br><h4>  Implementation </h4><br><br>  First of all, I screwed logs (Log.i ("DroidGPS", (NMEA + "\ n")) to my already written Droid program);), it was important to send logs in the NMEA string.  For its formation, I pulled a class from a non-working program found on the Internet. <br><a name="habracut"></a><br>  The next step was to get the logs on the computer, the benefit of the Google SDK is under Linux.  We get them thanks to the adb program from the tools folder: <br> <code>spin@~$ ./androidSDK/tools/adb -s MYSERIALNUMBER -v raw DroidGPS:I *:S</code> <br> <br>  The <i>raw</i> parameter allows you to get only the log line without unnecessary information such as a PID process.  We also set to receive only logs with the DroidGPS tag. <br><br><h4>  Connection </h4><br><br>  Unfortunately, GPSD can only receive coordinates from devices like / dev / rfcomm0, etc., so you need to set up an exchange using fifo: <br> <code>spin@~$ mkfifo /tmp/fifo</code> <br> <br>  All logs are thrown there: <br> <code>spin@~$ ./androidSDK/tools/adb -s MYSERIALNUMBER -v raw DroidGPS:I *:S &amp;&gt; /tmp/fifo</code> <br> <br>  Finally, turn on GPSD: <br> <code>spin@~$ gpsd /tmp/fifo</code> <br> <br><h4>  Result </h4><br><br>  Thanks to all this dance with tambourines, my demon began to receive coordinates, which I was not slow to use. <br><br>  PS I put the application for my phone here: <a href="">7ion.ru/uploads/GPSlog.apk</a> , and the SDK can be downloaded from the <a href="http://developer.android.com/sdk/index.html">official Android site</a> . </div><p>Source: https://habr.com/ru/post/97767/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

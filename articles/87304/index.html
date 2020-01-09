@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Automatic compilation of computer name and issue it via DHCP</h1><div class="post__text post__text-html js-mediator-article"> Recently, the task arose of installing a Linux distribution on a fleet of 15 machines.  The most automated method of such an installation is to install over the network.  As such, many guides are devoted to this task; there are tools for it that are specific to each distribution (debian-installer, kickstart), and universal (CloneZilla, System Installer).  In this article, I want to write about how to solve this problem to ensure that each machine is assigned a computer name in pcNN format, where NN is a number in the order of 01 to 99, in my decision it will be the last two decimal places from IP addresses.  Googling on this topic, I did not find a ready answer, so having rummaged in the manual for the DHCP server I found a solution and decided to share it with the habrasoobschestvom. <br><a name="habracut"></a><br>  On the DHCP server, I use the ISC DHCP Server (dhcpd).  To solve the problem, I used the built-in ability to use so-called.  expressions to set any parameters. <br><br>  Typically, the computer name can be set in this format: <br><br> <code>option host-name "example";</code> <br> <br>  And bind it, for example, to a specific machine by MAC address.  But I was too lazy to prescribe hostnames for each machine: what if you need to install not 15 machines, but 100?  Therefore, we will issue a computer name based on IP, issued to it by DHCP.  The configuration string for this is as follows: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-     <code>option host-name=concat("pc", suffix(binary-to-ascii(10,8, "", leased-address),2));</code> <br> <br>  Using the "=" sign, we show that the option will be set using expression'a. <br>  leased-address returns the given IP address in binary format, using the binary-to-ascii function, we convert it to binary-decimal format without separators (for example, 19216801), the separator can be specified using the third operand.  Finally, we take only the last two characters from the address (01) and perform concatenation with the string “pc”, getting the address pc01.  The uniqueness of IP guarantees us the uniqueness of the computer name. <br><br>  And this is the complete configuration file: <br><br> <code>ddns-update-style none; <br> <br> default-lease-time 600; <br> max-lease-time 7200; <br> <br> log-facility local7; <br> <br> subnet 192.168.0.0 netmask 255.255.255.0 { <br> range 192.168.0.101 192.168.0.199; <br> option domain-name-servers 192.168.0.1; <br> option host-name=concat("pc", suffix(binary-to-ascii(10,8, "", leased-address),2)); <br> filename="pxelinux.0"; <br> } <br></code> <br><br>  As you can see, I restricted the range to 192.168.0.101-192.168.0.199, i.e.  from pc01 to pc99. <br><br>  Of course, with this algorithm, a problem arises due to the fact that a different IP can be assigned to the same computer, therefore, the computer name will be different every time.  But when using this scheme for installation over the network, the system is turned on and installed as a rule at a time, and the name issued by DHCP is written into the configuration of each machine (at least when installed using debian-installer), so the problem is not so significant.  If you need a name that is hardwired to a specific machine, you can compose it based on the MAC address (for example, its last byte), or issue the IP addresses themselves based on the MAC address. </div><p>Source: <a href="https://habr.com/ru/post/87304/">https://habr.com/ru/post/87304/</a></p>
+     <code>option host-name=concat("pc", suffix(binary-to-ascii(10,8, "", leased-address),2));</code> <br> <br>  Using the "=" sign, we show that the option will be set using expression'a. <br>  leased-address returns the given IP address in binary format, using the binary-to-ascii function, we convert it to binary-decimal format without separators (for example, 19216801), the separator can be specified using the third operand.  Finally, we take only the last two characters from the address (01) and perform concatenation with the string “pc”, getting the address pc01.  The uniqueness of IP guarantees us the uniqueness of the computer name. <br><br>  And this is the complete configuration file: <br><br> <code>ddns-update-style none; <br> <br> default-lease-time 600; <br> max-lease-time 7200; <br> <br> log-facility local7; <br> <br> subnet 192.168.0.0 netmask 255.255.255.0 { <br> range 192.168.0.101 192.168.0.199; <br> option domain-name-servers 192.168.0.1; <br> option host-name=concat("pc", suffix(binary-to-ascii(10,8, "", leased-address),2)); <br> filename="pxelinux.0"; <br> } <br></code> <br><br>  As you can see, I restricted the range to 192.168.0.101-192.168.0.199, i.e.  from pc01 to pc99. <br><br>  Of course, with this algorithm, a problem arises due to the fact that a different IP can be assigned to the same computer, therefore, the computer name will be different every time.  But when using this scheme for installation over the network, the system is turned on and installed as a rule at a time, and the name issued by DHCP is written into the configuration of each machine (at least when installed using debian-installer), so the problem is not so significant.  If you need a name that is hardwired to a specific machine, you can compose it based on the MAC address (for example, its last byte), or issue the IP addresses themselves based on the MAC address. </div><p>Source: https://habr.com/ru/post/87304/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../87293/index.html">New Blogger Blogging Template Designer</a></li>
-<li><a href="../87294/index.html">Yandeks.Probki: get the area covered with traffic jams + alternative cork gadget</a></li>
+<li><a href="../873/index.html">MySQL 5.1 - what's new?</a></li>
+<li><a href="../8730/index.html">It's hard to be a god ...</a></li>
 <li><a href="../87300/index.html">Quartz Composer: music cube</a></li>
 <li><a href="../87301/index.html">Apple Store prepares for pre-order iPad</a></li>
 <li><a href="../87303/index.html">Harmony</a></li>
 <li><a href="../87308/index.html">CoolerMaster NotePal X2 Notebook Cooling Pad Review</a></li>
+<li><a href="../8731/index.html">Terra Firma buys EMI</a></li>
 <li><a href="../87314/index.html">Fleece Scroll Bar</a></li>
 <li><a href="../87315/index.html">HabrEffect.ru</a></li>
 <li><a href="../87316/index.html">Easy Control Music Player Daemon on the Gnome Panel</a></li>
-<li><a href="../87317/index.html">PARPG role-playing game requires a new project leader</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

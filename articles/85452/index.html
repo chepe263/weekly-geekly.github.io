@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Chrome HabraMail Extension (and favicon method)</h1><div class="post__text post__text-html js-mediator-article">  In continuation of the <a href="http://habrahabr.ru/blogs/google_chrome/85042/">topic</a> . <br><br>  This time, tired of the usual habr mail (from the endless updating of pages, clicking on links, etc.), I decided to write a small extension for google chrome, which should simplify the everyday tasks of a habra person. <br><br>  Meet your friend, <a href="https://chrome.google.com/extensions/detail/mminmkaoiedpammejecifbcbfadnjpbp">HabraMail</a> ! 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      This is, so far, the <b>beta</b> version (a <i>lot of things have to be finalized</i> ), but you can start using it now. <br><br>  <b>UPD:</b> <a href="http://code.google.com/p/darkmatterteam/source/browse/">Source Code</a> <br><br>  The rest is under the cut: <a name="habracut"></a><br><h4>  Description </h4><br><br>  After installation, on any page of the habr, its icon will be displayed in the lower right corner. <br><img src="http://chrome.google.com/extensions/img/mminmkaoiedpammejecifbcbfadnjpbp/1267036813.64/screenshot/1" alt="image"><br>  We click on it and leave a small window with the latest messages in our "habrayaschike." <br><img src="http://chrome.google.com/extensions/img/mminmkaoiedpammejecifbcbfadnjpbp/1267036813.64/screenshot/1001" alt="image"><br>  Click on the topic of the message, and smoothly, without rebooting, we get a window with our message. <br><img src="http://chrome.google.com/extensions/img/mminmkaoiedpammejecifbcbfadnjpbp/1267036813.64/screenshot/2001" alt="image"><br>  Click on the inscription "write" or the name of the author (to the left of the subject of the message), and a new message form appears. <br><img src="http://chrome.google.com/extensions/img/mminmkaoiedpammejecifbcbfadnjpbp/1267036813.64/screenshot/2003" alt="image"><br>  <i>In the form of viewing, by the way, you can also delete the message.</i> <br><br><h4>  Technical implementation </h4><br>  As soon as I started writing this extension, I immediately encountered the following kind of problem: even though chrome extensions can send cross-domain requests, the Origin property will be put in the request header, equal to the url of the page from which it is sent. <br><br>  All would be nothing, but the server habrakhabra refuses to accept requests with a different Orgin. <br><br>  And here comes the help of the favicon method, which I will tell you about ( <i>it is quite likely that I am not the first to think of it before</i> ). <br><br><h4>  Favicon method </h4><br>  And I decided to do a cross-domain request using iframe (content scripts are connected, and there too).  But the trouble - the smallest page I could find (I was looking, though not for long) - this is “404 error”.  Of course, this did not suit me, and I began to look for an “alternative” solution. <br><br>  I accidentally noticed that the extension can even connect to a page where there is nothing at all except for a picture ( <i>for example, <b>http://example.com/example.png</b></i> ). <br><br>  I recall that the task was to send a request from the domain <b>username1.habrahabr.ru</b> (or just <b>habrahabr.ru</b> ) to the domain <b>username2.habrahabr.ru</b> . <br><br>  And using the “find with picture” in my extension, I decided it as follows: instead of the icon, we put an iframe without border with a fixed width and height, which loads the following url: <b>http://username2.habrahabr.ru/favicon.ico</b> .  A content script is inserted into this iframe that communicates with the main page ( <b>username1.habrahabr.ru</b> ) through an extension ( <i>using chrome.extension.connect</i> ).  The script on the main page sends a request to the extension, it sends to the iframe, and he back, and the extension returns the answer to the script. <br><br>  Here's a method for sending cross-origin requests to chrome extensions. <br><br>  I look forward to feedback and suggestions! </div><p>Source: <a href="https://habr.com/ru/post/85452/">https://habr.com/ru/post/85452/</a></p>
+      This is, so far, the <b>beta</b> version (a <i>lot of things have to be finalized</i> ), but you can start using it now. <br><br>  <b>UPD:</b> <a href="http://code.google.com/p/darkmatterteam/source/browse/">Source Code</a> <br><br>  The rest is under the cut: <a name="habracut"></a><br><h4>  Description </h4><br><br>  After installation, on any page of the habr, its icon will be displayed in the lower right corner. <br><img src="http://chrome.google.com/extensions/img/mminmkaoiedpammejecifbcbfadnjpbp/1267036813.64/screenshot/1" alt="image"><br>  We click on it and leave a small window with the latest messages in our "habrayaschike." <br><img src="http://chrome.google.com/extensions/img/mminmkaoiedpammejecifbcbfadnjpbp/1267036813.64/screenshot/1001" alt="image"><br>  Click on the topic of the message, and smoothly, without rebooting, we get a window with our message. <br><img src="http://chrome.google.com/extensions/img/mminmkaoiedpammejecifbcbfadnjpbp/1267036813.64/screenshot/2001" alt="image"><br>  Click on the inscription "write" or the name of the author (to the left of the subject of the message), and a new message form appears. <br><img src="http://chrome.google.com/extensions/img/mminmkaoiedpammejecifbcbfadnjpbp/1267036813.64/screenshot/2003" alt="image"><br>  <i>In the form of viewing, by the way, you can also delete the message.</i> <br><br><h4>  Technical implementation </h4><br>  As soon as I started writing this extension, I immediately encountered the following kind of problem: even though chrome extensions can send cross-domain requests, the Origin property will be put in the request header, equal to the url of the page from which it is sent. <br><br>  All would be nothing, but the server habrakhabra refuses to accept requests with a different Orgin. <br><br>  And here comes the help of the favicon method, which I will tell you about ( <i>it is quite likely that I am not the first to think of it before</i> ). <br><br><h4>  Favicon method </h4><br>  And I decided to do a cross-domain request using iframe (content scripts are connected, and there too).  But the trouble - the smallest page I could find (I was looking, though not for long) - this is “404 error”.  Of course, this did not suit me, and I began to look for an “alternative” solution. <br><br>  I accidentally noticed that the extension can even connect to a page where there is nothing at all except for a picture ( <i>for example, <b>http://example.com/example.png</b></i> ). <br><br>  I recall that the task was to send a request from the domain <b>username1.habrahabr.ru</b> (or just <b>habrahabr.ru</b> ) to the domain <b>username2.habrahabr.ru</b> . <br><br>  And using the “find with picture” in my extension, I decided it as follows: instead of the icon, we put an iframe without border with a fixed width and height, which loads the following url: <b>http://username2.habrahabr.ru/favicon.ico</b> .  A content script is inserted into this iframe that communicates with the main page ( <b>username1.habrahabr.ru</b> ) through an extension ( <i>using chrome.extension.connect</i> ).  The script on the main page sends a request to the extension, it sends to the iframe, and he back, and the extension returns the answer to the script. <br><br>  Here's a method for sending cross-origin requests to chrome extensions. <br><br>  I look forward to feedback and suggestions! </div><p>Source: https://habr.com/ru/post/85452/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../85442/index.html">Copy does not mean to steal!</a></li>
 <li><a href="../85443/index.html">uTorrent 2.0, hurry with uTP</a></li>
 <li><a href="../85446/index.html">IE6 death scheduled for March 13</a></li>
 <li><a href="../85447/index.html">IPod Shuffle Review</a></li>
 <li><a href="../85448/index.html">The sun is simple. Part Four: Fluctuations on the Sun's Surface</a></li>
+<li><a href="../8545/index.html">Encyclopedia of programming languages</a></li>
 <li><a href="../85455/index.html">Registration for the RIT ++ 2010 conference started (April 12-14, Moscow)</a></li>
 <li><a href="../85456/index.html">Balanced Scorecard as a tool for managing a company / division</a></li>
 <li><a href="../85459/index.html">Python Tips, Tricks, and Hacks (Part 2)</a></li>
+<li><a href="../8546/index.html">Nokia advises disconnecting chargers from the network</a></li>
 <li><a href="../85460/index.html">Our programmable brain. Part three</a></li>
-<li><a href="../85463/index.html">Igelle DSV 1.0.0</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

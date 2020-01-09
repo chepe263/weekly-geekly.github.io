@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Effective video encoding in Linux with Nvidia NVENC: part 2, additional</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/files/713/0a9/d09/7130a9d0992649c99b895416493e31ce.png"><br><br>  In the <a href="http://habrahabr.ru/post/262507/">first part,</a> I talked about video encoding in Linux using Nvidia NVENC.  As mentioned earlier, Nvidia for desktop video cards limits the number of encoding streams to two sessions per system.  This part is dedicated to combating this limitation. <a name="habracut"></a><br><br><h4>  Environment </h4><br>  Everything described happens on a GTX 970 machine and an installed FFmpeg, in accordance with the configuration discussed earlier. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
     <h4>  External manifestations </h4><br>  If you try to start coding more than two video streams in parallel, FFmpeg will generate an error: <br><pre> ...
@@ -190,20 +190,20 @@
 </pre><br>  We are interested in the neighborhood address 0x7fffe289b31e, it falls into this region.  Then the offset in the file is: address - starting address + segment offset. <br><pre> (gdb) print / x 0x7fffe289b31e - 0x7fffe2887000 + 0x0
  $ 7 = 0x1431e
 </pre><br><br><h4>  Biew </h4><br>  It remains to patch the file itself.  I haven’t found anything better than <a href="http://sourceforge.net/p/beye/wiki/Home/">biew</a> (was renamed beye).  Before making a backup, fix the file: <br><pre> biew /usr/lib/x86_64-linux-gnu/libnvidia-encode.so.346.46
-</pre><br>  In it: F2 -&gt; Disassembler, F5 -&gt; 1431e <br>  We get this picture: <br><img src="https://habrastorage.org/files/302/937/5d0/3029375d01b64f2f97f92cfe240fcce2.png"><br><br>  It looks exactly like the required code, so we hit right.  We need the eax register to be 0, and the conditional transition never happens. <br><br>  Pressing F4 turns on editing mode.  In biew there is no such convenient mode as in hiew, in which you can directly enter the instruction, and the editor assembles it.  Therefore it is necessary to manipulate opcodes numerically.  Write, for example, like this: <br><img src="https://habrastorage.org/files/02f/d09/f22/02fd09f2257748d088599f5b544f81bb.png"><br><br>  Byte at offset 0x1431e from 0x85 value is changed to 0x29.  The instruction "test eax, eax" turns into "sub eax, eax".  Two bytes at offsets 0x14322 and 0x14323 are replaced by 0x90 - this is a widely known opcode nop. <br><br><h4>  Total </h4><br>  The resulting solution works quite well.  By applying standard tools, you can achieve a lot and expand the boundaries of the possible. </div><p>Source: <a href="https://habr.com/ru/post/262563/">https://habr.com/ru/post/262563/</a></p>
+</pre><br>  In it: F2 -&gt; Disassembler, F5 -&gt; 1431e <br>  We get this picture: <br><img src="https://habrastorage.org/files/302/937/5d0/3029375d01b64f2f97f92cfe240fcce2.png"><br><br>  It looks exactly like the required code, so we hit right.  We need the eax register to be 0, and the conditional transition never happens. <br><br>  Pressing F4 turns on editing mode.  In biew there is no such convenient mode as in hiew, in which you can directly enter the instruction, and the editor assembles it.  Therefore it is necessary to manipulate opcodes numerically.  Write, for example, like this: <br><img src="https://habrastorage.org/files/02f/d09/f22/02fd09f2257748d088599f5b544f81bb.png"><br><br>  Byte at offset 0x1431e from 0x85 value is changed to 0x29.  The instruction "test eax, eax" turns into "sub eax, eax".  Two bytes at offsets 0x14322 and 0x14323 are replaced by 0x90 - this is a widely known opcode nop. <br><br><h4>  Total </h4><br>  The resulting solution works quite well.  By applying standard tools, you can achieve a lot and expand the boundaries of the possible. </div><p>Source: https://habr.com/ru/post/262563/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../262553/index.html">Overview of the Russian office package open source OnlyOffice in InfoboxCloud</a></li>
 <li><a href="../262555/index.html">The story of how I automated a coal boiler</a></li>
 <li><a href="../262557/index.html">Protecting corporate information on mobile devices with Oracle Mobile Security Suite</a></li>
 <li><a href="../262559/index.html">DataTalks # 3: Online Surveys</a></li>
+<li><a href="../26256/index.html">Do I need to take money from "superuser"?</a></li>
 <li><a href="../262561/index.html">Generalized matchings, or how to marry and distribute applicants</a></li>
 <li><a href="../262565/index.html">Release InfluxDB 0.9</a></li>
+<li><a href="../26257/index.html">A US court has authorized the resale of "used" software!</a></li>
 <li><a href="../262571/index.html">Caching in Android, Telegram for groups, improved callback, multicast, showlist and other innovations</a></li>
 <li><a href="../262573/index.html">Dreams of an ideal API or how difficulties were overcome in the AdHands project</a></li>
 <li><a href="../262575/index.html">Free online school of Android developers. Last days of registration</a></li>
-<li><a href="../262579/index.html">Hacking the site and its consequences</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

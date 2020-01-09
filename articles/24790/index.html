@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Problems with SDHC and their solution</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/olpictures/a1c/70b/f24/a1c70bf242bdf0376b57676d72a5ce04.jpg" width="166" height="133" alt="kingston" hspace="10" vspace="10" align="left"><br>  Probably many have encountered the problem of recording SDHC cards on an EEE PC.  I want to talk about the way I achieved the normal operation of the memory card. <br>  I have a memory card, a fairly common trademark Kingston, with a capacity of 4 gb, class 6. The problems began when I tried to write files of more than 100 mb. <a name="habracut"></a>  The record indicator just hung, after a while a message about the write error was displayed.  At first, I thought the curve map, then I remembered that under XP it worked fine.  He began again to scour the forum.  It turned out that many are faced with such a problem, mainly SDHC cards, ranging in size from 4gb, from various manufacturers.  On the forum I found a <a href="http://wiki.eeeuser.com/hardware:eee_un_supported_devices%3Fs%3Dsdhc">list</a> of memory cards that are supported by EEE PC.  My card was not on the list.  After an exhausting search, I came across the first solution to the problem. <br><ol><li>  Reboot the computer. </li><li>  Click " <strong>F2</strong> " and get into the BIOS. </li><li>  Select the " <strong>Advanced</strong> " tab. </li><li>  The item " <strong>OS Installation</strong> " is changed from <strong>Finish</strong> to <strong>Start</strong> . </li><li>  Press " <strong>F10</strong> " select Yes. </li></ol><br>  That's basically it.  We are loading, checking the map and see that everything is written successfully on it.  This solution was not suitable for me.  As it turned out, the web-camera stops working.  When converting the Finish value to Start, the speed of the USB ports changes from 2.0 to 1.1. The built-in camera does not work on USB 1.1.  In addition, the recording speed is also several times lower.  Skype has to be used every day, all the time switching through the BIOS, I did not want to.  Maybe someone can use this method, for example, on versions of EEE PC 4 serf and below.  I continued my search for solutions. <br>  The next solution is a bit more complicated, but there are no minuses in the work of the EEE PC. <br>  We need the module " <strong>eee.ko</strong> ".  We open the terminal and write the following: <br><br>  <em>wget <a href="">eeepc-linux.googlecode.com/files/eeepc-linux-0.2.tar.gz</a></em> <em><br></em>  <em>tar -zxvf eeepc-linux-0.2.tar.gz</em> <em><br></em>  <em>cd eeepc-linux / module /</em> <em><br></em>  <em>sudo make</em> <br><br>  The file " <strong>eee.ko</strong> " <strong>appears</strong> .  Now we need to copy it into " <strong>/lib/modules/2.6.22-14-generic/kernel</strong> " 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,18 +59,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <em>sudo cp eee.ko /lib/modules/2.6.22-14-generic/kernel</em> <br><br>  Next, run depmod -a <br><br>  <em>sudo depmod -a</em> <br><br>  We need to edit " <strong>/etc/modprobe.d/blacklist</strong> " and comment out " <strong>i2c_i801</strong> " there <br><br>  <em>sudo gedit /etc/modprobe.d/blacklist</em> <br><br>  find the string: <br><br>  blacklist i2c_i801 <br><br>  Replace with: <br><br>  #blacklist i2c_i801 <br><br>  Editing " <strong>/ etc / modules</strong> " <br><br>  <em>sudo gedit / etc / modules</em> <br><br>  At the very end add: <br><br>  i2c_i801 <br>  eee <br><br>  Now at the next boot, the " <strong>eee</strong> " module will automatically load.  But that is not all. <br>  Edit " <strong>/etc/init.d/checkfs.sh</strong> " <br><br>  <em>sudo gedit /etc/init.d/checkfs.sh</em> <br><br>  at the very end add: <br>  #make sdhc card safe for checking <br>  modprobe i2c-i801 <br>  modprobe eee <br>  echo 70 24 1&gt; / proc / eee / fsb <br><br>  Save, reboot.  Now really everything. <br>  We can check the recording speed: <br><br>  go to the memory card <br><br>  <em>cd / media / data</em> <br><br>  where the data folder is where you have a memory stick mounted, by default it's usually just disk <br>  create file <br>  <em>dd if = / dev / zero of = test bs = 1024 count = 102400</em> <br><br>  This will create a 100mb file.  In my case, I got the following result: <br><br>  <em>alex @ alex-laptop: / media / data $ dd if = / dev / zero of = test bs = 1024 count = 102400</em> <em><br></em>  <em>102400 + 0 records read</em> <em><br></em>  <em>102400 + 0 records written</em> <em><br></em>  <em>104857600 bytes (105 MB), 11.848 seconds, 8.9 MB / s are copied</em> <em><br></em>  <em>alex @ alex-laptop: / media / data $</em> <br><br>  8.9 MB, s is a good indicator for my card.  That's actually <br>  now everything works fine. <br><br>  Taken from <a href="http://eee-blog.ru/">eee-blog.ru</a> <br></div><p>Source: <a href="https://habr.com/ru/post/24790/">https://habr.com/ru/post/24790/</a></p>
+      <em>sudo cp eee.ko /lib/modules/2.6.22-14-generic/kernel</em> <br><br>  Next, run depmod -a <br><br>  <em>sudo depmod -a</em> <br><br>  We need to edit " <strong>/etc/modprobe.d/blacklist</strong> " and comment out " <strong>i2c_i801</strong> " there <br><br>  <em>sudo gedit /etc/modprobe.d/blacklist</em> <br><br>  find the string: <br><br>  blacklist i2c_i801 <br><br>  Replace with: <br><br>  #blacklist i2c_i801 <br><br>  Editing " <strong>/ etc / modules</strong> " <br><br>  <em>sudo gedit / etc / modules</em> <br><br>  At the very end add: <br><br>  i2c_i801 <br>  eee <br><br>  Now at the next boot, the " <strong>eee</strong> " module will automatically load.  But that is not all. <br>  Edit " <strong>/etc/init.d/checkfs.sh</strong> " <br><br>  <em>sudo gedit /etc/init.d/checkfs.sh</em> <br><br>  at the very end add: <br>  #make sdhc card safe for checking <br>  modprobe i2c-i801 <br>  modprobe eee <br>  echo 70 24 1&gt; / proc / eee / fsb <br><br>  Save, reboot.  Now really everything. <br>  We can check the recording speed: <br><br>  go to the memory card <br><br>  <em>cd / media / data</em> <br><br>  where the data folder is where you have a memory stick mounted, by default it's usually just disk <br>  create file <br>  <em>dd if = / dev / zero of = test bs = 1024 count = 102400</em> <br><br>  This will create a 100mb file.  In my case, I got the following result: <br><br>  <em>alex @ alex-laptop: / media / data $ dd if = / dev / zero of = test bs = 1024 count = 102400</em> <em><br></em>  <em>102400 + 0 records read</em> <em><br></em>  <em>102400 + 0 records written</em> <em><br></em>  <em>104857600 bytes (105 MB), 11.848 seconds, 8.9 MB / s are copied</em> <em><br></em>  <em>alex @ alex-laptop: / media / data $</em> <br><br>  8.9 MB, s is a good indicator for my card.  That's actually <br>  now everything works fine. <br><br>  Taken from <a href="http://eee-blog.ru/">eee-blog.ru</a> <br></div><p>Source: https://habr.com/ru/post/24790/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../247885/index.html">MyBatis as a faster alternative to Hibernate</a></li>
 <li><a href="../247889/index.html">Clojure - transducers, reducers and other dregs</a></li>
 <li><a href="../247891/index.html">Wolves of Wall Street: A story about high-frequency trading from the expert Thomson Reuters</a></li>
 <li><a href="../247893/index.html">List of YouTube channels for web development training</a></li>
 <li><a href="../247897/index.html">Conditional indexing. Optimizing the full-text search process</a></li>
+<li><a href="../2479/index.html">Google stopped giving advice</a></li>
 <li><a href="../247901/index.html">Study under the MASA program in Israel</a></li>
 <li><a href="../247903/index.html">Docker: interesting features of basic images</a></li>
 <li><a href="../247905/index.html">DWDM lines between data centers: how does the approach change, if we are talking about banks and responsible objects</a></li>

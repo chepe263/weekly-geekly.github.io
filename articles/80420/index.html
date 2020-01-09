@@ -25,12 +25,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -52,7 +52,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Add .amr support in Ubuntu Karmic</h1><div class="post__text post__text-html js-mediator-article">  Nokia phones dictated in <a title="wiki: Adaptive Multi-Rate audio codec" href="http://en.wikipedia.org/wiki/Adaptive_Multi-Rate_audio_codec">amr</a> format. <br>  We connect the phone with a wire to the glamorous Ubuntu Karmic, transfuse dictated by long painstaking mental work ... <br>  And here we are waiting for an unexpected bummer.  The codec for these files is not only not installed, but is not found with the help of the built-in (quite often, by the way, “making the mistake”) codecs search utility for gstreamer. <br>  Moreover, there was no quick way in the spirit of “putting such and such a package, and it went on all by itself” in the network.  There are libopencore-amrnb0 and libopencore-amrwb0 packages in the repository, but no other packages rely on them — that is, no player can use these libraries by default. <br><br>  So, Ubuntu is also Linux.  Therefore, all this mess will rule hands. <br><a name="habracut"></a><br><ol><li>  <strong>Do it once.</strong>  Amr support actually happens in ffmpeg.  But the guys from Ubuntu for some (apparently copyrighted) reasons did not include it when building the package. <br>  We will reassemble the package more correctly, because in our country licensing violations have not stopped anyone yet, right? <br>  Download the source: <br><blockquote>  $ cd / usr / src <br>  $ apt-get source ffmpeg <br>  $ cd ffmpeg-0.5 + svn20090706 / <br></blockquote><br>  In the <code>debian/confflags</code> amr is mentioned in the context of a library that I did not find in the standard repositories: <br><blockquote>  confflags + = $ (call cond_enable_nf, / usr / include / amrnb / sp_dec.h, libamr-nb) <br>  confflags + = $ (call cond_enable_nf, / usr / include / amrwb / dec.h, libamr-wb) <br></blockquote><br>  Here, the <code>cond_enable_nf</code> macro <code>cond_enable_nf</code> the necessary flags for configure, based on the presence of headers for each non-free library.  Having studied <code>configure -h</code> , we see in the list of possible flags: <br><blockquote>  --enable-libamr-nb enable libamr-nb floating point audio codec [no] <br>  --enable-libamr-wb enable libamr-wb floating point audio codec [no] <br>  --enable-libopencore-amrnb enable AMR-NB de / encoding via libopencore-amrnb [no] <br>  --enable-libopencore-amrwb enable AMR-WB decoding via libopencore-amrwb [no] <br></blockquote><br>  that is, libraries from opencore can be connected to ffmpeg. </li><li>  <strong>Install libraries for assembly.</strong> <br>  Everything is trivial here - we pull out the * -dev packages required for compilation, and the libraries for amr (there are two of them, it was too lazy to understand what was needed - maybe the second one will also come in handy in the future): <br><blockquote>  $ sudo apt-get build-dep ffmpeg <br>  $ sudo apt-get install libopencore-amrnb libopencore-amrnb-dev libopencore-amrwb libopencore-amrwb-dev <br></blockquote></li><li>  <strong>Correcting the package build algorithm for ffmpeg</strong> <br>  Add a check for the availability of amr libraries from opencore to the debian / confflags file: <br><blockquote>  confflags + = $ (call cond_enable_nf, / usr / include / amrnb / sp_dec.h, libamr-nb) <br>  confflags + = $ (call cond_enable_nf, / usr / include / amrwb / dec.h, libamr-wb) <br>  <strong>confflags + = $ (call cond_enable_nf, / usr / include / opencore-amrnb / interf_dec.h, libopencore-amrnb)</strong> <strong><br></strong>  <strong>confflags + = $ (call cond_enable_nf, / usr / include / opencore-amrwb / dec_if.h, libopencore-amrwb)</strong> <br></blockquote><br>  Now everything must come together. </li><li>  <strong>We collect the updated ffmpeg.</strong> <br><blockquote>  $ dpkg-buildpackage -rfakeroot -uc -b </blockquote><br>  We build only binary packages ( <code>-b</code> ) using fakeroot ( <code>-rfakeroot</code> ), and do not sign changes ( <code>-uc</code> ). <br>  The output in / usr / src will be a whole bunch of recompiled packages. </li><li>  <strong>Install everything that happened.</strong> <br><blockquote>  $ sudo dpkg -i /usr/src/*.deb <br></blockquote><br>  (If you have any other packages there that you don’t need to install, then I’m not to blame.) </li><li>  <strong>We check if everything is well supported, if there is amr support in ffmpeg.</strong> <br><blockquote>  $ ffmpeg -version | grep amr </blockquote><br>  If the received long sausage has a piece <code>--enable-libopencore-amrnb --enable-nonfree --enable-libopencore-amrwb --enable-nonfree</code> , then everything went well. </li><li>  <strong>We play files.</strong> <br>  Now our files are normally played with <code>ffplay</code> .  Players that use ffmpeg via <code>gstreamer0.10-ffmpeg</code> (for example, Exaile) continue to not find codecs.  What to do about it, I have not figured it out yet, and as a temporary measure, it was decided to simply overtake all the <code>.amr</code> files into <code>.ogg</code> . </li><li>  <strong>We write a script recoder.</strong> <br>  Somewhere in the right place (I like <code>/usr/local/bin</code> ) create the file amr2ogg, give it the rights <code>rwxr-xr-x</code> and the owner root: root, and inside we write: <br><blockquote>  #! / bin / sh <br>  ffmpeg -i "$ 1" "` echo "$ 1" | sed s / amr $ / ogg / `" <br></blockquote></li></ol><br>  Next, we expose to open the * .amr files using our script, and <strong>everything is ready</strong> - an ogg is created with a double click next to the source file with the same name that can be played on anything. <br><br><hr><br>  With this post, I would like to remind many that Ubuntu is still much closer to Gentoo than to MS Windows, and leaves a lot of room for fine-tuning and rebuilding the code to the person who wants it. <br></div>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -60,18 +60,18 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <p>Source: <a href="https://habr.com/ru/post/80420/">https://habr.com/ru/post/80420/</a></p>
+    <p>Source: https://habr.com/ru/post/80420/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../80411/index.html">Hacker in Law (blogger bablaw) reprinted an open letter to the President in defense of genuine software freedom</a></li>
 <li><a href="../80412/index.html">Mobile phones protect against Alzheimer's disease</a></li>
 <li><a href="../80413/index.html">OperaTor updated to 3.5</a></li>
 <li><a href="../80414/index.html">Hands reached: we continue about ASA</a></li>
 <li><a href="../80417/index.html">Visualization of links between web resources</a></li>
+<li><a href="../8042/index.html">How I bought Kolin i-Library EB683</a></li>
 <li><a href="../80421/index.html">Acer recalls 22 thousand netbooks</a></li>
 <li><a href="../80422/index.html">Palm Pre Plus and Palm Pixi Plus - another attempt to catch up with the iPhone</a></li>
 <li><a href="../80423/index.html">Moscow.pm 2009 => 2010</a></li>

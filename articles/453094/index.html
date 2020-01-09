@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Analysis of the frequency of occurrence of numbers in the MD5 hash</h1><div class="post__text post__text-html js-mediator-article">  We all know what a hash looks like, but have you wondered how often a particular character is found in a hash?  I wondered.  And I decided to check.  Sketched a Python script for counting, and this is what came of it. <br><a name="habracut"></a><br>  For starters, I generated a random string of characters (from 0 to 1000 long). <br><br><pre><code class="python hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">random_string</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(from_int, to_int)</span></span></span><span class="hljs-function">:</span></span> <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> str(<span class="hljs-string"><span class="hljs-string">''</span></span>.join(random.SystemRandom().choice(string.ascii_letters + string.digits + string.punctuation) <span class="hljs-keyword"><span class="hljs-keyword">for</span></span> _ <span class="hljs-keyword"><span class="hljs-keyword">in</span></span> range(random.randint(from_int, to_int))))</code> </pre> <br>  Then I took the MD5 hash from the string. <br><br><pre> <code class="python hljs"><span class="hljs-function"><span class="hljs-keyword"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="hljs-title"><span class="hljs-function"><span class="hljs-title">md5_from_string</span></span></span><span class="hljs-params"><span class="hljs-function"><span class="hljs-params">(string)</span></span></span><span class="hljs-function">:</span></span> <span class="hljs-keyword"><span class="hljs-keyword">return</span></span> hashlib.md5(string.encode(<span class="hljs-string"><span class="hljs-string">'utf-8'</span></span>)).hexdigest()</code> </pre> <br>  After - calculated how many digits from 0 to 9 are in the hash.  On a sample of 1000 hashes received the following data: 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <img src="https://habrastorage.org/webt/rs/bt/gl/rsbtgltik1og4tsycgke6ksoftc.png" alt="image"><br><br>  Here the difference between the most frequently encountered digit and the most rarely encountered (delta value) is interesting. <br><br><img src="https://habrastorage.org/webt/_k/0g/qw/_k0gqw9wzbh5gl3ke5rvhjlaxo0.png"><br><br>  Further, in order to trace the change in the value of delta, I made samples of 10,000, 100,000, 1,000,000, 10,000,000 hashes. <br><br><img src="https://habrastorage.org/webt/i3/rp/ik/i3rpik9dorgej76dcffqmlnjrxm.png"><br><br>  The following is a list of the minimum and maximum digits and delta values ​​on samples with different number of MD5 hashes: <br><br><ul><li>  100 - min: 179, max: 230, delta: <b>22.17%</b> </li><li>  1000 - min: 1925, max: 2058, delta: <b>6.46%</b> </li><li>  10000 - min: 19769, max: 20251, delta: <b>2.38%</b> </li><li>  100000 - min: 199297, max: 200846, delta: <b>0.77%</b> </li><li>  1000000 - min: 1997650, max: 2001690, delta: <b>0.20%</b> </li><li>  10,000,000 - min: 19991830, max: 20004818, delta: <b>0.06%</b> </li></ul><br>  What we have: with an increase in the number of hashes in the array, the value of delta decreases and any digit will almost automatically fall into the array with the same probability.  Thus, the larger the sample, the smaller the difference between common and rarely encountered numbers.  Accordingly, the probability of obtaining one or another digit in the hash tends towards uniformity. <br>  This information formed the basis of the algorithm that we implemented on the platform for holding <a href="https://bepeam.com/">bepeam.com</a> contests <a href="https://bepeam.com/">.</a> </div><p>Source: <a href="https://habr.com/ru/post/453094/">https://habr.com/ru/post/453094/</a></p>
+    <img src="https://habrastorage.org/webt/rs/bt/gl/rsbtgltik1og4tsycgke6ksoftc.png" alt="image"><br><br>  Here the difference between the most frequently encountered digit and the most rarely encountered (delta value) is interesting. <br><br><img src="https://habrastorage.org/webt/_k/0g/qw/_k0gqw9wzbh5gl3ke5rvhjlaxo0.png"><br><br>  Further, in order to trace the change in the value of delta, I made samples of 10,000, 100,000, 1,000,000, 10,000,000 hashes. <br><br><img src="https://habrastorage.org/webt/i3/rp/ik/i3rpik9dorgej76dcffqmlnjrxm.png"><br><br>  The following is a list of the minimum and maximum digits and delta values ​​on samples with different number of MD5 hashes: <br><br><ul><li>  100 - min: 179, max: 230, delta: <b>22.17%</b> </li><li>  1000 - min: 1925, max: 2058, delta: <b>6.46%</b> </li><li>  10000 - min: 19769, max: 20251, delta: <b>2.38%</b> </li><li>  100000 - min: 199297, max: 200846, delta: <b>0.77%</b> </li><li>  1000000 - min: 1997650, max: 2001690, delta: <b>0.20%</b> </li><li>  10,000,000 - min: 19991830, max: 20004818, delta: <b>0.06%</b> </li></ul><br>  What we have: with an increase in the number of hashes in the array, the value of delta decreases and any digit will almost automatically fall into the array with the same probability.  Thus, the larger the sample, the smaller the difference between common and rarely encountered numbers.  Accordingly, the probability of obtaining one or another digit in the hash tends towards uniformity. <br>  This information formed the basis of the algorithm that we implemented on the platform for holding <a href="https://bepeam.com/">bepeam.com</a> contests <a href="https://bepeam.com/">.</a> </div><p>Source: https://habr.com/ru/post/453094/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

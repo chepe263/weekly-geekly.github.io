@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -76,7 +76,7 @@
                        vector-type |  date-type |  byte-array-type))
 </pre><hr><br>  As you can see, 4 additional markers were added: 3 special for numeric values ​​and one for the rest. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -84,10 +84,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <em><b>Comment.</b></em>  <em>In fact, the specification is not entirely correct, namely the <code>vector-other-type</code> rule.</em>  <em>According to the specification it turns out that such a vector can simultaneously contain all of the listed types, but in fact only one of the listed types.</em>  <em>And only <code><nobr>null-type</nobr></code> can be used simultaneously with other types.</em>  <em>Unfortunately, I do not know how to specify such a rule using ABNF.</em> <br><br><h5>  Numeric Vectors </h5><br>  Everything is simple with them.  Read the length of the vector, the <code>fixed</code> flag, and N values ​​( <code>int</code> , <code>uint</code> or <code>double</code> ).  To be honest, I was surprised that these three vectors were rendered, especially against the background of the fact that the vectors of rows and boules are encoded as vectors of objects (more on this below). <br><br><h5>  Object Vector </h5><br>  Exactly the same as numerical vectors.  The only difference is the additional parameter <code>class-name</code> , the name of the class whose objects contain a vector.  <code>class-name</code> can be empty, meaning <code>Object</code> . <br><br><h5>  Vectors of strings, boules, arrays, vectors </h5><br>  I was unpleasantly surprised at how the vectors are encoded for the remaining “special types”.  For them, a vector marker of objects with an empty string instead of a <code>class-name</code> .  So without data it is impossible to know what exactly the vector contains, i.e.  it is impossible to know what kind of vector arrived if it is empty. <br><br><h5>  Implementation </h5><br>  Because of these vectors for “special data types,” I also had difficulty in implementing vectors for PHP.  The problem lies in the strict typing of vectors - a vector can store only one type of data.  Here I was torn between 2 ways of implementation: <br>  - simple but dumb container for arrays <br>  - typesafe vector <br>  With the first, everything is simple, but I want the second.  As a result, the patch for Zend_Amf was never written, because I left the company for which I worked.  And now there is no time to finish it.  Therefore, I decided to simply lay out the specification.  I am sure there are many who are willing to implement vector support in Zend_Amf, AMFPHP, WebORB, PyAMF, and others. <br><br><h5>  PS </h5><br>  The specification has not been thoroughly tested, so it may well not be complete.  I would welcome any amendments. </div><p>Source: <a href="https://habr.com/ru/post/122178/">https://habr.com/ru/post/122178/</a></p>
+      <em><b>Comment.</b></em>  <em>In fact, the specification is not entirely correct, namely the <code>vector-other-type</code> rule.</em>  <em>According to the specification it turns out that such a vector can simultaneously contain all of the listed types, but in fact only one of the listed types.</em>  <em>And only <code><nobr>null-type</nobr></code> can be used simultaneously with other types.</em>  <em>Unfortunately, I do not know how to specify such a rule using ABNF.</em> <br><br><h5>  Numeric Vectors </h5><br>  Everything is simple with them.  Read the length of the vector, the <code>fixed</code> flag, and N values ​​( <code>int</code> , <code>uint</code> or <code>double</code> ).  To be honest, I was surprised that these three vectors were rendered, especially against the background of the fact that the vectors of rows and boules are encoded as vectors of objects (more on this below). <br><br><h5>  Object Vector </h5><br>  Exactly the same as numerical vectors.  The only difference is the additional parameter <code>class-name</code> , the name of the class whose objects contain a vector.  <code>class-name</code> can be empty, meaning <code>Object</code> . <br><br><h5>  Vectors of strings, boules, arrays, vectors </h5><br>  I was unpleasantly surprised at how the vectors are encoded for the remaining “special types”.  For them, a vector marker of objects with an empty string instead of a <code>class-name</code> .  So without data it is impossible to know what exactly the vector contains, i.e.  it is impossible to know what kind of vector arrived if it is empty. <br><br><h5>  Implementation </h5><br>  Because of these vectors for “special data types,” I also had difficulty in implementing vectors for PHP.  The problem lies in the strict typing of vectors - a vector can store only one type of data.  Here I was torn between 2 ways of implementation: <br>  - simple but dumb container for arrays <br>  - typesafe vector <br>  With the first, everything is simple, but I want the second.  As a result, the patch for Zend_Amf was never written, because I left the company for which I worked.  And now there is no time to finish it.  Therefore, I decided to simply lay out the specification.  I am sure there are many who are willing to implement vector support in Zend_Amf, AMFPHP, WebORB, PyAMF, and others. <br><br><h5>  PS </h5><br>  The specification has not been thoroughly tested, so it may well not be complete.  I would welcome any amendments. </div><p>Source: https://habr.com/ru/post/122178/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -97,10 +97,10 @@
 <li><a href="../122175/index.html">The first coin with a QR code</a></li>
 <li><a href="../122176/index.html">100,000 NektoMe users</a></li>
 <li><a href="../122179/index.html">Making Linux From Scratch our universal distribution</a></li>
+<li><a href="../12218/index.html">Microsoft vs. Google - The struggle of two concepts</a></li>
 <li><a href="../122181/index.html">Microsoft has announced successes in the fight against autorun viruses</a></li>
 <li><a href="../122182/index.html">i-garden</a></li>
 <li><a href="../122183/index.html">Wireless chips from Renesas Electronics Corp can work without batteries</a></li>
-<li><a href="../122184/index.html">Experienced trivia-4, or "Measuring backups?"</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

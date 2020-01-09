@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>DIY backups for dummies</h1><div class="post__text post__text-html js-mediator-article">  It has long been known that system administrators are divided into two categories: those who are not yet doing backups and those who are already doing.  At a time when some DCs are burning, and the latter suddenly disappear, it is best to belong to the second category. <br><br>  So, I want to share the experience of simple automatic data backup for dummies. <br><br><h4>  Task </h4><br>  It is necessary to create backup copies of files and databases on a schedule.  These two processes should be independent of each other, because database backup is done more often than file backup (or vice versa). <br><h5>  Given </h5><br><ul><li>  Centos 5 x86_64 based VPS. </li><li>  Control Panel ISP Manager.  Standard ISP Manager tools do not suit. </li><li>  There is very little free space on the server. </li></ul><br><h5>  purpose </h5><br>  Get file and database archives on the server in a specific folder.  Archives must be accessible by http-protocol. <br><a name="habracut"></a>
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-    <h5>  <b>Decision</b> </h5><br><br>  Since this is the first experience of writing scripts, the code may seem a bit clumsy to someone. <br><br>  <b>MySQL backup</b> <br>  Makes dumps of all databases available to the specified user. <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh # ----  -------------------------------------- # ,    BACKUP_DIR="/var/www/wscms/data/www/site.ru/backup/" #    BACKUP_FILE="sql.tar" # ,     USER="wscms" #     MySQL MDIR="mysql/" #   MySQL MHOST="localhost" # MYSQL root  MUSER="root" # MYSQL root  MPASS="***************" #  "-zcf"      "-cf"    PARAMS="-cf" #---   -------------------------- #   mysql. MYSQL="$(which mysql)" #   mysqldump MYSQLDUMP="$(which mysqldump)" #   tar TAR="$(which tar)" #   chown CHOWN="$(which chown)" #   RM RM="$(which rm)" #   MKDIR MKDIR="$(which mkdir)" # ----     DBS="$($MYSQL -u $MUSER -h $MHOST -p$MPASS -Bse 'show databases')" # ----      ,     $RM -rf $BACKUP_DIR$MDIR # ----     $MKDIR -p $BACKUP_DIR$MDIR # ----    .    for db in $DBS do FILE=$BACKUP_DIR$MDIR$db.sql $MYSQLDUMP -u $MUSER -h $MHOST -p$MPASS $db &gt; $FILE done # ----   $TAR $PARAMS $BACKUP_DIR$BACKUP_FILE $BACKUP_DIR$MDIR # ----        MySQL  $RM -rf $BACKUP_DIR$MDIR $CHOWN $USER $BACKUP_DIR $CHOWN $USER $BACKUP_DIR$BACKUP_FILE exit 0</span></span></code> </pre> <br><br>  <b>Backup files</b> <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh # ----  -------------------------------------- # ,    BACKUP_DIR="/var/www/wscms/data/www/site.ru/backup/" #    EXT=".tar" # ,     MAIN_DIR="/var/www/" # ,      DATA_DIR="/data/www/" # ,     USER="wscms" #  "-zcf"      "-cf"    #  u      PARAMS="-cf" #---   -------------------------- #   tar TAR="$(which tar)" #   chown CHOWN="$(which chown)" RM="$(which rm)" MKDIR="$(which mkdir)" # ----     $MKDIR -p $BACKUP_DIR $CHOWN -R $USER $BACKUP_DIR # ----     for DIR in $(/usr/local/ispmgr/sbin/mgrctl -m ispmgr user | cut -d' ' -f1 | sed s/name=//) do # ----   $TAR $PARAMS $BACKUP_DIR$DIR$EXT $MAIN_DIR$DIR$DATA_DIR $CHOWN $USER $BACKUP_DIR$DIR$EXT done $CHOWN -R $USER $BACKUP_DIR exit 0</span></span></code> </pre> <br><br>  Add to CRON as root user <br>  / bin / sh /backup/backup.sh <br>  / bin / sh /backup/sql.sh <br>  We set the schedule we need <br><br>  After the operation of these two scripts, we have backup files for each user separately and backup MySql. <br><br>  Now we can do anything with them: either on a third-party server in another DC, pick them up using wget, or (as I have done) with a simple windows-application loaded into the scheduler, download backups to the local machine daily. <br><br>  For security purposes, I advise you to put the following .htaccess folder in the site.ru/backup/ folder <br>  Order Deny, Allow <br>  Deny from all <br>  Allow from your.IP.Address, IP.Address.VPS.If you use.wget <br><br>  Good luck to you, and do not lose your data. </div><p>Source: <a href="https://habr.com/ru/post/132262/">https://habr.com/ru/post/132262/</a></p>
+    <h5>  <b>Decision</b> </h5><br><br>  Since this is the first experience of writing scripts, the code may seem a bit clumsy to someone. <br><br>  <b>MySQL backup</b> <br>  Makes dumps of all databases available to the specified user. <br><pre><code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh # ----  -------------------------------------- # ,    BACKUP_DIR="/var/www/wscms/data/www/site.ru/backup/" #    BACKUP_FILE="sql.tar" # ,     USER="wscms" #     MySQL MDIR="mysql/" #   MySQL MHOST="localhost" # MYSQL root  MUSER="root" # MYSQL root  MPASS="***************" #  "-zcf"      "-cf"    PARAMS="-cf" #---   -------------------------- #   mysql. MYSQL="$(which mysql)" #   mysqldump MYSQLDUMP="$(which mysqldump)" #   tar TAR="$(which tar)" #   chown CHOWN="$(which chown)" #   RM RM="$(which rm)" #   MKDIR MKDIR="$(which mkdir)" # ----     DBS="$($MYSQL -u $MUSER -h $MHOST -p$MPASS -Bse 'show databases')" # ----      ,     $RM -rf $BACKUP_DIR$MDIR # ----     $MKDIR -p $BACKUP_DIR$MDIR # ----    .    for db in $DBS do FILE=$BACKUP_DIR$MDIR$db.sql $MYSQLDUMP -u $MUSER -h $MHOST -p$MPASS $db &gt; $FILE done # ----   $TAR $PARAMS $BACKUP_DIR$BACKUP_FILE $BACKUP_DIR$MDIR # ----        MySQL  $RM -rf $BACKUP_DIR$MDIR $CHOWN $USER $BACKUP_DIR $CHOWN $USER $BACKUP_DIR$BACKUP_FILE exit 0</span></span></code> </pre> <br><br>  <b>Backup files</b> <br><pre> <code class="bash hljs"><span class="hljs-comment"><span class="hljs-comment">#!/bin/sh # ----  -------------------------------------- # ,    BACKUP_DIR="/var/www/wscms/data/www/site.ru/backup/" #    EXT=".tar" # ,     MAIN_DIR="/var/www/" # ,      DATA_DIR="/data/www/" # ,     USER="wscms" #  "-zcf"      "-cf"    #  u      PARAMS="-cf" #---   -------------------------- #   tar TAR="$(which tar)" #   chown CHOWN="$(which chown)" RM="$(which rm)" MKDIR="$(which mkdir)" # ----     $MKDIR -p $BACKUP_DIR $CHOWN -R $USER $BACKUP_DIR # ----     for DIR in $(/usr/local/ispmgr/sbin/mgrctl -m ispmgr user | cut -d' ' -f1 | sed s/name=//) do # ----   $TAR $PARAMS $BACKUP_DIR$DIR$EXT $MAIN_DIR$DIR$DATA_DIR $CHOWN $USER $BACKUP_DIR$DIR$EXT done $CHOWN -R $USER $BACKUP_DIR exit 0</span></span></code> </pre> <br><br>  Add to CRON as root user <br>  / bin / sh /backup/backup.sh <br>  / bin / sh /backup/sql.sh <br>  We set the schedule we need <br><br>  After the operation of these two scripts, we have backup files for each user separately and backup MySql. <br><br>  Now we can do anything with them: either on a third-party server in another DC, pick them up using wget, or (as I have done) with a simple windows-application loaded into the scheduler, download backups to the local machine daily. <br><br>  For security purposes, I advise you to put the following .htaccess folder in the site.ru/backup/ folder <br>  Order Deny, Allow <br>  Deny from all <br>  Allow from your.IP.Address, IP.Address.VPS.If you use.wget <br><br>  Good luck to you, and do not lose your data. </div><p>Source: https://habr.com/ru/post/132262/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../132247/index.html">MU-MIMO, or how OFDM in WiMAX / LTE differs from OFDM in 802.11a / g / n</a></li>
-<li><a href="../132248/index.html">How to choose a TV</a></li>
+<li><a href="../13225/index.html">Special licenses for Kaspersky Anti-Virus for MoneyMail users</a></li>
 <li><a href="../132254/index.html">Bible design. Part two. Crutches, exile from paradise, Cain, Abel, and again from scratch</a></li>
 <li><a href="../132255/index.html">Features testing Flex UI components using FlexUnit 4</a></li>
 <li><a href="../132257/index.html">Coworking in an Internet cafe: Start</a></li>
+<li><a href="../13226/index.html">Adygea resident, who posted the execution video, was taken into custody</a></li>
+<li><a href="../13227/index.html">46 million heated batteries</a></li>
 <li><a href="../132272/index.html">On the fixing of negotiations of cellular subscribers</a></li>
 <li><a href="../132274/index.html">Installing your own time base database on Junos devices</a></li>
 <li><a href="../132276/index.html">Life without patents - for and against</a></li>
 <li><a href="../132277/index.html">Working Pull to refresh</a></li>
-<li><a href="../132279/index.html">Crossbrowser APNG</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

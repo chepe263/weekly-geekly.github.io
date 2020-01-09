@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>How to avoid null pointer dereferencing, using the example of a single patch in the Linux kernel</h1><div class="post__text post__text-html js-mediator-article">  The idea is as follows.  In order to avoid dereferencing the null pointer, it is necessary that there is no null pointer.  Your co.  It so happened that once I fixed a small problem in the Linux kernel, but it was not the current kernel branch, but stable.  In the current, at that time, this problem was also corrected, but differently. <br><a name="habracut"></a><br>  The problem was simple and very common.  One thread frees the buffer while the second continues to use it.  Race condition.  How to avoid this situation?  You can force one thread to wait while the second uses the buffer, the solution is simple, but not efficient, sometimes cumbersome. <br><br>  <a href="">First option</a> <br><br>  My decision was different, but why actually wait until the buffer is free, to erase it right away?  Let's leave it alone, a small buffer of 512 bytes of weather will not do.  Remove all other buffers that are not currently in use, and leave the last one.  This will make it much easier to synchronize the two threads of the kernel; you just won't have to think about it.  And the data that will remain in the buffer, in any case, can be, because  arrive there by interrupt, and even if we freed the last buffer, at the same moment, by interrupt, it is possible to allocate a new buffer and write new data there.  Thus, we obtain an effective and simpler solution than a head-on solution.  I had to remove the first patch and add my own, which made the patch much more than it should have been. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,23 +59,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      <a href="">Second option</a> <br><div class="spoiler">  <b class="spoiler_title">The initial version.</b> <div class="spoiler_text"><pre><code class="diff hljs"><span class="hljs-comment"><span class="hljs-comment">--- diff --git a/drivers/tty/tty_buffer.cb/drivers/tty/tty_buffer.c index 6c9b7cd..4f02f9c 100644 --- a/drivers/tty/tty_buffer.c +++ b/drivers/tty/tty_buffer.c @@ -114,11 +114,14 @@ static void __tty_buffer_flush(struct tty_struct *tty) { struct tty_buffer *thead; - while ((thead = tty-&gt;buf.head) != NULL) { - tty-&gt;buf.head = thead-&gt;next; - tty_buffer_free(tty, thead); + if (tty-&gt;buf.head == NULL) + return; + while ((thead = tty-&gt;buf.head-&gt;next) != NULL) { + tty_buffer_free(tty, tty-&gt;buf.head); + tty-&gt;buf.head = thead; } - tty-&gt;buf.tail = NULL; + WARN_ON(tty-&gt;buf.head != tty-&gt;buf.tail); + tty-&gt;buf.head-&gt;read = tty-&gt;buf.head-&gt;commit; } /**</span></span></code> </pre> <br>  To remove the “if”, it would be good to allocate the first buffer when opening the device file, and not when the first data appears, but this would complicate the “patch”. <br></div></div><br><div class="spoiler">  <b class="spoiler_title">My opinion on the development of the Linux kernel</b> <div class="spoiler_text">  Is it good to patch holes with the first available method or badly?  It seems to me that it is bad, the process of making changes to the core looks like some kind of race, who managed to make changes, and the consequences, then we will understand.  It seems to me that there are too many such fixes in the kernel, which makes the code even more confusing and not so simple. <br></div></div></div><p>Source: <a href="https://habr.com/ru/post/254097/">https://habr.com/ru/post/254097/</a></p>
+      <a href="">Second option</a> <br><div class="spoiler">  <b class="spoiler_title">The initial version.</b> <div class="spoiler_text"><pre><code class="diff hljs"><span class="hljs-comment"><span class="hljs-comment">--- diff --git a/drivers/tty/tty_buffer.cb/drivers/tty/tty_buffer.c index 6c9b7cd..4f02f9c 100644 --- a/drivers/tty/tty_buffer.c +++ b/drivers/tty/tty_buffer.c @@ -114,11 +114,14 @@ static void __tty_buffer_flush(struct tty_struct *tty) { struct tty_buffer *thead; - while ((thead = tty-&gt;buf.head) != NULL) { - tty-&gt;buf.head = thead-&gt;next; - tty_buffer_free(tty, thead); + if (tty-&gt;buf.head == NULL) + return; + while ((thead = tty-&gt;buf.head-&gt;next) != NULL) { + tty_buffer_free(tty, tty-&gt;buf.head); + tty-&gt;buf.head = thead; } - tty-&gt;buf.tail = NULL; + WARN_ON(tty-&gt;buf.head != tty-&gt;buf.tail); + tty-&gt;buf.head-&gt;read = tty-&gt;buf.head-&gt;commit; } /**</span></span></code> </pre> <br>  To remove the “if”, it would be good to allocate the first buffer when opening the device file, and not when the first data appears, but this would complicate the “patch”. <br></div></div><br><div class="spoiler">  <b class="spoiler_title">My opinion on the development of the Linux kernel</b> <div class="spoiler_text">  Is it good to patch holes with the first available method or badly?  It seems to me that it is bad, the process of making changes to the core looks like some kind of race, who managed to make changes, and the consequences, then we will understand.  It seems to me that there are too many such fixes in the kernel, which makes the code even more confusing and not so simple. <br></div></div></div><p>Source: https://habr.com/ru/post/254097/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../254079/index.html">Installation, configuration and use of Antidoto security scanner</a></li>
+<li><a href="../25408/index.html">OUR TAKEN A UEFA CUP !!!</a></li>
 <li><a href="../254087/index.html">The process of developing and testing demons</a></li>
 <li><a href="../254089/index.html">ROTE and Lua bind terminal emulation library</a></li>
 <li><a href="../254091/index.html">Free online school of Android developers</a></li>
 <li><a href="../254093/index.html">Algorithm Tasks</a></li>
 <li><a href="../254099/index.html">Wristwatches based on Arduino, created on a 3D printer in one Saturday evening</a></li>
+<li><a href="../2541/index.html">Yandex will divide 5 million rubles between 31 scientists</a></li>
+<li><a href="../25410/index.html">Paginator - danator</a></li>
 <li><a href="../254101/index.html">Nutanix Discovery Kit - "Datacenter in a Box", more accessible than ever</a></li>
 <li><a href="../254103/index.html">Webix 2.3. Spring update</a></li>
-<li><a href="../254105/index.html">TARS, make the level of frontend-routine 0%</a></li>
-<li><a href="../254109/index.html">How to decrypt magnetic track data using DUKPT</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>PHP mail for Windows</h1><div class="post__text post__text-html js-mediator-article"><img src="https://habrastorage.org/getpro/habr/post_images/699/dc7/84a/699dc784a5b6fd72e024cb89d4dbef72.png" alt="Php mail picture with envelope"><br><br>  In this article I want to talk about <strong>sending mail</strong> from php scripts under Windows. <br><br>  Of course, I will not reveal America, but I hope that this article will be useful to someone or will simply save time. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,7 +61,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       From the point of view of a php programmer, mail is sent using the standard <code>mail()</code> function.  And here many beginner developers have a <strong>problem</strong> .  The script, which works fine on the host server, gives errors on the local computer. <br><br>  Usually these errors have a description like this: <br> <code>Warning: mail() [function.mail]: Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in E:\www\simplemail\mailer.php on line ......</code> <br> <a name="habracut"></a><br>  The fact is that the mail function itself <strong>does not send</strong> mail, it simply calls the <strong>sendmail</strong> program, which is <strong>not</strong> (and should not be) <strong>included</strong> in the web server distribution kit and the interpreter php. <br><br>  Sendmail, in turn, uses an <strong>SMTP server</strong> to send mail. <br><br>  So, in order for the php script to send mail, you need to <strong>install and configure sendmail and SMTP server</strong> . <br><br>  The sendmail version for Windows can be downloaded <a href="http://www.glob.com.au/sendmail/">here</a> . <br><br>  <strong>Installation and configuration</strong> is carried out in three stages. <br><br>  1) <strong>Unpack the archive</strong> on the same disk where php is installed.  For example, I created the folder C: \ wamp \ sendmail. <br><br>  2) <strong>We make changes</strong> to the php.ini file: <br><br> <code>[mail function] <br> SMTP = <br> sendmail_from = <br> sendmail_path = "C:\wamp\sendmail\sendmail.exe -t"</code> <br> <br>  As you can see, you only need to specify the path to sendmail so that php can find it. <br><br>  3) <strong>Configure sendmail</strong> .  All settings are in the sendmail.ini file (located in the sendmail folder). <br><br>  But before setting up a few words about the <strong>SMTP server</strong> .  You do not need to install a server on your computer.  Many mail services provide free access to their servers. <br><br>  Below I will show an example of setting up sendmail to work with the mail.ru SMTP server, but, of course, you can choose any other. <br><br>  So, open sendmail.ini and set the following parameters: <br><br>  <code>smtp_server=smtp.mail.ru</code> ;  SMTP server address <br>  <code>smtp_port=25</code> ;  SMTP server port <br><br>  <code>default_domain=mail.ru</code> ;  default domain <br><br>  <code>error_logfile=error.log</code> ;  error log file <br><br>  <code>debug_logfile=debug.log</code> ;  very useful option at the debugging stage.  Logs all operations that sendmail performs. <br><br>  <code>auth_username=account_name@mail.ru</code> ;  your account name <br>  <code>auth_password=account_password</code> ;  your password <br><br>  ;  The following three options are used if authorization is required on the POP3 server before authorization on the SMTP server <br> <code>pop3_server=pop.mail.ru <br> pop3_username=account_name@mail.ru <br> pop3_password=account_password</code> <br> <br>  ;  parameter for the MAIL FROM command <br> <code>force_sender=account_name@mail.ru</code> <br> <br> <code>hostname=mail.ru</code> <br> <br>  Now do not forget to <strong>restart the web server</strong> for the changes to take effect. <br><br>  To test the operation of the mail, we will write a simple script: <br><br><pre>  01 &lt;html xmlns = "http://www.w3.org/1999/xhtml"&gt;
@@ -102,7 +102,7 @@
  36 &lt;/ p&gt;
  37 &lt;/ form&gt;
  38 &lt;/ body&gt;
- 39 &lt;/ html&gt; </pre><br><br>  He creates a form with three fields for entering the <strong>address</strong> , <strong>subject</strong> and <strong>content of the</strong> letter.  Clicking on the “Send” button will send a request to the same script (line 21). <br><br>  If the data is entered, the mail function will be called (line 13), which will send the letter.  If successful, the function returns true; otherwise, it returns false. <br><br>  As you can see, there is nothing difficult in the mail tincture. <br><br>  Good luck! <br><br>  Source: Crossposting from my blog - <a href="http://www.simplecoding.org/php-mail-pod-windows.html">www.simplecoding.org</a> . </div><p>Source: <a href="https://habr.com/ru/post/26518/">https://habr.com/ru/post/26518/</a></p>
+ 39 &lt;/ html&gt; </pre><br><br>  He creates a form with three fields for entering the <strong>address</strong> , <strong>subject</strong> and <strong>content of the</strong> letter.  Clicking on the “Send” button will send a request to the same script (line 21). <br><br>  If the data is entered, the mail function will be called (line 13), which will send the letter.  If successful, the function returns true; otherwise, it returns false. <br><br>  As you can see, there is nothing difficult in the mail tincture. <br><br>  Good luck! <br><br>  Source: Crossposting from my blog - <a href="http://www.simplecoding.org/php-mail-pod-windows.html">www.simplecoding.org</a> . </div><p>Source: https://habr.com/ru/post/26518/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">

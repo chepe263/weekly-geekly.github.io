@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Following the D-Link Vulnerability: Backdoor Detected in Tenda and Medialink Wireless Routers</h1><div class="post__text post__text-html js-mediator-article">  So that you don’t think that D-Link is the only supplier that leaves <a href="http://habrahabr.ru/post/197314/">backdoors</a> in its products, here’s another one - <a href="http://www.tenda.cn/">Tenda.</a> <br><br><a name="habracut"></a><br>  After extracting the latest firmware for the Tenda W302R wireless router, Craig Heffner (Craig Heffner) decided to look into / bin / httpd, which turned out to be a GoAhead web server: <br><img src="https://habrastorage.org/getpro/habr/post_images/6e5/00b/34d/6e500b34d70d6024a9d0d11247726aaa.png" alt="image"><br><br>  But in Tenda is a modified server.  Immediately before entering the HTTP receive loop, the main call to InitMfgTask spawns the MfgThread function as a separate thread: <br><img src="https://habrastorage.org/getpro/habr/post_images/784/f0d/7f2/784f0d7f2ce84d73d385c14d227bc8d8.png" alt="image">
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,7 +62,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       The first MfgThread creates a UDP socket and listens on port 7329: <br><img src="https://habrastorage.org/getpro/habr/post_images/646/d0e/e21/646d0ee21004e34215a3a5cebedf5d32.png" alt="image"><br><br>  The stream then enters the recvfrom loop and reads 128 bytes from the socket.  It listens to each received UDP packet having a length of 14 bytes. <br><img src="https://habrastorage.org/getpro/habr/post_images/446/a9e/4a5/446a9e4a52b628ddbf805c1bab62f7b5.png" alt="image"><br><br>  The received UDP packet is then processed by this code: <br><img src="https://habrastorage.org/getpro/habr/post_images/c40/65e/ad6/c4065ead6889d59b13fcbc6b1f274f84.png" alt="image"><br><br>  An example of the same C code: <br><pre> memset (rx_magic_string, 0, 0x80);
@@ -116,20 +116,20 @@
  drwxr-xr-x 7 0 0 154 etc_ro
  drwxr-xr-x 1 0 0 0 etc
  drwxr-xr-x 1 0 0 0 dev
- drwxr-xr-x 2 1000 100 574 bin </pre><br><br>  This package can only be sent from the local network, while the backdoor cannot be used from the global network.  However, the operated wireless networks in which WPS is enabled by default are not protected against brute force.  ReaverPro relatively quickly cracked WPS brute-force, providing access to the wireless network: <br><img src="https://habrastorage.org/getpro/habr/post_images/0a2/1ce/35b/0a21ce35ba0d4debe2fb3b0ff43d5fbe.png" alt="image"><br><br>  This backdoor is most likely first implemented in Tenda in the W302R, although it also exists in the Tenda W330R, as well as in similar models, such as the Medialink MWN-WAPR150N.  All of them are also vulnerable to the “w302r_mfg” string in the UDP packet. <br><br>  UPDATE: <br>  Link to githab: <a href="http://ea.github.io/blog/2013/10/18/tenda-backdoor/">ea.github.io/blog/2013/10/18/tenda-backdoor</a> <br>  <b>The following firmware are subject to vulnerabilities:</b> <br><br>  301r_v3.1.192_en.bin <br>  W311r_W268R_H1_V3.3.6b_ost_staticR.bin <br>  302r_v3.1.192_en.bin <br>  V3.1.201d_W301R_2010_0709.bin <br>  W368R_H3_V3.3.6h_EN_spi.bin <br>  V3.1.201d_W302R_2010_0709.bin <br>  3gr_H2_V3.3.0y_multi_02.bin <br>  w368r_H1_V3.3.6l_EN.bin <br>  U_W330R_V3.1.201d_tenda_en.bin <br>  W368r_H1_V3.3.6b_ost_staticR.bin <br>  3g611r_en_0607.bin.bin <br>  U_W311R_W268R_H3_V3.3.6h_EN_spi.bin <br>  U_3G611R_H2_V3.3.1e_MULTI_02.bin <br>  US_W268RRA__H3_V3.3.6h_EN_SPI.bin <br>  US_W311RRA__H3_V3.3.6h_EN_SPI.bin <br>  w1500a_kfw_V1.0.1.22_en_svn6227.bin <br>  U150M_V3.32.12_EN.bin <br>  U300M_V3.32.12_EN.bin <br>  U_W302RRA_V3.1.201d_EN.bin <br>  US_N60BRV1_N60_V1.0.0.15_EN.bin <br>  US_N6BRV1_N6_V2.0.0.2_EN.bin <br>  U_W150M_EN_V3.33.13_SPI_EN.bin <br>  U_W300M_EN_V3.33.13_SPI_EN.bin <br>  U_W330R_V3.1.201f_en_onWISP.bin <br>  W330R_V3.1.201d_EN.bin <br>  W311R_H1_V3.3.5o.bin <br>  w311r_H1_V3.3.5n_en.bin <br>  US_N60BRV1_N60_V1.0.0.16_EN.bin <br>  US_N80_W568Rbr_V1.0.1.8 (4428) _en_TD.bin <br>  W311r_H1_V3.3.6b.bin <br>  U268R_H1_V3.3.6d_EN.bin <br>  U311R_H1_V3.3.6d_EN.bin <br>  U150M_RT_EN_V3.32.11.bin <br>  U300M_RT_EN_V3.32.11.bin </div><p>Source: <a href="https://habr.com/ru/post/198218/">https://habr.com/ru/post/198218/</a></p>
+ drwxr-xr-x 2 1000 100 574 bin </pre><br><br>  This package can only be sent from the local network, while the backdoor cannot be used from the global network.  However, the operated wireless networks in which WPS is enabled by default are not protected against brute force.  ReaverPro relatively quickly cracked WPS brute-force, providing access to the wireless network: <br><img src="https://habrastorage.org/getpro/habr/post_images/0a2/1ce/35b/0a21ce35ba0d4debe2fb3b0ff43d5fbe.png" alt="image"><br><br>  This backdoor is most likely first implemented in Tenda in the W302R, although it also exists in the Tenda W330R, as well as in similar models, such as the Medialink MWN-WAPR150N.  All of them are also vulnerable to the “w302r_mfg” string in the UDP packet. <br><br>  UPDATE: <br>  Link to githab: <a href="http://ea.github.io/blog/2013/10/18/tenda-backdoor/">ea.github.io/blog/2013/10/18/tenda-backdoor</a> <br>  <b>The following firmware are subject to vulnerabilities:</b> <br><br>  301r_v3.1.192_en.bin <br>  W311r_W268R_H1_V3.3.6b_ost_staticR.bin <br>  302r_v3.1.192_en.bin <br>  V3.1.201d_W301R_2010_0709.bin <br>  W368R_H3_V3.3.6h_EN_spi.bin <br>  V3.1.201d_W302R_2010_0709.bin <br>  3gr_H2_V3.3.0y_multi_02.bin <br>  w368r_H1_V3.3.6l_EN.bin <br>  U_W330R_V3.1.201d_tenda_en.bin <br>  W368r_H1_V3.3.6b_ost_staticR.bin <br>  3g611r_en_0607.bin.bin <br>  U_W311R_W268R_H3_V3.3.6h_EN_spi.bin <br>  U_3G611R_H2_V3.3.1e_MULTI_02.bin <br>  US_W268RRA__H3_V3.3.6h_EN_SPI.bin <br>  US_W311RRA__H3_V3.3.6h_EN_SPI.bin <br>  w1500a_kfw_V1.0.1.22_en_svn6227.bin <br>  U150M_V3.32.12_EN.bin <br>  U300M_V3.32.12_EN.bin <br>  U_W302RRA_V3.1.201d_EN.bin <br>  US_N60BRV1_N60_V1.0.0.15_EN.bin <br>  US_N6BRV1_N6_V2.0.0.2_EN.bin <br>  U_W150M_EN_V3.33.13_SPI_EN.bin <br>  U_W300M_EN_V3.33.13_SPI_EN.bin <br>  U_W330R_V3.1.201f_en_onWISP.bin <br>  W330R_V3.1.201d_EN.bin <br>  W311R_H1_V3.3.5o.bin <br>  w311r_H1_V3.3.5n_en.bin <br>  US_N60BRV1_N60_V1.0.0.16_EN.bin <br>  US_N80_W568Rbr_V1.0.1.8 (4428) _en_TD.bin <br>  W311r_H1_V3.3.6b.bin <br>  U268R_H1_V3.3.6d_EN.bin <br>  U311R_H1_V3.3.6d_EN.bin <br>  U150M_RT_EN_V3.32.11.bin <br>  U300M_RT_EN_V3.32.11.bin </div><p>Source: https://habr.com/ru/post/198218/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../198202/index.html">Perfeo 9748-RT - Retina display and capacious battery</a></li>
-<li><a href="../198204/index.html">Automatically download music to Google Music</a></li>
 <li><a href="../198206/index.html">Artificial Intelligence and Search Engines</a></li>
+<li><a href="../198208/index.html">coviolations.io now beta</a></li>
+<li><a href="../19821/index.html">Updates on the Apple Store</a></li>
 <li><a href="../198212/index.html">(Archive) Matreshka.js - MK.Array</a></li>
 <li><a href="../198216/index.html">The digest of interesting materials from the world of web development and IT for the last week No. 79 (October 13 - 19, 2013)</a></li>
+<li><a href="../19822/index.html">Apple Announces 16Gb iPhone and 32Gb iPod Touch</a></li>
 <li><a href="../198220/index.html">Why do copyright holders have to live on donations?</a></li>
 <li><a href="../198224/index.html">ETL process using web services in Integration Services 2012</a></li>
 <li><a href="../198228/index.html">Programming language J. Amateur look. Part 3. Arrays</a></li>
-<li><a href="../198230/index.html">Programming language J. Amateur look. Part 4. Boxes and cycles. Conclusion</a></li>
-<li><a href="../198232/index.html">Apogee: Man Orchestra and Online Game Publisher 1987</a></li>
+<li><a href="../19823/index.html">Why Microsoft buys Yahoo: the real reason</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

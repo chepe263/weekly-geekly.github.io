@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Running and using OpenWrt in VirtualBox</h1><div class="post__text post__text-html js-mediator-article"><img align="right" src="https://habrastorage.org/getpro/habr/post_images/d8f/094/3df/d8f0943df1ace00237a427e9372e4732.jpg" alt="Screenshot list of virtual machines">  In this article I will talk about how to run OpenWrt in the emulator and configure it to work on the network, as well as touch on the use of vi, ssh and scp clients.  I consider the main reason for all this action to be the opportunity to touch the firmware with my hands without fear of remaining without the Internet, in case of problems with the router.  This article is intended for people who are not familiar with Linux. <br>  Wikipedia suggests that OpenWrt is a Linux-based firmware for home routers.  In fact, this is a whole family of firmware.  OpenWrt along with DD-Wrt and Gargoyle are available for a huge number of routers on different hardware platforms.  The repository is available at <a href="http://downloads.openwrt.org/">downloads.openwrt.org</a> .  In addition to the main branch (having several implementations within the platform), called attitude_adjustment, backfire and kamikaze versions are common. <br><br><h2>  Software installation </h2><a name="habracut"></a><br>  First of all, <a href="https://www.virtualbox.org/wiki/Downloads" title="Download VirtualBox">install the VirtualBox emulator</a> if you don’t have it.  To be able to execute commands outside the console of the emulator window, you will need an SSH client.  <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html" title="Download Putty">For example, Putty</a> .  At the same time you will be available to the home system clipboard.  For convenient access to the file system of the "router" you need a graphical SCP client.  For example, <a href="http://winscp.net/eng/download.php" title="Download WinSCP">WinSCP for Windows</a> .  For Linux, the built-in file manager will suffice.  For example, Krusader, Dolphin, Nautilus. <br><br><h2>  Select firmware </h2><br>  Emulation requires firmware for x86 platform, preferably with Ext2 or Ext4 file system. <br>  Although the <a href="http://wiki.openwrt.org/doc/howto/virtualbox">official wiki advises</a> to install a <a href="http://downloads.openwrt.org/attitude_adjustment/12.09/x86/generic/">version of attitude_adjustment</a> , I had problems with it: it refused to start, reporting kernel panic.  So it's easier to stay on one of the two remaining.  Choosing the firmware, look in the options for downloading the finished .vdi file. <br><img src="https://habrastorage.org/getpro/habr/post_images/91d/ee4/116/91dee4116f36976b46895b6ada4bd88c.png" alt=".vdi firmware image"><br>  Link for backfire version 10.03.1: <a href="">http://downloads.openwrt.org/backfire/10.03.1/x86_generic/openwrt-x86-generic-combined-ext2.vdi</a> . 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,7 +59,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       If the firmware you are interested in is available only as a raw image (img.gz, image.gz, bin) you will need to use the converter included in the VirtualBox kit.  For Windows, save the following text file in the VirtualBox folder (you may need administrator rights) and give it the extension .bat or .cmd: <br><blockquote><pre>  "% ~ dp0VBoxManage.exe" convertfromraw --format VDI% 1 "% ~ dpn1.vdi"
@@ -96,20 +96,20 @@
  Installing luci-i18n-russian (0.10.0-1) to root ...
  Configuring luci-i18n-russian.
  root @ OpenWrt: ~ #
-</pre></blockquote><br>  Keep in mind that the architecture of your firmware and the package to be installed must match. <br><br><h2>  Web interface </h2><br>  Most versions of OpenWrt initially include the LuCI web shell.  LuCI stands for Lua Configuration Interface.  Navigate to the browser address of your “router” in the browser, enter the password specified at the beginning and you can experiment with LuCI. <br><img src="https://habrastorage.org/getpro/habr/post_images/cde/659/25a/cde65925af14605046cf76a65f2f0801.png" alt="LuCI login window"><br>  Russian translation is available.  To install, go to the System - Software section, type the word “russian” in the Filter field, and on the Available packages (russian) tab, install the luci-i18n-russian package.  Or, install it using opkg as described above, and then select a language in the System - System - Language and Style - Language section. <br><br><h2>  Links </h2><br>  <a href="http://downloads.openwrt.org/">OpenWrt repository</a> <br>  <a href="http://wiki.openwrt.org/ru/doc/start">OpenWRT Project Wiki</a> <br>  <a href="https://ru.wikipedia.org/wiki/OpenWrt">Wikipedia about OpenWrt</a> <br>  <a href="http://habrahabr.ru/post/128451/">Network configuration in OpenWRT</a> <br>  <a href="http://habrahabr.ru/post/191990/">OpenWRT, or What else can you do with your router?</a> </div><p>Source: <a href="https://habr.com/ru/post/195592/">https://habr.com/ru/post/195592/</a></p>
+</pre></blockquote><br>  Keep in mind that the architecture of your firmware and the package to be installed must match. <br><br><h2>  Web interface </h2><br>  Most versions of OpenWrt initially include the LuCI web shell.  LuCI stands for Lua Configuration Interface.  Navigate to the browser address of your “router” in the browser, enter the password specified at the beginning and you can experiment with LuCI. <br><img src="https://habrastorage.org/getpro/habr/post_images/cde/659/25a/cde65925af14605046cf76a65f2f0801.png" alt="LuCI login window"><br>  Russian translation is available.  To install, go to the System - Software section, type the word “russian” in the Filter field, and on the Available packages (russian) tab, install the luci-i18n-russian package.  Or, install it using opkg as described above, and then select a language in the System - System - Language and Style - Language section. <br><br><h2>  Links </h2><br>  <a href="http://downloads.openwrt.org/">OpenWrt repository</a> <br>  <a href="http://wiki.openwrt.org/ru/doc/start">OpenWRT Project Wiki</a> <br>  <a href="https://ru.wikipedia.org/wiki/OpenWrt">Wikipedia about OpenWrt</a> <br>  <a href="http://habrahabr.ru/post/128451/">Network configuration in OpenWRT</a> <br>  <a href="http://habrahabr.ru/post/191990/">OpenWRT, or What else can you do with your router?</a> </div><p>Source: https://habr.com/ru/post/195592/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../195582/index.html">See the invisible, or a little about the secrets of mail.ru</a></li>
 <li><a href="../195584/index.html">The author of scientific articles Clive Thompson does not think that technology makes us sillier.</a></li>
 <li><a href="../195586/index.html">RailsClub'Moscow 2013. The conference has begun!</a></li>
 <li><a href="../195588/index.html">[UPD] Chain.js: link synchronous and asynchronous functions in the chain</a></li>
+<li><a href="../19559/index.html">Week of Safe Runet</a></li>
 <li><a href="../195590/index.html">Two hares - SOPA and IP4, one solution</a></li>
 <li><a href="../195594/index.html">Autonomous monitoring system with a small budget</a></li>
 <li><a href="../195596/index.html">We test and monitor MSTP in a heterogeneous network</a></li>
 <li><a href="../195598/index.html">Curiosity found water!</a></li>
-<li><a href="../195604/index.html">Charging station from used batteries</a></li>
-<li><a href="../195608/index.html">The main mistakes in the design of the main menu of the game</a></li>
+<li><a href="../1956/index.html">WebMoney system has changed the registration procedure</a></li>
+<li><a href="../19560/index.html">Improving e-mail links</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

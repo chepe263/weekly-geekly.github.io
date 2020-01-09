@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>NTLM-relay reincarnation or how to become a domain administrator in 1 minute</h1><div class="post__text post__text-html js-mediator-article">  This post is a logical continuation of the research begun in <a href="http://habrahabr.ru/post/142219/">tyts</a> and <a href="http://habrahabr.ru/post/182954/">tyts</a> . <br><br>  In the first post I wrote about the good old SMB Relay in the context of modern operating conditions. <br>  The second post affected a new technique called SMB Hijacking with which you can execute code even if the outgoing SMB session uses Kerberos. <br><br>  This time we will talk about the next technique, which is based on the classic NTLM Relay. <br><a name="habracut"></a><br>  There is nothing fundamentally new in it, it differs from SMB Relay only in the service to which the data is redirected, but in terms of its impact, this technique is inconceivably superior to its progenitor. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,10 +61,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      As you remember, in a domain network, the controller is protected from SMB Relay by a rather simple and effective mechanism called SMB Signing, therefore redirection to DC as a third-party host is impossible.  The problem is that one of the central systems of the Active Directory domain, which looks like an LDAP server from the outside, by default does not require the mandatory signature of packets during remote network interaction!  To put it mildly, this is quite a frank backdoor in the system, left for some unknown reason.  Either this is done intentionally for backward compatibility, or Microsoft employees thought that if there are no working exploits, then there is no cause for concern. <br><br>  The lack of tools for NTLM relay on LDAP (Active Directory) is also not entirely clear.  The vector is fairly obvious, but it is covered very poorly, perhaps the researchers simply could not think that a domain controller could be so defenseless in the default configuration. <br><br>  In 2012, at the Blackhat conference, a certain Zack Fasel presented his tool called ZackAttack.  Among the declared functionality, there was also a relay on LDAP.  Despite the rather crude, but in some cases, the work implementation, the main merit of Zack, for me personally, was not the creation of the tool, but the mention of the lack of mandatory signature of packages when working with Active Directory.  It took quite a long time before my hands reached this topic, but it happened and the working implementation of the attack appeared in Intercepter-NG. <br><br>  For the attack requires only one condition: you need to know which computer is currently running the current domain administrator.  The attacker does not even have to be a member of the domain, just connect to the network.  As in the case of other attacks, to speed up the action, a link to the pseudo-web service Interceter, which will require NTLM authorization, is injected into the attacker's traffic.  During the web surfing, the attacker will automatically and imperceptibly send authentication information, which will then be redirected to Active Directory.  As a result of the attack, a new user will be created with Domain Admins rights. <br><br>  The attack was successfully tested on the server operating systems Windows 2003 and 2008R2, but it should also work on Windows 2012, because  The policy “Domain controller: LDAP server signing requirements” is similarly set to none by default. <br><br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/lexALI8Tphk%3Ffeature%3Doembed&amp;xid=17259,15700022,15700186,15700191,15700253&amp;usg=ALkJrhjHx_jAv7DTGF8V5uzbDHZBIJ3kVw" frameborder="0" allowfullscreen=""></iframe><br><br>  You can try out the attack yourself with the release of the new version of Intercepter-NG, which is scheduled for autumn. </div><p>Source: <a href="https://habr.com/ru/post/226189/">https://habr.com/ru/post/226189/</a></p>
+      As you remember, in a domain network, the controller is protected from SMB Relay by a rather simple and effective mechanism called SMB Signing, therefore redirection to DC as a third-party host is impossible.  The problem is that one of the central systems of the Active Directory domain, which looks like an LDAP server from the outside, by default does not require the mandatory signature of packets during remote network interaction!  To put it mildly, this is quite a frank backdoor in the system, left for some unknown reason.  Either this is done intentionally for backward compatibility, or Microsoft employees thought that if there are no working exploits, then there is no cause for concern. <br><br>  The lack of tools for NTLM relay on LDAP (Active Directory) is also not entirely clear.  The vector is fairly obvious, but it is covered very poorly, perhaps the researchers simply could not think that a domain controller could be so defenseless in the default configuration. <br><br>  In 2012, at the Blackhat conference, a certain Zack Fasel presented his tool called ZackAttack.  Among the declared functionality, there was also a relay on LDAP.  Despite the rather crude, but in some cases, the work implementation, the main merit of Zack, for me personally, was not the creation of the tool, but the mention of the lack of mandatory signature of packages when working with Active Directory.  It took quite a long time before my hands reached this topic, but it happened and the working implementation of the attack appeared in Intercepter-NG. <br><br>  For the attack requires only one condition: you need to know which computer is currently running the current domain administrator.  The attacker does not even have to be a member of the domain, just connect to the network.  As in the case of other attacks, to speed up the action, a link to the pseudo-web service Interceter, which will require NTLM authorization, is injected into the attacker's traffic.  During the web surfing, the attacker will automatically and imperceptibly send authentication information, which will then be redirected to Active Directory.  As a result of the attack, a new user will be created with Domain Admins rights. <br><br>  The attack was successfully tested on the server operating systems Windows 2003 and 2008R2, but it should also work on Windows 2012, because  The policy “Domain controller: LDAP server signing requirements” is similarly set to none by default. <br><br><iframe width="560" height="315" src="https://translate.googleusercontent.com/translate_c?depth=1&amp;rurl=translate.google.com&amp;sl=ru&amp;sp=nmt4&amp;tl=en&amp;u=https://www.youtube.com/embed/lexALI8Tphk%3Ffeature%3Doembed&amp;xid=17259,15700022,15700186,15700191,15700253&amp;usg=ALkJrhjHx_jAv7DTGF8V5uzbDHZBIJ3kVw" frameborder="0" allowfullscreen=""></iframe><br><br>  You can try out the attack yourself with the release of the new version of Intercepter-NG, which is scheduled for autumn. </div><p>Source: https://habr.com/ru/post/226189/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -75,9 +75,9 @@
 <li><a href="../226185/index.html">Useful and strange: 8 amazing ideas from the world of the Internet of things (+1)</a></li>
 <li><a href="../226195/index.html">Plugin for Xcode that automatically checks the accessibility of interfaces in iOS: distribution of free beta versions</a></li>
 <li><a href="../226199/index.html">How our books hit the shelves</a></li>
+<li><a href="../2262/index.html">BitTorrent received $ 20 million investment</a></li>
+<li><a href="../22620/index.html">Offices of popular web 2.0 projects</a></li>
 <li><a href="../226201/index.html">Taking pictures from a digital SLR camera (Nikon) from the c # program code</a></li>
-<li><a href="../226203/index.html">Analog is becoming increasingly digital</a></li>
-<li><a href="../226205/index.html">Vessyl: a smart cup that knows how much and what you drink</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

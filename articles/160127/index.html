@@ -24,12 +24,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -51,7 +51,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Web server abroad + statics in Russia = speeding up page loading speed</h1><div class="post__text post__text-html js-mediator-article">  The most common question when choosing a foreign host (for example, Hetzner): “Will the site be slow to stop”?  Despite the fact that ping to Hetzner from Russia is quite small, static (especially heavy or if there are a lot of it) from servers hosted in Russia is given faster. <br><br>  There are several options for increasing the speed remaining in Hetzner: <br><br>  1. Use of Russian CDN-services. <br>  2. Proxy / caching statics via server / vps, located in Russia. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -59,10 +59,10 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I will tell you how to technically implement static proxying / caching using nginx via a server hosted in Russia. <br><br><a name="habracut"></a><br>  To solve the problem, it will be necessary to bring all the static to a separate subdomain, and if there are many statics - to several domains.  For example, assets01.example.com, assets02.example.com, ..., assets04.example.com (using more than 4 domains can lead to a decrease in performance, because DNS-resolve also takes some time ).  Thus, bypassing the limitations of simultaneous connections, the browser will load the page faster.  It is important that the links to the statics on the page always remain the same, since  in case of continuous mixing of assets01-asstets04 domains, the browser will reload it. <br><br>  In the following example, the static will be transparently proxied from the server in Hetzner and cached on the Russian server, so the reload will occur only when changes are made on the server in Hetzner.  I note that in case you need to change, for example, css, you will need to either change the file name or the number in the request.  For example, you can use the addresses <a href="">assetsXX.example.com/css/styles.css?2342324</a> , and when changing the styles.css file, change the serial to any other.  This is also useful when using the nginx “expires max” parameter — the browser will not even check for updates, which also increases the speed of the page opening. <br><br>  The nginx config on the Russian server will look like this (on the server in Hetzner you also need to register aliases): <br><br><pre><code class="nginx hljs"><span class="hljs-comment"><span class="hljs-comment">#      30 ,    100  proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=static:32m inactive=30d max_size=100g; server { listen 80; server_name assets01.example.com assets02.example.com assets03.example.com assets04.example.com; # access_log     , ..             access_log off; error_log /var/log/nginx/example.com-err.log; #     ,         http://assetsXX.example.com/ -      location / { rewrite ^ http://example.com$uri permanent; } #  ,    location ~* \.(jpg|jpeg|gif|png|ico|css|midi|wav|bmp|js|swf|flv|avi|djvu|mp3)$ { #  IP   Hetzner proxy_pass http://111.111.111.111:80; proxy_redirect off; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_buffer_size 16k; proxy_buffers 32 16k; #   expires  ,    serial ( , http://assetsXX.example.com/css/styles.css?2342324) if ($request_uri ~* "\?[0-9]+$") { expires max; break; } proxy_cache static; #      30  proxy_cache_valid 30d; proxy_ignore_headers "Cache-Control" "Expires"; #        ,    ,    assetsXX     (  /css/styles.css?123  /css/styles.css?321   ) proxy_cache_key "$uri$is_args$args"; proxy_cache_lock on; } }</span></span></code> </pre> </div><p>Source: <a href="https://habr.com/ru/post/160127/">https://habr.com/ru/post/160127/</a></p>
+      I will tell you how to technically implement static proxying / caching using nginx via a server hosted in Russia. <br><br><a name="habracut"></a><br>  To solve the problem, it will be necessary to bring all the static to a separate subdomain, and if there are many statics - to several domains.  For example, assets01.example.com, assets02.example.com, ..., assets04.example.com (using more than 4 domains can lead to a decrease in performance, because DNS-resolve also takes some time ).  Thus, bypassing the limitations of simultaneous connections, the browser will load the page faster.  It is important that the links to the statics on the page always remain the same, since  in case of continuous mixing of assets01-asstets04 domains, the browser will reload it. <br><br>  In the following example, the static will be transparently proxied from the server in Hetzner and cached on the Russian server, so the reload will occur only when changes are made on the server in Hetzner.  I note that in case you need to change, for example, css, you will need to either change the file name or the number in the request.  For example, you can use the addresses <a href="">assetsXX.example.com/css/styles.css?2342324</a> , and when changing the styles.css file, change the serial to any other.  This is also useful when using the nginx “expires max” parameter — the browser will not even check for updates, which also increases the speed of the page opening. <br><br>  The nginx config on the Russian server will look like this (on the server in Hetzner you also need to register aliases): <br><br><pre><code class="nginx hljs"><span class="hljs-comment"><span class="hljs-comment">#      30 ,    100  proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=static:32m inactive=30d max_size=100g; server { listen 80; server_name assets01.example.com assets02.example.com assets03.example.com assets04.example.com; # access_log     , ..             access_log off; error_log /var/log/nginx/example.com-err.log; #     ,         http://assetsXX.example.com/ -      location / { rewrite ^ http://example.com$uri permanent; } #  ,    location ~* \.(jpg|jpeg|gif|png|ico|css|midi|wav|bmp|js|swf|flv|avi|djvu|mp3)$ { #  IP   Hetzner proxy_pass http://111.111.111.111:80; proxy_redirect off; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_buffer_size 16k; proxy_buffers 32 16k; #   expires  ,    serial ( , http://assetsXX.example.com/css/styles.css?2342324) if ($request_uri ~* "\?[0-9]+$") { expires max; break; } proxy_cache static; #      30  proxy_cache_valid 30d; proxy_ignore_headers "Cache-Control" "Expires"; #        ,    ,    assetsXX     (  /css/styles.css?123  /css/styles.css?321   ) proxy_cache_key "$uri$is_args$args"; proxy_cache_lock on; } }</span></span></code> </pre> </div><p>Source: https://habr.com/ru/post/160127/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
@@ -72,10 +72,10 @@
 <li><a href="../160123/index.html">Tornado WebSocket Chat for your Django project</a></li>
 <li><a href="../160125/index.html">Filter for comments Habrahabr as userscript</a></li>
 <li><a href="../160129/index.html">Everything you need to know about Do Not Track: Microsoft vs. Google and Mozilla</a></li>
+<li><a href="../16013/index.html">Improving the efficiency of online stores</a></li>
 <li><a href="../160131/index.html">Study: the closure of Megaupload could have a negative impact on the box office of many films</a></li>
 <li><a href="../160133/index.html">RIM Shares Show Record Growth</a></li>
 <li><a href="../160135/index.html">Minecraft officially ported to Raspberry Pi</a></li>
-<li><a href="../160137/index.html">Bruce Beyer, "the father of digital photography," passed away</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>

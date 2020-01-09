@@ -27,12 +27,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -54,7 +54,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Again about the layout of Birman, and the switching of layouts in general in the coming 8.10</h1><div class="post__text post__text-html js-mediator-article"><h2>  Disclaimer </h2><br>  Everything described below applies to Ubuntu 8.10 (interpid), although it is likely to affect future stable versions. <br><br>  Pay attention that some of the steps described below can lead to unpredictable :) consequences. <br><br><h2>  Prehistory </h2><br>  Some time ago, <a href="https://habrahabr.ru/users/o4kapuk/" class="user_link">o4kapuk</a> described in the article <a href="http://habrahabr.ru/blogs/ubuntu/25150/">And again about the layout of Birman</a> how to “get support for the“ typographic ”functionality by means as close as possible to the standard ones.” 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -62,7 +62,7 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
       For me, both at home and at work, this decision led to the following problems: <br><ol><li>  After the reboot, the layout did not switch.  This problem each time had to be solved by calling the configuration applet and changing some parameter in the “Additional parameters”. </li><li>  After some updates, the layout broke down completely.  I had to reinstall the necessary files </li><li>  After updating to 8.10, the method stopped working completely. </li></ol><br><a name="habracut"></a><br><h2>  Who is to blame and what to do? </h2><br><h6>  Step 1 </h6><br>  To begin with, since some time the winkeys version has become the “default option” in the file <br>  / etc / X11 / xkb is not mentioned in the layout.  In spite of this, let us repeat the third step from the article mentioned: add the variant winkeys_typo: <br><br><pre>       &lt;layout&gt;
@@ -122,14 +122,14 @@
 </pre><br><h6>  Step 3 </h6><br>  The layout appeared in the list and it all worked?  Well, you were lucky ... but I was not very lucky: there were no layouts on the list. <br>  In search of a solution, I <a href="https://bugs.launchpad.net/ubuntu/%2Bsource/xkeyboard-config/%2Bbug/259489">stumbled upon such a discussion</a> . <br>  Having tried different options, I stopped at the following: <br><br><h6>  Step 3.1 </h6><br>  Edit the / etc / default / console-setup file: <br><br><pre> XKBMODEL = "logimel"
  XKBLAYOUT = "us, ru"
  XKBVARIANT = ", winkeys_typo"
-</pre><br><br>  Pay attention to XKBMODEL = "logimel" - this is a model of your keyboard, some additional keys did not work for me until I stopped at this one.  By the way, it is possible to understand which one you have; the file /usr/share/X11/xkb/rules/base.lst will help you. <br><br><h6>  Step 3.2 </h6><br>  sudo dpkg-reconfigure console-setup :) <br>  Here you can simply press enter, but if it doesn’t click - press tab first :) <br>  As a result, get a bunch of messages like "WARNING: Undefined kernel key code for xxx" - do not pay attention.  At the end there should be a message “[OK] update-initramfs: Generating /boot/initrd.img-2.6.27-3-generic” <br><br><h6>  Step 4 </h6><br>  And now let's solve the old problem of switching failures upon reboot - for this, let's clear the gnome's keyboard configuration file: sudo gedit ~ / .gconf / desktop / gnome / peripherals / keyboard / kbd /% gconf.xml -&gt; ctrl + a -&gt; ctrl + s: ) <br><br><h6>  Step 5 </h6><br>  Yes, no matter how awful it sounds - we reboot and everything should work.  If not ... check everything again. <br><br><h2>  Conclusion and sentence </h2><br><br>  The disadvantages of this method, like the previous one, are problems with compatibility with future versions of ubuntu, but it is better to spend an hour or two to solve these problems and get a perfectly working typographic layout than to watch what Habr did with quotes here. <br><br>  On the other hand, why not include this option in the basic delivery?  This I appeal to developers who will not be difficult to make changes to the distribution. <br></div><p>Source: <a href="https://habr.com/ru/post/40543/">https://habr.com/ru/post/40543/</a></p>
+</pre><br><br>  Pay attention to XKBMODEL = "logimel" - this is a model of your keyboard, some additional keys did not work for me until I stopped at this one.  By the way, it is possible to understand which one you have; the file /usr/share/X11/xkb/rules/base.lst will help you. <br><br><h6>  Step 3.2 </h6><br>  sudo dpkg-reconfigure console-setup :) <br>  Here you can simply press enter, but if it doesn’t click - press tab first :) <br>  As a result, get a bunch of messages like "WARNING: Undefined kernel key code for xxx" - do not pay attention.  At the end there should be a message “[OK] update-initramfs: Generating /boot/initrd.img-2.6.27-3-generic” <br><br><h6>  Step 4 </h6><br>  And now let's solve the old problem of switching failures upon reboot - for this, let's clear the gnome's keyboard configuration file: sudo gedit ~ / .gconf / desktop / gnome / peripherals / keyboard / kbd /% gconf.xml -&gt; ctrl + a -&gt; ctrl + s: ) <br><br><h6>  Step 5 </h6><br>  Yes, no matter how awful it sounds - we reboot and everything should work.  If not ... check everything again. <br><br><h2>  Conclusion and sentence </h2><br><br>  The disadvantages of this method, like the previous one, are problems with compatibility with future versions of ubuntu, but it is better to spend an hour or two to solve these problems and get a perfectly working typographic layout than to watch what Habr did with quotes here. <br><br>  On the other hand, why not include this option in the basic delivery?  This I appeal to developers who will not be difficult to make changes to the distribution. <br></div><p>Source: https://habr.com/ru/post/40543/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../40536/index.html">JAVA class for determining free space under * nix</a></li>
 <li><a href="../40537/index.html">Attempting to understand the financial crisis</a></li>
 <li><a href="../40538/index.html">Modern culture and how to deal with it.</a></li>
 <li><a href="../40539/index.html">HTC Touch HD - a new Taiwanese flagship is being prepared</a></li>
+<li><a href="../4054/index.html">Word 2007 will be able to create and edit blogs</a></li>
 <li><a href="../40540/index.html">Two wise men</a></li>
 <li><a href="../40545/index.html">Another PHP threading implementation</a></li>
 <li><a href="../405457/index.html">Not really smart, but very safe house from Xiaomi</a></li>

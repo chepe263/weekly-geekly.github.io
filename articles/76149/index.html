@@ -26,12 +26,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="../../js/vendors/jquery-3.3.1.min.js"><\/script>')</script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"><\/script>')</script>
   <script>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-6974184241884155",
-            enable_page_level_ads: true
-       });
+        var superSpecialObject = {};
+        superSpecialObject['google_a' + 'd_client'] = 'ca-p' + 'ub-6974184241884155';
+        superSpecialObject['enable_page_level_a' + 'ds'] = true;
+       (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push(superSpecialObject);
   </script>
 </head>
 
@@ -53,7 +53,7 @@
   <a href="http://bit.ly/donateToWeeklyGeekly" class="donate-btn">DONATE</a>
   <section class="page js-page"><h1>Large tables and unique keys</h1><div class="post__text post__text-html js-mediator-article">  The other day I had a task to add a new field to the table.  It would seem, ALTER TABLE ... Not here it was. <br><br>  I launched this query in the evening, but in the morning it was still executed (16 hours was not enough :) <br><br>  I immediately suggested that the problem is most likely in the construction of a unique index and the huge size of the source table.  As you know, with ALTER TABLE, the server creates a temporary file into which it copies the necessary data.  SHOW PROCESSLIST confirmed this. 
       <br>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>document.write('<script src="//pagea' + 'd2.googles' + 'yndication.com/pagea' + 'd/js/a' + 'dsby' + 'google.js"></script>')</script>
         <ins class="adsbygoogle"
           style="display:block; text-align:center;"
           data-ad-layout="in-article"
@@ -61,23 +61,23 @@
           data-ad-client="ca-pub-6974184241884155"
           data-ad-slot="8945601208"></ins>
         <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          (window['a' + 'dsbygoogle'] = window['a' + 'dsbygoogle'] || []).push({});
         </script>
       <br>
-      I will give a more detailed formulation of the problem. <a name="habracut"></a><br><br>  <b>It is given.</b>  There is a data table. <br>  Type - MyISAM. <br>  The table has a VARCHAR field 140 characters long and a unique key for it. <br>  The table has about 150 million rows. <br>  The amount of disk space is 15 GB. <br>  <b>You must</b> add a new field to the table. <br><br>  The search showed that the problem is known and that the usual way can last forever.  The size of the index does not allow using the in-memory cache, so creating a new table line by line is very slow. <br><br>  <a href="http://peter-zaitsev.livejournal.com/11772.html">Petr Zaitsev’s blog</a> suggested a non-standard “hacker” solution. <br><br>  1. Create a new table (for example, test_new) with the desired structure, but without any indexes, even without a primary key;  if there is an auto-increment field, then remove auto_increment from its definition. <br>  2. Fill this table with data using <a href="http//dev.mysql.com/doc/refman/5.1/en/insert-select.html">INSERT INTO test_new ... SELECT</a> . <br>  3. Create another table with the same structure as test_new, <b>but with all the necessary keys</b> ;  let's call it test_struct. <br>  4. Go to the directory on the disk where our tables are stored and copy test_struct.frm over test_new.frm and test_struct.MYI over test_new.MYI. <br>  5. Open the mysql client and execute FLUSH TABLES and REPAIR TABLE test_new queries. <br><br>  In my case, REPAIR TABLE took 20 minutes. <br><br>  <b>Possible problem.</b>  I also encountered a shortage of space in the MySQL temporary directory.  In my case it was / tmp with a capacity of 5 GB.  The fact is that REPAIR TABLE creates a temporary file for the new index, which eventually weighed 7 GB, which, of course, did not fit into 5 GB.  If there is not enough disk space, MySQL waits 1 minute, and then tries to find it again and so many times.  We, of course, remain in ignorance, thinking that he is busy :) <br>  You can set the <a href="http//dev.mysql.com/doc/refman/5.1/en/temporary-files.html">MySQL</a> temporary directory with the <a href="http//dev.mysql.com/doc/refman/5.1/en/temporary-files.html">tmpdir</a> parameter. <br><br>  <b>Where can I use this hack?</b>  When adding, deleting or changing a field in a very large table, where there is a unique index, is also very large (most likely on a string field).  When creating a unique index in a similar table.  When recreating such a table from a dump. <br><br>  <b>Addition.</b>  <b>What's the secret?</b>  Normal creation of a unique index goes line by line, record by record.  REPAIR TABLE creates an index at once, using sorting, which is significantly faster. <br><br>  Good luck! </div><p>Source: <a href="https://habr.com/ru/post/76149/">https://habr.com/ru/post/76149/</a></p>
+      I will give a more detailed formulation of the problem. <a name="habracut"></a><br><br>  <b>It is given.</b>  There is a data table. <br>  Type - MyISAM. <br>  The table has a VARCHAR field 140 characters long and a unique key for it. <br>  The table has about 150 million rows. <br>  The amount of disk space is 15 GB. <br>  <b>You must</b> add a new field to the table. <br><br>  The search showed that the problem is known and that the usual way can last forever.  The size of the index does not allow using the in-memory cache, so creating a new table line by line is very slow. <br><br>  <a href="http://peter-zaitsev.livejournal.com/11772.html">Petr Zaitsev’s blog</a> suggested a non-standard “hacker” solution. <br><br>  1. Create a new table (for example, test_new) with the desired structure, but without any indexes, even without a primary key;  if there is an auto-increment field, then remove auto_increment from its definition. <br>  2. Fill this table with data using <a href="http//dev.mysql.com/doc/refman/5.1/en/insert-select.html">INSERT INTO test_new ... SELECT</a> . <br>  3. Create another table with the same structure as test_new, <b>but with all the necessary keys</b> ;  let's call it test_struct. <br>  4. Go to the directory on the disk where our tables are stored and copy test_struct.frm over test_new.frm and test_struct.MYI over test_new.MYI. <br>  5. Open the mysql client and execute FLUSH TABLES and REPAIR TABLE test_new queries. <br><br>  In my case, REPAIR TABLE took 20 minutes. <br><br>  <b>Possible problem.</b>  I also encountered a shortage of space in the MySQL temporary directory.  In my case it was / tmp with a capacity of 5 GB.  The fact is that REPAIR TABLE creates a temporary file for the new index, which eventually weighed 7 GB, which, of course, did not fit into 5 GB.  If there is not enough disk space, MySQL waits 1 minute, and then tries to find it again and so many times.  We, of course, remain in ignorance, thinking that he is busy :) <br>  You can set the <a href="http//dev.mysql.com/doc/refman/5.1/en/temporary-files.html">MySQL</a> temporary directory with the <a href="http//dev.mysql.com/doc/refman/5.1/en/temporary-files.html">tmpdir</a> parameter. <br><br>  <b>Where can I use this hack?</b>  When adding, deleting or changing a field in a very large table, where there is a unique index, is also very large (most likely on a string field).  When creating a unique index in a similar table.  When recreating such a table from a dump. <br><br>  <b>Addition.</b>  <b>What's the secret?</b>  Normal creation of a unique index goes line by line, record by record.  REPAIR TABLE creates an index at once, using sorting, which is significantly faster. <br><br>  Good luck! </div><p>Source: https://habr.com/ru/post/76149/</p>
 <section class="more-articles-navigation-panel js-more-articles-navigation-panel">
 <h4>More articles:</h4>
 <nav class="list-of-articles-container js-list-of-articles-container"><ul class="list-of-pages js-list-of-pages">
-<li><a href="../76135/index.html">Team development using git and Trac in the Midnight Commander project</a></li>
 <li><a href="../76138/index.html">Your provider gives fair unlimited tariffs?</a></li>
+<li><a href="../7614/index.html">US bans other states to form alliances</a></li>
 <li><a href="../76144/index.html">Writing Comet-chat</a></li>
 <li><a href="../76147/index.html">The action "Interface = understanding": the results of the first stage are summed up</a></li>
 <li><a href="../76148/index.html">Habrawars: utility for graphical debugging</a></li>
+<li><a href="../7615/index.html">Personal messages - to whom and how</a></li>
 <li><a href="../76152/index.html">ScrumTrek and AgileRussia: Requirements Management in Agile Workshop | December 2nd</a></li>
 <li><a href="../76153/index.html">Battle tank (Tanchiki) aka Battle City 2. Now on the iPhone!</a></li>
 <li><a href="../76154/index.html">Erlang User Conference 2009 in Stockholm, Sweden</a></li>
 <li><a href="../76156/index.html">Announcement of training on designing user interfaces or interface secrets of successful websites and programs</a></li>
-<li><a href="../76158/index.html">IT events at the end of autumn in Minsk</a></li>
 </ul></nav>
 </section><br />
 <a href="../../allArticles.html"><strong>All Articles</strong></a>
